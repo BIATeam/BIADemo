@@ -1,0 +1,247 @@
+<form [formGroup]="form" class="bia-calc-form">
+  <p-table
+    *ngIf="configuration"
+    #dt
+    [autoLayout]="true"
+    [reorderableColumns]="true"
+    [columns]="displayedColumns"
+    [value]="elements"
+    [paginator]="paginator"
+    [rows]="pageSize"
+    (onFilter)="onFilter()"
+    [totalRecords]="totalRecord"
+    [lazy]="true"
+    [loading]="loading && (showLoading$ | async) !== null"
+    (onLazyLoad)="onLoadLazy($event)"
+    [stateStorage]="'session'"
+    [stateKey]="tableStateKey"
+    [lazyLoadOnInit]="getLazyLoadOnInit()"
+    [sortField]="sortFieldValue"
+    [sortOrder]="sortOrderValue"
+    (onStateSave)="onStateSave($event)"
+    (selectionChange)="onSelectionChange()"
+    editMode="row"
+    dataKey="id"
+  >
+    <!-- HEADER -->
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th class="bia-table-select-col" *ngIf="canSelectElement">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <ng-container *ngFor="let col of columns">
+          <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field">
+            {{ col?.header | translate }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </th>
+          <th *ngIf="col?.isSortable !== true">
+            {{ col?.header | translate }}
+          </th>
+        </ng-container>
+      </tr>
+      <tr *ngIf="showColSearch">
+        <th *ngIf="canSelectElement"></th>
+        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+          <span *ngIf="col.isSearchable === true" class="md-inputfield">
+            <input
+              pInputText
+              class="input-search"
+              type="{{ col.type === 'Number' ? 'number' : 'text' }}"
+              placeholder="{{ col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+              (input)="dt.filter($event.target.value, col.field, col.filterMode)"
+              [value]="dt.filters[col.field]?.value"
+              [ngClass]="{ 'ui-state-filled': dt.filters[col.field]?.value != '' }"
+            />
+          </span>
+        </th>
+      </tr>
+    </ng-template>
+    <!-- BODY -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-ri="rowIndex">
+      <tr
+        [pSelectableRow]="isFooter(rowData) !== true ? rowData : null"
+        [pEditableRow]="rowData"
+        (focusout)="onFocusout()"
+        (keyup.enter)="initEditableRow(null)"
+        (keyup.escape)="cancel()"
+      >
+        <!-- FIRST COLUMN WITH CHECKBOX -->
+        <td *ngIf="canSelectElement">
+          <p-tableCheckbox *ngIf="isFooter(rowData) !== true && rowData.id > 0" [value]="rowData"></p-tableCheckbox>
+          <i *ngIf="isFooter(rowData) === true" class="pi pi-plus"></i>
+        </td>
+        <!-- OTHER COLUMNS -->
+        <td (click)="initEditableRow(rowData)" *ngFor="let col of columns">
+          <p-cellEditor>
+            <!-- SPECIFIC INPUT -->
+            <ng-template pTemplate="input" *ngIf="isSpecificInput(col.field) === true">
+              <ng-container [ngSwitch]="col.field">
+                <!-- Begin Add here specific input -->                
+                <!-- End Add here specific input -->
+                <ng-container *ngSwitchDefault>
+                  <input pInputText type="text" [formControlName]="col.field" (change)="onChange()" />
+                </ng-container>
+              </ng-container>
+              <span *ngIf="isRequired(col.field) === true" class="bia-star-mandatory">*</span>
+            </ng-template>
+            <!-- SPECIFIC OUTPUT -->
+            <ng-template pTemplate="output" *ngIf="isSpecificInput(col.field) === true">
+              <ng-container [ngSwitch]="col.field">
+                <!-- Begin Add here specific output -->
+                <!-- End Add here specific output -->
+                <ng-container *ngSwitchDefault>
+                  {{ rowData[col.field] }}
+                </ng-container>
+              </ng-container>
+            </ng-template>
+            <!-- INPUT -->
+            <ng-template pTemplate="input" *ngIf="isSpecificInput(col.field) !== true">
+              <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
+                <ng-container [ngSwitch]="col.type">
+                  <ng-container *ngSwitchCase="'OneToMany'">
+                    <p-dropdown
+                      placeholder="&nbsp;"
+                      [formControlName]="col.field"
+                      [options]="getOptionDto(col.field)"
+                      optionLabel="display"
+                      dataKey="id"
+                      showClear="true"
+                      (onChange)="onChange()"
+                      appendTo="body"
+                      [style]="{ width: '100%' }"
+                    ></p-dropdown>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'ManyToMany'">
+                    <p-multiSelect
+                      defaultLabel="&nbsp;"
+                      [formControlName]="col.field"
+                      [options]="getOptionDto(col.field)"
+                      optionLabel="display"
+                      datakey="id"
+                      (onChange)="onChange()"
+                      (onPanelShow)="onPanelShowMultiSelect()"
+                      (onPanelHide)="onPanelHideMultiSelect()"
+                      appendTo="body"
+                      [style]="{ width: '100%' }"
+                    ></p-multiSelect>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Boolean'">
+                    <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Number'">
+                    <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Date'">
+                    <p-calendar
+                      biaLocale
+                      [formControlName]="col.field"
+                      placeholder="&nbsp;"
+                      [showButtonBar]="true"
+                      (onShow)="onShowCalendar()"
+                      (onSelect)="onChange()"
+                      (onBlur)="onBlurCalendar()"
+                      appendTo="body"
+                      readonlyInput="true"
+                      [style]="{ width: '100%' }"
+                      [inputStyle]="{ width: '100%' }"
+                      dateFormat="yy-mm-dd"
+                    ></p-calendar>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Time'">
+                    <p-calendar
+                      biaLocale
+                      [formControlName]="col.field"
+                      placeholder="&nbsp;"
+                      (onShow)="onShowCalendar()"
+                      (onSelect)="onChange()"
+                      (onBlur)="onBlurCalendar()"
+                      appendTo="body"
+                      readonlyInput="true"
+                      [style]="{ width: '100%' }"
+                      [inputStyle]="{ width: '100%' }"
+                      showTime="true"
+                      [timeOnly]="true"
+                      dateFormat="yy-mm-dd"
+                    ></p-calendar>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'DateTime'">
+                    <p-calendar
+                      biaLocale
+                      [formControlName]="col.field"
+                      placeholder="&nbsp;"
+                      [showButtonBar]="true"
+                      (onShow)="onShowCalendar()"
+                      (onSelect)="onChange()"
+                      (onBlur)="onBlurCalendar()"
+                      appendTo="body"
+                      readonlyInput="true"
+                      [style]="{ width: '100%' }"
+                      [inputStyle]="{ width: '100%' }"
+                      showTime="true"
+                      dateFormat="yy-mm-dd"
+                    ></p-calendar>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    <input
+                      pInputText
+                      type="text"
+                      [maxlength]="col.maxlength"
+                      [formControlName]="col.field"
+                      (change)="onChange()"
+                    />
+                  </ng-container>
+                </ng-container>
+                <span *ngIf="isRequired(col.field) === true" class="bia-star-mandatory">*</span>
+              </ng-template>
+              <ng-template #isNotEditable>
+                <ng-container *ngIf="isFooter(rowData) !== true">
+                  <ng-container [ngSwitch]="col.type">
+                    <ng-container *ngSwitchCase="'OneToMany'">
+                      {{ rowData[col.field]?.display }}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'ManyToMany'">
+                      {{ formatDisplayName(rowData[col.field]) }}
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                      {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </ng-template>
+            </ng-template>
+            <!-- OUTPUT -->
+            <ng-template pTemplate="output" *ngIf="isSpecificInput(col.field) !== true">
+              <ng-template [ngIf]="isFooter(rowData) === true" [ngIfElse]="editRow">
+                <label *ngIf="col.isEditable === true">-</label>
+              </ng-template>
+              <ng-template #editRow>
+                <ng-container [ngSwitch]="col.type">
+                  <ng-container *ngSwitchCase="'OneToMany'">
+                    {{ rowData[col.field]?.display }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'ManyToMany'">
+                    {{ formatDisplayName(rowData[col.field]) }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Boolean'">
+                    <i class="ui-icon-check" *ngIf="rowData[col.field] === true"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+                  </ng-container>
+                </ng-container>
+              </ng-template>
+            </ng-template>
+          </p-cellEditor>
+        </td>
+      </tr>
+    </ng-template>
+    <!-- EMPTY MESSAGE -->
+    <ng-template pTemplate="emptymessage" let-columns>
+      <tr>
+        <td class="app-empty-message" [attr.colspan]="columns.length + 1">
+          {{ 'bia.NoRecordsFound' | translate }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</form>

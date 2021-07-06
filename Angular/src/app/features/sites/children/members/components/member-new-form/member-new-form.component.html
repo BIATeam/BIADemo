@@ -1,0 +1,54 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-autoComplete
+          [(ngModel)]="selecteds"
+          [multiple]="true"
+          formControlName="users"
+          [suggestions]="users"
+          (completeMethod)="onSearchUsers($event)"
+          [size]="30"
+          [minLength]="2"
+          placeholder="&nbsp;"
+          field="displayName"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+          (onSelect)="onSelect($event)"
+        ></p-autoComplete>
+        <label><span class="bia-star-mandatory">*</span>{{ 'app.members' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div class="app-field-container" fxLayout="row" fxLayoutAlign="center">
+    <div fxFlex="90">
+      <label>{{ 'member.roles' | translate }}:</label>
+      <p-listbox
+        [options]="allRoles"
+        [showToggleAll]="false"
+        formControlName="roles"
+        multiple="multiple"
+        checkbox="checkbox"
+        optionLabel="label"
+        [style]="{ width: '100%' }"
+      >
+      <ng-template let-item pTemplate="item">
+        {{ item?.value | translateRoleLabel : translateService.currentLang }}
+      </ng-template>
+      <ng-template let-selectedItem pTemplate="selectedItem">
+        {{ selectedItem?.value | translateRoleLabel : translateService.currentLang }}
+      </ng-template>
+      </p-listbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="ui-button-secondary"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

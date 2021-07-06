@@ -1,0 +1,59 @@
+<div>
+  <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+    <app-site-filter
+      [hidden]="!showFilter"
+      [fxFlexValue]="25"
+      [users]="users$ | async"
+      (searchUsers)="onSearchUsers($event)"
+      (filter)="onFilter($event)"
+      (close)="onCloseFilter()"
+    ></app-site-filter>
+    <div fxFlex="100">
+      <app-site-table-header
+        [headerTitle]="'site.listOf' | translate"
+        [haveFilter]="haveFilter"
+        [showFilter]="showFilter"
+        [showBtnFilter]="true"
+        [canAdd]="canAdd"
+        [canEdit]="canEdit"
+        (create)="onCreate()"
+        (openFilter)="onOpenFilter()"
+        (delete)="onDelete()"
+        (edit)="onEdit()"
+        [selectedElements]="selectedSites"
+      ></app-site-table-header>
+      <bia-table-controller
+        [defaultPageSize]="defaultPageSize"
+        [length]="totalCount$ | async"
+        [columns]="columns"
+        [columnToDisplays]="displayedColumns"
+        (displayedColumnsChange)="displayedColumnsChanged($event)"
+        (filter)="searchGlobalChanged($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+        (toggleSearch)="onToggleSearch()"
+        (viewChange)="onViewChange($event)"
+      ></bia-table-controller>
+      <bia-table
+        [elements]="sites$ | async"
+        [totalRecord]="totalCount$ | async"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        [configuration]="tableConfiguration"
+        [showColSearch]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canEdit]="canManageMembers"
+        [canSelectElement]="canDelete"
+        [loading]="loading$ | async"
+        (edit)="onManageMember($event)"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [advancedFilter]="advancedFilter"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      ></bia-table>
+    </div>
+  </div>
+  <!-- begin popup mode -->
+  <app-site-edit-dialog></app-site-edit-dialog>
+  <app-site-new-dialog></app-site-new-dialog>
+  <!-- end popup mode -->
+</div>

@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 70vh, rgb(255, 255, 255) 100%),
+    url('~/assets/bia/bg-default.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll;
+  padding-top: 48px;
+  padding-left: 35px;
+  padding-right: 35px;
+  color: white; // Hardcoded color to match the hardcoded background
+  height: 100%;
+}
+
+// .title {
+//   h4 {
+//     @include mat-typography-level-to-styles($arial-typography, title);
+//   }
+// }
+h1 {
+  font-family: 'raleway-thin', serif;
+  font-size: 36px;
+  font-weight: 200;
+}

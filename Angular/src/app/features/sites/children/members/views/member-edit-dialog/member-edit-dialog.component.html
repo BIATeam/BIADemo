@@ -1,0 +1,24 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '40vw' }"
+  [contentStyle]="{ overflow: 'auto' }"
+>
+  <p-header>
+    {{ 'member.manage' | translate }}
+    <ng-container *ngIf="(loading$ | async) !== true">
+      {{ (member$ | async)?.userFirstName }} {{ (member$ | async)?.userLastName }}</ng-container
+    >
+  </p-header>
+  <app-member-edit-form
+    [member]="member$ | async"
+    [allRoles]="allRoles$ | async"
+    (cancel)="onCancelled()"
+    (save)="onSubmitted($event)"
+  ></app-member-edit-form>
+  <bia-spinner *ngIf="loading$ | async" [overlay]="true"></bia-spinner>
+</p-dialog>

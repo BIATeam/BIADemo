@@ -1,0 +1,36 @@
+:host {
+  display: inline-flex;
+  justify-content: center;
+  img {
+    height: 100px;
+    width: 100px;
+  }
+  &.tiny img {
+    height: 25px;
+    width: 25px;
+  }
+  &.small img {
+    height: 60px;
+    width: 60px;
+  }
+}
+
+picture {
+  display: inline-flex;
+}
+
+.overlay {
+  position: absolute;
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  picture {
+    opacity: 0.6;
+  }
+  z-index: 2;
+}

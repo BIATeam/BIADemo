@@ -1,0 +1,67 @@
+{
+  "BiaNet": {
+    "WorkerFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "https://the-bia-dev-team.the-deploy-domain-name.bia/BIADemo/WebApi/HubForClients"
+      }
+    },
+    "Environment": {
+      "Type": "PRD"
+    },
+    "Authentication": {
+      "LdapDomains": [
+        {
+          "Name": "DOMAIN_BIA_1",
+          "LdapName": "the-user-domain1-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain1-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_2",
+          "LdapName": "the-user-domain2-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain1-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_3",
+          "LdapName": "the-user-domain3-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain3-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_SRV",
+          "LdapName": "the-server-domain-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-server-domain-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": false
+        }
+      ]
+    },
+    "Roles": [
+      {
+        "Label": "User",
+        "Type": "Synchro",
+        "LdapGroups": [
+          {
+            "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_BIADemo_PRD_User",
+            "Domain": "DOMAIN_BIA_SRV"
+          }
+        ]
+      },
+      {
+        "Label": "Admin",
+        "Type": "Ldap",
+        "LdapGroups": [
+          {
+            "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_SRV" ],
+            "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_Admin",
+            "Domain": "DOMAIN_BIA_SRV"
+          }
+        ]
+      }
+    ]
+  }
+}

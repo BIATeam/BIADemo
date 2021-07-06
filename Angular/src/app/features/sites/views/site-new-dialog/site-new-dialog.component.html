@@ -1,0 +1,15 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '50vw' }"
+  [contentStyle]="{'overflow': 'auto'}"
+>
+  <p-header>
+    {{ 'site.add' | translate }}
+  </p-header>
+  <app-site-form [site]="site" (cancel)="onCancelled()" (save)="onSubmitted($event)"></app-site-form>
+</p-dialog>

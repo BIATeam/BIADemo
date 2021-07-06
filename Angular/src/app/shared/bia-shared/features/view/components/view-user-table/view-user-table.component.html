@@ -1,0 +1,57 @@
+<div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+  <button
+    pButton
+    *ngIf="canDelete === true"
+    [disabled]="viewSelected?.viewType !== 2"
+    label="{{ 'bia.delete' | translate }}"
+    (click)="onDeleteView(viewSelected?.id)"
+  ></button>
+  <button
+    pButton
+    *ngIf="showDefineDefault()"
+    [disabled]="viewSelected?.viewType !== 2"
+    label="{{ 'bia.views.defineDefault' | translate }}"
+    (click)="onSetDefaultView(viewSelected?.id, true)"
+  ></button>
+  <button
+    pButton
+    *ngIf="!showDefineDefault()"
+    label="{{ 'bia.views.removeDefault' | translate }}"
+    (click)="onSetDefaultView(viewSelected?.id, false)"
+  ></button>
+</div>
+<p-table
+  #viewUserTable
+  [value]="views"
+  [sortField]="'name'"
+  [scrollable]="true"
+  scrollHeight="40vh"
+  dataKey="id"
+  (selectionChange)="onSelectionChange()"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngIf="canUpdate" class="app-action-col">{{ 'bia.select' | translate }}</th>
+      <th>{{ 'bia.views.name' | translate }}</th>
+      <th>{{ 'bia.views.description' | translate }}</th>
+      <th>{{ 'bia.views.viewType' | translate }}</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-view>
+    <tr [pSelectableRow]="view">
+      <td *ngIf="canUpdate" class="app-action-col">
+        <p-tableRadioButton *ngIf="view.viewType === 2" [value]="view"></p-tableRadioButton>
+      </td>
+      <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="ui-icon-star-border"></i></td>
+      <td>{{ view.description }}</td>
+      <td>{{ (view.viewType === 1 ? 'bia.views.typeSite' : 'bia.views.typeUser') | translate }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-view>
+    <tr>
+      <td class="app-empty-message" [attr.colspan]="3">
+        {{ 'bia.NoRecordsFound' | translate }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

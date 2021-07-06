@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>3.3.3</Version>
+    <Authors>BIA Team</Authors>
+    <Company>BIA</Company>
+    <Description>Dto for BIA.Net Core Framework</Description>
+    <Copyright>Copyright © BIA 2020</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageIcon>LogoBIA.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Images\LogoBIA.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

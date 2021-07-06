@@ -1,0 +1,113 @@
+// classic-footer-theme
+bia-classic-footer {
+  @if ($is-dark) {
+    background-color: $biaMainBarColor;
+  } @else {
+    background-color: $biaAccentColor;
+  }
+
+  color: $biaColorOnBgAccentColor;
+}
+
+// classic-header-theme
+bia-classic-header {
+  .topbar {
+    background-color: $biaAccentColor;
+    color: white;
+    @if ($is-dark) {
+      border-bottom-style: solid;
+      border-bottom-width: thin;
+    }
+  }
+
+  .mainbar {
+    background-color: $biaMainBarColor;
+    @if ($is-dark) {
+      color: $biaFgTextColor;
+    } @else {
+      color: $biaAccentColor;
+    }
+
+    .ui-menubar-root-list .ui-state-active {
+      text-decoration: underline;
+    }
+  }
+}
+
+// classic-layout-theme
+bia-classic-layout {
+  .content {
+    background-image: linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
+      url('~/assets/bia/bg-default.jpg');
+  }
+
+  p-breadcrumb {
+    .pi,
+    .ui-menuitem-text {
+      color: $biaTextBreadcrumbColor !important;
+    }
+    .ui-widget-header {
+      background-color: $biaBgBreadcrumbColor;
+    }
+    li:last-child .ui-menuitem-text {
+      color: $biaPrimaryColor !important;
+      font-weight: bold;
+    }
+  }
+  
+  &.no-margin{
+    section.content {
+      display: flex;
+      flex-flow: column;
+      bia-classic-page-layout {
+        align-items: stretch;
+    
+        div.mat-elevation-z2 {
+          margin-top: 0;
+          max-width: 100% !important;
+          padding: 0;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+// classic-page-layout-theme
+bia-classic-page-layout {
+  > div {
+    background-color: $biaBgColor;
+  }
+}
+
+// search-filter
+.app-search-filter {
+  background-color: $biaBgHoverColor;
+}
+
+// bia-table-controller-theme
+bia-table-controller {
+  background-color: $biaBgHoverColor; // Same color in table
+}
+
+.bia-star-mandatory {
+  color: $biaRed;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.logo svg {
+  fill: $biaOrange;
+}
+
+// For table calc mode
+.bia-calc-form {
+  p-celleditor input {
+    width: 100%;
+  }
+  .ui-table-tbody td {
+    position: relative;
+    .bia-star-mandatory {
+      position: absolute;
+    }
+  }
+}

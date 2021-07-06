@@ -1,0 +1,35 @@
+<ng-template #template>
+  <div [hidden]="hidden" class="app-search-filter" fxFlex="{{ fxFlexValue }}">
+    <div fxLayout="row" fxLayoutAlign="stretch center">
+      <i class="ui-icon-clear bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i>
+      <h3>{{ 'bia.filters' | translate }}</h3>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+      <div class="app-filter-container" fxFlex="90">
+        <p-autoComplete
+        [multiple]="false"
+        [(ngModel)]="userSelected"
+        [suggestions]="users"
+        (completeMethod)="onSearchUsers($event)"
+        [size]="30"
+        [minLength]="2"
+        placeholder="{{ 'site.selectUser' | translate }}"
+        field="displayName"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+      ></p-autoComplete>
+      </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="space-around">
+      <button
+        pButton
+        label="{{ 'bia.reset' | translate }}"
+        fxFlex="33"
+        class="ui-button-secondary"
+        (click)="onReset()"
+      ></button>
+      <button pButton label="{{ 'bia.filter' | translate }}" fxFlex="33" (click)="onFilter()"></button>
+    </div>
+  </div>
+</ng-template>

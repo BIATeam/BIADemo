@@ -1,0 +1,42 @@
+<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <bia-table-header
+      [headerTitle]="'plane.listOf' | translate"
+      [canAdd]="canAdd"
+      [canExportCSV]="true"
+      (create)="onCreate()"
+      (exportCSV)="onExportCSV()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedPlanes"
+    ></bia-table-header>
+    <bia-table-controller
+      [defaultPageSize]="defaultPageSize"
+      [length]="totalCount$ | async"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
+    ></bia-table-controller>
+    <bia-table
+      [elements]="planes$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (edit)="onEdit($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+    ></bia-table>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<p-dialog
+[focusOnShow]="false"
+[visible]="true"
+[modal]="true"
+[closable]="false"
+[responsive]="true"
+[maximizable]="this.maximizable"
+[style]="this.style"
+[contentStyle]="{'overflow': 'auto'}"
+>
+<p-header>
+  {{ this.popupTitle | translate}}
+</p-header>
+  <ng-template #dynamic></ng-template>
+</p-dialog> 
+<router-outlet></router-outlet>

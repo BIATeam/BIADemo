@@ -1,0 +1,79 @@
+<p-dialog
+  #viewDialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="true"
+  [responsive]="true"
+  [maximizable]="true"
+  [contentStyle]="{ overflow: 'auto' }"
+  (onHide)="onClose()"
+  (onShow)="showDialogMaximized(viewDialog)"
+>
+  <p-header>
+    {{ 'bia.views.manageViews' | translate }}
+  </p-header>
+  <p-tabView *ngIf="display">
+    <p-tabPanel header="{{ 'bia.views.user' | translate | uppercase }}" *ngIf="canSetUserView()">
+      <div class="app-div-view-form" *ngIf="canAddUserView === true || canUpdateUserView === true">
+        <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
+        <app-view-form [view]="userViewSelected" (save)="onSaveUserView($event)"></app-view-form>
+      </div>
+      <app-view-user-table
+        [views]="views$ | async"
+        [canDelete]="canDeleteUserView"
+        [canSetDefault]="canSetDefaultUserView"
+        [canUpdate]="canUpdateUserView"
+        (delete)="onDeleteUserView($event)"
+        (setDefault)="onSetDefaultUserView($event)"
+        (viewSelect)="onUserViewSelected($event)"
+      ></app-view-user-table>
+    </p-tabPanel>
+    <p-tabPanel
+      header="{{ 'bia.views.site' | translate | uppercase }} {{
+        (sites$ | async)?.length === 1 ? siteSelected?.title : ''
+      }}"
+      *ngIf="canSetSiteView()"
+    >
+      <div class="app-div-select-site">
+        <p-dropdown
+          *ngIf="(sites$ | async)?.length > 1"
+          optionLabel="title"
+          placeholder="{{ 'bia.views.selectSite' | translate }}"
+          [options]="sites$ | async"
+          [(ngModel)]="siteSelected"
+        ></p-dropdown>
+      </div>
+      <ng-container *ngIf="siteSelected">
+        <div class="app-div-view-form" *ngIf="canAddSiteView === true || canUpdateSiteView === true">
+          <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
+          <app-view-form [view]="siteViewSelected" (save)="onSaveSiteView($event)"></app-view-form>
+        </div>
+        <app-view-site-table
+          [views]="viewSites$ | async"
+          [siteSelected]="siteSelected"
+          [canDelete]="canDeleteSiteView"
+          [canSetDefault]="canSetDefaultSiteView"
+          [canUpdate]="canUpdateSiteView"
+          [canAssign]="canAssignSiteView"
+          (assignViewToSite)="onAssignViewToSite($event)"
+          (delete)="onDeleteSiteView($event)"
+          (setDefault)="onSetDefaultSiteView($event)"
+          (viewSelect)="onSiteViewSelected($event)"
+        ></app-view-site-table>
+      </ng-container>
+    </p-tabPanel>
+  </p-tabView>
+  <p-footer>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button
+        id="btn-close"
+        type="button"
+        pButton
+        (click)="display = false"
+        label="{{ 'bia.close' | translate }}"
+      ></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog>

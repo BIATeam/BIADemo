@@ -1,0 +1,37 @@
+p-button,
+button[pbutton] {
+  &.ui-button-secondary {
+    color: $primaryColor !important;
+    :before {
+      color: $primaryColor !important;
+    }
+  }
+}
+
+input,
+textarea,
+select,
+button {
+  border-radius: 0 !important;
+  color: $biaFgTextColor;
+  &.ui-button-secondary {
+    border-style: solid;
+    border-width: thin;
+    &:not(:hover) {
+      background-color: $biaBgColor !important;
+    }
+  }
+}
+
+h1 {
+  color: $biaTitleColor;
+}
+
+.ui-button-text {
+  font-family: 'oswald-light';
+}
+
+// dialog
+body .ui-dialog .ui-dialog-titlebar {
+  background-color: $biaBgColor;
+}

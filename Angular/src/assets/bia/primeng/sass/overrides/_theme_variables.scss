@@ -1,0 +1,51 @@
+/* Add your variable customizations of theme here */
+@import './customs/common_variables';
+
+$contentBgColor: $biaBgColor;
+$dividerColor: $biaBorderColor; // panel border
+// $hoverBgColor:red; // Color when the cursor is moved over a line of a table.
+// $activeMenuItemBadgeColor: red;
+
+$primaryTextColor: $biaFgTextColor; // #ffffff;
+// $headerBgColor: $primaryColor;
+// $headerTextColor: #ffffff;
+// $headerIconColor: #ffffff;
+$contentBorderColor: $biaBorderColor; // #bdbdbd; table border
+$contentBgColor: $biaBgColor; // #ffffff; content panel
+$contentIconColor: $biaFgTextColor; // #757575;
+
+$inputBorderColor: $biaFgTextColor; // #bdbdbd;
+// $inputInvalidBorderColor: #e62a10;
+// $inputBgColor: transparent;
+// $inputErrorTextColor: #e62a10;
+// $inputBorderErrorColor: #e62a10;
+// $inputFieldLabelTextColor: #999999;
+// $inputFieldBoxBgColor: #f7f7f7;
+// $inputFieldFillBgColor: #f7f7f7;
+// $inputAutoFillBorderColor: #bdbdbd;
+// $textboxBgColor: #f7f7f7;
+
+// //groups
+// $inputGroupBorderColor: #bdbdbd;
+// $inputGroupBgColor: transparent;
+// $inputGroupTextColor: $textSecondaryColor;
+// $inputGroupIconColor: $textSecondaryColor;
+// $inputGroupAddonMinWidth: 2 * $fontSize;
+// $checkboxWidth: 18px;
+// $checkboxHeight: 18px;
+// $inputGroupPadding: 2px 2px 1px 2px;
+// $inputGroupIconFontSize: 1.5em;
+
+// //panels
+// $accordionHeaderBgColor: $primaryColor;
+// $accordionHeaderTextColor: #ffffff;
+// $accordionHeaderHoverBgColor: $primaryDarkColor;
+// $accordionHeaderHoverTextColor: #ffffff;
+
+// $buttonTextColor: #ffffff;
+
+$radioButtonBorderColor: $biaFgTextColor; // #757575;
+$checkboxBorderColor: $biaFgTextColor; // #757575;
+
+// //data
+$dataTableRowBgColorEven: $biaBgHoverColor;

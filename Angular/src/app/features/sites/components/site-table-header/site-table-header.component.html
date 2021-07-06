@@ -1,0 +1,53 @@
+<div class="header" fxLayout="row" fxLayoutAlign="space-between">
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+    <ng-container *ngIf="showBtnFilter">
+      <button
+        type="button"
+        icon="ui-icon-filter-list"
+        class="ui-button-secondary flat"
+        *ngIf="showFilter === false && haveFilter === false"
+        pButton
+        (click)="toggleFilter()"
+        pTooltip="{{ 'msg.showFilters' | translate }}"
+      ></button>
+      <button
+        type="button"
+        icon="ui-icon-filter-list"
+        *ngIf="showFilter === false && haveFilter === true"
+        pButton
+        (click)="toggleFilter()"
+        pTooltip="{{ 'msg.showFilters' | translate }}"
+      ></button>
+    </ng-container>
+    <button
+      pButton
+      [disabled]="nbSelectedElements === 0"
+      *ngIf="canDelete"
+      label="{{ 'bia.delete' | translate }}"
+      (click)="onDelete()"
+    ></button>
+    <button
+      pButton
+      [disabled]="nbSelectedElements !== 1"
+      *ngIf="canEdit"
+      class="ui-button-secondary"
+      label="{{ 'site.edit' | translate }}"
+      (click)="edit.emit()"
+    ></button>
+  </div>
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+    <h1>{{ headerTitle }}</h1>
+  </div>
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+    <button
+      pButton
+      class="ui-button-secondary"
+      label="{{ 'bia.back' | translate }}"
+      (click)="onBack()"
+      *ngIf="canBack"
+    ></button>
+    <button pButton *ngIf="canExportCSV" class="ui-button-secondary" label="CSV" (click)="exportCSV.emit()"></button>
+    <button pButton *ngIf="canAdd" label="{{ 'bia.add' | translate }}" (click)="onCreate()"></button>
+  </div>
+</div>
+<p-confirmDialog></p-confirmDialog>

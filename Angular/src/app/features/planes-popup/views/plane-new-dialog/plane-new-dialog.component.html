@@ -1,0 +1,20 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '50vw' }"
+  [contentStyle]="{'overflow': 'auto'}"
+>
+  <p-header>
+    {{ 'plane.add' | translate }}
+  </p-header>
+  <app-plane-form 
+    [plane]="plane" 
+    [airportOptions]="airportOptions$ | async"
+    [planeTypeOptions]="planeTypeOptions$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"></app-plane-form>
+</p-dialog>

@@ -1,0 +1,89 @@
+body .ui-table .ui-table-tbody > tr {
+  background: $biaBgHoverColor;
+}
+body .ui-table .ui-table-tbody > tr:nth-child(even) {
+  background-color: $biaBgColor;
+}
+
+p-table {
+  .ui-widget-overlay {
+    background-color: $biaBgColor !important;
+  }
+  table {
+    thead {
+      tr:first-child th {
+        border-top-width: 0px !important;
+        font-weight: 800 !important;
+      }
+      th {
+        background-color: $biaBgColor !important;
+        color: $biaTitleColor !important;
+        &.ui-state-highlight {
+          color: $primaryColor !important;
+        }
+        .pi-sort-alt:before {
+          color: $biaTitleColor !important;
+        }
+
+        .pi-sort-amount-up-alt:before,
+        .pi-sort-amount-down:before {
+          color: $primaryColor !important;
+        }
+      }
+    }
+    tbody {
+      tr.ui-state-highlight {
+        background-color: $biaBgRowSelected !important;
+        border-color: $biaBorderRowSelected !important;
+        // border-style: solid !important;
+        // border-bottom-width: thin !important;
+        // border-top-width: thin !important;
+        color: $biaFgTextColor !important;
+      }
+    }
+
+    tr,
+    th,
+    td {
+      border-left-width: 0px !important;
+      border-right-width: 0px !important;
+    }
+
+    // td {
+    //   font-weight: 300;
+    //   padding: 0.614em 0.857em !important;
+    // }
+  }
+}
+
+p-paginator .ui-paginator {
+  border-left-width: 0px !important;
+  border-right-width: 0px !important;
+  border-top-width: 0px !important;
+  border-bottom-width: 0px !important;
+  background-color: $biaBgColor !important;
+
+  .ui-paginator-prev:before,
+  .ui-paginator-next:before,
+  .ui-paginator-last:before,
+  .ui-paginator-first:before,
+  .ui-paginator-element {
+    color: $biaFgTextColor !important;
+  }
+
+  .ui-paginator-pages {
+    a {
+      border-radius: 0 !important;
+      -webkit-border-radius: 0 !important;
+    }
+    a.ui-state-active {
+      background-color: $primaryColor !important;
+      // color: $biaBgColor !important;
+      color: $accentTextColor !important;
+    }
+  }
+}
+
+body .ui-dataview .ui-dataview-header {
+  background-color: $contentBgColor;
+}

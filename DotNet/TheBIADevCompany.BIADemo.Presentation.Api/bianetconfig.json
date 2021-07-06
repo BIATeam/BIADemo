@@ -1,0 +1,175 @@
+{
+  "BiaNet": {
+    "ApiFeatures": {
+      "DistributedCache": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "DelegateJobToWorker": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "HubForClients": {
+        "IsActive": true
+      }
+    },
+    "EmailConfiguration": {
+      "From": "noreply-BIADemo@the-mail-domain.bia",
+      "SmtpHost": "smtp",
+      "SmtpPort": 25
+    },
+    "Authentication": {
+      "LdapCacheGroupDuration": 200, //in minutes
+      "LdapCacheUserDuration": 1800 //in minutes
+    },
+    "Jwt": {
+      "Issuer": "BIADemoApi",
+      "Audience": "http://localhost:4200",
+      //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication to force the client to refresh
+      //"SecretKey": "0BA9AE2BDC6FBA1056D86EB2ACB45D53072F786FBD94C658240FAE6198F5DC64DE018FE517E68410B9D41B9BE106532345D21090549B0BC396437DCEF3AADAAC",
+      "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
+    },
+    "Roles": [
+    ],
+    "UserProfile": {
+      "url": "http://localhost/DMIndex/UserProfile/GetUserProfile"
+    },
+    "Languages": [
+      {
+        "Country": "DE",
+        "Name": "Deutsh",
+        "Code": "de-DE"
+      },
+      {
+        "Country": "ES",
+        "Name": "Español ES",
+        "Code": "es-ES"
+      },
+      {
+        "Country": "FR",
+        "Name": "Français",
+        "Code": "fr-FR"
+      },
+      {
+        "Country": "GB",
+        "Name": "English GB",
+        "Code": "en-GB"
+      },
+      {
+        "Country": "MX",
+        "Name": "Español MX",
+        "Code": "es-MX"
+      },
+      {
+        "Country": "US",
+        "Name": "English US",
+        "Code": "en-US"
+      },
+      {
+        "Country": "MA",
+        "Name": "Maroc",
+        "Code": "fr-FR"
+      }
+    ],
+    "Permissions": [
+      // Begin BIADemo
+      // Hangfire
+      {
+        "Name": "Hangfire_Run_Worker",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      // Plane
+      {
+        "Names": [ "Plane_List_Access", "Plane_Create", "Plane_Read", "Plane_Update", "Plane_Delete", "Plane_Save" ],
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      // Airport
+      {
+        "Name": "Airport_Options",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      // PlaneType
+      {
+        "Name": "PlaneType_Options",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      // End BIADemo
+      // Home
+      {
+        "Name": "Home_Access",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member", "User" ]
+      },
+      // Log
+      {
+        "Name": "Logs_Create",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      // Member
+      {
+        "Names": [ "Member_List_Access", "Member_Create", "Member_Read", "Member_Update", "Member_Delete", "Member_Save" ],
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Name": "Member_Set_Default_Site",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Name": "Member_Set_Default_Role",
+        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
+      },
+      // Role
+      {
+        "Name": "Roles_List",
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Name": "Roles_List_For_Current_User",
+        "Roles": [ "User", "Admin", "Site_Admin" ]
+      },
+      // Ldap Domain
+      {
+        "Name": "LdapDomains_List",
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
+      // Site
+      {
+        "Names": [ "Site_List_Access", "Site_Read" ],
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      // User
+      {
+        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Roles": [ "Admin" ]
+      },
+      // View
+      {
+        "Name": "View_List",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "View_Add_SiteView", "View_Update_SiteView", "View_Set_Default_SiteView", "View_Assign_To_Site" ],
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
+      {
+        "Name": "View_Delete_SiteView",
+        "Roles": [ "Admin" ]
+      }
+    ]
+  }
+}

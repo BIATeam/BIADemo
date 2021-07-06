@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Copyright>Copyright © BIA 2020</Copyright>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Version>3.3.1</Version>
+    <PackageIcon>LogoBIA.png</PackageIcon>
+    <PackageIconUrl />
+    <Authors>BIA Team</Authors>
+    <Company>BIA</Company>
+    <Description>WorkerService layer classes for BIA.Net Core Framework</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.11" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
+    <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+    <ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Authentication\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Images\LogoBIA.png" Link="LogoBIA.png">
+      <PackagePath></PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<form (submit)="onSubmit()" fxLayout="row" fxLayoutAlign="space-around end" [formGroup]="form">
+  <div fxFlex="22">
+    <span class="md-inputfield">
+      <input formControlName="name" type="text" pInputText maxlength="50" />
+      <label>{{ 'bia.views.name' | translate }}</label>
+    </span>
+  </div>
+  <div fxFlex="70">
+    <span class="md-inputfield">
+      <input formControlName="description" type="text" pInputText maxlength="500" />
+      <label>{{ 'bia.views.description' | translate }}</label>
+    </span>
+  </div>
+  <div fxFlex="8">
+    <button
+      flex
+      pButton
+      label="{{ isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate) }}"
+      type="submit"
+      [disabled]="!form.valid"
+    ></button>
+  </div>
+</form>

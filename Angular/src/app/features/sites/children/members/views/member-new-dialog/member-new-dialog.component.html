@@ -1,0 +1,22 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '40vw' }"
+  [contentStyle]="{'overflow': 'auto'}"
+>
+  <p-header>
+    {{ 'member.add' | translate }}
+  </p-header>
+  <app-member-new-form
+    [site]="site"
+    [users]="users$ | async"
+    (searchUsers)="onSearchUsers($event)"
+    [allRoles]="allRoles$ | async"
+    (cancel)="onCancelled()"
+    (save)="onSubmitted($event)"
+  ></app-member-new-form>
+</p-dialog>

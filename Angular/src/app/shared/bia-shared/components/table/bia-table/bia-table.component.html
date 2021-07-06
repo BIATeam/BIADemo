@@ -1,0 +1,85 @@
+<p-table
+  *ngIf="configuration"
+  #dt
+  [autoLayout]="true"
+  [reorderableColumns]="true"
+  [columns]="displayedColumns"
+  [value]="elements"
+  [paginator]="paginator"
+  [rows]="pageSize"
+  (onFilter)="onFilter()"
+  [totalRecords]="totalRecord"
+  [lazy]="true"
+  [loading]="loading && (showLoading$ | async) !== null"
+  (onLazyLoad)="onLoadLazy($event)"
+  [stateStorage]="'session'"
+  [stateKey]="tableStateKey"
+  [lazyLoadOnInit]="getLazyLoadOnInit()"
+  [sortField]="sortFieldValue"
+  [sortOrder]="sortOrderValue"
+  (onStateSave)="onStateSave($event)"
+  (selectionChange)="onSelectionChange()"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th class="bia-table-select-col" *ngIf="canSelectElement">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <ng-container *ngFor="let col of columns">
+        <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field">
+          {{ col?.header | translate }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+        <th *ngIf="col?.isSortable !== true">
+          {{ col?.header | translate }}
+        </th>
+      </ng-container>
+    </tr>
+    <tr *ngIf="showColSearch">
+      <th *ngIf="canSelectElement"></th>
+      <th *ngFor="let col of columns" [ngSwitch]="col.field">
+        <span *ngIf="col.isSearchable === true" class="md-inputfield">
+          <input
+            pInputText
+            class="input-search"
+            type="{{ col.type === 'Number' ? 'number' : 'text' }}"
+            placeholder="{{ col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+            (input)="dt.filter($event.target.value, col.field, col.filterMode)"
+            [value]="dt.filters[col.field]?.value"
+            [ngClass]="{ 'ui-state-filled': dt.filters[col.field]?.value != '' }"
+          />
+        </span>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr [pSelectableRow]="rowData">
+      <td *ngIf="canSelectElement">
+        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+      </td>
+      <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
+        <ng-container [ngSwitch]="col.type">
+          <ng-container *ngSwitchCase="'OneToMany'">
+            {{ rowData[col.field]?.display }}
+          </ng-container>
+          <ng-container *ngSwitchCase="'ManyToMany'">
+            {{ rowData[col.field] | pluck:"display" | join:", " }}
+          </ng-container>
+          <ng-container *ngSwitchCase="'Boolean'">
+            <i class="ui-icon-check" *ngIf="rowData[col.field] === true"></i>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage" let-columns>
+    <tr>
+      <td class="app-empty-message" [attr.colspan]="columns.length + 1">
+        {{ 'bia.NoRecordsFound' | translate }}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

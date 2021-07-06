@@ -1,0 +1,21 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="_display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '50vw' }"
+  [contentStyle]="{ overflow: 'auto' }"
+>
+  <p-header>
+    {{ 'user.add' | translate }}
+  </p-header>
+  <app-user-form
+    [users]="usersFromAD$ | async"
+    [domains]="ldapDomains$ | async"
+    (searchUsers)="onSearchUsers($event)"
+    (cancel)="onCancelled()"
+    (save)="onSubmitted($event)"
+  ></app-user-form>
+</p-dialog>

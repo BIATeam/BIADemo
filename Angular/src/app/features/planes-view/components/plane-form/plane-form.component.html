@@ -1,0 +1,75 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="msn" type="text" pInputText maxlength="64" />
+        <label><span class="bia-star-mandatory">*</span>{{ 'plane.msn' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <p-checkbox binary="true" formControlName="isActive" label="{{ 'plane.isActive' | translate }}"></p-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-calendar
+          biaLocale
+          formControlName="firstFlightDate"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          dateFormat="yy-mm-dd"
+        ></p-calendar>
+        <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-calendar
+          formControlName="firstFlightTime"
+          showTime="true"
+          [timeOnly]="true"
+          placeholder="&nbsp;"
+        ></p-calendar>
+        <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightTime' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-calendar
+          biaLocale
+          formControlName="lastFlightDate"
+          showTime="true"
+          placeholder="DateTime"
+          dateFormat="yy-mm-dd"
+          placeholder="&nbsp;"
+        ></p-calendar>
+        <label>{{ 'plane.lastFlightDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="capacity" type="number" pInputText />
+        <label><span class="bia-star-mandatory">*</span>{{ 'plane.capacity' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="ui-button-secondary"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

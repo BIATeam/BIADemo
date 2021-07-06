@@ -1,0 +1,22 @@
+<p-dialog
+  [focusOnShow]="false"
+  [(visible)]="display"
+  [modal]="true"
+  [closable]="false"
+  [responsive]="true"
+  [maximizable]="true"
+  [style]="{ minWidth: '50vw' }"
+  [contentStyle]="{ overflow: 'auto' }"
+>
+  <p-header>
+    {{ 'plane.edit' | translate }}
+  </p-header>
+  <app-plane-form 
+    [plane]="plane$ | async"
+    [airportOptions]="airportOptions$ | async"
+    [planeTypeOptions]="planeTypeOptions$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+  ></app-plane-form>
+  <bia-spinner *ngIf="loading$ | async" [overlay]="true"></bia-spinner>
+</p-dialog>

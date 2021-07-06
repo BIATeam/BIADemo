@@ -1,0 +1,164 @@
+@import '../../../../../../scss/bia/bia-variables';
+
+:host {
+  display: flex;
+}
+
+.topbar {
+  height: 35px;
+}
+
+.logos {
+  .separator {
+    height: 24px;
+    border-left: 1px solid;
+  }
+  a {
+    display: flex;
+  }
+}
+
+.mainbar {
+  // Warning any change to this area will affect custom main bar
+  min-height: 70px;
+  z-index: 1;
+  // ----
+  nav {
+    .nav-button {
+      text-transform: uppercase;
+    }
+  }
+
+  .action {
+    padding-right: 8px;
+    width: 80px;
+  }
+
+  .project-title {
+    display: flex;
+    padding-left: 16px;
+    font-family: 'oswald-regular';
+    font-size: 19px;
+  }
+
+  .project-version {
+    font-family: 'oswald-regular';
+    font-size: 10px;
+  }
+
+  .app-logo {
+    height: 60px;
+    width: 60px;
+    margin-right: 0.5em;
+    // https://codepen.io/sosuke/pen/Pjoqqp
+    // hexa: #f8a92b
+    filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg) brightness(98%) contrast(98%);
+  }
+
+  &.env-dev {
+    background-color: rgba($color: $biaBlue, $alpha: 0.5);
+    .project-title {
+      background-color: rgba($color: $biaBlue, $alpha: 0);
+    }
+  }
+
+  &.env-int {
+    background-color: rgba($color: $biaGreen, $alpha: 0.5);
+    .project-title {
+      background-color: rgba($color: $biaGreen, $alpha: 0);
+    }
+  }
+
+  &.env-uat {
+    background-color: rgba($color: $biaOrange, $alpha: 0.5);
+    .project-title {
+      background-color: rgba($color: $biaOrange, $alpha: 0);
+    }
+  }
+
+  &.env-pra {
+    background-color: rgba($color: $biaRed, $alpha: 0.5);
+    .project-title {
+      background-color: rgba($color: $biaRed, $alpha: 0);
+    }
+  }
+}
+
+.fullscreen-exit {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.app-full-screen {
+  margin-right: 16px;
+  margin-left: 8px;
+}
+
+.app-icon-header {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+:host ::ng-deep {
+  .ui-widget-content {
+    border-width: 0px !important;
+  }
+  .ui-megamenu,
+  .ui-menubar {
+    background-color: transparent !important;
+  }
+
+  p-menubar {
+    .ui-menubar {
+      margin-top: 17px;
+    }
+    p-menubarsub:first-child > ul > li > a > .ui-menuitem-text {
+      font-family: 'oswald-regular';
+      font-weight: 400 !important;
+      font-size: 18px !important;
+      text-transform: uppercase !important;
+    }
+    .ui-state-active {
+      background-color: transparent;
+    }
+  }
+
+  p-megamenu {
+    .ui-menuitem-link {
+      padding-top: 0.3em;
+    }
+    .ui-megamenu-panel {
+      width: 10em;
+    }
+
+    .ui-megamenu-submenu {
+      width: 9em;
+    }
+    .ui-menuitem-active > a {
+      background-color: transparent !important;
+    }
+    .ui-megamenu-root-list > li > .ui-menuitem-link {
+      > .ui-menuitem-text,
+      .ui-submenu-icon {
+        color: white;
+      }
+      > .ui-menuitem-text {
+        text-transform: uppercase !important;
+      }
+    }
+
+    .ui-menuitem-text {
+      font-family: 'oswald-light';
+    }
+  }
+
+  p-dropdown .ui-dropdown-trigger-icon {
+    color: white !important;
+  }
+
+  .ui-dropdown {
+    background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
+  }
+}

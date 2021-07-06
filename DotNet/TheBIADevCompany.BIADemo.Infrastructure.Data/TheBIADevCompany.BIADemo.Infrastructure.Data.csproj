@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Company>TheBIADevCompany</Company>
+    <Copyright>Copyright © TheBIADevCompany 2020</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200219151113_AddViews.cs" />
+    <Compile Remove="Migrations\20200219151113_AddViews.Designer.cs" />
+    <Compile Remove="Migrations\20200908082829_AddVersionedTable.cs" />
+    <Compile Remove="Migrations\20200908082829_AddVersionedTable.Designer.cs" />
+    <Compile Remove="Migrations\20200908084410_AddVersionedTable.cs" />
+    <Compile Remove="Migrations\20200908084410_AddVersionedTable.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Data" Version="3.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="8.13.1.21947">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

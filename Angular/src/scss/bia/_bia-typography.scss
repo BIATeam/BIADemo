@@ -1,0 +1,78 @@
+$bia-assets-path: '~/assets/bia' !default;
+
+@font-face {
+  font-family: 'oswald-light';
+  src: url(#{$bia-assets-path}/fonts/oswald/oswald-light-webfont.woff) format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'oswald-regular';
+  src: url(#{$bia-assets-path}/fonts/oswald/oswald-regular-webfont.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'oswald-bold';
+  src: url(#{$bia-assets-path}/fonts/oswald/oswald-bold-webfont.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-thin';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-thin-webfont.woff) format('woff');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-extralight';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-extralight-webfont.woff) format('woff');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-light';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-light-webfont.woff) format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-regular';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-regular-webfont.woff) format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-semibold';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-semibold-webfont.woff) format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-bold';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-bold-webfont.woff) format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-extrabold';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-extrabold-webfont.woff) format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'raleway-heavy';
+  src: url(#{$bia-assets-path}/fonts/raleway/raleway-heavy-webfont.woff) format('woff');
+  font-weight: 900;
+  font-style: normal;
+}

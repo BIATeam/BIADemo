@@ -1,0 +1,14 @@
+<ng-template let-footerPortal [ngIf]="layoutService.footerPortal$ | async" [ngIfElse]="classicFooter">
+  <ng-template [cdkPortalOutlet]="footerPortal"></ng-template>
+</ng-template>
+<ng-template #classicFooter>
+  <footer fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+    <div class="copyright">
+      © 2020 {{ companyName }}
+      v{{ frameworkVersion }}
+    </div>
+    <div class="logo">
+      <img src="{{ logo }}" />
+    </div>
+  </footer>
+</ng-template>

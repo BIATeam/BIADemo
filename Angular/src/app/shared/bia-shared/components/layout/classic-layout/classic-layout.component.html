@@ -1,0 +1,31 @@
+<bia-classic-header
+  [version]="version"
+  [menus]="menus"
+  [appTitle]="appTitle"
+  [username]="username"
+  [logos]="headerLogos"
+  [supportedLangs]="supportedLangs"
+  [allowThemeChange]="allowThemeChange"
+  [helpUrl]="helpUrl"
+  [reportUrl]="reportUrl"
+  [sites]="sites"
+  [siteId]="siteId"
+  [roles]="roles"
+  [roleId]="roleId"
+  [environmentType]="environmentType"
+  (language)="onLanguageChange($event)"
+  (theme)="onThemeChange($event)"
+  (siteChange)="onSiteChange($event)"
+  (roleChange)="onRoleChange($event)"
+  (setDefaultSite)="onSetDefaultSite($event)"
+  (setDefaultRole)="onSetDefaultRole($event)"
+></bia-classic-header>
+<section class="content">
+  <p-breadcrumb *ngIf="(layoutService.breadcrumbHidden$ | async) === false" [model]="menuItems"></p-breadcrumb>
+  <ng-content></ng-content>
+</section>
+<bia-classic-footer
+  *ngIf="(layoutService.footerHidden$ | async) === false"
+  [companyName]="companyName"
+  [logo]="footerLogo"
+></bia-classic-footer>

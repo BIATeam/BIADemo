@@ -1,0 +1,31 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.content {
+  // display: flex;
+  height: 100%;
+  // flex-grow: 1;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll;
+  padding-top: 0.1em;
+}
+
+:host ::ng-deep {
+  p-breadcrumb {
+    .pi,
+    .ui-menuitem-text {
+      font-size: 0.9em;
+      font-weight: 100;
+    }
+    .ui-widget-header {
+      border-width: 0px;
+    }
+    .ui-state-active {
+      background-color: transparent;
+    }
+  }
+}

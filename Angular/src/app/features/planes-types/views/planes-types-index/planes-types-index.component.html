@@ -1,0 +1,44 @@
+<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <bia-table-header
+      [headerTitle]="'planeType.listOf' | translate"
+      [canAdd]="canAdd"
+      [canExportCSV]="true"
+      (create)="onCreate()"
+      (exportCSV)="onExportCSV()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedPlanesTypes"
+    ></bia-table-header>
+    <bia-table-controller
+      [defaultPageSize]="defaultPageSize"
+      [length]="totalCount$ | async"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+    ></bia-table-controller>
+    <bia-table
+      [elements]="planesTypes$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (edit)="onEdit($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+    ></bia-table>
+  </div>
+</div>
+<!-- begin popup mode -->
+<app-plane-type-edit-dialog></app-plane-type-edit-dialog>
+<app-plane-type-new-dialog></app-plane-type-new-dialog>
+<!-- end popup mode -->

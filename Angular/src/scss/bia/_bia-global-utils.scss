@@ -1,0 +1,25 @@
+.bia-flex {
+  display: flex;
+  flex: 1;
+}
+
+.bia-relative {
+  position: relative;
+}
+
+.bia-absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+i.bia-pointer:before {
+  cursor: pointer;
+}
+
+body {
+  .ui-button-text {
+    font-family: 'oswald-light';
+  }
+}

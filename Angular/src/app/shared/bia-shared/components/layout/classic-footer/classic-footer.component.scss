@@ -1,0 +1,20 @@
+// @import '../../../scss/typography';
+
+:host {
+  // Warning any change to this area will affect custom footer
+  min-height: 71px;
+  z-index: 1;
+  display: flex;
+  // ----
+  .copyright {
+    padding-left: 16px;
+  }
+}
+
+// .copyright {
+//   @include bia-typography-level-to-styles($raleway-typography, caption);
+// }
+
+.copyright {
+  font-family: 'oswald-light';
+}

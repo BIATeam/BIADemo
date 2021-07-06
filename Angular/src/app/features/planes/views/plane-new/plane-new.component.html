@@ -1,0 +1,6 @@
+<app-plane-form 
+    [airportOptions]="planeOptionsService.airportOptions$| async"
+    [planeTypeOptions]="planeOptionsService.planeTypeOptions$| async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-plane-form>

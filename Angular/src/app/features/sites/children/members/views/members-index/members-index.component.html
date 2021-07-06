@@ -1,0 +1,47 @@
+<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <bia-table-header  *ngIf="(siteService.loading$ | async) === (false)"
+      [headerTitle]="('member.listOfSiteMembers' | translate) + (siteService.currentSite?.title)"
+      [canAdd]="canAdd"
+      [canBack]="true"
+      (create)="onCreate()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedMembers"
+    ></bia-table-header>
+    <bia-table-controller
+      [defaultPageSize]="defaultPageSize"
+      [length]="totalCount$ | async"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()"
+    ></bia-table-controller>
+    <bia-table
+      [elements]="members$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (edit)="onEdit($event)"
+      (loadLazy)="onLoadLazy($event)"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+    ></bia-table>
+  </div>
+</div>
+<!-- begin popup mode -->
+<app-member-edit-dialog></app-member-edit-dialog>
+<app-member-new-dialog [site]="siteService.currentSite" *ngIf="(siteService.loading$ | async) === (false)"></app-member-new-dialog>
+<!-- end popup mode -->
+
+
+
+
+
+

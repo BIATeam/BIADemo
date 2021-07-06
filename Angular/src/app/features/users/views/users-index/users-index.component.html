@@ -1,0 +1,39 @@
+<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <app-user-table-header
+      [headerTitle]="'user.listOf' | translate"
+      [canSync]="canSync"
+      [canAdd]="canAdd"
+      (create)="onCreate()"
+      (synchronize)="onSynchronize()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedUsers"
+    ></app-user-table-header>
+    <bia-table-controller
+      [defaultPageSize]="pageSize"
+      [length]="totalCount$ | async"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+    ></bia-table-controller>
+    <bia-table
+      [elements]="users$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="false"
+      [canSelectElement]="canDelete"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+    ></bia-table>
+  </div>
+</div>
+<app-user-new-dialog [(display)]="displayNewUserDialog"></app-user-new-dialog>

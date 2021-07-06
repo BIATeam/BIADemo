@@ -1,0 +1,37 @@
+{
+  "BiaNet": {
+    "WorkerFeatures": {
+      "HangfireServer": {
+        "IsActive": true,
+        "UseDashboard": true,
+        "ServerName": "BIADemo",
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "DistributedCache": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "DatabaseHandler": {
+        "IsActive": true
+      },
+      "ClientForHub": {
+        "IsActive": true
+      }
+    },
+    "EmailConfiguration": {
+      "From": "noreply-BIADemo@the-mail-domain.bia",
+      "SmtpHost": "smtp",
+      "SmtpPort": 25
+    },
+    "Authentication": {
+      "LdapCacheGroupDuration": 20, // in minutes
+      "LdapCacheUserDuration": 180 // in minutes
+    },
+    "Permissions": [
+      {
+        "Name": "Hangfire_Dashboard",
+        "Roles": [ "Admin" ]
+      }
+    ]
+  }
+}

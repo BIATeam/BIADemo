@@ -1,0 +1,78 @@
+{
+  "BiaNet": {
+    "Environment": {
+      "Type": "INT",
+      "UrlMatomo": "https://matomo-int.the-shared-tools-domain-name.bia/"
+    },
+    "ApiFeatures": {
+      "HubForClients": {
+        "RedisConnectionString": "the-bia-dev-team-redis-int.the-deploy-domain-name.bia",
+        "RedisChannelPrefix": "TheBIADevCompany.BIADemo"
+      }
+    },
+    "Authentication": {
+      "LdapDomains": [
+        {
+          "Name": "DOMAIN_BIA_1",
+          "LdapName": "the-user-domain1-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain1-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_2",
+          "LdapName": "the-user-domain2-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain1-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_3",
+          "LdapName": "the-user-domain3-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-user-domain3-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": true
+        },
+        {
+          "Name": "DOMAIN_BIA_SRV",
+          "LdapName": "the-server-domain-name.bia",
+          "CredentialKeyInWindowsVault": "BIA:LDAP://the-server-domain-name.bia",
+          "ContainsGroup": true,
+          "ContainsUser": false
+        }
+      ]
+    },
+    "Roles": [
+      //{
+      //  "Label": "User",
+      //  "Type": "Fake"
+      //},
+      //{
+      //  "Label": "Admin",
+      //  "Type": "Fake"
+      //}
+      {
+        "Label": "User",
+        "Type": "Ldap",
+        "LdapGroups": [
+          {
+            "AddUsersOfDomains": [ "DOMAIN_BIA_3", "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
+            "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_BIADemo_INT_User",
+            "Domain": "DOMAIN_BIA_SRV"
+          }
+        ]
+      },
+      {
+        "Label": "Admin",
+        "Type": "Ldap",
+        "LdapGroups": [
+          {
+            "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_SRV" ],
+            "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_Admin",
+            "Domain": "DOMAIN_BIA_SRV"
+          }
+        ]
+      }
+    ]
+  }
+}

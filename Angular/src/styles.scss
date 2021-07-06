@@ -1,0 +1,21 @@
+@import './scss/bia/bia-typography';
+@import './scss/bia/bia-global-utils';
+
+html,
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: initial;
+  min-height: 100vh;
+
+  @import './scss/bia/bia-variables';
+  @import './scss/bia/light-variables';
+  @import './scss/bia/bia-custom-theme';
+  @import './scss/app-custom-theme';
+  &.dark-theme {
+    @import './scss/bia/dark-variables';
+    @import './scss/bia/bia-custom-theme';
+    @import './scss/app-custom-theme';
+  }
+}

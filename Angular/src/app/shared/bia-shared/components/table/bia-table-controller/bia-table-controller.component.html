@@ -1,0 +1,41 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxLayout="row" fxFlex="25" fxLayoutAlign="baseline" fxLayoutGap="20px">
+    <span>
+      <strong>{{
+        length | i18nPlural: resultMessageMapping:translateService.currentLang | translate: { length: length }
+      }}</strong>
+    </span>
+    <div>
+      <span>{{ 'bia.itemsPerPage' | translate }} : </span>
+      <p-dropdown
+        [options]="pageSizes"
+        [(ngModel)]="pageSize"
+        (onChange)="onPageSizeChange()"
+        [style]="{ 'min-width': 'initial' }"
+      ></p-dropdown>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="20px" fxFlex="75" fxLayoutAlign="flex-end end">
+    <div *ngIf="tableStateKey">
+      <span>{{ 'bia.views.view' | translate }} : </span>
+      <app-view-list [tableStateKey]="tableStateKey" (viewChange)="onViewChange($event)"></app-view-list>
+    </div>
+    <div>
+      <span>{{ 'bia.display' | translate }} </span>
+      <p-multiSelect
+        defaultLabel="{{ 'bia.select' | translate }}"
+        [options]="listedColumns"
+        [(ngModel)]="displayedColumns"
+        (onChange)="onChangeSelectColumn()"
+        autoWidth="false"
+        [style]="{ width: '300px' }"
+      ></p-multiSelect>
+    </div>
+    <span class="md-inputfield">
+      <input pInputText type="text" [formControl]="filterCtrl" [value]="globalFilter" />
+      <label for="name">{{ 'bia.search' | translate }}</label>
+      <i class="ui-icon-search bia-pointer"></i>
+    </span>
+    <i class="ui-icon-filter-list bia-pointer" (click)="onToggleSearch()"></i>
+  </div>
+</div>

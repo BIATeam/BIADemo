@@ -1,0 +1,18 @@
+<p-dropdown
+  [options]="groupedViews"
+  [(ngModel)]="selectedView"
+  [style]="{ 'min-width': '150px' }"
+  [group]="true"
+  (onChange)="onViewChange($event)"
+>
+  <ng-template let-item pTemplate="selectedItem">
+    <span>{{ item.label }}</span>
+    <i *ngIf="defaultView == item.value" class="ui-icon-star-border"></i>
+  </ng-template>
+  <ng-template let-object pTemplate="item">
+    <span>{{ object.label }}</span>
+    <i *ngIf="defaultView == object.value" class="ui-icon-star-border"></i>
+  </ng-template>
+</p-dropdown>
+<i *ngIf="showEditButton() === true" class="ui-icon-edit bia-pointer" (click)="onManageView()"></i>
+<app-view-dialog *ngIf="showEditButton() === true" [tableStateKey]="tableStateKey"></app-view-dialog>
