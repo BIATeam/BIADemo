@@ -111,3 +111,14 @@ bia-table-controller {
     }
   }
 }
+
+// For view
+app-view-list
+{
+  .ui-icon-star-border.ng-star-inserted {
+    font-size: 1.1em;
+  }
+  .ui-icon-edit {
+    font-size: 1.3em;
+  }
+}

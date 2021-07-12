@@ -29,6 +29,32 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string ContentType = "text/csv";
         }
+
+        public static class Eclipse
+        {
+            /// <summary>
+            /// the extension of a eclipse file.
+            /// </summary>
+            public const string Extension = ".ecl";
+
+            /// <summary>
+            /// the extension of a eclipse file.
+            /// </summary>
+            public const string ContentType = "text/x-ecl";
+        }
+
+        public static class PDF
+        {
+            /// <summary>
+            /// the extension of a eclipse file.
+            /// </summary>
+            public const string Extension = ".pdf";
+
+            /// <summary>
+            /// the extension of a eclipse file.
+            /// </summary>
+            public const string ContentType = "application/pdf";
+        }
         /// <summary>
         /// The class containing HTTP headers constants.
         /// </summary>

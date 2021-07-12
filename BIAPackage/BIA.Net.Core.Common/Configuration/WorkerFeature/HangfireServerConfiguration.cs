@@ -12,6 +12,11 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Type of database engine.
+        /// </summary>
+        public string DBEngine { get; set; }
+
+        /// <summary>
         /// Hangfire name of the server.
         /// </summary>
         public string ServerName { get; set; }

@@ -58,20 +58,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         {
             if (obj == null)
                 return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            using MemoryStream ms = new MemoryStream();
+            BinaryFormatter bf = new();
+            using MemoryStream ms = new();
             bf.Serialize(ms, obj);
             return ms.ToArray();
         }
 
         // Convert a byte array to an Object
-        private Object ByteArrayToObject(byte[] arrBytes)
+        private object ByteArrayToObject(byte[] arrBytes)
         {
-            MemoryStream memStream = new MemoryStream();
-            BinaryFormatter binForm = new BinaryFormatter();
+            MemoryStream memStream = new();
+            BinaryFormatter binForm = new();
             memStream.Write(arrBytes, 0, arrBytes.Length);
             memStream.Seek(0, SeekOrigin.Begin);
-            Object obj = (Object)binForm.Deserialize(memStream);
+            object obj = binForm.Deserialize(memStream);
 
             return obj;
         }

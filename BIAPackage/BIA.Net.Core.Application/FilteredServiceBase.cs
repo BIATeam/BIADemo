@@ -162,14 +162,14 @@ namespace BIA.Net.Core.Application
 
             List<object[]> records = results.Select(new TOtherMapper().DtoToRecord(mapperMode)).ToList();
 
-            StringBuilder csv = new StringBuilder();
+            StringBuilder csv = new ();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
             });
 
             string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv.ToString()}");
+            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
         }
 
         public virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
@@ -304,15 +304,15 @@ namespace BIA.Net.Core.Application
 
                 case DtoState.Modified:
                     await this.UpdateAsync<TOtherDto, TOtherMapper>(dto,
-                        accessMode: accessMode != null ? accessMode : AccessMode.Update,
-                        queryMode: queryMode!=null? queryMode : QueryMode.Update,
+                        accessMode: accessMode ?? AccessMode.Update,
+                        queryMode: queryMode ?? QueryMode.Update,
                         mapperMode: mapperMode);
                     break;
 
                 case DtoState.Deleted:
                     await this.RemoveAsync(dto.Id,
-                        accessMode: accessMode != null ? accessMode : AccessMode.Delete,
-                        queryMode: queryMode != null ? queryMode : QueryMode.Delete);
+                        accessMode: accessMode ?? AccessMode.Delete,
+                        queryMode: queryMode ?? QueryMode.Delete);
                     break;
 
                 default:
@@ -369,6 +369,74 @@ namespace BIA.Net.Core.Application
                 }
             }
             return null;
+        }
+
+        public void AddBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
+            where TOtherDto : BaseDto, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    new TOtherMapper().DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                this.Repository.UnitOfWork.AddBulk(entity);
+            }
+        }
+
+        public void UpdateBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
+            where TOtherDto : BaseDto, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    new TOtherMapper().DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                this.Repository.UnitOfWork.UpdateBulk(entity);
+            }
+        }
+
+        public void RemoveBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
+            where TOtherDto : BaseDto, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    new TOtherMapper().DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                this.Repository.UnitOfWork.RemoveBulk(entity);
+            }
+        }
+
+        public async Task RemoveBulkAsync(IEnumerable<int> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        {
+            var entity = await this.Repository.GetAllEntityAsync(specification: GetFilterSpecification(accessMode, filtersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
+            if (entity == null)
+            {
+                throw new ElementNotFoundException();
+            }
+
+            this.Repository.UnitOfWork.RemoveBulk(entity);
         }
     }
 }

@@ -37,9 +37,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc/>
         public async Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null)
         {
-            MimeMessage messageToSend = new MimeMessage();
-
-            messageToSend.Subject = subject?.Trim();
+            MimeMessage messageToSend = new()
+            {
+                Subject = subject?.Trim()
+            };
 
             messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration.From, this.configuration.EmailConfiguration.From));
 
@@ -63,7 +64,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             messageToSend.Body = new TextPart(TextFormat.Html) { Text = bodyText?.Trim() };
 
-            using (SmtpClient client = new SmtpClient())
+            using (SmtpClient client = new())
             {
                 await client.ConnectAsync(this.configuration.EmailConfiguration.SmtpHost, this.configuration.EmailConfiguration.SmtpPort, false);
                 await client.SendAsync(messageToSend);

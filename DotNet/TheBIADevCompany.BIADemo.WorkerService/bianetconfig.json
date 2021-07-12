@@ -3,12 +3,14 @@
     "WorkerFeatures": {
       "HangfireServer": {
         "IsActive": true,
+        "DBEngine": "SQLServer", //SQLServer or PostgreSQL
         "UseDashboard": true,
         "ServerName": "BIADemo",
         "ConnectionStringName": "BIADemoDatabase"
       },
       "DistributedCache": {
         "IsActive": true,
+        "DBEngine": "SQLServer", //SQLServer or PostgreSQL
         "ConnectionStringName": "BIADemoDatabase"
       },
       "DatabaseHandler": {

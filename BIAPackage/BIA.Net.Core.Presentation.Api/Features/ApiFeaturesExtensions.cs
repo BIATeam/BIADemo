@@ -6,7 +6,9 @@
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
+    using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire;
+    using Hangfire.PostgreSql;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
@@ -44,12 +46,24 @@
             // Distributed Cache
             if (options.DistributedCache.IsActive)
             {
-                services.AddDistributedSqlServerCache(config =>
+                if (options.DistributedCache.DBEngine.Equals("SQLServer"))
                 {
-                    config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
-                    config.TableName = "DistCache";
-                    config.SchemaName = "dbo";
-                });
+                    services.AddDistributedSqlServerCache(config =>
+                    {
+                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.TableName = "DistCache";
+                        config.SchemaName = "dbo";
+                    });
+                }
+                else if (options.DistributedCache.DBEngine.Equals("PostgreSQL"))
+                {
+                    services.AddDistributedPostgreSqlCache(config =>
+                    {
+                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.SchemaName = "dbo";
+                        config.TableName = "DistCache";
+                    });
+                }
             }
 
             // Swagger
@@ -74,8 +88,10 @@
                             Id = "Bearer",
                         },
                     };
-                    var securityRequirement = new OpenApiSecurityRequirement();
-                    securityRequirement.Add(apiScheme, new[] { "Bearer" });
+                    var securityRequirement = new OpenApiSecurityRequirement
+                    {
+                        { apiScheme, new[] { "Bearer" } }
+                    };
 
                     a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
                     a.AddSecurityDefinition(
@@ -92,17 +108,18 @@
             }
             if (options.HubForClients.IsActive)
             {
-                if (String.IsNullOrEmpty(options.HubForClients.RedisConnectionString))
+                if (string.IsNullOrEmpty(options.HubForClients.RedisConnectionString))
                 {
                     services.AddSignalR();
                 }
                 else
                 {
-                    if (String.IsNullOrEmpty(options.HubForClients.RedisChannelPrefix))
+                    if (string.IsNullOrEmpty(options.HubForClients.RedisChannelPrefix))
                     {
                         services.AddSignalR().AddRedis(options.HubForClients.RedisConnectionString);
                     }
-                    else { 
+                    else
+                    {
                         services.AddSignalR().AddRedis(options.HubForClients.RedisConnectionString,
                         rediOptions =>
                         {
@@ -119,8 +136,24 @@
             }
             if (options.DelegateJobToWorker.IsActive)
             {
-                var sqlStorage = new SqlServerStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName));
-                JobStorage.Current = sqlStorage;
+                if (options.DistributedCache.DBEngine.ToLower().Equals("sqlserver"))
+                {
+                    var optionsTime = new SqlServerStorageOptions
+                    {
+                        InvisibilityTimeout = TimeSpan.FromDays(5),
+                    };
+
+                    JobStorage.Current = new SqlServerStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                }
+                else if (options.DistributedCache.DBEngine.ToLower().Equals("postgresql"))
+                {
+                    var optionsTime = new PostgreSqlStorageOptions
+                    {
+                        InvisibilityTimeout = TimeSpan.FromDays(5),
+                    };
+
+                    JobStorage.Current = new PostgreSqlStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                }
             }
 
             return services;

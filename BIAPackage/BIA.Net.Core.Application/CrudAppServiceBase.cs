@@ -144,6 +144,30 @@ namespace BIA.Net.Core.Application
             return await this.UpdateAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.BulkAddAsync"/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            this.AddBulk<TDto, TMapper>(dtos);
+        }
+
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.UpdateBulkAsync"/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            this.UpdateBulk<TDto, TMapper>(dtos);
+        }
+
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.RemoveBulkAsync(System.Collections.Generic.IEnumerable{TDto})"/>
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            this.RemoveBulk<TDto, TMapper>(dtos);
+        }
+
         public virtual async Task SaveAsync(TDto dto,
             string accessMode = null,
             string queryMode = null,

@@ -1,7 +1,7 @@
-﻿
-
-namespace BIA.Net.Core.Infrastructure.Data
+﻿namespace BIA.Net.Core.Infrastructure.Data
 {
+    using System.Collections.Generic;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
@@ -82,6 +82,36 @@ namespace BIA.Net.Core.Infrastructure.Data
         public void RollbackChanges()
         {
             this.ChangeTracker.Entries().ToList().ForEach(entry => entry.State = EntityState.Unchanged);
+        }
+
+        /// <summary>
+        /// Bulk function to add entities.
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <param name="items">List of the items to add.</param>
+        public void AddBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        {
+            this.BulkInsert(items);
+        }
+
+        /// <summary>
+        /// Bulk function to update entities.
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <param name="items">List of the items to update.</param>
+        public void UpdateBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        {
+            this.BulkUpdate(items);
+        }
+
+        /// <summary>
+        /// Bulk function to delete entities.
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <param name="items">List of the items to delete.</param>
+        public void RemoveBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        {
+            this.BulkDelete(items);
         }
 
         /// <summary>

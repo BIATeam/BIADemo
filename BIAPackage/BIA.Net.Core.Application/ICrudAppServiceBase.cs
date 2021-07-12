@@ -195,5 +195,26 @@ namespace BIA.Net.Core.Application
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null);
+
+        /// <summary>
+        /// Transform the DTO into the corresponding entities and add these to the DB.
+        /// </summary>
+        /// <param name="dtos">The DTO for all items.</param>
+        Task AddBulkAsync(IEnumerable<TDto> dtos);
+        
+        /// <summary>
+        /// Transform the DTO into the corresponding entities and update these to the DB.
+        /// </summary>
+        Task UpdateBulkAsync(IEnumerable<TDto> dtos);
+
+        /// <summary>
+        /// Remove entities in DB from the list of ids.
+        /// </summary>
+        Task RemoveBulkAsync(IEnumerable<int> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
+
+        /// <summary>
+        /// Transform the DTO into the corresponding entities and delete these to the DB.
+        /// </summary>
+        Task RemoveBulkAsync(IEnumerable<TDto> idList);
     }
 }

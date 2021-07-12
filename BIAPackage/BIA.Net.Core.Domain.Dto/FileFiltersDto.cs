@@ -1,5 +1,5 @@
-﻿// <copyright file="FileFilterDto.cs" company="BIA">
-//     BIA. All rights reserved.
+﻿// <copyright file="FileFiltersDto.cs" company="BIA">
+// Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Dto

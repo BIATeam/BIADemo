@@ -8,6 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
+import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
@@ -20,11 +21,13 @@ import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
+import { FieldsetModule } from 'primeng/fieldset';
 import { FullCalendarModule } from 'primeng/fullcalendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { MenuModule } from 'primeng/menu';
@@ -86,6 +89,7 @@ import { PluckPipe } from './pipes/pluck.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 
 const PRIMENG_MODULES = [
+  AccordionModule,
   AutoCompleteModule,
   BreadcrumbModule,
   ButtonModule,
@@ -98,11 +102,13 @@ const PRIMENG_MODULES = [
   DialogModule,
   DropdownModule,
   EditorModule,
+  FieldsetModule,
   FullCalendarModule,
   InputMaskModule,
   InputSwitchModule,
   InputTextModule,
   InputTextareaModule,
+  InputNumberModule,
   ListboxModule,
   MegaMenuModule,
   MenuModule,

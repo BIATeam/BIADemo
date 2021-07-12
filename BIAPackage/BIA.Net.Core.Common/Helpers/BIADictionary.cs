@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Common
         /// The internal dictionary.
         /// </summary>
         protected readonly Dictionary<string, TElem> internalDictionary
-            = new Dictionary<string, TElem>(StringComparer.InvariantCultureIgnoreCase);
+            = new(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets or sets the <see cref="TElem"/> with the specified key.

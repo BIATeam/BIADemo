@@ -8,8 +8,8 @@ namespace BIA.Net.Core.Common.Helpers
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
+    using System.Text.Json;
     using System.Threading.Tasks;
-    using Newtonsoft.Json;
 
     /// <summary>
     /// The helper used to encapsulate the API calls.
@@ -56,7 +56,7 @@ namespace BIA.Net.Core.Common.Helpers
                 using (var response = await httpClient.GetAsync(CreateUrl(url, urlParameters)))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(apiResponse);
+                    return JsonSerializer.Deserialize<T>(apiResponse);
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Common.Helpers
         {
             using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
             {
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -94,11 +94,11 @@ namespace BIA.Net.Core.Common.Helpers
         {
             using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
             {
-                var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<T>(apiResponse);
+                    return JsonSerializer.Deserialize<T>(apiResponse);
                 }
             }
         }
@@ -113,7 +113,7 @@ namespace BIA.Net.Core.Common.Helpers
         {
             var parameterBuilder = new StringBuilder();
 
-            if (parameters!=null)
+            if (parameters != null)
             {
                 foreach (var parameter in parameters)
                 {

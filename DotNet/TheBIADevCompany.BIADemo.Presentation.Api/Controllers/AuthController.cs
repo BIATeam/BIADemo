@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="singleRoleMode">Whether the front is configured to use a single role at a time.</param>
         /// <returns>The JWT if authenticated.</returns>
-        [HttpGet("login/{singleRoleMode}")]
+        [HttpGet("login/{singleRoleMode?}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>
         /// The JWT if authenticated.
         /// </returns>
-        [HttpGet("login/site/{siteId}/{singleRoleMode}/{roleId?}")]
+        [HttpGet("login/site/{siteId}/{singleRoleMode?}/{roleId?}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -151,7 +151,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
                 }
             }
-            else
+
+            if (userInfo == null)
             {
                 userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
             }

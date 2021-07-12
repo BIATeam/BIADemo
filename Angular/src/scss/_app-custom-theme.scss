@@ -1,6 +1,10 @@
 p-table {
-  td {
+  .ui-table .ui-table-tbody>tr>td {
     font-weight: 300;
-    padding: 0.414em 0.857em !important;
+    padding: 0.414em 0.857em;
+
+    .ui-icon-check {
+      font-size: 1.1em;
+    }
   }
 }

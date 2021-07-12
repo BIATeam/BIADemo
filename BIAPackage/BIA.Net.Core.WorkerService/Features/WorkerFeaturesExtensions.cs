@@ -10,6 +10,9 @@
     using Microsoft.Extensions.Hosting;
     using Hangfire;
     using Microsoft.AspNetCore.Builder;
+    using Community.Microsoft.Extensions.Caching.PostgreSql;
+    using Hangfire.PostgreSql;
+    using Hangfire.SqlServer;
 
     /// <summary>
     /// Add the standard service.
@@ -36,8 +39,6 @@
             // Local memory cache
             services.AddMemoryCache();
 
-
-
             // Distributed Cache
             if (biaNetSection?.WorkerFeatures?.DistributedCache?.IsActive == true)
             {
@@ -46,12 +47,25 @@
             }
             if (options.DistributedCache.IsActive)
             {
-                services.AddDistributedSqlServerCache(config =>
+                if (options.DistributedCache.DBEngine.Equals("SQLServer"))
                 {
-                    config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
-                    config.TableName = "DistCache";
-                    config.SchemaName = "dbo";
-                });
+                    services.AddDistributedSqlServerCache(config =>
+                    {
+                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.TableName = "DistCache";
+                        config.SchemaName = "dbo";
+                    });
+                }
+                else if (options.DistributedCache.DBEngine.Equals("PostgreSQL"))
+                {
+                    services.AddDistributedPostgreSqlCache(config =>
+                    {
+                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.TableName = "DistCache";
+                        config.SchemaName = "dbo";
+                    });
+                }
+
                 services.AddMemoryCache();
             }
 
@@ -92,11 +106,28 @@
                 });
                 services.AddHangfire(config =>
                 {
-                    config
-                        .UseSimpleAssemblyNameTypeSerializer()
-                        .UseRecommendedSerializerSettings()
-                        .UseSqlServerStorage(
-                           options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName));
+                    if (options.DistributedCache.DBEngine.ToLower().Equals("sqlserver"))
+                    {
+                        var optionsTime = new SqlServerStorageOptions
+                        {
+                            InvisibilityTimeout = TimeSpan.FromDays(5),
+                        };
+
+                        config.UseSimpleAssemblyNameTypeSerializer()
+                              .UseRecommendedSerializerSettings()
+                              .UseSqlServerStorage(options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName), optionsTime);
+                    }
+                    else if (options.DistributedCache.DBEngine.ToLower().Equals("postgresql"))
+                    {
+                        var optionsTime = new PostgreSqlStorageOptions
+                        {
+                            InvisibilityTimeout = TimeSpan.FromDays(5),
+                        };
+
+                        config.UseSimpleAssemblyNameTypeSerializer()
+                              .UseRecommendedSerializerSettings()
+                              .UsePostgreSqlStorage(options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName), optionsTime);
+                    }
                 });
             }
 
@@ -130,10 +161,7 @@
                 //    })
                 //    /*.RequireAuthorization(HangfirePolicyName)*/;
                 //});
-                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                {
-                    DashboardTitle = () => options.HangfireServer.ServerName,
-                });
+
 
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions
                 {

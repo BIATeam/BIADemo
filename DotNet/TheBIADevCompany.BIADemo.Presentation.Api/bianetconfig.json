@@ -3,10 +3,12 @@
     "ApiFeatures": {
       "DistributedCache": {
         "IsActive": true,
+        "DBEngine": "SQLServer", //SQLServer or PostgreSQL
         "ConnectionStringName": "BIADemoDatabase"
       },
       "DelegateJobToWorker": {
         "IsActive": true,
+        "DBEngine": "SQLServer", //SQLServer or PostgreSQL
         "ConnectionStringName": "BIADemoDatabase"
       },
       "HubForClients": {

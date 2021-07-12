@@ -34,7 +34,7 @@ namespace BIA.Net.Core.WorkerService
             }
 
             var mon = JobStorage.Current.GetMonitoringApi();
-            List<string> jobsToCheck = new List<string>();
+            List<string> jobsToCheck = new();
 
             mon.ProcessingJobs(0, int.MaxValue).ToList().ToList().ForEach(x => jobsToCheck.Add(x.Key));
 

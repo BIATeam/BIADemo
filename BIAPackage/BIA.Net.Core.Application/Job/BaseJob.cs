@@ -92,7 +92,7 @@ namespace BIA.Net.Core.Application.Job
             {
                 var recurringJobs = connection.GetRecurringJobs();
 
-                if (recurringJobs == null || recurringJobs.Count() == 0)
+                if (recurringJobs == null || recurringJobs.Count == 0)
                 {
                     this.Logger.LogInformation("No recurring jobs.");
                 }

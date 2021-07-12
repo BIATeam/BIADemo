@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Common
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -22,5 +23,23 @@ namespace BIA.Net.Core.Common
         /// Rollback changes in the current context.
         /// </summary>
         void RollbackChanges();
+
+        /// <summary>
+        /// Bulk method to add a list of item.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        void AddBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+
+        /// <summary>
+        /// Bulk method to update a list of item.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        void UpdateBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+
+        /// <summary>
+        /// Bulk method to remove a list of item.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        void RemoveBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
     }
 }

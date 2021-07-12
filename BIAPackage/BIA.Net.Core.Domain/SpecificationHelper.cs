@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -129,55 +130,54 @@ namespace BIA.Net.Core.Domain
             Expression binaryExpression;
             var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 
+            object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
+
             switch (criteria.ToLower())
             {
                 case "gt":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.GreaterThan(expressionBody, valueExpression);
                     break;
 
                 case "lt":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.LessThan(expressionBody, valueExpression);
                     break;
 
                 case "equals":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.Equal(expressionBody, valueExpression);
                     break;
 
                 case "lte":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.LessThanOrEqual(expressionBody, valueExpression);
                     break;
 
                 case "gte":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.GreaterThanOrEqual(expressionBody, valueExpression);
                     break;
 
                 case "notequals":
-                    valueExpression = Expression.Constant(AsType(value, valueType));
+                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                     binaryExpression = Expression.NotEqual(expressionBody, valueExpression);
                     break;
 
                 case "contains":
                     if (IsCollectionType(valueType))
                     {
-                        // todo : manage type other than string
-                        // a => a.Contains(value);
-                        valueExpression = Expression.Constant(value);
+                        valueExpression = Expression.Constant(valueFormated);
                         method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         ParameterExpression pe = Expression.Parameter(typeof(string), "a");
                         var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
                         var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
 
-                        // exp => expr.Any(a => a.Contains(value));
                         binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
                     }
                     else
                     {
-                        valueExpression = Expression.Constant(value);
+                        valueExpression = Expression.Constant(valueFormated);
                         method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         if (expressionBody.Type != typeof(string))
                         {
@@ -190,7 +190,7 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "startswith":
-                    valueExpression = Expression.Constant(value);
+                    valueExpression = Expression.Constant(valueFormated);
                     method = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
                     if (expressionBody.Type != typeof(string))
                     {
@@ -201,7 +201,7 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "endswith":
-                    valueExpression = Expression.Constant(value);
+                    valueExpression = Expression.Constant(valueFormated);
                     method = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
                     if (expressionBody.Type != typeof(string))
                     {
@@ -221,7 +221,7 @@ namespace BIA.Net.Core.Domain
         public static bool IsCollectionType(Type valueType)
         {
             return (valueType.Name.Length > 11 && valueType.Name.Substring(0, 11) == "IEnumerable")
-                || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable") ;
+                || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
         }
 
         /// <summary>
