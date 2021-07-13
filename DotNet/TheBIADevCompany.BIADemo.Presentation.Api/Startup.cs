@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.AddBiaApiFeatures(config =>
             {
                 config.Configuration = this.configuration;
-                config.DistributedCache.Activate("BIADemoDatabase", "SQLServer");
+                config.DistributedCache.Activate("BIADemoDatabase");
             });
 
             // End BIA Standard service

@@ -47,7 +47,8 @@
             }
             if (options.DistributedCache.IsActive)
             {
-                if (options.DistributedCache.DBEngine.Equals("SQLServer"))
+                string dbEngine = options.Configuration.GetDBEngine(options.DistributedCache.ConnectionStringName);
+                if (dbEngine.ToLower().Equals("sqlserver"))
                 {
                     services.AddDistributedSqlServerCache(config =>
                     {
@@ -56,7 +57,7 @@
                         config.SchemaName = "dbo";
                     });
                 }
-                else if (options.DistributedCache.DBEngine.Equals("PostgreSQL"))
+                else if (dbEngine.ToLower().Equals("postgresql"))
                 {
                     services.AddDistributedPostgreSqlCache(config =>
                     {
@@ -106,13 +107,14 @@
                 });
                 services.AddHangfire(config =>
                 {
-                    if (options.DistributedCache.DBEngine.ToLower().Equals("sqlserver"))
+                    string dbEngine = options.Configuration.GetDBEngine(options.DistributedCache.ConnectionStringName);
+                    if (dbEngine.ToLower().Equals("sqlserver"))
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
                               .UseSqlServerStorage(options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName));
                     }
-                    else if (options.DistributedCache.DBEngine.ToLower().Equals("postgresql"))
+                    else if (dbEngine.ToLower().Equals("postgresql"))
                     {
                         var optionsTime = new PostgreSqlStorageOptions
                         {

@@ -15,11 +15,6 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Type of database engine.
-        /// </summary>
-        public string DBEngine { get; set; }
-
-        /// <summary>
         /// Connexion string name for the database.
         /// </summary>
         public string ConnectionStringName { get; set; }
@@ -29,11 +24,10 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
             this.IsActive = false;
         }
 
-        public void Activate(string connectionStringName, string dbEngine)
+        public void Activate(string connectionStringName)
         {
             this.IsActive = true;
             this.ConnectionStringName = connectionStringName;
-            this.DBEngine = dbEngine;
         }
     }
 }
