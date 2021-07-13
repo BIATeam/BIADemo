@@ -53,12 +53,9 @@ To find the path to the **.gitconfig** file, type the following command:
 `git config --list --show-origin`   
 Open your **.gitconfig** file and add this configuration:
 ```
-[http "https://tfsdm.eu.labinal.snecma/"]
-                sslVerify = false
-                proxy = ""
-[http "https://azure.devops.thebiadevcompany/"]
-                sslVerify = false
-                proxy = ""
+[http]
+	sslVerify = false
+	proxy = "[Add here your proxy if requiered]"
 ```
 
 
@@ -86,7 +83,7 @@ Some files are part of the Framework and should not be modified.
 ## NPM Package
 The content of the framework is normally sufficient for the needs of any project. You should never install any other npm package other than those provided by the Framework.   You should not use the `ng update` command.   
 The component library chosen for this framework is [PrimeNG](https://www.primefaces.org/primeng/v9.1.4-lts/). You must use only these components.   
-If the content of this framework is not enough, please contact first [Jérémie Souques](mailto:jeremie.souques@thebiadevcompanygroup.com) before installing an npm package on your project.
+If the content of this framework is not enough, please contact first The BIATeam before installing an npm package on your project.
 
 ## Design / Layout
 If you need to modify the PrimeNG component design, you can modify the following file: src\scss\\_app-custom-theme.scss   
