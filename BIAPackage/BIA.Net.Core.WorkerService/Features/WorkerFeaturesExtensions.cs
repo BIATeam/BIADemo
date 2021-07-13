@@ -108,14 +108,9 @@
                 {
                     if (options.DistributedCache.DBEngine.ToLower().Equals("sqlserver"))
                     {
-                        var optionsTime = new SqlServerStorageOptions
-                        {
-                            InvisibilityTimeout = TimeSpan.FromDays(5),
-                        };
-
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UseSqlServerStorage(options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName), optionsTime);
+                              .UseSqlServerStorage(options.Configuration.GetConnectionString(options.HangfireServer.ConnectionStringName));
                     }
                     else if (options.DistributedCache.DBEngine.ToLower().Equals("postgresql"))
                     {

@@ -138,12 +138,7 @@
             {
                 if (options.DistributedCache.DBEngine.ToLower().Equals("sqlserver"))
                 {
-                    var optionsTime = new SqlServerStorageOptions
-                    {
-                        InvisibilityTimeout = TimeSpan.FromDays(5),
-                    };
-
-                    JobStorage.Current = new SqlServerStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                    JobStorage.Current = new SqlServerStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName));
                 }
                 else if (options.DistributedCache.DBEngine.ToLower().Equals("postgresql"))
                 {

@@ -22,7 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<DistCache>(entity =>
             {
                 entity.HasIndex(e => e.ExpiresAtTime)
-                    .HasName("Index_ExpiresAtTime");
+                    .HasDatabaseName("Index_ExpiresAtTime");
 
                 entity.Property(e => e.Id).HasMaxLength(449);
 
