@@ -1,5 +1,7 @@
 {
   "app": {
+    "members": "Miembros",
+    "sites": "Sitios",
     "Begin BIADemo" : "To remove in project from here",
     "administration" : "Administración",
     "airports": "Aeropuertos",
@@ -11,9 +13,8 @@
     "planesSignalRMode": "Planos (SignalR)",
     "planesCalcMode": "Planos (Hoja de cálculo)",
     "planesTypes": "Tipos de planos",
+    "sites": "Aerolíneas",
     "End BIADemo" : "To remove in project up to here",
-    "members": "Miembros",
-    "sites": "Sitios",
     "users": "Usuarios"
   },
   "Begin BIADemo" : "To remove in project from here",
@@ -36,7 +37,7 @@
     "listOf": "Lista de planos",
     "msn": "Msn",
     "planeType": "Tipos de planos",
-    "site": "Compañía aérea"
+    "site": "Aerolínea"
   },
   "planeType": {
     "add": "Añadir tipos de planos",
@@ -64,6 +65,11 @@
     "admins": "Administradores",
     "edit": "Editar sitios",
     "listOf": "Lista de sitios",
+    "Begin BIADemo" : "To remove in project from here",
+    "add": "Añadir aerolínea",
+    "edit": "Editar aerolínea",
+    "listOf": "Lista de aerolíneas",
+    "End BIADemo" : "To remove in project up to here",
     "selectUser": "Selecciona un usuario",
     "title": "Title"
   },

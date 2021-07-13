@@ -1,5 +1,7 @@
 {
   "app": {
+    "members": "Membres",
+    "sites": "Sites",
     "Begin BIADemo" : "To remove in project from here",
     "administration" : "Administration",
     "airports": "Aéroports",
@@ -11,9 +13,8 @@
     "planesSignalRMode": "Avions (SignalR)",
     "planesCalcMode": "Avions (Tableur)",
     "planesTypes": "Types d'avions",
+    "sites": "Compagnies aérienne",
     "End BIADemo" : "To remove in project up to here",
-    "members": "Membres",
-    "sites": "Sites",
     "users": "Utilisateurs"
   },
   "Begin BIADemo" : "To remove in project from here",
@@ -64,6 +65,11 @@
     "admins": "Administrateurs",
     "edit": "Modifier site",
     "listOf": "Liste de sites",
+    "Begin BIADemo" : "To remove in project from here",
+    "add": "Ajouter compagnie",
+    "edit": "Modifier compagnie",
+    "listOf": "Liste de compagnies",
+    "End BIADemo" : "To remove in project up to here",
     "selectUser": "Sélectionner un utilisateur",
     "title": "Titre"
   },
