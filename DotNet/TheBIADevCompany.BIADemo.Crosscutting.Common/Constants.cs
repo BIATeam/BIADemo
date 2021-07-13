@@ -17,17 +17,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The back end version.
             /// </summary>
-            public const string BackEndVersion = "1.3.3";
+            public const string BackEndVersion = "1.4.0";
 
             /// <summary>
             /// The front end version.
             /// </summary>
-            public const string FrontEndVersion = "1.3.3";
+            public const string FrontEndVersion = "1.4.0";
 
             /// <summary>
             /// The framework version.
             /// </summary>
-            public const string FrameworkVersion = "5.0.0";
+            public const string FrameworkVersion = "3.4.0";
         }
 
         /// <summary>
