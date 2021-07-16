@@ -72,10 +72,10 @@ index 0000000..906772e
 +```
 \ No newline at end of file
 diff --git a/Angular/docs/NEW_PROJECT.md b/Angular/docs/NEW_PROJECT.md
-index 310907d..72eca8a 100644
+index 310907d..c2a3f53 100644
 --- a/Angular/docs/NEW_PROJECT.md
 +++ b/Angular/docs/NEW_PROJECT.md
-@@ -10,63 +10,14 @@ This document explains how to create a new project based on the TheBIADevCompany
+@@ -10,64 +10,17 @@ This document explains how to create a new project based on the TheBIADevCompany
  * [PrimeNG component list](https://www.primefaces.org/primeng/v9.1.4-lts/)
  * [angular/flex-layout](https://github.com/angular/flex-layout/wiki)
  
@@ -138,11 +138,15 @@ index 310907d..72eca8a 100644
  Copy/Paste the contents of the zip into the Angular folder of your new project.   
  Inside the Angular folder of your new project, run the powershell script `new-angular-project.ps1`.   
 -For **old project name?**, type **BIATemplate**   
-+For **new company name ?**, type the name of your company   
- For **new project name?**, type the name of your project   
+-For **new project name?**, type the name of your project   
++For **new company name ?**, type the name of your company.   
++For **new project name?**, type the name of your project.
++Copy the company custom files from the BIACompanyFiles repo of your company.
++
  Update the version of the application. To do this, change the `version` variable in **src\environments\environment.ts** and **src\environments\environment.prod.ts**.   
  Warning in **src\environments\environment.ts** the apiUrl could be : 'http://localhost/[ProjectName]/**WebApi**/api' or 'http://localhost/[ProjectName]/api' it depend how you have configure the backend api in IIS (or properties of the Visual studio project)
-@@ -86,7 +37,7 @@ Some files are part of the Framework and should not be modified.
+ And serverLoggingUrl: 'http://localhost/JobMonitor/**WebApi**/api/logs' or http://localhost/JobMonitor/api/logs'
+@@ -86,7 +39,7 @@ Some files are part of the Framework and should not be modified.
  ## NPM Package
  The content of the framework is normally sufficient for the needs of any project. You should never install any other npm package other than those provided by the Framework.   You should not use the `ng update` command.   
  The component library chosen for this framework is [PrimeNG](https://www.primefaces.org/primeng/v9.1.4-lts/). You must use only these components.   
@@ -316,6 +320,22 @@ index 12d2e9b..223060d 100644
 diff --git a/Angular/src/assets/bia/Division.gif b/Angular/src/assets/bia/Division.gif
 index c9864f5..22a408b 100644
 Binary files a/Angular/src/assets/bia/Division.gif and b/Angular/src/assets/bia/Division.gif differ
+diff --git a/Angular/src/assets/bia/primeng/layout/css/layout-primeng-dark-thebiadevcompany.2276d9edc8604b2de0e190e3ab9295b7.css b/Angular/src/assets/bia/primeng/layout/css/layout-primeng-dark.2276d9edc8604b2de0e190e3ab9295b7.css
+similarity index 100%
+rename from Angular/src/assets/bia/primeng/layout/css/layout-primeng-dark-thebiadevcompany.2276d9edc8604b2de0e190e3ab9295b7.css
+rename to Angular/src/assets/bia/primeng/layout/css/layout-primeng-dark.2276d9edc8604b2de0e190e3ab9295b7.css
+diff --git a/Angular/src/assets/bia/primeng/layout/css/layout-primeng-light-thebiadevcompany.af3c393a6a88c5ba35377e26bc697deb.css b/Angular/src/assets/bia/primeng/layout/css/layout-primeng-light.af3c393a6a88c5ba35377e26bc697deb.css
+similarity index 100%
+rename from Angular/src/assets/bia/primeng/layout/css/layout-primeng-light-thebiadevcompany.af3c393a6a88c5ba35377e26bc697deb.css
+rename to Angular/src/assets/bia/primeng/layout/css/layout-primeng-light.af3c393a6a88c5ba35377e26bc697deb.css
+diff --git a/Angular/src/assets/bia/primeng/theme/theme-primeng-dark-thebiadevcompany.58b5d3170e34b572cb449a792e54c130.css b/Angular/src/assets/bia/primeng/theme/theme-primeng-dark.58b5d3170e34b572cb449a792e54c130.css
+similarity index 100%
+rename from Angular/src/assets/bia/primeng/theme/theme-primeng-dark-thebiadevcompany.58b5d3170e34b572cb449a792e54c130.css
+rename to Angular/src/assets/bia/primeng/theme/theme-primeng-dark.58b5d3170e34b572cb449a792e54c130.css
+diff --git a/Angular/src/assets/bia/primeng/theme/theme-primeng-light-thebiadevcompany.00fe4966c2d3c17daa0140cd55ad9b4a.css b/Angular/src/assets/bia/primeng/theme/theme-primeng-light.00fe4966c2d3c17daa0140cd55ad9b4a.css
+similarity index 100%
+rename from Angular/src/assets/bia/primeng/theme/theme-primeng-light-thebiadevcompany.00fe4966c2d3c17daa0140cd55ad9b4a.css
+rename to Angular/src/assets/bia/primeng/theme/theme-primeng-light.00fe4966c2d3c17daa0140cd55ad9b4a.css
 diff --git a/Angular/src/environments/environment.prod.ts b/Angular/src/environments/environment.prod.ts
 index 5f2fa32..bfadbdf 100644
 --- a/Angular/src/environments/environment.prod.ts
@@ -342,6 +362,42 @@ index 39dbf4a..794978f 100644
    logging: {
      conf: {
        serverLoggingUrl: 'http://localhost/BIATemplate/WebApi/api/logs',
+diff --git a/Angular/src/index.html b/Angular/src/index.html
+index ac9acd9..3e4f403 100644
+--- a/Angular/src/index.html
++++ b/Angular/src/index.html
+@@ -12,27 +12,27 @@
+       id="theme-light-css"
+       rel="stylesheet"
+       type="text/css"
+-      href="assets/bia/primeng/theme/theme-primeng-light-thebiadevcompany.00fe4966c2d3c17daa0140cd55ad9b4a.css"
++      href="assets/bia/primeng/theme/theme-primeng-light.00fe4966c2d3c17daa0140cd55ad9b4a.css"
+     />
+     <link
+       id="layout-light-css"
+       rel="stylesheet"
+       type="text/css"
+-      href="assets/bia/primeng/layout/css/layout-primeng-light-thebiadevcompany.af3c393a6a88c5ba35377e26bc697deb.css"
++      href="assets/bia/primeng/layout/css/layout-primeng-light.af3c393a6a88c5ba35377e26bc697deb.css"
+     />
+ 
+     <link
+       id="theme-dark-css"
+       rel="stylesheet"
+       type="text/css"
+-      href="assets/bia/primeng/theme/theme-primeng-dark-thebiadevcompany.58b5d3170e34b572cb449a792e54c130.css"
++      href="assets/bia/primeng/theme/theme-primeng-dark.58b5d3170e34b572cb449a792e54c130.css"
+       disabled
+     />
+     <link
+       id="layout-dark-css"
+       rel="stylesheet"
+       type="text/css"
+-      href="assets/bia/primeng/layout/css/layout-primeng-dark-thebiadevcompany.2276d9edc8604b2de0e190e3ab9295b7.css"
++      href="assets/bia/primeng/layout/css/layout-primeng-dark.2276d9edc8604b2de0e190e3ab9295b7.css"
+       disabled
+     />
+   </head>
 diff --git a/Angular/src/scss/_app-custom-theme.scss b/Angular/src/scss/_app-custom-theme.scss
 index b3e3193..92c6d60 100644
 --- a/Angular/src/scss/_app-custom-theme.scss
@@ -379,10 +435,10 @@ index 9dbddda..7787b4b 100644
 +  }
 +}
 diff --git a/Docs/PACKAGING.md b/Docs/PACKAGING.md
-index d9e660c..82f3079 100644
+index d9e660c..953c1c7 100644
 --- a/Docs/PACKAGING.md
 +++ b/Docs/PACKAGING.md
-@@ -27,6 +27,7 @@
+@@ -27,9 +27,14 @@
  ## Prepare BIATemplate:
  - Launch **...\BIATemplate\DotNet-BIADemo-BIATemplate.ps1**
  - Launch **...\BIATemplate\Angular-BIADemo-BIATemplate.ps1** (if some files are to exclude modify the script)
@@ -390,6 +446,13 @@ index d9e660c..82f3079 100644
  - Compile the solution BIATemplate, Test and verify the absence of warning.
  - DO NOT COMMIT BIATemplate here (this will block the build 24H because the packages are not published on nuget.org)
  
++## Prepare BIACompany Files:
++- Edit **...\BIADemo\Tools\CopySettingsFromBIATemplateCompanyFiles.ps1** to set correct version number
++- Launch **...\BIADemo\Tools\CopySettingsFromBIATemplateCompanyFiles.ps1**
++  
+ ## Publish BIAPackage
+ - If everything is ok Publish the packages on nuget.org
+ - Wait the confirmation by mail of all packages
 diff --git a/Docs/PREPARE MIGRATION.md b/Docs/PREPARE MIGRATION.md
 index a5e19a5..c597078 100644
 --- a/Docs/PREPARE MIGRATION.md	
