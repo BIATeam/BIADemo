@@ -1,3 +1,7 @@
+### [3.4.0] (2021-07-16)
+* .Net5.0
+* Bulk function in repository.
+* PostgreSQL compatibility.
 ### [3.3.3] (2021-06-25)
 * New helper in common to compare string.
 ### [3.3.2] (2021-05-28)
