@@ -17,8 +17,10 @@ This document explains how to create a new project based on the TheBIADevCompany
 Retrieve the latest version of the **[BIA.AngularTemplate.X.Y.Z.zip](../../Docs/BIAExtension)**.   
 Copy/Paste the contents of the zip into the Angular folder of your new project.   
 Inside the Angular folder of your new project, run the powershell script `new-angular-project.ps1`.   
-For **new company name ?**, type the name of your company   
-For **new project name?**, type the name of your project   
+For **new company name ?**, type the name of your company.   
+For **new project name?**, type the name of your project.
+Copy the company custom files from the BIACompanyFiles repo of your company.
+
 Update the version of the application. To do this, change the `version` variable in **src\environments\environment.ts** and **src\environments\environment.prod.ts**.   
 Warning in **src\environments\environment.ts** the apiUrl could be : 'http://localhost/[ProjectName]/**WebApi**/api' or 'http://localhost/[ProjectName]/api' it depend how you have configure the backend api in IIS (or properties of the Visual studio project)
 And serverLoggingUrl: 'http://localhost/JobMonitor/**WebApi**/api/logs' or http://localhost/JobMonitor/api/logs'
