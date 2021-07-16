@@ -1,18 +1,29 @@
-```powershell
-# Adapt the path to your dev environment
-$serviceFullPath = "D:\Sources\Azure.DevOps.TheBIADevCompany\DigitalManufacturing\BIADemo\DotNet\TheBIADevCompany.BIADemo.WorkerService\bin\Debug\netcoreapp3.1\TheBIADevCompany.BIADemo.WorkerService.exe"
+# Presentation Worker service project
 
-# Adapt the user un pass to your environment
-$secpasswd = ConvertTo-SecureString "**********" -AsPlainText -Force
-$cred = New-Object System.Management.Automation.PSCredential ("EU\*****", $secpasswd)
+## Prepare the Worker service Site:
+1. Compile the solution 
+- Set Presentation Api as startup project
+- Launch it a first time with IIS
 
-# Adapt the appli name to your application
-$appli = "BIADemo"
-$sCompanyName = "TheBIADevCompany"
-$sTeamName = "DM"
+2. Open IIS manager. 
+- Set the physical path of the Folder (with the name of the application [ProjectName]) to d:\www\[ProjectName] (in basic settings)
+- On the [ProjectName]\WorkerService site :
+    - Open Basic setting 
+    - Note the name of the application pool (automaticaly created by Visual studio during the first run)
+    - Move the Wepi Api Application Pool to an other one (no importance of witch one it is temporary)
+- In Application Pool 
+    - Rename the automaticaly created application pool to [ProjectName]WorkerService
+    - The pool must be in "No Managed Code".
+    - In advanced settings > identity Set an account, you have 2 options:
+      - Your user account (you will change the pass every time you udate it) 
+      - Use a Service account which have sufficient rights on AD. If you choose this option, don't forget to allow this user to access your database in SQL Server Management Studio.
+- On the [ProjectName]\WepApi site :
+    - Open Basic setting 
+    - Move the Wepi Api Application Pool to [ProjectName]WorkerService
+    - Verify the authentication : Anonymous and windows authentication should be enable.
 
-$serviceName = $sCompanyName + "_" + $sTeamName + "_" + $appli
-$ServiceDisplayName = $sCompanyName + " - " + $sTeamName + " - " + $appli + " Service"
-$ServiceDescription = $sCompanyName + " - " + $sTeamName + " service for " + $appli + " application."
-New-Service -Name $serviceName  -BinaryPathName $serviceFullPath -DisplayName $ServiceDisplayName -Credential $cred -Description $ServiceDescription
-```
+3. Restart Visual Studio
+- Close Visual Studio
+- Restart Visual Studio and open the solution
+- Launch it with IIS
+

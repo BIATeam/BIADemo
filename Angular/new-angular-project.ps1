@@ -67,11 +67,14 @@ function ReplaceProjectName {
   
 }
 
-$oldName = Read-Host "old project name ?"
-# $oldName = 'BIADemo'
+$oldCompany = "TheBIADevCompany"
+$oldName = "BIADemo"
+$newCompany = Read-Host "new company name ?"
 $newName = Read-Host "new project name ?"
 # $newName = 'BIATemplate'
 
+Write-Host "old company: " $oldCompany
+Write-Host "new company: " $newCompany
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
@@ -80,12 +83,16 @@ RemoveFolder -path 'dist'
 Write-Host "RemoveFolder node_modules"
 RemoveFolder -path 'node_modules'
 
+Write-Host "replace company name"
+ReplaceProjectName -oldName $oldCompany -newName $newCompany
+ReplaceProjectName -oldName $oldCompany.ToLower() -newName $newCompany.ToLower()
+
 Write-Host "replace project name"
 ReplaceProjectName -oldName $oldName -newName $newName
 ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower()
 
-Write-Host "npm install"
-npm install
+# Write-Host "npm install"
+# npm install
 # Write-Host "ng build --aot"
 # ng build --aot
 Write-Host "Finish"
