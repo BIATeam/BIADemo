@@ -8,9 +8,11 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StandardEncoder } from './standard-encoder';
+import { Injectable } from "@angular/core";
 
 // Workaroud issue: https://github.com/angular/angular/issues/11058
 // Because dot.NET interpret '+' as space
+@Injectable()
 export class StandardEncodeHttpParamsInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const params = new HttpParams({ encoder: new StandardEncoder(), fromString: req.params.toString() });
