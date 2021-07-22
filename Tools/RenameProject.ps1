@@ -1,12 +1,9 @@
-$rootPath = "D:\Sources\Azure.DevOps.TheBIADevCompany\DigitalManufacturing"
-#$rootPath = "D:\Sources\Azure.DevOps.TheBIADevCompany\Test"
+$rootPath = "D:\Sources\..."
 
 $oldName = 'BIADemo'
 $oldCompagnyName = 'TheBIADevCompany'
-#$oldRealSelector = read-host "old project name? "
 $newName = 'BIADemo'
 $newCompagnyName = 'TheBIADevCompany'
-#$newRealSelector = read-host "new project name? "
 
 
 Write-Host "Old name: " $oldName

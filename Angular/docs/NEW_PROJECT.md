@@ -1,5 +1,5 @@
 # New Project
-This document explains how to create a new project based on the TheBIADevCompany Angular framework.   
+This document explains how to create a new project based on the BIA Angular framework.   
 
 ## Prerequisite
 

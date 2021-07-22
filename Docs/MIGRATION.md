@@ -1,8 +1,8 @@
 # Migrate the framewok version of an existing project
 
 ## Check the framework version of you project:
-* open your project file ..\DotNet\TheBIADevCompany.YourProject.Crosscutting.Common\Constants.cs
-* read the value of FrameworkVersion
+* Open your project file ..\DotNet\\[YourCompanyName].[YourProjectName].Crosscutting.Common\Constants.cs
+* Read the value of FrameworkVersion
 
 ## Apply successively the migration:
 * Open the folder [Migration](./Migration) 

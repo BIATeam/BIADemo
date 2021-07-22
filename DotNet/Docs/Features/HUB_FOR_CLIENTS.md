@@ -27,11 +27,13 @@ In the BIANet Section add:
 ```Json
     "ApiFeatures": {
       "HubForClients": {
-        "RedisConnectionString": "dmeu-redis-[ENV].electrical-power.thebiadevcompany",
-        "RedisChannelPrefix": "TheBIADevCompany.[YourProjectName]"
+        "RedisConnectionString": "[FqdnYourRedisServer]",
+        "RedisChannelPrefix": "[YourProjectName]"
       }
     },
 ```
+replace [FqdnYourRedisServer] by the FQDN of your redis server
+replace [YourCompanyName] by the name of your company
 replace [YourProjectName] by the name of your project
 replace [ENV] by the corresponding env of the file (int, uat, prd or pra)
 

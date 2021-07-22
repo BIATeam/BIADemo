@@ -81,11 +81,11 @@ If you want to know what to do in order to add unit tests to your project, this 
 
 ### Create your test project
 #### Copy of TheBIADevCompany.BIADemo.Test
-* Copy/paste **TheBIADevCompany.BIADemo.Test** project from [here](https://azure.devops.thebiadevcompany/TheBIADevCompanyElectricalAndPower/Digital%20Manufacturing/_git/BIADemo?path=%2FDotNet%2FTheBIADevCompany.BIADemo.Test) and add it in the "**DotNet**" folder of your solution.
-* Rename the folder and csproj in order to match your company and project names, but keep the pattern **[CompanyName].[ProjectName].Test**.
+* Copy/paste **TheBIADevCompany.BIADemo.Test** project from [here](https://github.com/BIATeam/BIADemo/tree/master/DotNet/TheBIADevCompany.BIADemo.Test) and add it in the "**DotNet**" folder of your solution.
+* Rename the folder and csproj in order to match your company and project names, but keep the pattern **[YourCompanyName].[YourProjectName].Test**.
 * Add the project to your solution (usually inside a "**99 - Test**" folder).
 * Check the properties of your test project and (if necessary) change information in the "Package" tab in order to match your project information.
-* Replace all **TheBIADevCompany.BIADemo** occurences by **[CompanyName].[ProjectName]** (Ctrl+Shift+H on Visual Studio).
+* Replace all **TheBIADevCompany.BIADemo** occurences by **[YourCompanyName].[YourProjectName]** (Ctrl+Shift+H on Visual Studio).
 
 #### Remove examples
 * Some example classes/interfaces have been added in order to show how to implement unit tests in a more realistic way.
@@ -95,29 +95,29 @@ You can keep a copy of them somewhere to have examples, but eventually you will 
   * **UnitTestExample**
 * Remove anything that contains **Plane** (except if you really use planes in your project obviously :)):
   * **DataConstants.DefaultPlanesMsn**.
-  * Imports to **[CompanyName].[ProjectName].Domain.PlaneModule**
+  * Imports to **[YourCompanyName].[YourProjectName].Domain.PlaneModule**
   * Call to **<code>services.AddTransient<PlanesController, PlanesController>();</code>** in **IocContainerTest**.
   * Any use of the **<code>Plane</code>** class.
   * etc
   
 #### Adapt project
 Some additional modifications have to be made on your project (not the unit test project, but your real project, the one you want to test):
-* Modify **[CompanyName].[ProjectName].Crosscutting.Ioc.IocContainer.ConfigureContainer(IServiceCollection collection, IConfiguration configuration)** method (required in order to use the 'in memory' database):
+* Modify **[YourCompanyName].[YourProjectName].Crosscutting.Ioc.IocContainer.ConfigureContainer(IServiceCollection collection, IConfiguration configuration)** method (required in order to use the 'in memory' database):
   * Add a third parameter **<code>bool isUnitTest = false</code>** to this method.
   * Inside this method, add a **<code>if (!isUnitTest)</code>** and put inside:
     * Anything related to **<code>configuration</code>** (it should concern the DbContext and the management of BiaNetSection).
     * The IoC for **<code>IGenericRepository</code>**.
 * **ClaimsPrincipal**
-  * Modify **[CompanyName].[ProjectName].Presentation.Api.Startup** in order to change the IoC for **<code>IPrincipal</code>** (required because we cannot mock extension methods). 
+  * Modify **[YourCompanyName].[YourProjectName].Presentation.Api.Startup** in order to change the IoC for **<code>IPrincipal</code>** (required because we cannot mock extension methods). 
   If the previous value was **<code>services.AddTransient<IPrincipal>(provider => xxxx);</code>**,
   it should now be **<code>services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(xxxx));</code>** (just add <code>new BIAClaimsPrincipal()</code> around what was previsouly injected)
   * Everywhere you use **<code>ClaimsPrincipal</code>**, replace it by **<code>BIAClaimsPrincipal</code>**
 * **UserDataDto**
   * This class has been moved to **BIA.Net.Core.Domain.Dto.User**. 
-  * So remove your specific implementation (from **[CompanyName].[ProjectName].Domain.Dto.User**) and change usings where required.
+  * So remove your specific implementation (from **[YourCompanyName].[YourProjectName].Domain.Dto.User**) and change usings where required.
 * **DataRepository**
   * This class has been moved to **BIA.Net.Core.Infrastructure.Data.Repositories**. 
-  * So remove your specific implementation (from **[CompanyName].[ProjectName].Infrastructure.Data.Repositories**) and change usings where required.
+  * So remove your specific implementation (from **[YourCompanyName].[YourProjectName].Infrastructure.Data.Repositories**) and change usings where required.
 
 <p style="color:green; font-weight:bold">Once this is done, your solution should build successfully.</p>
 
@@ -157,7 +157,7 @@ You can take examples on the existing ones, but here are some guidelines.
 ##### Architecture
 * Your test suites shall be created in the "**Tests**" folder.
 The default structure is the following one:
-> [CompanyName].[ProjectName].Test
+> [YourCompanyName].[YourProjectName].Test
 > &nbsp;&nbsp;|\_ Tests
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|\_ Controllers
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|\_ One class for each controller you want to test
@@ -256,7 +256,7 @@ In order to execute your unit tests before each build on Azure DevOps, do the fo
     !\*\*\\obj\\\*\*</code>
 * When you execute the pipeline, check the results of the "**API Tests**" task.
 You should see something like that:
-  > 2020-12-22T10:39:52.7079229Z "D:\Agent\_work\8\s\DotNet\TheBIADevCompany.BIADemo.Test\bin\Release\netcoreapp3.1\TheBIADevCompany.BIADemo.Test.dll"
+  > 2020-12-22T10:39:52.7079229Z "D:\Agent\_work\8\s\DotNet\\[YourCompanyName].[YourProjectName].Test\bin\Release\netcoreapp3.1\\[YourCompanyName].[YourProjectName].Test.dll"
   2020-12-22T10:39:52.7079265Z /logger:"trx"
   2020-12-22T10:39:52.7079308Z /TestAdapterPath:"D:\Agent\_work\8\s"
   2020-12-22T10:39:52.7079341Z **Starting test execution, please wait...**
@@ -278,6 +278,6 @@ You should see something like that:
   2020-12-22T10:39:56.8593561Z ##[section]Async Command Start: Publish test results
   2020-12-22T10:39:56.8686539Z Publishing test results to test run '57'
   2020-12-22T10:39:56.8686682Z Test results remaining: 22. Test run id: 57
-  2020-12-22T10:39:57.1301682Z Published Test Run : https://azure.devops.thebiadevcompany/TheBIADevCompanyElectricalAndPower/Digital%20Manufacturing/_TestManagement/Runs?runId=57&_a=runCharts
+  2020-12-22T10:39:57.1301682Z Published Test Run : https://************************************/_TestManagement/Runs?runId=57&_a=runCharts
   2020-12-22T10:39:57.1315111Z ##[section]Async Command End: Publish test results
   2020-12-22T10:39:57.1316208Z ##[section]Finishing: API Tests

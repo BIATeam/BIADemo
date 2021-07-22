@@ -53,8 +53,8 @@ GRANT SUBSCRIBE QUERY NOTIFICATIONS TO "YourUserRW";
 GRANT RECEIVE ON QueryNotificationErrorsQueue TO "YourUserRW";
 GO
 ```
-=> TODO : - Testé une seule fois sur BIADemo
-- N'a marché qu'aprés avoir tourné une premiere fois en dbowner (sans le shema)
+=> TODO : - Testï¿½ une seule fois sur BIADemo
+- N'a marchï¿½ qu'aprï¿½s avoir tournï¿½ une premiere fois en dbowner (sans le shema)
 - Comprend pourquoi il faut faire tourner une fois en Owner avant (est ce premiere database BIADemo...)
 
 ## Overview
@@ -78,7 +78,7 @@ In the BIANet Section add:
 Create a repository classe in the worker project in floder Features this classe inherit of DatabaseHandlerRepository.
 Example from BIADemo:
 ```CSharp
-namespace TheBIADevCompany.BIADemo.WorkerService.Features
+namespace [YourCompanyName].[YourProjectName].WorkerService.Features
 {
     using System.Data.SqlClient;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;

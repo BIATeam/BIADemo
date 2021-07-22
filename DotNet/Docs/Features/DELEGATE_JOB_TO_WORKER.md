@@ -35,7 +35,7 @@ replace **[YourAppConnectionStringName]** by the name of your connection string 
 In the Application layer (this layer is share with the worker service) create the job classe in the Job folder.
 Example form BIADemo:
 ```CSharp
-namespace TheBIADevCompany.BIADemo.Application.Job
+namespace [YourCompanyName].[YourProjectName].Application.Job
 {
     using System;
     using BIA.Net.Core.Application.Helpers;
