@@ -14,7 +14,7 @@ This document explains how to create a new project based on the TheBIADevCompany
 * Follow the steps in [CONFIGURE_YOUR_DEV_ENVIRONMENT.md](./CONFIGURE_YOUR_DEV_ENVIRONMENT.md)
 
 ## Create a new project
-Retrieve the latest version of the **[BIA.AngularTemplate.X.Y.Z.zip](../../Docs/BIAExtension)**.   
+Retrieve the latest version of the **[BIA.AngularTemplate.X.Y.Z.zip](../../Docs/BIATemplate)**.   
 Copy/Paste the contents of the zip into the Angular folder of your new project.   
 Inside the Angular folder of your new project, run the powershell script `new-angular-project.ps1`.   
 For **new company name ?**, type the name of your company.   

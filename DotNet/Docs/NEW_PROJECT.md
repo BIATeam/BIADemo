@@ -14,7 +14,7 @@ This document explains how to create a new .NET Core project based on the BIA fr
 You must respect the following tree structure:   
 **ProjectName\Angular** and **ProjectName\DotNet**    
    
-Install the latest version of the **[BIA.ProjectCreator.vsix](../../Docs/BIAExtension)** extension for Visual Studio 2019.  
+Install the latest version of the **[BIA.ProjectCreator.vsix](../../Docs/BIATemplate)** extension for Visual Studio 2019.  
 You can now go to File > New > Project in Visual Studio.  
 Select the BIA template in the type of projects and click on Next button.  
 Fill **Project name** field. For **Location**, type [MyLocationSourceCode]\\[ProjectName] and check **Place solution and project in the same directory**.  
