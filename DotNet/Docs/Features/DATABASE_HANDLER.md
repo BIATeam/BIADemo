@@ -53,9 +53,6 @@ GRANT SUBSCRIBE QUERY NOTIFICATIONS TO "YourUserRW";
 GRANT RECEIVE ON QueryNotificationErrorsQueue TO "YourUserRW";
 GO
 ```
-=> TODO : - Test� une seule fois sur BIADemo
-- N'a march� qu'apr�s avoir tourn� une premiere fois en dbowner (sans le shema)
-- Comprend pourquoi il faut faire tourner une fois en Owner avant (est ce premiere database BIADemo...)
 
 ## Overview
 * The worker service run code when there is change on the database.

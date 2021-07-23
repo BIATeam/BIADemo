@@ -102,25 +102,6 @@ if ($oldName -ne $newName)
 	TransformProject $oldName $newName
 }
 
-
-# Replace the company specificity (to adapt)
-ReplaceInFiles "@thebiadevcompanygroup.com" "@the-mail-domain.bia" "*.json"
-ReplaceInFiles ".electrical-power.thebiadevcompany" ".the-deploy-domain-name.bia" "*.json"
-ReplaceInFiles ".devops.thebiadevcompany" ".the-shared-tools-domain-name.bia" "*.json"
-TransformCompany "TheBIADevTeam" "TheBIADevTeam"
-ReplaceInFiles "eu.labinal.snecma" "the-user-domain1-name.bia" "*.json"
-ReplaceInFiles """EU""" """DOMAIN_BIA_1""" "*.json"
-ReplaceInFiles "na.labinal.snecma" "the-user-domain2-name.bia" "*.json"
-ReplaceInFiles """NA""" """DOMAIN_BIA_2""" "*.json"
-ReplaceInFiles "corp.zodiac.lan" "the-user-domain3-name.bia" "*.json"
-ReplaceInFiles """CORP""" """DOMAIN_BIA_3""" "*.json"
-ReplaceInFiles "dmeu" "the-bia-dev-team" "*.json"
-ReplaceInFiles """RD1RF1""" """DOMAIN_BIA_SRV""" "*.json"
-ReplaceInFiles "rd1.rf1" "the-server-domain-name.bia" "*.json"
-ReplaceInFiles "RD1RF1\\\\RD1-SEP-DM-" "DOMAIN_BIA_SRV\\PREFIX-" "*.json"
-
-
-
 if ($oldCompagnyName -ne $newCompagnyName)
 {
     Write-Host "Transform company $oldCompagnyName in $newCompagnyName"

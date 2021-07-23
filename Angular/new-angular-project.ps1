@@ -71,7 +71,6 @@ $oldCompany = "TheBIADevCompany"
 $oldName = "BIADemo"
 $newCompany = Read-Host "new company name ?"
 $newName = Read-Host "new project name ?"
-# $newName = 'BIATemplate'
 
 Write-Host "old company: " $oldCompany
 Write-Host "new company: " $newCompany
