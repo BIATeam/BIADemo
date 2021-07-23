@@ -73,7 +73,6 @@ In the BIANet Section add:
 ## Usage
 ## Create the handler repositories:
 Create a repository classe in the worker project in floder Features this classe inherit of DatabaseHandlerRepository.
-Example from BIADemo:
 ```CSharp
 namespace [YourCompanyName].[YourProjectName].WorkerService.Features
 {
@@ -86,7 +85,7 @@ namespace [YourCompanyName].[YourProjectName].WorkerService.Features
     {
         public PlaneHandlerRepository(IConfiguration configuration)
             : base(
-            configuration.GetConnectionString("BIADemoDatabase"),
+            configuration.GetConnectionString("[YourProjectName]Database"),
             "SELECT RowVersion FROM [dbo].[Planes]",
             "" /*"SELECT TOP (1) [Id] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"*/,
             r => PlaneChange(r))
@@ -113,7 +112,6 @@ In the callback function :
 
 ### Parameters those repositories
 In program.cs you should pass the list of all yours database handler repositories class in the function config.DatabaseHandler.Activate.
-Example from BIADemo:
 ```CSharp
         services.AddBiaWorkerFeatures(config =>
         {

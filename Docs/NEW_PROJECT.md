@@ -4,7 +4,7 @@
 
 If you want to start a new project, you have to create the Frontend and/or the Backend project(s) depending on your needs.
 
-You have to respect the structure below (same as BIADemo) for your project :  
+You have to respect the structure below for your project :  
 
 ![Structure of Project's folder](./Images/folderStructure.png)
 

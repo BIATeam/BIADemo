@@ -25,7 +25,7 @@ In the BIANet Section add:
 ```Json
     "WorkerFeatures": {
       "HubForClients": {
-        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
+        "SignalRUrl": "http://localhost/[YourProjectName]/WebApi/HubForClients"
       }
     },
 ```

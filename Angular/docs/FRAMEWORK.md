@@ -2,7 +2,7 @@
 
 ## Customize PrimeNG Theme
 The PrimeNG theme chosen for this framework is the <a href="https://www.primefaces.org/ultima-ng/">Ultima theme</a>.
-In the BIADemo project, the content of the theme can be found in the following folders :<br/>
+In this project, the content of the theme can be found in the following folders :<br/>
 src/assets/bia/primeng<br/>
 To be able to customize the theme, you must first install node-sass globally with the following command: <b>npm install -g node-sass</b>.<br/>
 You only must change the <b>src/assets/bia/primeng/sass/overrides</b> folder.<br/>

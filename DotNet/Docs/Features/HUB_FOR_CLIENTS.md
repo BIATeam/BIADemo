@@ -10,7 +10,7 @@ This file explains what to use the the hub for client feature in your V3 project
 The Web clients are connected to one Web front server using SignalR.
 The server can push event to the Connected Clients.
 The front are connected with the redis server.
-The endpoint for this service is "HubForClients" (ie: http://localhost/BIADemo/WebApi/HubForClients)
+The endpoint for this service is "HubForClients" (ie: http://localhost/[YourProjectName]/WebApi/HubForClients)
 
 ## Activation
 * bianetconfig.json
