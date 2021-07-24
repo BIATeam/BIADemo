@@ -1,0 +1,189 @@
+.help-wrapper{
+    .card{
+        background-color: #f3f5f7;
+
+        &.help-wrapper-card{
+            padding: 0;
+            .help-header{
+                position: relative;
+                h1{
+                    color: #ffffff;
+                    font-size: 28px;
+                    position: absolute;
+                    top: 40%;
+                    left:40px;
+                    letter-spacing: 0.25px;
+                }
+                .search{
+                    bottom: -20px;
+                    position: absolute;
+                    height: 50px;
+                    background-color: #fafafa;
+                    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+                    left: 40px;
+                    right: 40px;
+
+                    span{
+                        width: 100%;
+
+                        input{
+                            border: none;
+                            position: relative;
+                            width: 100%;
+                            padding: 10px 40px;
+                            height: 50px;
+                            font-size: 16px;
+                            color: rgba(0, 0, 0, 0.87);
+                        }
+                    }
+
+
+                    i{
+                        position:absolute;
+                        bottom: 12px;
+                        left: 12px;
+                        z-index: 1;
+                        color: rgba(0, 0, 0, 0.54);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .help-content{
+                padding: 20px 0;
+
+                .card{
+                    margin:20px 40px;
+                    background-color: #fafafa;
+                    padding: 5px 20px;
+
+                    .main-accordion{
+                        background-color: #f3f5f7;
+                        .ui-accordion-header > a {
+                            border: none;
+                            background-color: #fafafa;
+                            color: #212121;
+                            position: relative;
+
+                            .accordion-title{
+                                padding-left: 45px;
+
+                                h1{
+                                    margin: 0;
+                                    margin-top: 8px;
+                                }
+                            }
+
+                            i{
+                                color:  $accentColor;
+                                position:absolute;
+                                bottom: 28px;
+                                left: 4px;
+                                z-index: 1;
+                                font-size: 50px;
+                            }
+
+                            .ui-accordion-toggle-icon{
+                                position: absolute;
+                                top: 50%;
+                                margin-top: -10px;
+                                color: #212121;
+                                right: 30px;
+                                left: auto;
+                            }
+                        }
+
+                        .ui-accordion-content{
+                            border: none;
+                            box-shadow: none;
+                            background-color: #fafafa;
+
+                            .questions{
+                                .sub-accordion{
+                                    .ui-accordion-header > a {
+                                        border: none;
+                                        background-color: #eaeaea;
+                                        color: #212121;
+                                        padding: 20px;
+                                        border-radius: 2px;
+                                        border: solid 1px #e0e0e0;
+                                        font-size: 16px;
+                                        letter-spacing: 0.12px;
+                                        color: #212121;
+                                        margin-bottom: 10px;
+
+                                        .ui-accordion-toggle-icon{
+                                            color: #212121;
+                                            right: 15px;
+                                            left: auto;
+                                        }
+
+                                        &:hover{
+                                            background-color: $primaryColor;
+                                            color: #ffffff;
+                                            .ui-accordion-toggle-icon{
+                                                color: #ffffff;
+                                            }
+                                        }
+                                    }
+                                    .ui-accordion-content{
+                                        padding-bottom: 24px;
+                                        line-height: 1.5;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .help-wrapper{
+        .card{
+            &.help-wrapper-card{
+                padding: 0;
+                .help-header{
+                    line-height: 1.5;
+                    img{
+                        height: 130px;
+                    }
+                    h1{
+                        top:0;
+
+                    }
+                    .search{
+                        left: 10px;
+                        right: 10px;
+                    }
+                }
+                .help-content{
+                    .card{
+                        margin:10px;
+                        padding: 0px 5px;
+                        .main-accordion{
+                            .ui-accordion-header > a {
+                                .ui-accordion-toggle-icon{
+                                    right: 5px;
+                                }
+                            }
+                            .ui-accordion-content{
+                                .questions{
+                                    .sub-accordion{
+                                        .ui-accordion-header > a {
+                                            .ui-accordion-toggle-icon{
+                                                right: 2px;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

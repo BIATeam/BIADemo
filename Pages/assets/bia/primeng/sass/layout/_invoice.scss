@@ -1,0 +1,134 @@
+.invoice-wrapper {
+    .invoice-header{
+        margin-bottom: 30px ;
+
+        .title{
+            margin-top: 40px;
+            font-size: 28px;
+            font-weight: 900;
+            color:$textColor;
+        }
+
+        .logo-adress{
+            text-align: right;
+        }
+    }
+
+    .card{
+        &.invoice-table{
+            padding: 0 ;
+            margin-bottom: 42px ;
+            width: 100%;
+
+            h2,p{
+                margin: 0;
+            }
+            .table-header{
+                padding: 3px 5px;
+                border-radius: 2px;
+                background-color: #e0e0e0;
+                text-align: right;
+
+                h2{
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: rgba(0, 0, 0, 0.6);
+                }
+            }
+
+            .table-content-row{
+                padding: 3px 5px;
+                font-size: 14px;
+                font-weight: 500;
+                color:#212121;
+                text-align: right;
+
+                h2{
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: rgba(0, 0, 0, 0.6);
+                }
+            }
+
+            .row-title{
+                text-align: left;
+            }
+
+            .total{
+                color: $accentColor;
+            }
+
+            &.billto-table{
+                .table-header{
+                    text-align: left;
+                }
+
+                .table-content-row{
+                    text-align: left;
+                }
+            }
+
+            &.bank-table{
+                margin-right:25px;
+            }
+        }
+    }
+
+
+    .table-g-6{
+        padding: 0;
+    }
+}
+
+@media (max-width: 1024px) {
+    .invoice-wrapper{
+        .card{
+            &.invoice-table{
+                &.bank-table{
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+}
+@media (max-width: 640px) {
+    .invoice-wrapper{
+        .logo-adress{
+            img{
+                width:135px;
+            }
+        }
+        .invoice-table{
+            .table-content-row{
+                font-size: 12px;
+            }
+        }
+    }
+}
+
+@media print{
+    body * {
+        visibility: hidden;
+    }
+    #invoice-content * {
+        visibility: visible;
+    }
+    #invoice-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    #invoice-content{
+        .card{
+            box-shadow: none;
+
+            &.invoice-table{
+                margin-bottom: 10px;
+                background-color: transparent;
+            }
+        }
+    }
+}
+
+
+

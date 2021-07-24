@@ -1,0 +1,419 @@
+.wizard-body {
+    height: 100vh;
+    background:  url("../../layout/images/extensions/background@2x.jpg") center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    .wizard-wrapper {
+        @include flex();
+        @include dir-col();
+        height: 100%;
+
+        .wizard-topbar {
+            background-color: #3949ab;
+            z-index: 1000;
+            -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+            -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.26);
+            height: 75px;
+            padding: 0 10%;
+            @include flex();
+            @include justify-between();
+            @include align-center();
+            @include flex-basis(75px);
+            @include flex-grow(0);
+            @include flex-shrink(0);
+
+            .logo {
+                display: inline-block;
+                vertical-align: middle;
+                width: 200px;
+                height: 30px;
+                background: url("../../layout/images/logo.png") top left no-repeat;
+            }
+
+            .profile {
+                @include flex();
+                @include justify-center();
+                @include align-center();
+                @include dir-row();
+
+                .profile-text {
+                    margin-right: 15px;
+                    text-align: right;
+
+                    h1{
+                        font-size: 16px;
+                        color:#ffffff;
+                        margin: 0;
+                    }
+
+                    p{
+                        font-size: 16px;
+                        opacity: 0.6;
+                        margin: 0;
+                        color:rgba(255,255,255,.7);
+                    }
+                }
+
+                .profile-image {
+                    display: inline-block;
+                    vertical-align: middle;
+                    width: 40px;
+                }
+            }
+        }
+
+        .wizard-content {
+            height: calc(100% - 75px);
+            min-height: 600px;
+            @include flex();
+            @include align-center();
+            @include justify-center();
+
+            .wizard-card {
+                background-color: #fafafa;
+                box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+                0 2px 1px -1px rgba(0, 0, 0, 0.12),
+                0 1px 1px 0 rgba(0, 0, 0, 0.14);
+                height: 550px;
+                width: 54.33%;
+                @include flex();
+                @include dir-col();
+                @include flex-grow(0);
+                @include flex-shrink(0);
+
+                .wizard-card-header{
+                    width:100%;
+                    background-color: #3f51b5;
+                    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
+                    position: relative;
+
+                    .tab{
+                        background-color: #3f51b5;
+                        text-align: center;
+                        cursor: pointer;
+
+                        i{
+                            width: 20px;
+                            opacity: 0.38;
+                            color: #ffffff;
+                        }
+
+                        .title{
+                            color: #ffffff;
+                            opacity: 0.38;
+                            font-size: 16px;
+                        }
+
+                        &.selected-tab{
+                            transition-duration: 0.6s;
+
+                            i{
+                                opacity: 1;
+                            }
+
+                            .title{
+                                opacity: 1;
+                            }
+                        }
+
+                    }
+
+                    .tab-bar {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        height: 2px;
+                        transition: .5s cubic-bezier(.35,0,.25,1);
+                        background-color: #ffffff;
+                        visibility: visible;
+                    }
+                }
+
+                .wizard-card-content{
+                    padding: 30px;
+                    display: none;
+                    overflow: auto;
+                    height: 100%;
+
+                    > .ui-g {
+                        height: 100%;
+                        width: 100%;
+                    }
+
+                    h1{
+                        font-size: 12px;
+                        color: rgba(0, 0, 0, 0.6);
+                        letter-spacing: 2px;
+                        margin: 0;
+                    }
+
+                    &.active-content{
+                        @include flex();
+                        @include flex-grow(1);
+                    }
+
+                    &.register{
+
+                        .forms{
+                            .ui-inputgroup{
+                                background-color: #f4f4f4;
+                                margin-top: 25px;
+                                padding-top: 20px;
+
+                                input{
+                                    width: 100%;
+                                    padding-bottom: 15px;
+                                }
+
+                                i{
+                                    margin-bottom: 15px;
+                                    margin-left: 4px;
+                                }
+                            }
+
+                            .ui-dropdown{
+                                background-color: #f4f4f4;
+                                margin-top: 25px;
+                                padding-top: 23px;
+                                width: 100%;
+
+                                .ui-dropdown-label{
+                                    padding-bottom:12px;
+                                    padding-left: 10px;
+                                }
+
+                                .ui-dropdown-trigger{
+                                    top: 22px;
+                                    right: 10px;
+                                }
+                            }
+
+                            .calendar{
+                                margin-top:14px;
+
+                                .ui-calendar{
+                                    width: 100%;
+                                    position: relative;
+
+                                    input{
+                                        padding-top: 32px;
+                                        padding-bottom: 12px;
+                                        padding-left: 15px;
+                                        width: 100%;
+                                        background-color: #f4f4f4;
+                                    }
+
+                                    button{
+                                        top: 20px;
+                                    }
+                                }
+                            }
+                        }
+
+                        .continue-button{
+                            &.ui-button{
+                                width: 100%;
+                                margin-top: 25px;
+                            }
+                        }
+                    }
+
+                    &.tier{
+                        .card{
+                            min-height: 400px;
+                            padding: 0;
+                            position: relative;
+
+                            .card-header{
+                                color:#ffffff;
+                                font-size: 18px;
+                                padding: 15px 10px;
+                                background-color: #3f51b5;
+
+                                h1{
+                                    color: #ffffff;
+                                    font-size: 24px;
+                                    display: inline;
+                                }
+                            }
+
+                            .card-content{
+                                font-size: 14px;
+                                padding:10px;
+
+                                i{
+                                    color:#3f51b5;
+                                }
+
+                                .card-row{
+                                    height: 40px;
+                                    width: 100%;
+                                }
+
+                                .tier-button-wrapper{
+                                    position: absolute;
+                                    bottom: 15px;
+                                    right: 10px;
+                                    left: 0px;
+                                    width: auto;
+
+                                    .tier-button{
+                                        &.ui-button{
+                                            width: 100%;
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.pro{
+                                .card-header{
+                                    background-color: #e91e63;
+                                }
+
+                                .card-content{
+                                    i{
+                                        color:#e91e63;
+                                    }
+
+                                    .tier-button{
+                                        &.ui-button{
+                                            background-color: #e91e63
+                                        }
+                                    }
+                                }
+                            }
+
+                            &.pro-plus{
+                                .card-header{
+                                    background-color: #607d8b;
+                                }
+
+                                .card-content{
+
+                                    i{
+                                        color:#607d8b;
+                                    }
+
+                                    .tier-button{
+                                        &.ui-button{
+                                            background-color: #607d8b
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    &.payment{
+                        padding: 0;
+
+                        .payment-info{
+                            padding: 70px 35px;
+
+                            .md-inputfield-box{
+                                background-color: #f4f4f4;
+
+                                input{
+                                    width: 100%;
+                                    padding-bottom: 15px;
+                                    background-color: transparent;
+                                }
+                            }
+
+                            .ui-chkbox-label {
+                                font-size: 14px;
+                            }
+
+                            #customPanel{
+                                width:100%;
+                            }
+
+                            .check-info{
+                                margin-top: 10px;
+                            }
+                        }
+
+                        .order-info{
+                            padding: 15px;
+                            background-color: #e0e0e0;
+                            border-left: solid 1px #bdbdbd;
+                            font-size: 14px;
+                            color: #757575;
+
+                            .order-basic,.order-pro,.order-pro-plus,.order-default{
+                                display: none;
+                            }
+
+                            .selected-order{
+                                display: block;
+                            }
+
+                            h1{
+                                margin-top: 15px;
+                            }
+
+                            .price{
+                                font-weight: 700;
+                                text-align: right;
+                            }
+
+                            .total{
+                                border-top: 1px solid #bdbdbd;
+                                padding: 15px 0px;
+                                margin-top: 30px;
+                            }
+
+                            .buy-button{
+                                &.ui-button{
+                                    width: 100%;
+                                    margin: 68px 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media(max-width:1024px){
+    .wizard-body {
+        .wizard-wrapper {
+            .wizard-content {
+                .wizard-card{
+                    width: 90%;
+                }
+            }
+        }
+    }
+}
+
+@media(max-width:640px){
+    .wizard-body {
+        .wizard-wrapper {
+            .wizard-topbar {
+                @include dir-col();
+                height: 150px;
+                padding: 0 5%;
+                @include justify-around();
+                @include flex-basis(150px);
+
+                .logo {
+                    @include align-self-start();
+                }
+
+                .profile {
+                    @include align-self-end();
+                }
+            }
+
+            .wizard-content {
+                height: calc(100% - 150px);
+            }
+        }
+    }
+}

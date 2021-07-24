@@ -1,0 +1,83 @@
+{
+  "app": {
+    "members": "Miembros",
+    "sites": "Sitios",
+    "Begin BIADemo" : "To remove in project from here",
+    "administration" : "Administración",
+    "airports": "Aeropuertos",
+    "examples": "Ejemplos",
+    "planes": "Planos",
+    "planesPageMode": "Planos (Página)",
+    "planesPopupMode": "Planos (Popup)",
+    "planesViewMode": "Planos (Ver)",
+    "planesSignalRMode": "Planos (SignalR)",
+    "planesCalcMode": "Planos (Hoja de cálculo)",
+    "planesTypes": "Tipos de planos",
+    "sites": "Aerolíneas",
+    "End BIADemo" : "To remove in project up to here",
+    "users": "Usuarios"
+  },
+  "Begin BIADemo" : "To remove in project from here",
+  "airport": {
+    "add": "Añadir aeropuerto",
+    "city" : "Ciudad",
+    "edit": "Editar aeropuerto",
+    "listOf": "Lista de aeropuertos",
+    "name" : "Nombre"
+  },
+  "plane": {
+    "add": "Añadir plano",
+    "capacity": "Capacidad",
+    "connectingAirports": "Aeropuertos de conexión",
+    "edit": "Editar plano",
+    "firstFlightDate": "Fecha del primer vuelo",
+    "firstFlightTime": "Tiempo del primer vuelo",
+    "isActive": "Activo",
+    "lastFlightDate": "Última fecha de vuelo",
+    "listOf": "Lista de planos",
+    "msn": "Msn",
+    "planeType": "Tipos de planos",
+    "site": "Aerolínea"
+  },
+  "planeType": {
+    "add": "Añadir tipos de planos",
+    "certificationDate": "Fecha de certificación",
+    "edit": "Editar tipos de planos",
+    "listOf": "Lista de tipos de planos",
+    "title": "Título"
+  },
+  "End BIADemo" : "To remove in project up to here",
+  "member": {
+    "add": "Añadir miembro",
+    "listOfSiteMembers": "Lista de miembros del sitio ",
+    "manage": "Gestionar miembro",
+    "roles": "Roles",
+    "rolesForSite": "Roles para el sitio",
+    "user": "Usuario"
+  },
+  "msg": {
+    "hideFilters": "Ocultar filtros",
+    "showFilters": "Mostrar filtros",
+    "welcome": "BIA es una biblioteca de componentes, construida con el marco Angular"
+  },
+  "site": {
+    "add": "Añadir sitios",
+    "admins": "Administradores",
+    "edit": "Editar sitios",
+    "listOf": "Lista de sitios",
+    "Begin BIADemo" : "To remove in project from here",
+    "add": "Añadir aerolínea",
+    "edit": "Editar aerolínea",
+    "listOf": "Lista de aerolíneas",
+    "End BIADemo" : "To remove in project up to here",
+    "selectUser": "Selecciona un usuario",
+    "title": "Title"
+  },
+  "user": {
+    "add": "Añadir usuario",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "listOf": "Lista de usuarios",
+    "login": "Login"
+  }
+}
