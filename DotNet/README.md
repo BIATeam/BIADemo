@@ -17,7 +17,3 @@ BIA Framework is a development platform for building mobile and desktop web appl
 ## Example in projects
 
 [See how existing project have implement functionnalities](./Docs/EXAMPLE_IN_PROJECTS.md)
-
-## Changelog
-
-[Learn about the latest improvements](./CHANGELOG.md).

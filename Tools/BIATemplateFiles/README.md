@@ -14,4 +14,5 @@ BIA Framework is a development platform for building RWD web applications (compa
 
 Learn about the latest improvements checking those links.
 
-- [CHANGELOG](./CHANGELOG.md)
+- [Angular](./Angular/CHANGELOG.md)
+- [DotNet](./DotNet/CHANGELOG.md)
