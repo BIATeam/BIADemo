@@ -12,7 +12,7 @@
     "build:aot2": "ng build --aot --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
     "build:prod": "ng build --prod --base-href /BIADemo/App/",
     "build:prod2": "ng build --prod --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
-    "build:docs": "ng build --prod --base-href /App/ --output-path ../../DBIADocs/App"
+    "build:docs": "ng build --prod --output-path ../Docs"
   },
   "private": true,
   "dependencies": {

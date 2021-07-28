@@ -1,0 +1,83 @@
+{
+  "app": {
+    "members": "Membres",
+    "sites": "Sites",
+    "Begin BIADemo" : "To remove in project from here",
+    "administration" : "Administration",
+    "airports": "Aéroports",
+    "examples": "Exemples",
+    "planes": "Avions",
+    "planesPageMode": "Avions (Page)",
+    "planesPopupMode": "Avions (Popup)",
+    "planesViewMode": "Avions (Vue)",
+    "planesSignalRMode": "Avions (SignalR)",
+    "planesCalcMode": "Avions (Tableur)",
+    "planesTypes": "Types d'avions",
+    "sites": "Compagnies aérienne",
+    "End BIADemo" : "To remove in project up to here",
+    "users": "Utilisateurs"
+  },
+  "Begin BIADemo" : "To remove in project from here",
+  "airport": {
+    "add": "Ajouter aéroport",
+    "city" : "Ville",
+    "edit": "Modifier aéroport",
+    "listOf": "Listes des aéroports",
+    "name" : "Nom"
+  },
+  "plane": {
+    "add": "Ajouter avion",
+    "capacity": "Capacité",
+    "connectingAirports": "Aéroports de connection",
+    "edit": "Modifier avion",
+    "firstFlightDate": "Date du premier vol",
+    "firstFlightTime": "Heure du premier vol",
+    "isActive": "Actif",
+    "lastFlightDate": "Date du dernier vol",
+    "listOf": "Liste des avions",
+    "msn": "Msn",
+    "planeType": "Type d'avions",
+    "site": "Compagnie aérienne"
+  },
+  "planeType": {
+    "add": "Ajouter type d'avions",
+    "certificationDate": "Date de certification",
+    "edit": "Modifier type d'avions",
+    "listOf": "Liste des types d'avions",
+    "title": "Titre"
+  },
+  "End BIADemo" : "To remove in project up to here",
+  "member": {
+    "add": "Ajouter membre",
+    "listOfSiteMembers": "Liste des membres du site ",
+    "manage": "Gérer membre",
+    "roles": "Roles",
+    "rolesForSite": "Roles pour le site",
+    "user": "Utilisateur"
+  },
+  "msg": {
+    "hideFilters": "Masquer les filtres",
+    "showFilters": "Afficher les filtres",
+    "welcome": "BIA est une librarie de composants, construite avec le framework Angular"
+  },
+  "site": {
+    "add": "Ajouter site",
+    "admins": "Administrateurs",
+    "edit": "Modifier site",
+    "listOf": "Liste de sites",
+    "Begin BIADemo" : "To remove in project from here",
+    "add": "Ajouter compagnie",
+    "edit": "Modifier compagnie",
+    "listOf": "Liste de compagnies",
+    "End BIADemo" : "To remove in project up to here",
+    "selectUser": "Sélectionner un utilisateur",
+    "title": "Titre"
+  },
+  "user": {
+    "add": "Ajouter utilisateur",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "listOf": "Liste des utilisateurs",
+    "login": "Login"
+  }
+}
