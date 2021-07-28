@@ -47,68 +47,15 @@
 - Wait the confirmation by mail of all packages
 - COMMIT BIADemo, BIACompanyFiles and BIATemplate
 
-
-
-
-## Prepare the VSExtension (No more use after V3.4.1)
-- In BIATemplate project extract the tempate for all projects:
-  - Use Ctrl+E, Ctrl+X to dislay wizard
-  - Select the project (should be done for all projects)
-  - Click next
-  - Uncheck the 2 combo
-  - Click Finish
-- In *...\BIAVSExtension\BIAProjectCreator\RefreshKit.ps1** check than the path ($RepSource) is correct 
-- Launch **...\BIAVSExtension\BIAProjectCreator\RefreshKit.ps1** (it refresh the files in BIAVSExtension\BIAProjectCreator\BIA.ProjectCreatorTemplateV3 from the template extrated)
-- Open the solution **..\BIAVSExtension\BIAVSExtension.sln**
-- If project have been added in the BIATemplate update **...\BIAVSExtension\BIAProjectCreator\BIA.ProjectCreatorTemplateV3\BIA.vstemplate**
-- Change the version number in the name tag of the file **...\BIAVSExtension\BIAProjectCreator\BIA.ProjectCreatorTemplateV3\BIA.vstemplate**
-- Change the version number (add a .0 to be on 4 digits) in **...\BIAVSExtension\BIAProjectCreator\BIA.ProjectCreator\source.extension.vsixmanifest**
-- Check that all the Additional Files and Docs are added to the project and have the properties: Build action = Content, Include In VSIX = true-. If not verify the BIA.ProjectCreator.csproj if should content:
-```XML
-  <ItemGroup>
-    <Content Include="AdditionalFiles\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*\*\*\*">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*\*\*\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="AdditionalFiles\*\*\*\*\*\*\*\*" >
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <None Include="source.extension.vsixmanifest">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
+## Publish the demo site:
+- Launch in VSCode in **...BIADemo\Angular** folder:
 ```
-- You can test the project BIAProjectCreator in debug ... when it start, create a new project and select BIA V... Template.
-- Rebuild solution in release.
-- COMMIT the BIAVSExtension solution.
-
-## Store the Templates in BIADemo repository
-- In folder ..\BIADemo\Docs\Templates create a new folder VX.Y.Z with (X.Y.Z = version)
-- Move the generated file **...\BIADemo\Docs\Templates\BIA.ProjectCreator.vsix** to  **...\BIADemo\Docs\Templates\VX.Y.Z\BIA.ProjectCreator.X.Y.Z.vsix**
-- Zip the **...\Templates\Angular** folder (after delete node_modules) to  **...\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip**
-- COMMIT the BIADemo repository.
+npm run deploy
+```
 
 ## Deliver the version
-- Set the tag of the version in the 2 repository BIADemo and BIATemplate
+- Create a release of the version in the 3 repository BIADocs, BIADemo and BIATemplate
 - Mail all developer to informe than a new version is available.
 
 ## Prepare Migration
-
 - Follow those steps: [PREPARE MIGRATION](./PREPARE%20MIGRATION.md)
