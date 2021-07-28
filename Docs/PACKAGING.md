@@ -48,7 +48,7 @@
 - COMMIT BIADemo, BIACompanyFiles and BIATemplate
 
 ## Publish the demo site:
-- Launch in VSCode in **...BIADemo\Angular** folder:
+- Launch in the terminal of VSCode in **...BIADemo\Angular** folder:
 ```
 npm run deploy
 ```
