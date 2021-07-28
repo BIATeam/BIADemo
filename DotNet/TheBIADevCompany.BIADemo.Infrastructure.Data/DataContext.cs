@@ -84,6 +84,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
+            NotificationModelBuilder.CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
