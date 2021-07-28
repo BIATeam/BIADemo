@@ -1,3 +1,16 @@
+# $oldName = Read-Host "old project name ?"
+$oldName = 'BIADemo'
+# $newName = Read-Host "new project name ?"
+$newName = 'BIATemplate'
+
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\Angular")
+$oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
+
+Write-Host "old name: " $oldName
+Write-Host "new name: " $newName
+
+
 # Returns all line numbers containing the value passed as a parameter.
 function GetLineNumber($pattern, $file) {
   $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
@@ -109,23 +122,13 @@ function ReplaceProjectName {
   
 }
 
-# $oldName = Read-Host "old project name ?"
-$oldName = 'BIADemo'
-# $newName = Read-Host "new project name ?"
-$newName = 'BIATemplate'
+RemoveFolder -path $newPath
 
-Write-Host "old name: " $oldName
-Write-Host "new name: " $newName
-
-
-RemoveFolder -path 'Angular'
-
-$oldPath = "..\" + $oldName + "\Angular"
 Write-Host "Copy from .$oldPath"
 #Copy-Item $oldPath '.' -Recurse
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination '.\Angular' -Recurse -Force
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination '$newPath' -Recurse -Force
 
-Set-Location -Path ./Angular
+Set-Location -Path $newPath
 
 Write-Host "Zip plane"
 compress-archive -path '.\src\app\features\planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
@@ -202,11 +205,11 @@ ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower()
 # ng build --aot
 
 
-Set-Location -Path ..
+Set-Location -Path $scriptPath
 
 
-Write-Host "Prepare the zip."
-compress-archive -path '.\Angular' -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# Write-Host "Prepare the zip."
+# compress-archive -path '.\Angular' -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
 
 
 Write-Host "Finish"

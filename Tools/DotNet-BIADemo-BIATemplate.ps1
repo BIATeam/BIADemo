@@ -1,4 +1,14 @@
+# $oldName = Read-Host "old project name ?"
+$oldName = 'BIADemo'
+# $newName = Read-Host "new project name ?"
+$newName = 'BIATemplate'
 
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\DotNet")
+$oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\DotNet"
+
+Write-Host "old name: " $oldName
+Write-Host "new name: " $newName
 
 # Returns all line numbers containing the value passed as a parameter.
 function GetLineNumber($pattern, $file) {
@@ -143,23 +153,15 @@ function ReplaceInScript {
   }
 }
 
-$CurrentRep= Resolve-Path -Path "."
 
-# $oldName = Read-Host "old project name ?"
-$oldName = 'BIADemo'
-# $newName = Read-Host "new project name ?"
-$newName = 'BIATemplate'
+RemoveItemFolder -path $newPath
 
-Write-Host "old name: " $oldName
-Write-Host "new name: " $newName
 
-RemoveItemFolder -path 'DotNet'
-
-$oldPath = "..\" + $oldName + "\DotNet"
 Write-Host "Copy from .$oldPath"
-Copy-Item $oldPath '.' -Recurse
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Destination '$newPath' -Recurse -Force
 
-Set-Location -Path ./DotNet
+
+Set-Location -Path $newPath
 
 
 Write-Host "Remove .vs"
@@ -199,46 +201,46 @@ $oldScriptVar = '"' + $oldName + '"'
 $newScriptVar = '"' + $newName + '"'
 ReplaceInScript $oldScriptVar $newScriptVar
 
-Set-Location -Path ..
+Set-Location -Path $scriptPath
 
-Write-Host "Prepare the zip."
-$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
-$sourceDir = Resolve-Path -Path "$scriptPath\DotNet"
-$targetDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\Tmp\DotNet")
+# Write-Host "Prepare the zip."
+# $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+# $sourceDir = Resolve-Path -Path "$scriptPath\DotNet"
+# $targetDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\Tmp\DotNet")
 
-Write-Host "   Delete old path."
-RemoveItemFolder -path $targetDir
-Write-Host "   Copy files."
+# Write-Host "   Delete old path."
+# RemoveItemFolder -path $targetDir
+# Write-Host "   Copy files."
 
-$filter = "*"
-$filterExclude = '\\bin\\|\\obj\\|appsettings..*.json|bianetconfig..*.json|csproj.user'
-$filterInclude = 'appsettings.Example.*.json|bianetconfig.Example.*.json'
+# $filter = "*"
+# $filterExclude = '\\bin\\|\\obj\\|appsettings..*.json|bianetconfig..*.json|csproj.user'
+# $filterInclude = 'appsettings.Example.*.json|bianetconfig.Example.*.json'
 
-Write-Host "Copy form $sourceDir to $targetDir"
-Get-ChildItem -File $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filterInclude) -or ($_.fullname -notmatch $filterExclude)}|`
-    foreach{
-        $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
+# Write-Host "Copy form $sourceDir to $targetDir"
+# Get-ChildItem -File $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filterInclude) -or ($_.fullname -notmatch $filterExclude)}|`
+    # foreach{
+        # $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
 
-		#Write-Host "Copy file " $_.FullName " to $targetFile"
-		New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        Copy-Item $_.FullName -destination $targetFile
-    }
+		# #Write-Host "Copy file " $_.FullName " to $targetFile"
+		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
+        # Copy-Item $_.FullName -destination $targetFile
+    # }
 
 
-Write-Host "Copy from .\AdditionnalFiles\DotNet\"
-$sourceDir = Resolve-Path -Path "$scriptPath\AdditionnalFiles\DotNet"
-Get-ChildItem -File $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filterInclude) -or ($_.fullname -notmatch $filterExclude)}|`
-    foreach{
-        $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
+# Write-Host "Copy from .\BIATemplateFiles\"
+# $sourceDir = Resolve-Path -Path "$scriptPath\BIATemplateFiles"
+# Get-ChildItem -File $sourceDir -filter $filter -recurse |`
+    # foreach{
+        # $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
 
-		#Write-Host "Copy file " $_.FullName " to $targetFile"
-		New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        Copy-Item $_.FullName -destination $targetFile
-    }
+		# #Write-Host "Copy file " $_.FullName " to $targetFile"
+		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
+        # Copy-Item $_.FullName -destination $targetFile
+    # }
 
-Write-Host "   Zip files."
-compress-archive -path $targetDir -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
-RemoveItemFolder -path 'Tmp'
+# Write-Host "   Zip files."
+# compress-archive -path $targetDir -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# RemoveItemFolder -path 'Tmp'
 
 write-host "finish"
 pause
