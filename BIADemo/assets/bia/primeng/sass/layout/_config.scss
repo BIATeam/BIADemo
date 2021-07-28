@@ -1,0 +1,343 @@
+.layout-config {
+    z-index: 1000002;
+    position: fixed;
+    padding: 0;
+    top: 75px;
+    display: block;
+    right: 0;
+    width: 550px;
+    z-index: 996;
+    height: calc(100% - 60px);
+    transform: translate3d(550px, 0px, 0px);
+    @include transition(transform $transitionDuration);
+    background-color: #ffffff;
+    
+    &.layout-config-active {
+        transform: translate3d(0px, 0px, 0px);
+        
+        .layout-config-content {
+            .layout-config-button {
+                i {
+                    @include rotate(360deg);
+                }
+            }
+        }
+    }
+
+    .panel-items {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .panel-item {
+            margin-right: 1em;
+            margin-bottom: 1em;
+            text-align: center;
+        }
+    }
+
+    .layout-config-content {
+        position: relative;
+        height: 100%;
+
+        > form {
+            height: 100%;
+        }
+        
+        .layout-config-button {
+            display: block;
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            line-height: 52px;
+            background-color: #fafafa;
+            text-align: center;
+            top: 230px;
+            left: -51px;
+            z-index: -1;
+            cursor: pointer;
+            color: $primaryColor;
+            @include border-radius-left($borderRadius);
+            @include transition(background-color $transitionDuration);
+            box-shadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2),
+                        0 5px 22px 4px rgba(0, 0, 0, 0.12), 
+                        0 12px 17px 2px rgba(0, 0, 0, 0.14);
+
+            i {
+                font-size: 32px;
+                line-height: inherit;
+                cursor: pointer;
+                height: 100%;
+                @include rotate(0deg);
+                @include transition(transform 1s);
+            }
+        
+            &:hover {
+                color: lighten($primaryColor, 15%);
+            }
+        }
+    }
+
+    .layout-config-close {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        right: 32px;
+        top: 10px;
+        z-index: 999;
+        background-color: #e0284f;
+        @include border-radius(50%);
+        @include transition(background-color $transitionDuration);
+
+        i {
+            color: #ffffff;
+            line-height: inherit;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        &:hover {
+            background-color: #d44d69;
+        }
+    }
+
+    .p-col {
+        text-align: center;
+    }
+
+    .ui-tabview {
+        border: 0 none;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        height: 100%;
+        @include shadow( 0 2px 10px 0 rgba(0, 0, 0, 0.24));
+        background-color: #ffffff;
+
+        &.ui-tabview-top > .ui-tabview-nav {
+            display: flex;
+
+            li {
+                vertical-align: bottom;
+                top: auto;
+                margin: 0;
+                background-color: transparent;
+                border: 0 none;
+                border-radius: 0;
+                border-bottom: 3px solid transparent;
+                outline: none;
+                cursor: pointer;
+
+                &:not(.ui-state-active):not(.ui-state-disabled):hover {
+                    border-color: lighten($color: $primaryColor, $amount: 25);
+                    background-color: lighten($color: $primaryColor, $amount: 45);
+                    @include transition(background-color $transitionDuration);
+
+                    > a {
+                        color: #1b1c1e;
+                    }
+                }
+
+                &.ui-state-active {
+                    border: none;
+                    border-bottom: 3px solid $primaryColor;
+                    background-color: lighten($color: $primaryColor, $amount: 35);
+                    @include transition(background-color $transitionDuration);
+                    > a {
+                        color: #1b1c1e;
+                        cursor: pointer;
+                    }
+
+                    &:hover {
+                        background-color: lighten($color: $primaryColor, $amount: 45);
+                        @include transition(background-color $transitionDuration);
+                    }
+                }
+
+                > a {
+                    color: #1b1c1e;
+                    padding: 13px 15px 10px;
+                    font-weight: bold;
+                }
+            }
+        } 
+
+        .ui-tabview-panels {
+            padding: 1em 0;
+            height: 100%;
+            overflow: auto;
+            border-width: 1px 0 0 0;
+            color: #1b1c1e;
+            @include border-radius-bottom(4px);
+
+            .ui-tabview-panel {
+                padding: 2em ;
+            }
+            
+            img {
+                max-height: 100px;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            }
+
+            a {
+                display: flex;
+                width: auto;
+                height: auto;
+                position: relative;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+                @include transition(transform $transitionDuration);
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+                &:hover {
+                    @include scale(1.1);
+                }
+
+                i {
+                    font-size: 32px;
+                    color: $primaryColor;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin-top: -20px;
+                    margin-left: -20px;
+                    @include border-radius(50%);
+                    background-color: #ffffff;
+                    width: 40px;
+                    line-height: 40px;
+                    height: 40px;
+                    font-weight: bold;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                }
+
+                &.layout-config-option {
+                    width: auto;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: auto;
+                    overflow: hidden;
+                    text-align: center;
+                    
+                    &:hover {
+                        @include scale(1.1);
+                    }
+                }
+
+                &.layout-config-layout-option {
+                    img {
+                        height: 87px;
+                        width: 109px;
+                    }
+
+                    i {
+                        color: #ffffff;
+                        position: absolute;
+                    }
+                }
+            }
+            
+            h1 {
+                font-size: 21px;
+                font-weight: 600px;
+                margin: 0;
+                margin-bottom: 10px;
+            }
+
+             span {
+                color: #000000;
+                font-size: 13px;
+                font-weight: 500;
+                display: block;
+                margin-top: 6px;
+                margin-bottom: 15px;
+            }
+
+            .ui-state-disabled {
+                display: flex;
+                width: auto;
+                height: auto;
+                position: relative;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+
+                &:hover {
+                    @include scale(1.0);
+                }
+                
+                i {
+                    font-size: 48px;
+                    color: $primaryColor;
+                    background-color: transparent;
+                    box-shadow: none;
+                    position: absolute;
+                }
+            }
+        }
+    }
+
+    p {
+        line-height: 1.5;
+        margin-top: 0;
+        color: $textSecondaryColor;
+    }
+}
+
+.blocked-scroll-config{
+    overflow: hidden;
+}
+
+.layout-rtl {
+    .layout-config {
+        direction: rtl;
+        right: auto;
+        left: 0;
+        width:  550px;
+        transform: translate3d(-550px, 0px, 0px);
+        
+        &.layout-config-active {
+            transform: translate3d(0px, 0px, 0px);
+        }
+
+        .layout-config-button {
+            left: auto;
+            right: -51px;
+        }
+
+        .layout-config-close {
+             right: auto;
+             left: 7px;
+        }
+
+       
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .layout-config {
+        transform: translate3d(100%, 0px, 0px);
+        
+        &.layout-config-active {
+            width: 100%;
+            transform: translate3d(0px, 0px, 0px);
+        }
+
+        .layout-config-button {
+            left: auto;
+            right: -52px;
+        }
+
+        .layout-config-close {
+            right: 10px;
+         }
+    }
+}
