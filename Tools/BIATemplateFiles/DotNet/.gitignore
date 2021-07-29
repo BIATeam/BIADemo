@@ -136,13 +136,6 @@ _TeamCity*
 *.coverage
 *.coveragexml
 
-
-#setting files (only template)
-appsettings.*.json
-bianetconfig.*.json
-!appsettings.Example*.json
-!bianetconfig.Example*.json
-
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml

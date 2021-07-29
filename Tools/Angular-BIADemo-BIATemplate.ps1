@@ -124,37 +124,38 @@ function ReplaceProjectName {
 
 RemoveFolder -path $newPath
 
-Write-Host "Copy from .$oldPath"
-#Copy-Item $oldPath '.' -Recurse
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination '$newPath' -Recurse -Force
+Write-Host "Copy from $oldPath to $newPath"
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination $newPath -Recurse -Force
 
 Set-Location -Path $newPath
 
+New-Item -ItemType Directory -Path '.\docs'
 Write-Host "Zip plane"
 compress-archive -path '.\src\app\features\planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
-Write-Host "Zip plane popup"
-compress-archive -path '.\src\app\features\planes-popup\*' -destinationpath '.\docs\feature-planes-popup.zip' -compressionlevel optimal
-Write-Host "Zip plane page"
-compress-archive -path '.\src\app\features\planes-page\*' -destinationpath '.\docs\feature-planes-page.zip' -compressionlevel optimal
-Write-Host "Zip plane SignalR"
-compress-archive -path '.\src\app\features\planes-SignalR\*' -destinationpath '.\docs\feature-planes-SignalR.zip' -compressionlevel optimal
-Write-Host "Zip plane view"
-compress-archive -path '.\src\app\features\planes-view\*' -destinationpath '.\docs\feature-planes-view.zip' -compressionlevel optimal
-Write-Host "Zip plane calc"
-compress-archive -path '.\src\app\features\planes-calc\*' -destinationpath '.\docs\feature-planes-calc.zip' -compressionlevel optimal
-Write-Host "Zip airport"
-compress-archive -path '.\src\app\features\airports\*' -destinationpath '.\docs\feature-airports.zip' -compressionlevel optimal
-Write-Host "Zip airport"
+
+# Write-Host "Zip plane popup"
+# compress-archive -path '.\src\app\features\planes-popup\*' -destinationpath '.\docs\feature-planes-popup.zip' -compressionlevel optimal
+# Write-Host "Zip plane page"
+# compress-archive -path '.\src\app\features\planes-page\*' -destinationpath '.\docs\feature-planes-page.zip' -compressionlevel optimal
+# Write-Host "Zip plane SignalR"
+# compress-archive -path '.\src\app\features\planes-SignalR\*' -destinationpath '.\docs\feature-planes-SignalR.zip' -compressionlevel optimal
+# Write-Host "Zip plane view"
+# compress-archive -path '.\src\app\features\planes-view\*' -destinationpath '.\docs\feature-planes-view.zip' -compressionlevel optimal
+# Write-Host "Zip plane calc"
+# compress-archive -path '.\src\app\features\planes-calc\*' -destinationpath '.\docs\feature-planes-calc.zip' -compressionlevel optimal
+# Write-Host "Zip airport"
+# compress-archive -path '.\src\app\features\airports\*' -destinationpath '.\docs\feature-airports.zip' -compressionlevel optimal
+Write-Host "Zip airport option"
 compress-archive -path '.\src\app\domains\airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
-Write-Host "Zip site-children"
-New-Item '.\src\app\features\sites-children\views\site-item\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\views\site-item\*' -Destination '.\src\app\features\sites-children\views\site-item\' -Recurse -Force
-New-Item '.\src\app\features\sites-children\services\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\services\site.service.ts' -Destination '.\src\app\features\sites-children\services\' 
-New-Item '.\src\app\features\sites-children\children\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\new-crud.ps1' -Destination '.\src\app\features\sites-children\new-crud.ps1'
-compress-archive -path '.\src\app\features\sites-children\*' -destinationpath '.\docs\features-sites-children.zip' -compressionlevel optimal
-RemoveFolder -path '.\src\app\features\sites-children'
+# Write-Host "Zip site-children"
+# New-Item '.\src\app\features\sites-children\views\site-item\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\views\site-item\*' -Destination '.\src\app\features\sites-children\views\site-item\' -Recurse -Force
+# New-Item '.\src\app\features\sites-children\services\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\services\site.service.ts' -Destination '.\src\app\features\sites-children\services\' 
+# New-Item '.\src\app\features\sites-children\children\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\new-crud.ps1' -Destination '.\src\app\features\sites-children\new-crud.ps1'
+# compress-archive -path '.\src\app\features\sites-children\*' -destinationpath '.\docs\features-sites-children.zip' -compressionlevel optimal
+# RemoveFolder -path '.\src\app\features\sites-children'
 
 Write-Host "RemoveFolder dist"
 RemoveFolder -path 'dist'

@@ -153,12 +153,20 @@ function ReplaceInScript {
   }
 }
 
+function RemoveFolder {
+  param (
+    [string]$path
+  )
+  if (Test-Path $path) {
+    Write-Host "delete " $path " folder"
+    Remove-Item $path -Recurse -Force -Confirm:$false
+  }
+}
 
-RemoveItemFolder -path $newPath
+RemoveFolder -path $newPath
 
-
-Write-Host "Copy from .$oldPath"
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Destination '$newPath' -Recurse -Force
+Write-Host "Copy from $oldPath to $newPath"
+Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
 
 
 Set-Location -Path $newPath
