@@ -21,6 +21,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the Hangfire job identifier.
+        /// </summary>
+        public string JobId { get; set; }
+
+        /// <summary>
         /// Gets or sets the title.
         /// </summary>
         public string Title { get; set; }

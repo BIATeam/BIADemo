@@ -19,6 +19,7 @@ import { SiteModule } from 'src/app/domains/site/site.module';
 import { RoleModule } from 'src/app/domains/role/role.module';
 import { EnvironmentConfigurationModule } from 'src/app/domains/environment-configuration/environment-configuration.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
+import { NotificationModule } from 'src/app/domains/notification/notification.module';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return (): Promise<any> => {
@@ -26,7 +27,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [HttpClientModule, SiteModule, RoleModule, EnvironmentConfigurationModule];
+const MODULES = [HttpClientModule, SiteModule, RoleModule, NotificationModule, EnvironmentConfigurationModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];

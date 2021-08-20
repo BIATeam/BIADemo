@@ -369,5 +369,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string AssignToSite = "View_Assign_To_Site";
         }
+
+        /// <summary>
+        /// The notifications rights.
+        /// </summary>
+        public static class Notifications
+        {
+            /// <summary>
+            /// The right to get all notifications.
+            /// </summary>
+            public const string ListAccess = "Notification_List_Access";
+        }
     }
 }

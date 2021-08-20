@@ -169,6 +169,11 @@
       {
         "Name": "View_Delete_SiteView",
         "Roles": [ "Admin" ]
+      },
+      // Notifications
+      {
+        "Name": "Notification_List_Access",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member", "User" ]
       }
     ]
   }

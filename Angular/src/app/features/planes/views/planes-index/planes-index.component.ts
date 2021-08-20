@@ -34,7 +34,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = true;
-  useSignalR = false;
+  useSignalR = true;
   useView = false;
 
   @HostBinding('class.bia-flex') flex = true;

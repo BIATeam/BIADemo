@@ -1,4 +1,4 @@
-import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { Component, HostBinding, Inject, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
@@ -22,6 +22,7 @@ import { Role } from 'src/app/domains/role/model/role';
 import { getMemberRoles } from 'src/app/domains/role/store/role.state';
 import { APP_BASE_HREF } from '@angular/common';
 import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
+import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
   selector: 'app-bia-layout',
@@ -37,6 +38,7 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
       [appTitle]="appTitle"
       [helpUrl]="helpUrl"
       [reportUrl]="reportUrl"
+      [enableNotifications]="enableNotifications"
       [sites]="sites$ | async"
       [siteId]="currentSiteId"
       [roles]="roles$ | async"
@@ -52,7 +54,7 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
     </bia-classic-layout>
   `
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   isLoadingUserInfo = false;
 
@@ -62,6 +64,7 @@ export class LayoutComponent implements OnInit {
   companyName = environment.companyName;
   helpUrl = environment.helpUrl;
   reportUrl = environment.reportUrl;
+  enableNotifications = environment.enableNotifications;
   username = '';
   headerLogos: string[];
   footerLogo = 'assets/bia/Footer.png';
@@ -78,15 +81,29 @@ export class LayoutComponent implements OnInit {
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
     private store: Store<AppState>,
+    private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) { }
 
   ngOnInit() {
+
+    if (this.enableNotifications) {
+      this.initNotificationSignalRService();
+    }
+
     this.initEnvironmentType();
     this.initSites();
     this.initRoles();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
+  }
+
+  ngOnDestroy() {
+    this.notificationSignalRService.destroy();
+  }
+
+  private initNotificationSignalRService() {
+    this.notificationSignalRService.initialize();
   }
 
   private initEnvironmentType() {

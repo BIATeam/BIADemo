@@ -47,6 +47,7 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() allowThemeChange?: boolean;
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
+  @Input() enableNotifications?: boolean;
   allSites: Site[];
   @Input()
   set sites(sites: Site[]) {

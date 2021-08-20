@@ -98,6 +98,7 @@
     <p-menubar [model]="navMenuItems"></p-menubar>
   </nav>
   <div class="action" fxLayoutAlign="space-evenly center">
+    <i *ngIf="enableNotifications" class="ui-icon-notifications bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}" [routerLink]="['notifications']"></i>
     <i *ngIf="reportUrl" class="ui-icon-insert-chart bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.report' | translate }}" (click)="openReport()"></i>
     <i *ngIf="helpUrl" class="ui-icon-help bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}" (click)="openHelp()"></i>
   </div>

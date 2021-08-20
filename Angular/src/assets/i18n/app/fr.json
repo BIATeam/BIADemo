@@ -15,7 +15,8 @@
     "planesTypes": "Types d'avions",
     "sites": "Compagnies aérienne",
     "End BIADemo" : "To remove in project up to here",
-    "users": "Utilisateurs"
+    "users": "Utilisateurs",
+    "notifications": "Notifications"
   },
   "Begin BIADemo" : "To remove in project from here",
   "airport": {
@@ -79,5 +80,10 @@
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
     "login": "Login"
+  },
+  "notification": {
+    "listOf": "Notifications",
+    "title": "Titre",
+    "description": "Description"
   }
 }

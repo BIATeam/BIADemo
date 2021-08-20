@@ -105,6 +105,14 @@ const routes: Routes = [
               canNavigate: true
             },
             loadChildren: () => import('./features/users/user.module').then((m) => m.UserModule)
+          },
+          {
+            path: 'notifications',
+            data: {
+              breadcrumb: 'app.notifications',
+              canNavigate: true
+            },
+            loadChildren: () => import('./features/notifications/notification.module').then((m) => m.NotificationModule)
           }
         ]
       }

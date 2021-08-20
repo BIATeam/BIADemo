@@ -63,6 +63,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("JobId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("NotifiedRoleId")
                         .HasColumnType("int");
 

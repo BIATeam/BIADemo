@@ -10,22 +10,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInPlane
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInPlane
     using Microsoft.AspNetCore.SignalR;
+    using TheBIADevCompany.BIADemo.Application.Job;
+    using TheBIADevCompany.BIADemo.Application.Notification;
 #endif
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
@@ -42,13 +48,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IHubContext<HubForClients> hubForClients;
 #endif
 
+        private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly INotificationAppService notificationAppService;
+        private readonly IBiaDemoTestHangfireService demoTestHangfireService;
+        private readonly BIAClaimsPrincipal principal;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController"/> class.
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="hubForClients">The hub for client.</param>
 #if UseHubForClientInPlane
-        public PlanesController(IPlaneAppService planeService, IHubContext<HubForClients> hubForClients)
+        public PlanesController(
+            IPlaneAppService planeService,
+            IHubContext<HubForClients> hubForClients,
+            IBackgroundJobClient backgroundJobClient,
+            INotificationAppService notificationAppService,
+            BIAClaimsPrincipal principal)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
@@ -57,6 +73,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.hubForClients = hubForClients;
 #endif
             this.planeService = planeService;
+            this.backgroundJobClient = backgroundJobClient;
+            this.notificationAppService = notificationAppService;
+            this.principal = principal as BIAClaimsPrincipal;
         }
 
         /// <summary>
@@ -140,6 +159,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
+                //var userId = this.principal.GetUserId();
+
+                //var jobId = this.backgroundJobClient.Enqueue(() => this.demoTestHangfireService.RunLongTask());
+                //var notification = new NotificationDto
+                //{
+                //    JobId = jobId,
+                //    CreatedById = userId,
+                //    CreatedDate = DateTime.Now,
+                //    Description = "Description",
+                //    SiteId = this.principal.GetUserData<UserDataDto>().CurrentSiteId,
+                //    Title = "Title",
+                //};
+
+                //this.notificationAppService.AddAsync(notification);
+
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
                 await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);

@@ -34,6 +34,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() companyName = 'BIA';
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
+  @Input() enableNotifications?: boolean;
   @Input() sites: Site;
   @Input() siteId: number;
   @Input() roles: Role[];
