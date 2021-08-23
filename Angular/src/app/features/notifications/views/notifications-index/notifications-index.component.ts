@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllNotifications, getNotificationsTotalCount } from '../../store/notification.state';
-import { multiRemove, loadAllByPost } from '../../store/notifications-actions';
+import { multiRemove, loadAllByPost, callWorkerWithNotification } from '../../store/notifications-actions';
 import { Observable } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from 'src/app/features/notifications/model/notification';
@@ -53,7 +53,7 @@ export class NotificationsIndexComponent implements OnInit {
 
   ngOnInit() {
     this.setPermissions();
-    this.notifications$ = this.store.select(getAllNotifications).pipe();
+    this.notifications$ = this.store.select(getAllNotifications);
     this.totalCount$ = this.store.select(getNotificationsTotalCount).pipe();
   }
 
@@ -107,5 +107,9 @@ export class NotificationsIndexComponent implements OnInit {
     this.notificationDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translate.instant('app.notifications') + '.csv');
     });
+  }
+
+  callWorkerWithNotification() {
+    this.store.dispatch(callWorkerWithNotification());
   }
 }

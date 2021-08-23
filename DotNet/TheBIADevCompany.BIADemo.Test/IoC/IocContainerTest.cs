@@ -51,7 +51,6 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
 
             // Begin BIADemo
             services.AddTransient<PlanesController, PlanesController>();
-
             // End BIADemo
         }
     }

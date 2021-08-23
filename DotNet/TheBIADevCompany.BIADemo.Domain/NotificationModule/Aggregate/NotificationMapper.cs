@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             }
 
             // Mapping relationship 0..1-* : PlaneType
-            entity.TypeId = dto.Type.Id;
+            entity.TypeId = dto.TypeId;
 
             // Mapping relationship *-* : ICollection<Airports>
             if (dto.NotificationUsers?.Any() == true)
@@ -85,33 +85,33 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             {
                 Id = entity.Id,
                 JobId = entity.JobId,
-                CreatedBy = new UserDto()
+                CreatedBy = entity.CreatedBy != null ? new UserDto()
                 {
                     Id = entity.CreatedBy.Id,
                     FirstName = entity.CreatedBy.FirstName,
                     LastName = entity.CreatedBy.LastName,
                     Login = entity.CreatedBy.Login,
-                },
+                } : null,
                 CreatedById = entity.CreatedById,
                 CreatedDate = entity.CreatedDate,
                 Description = entity.Description,
-                NotifiedRole = new RoleDto
+                NotifiedRole = entity.NotifiedRole != null ? new RoleDto
                 {
                     Id = entity.NotifiedRole.Id,
                     LabelEn = entity.NotifiedRole.LabelEn,
                     LabelFr = entity.NotifiedRole.LabelFr,
                     LabelEs = entity.NotifiedRole.LabelEs,
-                },
+                } : null,
                 NotifiedRoleId = entity.NotifiedRoleId,
                 Read = entity.Read,
                 SiteId = entity.SiteId,
                 Title = entity.Title,
                 TypeId = entity.TypeId,
-                Site = new SiteDto
+                Site = entity.Site != null ? new SiteDto
                 {
                     Id = entity.Site.Id,
                     Title = entity.Site.Title,
-                },
+                } : null,
                 Type = entity.Type != null ? new NotificationTypeDto
                 {
                     Id = entity.Type.Id,

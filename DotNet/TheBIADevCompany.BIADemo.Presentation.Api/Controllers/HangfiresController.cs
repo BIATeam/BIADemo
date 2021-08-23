@@ -6,8 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
-    using System.DirectoryServices.AccountManagement;
     using System.Security.Principal;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
@@ -27,7 +27,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {
-        private readonly IBackgroundJobClient backgroundJobClient;
         private readonly INotificationAppService notificationAppService;
         private readonly IBiaDemoTestHangfireService demoTestHangfireService;
         private readonly BIAClaimsPrincipal principal;
@@ -36,12 +35,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         public HangfiresController(
-            IBackgroundJobClient backgroundJobClient,
             IBiaDemoTestHangfireService demoTestHangfireService,
             INotificationAppService notificationAppService,
             IPrincipal principal)
         {
-            this.backgroundJobClient = backgroundJobClient;
             this.notificationAppService = notificationAppService;
             this.demoTestHangfireService = demoTestHangfireService;
             this.principal = principal as BIAClaimsPrincipal;
@@ -90,13 +87,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Hangfires.RunWorker)]
-        public IActionResult CallWorkerWithNotification()
+        public async Task<IActionResult> CallWorkerWithNotification()
         {
             try
             {
                 var userId = this.principal.GetUserId();
 
-                var jobId = this.backgroundJobClient.Enqueue(() => this.demoTestHangfireService.RunLongTask());
+                var client = new BackgroundJobClient();
+
+                var jobId = client.Create<BiaDemoTestHangfireService>(x => x.RunLongTask(), new EnqueuedState("callworkerwithnotification"));
+
                 var notification = new NotificationDto
                 {
                     JobId = jobId,
@@ -105,9 +105,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     Description = "Description",
                     SiteId = this.principal.GetUserData<UserDataDto>().CurrentSiteId,
                     Title = "Title",
+                    TypeId = 1,
                 };
 
-                this.notificationAppService.AddAsync(notification);
+                await this.notificationAppService.AddAsync(notification);
 
                 return this.Ok();
             }

@@ -2,6 +2,10 @@
   <div fxFlex="100">
     <bia-table-header [headerTitle]="'notification.listOf' | translate" [canExportCSV]="true"
       (exportCSV)="onExportCSV()" (delete)="onDelete()" [selectedElements]="selectedNotifications"></bia-table-header>
+
+    <button type="button" class="ui-button-secondary flat" pButton (click)="callWorkerWithNotification()"
+      pTooltip="{{ 'msg.showFilters' | translate }}" label="Call worker with notification"></button>
+
     <bia-table-controller [defaultPageSize]="pageSize" [length]="totalCount$ | async" [columns]="columns"
       [columnToDisplays]="displayedColumns" (displayedColumnsChange)="displayedColumnsChanged($event)"
       (filter)="searchGlobalChanged($event)" (pageSizeChange)="onPageSizeChange($event)"

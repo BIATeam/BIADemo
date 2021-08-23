@@ -376,9 +376,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Notifications
         {
             /// <summary>
-            /// The right to get all notifications.
+            /// The right to access to the list of notifications.
             /// </summary>
             public const string ListAccess = "Notification_List_Access";
+
+            /// <summary>
+            /// The right to delete notifications.
+            /// </summary>
+            public const string Delete = "Notification_Delete";
         }
     }
 }

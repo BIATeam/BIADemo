@@ -1,29 +1,19 @@
-// <copyright file="NotificationAppService .cs" company="TheBIADevCompany">
+// <copyright file="NotificationAppService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Application.Notification
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application;
     using BIA.Net.Core.Application.Authentication;
-    using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Specification;
-    using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.SiteView;
-    using TheBIADevCompany.BIADemo.Domain.Dto.View;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
     /// The application service used to manage views.
