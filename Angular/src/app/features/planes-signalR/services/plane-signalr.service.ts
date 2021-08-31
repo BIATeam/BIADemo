@@ -30,7 +30,7 @@ export class PlanesSignalRService {
    */
   initialize() {
     console.log('%c [PlanesSignalR] Register SignalR : refresh-planesSignalR', 'color: purple; font-weight: bold');
-    this.signalRService.addMethod('refresh-planesSignalR', () => {
+    this.signalRService.addMethod('refresh-planes', () => {
       this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
         (event) => {
           console.log('%c [PlanesSignalR] RefreshSuccess', 'color: green; font-weight: bold');
