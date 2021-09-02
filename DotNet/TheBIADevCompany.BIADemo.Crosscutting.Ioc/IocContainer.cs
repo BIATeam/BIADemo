@@ -91,6 +91,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
                 options.EnableSensitiveDataLogging();
             });
+            collection.AddDbContext<IQueryableUnitOfWork, DataContextReadOnly>(
+                options =>
+                {
+                    options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
+                    options.EnableSensitiveDataLogging();
+                },
+                contextLifetime: ServiceLifetime.Transient);
+
             collection.AddScoped(typeof(ITGenericRepository<>), typeof(TGenericRepositoryEF<>));
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
