@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Copyright>Copyright © BIA 2021</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.4.0.1</Version>
+    <Version>3.4.2</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -12,6 +12,12 @@
     <Description>WorkerService layer classes for BIA.Net Core Framework</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Authentication\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <None Remove="Authentication\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
@@ -27,10 +33,6 @@
     <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Authentication\" />
   </ItemGroup>
 
   <ItemGroup>

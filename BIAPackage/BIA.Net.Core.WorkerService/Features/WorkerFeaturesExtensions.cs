@@ -13,6 +13,7 @@
     using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire.PostgreSql;
     using Hangfire.SqlServer;
+    using Hangfire.Dashboard;
 
     /// <summary>
     /// Add the standard service.
@@ -160,9 +161,14 @@
                 //});
 
 
-                app.UseHangfireDashboard("/hangfire", new DashboardOptions
+                app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
                     Authorization = options.HangfireServer.Authorization
+                });
+                app.UseHangfireDashboard("/hangfire", new DashboardOptions
+                {
+                    IsReadOnlyFunc = (DashboardContext context) => true,
+                    Authorization = options.HangfireServer.AuthorizationReadOnly
                 });
             }
             return app;
