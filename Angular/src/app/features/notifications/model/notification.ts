@@ -9,7 +9,7 @@ export interface Notification {
   title: string;
   description: string;
   typeId: number;
-  type: NotificationType;
+  type: NotificationType | string;
   read: boolean;
   createdDate: string;
   createdById: number;
@@ -19,4 +19,6 @@ export interface Notification {
   siteId: number;
   site: Site;
   notificationUsers: User[];
+  targetRoute: string;
+  targetId: number;
 }

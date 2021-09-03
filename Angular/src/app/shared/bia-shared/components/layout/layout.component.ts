@@ -22,7 +22,7 @@ import { Role } from 'src/app/domains/role/model/role';
 import { getMemberRoles } from 'src/app/domains/role/store/role.state';
 import { APP_BASE_HREF } from '@angular/common';
 import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
-import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
+// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
   selector: 'app-bia-layout',
@@ -81,14 +81,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
     private store: Store<AppState>,
-    private notificationSignalRService: NotificationSignalRService,
+    // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) { }
 
   ngOnInit() {
 
     if (this.enableNotifications) {
-      this.initNotificationSignalRService();
+      // this.initNotificationSignalRService();
     }
 
     this.initEnvironmentType();
@@ -99,12 +99,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.notificationSignalRService.destroy();
+    // this.notificationSignalRService.destroy();
   }
 
-  private initNotificationSignalRService() {
-    this.notificationSignalRService.initialize();
-  }
+  // private initNotificationSignalRService() {
+  //   // this.notificationSignalRService.initialize();
+  // }
 
   private initEnvironmentType() {
     this.environmentType$ = this.store.select(getEnvironmentConfiguration).pipe(

@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.IocContainer;
+    using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -71,6 +72,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
+            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
             // End BIADemo
         }
 

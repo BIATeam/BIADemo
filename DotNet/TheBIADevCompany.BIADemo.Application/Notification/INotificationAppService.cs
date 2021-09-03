@@ -16,5 +16,10 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     /// </summary>
     public interface INotificationAppService : ICrudAppServiceBase<NotificationDto, Notification, LazyLoadDto>
     {
+        /// <summary>
+        /// Gets the number of unread notifications.
+        /// </summary>
+        /// <returns>The number of unread notifications.</returns>
+        Task<int> GetUnreadCount();
     }
 }

@@ -381,6 +381,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string ListAccess = "Notification_List_Access";
 
             /// <summary>
+            /// The right to read notifications.
+            /// </summary>
+            public const string Read = "Notification_Read";
+
+            /// <summary>
             /// The right to delete notifications.
             /// </summary>
             public const string Delete = "Notification_Delete";

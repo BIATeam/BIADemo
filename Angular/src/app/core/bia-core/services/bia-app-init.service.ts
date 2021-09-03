@@ -8,13 +8,17 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { loadAllSites } from 'src/app/domains/site/store/sites-actions';
 import { loadAllRoles, loadMemberRoles } from 'src/app/domains/role/store/roles-actions';
+// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BiaAppInitService implements OnDestroy {
   private sub: Subscription;
-  constructor(private authService: AuthService, private store: Store<AppState>) { }
+  constructor(
+    private authService: AuthService,
+    private store: Store<AppState>) { }
+
   Init() {
     return this.initAuth();
   }
@@ -37,6 +41,10 @@ export class BiaAppInitService implements OnDestroy {
 
           if (environment.singleRoleMode === true) {
             this.store.dispatch(loadMemberRoles({ siteId: this.authService.getCurrentSiteId() }));
+          }
+
+          if (environment.enableNotifications === true) {
+            // this.notificationSignalRService.initialize();
           }
 
           resolve();

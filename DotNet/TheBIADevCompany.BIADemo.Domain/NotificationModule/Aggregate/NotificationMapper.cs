@@ -47,10 +47,15 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.CreatedDate = dto.CreatedDate;
             entity.Description = dto.Description;
             entity.CreatedById = dto.CreatedById;
+            entity.NotifiedRoleId = dto.NotifiedRoleId;
 
             if (dto.Site != null)
             {
                 entity.SiteId = dto.Site.Id;
+            }
+            else
+            {
+                entity.SiteId = dto.SiteId;
             }
 
             // Mapping relationship 0..1-* : PlaneType
@@ -124,6 +129,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     NotificationId = nu.NotificationId,
                     Read = nu.Read,
                 }).ToList(),
+                TargetId = entity.TargetId,
+                TargetRoute = entity.TargetRoute,
             };
         }
     }

@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { loadSuccess, loadAllByPostSuccess } from './notifications-actions';
+import { loadNotificationSuccess, loadAllNotificationsByPostSuccess, loadNotification, loadAllNotificationsByPost } from './notifications-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from 'src/app/features/notifications/model/notification';
 
@@ -26,26 +26,34 @@ export interface State extends EntityState<Notification> {
   totalCount: number;
   currentNotification: Notification;
   lastLazyLoadEvent: LazyLoadEvent;
+  loadingGet: boolean;
 }
 
 export const INIT_STATE: State = notificationsAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentNotification: <Notification>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{}
+  lastLazyLoadEvent: <LazyLoadEvent>{},
+  loadingGet: false
 });
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(loadAllNotificationsByPost, (state, { event }) => {
+    return { ...state, loadingGet: true };
+  }),
+  on(loadAllNotificationsByPostSuccess, (state, { result, event }) => {
     const stateUpdated = notificationsAdapter.setAll(result.data, state);
     stateUpdated.currentNotification = <Notification>{};
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { notification }) => {
-    return { ...state, currentNotification: notification };
+  on(loadNotification, (state) => {
+    return { ...state, loadingGet: true };
+  }),
+  on(loadNotificationSuccess, (state, { notification }) => {
+    return { ...state, currentNotification: notification, loadingGet: false };
   })
 );
 

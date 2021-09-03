@@ -12,8 +12,8 @@
       (toggleSearch)="onToggleSearch()" (viewChange)="onViewChange($event)"></bia-table-controller>
     <bia-table [elements]="notifications$ | async" [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns" [pageSize]="pageSize" [configuration]="tableConfiguration"
-      [showColSearch]="showColSearch" [globalSearchValue]="globalSearchValue" [canEdit]="false"
+      [showColSearch]="showColSearch" [globalSearchValue]="globalSearchValue" [canEdit]="true"
       [canSelectElement]="true" (loadLazy)="onLoadLazy($event)" [viewPreference]="viewPreference"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"></bia-table>
+      (selectedElementsChanged)="onSelectedElementsChanged($event)" (edit)="onEdit($event)"></bia-table>
   </div>
 </div>

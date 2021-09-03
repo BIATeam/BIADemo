@@ -10,3 +10,8 @@ export const load = createAction('[Domain Notifications] Load', props<{ id: numb
 export const loadSuccess = createAction('[Domain Notifications] Load success', props<{ notification: Notification }>());
 
 export const failure = createAction('[Domain Notifications] Failure', props<{ error: any }>());
+
+export const loadUnreadNotificationCount = createAction('[Domain Notifications] Load unread notification count');
+
+export const loadUnreadNotificationCountSuccess =
+    createAction('[Domain Notifications] Load unread notification count success', props<{ count: number }>());

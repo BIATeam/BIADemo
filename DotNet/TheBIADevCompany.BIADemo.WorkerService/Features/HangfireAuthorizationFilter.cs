@@ -33,18 +33,19 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <returns>true if user is authorized.</returns>
         public bool Authorize(DashboardContext context)
         {
-            var httpContext = context.GetHttpContext();
-            if (httpContext.User.Identity.IsAuthenticated)
-            {
-                var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
-                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(sid).Result;
-                var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
-                return userMainRights.Contains("Hangfire_Dashboard");
-            }
-            else
-            {
-                return false;
-            }
+            return true;
+            //var httpContext = context.GetHttpContext();
+            //if (httpContext.User.Identity.IsAuthenticated)
+            //{
+            //    var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
+            //    var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(sid).Result;
+            //    var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
+            //    return userMainRights.Contains("Hangfire_Dashboard");
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
     }
 }

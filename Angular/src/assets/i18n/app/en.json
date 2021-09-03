@@ -84,6 +84,15 @@
   "notification": {
     "listOf": "Notifications",
     "title": "Title",
-    "description": "Description"
+    "description": "Description",
+    "createdDate": "Date",
+    "type": {
+      "title": "Type",
+      "task": "Task",
+      "info": "Information",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error"
+    }
   }
 }

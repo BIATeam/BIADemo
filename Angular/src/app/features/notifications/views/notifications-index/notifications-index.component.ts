@@ -1,25 +1,30 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllNotifications, getNotificationsTotalCount } from '../../store/notification.state';
-import { multiRemove, loadAllByPost, callWorkerWithNotification } from '../../store/notifications-actions';
+import { multiRemove, loadAllNotificationsByPost, callWorkerWithNotification, loadNotification } from '../../store/notifications-actions';
 import { Observable } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from 'src/app/features/notifications/model/notification';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { BiaListConfig, PrimeTableColumn } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { BiaListConfig, PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { TranslateService } from '@ngx-translate/core';
 import FileSaver from 'file-saver';
 import { NotificationDas } from '../../service/notification-das.service';
+import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
+import { map } from 'rxjs/operators';
+import { NotificationType } from '../../model/notification-type';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-notifications-index',
   templateUrl: './notifications-index.component.html',
   styleUrls: ['./notifications-index.component.scss']
 })
-export class NotificationsIndexComponent implements OnInit {
+export class NotificationsIndexComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
   showColSearch = false;
@@ -33,28 +38,40 @@ export class NotificationsIndexComponent implements OnInit {
   displayNewNotificationDialog = false;
   viewPreference: string;
 
-  tableConfiguration: BiaListConfig = {
-    columns: [
-      new PrimeTableColumn('title', 'notification.title'),
-      new PrimeTableColumn('description', 'notification.description')
-    ]
-  };
+  tableConfiguration: BiaListConfig;
 
-  columns: KeyValuePair[] = this.tableConfiguration.columns.map(
-    (col) => <KeyValuePair>{ key: col.field, value: col.header }
-  );
-  displayedColumns: KeyValuePair[] = this.columns;
+  columns: KeyValuePair[];
+  displayedColumns: KeyValuePair[];
+
   lastLazyLoadEvent: LazyLoadEvent;
 
   constructor(
     private store: Store<AppState>,
+    private notificationSignalRService: NotificationSignalRService,
     private notificationDas: NotificationDas,
-    private translate: TranslateService) { }
+    private translate: TranslateService,
+    private biaTranslationService: BiaTranslationService,
+    private router: Router) {
+    this.notificationSignalRService.initialize();
+  }
 
   ngOnInit() {
     this.setPermissions();
-    this.notifications$ = this.store.select(getAllNotifications);
+    this.initTableConfiguration();
+
+    this.notifications$ = this.store.select(getAllNotifications)
+      .pipe(map(notifications => notifications.map(notif => {
+        if (typeof notif.type !== 'string') {
+          notif.type = this.translate.instant(`notification.type.${(<NotificationType>notif.type).code.toLowerCase()}`);
+        }
+        return notif;
+      })));
+
     this.totalCount$ = this.store.select(getNotificationsTotalCount).pipe();
+  }
+
+  ngOnDestroy() {
+    this.notificationSignalRService.destroy();
   }
 
   onCreate() {
@@ -78,7 +95,7 @@ export class NotificationsIndexComponent implements OnInit {
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     this.lastLazyLoadEvent = lazyLoadEvent;
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
+    this.store.dispatch(loadAllNotificationsByPost({ event: lazyLoadEvent }));
   }
 
   searchGlobalChanged(value: string) {
@@ -111,5 +128,44 @@ export class NotificationsIndexComponent implements OnInit {
 
   callWorkerWithNotification() {
     this.store.dispatch(callWorkerWithNotification());
+  }
+
+  onEdit(notificationId: number) {
+    this.store.dispatch(loadNotification({ id: notificationId }));
+    this.router.navigate(['notifications/edit']);
+    // this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe(notif => {
+    //   if (!notif) {
+    //     return;
+    //   }
+
+    //   this.store.dispatch(load({ id: notificationId }));
+
+    //   if (notif.targetRoute && notif.targetRoute.length > 0) {
+    //     this.router.navigate([notif.targetRoute, notif.targetId]);
+    //   } else {
+    //     this.router.navigate(['notifications/edit/' + notif.id]);
+    //   }
+    // });
+  }
+
+  private initTableConfiguration() {
+    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+
+      this.tableConfiguration = {
+        columns: [
+          new PrimeTableColumn('title', 'notification.title'),
+          new PrimeTableColumn('description', 'notification.description'),
+          new PrimeTableColumn('type', 'notification.type.title'),
+          Object.assign(new PrimeTableColumn('createdDate', 'notification.createdDate'), {
+            type: PropType.Date,
+            formatDate: dateFormat.dateTimeFormat
+          }),
+        ]
+      };
+
+      this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
+
+      this.displayedColumns = [...this.columns];
+    });
   }
 }

@@ -4,10 +4,10 @@ import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rx
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   failure,
-  load,
-  loadAllByPost,
-  loadAllByPostSuccess,
-  loadSuccess,
+  loadNotification,
+  loadAllNotificationsByPost,
+  loadAllNotificationsByPostSuccess,
+  loadNotificationSuccess,
   remove,
   multiRemove,
   update,
@@ -21,6 +21,7 @@ import { AppState } from 'src/app/store/state';
 import { getLastLazyLoadEvent } from './notification.state';
 import { NotificationDas } from '../service/notification-das.service';
 import { HangfireDas } from '../service/hangfire-das.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -31,14 +32,14 @@ import { HangfireDas } from '../service/hangfire-das.service';
 export class NotificationsEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByPost),
+      ofType(loadAllNotificationsByPost),
       pluck('event'),
       switchMap((event) =>
         this.notificationDas.getListByPost(event).pipe(
-          map((result: DataResult<Notification[]>) => loadAllByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<Notification[]>) => loadAllNotificationsByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(failure({ error: err }));
           })
         )
       )
@@ -47,9 +48,16 @@ export class NotificationsEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(loadNotification),
       pluck('id'),
-      switchMap((id) => this.notificationDas.get(id).pipe(map((notification) => loadSuccess({ notification }))))
+      switchMap((id) => {
+        return this.notificationDas.get(id).pipe(
+          map((notification) => loadNotificationSuccess({ notification })),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(failure({ error: err }));
+          }));
+      })
     )
   );
 
@@ -62,11 +70,11 @@ export class NotificationsEffects {
         return this.notificationDas.put(notification, notification.id).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllByPost({ event: event });
+            return loadAllNotificationsByPost({ event: event });
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(failure({ error: err }));
           })
         );
       })
@@ -81,11 +89,12 @@ export class NotificationsEffects {
         return this.hangfireDas.callWorkerWithNotification().pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllByPost({ event: event });
+            // return loadAllByPost({ event: event });
+            return biaSuccessWaitRefreshSignalR();
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(failure({ error: err }));
           })
         );
       })
@@ -101,11 +110,11 @@ export class NotificationsEffects {
         return this.notificationDas.delete(id).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllByPost({ event: event });
+            return loadAllNotificationsByPost({ event: event });
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(failure({ error: err }));
           })
         );
       })
@@ -121,11 +130,11 @@ export class NotificationsEffects {
         return this.notificationDas.deletes(ids).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllByPost({ event: event });
+            return loadAllNotificationsByPost({ event: event });
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(failure({ error: err }));
           })
         );
       })

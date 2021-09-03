@@ -84,5 +84,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Notification
         /// Gets or sets the list of users to be notified.
         /// </summary>
         public IList<NotificationUserDto> NotificationUsers { get; set; }
+
+        /// <summary>
+        /// Gets ot sets the route to load on notification click.
+        /// </summary>
+        public string TargetRoute { get; set; }
+
+        /// <summary>
+        /// Gets or sets the object identifier related to this notification.
+        /// </summary>
+        public int TargetId { get; set; }
     }
 }

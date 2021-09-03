@@ -5,24 +5,38 @@
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System;
+    using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Domain.Dto.User;
+    using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Application.Notification;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
 
     /// <summary>
     /// Sample class to use a hangfire task.
     /// </summary>
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
+        private readonly INotificationAppService notificationAppService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaDemoTestHangfireService"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">logger.</param>
-        public BiaDemoTestHangfireService(IConfiguration configuration, ILogger<BiaDemoTestHangfireService> logger)
+        /// <param name="notificationAppService">The notification service.</param>
+        public BiaDemoTestHangfireService(
+            IConfiguration configuration,
+            ILogger<BiaDemoTestHangfireService> logger,
+            INotificationAppService notificationAppService)
             : base(configuration, logger)
         {
+            this.notificationAppService = notificationAppService;
         }
 
         /// <summary>
@@ -40,6 +54,41 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         public async Task RunLongTask()
         {
             await Task.Delay(5000);
+        }
+
+        /// <inheritdoc/>
+        public async Task RunLongTaskWithNotification(NotificationSettingsDto settings, PerformContext context)
+        {
+            if (settings == null)
+            {
+                throw new ArgumentNullException("settings");
+            }
+
+            string jobId = context.BackgroundJob.Id;
+
+            var notification = new NotificationDto
+            {
+                JobId = jobId,
+                CreatedById = settings.CreatedById,
+                CreatedDate = DateTime.Now,
+                Description = "Run a long task and will send a notification when processed",
+                SiteId = settings.SiteId,
+                Title = "RunLongTaskWithNotification",
+                NotifiedRoleId = settings.NotifiedRoleId,
+            };
+
+            try
+            {
+                notification.TypeId = (int)NotificationType.Success;
+
+                await this.notificationAppService.AddAsync(notification);
+            }
+            catch (Exception)
+            {
+                notification.TypeId = (int)NotificationType.Error;
+
+                await this.notificationAppService.AddAsync(notification);
+            }
         }
     }
 }

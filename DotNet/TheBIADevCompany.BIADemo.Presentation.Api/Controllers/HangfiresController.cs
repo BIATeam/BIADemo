@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
@@ -91,26 +92,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var userId = this.principal.GetUserId();
-
                 var client = new BackgroundJobClient();
 
-                var jobId = client.Create<BiaDemoTestHangfireService>(x => x.RunLongTask(), new EnqueuedState("callworkerwithnotification"));
-
-                var notification = new NotificationDto
+                var notificationSettings = new NotificationSettingsDto
                 {
-                    JobId = jobId,
-                    CreatedById = userId,
-                    CreatedDate = DateTime.Now,
-                    Description = "Description",
+                    CreatedById = this.principal.GetUserId(),
                     SiteId = this.principal.GetUserData<UserDataDto>().CurrentSiteId,
-                    Title = "Title",
-                    TypeId = 1,
+                    NotifiedRoleId = 1,
                 };
 
-                await this.notificationAppService.AddAsync(notification);
+                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(notificationSettings, null), new EnqueuedState());
 
-                return this.Ok();
+                return this.Ok("Operation being processed in background...");
             }
             catch (ArgumentNullException)
             {

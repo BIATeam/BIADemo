@@ -22,9 +22,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using NLog;
     using NLog.Extensions.Logging;
     using NLog.Web;
+    using TheBIADevCompany.BIADemo.Application.Notification;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
@@ -99,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                             config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
                             {
                                 new PlaneHandlerRepository(hostContext.Configuration),
+                                new NotificationHandlerRepository(hostContext.Configuration),
                             });
                         }
 
@@ -148,6 +151,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                             config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
                             {
                                 new PlaneHandlerRepository(hostContext.Configuration),
+                                //new NotificationHandlerRepository(hostContext.Configuration, services.BuildServiceProvider().GetService<INotificationAppService>()),
                             });
                         }
 

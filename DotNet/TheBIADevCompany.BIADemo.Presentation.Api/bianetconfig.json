@@ -172,7 +172,7 @@
       },
       // Notifications
       {
-        "Names": [ "Notification_List_Access", "Notification_Delete" ],
+        "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       }
     ]

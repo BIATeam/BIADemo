@@ -29,6 +29,11 @@ export const getUserNotifications = createSelector(
   (state) => state.notifications?.userNotifications
 );
 
+export const getUnreadNotificationCount = createSelector(
+  getNotificationsState,
+  (state) => state.notifications.unreadCount
+);
+
 export const { selectAll: getAllNotifications } = fromNotifications.notificationsAdapter.getSelectors(
   getNotificationsEntitiesState
 );

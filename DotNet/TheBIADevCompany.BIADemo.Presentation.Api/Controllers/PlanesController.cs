@@ -48,10 +48,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IHubContext<HubForClients> hubForClients;
 #endif
 
-        private readonly IBackgroundJobClient backgroundJobClient;
-        private readonly INotificationAppService notificationAppService;
-        private readonly IBiaDemoTestHangfireService demoTestHangfireService;
-        private readonly BIAClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController"/> class.
@@ -61,10 +57,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #if UseHubForClientInPlane
         public PlanesController(
             IPlaneAppService planeService,
-            IHubContext<HubForClients> hubForClients,
-            IBackgroundJobClient backgroundJobClient,
-            INotificationAppService notificationAppService,
-            BIAClaimsPrincipal principal)
+            IHubContext<HubForClients> hubForClients)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
@@ -73,9 +66,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.hubForClients = hubForClients;
 #endif
             this.planeService = planeService;
-            this.backgroundJobClient = backgroundJobClient;
-            this.notificationAppService = notificationAppService;
-            this.principal = principal as BIAClaimsPrincipal;
         }
 
         /// <summary>

@@ -43,6 +43,11 @@ export const { selectAll: getAllNotifications } = fromNotifications.notification
   getNotificationsEntitiesState
 );
 
+export const getNotificationLoadingGet = createSelector(
+  getNotificationsEntitiesState,
+  (state) => state.loadingGet
+);
+
 export const getNotificationById = (id: number) =>
   createSelector(
     getNotificationsEntitiesState,

@@ -103,6 +103,67 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
+        /// Get a notification by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The notification.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.Read)]
+        public async Task<IActionResult> Get(int id)
+        {
+            if (id == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var dto = await this.notificationService.GetAsync(id);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Get unread notifications count.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The number of unread notifications.</returns>
+        [HttpGet("unreadCount")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.ListAccess)]
+        public async Task<IActionResult> GetUnreadCount()
+        {
+            try
+            {
+                var dto = await this.notificationService.GetUnreadCount();
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
         /// Removes the specified user ids.
         /// </summary>
         /// <param name="ids">The identifiers of the user.</param>

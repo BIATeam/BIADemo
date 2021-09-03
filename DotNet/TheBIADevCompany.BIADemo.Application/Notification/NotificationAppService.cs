@@ -21,26 +21,27 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     public class NotificationAppService : CrudAppServiceBase<NotificationDto, Notification, LazyLoadDto, NotificationMapper>, INotificationAppService
     {
         /// <summary>
-        /// The current site identifier.
-        /// </summary>
-        private readonly int currentSiteId;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public NotificationAppService(ITGenericRepository<Notification> repository, IPrincipal principal)
+        public NotificationAppService(ITGenericRepository<Notification> repository)
             : base(repository)
         {
-            this.currentSiteId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().CurrentSiteId;
         }
 
         /// <inheritdoc/>
-        public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
+        public async Task<int> GetUnreadCount()
         {
-            dto.Site = new SiteDto { Id = this.currentSiteId };
-            return base.AddAsync(dto, mapperMode);
+            var filters = new LazyLoadDto
+            {
+                First = 0,
+                Rows = 1,
+            };
+
+            var unreadNotifications = await this.GetRangeAsync(filters, filter: x => !x.Read);
+
+            return unreadNotifications.Item2;
         }
     }
 }

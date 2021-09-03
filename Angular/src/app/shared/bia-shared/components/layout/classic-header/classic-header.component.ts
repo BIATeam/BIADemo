@@ -11,6 +11,10 @@ import { Site } from 'src/app/domains/site/model/site';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Role } from 'src/app/domains/role/model/role';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/state';
+import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
+import { loadUnreadNotificationCount } from 'src/app/domains/notification/store/notifications-actions';
 
 @Component({
   selector: 'bia-classic-header',
@@ -101,12 +105,18 @@ export class ClassicHeaderComponent implements OnDestroy {
   navMenuItems: MenuItem[];
   appIcon$: Observable<string>;
 
+  unreadNotificationCount$: Observable<number>;
+
   constructor(
     public layoutService: BiaClassicLayoutService,
     public auth: AuthService,
     public translateService: TranslateService,
     private platform: Platform,
-  ) { }
+    private store: Store<AppState>
+  ) {
+    this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
+    this.store.dispatch(loadUnreadNotificationCount());
+  }
 
   ngOnDestroy() {
     if (this.sub) {

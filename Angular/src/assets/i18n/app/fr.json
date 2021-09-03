@@ -2,8 +2,8 @@
   "app": {
     "members": "Membres",
     "sites": "Sites",
-    "Begin BIADemo" : "To remove in project from here",
-    "administration" : "Administration",
+    "Begin BIADemo": "To remove in project from here",
+    "administration": "Administration",
     "airports": "Aéroports",
     "examples": "Exemples",
     "planes": "Avions",
@@ -14,17 +14,17 @@
     "planesCalcMode": "Avions (Tableur)",
     "planesTypes": "Types d'avions",
     "sites": "Compagnies aérienne",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "users": "Utilisateurs",
     "notifications": "Notifications"
   },
-  "Begin BIADemo" : "To remove in project from here",
+  "Begin BIADemo": "To remove in project from here",
   "airport": {
     "add": "Ajouter aéroport",
-    "city" : "Ville",
+    "city": "Ville",
     "edit": "Modifier aéroport",
     "listOf": "Listes des aéroports",
-    "name" : "Nom"
+    "name": "Nom"
   },
   "plane": {
     "add": "Ajouter avion",
@@ -47,7 +47,7 @@
     "listOf": "Liste des types d'avions",
     "title": "Titre"
   },
-  "End BIADemo" : "To remove in project up to here",
+  "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Ajouter membre",
     "listOfSiteMembers": "Liste des membres du site ",
@@ -66,11 +66,11 @@
     "admins": "Administrateurs",
     "edit": "Modifier site",
     "listOf": "Liste de sites",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "add": "Ajouter compagnie",
     "edit": "Modifier compagnie",
     "listOf": "Liste de compagnies",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "selectUser": "Sélectionner un utilisateur",
     "title": "Titre"
   },
@@ -84,6 +84,15 @@
   "notification": {
     "listOf": "Notifications",
     "title": "Titre",
-    "description": "Description"
+    "description": "Description",
+    "createdDate": "Date",
+    "type": {
+      "title": "Type",
+      "task": "Tâche",
+      "info": "Information",
+      "success": "Succès",
+      "warning": "Avertissement",
+      "error": "Erreur"
+    }
   }
 }

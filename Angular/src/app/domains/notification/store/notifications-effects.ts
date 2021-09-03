@@ -8,6 +8,8 @@ import {
   loadAllNotifications,
   loadAllSuccess,
   loadSuccess,
+  loadUnreadNotificationCount,
+  loadUnreadNotificationCountSuccess,
 } from './notifications-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { NotificationDas } from '../services/notification-das.service';
@@ -50,9 +52,25 @@ export class NotificationsEffects {
     )
   );
 
+  loadUnreadNotificationCount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadUnreadNotificationCount),
+      pluck('event'),
+      switchMap((event) =>
+        this.notificationDas.getUnreadNotificationCount().pipe(
+          map((count) => loadUnreadNotificationCountSuccess({ count })),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private notificationDas: NotificationDas,
     private biaMessageService: BiaMessageService
-  ) {}
+  ) { }
 }
