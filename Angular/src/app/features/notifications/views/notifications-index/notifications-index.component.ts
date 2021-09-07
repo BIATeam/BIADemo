@@ -1,6 +1,6 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getAllNotifications, getNotificationsTotalCount } from '../../store/notification.state';
+import { getAllNotifications, getNotificationLoadingGet, getNotificationsTotalCount } from '../../store/notification.state';
 import { multiRemove, loadAllNotificationsByPost, callWorkerWithNotification, loadNotification } from '../../store/notifications-actions';
 import { Observable } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
@@ -13,9 +13,7 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { TranslateService } from '@ngx-translate/core';
 import FileSaver from 'file-saver';
 import { NotificationDas } from '../../service/notification-das.service';
-import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 import { map } from 'rxjs/operators';
-import { NotificationType } from '../../model/notification-type';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Router } from '@angular/router';
 
@@ -24,19 +22,23 @@ import { Router } from '@angular/router';
   templateUrl: './notifications-index.component.html',
   styleUrls: ['./notifications-index.component.scss']
 })
-export class NotificationsIndexComponent implements OnInit, OnDestroy {
+export class NotificationsIndexComponent implements OnInit {
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
   showColSearch = false;
   globalSearchValue = '';
   pageSize = DEFAULT_PAGE_SIZE;
   totalRecords: number;
-  notifications$: Observable<Notification[]>;
-  selectedNotifications: Notification[];
-  totalCount$: Observable<number>;
+
   displayEditNotificationDialog = false;
   displayNewNotificationDialog = false;
   viewPreference: string;
+
+  notifications$: Observable<Notification[]>;
+  totalCount$: Observable<number>;
+  loading$: Observable<boolean>;
+
+  selectedNotifications: Notification[];
 
   tableConfiguration: BiaListConfig;
 
@@ -47,12 +49,10 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private notificationSignalRService: NotificationSignalRService,
     private notificationDas: NotificationDas,
     private translate: TranslateService,
     private biaTranslationService: BiaTranslationService,
     private router: Router) {
-    this.notificationSignalRService.initialize();
   }
 
   ngOnInit() {
@@ -62,16 +62,13 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.notifications$ = this.store.select(getAllNotifications)
       .pipe(map(notifications => notifications.map(notif => {
         if (typeof notif.type !== 'string') {
-          notif.type = this.translate.instant(`notification.type.${(<NotificationType>notif.type).code.toLowerCase()}`);
+          notif.type = this.translate.instant(`notification.type.${notif.typeId}`);
         }
         return notif;
       })));
 
-    this.totalCount$ = this.store.select(getNotificationsTotalCount).pipe();
-  }
-
-  ngOnDestroy() {
-    this.notificationSignalRService.destroy();
+    this.totalCount$ = this.store.select(getNotificationsTotalCount);
+    this.loading$ = this.store.select(getNotificationLoadingGet);
   }
 
   onCreate() {
@@ -158,8 +155,9 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           new PrimeTableColumn('type', 'notification.type.title'),
           Object.assign(new PrimeTableColumn('createdDate', 'notification.createdDate'), {
             type: PropType.Date,
-            formatDate: dateFormat.dateTimeFormat
+            formatDate: dateFormat.dateTimeFormat,
           }),
+          new PrimeTableColumn('read', 'Read'),
         ]
       };
 

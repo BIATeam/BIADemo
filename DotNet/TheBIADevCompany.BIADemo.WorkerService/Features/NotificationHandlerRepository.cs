@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
             "SELECT RowVersion FROM [dbo].[Notification]",
-            "SELECT TOP 1 [Id], [Title], [Description] FROM [dbo].[Notification] ORDER BY [RowVersion] DESC",
+            "SELECT TOP 1 [Id], [Title], [Description], (SELECT COUNT(*) FROM dbo.Notification WHERE Notification.[Read] = 0) as UnreadCount FROM [dbo].[Notification] ORDER BY [RowVersion] DESC",
             async r => await NotificationChange(r))
         {
         }
@@ -42,6 +42,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 id = reader.GetInt32(0),
                 title = reader.GetString(1),
                 description = reader.GetString(2),
+                unreadCount = reader.GetInt32(3),
             };
 
             /* To read information use: int id = reader.GetInt32(0)  */

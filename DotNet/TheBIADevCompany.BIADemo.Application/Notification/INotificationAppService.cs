@@ -17,9 +17,10 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     public interface INotificationAppService : ICrudAppServiceBase<NotificationDto, Notification, LazyLoadDto>
     {
         /// <summary>
-        /// Gets the number of unread notifications.
+        /// Set the notification as read.
         /// </summary>
-        /// <returns>The number of unread notifications.</returns>
-        Task<int> GetUnreadCount();
+        /// <param name="notification">The notification data transfer object.</param>
+        /// <returns>A task returning the updated data transfer object.</returns>
+        Task<NotificationDto> SetAsRead(NotificationDto notification);
     }
 }

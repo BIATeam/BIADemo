@@ -66,6 +66,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<INotificationAppService, NotificationAppService>();
+            collection.AddTransient<INotificationLightAppService, NotificationLightAppService>();
 
             // Begin BIADemo
             collection.AddTransient<IPlaneAppService, PlaneAppService>();

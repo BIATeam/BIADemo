@@ -4,15 +4,19 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Notification
 {
+    using System;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
@@ -31,17 +35,10 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         }
 
         /// <inheritdoc/>
-        public async Task<int> GetUnreadCount()
+        public async Task<NotificationDto> SetAsRead(NotificationDto notification)
         {
-            var filters = new LazyLoadDto
-            {
-                First = 0,
-                Rows = 1,
-            };
-
-            var unreadNotifications = await this.GetRangeAsync(filters, filter: x => !x.Read);
-
-            return unreadNotifications.Item2;
+            notification.Read = true;
+            return await this.UpdateAsync(notification);
         }
     }
 }

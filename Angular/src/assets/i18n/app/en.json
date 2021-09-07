@@ -88,10 +88,15 @@
     "createdDate": "Date",
     "type": {
       "title": "Type",
+      "1": "Task",
       "task": "Task",
+      "2": "Information",
       "info": "Information",
+      "3": "Success",
       "success": "Success",
+      "4": "Warning",
       "warning": "Warning",
+      "5": "Error",
       "error": "Error"
     }
   }

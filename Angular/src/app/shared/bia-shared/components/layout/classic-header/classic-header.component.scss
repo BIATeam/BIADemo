@@ -33,18 +33,22 @@
     padding-right: 8px;
     width: 80px;
 
-    .notification-count {
-      position: absolute;
-      top: 0;
-      right: 15px;
-      z-index: 10;
-      color: white;
-      background: #7b7b9c;
-      border-radius: 14%;
-      font-size: 9px;
-      /* height: 10px; */
-      line-height: 10px;
-      padding: 2px;
+    .notifications {
+      position: relative;
+      display: flex;
+
+      .notification-count {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        z-index: 10;
+        color: white;
+        background: $biaRed;
+        border-radius: 14%;
+        font-size: 10px;
+        line-height: 11px;
+        padding: 1px 3px;
+      }
     }
   }
 

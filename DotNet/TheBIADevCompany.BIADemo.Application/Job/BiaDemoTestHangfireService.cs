@@ -59,6 +59,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <inheritdoc/>
         public async Task RunLongTaskWithNotification(NotificationSettingsDto settings, PerformContext context)
         {
+            //await Task.Delay(5000);
+
             if (settings == null)
             {
                 throw new ArgumentNullException("settings");
@@ -82,6 +84,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 notification.TypeId = (int)NotificationType.Success;
 
                 await this.notificationAppService.AddAsync(notification);
+                // TODO ? - SignalR Send
             }
             catch (Exception)
             {

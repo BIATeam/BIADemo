@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { loadAllNotifications } from '../store/notifications-actions';
+import { loadUnreadNotificationCountSuccess } from '../store/notifications-actions';
 import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 
@@ -31,21 +31,20 @@ export class NotificationSignalRService {
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    console.log('%c [Notification] Register SignalR : notification-sent', 'color: purple; font-weight: bold');
     this.signalRService.addMethod('notification-sent', (args) => {
-
       const notification: Notification = JSON.parse(args);
-
       this.messageService.showInfo(notification.description);
+      this.store.dispatch(loadUnreadNotificationCountSuccess({ count: JSON.parse(args).unreadCount }));
+    });
 
-      console.log('%c [Notification] Notification Sent', 'color: green; font-weight: bold');
-      console.log(args);
-      this.store.dispatch(loadAllNotifications());
+    this.signalRService.addMethod('notification-count', (count) => {
+      console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
+      this.store.dispatch(loadUnreadNotificationCountSuccess({ count }));
     });
   }
 
   destroy() {
-    console.log('%c [Notification] Unregister SignalR : notification-sent', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('notification-sent');
+    this.signalRService.removeMethod('notification-count');
   }
 }

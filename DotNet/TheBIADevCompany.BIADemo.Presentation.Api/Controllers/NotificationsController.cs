@@ -12,10 +12,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SignalR;
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
@@ -25,17 +27,33 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     public class NotificationsController : BiaControllerBase
     {
         /// <summary>
-        /// The service notification.
+        /// The notification service.
         /// </summary>
         private readonly INotificationAppService notificationService;
+
+        /// <summary>
+        /// The light notification service.
+        /// </summary>
+        private readonly INotificationLightAppService notificationLightService;
+
+        /// <summary>
+        /// SignalR Hub for clients.
+        /// </summary>
+        private readonly IHubContext<HubForClients> hubForClients;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// </summary>
         /// <param name="notificationService">The notification service.</param>
-        public NotificationsController(INotificationAppService notificationService)
+        /// <param name="notificationLightService">The light notification service.</param>
+        public NotificationsController(
+            INotificationAppService notificationService,
+            INotificationLightAppService notificationLightService,
+            IHubContext<HubForClients> hubForClients)
         {
             this.notificationService = notificationService;
+            this.notificationLightService = notificationLightService;
+            this.hubForClients = hubForClients;
         }
 
         /// <summary>
@@ -64,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] LazyLoadDto filters)
         {
-            var (results, total) = await this.notificationService.GetRangeAsync(filters);
+            var (results, total) = await this.notificationLightService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -123,6 +141,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var dto = await this.notificationService.GetAsync(id);
+
+                // If it's the first time this notification is read
+                if (!dto.Read)
+                {
+                    dto = await this.notificationService.SetAsRead(dto);
+
+                    var unreadCount = await this.notificationLightService.GetUnreadCount();
+                    await this.hubForClients.Clients.All.SendAsync("notification-count", unreadCount);
+                }
+
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -150,7 +178,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var dto = await this.notificationService.GetUnreadCount();
+                var dto = await this.notificationLightService.GetUnreadCount();
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

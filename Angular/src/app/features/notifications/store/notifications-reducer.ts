@@ -47,6 +47,7 @@ export const notificationReducers = createReducer<State>(
     stateUpdated.currentNotification = <Notification>{};
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
+    stateUpdated.loadingGet = false;
     return stateUpdated;
   }),
   on(loadNotification, (state) => {

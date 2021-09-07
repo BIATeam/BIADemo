@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { loadAllSites } from 'src/app/domains/site/store/sites-actions';
 import { loadAllRoles, loadMemberRoles } from 'src/app/domains/role/store/roles-actions';
+import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Injectable({
@@ -17,7 +18,8 @@ export class BiaAppInitService implements OnDestroy {
   private sub: Subscription;
   constructor(
     private authService: AuthService,
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    private notificationSignalRService: NotificationSignalRService) { }
 
   Init() {
     return this.initAuth();
@@ -44,7 +46,7 @@ export class BiaAppInitService implements OnDestroy {
           }
 
           if (environment.enableNotifications === true) {
-            // this.notificationSignalRService.initialize();
+            this.notificationSignalRService.initialize();
           }
 
           resolve();
@@ -55,6 +57,10 @@ export class BiaAppInitService implements OnDestroy {
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
+    }
+
+    if (environment.enableNotifications === true) {
+      this.notificationSignalRService.destroy();
     }
   }
 }

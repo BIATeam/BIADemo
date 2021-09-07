@@ -28,6 +28,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 {
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },
+                    { "CreatedDate", notification => notification.CreatedDate },
+                    { "TypeId", notification => notification.TypeId },
                 };
             }
         }
