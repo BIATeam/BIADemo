@@ -3,11 +3,11 @@
 namespace BIA.Net.Core.WorkerService.Features
 {
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using BIA.Net.Core.WorkerService.Features.ClientForHub;
     using Microsoft.Extensions.Configuration;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.WorkerService.Features.HangfireServer;
+    using BIA.Net.Core.Common.Features.ClientForHub;
 
     public class WorkerFeaturesServiceOptions
     {

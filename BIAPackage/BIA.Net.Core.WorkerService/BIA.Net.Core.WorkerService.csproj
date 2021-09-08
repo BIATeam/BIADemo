@@ -14,6 +14,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <None Remove="Authentication\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
     <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="3.0.3.2" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.8.5.3" />
@@ -30,14 +36,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\Images\LogoBIA.png" Link="LogoBIA.png">
       <PackagePath></PackagePath>
       <Pack>True</Pack>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\ClientForHub\" />
   </ItemGroup>
 
 </Project>

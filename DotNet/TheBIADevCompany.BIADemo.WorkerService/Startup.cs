@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System.Security.Principal;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -80,6 +81,13 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Begin BIADemo
+            PlaneHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
+
+            // End BIADemo
+
+            NotificationHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
 
             app.UseBiaWorkerFeatures(config =>
             {

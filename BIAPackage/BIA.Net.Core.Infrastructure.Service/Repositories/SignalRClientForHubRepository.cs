@@ -1,30 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Hosting;
-
-namespace BIA.Net.Core.WorkerService.Features.ClientForHub
+﻿namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    public class ClientForHubService : IHostedService, IDisposable
+    using System;
+    using System.Security.Cryptography;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Features.ClientForHub;
+    using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.AspNetCore.SignalR.Client;
+
+
+    public class SignalRClientForHubRepository : IClientForHubRepository
     {
-        private static HubConnection connection;
+        private HubConnection connection;
         private bool starting = false;
-        private static bool started = false;
-        private readonly ClientForHubOptions _options;
-        public ClientForHubService(ClientForHubOptions options)
+        private bool started = false;
+
+        public SignalRClientForHubRepository()
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
+            if (!ClientForHubOptions.IsActive)
+            {
+                throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
+            }
         }
-        public Task StartAsync(CancellationToken cancellationToken)
+
+        public Task StartAsync()
         {
             if (!starting)
             {
                 starting = true;
                 connection = new HubConnectionBuilder()
-                    .WithUrl(_options.SignalRUrl)
+                    .WithUrl(ClientForHubOptions.SignalRUrl)
                     .WithAutomaticReconnect()
                     .Build();
                 connection.Closed += async (error) =>
@@ -56,8 +61,12 @@ namespace BIA.Net.Core.WorkerService.Features.ClientForHub
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        public static async Task SendMessage(string action, string jsonContext)
+        public async Task SendMessage(string action, string jsonContext)
         {
+            if (!starting && ! started)
+            {
+                _ = StartAsync();
+            }
             while (!started)
             {
                 await Task.Delay(200);

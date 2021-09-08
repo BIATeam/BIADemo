@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
+    using System.Collections.Generic;
     using System.Data.SqlClient;
 
     public class DatabaseHandlerRepository 
@@ -12,27 +13,36 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
         private readonly string sqlOnChangeEventHandlerRequest;
         private readonly string sqlReadChangeRequest;
-
+        private readonly List<SqlNotificationInfo> filterNotifictionInfos;
         public delegate void ChangeHandler(SqlDataReader reader);
+
+
 
         public event ChangeHandler OnChange;
 
-        public DatabaseHandlerRepository(string connectionString, string sqlOnChangeEventHandlerRequest, string sqlReadChangeRequest, ChangeHandler OnChange)
+        public DatabaseHandlerRepository(
+            string connectionString, 
+            string sqlOnChangeEventHandlerRequest, 
+            string sqlReadChangeRequest, 
+            ChangeHandler OnChange,
+            List<SqlNotificationInfo> filterNotifictionInfos = null
+            )
         {
             this.connectionString = connectionString;
             this.sqlOnChangeEventHandlerRequest = sqlOnChangeEventHandlerRequest;
             this.sqlReadChangeRequest = sqlReadChangeRequest;
             this.OnChange = OnChange;
+            this.filterNotifictionInfos = filterNotifictionInfos;
         }
 
         private bool isFirst = true;
 
         public void Start()
         {
-            this.NotifyNewItem();
+            this.NotifyNewItem(null);
         }
 
-        private void NotifyNewItem()
+        private void NotifyNewItem(SqlNotificationEventArgs e)
         {
             if (this.isFirst)
             {
@@ -52,7 +62,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 {
                     if (string.IsNullOrEmpty(sqlReadChangeRequest))
                     {
-                        if (this.OnChange != null)
+                        if (IsValidEvent(e) && this.OnChange != null)
                         {
                             this.OnChange(null);
                         }
@@ -68,7 +78,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
                                 //int id = reader.GetInt32(0);
 
-                                if (this.OnChange != null)
+                                if (IsValidEvent(e) && this.OnChange != null)
                                 {
                                     this.OnChange(reader);
                                 }
@@ -79,13 +89,25 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
         }
 
+        private bool IsValidEvent(SqlNotificationEventArgs e)
+        {
+            return (e != null)
+                    &&
+                    (
+                        this.filterNotifictionInfos == null
+                        ||
+                        this.filterNotifictionInfos.Contains(e.Info)
+                    );
+        }
+
         private void OnDependencyChange(object sender, SqlNotificationEventArgs e)
         {
             this.isFirst = false;
 
             if (e.Info != SqlNotificationInfo.Invalid)
+
             {
-                this.NotifyNewItem();
+                this.NotifyNewItem(e);
             }
         }
 

@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BIA.Net.Core.WorkerService.Features.ClientForHub
+namespace BIA.Net.Core.Common.Features.ClientForHub
 {
     public class ClientForHubOptions
     {
         // hub for clients options
-        internal bool IsActive { get; private set; }
-        internal string SignalRUrl { get; private set; }
+        public static bool IsActive { get; private set; }
+        public static string SignalRUrl { get; private set; }
 
         public ClientForHubOptions()
         {
             IsActive = false;
         }
 
-        public void Activate(string signalRUrl)
+        public static void Activate(string signalRUrl)
         {
             IsActive = true;
             SignalRUrl = signalRUrl;

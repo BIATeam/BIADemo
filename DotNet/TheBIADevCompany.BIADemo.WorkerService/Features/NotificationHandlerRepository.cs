@@ -5,9 +5,11 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
+    using System.Collections.Generic;
+    using System.Configuration;
     using System.Data.SqlClient;
     using System.Threading.Tasks;
-    using BIA.Net.Core.WorkerService.Features.ClientForHub;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json;
@@ -17,6 +19,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     /// </summary>
     public class NotificationHandlerRepository : DatabaseHandlerRepository
     {
+        private static IClientForHubRepository clientForHubService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationHandlerRepository"/> class.
         /// Constructor Set the trigger request.
@@ -27,16 +31,31 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             configuration.GetConnectionString("BIADemoDatabase"),
             "SELECT RowVersion FROM [dbo].[Notification]",
             "SELECT TOP 1 [Id], [Title], [Description], (SELECT COUNT(*) FROM dbo.Notification WHERE Notification.[Read] = 0) as UnreadCount FROM [dbo].[Notification] ORDER BY [RowVersion] DESC",
-            async r => await NotificationChange(r))
+            r => NotificationChange(r),
+            new List<SqlNotificationInfo>() { SqlNotificationInfo.Insert })
         {
+        }
+
+        /// <summary>
+        /// Configure the services.
+        /// </summary>
+        /// <param name="pClientForHubService">The client for hub service.</param>
+        public static void Configure(IClientForHubRepository pClientForHubService)
+        {
+            clientForHubService = pClientForHubService;
         }
 
         /// <summary>
         /// Send message to the clients.
         /// </summary>
         /// <param name="reader">the reader use to retrieve info send by the trigger.</param>
-        public static async Task NotificationChange(SqlDataReader reader)
+        public static void NotificationChange(SqlDataReader reader)
         {
+            if (clientForHubService == null)
+            {
+                throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use NotificationChange. Verify your correctly configure NotificationHandlerRepository in Statup.cs.");
+            }
+
             var notification = new
             {
                 id = reader.GetInt32(0),
@@ -46,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             };
 
             /* To read information use: int id = reader.GetInt32(0)  */
-            _ = ClientForHubService.SendMessage("notification-sent", JsonConvert.SerializeObject(notification));
+            _ = clientForHubService.SendMessage("notification-sent", JsonConvert.SerializeObject(notification));
         }
     }
 }

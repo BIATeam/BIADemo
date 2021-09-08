@@ -107,6 +107,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddTransient<INotification, MailRepository>();
+            collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
         }
     }
 }
