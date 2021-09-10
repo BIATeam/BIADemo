@@ -2,17 +2,17 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
+
 namespace BIA.Net.Core.Domain
 {
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Specification;
+    using Microsoft.EntityFrameworkCore;
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
     /// The helpers for specifications.
@@ -186,6 +186,29 @@ namespace BIA.Net.Core.Domain
 
                         binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
                     }
+
+                    // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
+                    // if (IsCollectionType(valueType))
+                    // {
+                    //    valueExpression = Expression.Constant(valueFormated);
+                    //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
+                    //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+                    //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+                    //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+
+                    //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
+                    // }
+                    // else
+                    // {
+                    //    if (expressionBody.Type != typeof(string))
+                    //    {
+                    //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+                    //    }
+
+                    //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
+                    //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
+                    //        expressionBody, Expression.Constant($"%{valueFormated}%"));
+                    // }
 
                     break;
 
