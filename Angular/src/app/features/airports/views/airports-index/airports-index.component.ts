@@ -1,28 +1,39 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllAirports, getAirportsTotalCount, getAirportLoadingGetAll } from '../../store/airport.state';
-import { multiRemove, loadAllByPost, load, openDialogEdit, openDialogNew } from '../../store/airports-actions';
+import { multiRemove, loadAllByPost, update, create } from '../../store/airports-actions';
 import { Observable } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Airport } from '../../model/airport';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { BiaListConfig, PrimeTableColumn } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import {
+  BiaListConfig,
+  PrimeTableColumn,
+} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AirportDas } from '../../services/airport-das.service';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { AirportsSignalRService } from '../../services/airport-signalr.service';
+import { AirportsEffects } from '../../store/airports-effects';
+import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 
 @Component({
   selector: 'app-airports-index',
   templateUrl: './airports-index.component.html',
   styleUrls: ['./airports-index.component.scss']
 })
-export class AirportsIndexComponent implements OnInit {
+export class AirportsIndexComponent implements OnInit, OnDestroy {
+  useCalcMode = false;
+  useSignalR = true;
+  useView = false;
+
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) airportListComponent: BiaTableComponent;
   showColSearch = false;
@@ -41,14 +52,21 @@ export class AirportsIndexComponent implements OnInit {
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
+  popupTitle: string;
+  tableStateKey = this.useView ? 'airportsGrid' : '';
+
 
   constructor(
     private store: Store<AppState>,
+    private router: Router,
+    public activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private airportDas: AirportDas,
     private translateService: TranslateService,
-    private biaTranslationService: BiaTranslationService
-  ) {}
+    private biaTranslationService: BiaTranslationService,
+    private airportsSignalRService: AirportsSignalRService,
+  ) {
+  }
 
   ngOnInit() {
     this.initTableConfiguration();
@@ -56,19 +74,67 @@ export class AirportsIndexComponent implements OnInit {
     this.airports$ = this.store.select(getAllAirports).pipe();
     this.totalCount$ = this.store.select(getAirportsTotalCount).pipe();
     this.loading$ = this.store.select(getAirportLoadingGetAll).pipe();
+    this.OnDisplay();
+  }
+
+  ngOnDestroy() {
+    this.OnHide();
+  }
+
+  OnDisplay() {
+    if (this.airportListComponent !== undefined) {
+      this.store.dispatch(loadAllByPost({ event: this.airportListComponent.getLazyLoadMetadata() }));
+    }
+
+    if (this.useView)
+    {
+      this.store.dispatch(loadAllView());
+    }
+
+
+    if (this.useSignalR)
+    {
+      this.airportsSignalRService.initialize();
+      AirportsEffects.useSignalR = true;
+    }
+  }
+
+  OnHide() {
+    if (this.useSignalR)
+    {
+      AirportsEffects.useSignalR = false;
+      this.airportsSignalRService.destroy();
+    }
   }
 
   onCreate() {
-    this.store.dispatch(openDialogNew());
+    if (!this.useCalcMode) {
+      this.router.navigate(['../create'], { relativeTo: this.activatedRoute });
+    }
   }
 
   onEdit(airportId: number) {
-    this.store.dispatch(load({ id: airportId }));
-    this.store.dispatch(openDialogEdit());
+    if (!this.useCalcMode) {
+      this.router.navigate(['../' + airportId + '/edit'], { relativeTo: this.activatedRoute });
+    }
+  }
+
+  onSave(airport: Airport) {
+    if (this.useCalcMode) {
+      if (airport?.id > 0) {
+        if (this.canEdit) {
+          this.store.dispatch(update({ airport: airport }));
+        }
+      } else {
+        if (this.canAdd) {
+          this.store.dispatch(create({ airport: airport }));
+        }
+      }
+    }
   }
 
   onDelete() {
-    if (this.selectedAirports) {
+    if (this.selectedAirports && this.canDelete) {
       this.store.dispatch(multiRemove({ ids: this.selectedAirports.map((x) => x.id) }));
     }
   }
@@ -119,7 +185,10 @@ export class AirportsIndexComponent implements OnInit {
   private initTableConfiguration() {
     this.biaTranslationService.culture$.subscribe((dateFormat) => {
       this.tableConfiguration = {
-        columns: [new PrimeTableColumn('name', 'airport.name'), new PrimeTableColumn('city', 'airport.city')]
+        columns: [
+          new PrimeTableColumn('name', 'airport.name'),
+          new PrimeTableColumn('city', 'airport.city')
+        ]
       };
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });

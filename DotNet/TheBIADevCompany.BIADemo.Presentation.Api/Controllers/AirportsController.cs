@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #if UseHubForClientInAirport
         public AirportsController(IAirportAppService airportService, IHubContext<HubForClients> hubForClients)
 #else
-        public AirportsController(IPlaneAppService planeService)
+        public AirportsController(IAirportAppService airportService)
 #endif
         {
 #if UseHubForClientInAirport

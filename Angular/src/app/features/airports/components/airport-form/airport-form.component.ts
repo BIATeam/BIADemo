@@ -9,16 +9,20 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Airport } from '../../model/airport';
 
 @Component({
   selector: 'app-airport-form',
   templateUrl: './airport-form.component.html',
   styleUrls: ['./airport-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
+
 export class AirportFormComponent implements OnInit, OnChanges {
   @Input() airport: Airport = <Airport>{};
+  @Input() airportOptions: OptionDto[];
+  @Input() airportTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Airport>();
   @Output() cancel = new EventEmitter();
@@ -29,10 +33,11 @@ export class AirportFormComponent implements OnInit, OnChanges {
     this.initForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.airport) {
+    if (this.airport) {
       this.form.reset();
       if (this.airport) {
         this.form.patchValue({ ...this.airport });
@@ -43,8 +48,8 @@ export class AirportFormComponent implements OnInit, OnChanges {
   private initForm() {
     this.form = this.formBuilder.group({
       id: [this.airport.id],
-      name: [this.airport.name, Validators.required],
-      city: [this.airport.city, Validators.required]
+      name: [this.airport.name, Validators.required],      
+      city: [this.airport.city, Validators.required],
     });
   }
 
@@ -62,3 +67,4 @@ export class AirportFormComponent implements OnInit, OnChanges {
     }
   }
 }
+

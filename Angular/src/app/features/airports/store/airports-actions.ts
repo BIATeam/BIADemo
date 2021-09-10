@@ -24,10 +24,8 @@ export const loadSuccess = createAction('[Airports] Load success', props<{ airpo
 
 export const failure = createAction('[Airports] Failure', props<{ error: any }>());
 
-export const openDialogEdit = createAction('[Airports] Open dialog edit');
 
-export const closeDialogEdit = createAction('[Airports] Close dialog edit');
 
-export const openDialogNew = createAction('[Airports] Open dialog new');
 
-export const closeDialogNew = createAction('[Airports] Close dialog new');
+
+
