@@ -2,7 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlane
+// #define UseHubForClientInPlane
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInPlane
-    using BIA.Net.Core.Presentation.Common.Features.HubForClients;
+    using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
@@ -45,24 +45,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IPlaneAppService planeService;
 
 #if UseHubForClientInPlane
-        private readonly IHubContext<HubForClients> hubForClients;
+        private readonly IClientForHubRepository clientForHubService;
 #endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController"/> class.
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
-        /// <param name="hubForClients">The hub for client.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInPlane
         public PlanesController(
-            IPlaneAppService planeService,
-            IHubContext<HubForClients> hubForClients)
+            IPlaneAppService planeService, IClientForHubRepository clientForHubService)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
-            this.hubForClients = hubForClients;
+            this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
         }
@@ -165,7 +164,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -202,7 +201,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -242,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -282,7 +281,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 }
 
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.Clients.All.SendAsync("refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -319,7 +318,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
