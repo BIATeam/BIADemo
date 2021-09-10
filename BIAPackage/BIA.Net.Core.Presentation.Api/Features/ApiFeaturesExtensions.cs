@@ -4,6 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Features.ClientForHub;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
@@ -128,6 +129,12 @@
                         });
                     }
                 }
+            }
+
+            // Client for hub
+            if (biaNetSection?.ApiFeatures?.ClientForHub?.IsActive == true)
+            {
+                ClientForHubOptions.Activate(biaNetSection.ApiFeatures.ClientForHub.SignalRUrl);
             }
 
             // Delegate Job Worker

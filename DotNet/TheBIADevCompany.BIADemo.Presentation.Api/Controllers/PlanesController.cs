@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
-    /// The API controller used to manage planes.
+    /// The API controller used to manage Planes.
     /// </summary>
     public class PlanesController : BiaControllerBase
     {
@@ -47,7 +47,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #if UseHubForClientInPlane
         private readonly IHubContext<HubForClients> hubForClients;
 #endif
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController"/> class.

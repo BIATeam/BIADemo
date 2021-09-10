@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BIA.Net.Core.Common.Configuration.WorkerFeature
+namespace BIA.Net.Core.Common.Configuration.CommonFeature
 {
     public class ClientForHubConfiguration
     {

@@ -11,6 +11,9 @@
       },
       "HubForClients": {
         "IsActive": true
+      },
+      "ClientForHub": {
+        "IsActive": true
       }
     },
     "EmailConfiguration": {
@@ -25,8 +28,7 @@
     "Jwt": {
       "Issuer": "BIADemoApi",
       "Audience": "http://localhost:4200",
-      //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication to force the client to refresh
-      //"SecretKey": "0BA9AE2BDC6FBA1056D86EB2ACB45D53072F786FBD94C658240FAE6198F5DC64DE018FE517E68410B9D41B9BE106532345D21090549B0BC396437DCEF3AADAAC",
+      //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
     },
     "Roles": [
