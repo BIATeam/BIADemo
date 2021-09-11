@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Collections.Generic;
 
     using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
     /// The role entity.
@@ -42,5 +43,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the member roles.
         /// </summary>
         public virtual ICollection<MemberRole> MemberRoles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of notifications.
+        /// </summary>
+        public virtual ICollection<NotificationRole> NotificationRoles { get; set; }
     }
 }

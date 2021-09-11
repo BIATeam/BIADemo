@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210910170942_RemoveNotifType")]
+    partial class RemoveNotifType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,6 +65,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("JobId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NotifiedRoleId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Read")
                         .HasColumnType("bit");
 
@@ -74,7 +82,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TargetJson")
+                    b.Property<int>("TargetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TargetRoute")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -89,29 +100,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatedById");
 
+                    b.HasIndex("NotifiedRoleId");
+
                     b.HasIndex("SiteId");
 
                     b.ToTable("Notification");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationRole", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("RoleId", "NotificationId");
-
-                    b.HasIndex("NotificationId");
-
-                    b.ToTable("NotificationRole");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
@@ -121,6 +114,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<int>("NotificationId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
@@ -566,6 +562,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "NotifiedRole")
+                        .WithMany()
+                        .HasForeignKey("NotifiedRoleId");
+
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
                         .WithMany()
                         .HasForeignKey("SiteId")
@@ -574,32 +574,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Navigation("CreatedBy");
 
+                    b.Navigation("NotifiedRole");
+
                     b.Navigation("Site");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationRole", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
-                        .WithMany("NotifiedRoles")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
-                        .WithMany("NotificationRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Notification");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
-                        .WithMany("NotifiedUsers")
+                        .WithMany("NotificationUsers")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -729,9 +712,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
                 {
-                    b.Navigation("NotifiedRoles");
-
-                    b.Navigation("NotifiedUsers");
+                    b.Navigation("NotificationUsers");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", b =>
@@ -759,8 +740,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
                 {
                     b.Navigation("MemberRoles");
-
-                    b.Navigation("NotificationRoles");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", b =>

@@ -5,10 +5,12 @@
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.User;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
@@ -57,26 +59,21 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         }
 
         /// <inheritdoc/>
-        public async Task RunLongTaskWithNotification(NotificationSettingsDto settings, PerformContext context)
+        public async Task RunLongTaskWithNotification(int siteId, int createdById, PerformContext context)
         {
             //await Task.Delay(5000);
-
-            if (settings == null)
-            {
-                throw new ArgumentNullException("settings");
-            }
 
             string jobId = context.BackgroundJob.Id;
 
             var notification = new NotificationDto
             {
-                JobId = jobId,
-                CreatedById = settings.CreatedById,
+                CreatedById = createdById,
                 CreatedDate = DateTime.Now,
                 Description = "Run a long task and will send a notification when processed",
-                SiteId = settings.SiteId,
+                SiteId = siteId,
                 Title = "RunLongTaskWithNotification",
-                NotifiedRoleId = settings.NotifiedRoleId,
+                NotifiedRoleIds = new List<int> { 1 },
+                TargetJson = "{JobId = '" + jobId + "'}",
             };
 
             try

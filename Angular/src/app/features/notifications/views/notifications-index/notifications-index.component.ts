@@ -61,9 +61,6 @@ export class NotificationsIndexComponent implements OnInit {
 
     this.notifications$ = this.store.select(getAllNotifications)
       .pipe(map(notifications => notifications.map(notif => {
-        if (typeof notif.type !== 'string') {
-          notif.type = this.translate.instant(`notification.type.${notif.typeId}`);
-        }
         return notif;
       })));
 

@@ -29,6 +29,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <param name="settings">The notification settings.</param>
         /// <param name="context">The job context.</param>
         /// <returns>The Task.</returns>
-        Task RunLongTaskWithNotification(NotificationSettingsDto settings, PerformContext context);
+        Task RunLongTaskWithNotification(int siteId, int createdById, PerformContext context);
     }
 }

@@ -10,7 +10,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../../model/notification';
-import { NotificationType } from '../../model/notification-type';
 import { getNotificationLoadingGet } from '../../store/notification.state';
 
 @Component({
@@ -22,7 +21,6 @@ import { getNotificationLoadingGet } from '../../store/notification.state';
 export class NotificationFormComponent implements OnInit {
   @Input() notification: Notification;
   @Output() cancel = new EventEmitter();
-  NotificationType = <NotificationType>{};
 
   loading$: Observable<boolean>;
 

@@ -93,15 +93,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var client = new BackgroundJobClient();
-
-                var notificationSettings = new NotificationSettingsDto
-                {
-                    CreatedById = this.principal.GetUserId(),
-                    SiteId = this.principal.GetUserData<UserDataDto>().CurrentSiteId,
-                    NotifiedRoleId = 1,
-                };
-
-                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(notificationSettings, null), new EnqueuedState());
+                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(this.principal.GetUserData<UserDataDto>().CurrentSiteId, this.principal.GetUserId(), null), new EnqueuedState());
 
                 return this.Ok("Operation being processed in background...");
             }

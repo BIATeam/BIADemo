@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// <summary>
     /// The NotificationUser entity.
     /// </summary>
-    public class NotificationUser : VersionedTable
+    public class NotificationRole : VersionedTable
     {
         /// <summary>
         /// Gets or sets the notification identifier.
@@ -26,11 +26,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <summary>
         /// Gets or sets the identifier of the user.
         /// </summary>
-        public int UserId { get; set; }
+        public int RoleId { get; set; }
 
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        public virtual User User { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

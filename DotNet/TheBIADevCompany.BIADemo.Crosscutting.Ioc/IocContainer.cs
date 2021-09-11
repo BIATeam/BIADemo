@@ -66,7 +66,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<INotificationAppService, NotificationAppService>();
-            collection.AddTransient<INotificationLightAppService, NotificationLightAppService>();
 
             // Begin BIADemo
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
@@ -106,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
-            collection.AddTransient<INotification, MailRepository>();
+            collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
         }
     }

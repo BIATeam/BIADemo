@@ -4,11 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Notification
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application;
     using BIA.Net.Core.Domain.Dto.Base;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>

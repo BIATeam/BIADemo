@@ -17,14 +17,16 @@
 
         public SignalRClientForHubRepository()
         {
-            if (!ClientForHubOptions.IsActive)
-            {
-                throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
-            }
+
         }
 
         public Task StartAsync()
         {
+            if (!ClientForHubOptions.IsActive)
+            {
+                throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
+            }
+
             if (!starting)
             {
                 starting = true;

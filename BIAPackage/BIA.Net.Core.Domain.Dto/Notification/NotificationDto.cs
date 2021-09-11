@@ -1,25 +1,18 @@
-// <copyright file="Notification.cs" company="TheBIADevCompany">
+// <copyright file="NotificationDto.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
+namespace BIA.Net.Core.Domain.Dto.Notification
 {
     using System;
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
-    /// The Notification entity.
+    /// The DTO used for notifications.
     /// </summary>
-    public class Notification : VersionedTable, IEntity
+    public class NotificationDto : BaseDto
     {
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
@@ -46,14 +39,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public DateTime CreatedDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the user who triggered the notification.
-        /// </summary>
-        public int CreatedById { get; set; }
-
-        /// <summary>
         /// Gets or sets the user who triggered the notification.
         /// </summary>
-        public virtual User CreatedBy { get; set; }
+        public int CreatedById { get; set; }
 
         /// <summary>
         /// Gets or sets the site identifier.
@@ -61,23 +49,19 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public int SiteId { get; set; }
 
         /// <summary>
-        /// Gets or sets the site.
+        /// Gets or sets the role identifier to be notified, if any.
         /// </summary>
-        public virtual Site Site { get; set; }
+        public IList<int> NotifiedRoleIds { get; set; }
 
         /// <summary>
-        /// Gets or sets the role to be notified, if any.
+        /// Gets or sets the list of users id to be notified.
         /// </summary>
-        public ICollection<NotificationRole> NotifiedRoles { get; set; }
+        public IList<int> NotifiedUserIds { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of users to be notified.
-        /// </summary>
-        public ICollection<NotificationUser> NotifiedUsers { get; set; }
-
-        /// <summary>
-        /// Gets ot sets the route to load on notification click.
+        /// Gets ot sets the target info to load on notification click or custom action.
         /// </summary>
         public string TargetJson { get; set; }
+
     }
 }
