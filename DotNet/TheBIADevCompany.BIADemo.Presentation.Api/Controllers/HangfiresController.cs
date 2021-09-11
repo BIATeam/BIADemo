@@ -19,9 +19,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Job;
-    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
     /// The API controller used to manage planes.

@@ -23,10 +23,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null);
 
-
         Task CreateNotification(NotificationDto notification);
-
-        Task<List<int>> GetUnreadIds(int userId);
 
     }
 }

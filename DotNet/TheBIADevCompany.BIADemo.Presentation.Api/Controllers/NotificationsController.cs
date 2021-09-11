@@ -26,9 +26,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #if UseHubForClientInNotification
     using Microsoft.AspNetCore.SignalR;
 #endif
-    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
     /// The API controller used to manage Notifications.
@@ -39,7 +38,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// The plane application service.
         /// </summary>
         private readonly INotificationAppService notificationService;
-        private readonly INotification notificationInfra;
         private readonly IPrincipal principal;
 
 #if UseHubForClientInNotification
@@ -50,10 +48,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// </summary>
         /// <param name="notificationService">The notification application service.</param>
-        /// <param name="notificationInfra">The notification infrastructure service.</param>
+        /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInNotification
-        public NotificationsController(INotificationAppService notificationService, INotification notificationInfra, IPrincipal principal,  IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal,  IClientForHubRepository clientForHubService)
 #else
         public NotificationsController(INotificationAppService notificationService)
 #endif
@@ -62,7 +60,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.clientForHubService = clientForHubService;
 #endif
             this.notificationService = notificationService;
-            this.notificationInfra = notificationInfra;
             this.principal = principal;
 
         }
@@ -185,7 +182,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
             try
             {
-                var dto = await this.notificationInfra.GetUnreadIds(userId);
+                var dto = await this.notificationService.GetUnreadIds(userId);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 

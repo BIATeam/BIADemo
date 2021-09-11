@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
@@ -16,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;

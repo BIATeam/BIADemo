@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Application.Job;
-    using TheBIADevCompany.BIADemo.Application.Notification;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Plane;
@@ -23,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
@@ -65,7 +65,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IRoleAppService, RoleAppService>();
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
-            collection.AddTransient<INotificationAppService, NotificationAppService>();
 
             // Begin BIADemo
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
@@ -81,6 +80,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Domain Layer
             collection.AddTransient<IUserRightDomainService, UserRightDomainService>();
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
+            collection.AddTransient<INotificationAppService, NotificationAppService>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

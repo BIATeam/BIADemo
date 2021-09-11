@@ -92,8 +92,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             app.UseBiaWorkerFeatures(config =>
             {
                 config.Configuration = this.configuration;
-                config.HangfireServer.Authorization = new[] { new HangfireAuthorizationFilter(userAppService) };
+                config.HangfireServer.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard") };
             });
+
         }
     }
 }
