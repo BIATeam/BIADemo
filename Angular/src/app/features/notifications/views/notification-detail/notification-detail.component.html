@@ -8,7 +8,7 @@
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
     <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="ui-button-secondary"
-      (click)="onEdit()"></button>
+      (click)="onEdit()" *ngIf="canEdit"></button>
     <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="ui-button-primary"
       (click)="onCancelled()"></button>
   </div>
