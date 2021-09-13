@@ -1,5 +1,5 @@
 <ng-container *ngIf="(notification$ |async) as notification">
-  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="space-evenly">
+  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="space-evenly"  *ngIf="notification && notification.id">
     <div><b>{{ 'notification.title' | translate }}</b><br />{{ notification.title }}</div>
     <div><b>{{ 'notification.description' | translate }}</b><br />{{ notification.description }}
     </div>
