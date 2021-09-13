@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -20,13 +21,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : AppServiceBase<User>, IUserAppService
+    public class UserAppService : FilteredServiceBase<User>, IUserAppService
     {
         /// <summary>
         /// The user right domain service.
@@ -76,6 +78,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
+        }
+
+        /// <summary>
+        /// Return options.
+        /// </summary>
+        /// <returns>List of OptionDto.</returns>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
+        {
+            return this.GetAllAsync<OptionDto, UserOptionMapper>();
         }
 
         /// <inheritdoc cref="IUserAppService.GetAllAsync(string)"/>

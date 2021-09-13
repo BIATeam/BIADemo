@@ -6,17 +6,14 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System;
     using System.Collections.Generic;
-    using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.Option;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
@@ -77,25 +74,25 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 
             var notification = new NotificationDto
             {
-                CreatedById = createdById,
+                CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
                 Description = "Run a long task and will send a notification when processed",
-                SiteId = siteId,
+                Site = new OptionDto { Id = siteId },
                 Title = "RunLongTaskWithNotification",
-                NotifiedRoleIds = new List<int> { 1 },
+                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1 } },
                 TargetJson = "{JobId = '" + jobId + "'}",
             };
 
             try
             {
-                notification.TypeId = (int)NotificationType.Success;
+                notification.Type = new OptionDto { Id = (int)NotificationType.Success };
 
                 await this.notificationAppService.AddAsync(notification);
                 // TODO ? - SignalR Send
             }
             catch (Exception)
             {
-                notification.TypeId = (int)NotificationType.Error;
+                notification.Type = new OptionDto { Id = (int)NotificationType.Error };
 
                 await this.notificationAppService.AddAsync(notification);
             }

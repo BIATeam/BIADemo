@@ -61,6 +61,13 @@
     "showFilters": "Mostrar filtros",
     "welcome": "BIA es una biblioteca de componentes, construida con el marco Angular"
   },
+  "role": {
+    "site_admin" : "Administrador del sitio",
+    "Begin BIADemo": "To remove in project from here",
+    "site_admin" : "Administrador de la aerolínea",
+    "End BIADemo": "To remove in project up to here",
+    "title": "Role"
+  },
   "site": {
     "add": "Añadir sitios",
     "admins": "Administradores",
@@ -88,16 +95,16 @@
     "createdDate": "Fecha",
     "type": {
       "title": "Tipo",
-      "1": "Tarea",
       "task": "Tarea",
-      "2": "Información",
       "info": "Información",
-      "3": "Éxito",
       "success": "Éxito",
-      "4": "Advertencia",
       "warning": "Advertencia",
-      "5": "Error",
       "error": "Error"
-    }
+    },
+    "read": "Leer",
+    "createdBy": "Creado por",
+    "notifiedRoles": "Roles notificados",
+    "notifiedUsers": "Usuarios notificados",
+    "targetJson" : "Objetivo JSON"
   }
 }

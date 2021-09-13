@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto;
@@ -26,12 +26,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInPlane
     using Microsoft.AspNetCore.SignalR;
-    using TheBIADevCompany.BIADemo.Application.Job;
-    using TheBIADevCompany.BIADemo.Application.Notification;
 #endif
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
@@ -147,21 +144,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                //var userId = this.principal.GetUserId();
-
-                //var jobId = this.backgroundJobClient.Enqueue(() => this.demoTestHangfireService.RunLongTask());
-                //var notification = new NotificationDto
-                //{
-                //    JobId = jobId,
-                //    CreatedById = userId,
-                //    CreatedDate = DateTime.Now,
-                //    Description = "Description",
-                //    SiteId = this.principal.GetUserData<UserDataDto>().CurrentSiteId,
-                //    Title = "Title",
-                //};
-
-                //this.notificationAppService.AddAsync(notification);
-
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
                 await this.clientForHubService.SendMessage("refresh-planes", string.Empty);

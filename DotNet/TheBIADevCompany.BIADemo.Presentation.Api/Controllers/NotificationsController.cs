@@ -11,11 +11,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Notification;
 #if UseHubForClientInNotification
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -35,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     public class NotificationsController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The notification application service.
         /// </summary>
         private readonly INotificationAppService notificationService;
         private readonly IPrincipal principal;
@@ -65,10 +66,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Get all planes with filters.
+        /// Get all notifications with filters.
         /// </summary>
         /// <param name="filters">The filters.</param>
-        /// <returns>The list of planes.</returns>
+        /// <returns>The list of notifications.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -88,10 +89,82 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
         }
 
+
         /// <summary>
-        /// Remove a plane.
+        /// Add a notification.
         /// </summary>
-        /// <param name="id">The plane identifier.</param>
+        /// <param name="dto">The notification DTO.</param>
+        /// <returns>The result of the creation.</returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.Create)]
+        public async Task<IActionResult> Add([FromBody] NotificationDto dto)
+        {
+            try
+            {
+                var createdDto = await this.notificationService.AddAsync(dto);
+#if UseHubForClientInNotification
+                await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+#endif
+                return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Update a notification.
+        /// </summary>
+        /// <param name="id">The notification identifier.</param>
+        /// <param name="dto">The notification DTO.</param>
+        /// <returns>The result of the update.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.Update)]
+        public async Task<IActionResult> Update(int id, [FromBody] NotificationDto dto)
+        {
+            if (id == 0 || dto == null || dto.Id != id)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var updatedDto = await this.notificationService.UpdateAsync(dto);
+#if UseHubForClientInNotification
+                await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+#endif
+                return this.Ok(updatedDto);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Remove a notification.
+        /// </summary>
+        /// <param name="id">The notification identifier.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -125,10 +198,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Get a plane by its identifier.
+        /// Get a notification by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The plane.</returns>
+        /// <returns>The notification.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -145,14 +218,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var dto = await this.notificationService.GetAsync(id);
-                
+
                 // If it's the first time this notification is read
                 if (!dto.Read)
                 {
                     dto = await this.notificationService.SetAsRead(dto);
-
-                    /*var unreadCount = await this.notificationLightService.GetUnreadCount();
-                    await this.hubForClients.Clients.All.SendAsync("notification-count", unreadCount);*/
                 }
 
                 return this.Ok(dto);
@@ -196,9 +266,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Removes the specified planesType ids.
+        /// Removes the specified notificationsType ids.
         /// </summary>
-        /// <param name="ids">The planesType ids.</param>
+        /// <param name="ids">The notificationsType ids.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]

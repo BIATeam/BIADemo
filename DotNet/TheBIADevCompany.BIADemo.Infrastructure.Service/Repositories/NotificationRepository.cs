@@ -4,17 +4,11 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>

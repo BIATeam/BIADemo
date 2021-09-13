@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System.Security.Principal;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features;
     using Microsoft.AspNetCore.Builder;

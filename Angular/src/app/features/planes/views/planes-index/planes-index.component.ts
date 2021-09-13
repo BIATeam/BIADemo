@@ -33,7 +33,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
   styleUrls: ['./planes-index.component.scss']
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = true;
+  useCalcMode = false;
   useSignalR = true;
   useView = false;
 

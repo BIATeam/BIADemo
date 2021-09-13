@@ -61,6 +61,13 @@
     "showFilters": "Show filters",
     "welcome": "BIA is a component library, built with the Angular framework"
   },
+  "role": {
+    "site_admin" : "Site administrator",
+    "Begin BIADemo": "To remove in project from here",
+    "site_admin" : "Airline administrator",
+    "End BIADemo": "To remove in project up to here",
+    "title": "Role"
+  },
   "site": {
     "add": "Add site",
     "admins": "Administrators",
@@ -88,16 +95,16 @@
     "createdDate": "Date",
     "type": {
       "title": "Type",
-      "1": "Task",
       "task": "Task",
-      "2": "Information",
       "info": "Information",
-      "3": "Success",
       "success": "Success",
-      "4": "Warning",
       "warning": "Warning",
-      "5": "Error",
       "error": "Error"
-    }
+    },
+    "read": "Read",
+    "createdBy": "Created by",
+    "notifiedRoles": "Notified roles",
+    "notifiedUsers": "Notified users",
+    "targetJson" : "Target JSON"
   }
 }

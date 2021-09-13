@@ -1,15 +1,120 @@
-<h1>Détail notification</h1>
-<ng-container *ngIf="notification && notification.id">
-  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="space-evenly">
-    <div><b>{{ 'notification.title' | translate }}</b><br />{{ notification.title }}</div>
-    <div><b>{{ 'notification.description' | translate }}</b><br />{{ notification.description }}
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+      </span>
     </div>
-    <div><b>{{ 'notification.createdDate' | translate }}</b><br />{{ notification.createdDate }}</div>
-    <div><b>{{ 'notification.type.title' | translate }}</b><br />{{ 'notification.type.' + notification.typeId | translate}}</div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="description" type="text" pInputText maxlength="64" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-dropdown
+          [options]="notificationTypeOptions"
+          placeholder="&nbsp;"
+          formControlName="type"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+          [showClear]="true"
+        ></p-dropdown>
+        <label>{{ 'notification.type.title' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <p-checkbox binary="true" formControlName="read" label="{{ 'notification.read' | translate }}"></p-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-calendar
+          biaLocale
+          formControlName="createdDate"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          dateFormat="yy-mm-dd"
+          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+        ></p-calendar>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.createdDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-dropdown
+          [options]="userOptions"
+          placeholder="&nbsp;"
+          formControlName="createdBy"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+          [showClear]="true"
+        ></p-dropdown>
+        <label>{{ 'notification.createdBy' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="roleOptions"
+          formControlName="notifiedRoles"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+        ></p-multiSelect>
+        <label>{{ 'notification.notifiedRoles' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="userOptions"
+          formControlName="notifiedUsers"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+        ></p-multiSelect>
+        <label>{{ 'notification.notifiedUsers' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="targetJson" type="text" pInputText maxlength="64" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.targetJson' | translate }}</label>
+      </span>
+    </div>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
-    <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="ui-button-secondary"
-      (click)="onCancel()"></button>
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="ui-button-secondary"
+      (click)="onCancel()"
+    ></button>
   </div>
-</ng-container>
-<bia-spinner *ngIf="loading$ | async" [overlay]="true"></bia-spinner>
+</form>

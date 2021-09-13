@@ -61,6 +61,13 @@
     "showFilters": "Afficher les filtres",
     "welcome": "BIA est une librarie de composants, construite avec le framework Angular"
   },
+  "role": {
+    "site_admin" : "Administrateur du site",
+    "Begin BIADemo": "To remove in project from here",
+    "site_admin" : "Administrateur de la compagnie",
+    "End BIADemo": "To remove in project up to here",
+    "title": "Role"
+  },
   "site": {
     "add": "Ajouter site",
     "admins": "Administrateurs",
@@ -88,16 +95,16 @@
     "createdDate": "Date",
     "type": {
       "title": "Type",
-      "1": "Tâche",
       "task": "Tâche",
-      "2": "Information",
       "info": "Information",
-      "3": "Succès",
       "success": "Succès",
-      "4": "Avertissement",
       "warning": "Avertissement",
-      "5": "Erreur",
       "error": "Erreur"
-    }
+    },
+    "read": "Lue",
+    "createdBy": "Créé par",
+    "notifiedRoles": "Roles notifiés",
+    "notifiedUsers": "Utilisateurs notifiés",
+    "targetJson" : "Cible JSON"
   }
 }

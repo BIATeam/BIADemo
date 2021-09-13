@@ -216,6 +216,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Roles
         {
             /// <summary>
+            /// The right to access to the list of airports (options only).
+            /// </summary>
+            public const string Options = "Roles_Options";
+
+            /// <summary>
             /// The right to get all roles.
             /// </summary>
             public const string List = "Roles_List";
@@ -283,6 +288,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class Users
         {
+            /// <summary>
+            /// The right to access to the list of airports (options only).
+            /// </summary>
+            public const string Options = "User_Options";
+
             /// <summary>
             /// The right to access to the list of users.
             /// </summary>
@@ -386,9 +396,30 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Read = "Notification_Read";
 
             /// <summary>
+            /// The right to create notifications.
+            /// </summary>
+            public const string Create = "Notification_Create";
+
+            /// <summary>
+            /// The right to update notifications.
+            /// </summary>
+            public const string Update = "Notification_Update";
+
+            /// <summary>
             /// The right to delete notifications.
             /// </summary>
             public const string Delete = "Notification_Delete";
+        }
+        /// <summary>
+        /// The planes rights.
+        /// </summary>
+        public static class NotificationTypes
+        {
+            /// <summary>
+            /// The right to access to the list of planes types (options only).
+            /// </summary>
+            public const string Options = "NotifiactionType_Options";
+
         }
     }
 }

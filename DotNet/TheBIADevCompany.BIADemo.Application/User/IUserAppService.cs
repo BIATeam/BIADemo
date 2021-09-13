@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
@@ -15,6 +16,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public interface IUserAppService
     {
+        /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+
         /// <summary>
         /// Get all existing users filtered.
         /// </summary>

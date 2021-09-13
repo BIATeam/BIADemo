@@ -1,7 +1,7 @@
 ﻿// <copyright file="BIAClaimsPrincipal.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
-namespace BIA.Net.Core.Application.Authentication
+namespace BIA.Net.Core.Domain.Authentication
 {
     using Newtonsoft.Json;
     using System.Collections.Generic;

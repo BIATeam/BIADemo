@@ -8,16 +8,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for role.
     /// </summary>
-    public class RoleAppService : AppServiceBase<Role>, IRoleAppService
+    public class RoleAppService : FilteredServiceBase<Role>, IRoleAppService
     {
         /// <summary>
         /// The claims principal.
@@ -33,6 +35,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+        }
+
+        /// <summary>
+        /// Return options.
+        /// </summary>
+        /// <returns>List of OptionDto.</returns>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
+        {
+            return this.GetAllAsync<OptionDto, RoleOptionMapper>();
         }
 
         /// <inheritdoc cref="IRoleAppService.GetAllAsync"/>

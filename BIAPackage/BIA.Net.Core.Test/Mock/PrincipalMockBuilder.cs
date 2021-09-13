@@ -4,7 +4,7 @@
 namespace BIA.Net.Core.Test.Mock
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Test.IoC;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;

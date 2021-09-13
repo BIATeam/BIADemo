@@ -1,13 +1,15 @@
+import { OptionDto } from "src/app/shared/bia-shared/model/option-dto";
+
 export interface Notification {
   id: number;
   title: string;
   description: string;
-  typeId: number;
+  type: OptionDto;
   read: boolean;
   createdDate: string;
-  createdById: number;
-  siteId: number;
-  notifiedRoleIds: number[];
-  notifiedUserIds: number[];
+  createdBy: OptionDto | null;
+  site: OptionDto;
+  notifiedRoles: OptionDto[];
+  notifiedUsers: OptionDto[];
   targetJson: string;
 }

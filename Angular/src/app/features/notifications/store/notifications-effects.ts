@@ -3,24 +3,24 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  create,
   failure,
-  loadNotification,
-  loadAllNotificationsByPost,
-  loadAllNotificationsByPostSuccess,
-  loadNotificationSuccess,
+  load,
+  loadAllByPost,
+  loadAllByPostSuccess,
+  loadSuccess,
   remove,
   multiRemove,
-  update,
-  callWorkerWithNotification,
+  update
 } from './notifications-actions';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { Notification } from 'src/app/features/notifications/model/notification';
+import { NotificationDas } from '../services/notification-das.service';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { getLastLazyLoadEvent } from './notification.state';
-import { NotificationDas } from '../service/notification-das.service';
-import { HangfireDas } from '../service/hangfire-das.service';
+import { Notification } from '../model/notification';
+import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { AppState } from 'src/app/store/state';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 
 /**
@@ -30,13 +30,14 @@ import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-a
 
 @Injectable()
 export class NotificationsEffects {
+  static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllNotificationsByPost),
+      ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
         this.notificationDas.getListByPost(event).pipe(
-          map((result: DataResult<Notification[]>) => loadAllNotificationsByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<Notification[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(failure({ error: err }));
@@ -48,15 +49,40 @@ export class NotificationsEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadNotification),
+      ofType(load),
       pluck('id'),
       switchMap((id) => {
         return this.notificationDas.get(id).pipe(
-          map((notification) => loadNotificationSuccess({ notification })),
+          map((notification) => loadSuccess({ notification })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(failure({ error: err }));
-          }));
+          })
+        );
+      })
+    )
+  );
+
+  create$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(create),
+      pluck('notification'),
+      concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      switchMap(([notification, event]) => {
+        return this.notificationDas.post(notification).pipe(
+          map(() => {
+            this.biaMessageService.showAddSuccess();
+            if (NotificationsEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
+          }),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(failure({ error: err }));
+          })
+        );
       })
     )
   );
@@ -70,27 +96,11 @@ export class NotificationsEffects {
         return this.notificationDas.put(notification, notification.id).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllNotificationsByPost({ event: event });
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(failure({ error: err }));
-          })
-        );
-      })
-    )
-  );
-
-  callWorkerWithNotification$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(callWorkerWithNotification),
-      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([x, event]) => {
-        return this.hangfireDas.callWorkerWithNotification().pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            // return loadAllByPost({ event: event });
-            return biaSuccessWaitRefreshSignalR();
+            if (NotificationsEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -110,7 +120,11 @@ export class NotificationsEffects {
         return this.notificationDas.delete(id).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllNotificationsByPost({ event: event });
+            if (NotificationsEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -130,7 +144,11 @@ export class NotificationsEffects {
         return this.notificationDas.deletes(ids).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllNotificationsByPost({ event: event });
+            if (NotificationsEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -144,8 +162,7 @@ export class NotificationsEffects {
   constructor(
     private actions$: Actions,
     private notificationDas: NotificationDas,
-    private hangfireDas: HangfireDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

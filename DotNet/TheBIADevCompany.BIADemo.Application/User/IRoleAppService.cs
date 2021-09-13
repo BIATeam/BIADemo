@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using BIA.Net.Core.Domain.Dto.Option;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -13,6 +14,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public interface IRoleAppService
     {
+        /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+
         /// <summary>
         /// Get all existing roles.
         /// </summary>

@@ -6,9 +6,11 @@ export enum Permission {
   Member_Read = 'Member_Read',
   Member_Save = 'Member_Save',
   Member_Update = 'Member_Update',
+  Notification_Create = 'Notification_Create',
   Notification_List_Access = 'Notification_List_Access',
   Notification_Delete = 'Notification_Delete',
   Notification_Read = 'Notification_Read',
+  Notification_Update = 'Notification_Update',
   // Begin BIADemo
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',

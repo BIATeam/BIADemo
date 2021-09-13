@@ -38,6 +38,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// /// <returns>The list of production sites.</returns>
+        [HttpGet("allOptions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Users.Options)]
+        public async Task<IActionResult> GetAllOptions()
+        {
+            var results = await this.userService.GetAllOptionsAsync();
+            return this.Ok(results);
+        }
+
+        /// <summary>
         /// Gets all users using the filter.
         /// </summary>
         /// <param name="filter">Used to filter on lastname, firstname or login.</param>

@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateModel(ModelBuilder modelBuilder)
         {
             CreateNotificationModel(modelBuilder);
+            CreateNotificationTypeModel(modelBuilder);
             CreateNotificationUserModel(modelBuilder);
             CreateNotificationRoleModel(modelBuilder);
         }
@@ -35,6 +36,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Notification>().Property(m => m.Description).HasMaxLength(256);
             modelBuilder.Entity<Notification>().Property(m => m.TypeId).IsRequired();
             modelBuilder.Entity<Notification>().Property(m => m.CreatedDate).IsRequired();
+        }
+
+        /// <summary>
+        /// Create the model for notification types.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateNotificationTypeModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
+            modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "Task" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "Info" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "Success" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "Warning" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "Error" });
         }
 
         /// <summary>

@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used for notifications.
@@ -26,7 +27,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the notification type identifier.
         /// </summary>
-        public int TypeId { get; set; }
+        public OptionDto Type { get; set; }
 
         /// <summary>
         /// Gets or sets whether the notification has been read.
@@ -41,22 +42,22 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the user who triggered the notification.
         /// </summary>
-        public int CreatedById { get; set; }
+        public OptionDto CreatedBy { get; set; }
 
         /// <summary>
         /// Gets or sets the site identifier.
         /// </summary>
-        public int SiteId { get; set; }
+        public OptionDto Site { get; set; }
 
         /// <summary>
         /// Gets or sets the role identifier to be notified, if any.
         /// </summary>
-        public IList<int> NotifiedRoleIds { get; set; }
+        public ICollection<OptionDto> NotifiedRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the list of users id to be notified.
         /// </summary>
-        public IList<int> NotifiedUserIds { get; set; }
+        public ICollection<OptionDto> NotifiedUsers { get; set; }
 
         /// <summary>
         /// Gets ot sets the target info to load on notification click or custom action.

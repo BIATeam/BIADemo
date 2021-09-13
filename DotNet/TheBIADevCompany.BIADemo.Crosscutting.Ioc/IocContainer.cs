@@ -81,6 +81,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserRightDomainService, UserRightDomainService>();
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
             collection.AddTransient<INotificationAppService, NotificationAppService>();
+            collection.AddTransient<INotificationTypeAppService, NotificationTypeAppService>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

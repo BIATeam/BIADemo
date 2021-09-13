@@ -36,6 +36,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public int TypeId { get; set; }
 
         /// <summary>
+        /// Gets or sets the notification type.
+        /// </summary>
+        public virtual NotificationType Type { get; set; }
+
+        /// <summary>
         /// Gets or sets whether the notification has been read.
         /// </summary>
         public bool Read { get; set; }
@@ -48,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <summary>
         /// Gets or sets the identifier of the user who triggered the notification.
         /// </summary>
-        public int CreatedById { get; set; }
+        public int? CreatedById { get; set; }
 
         /// <summary>
         /// Gets or sets the user who triggered the notification.

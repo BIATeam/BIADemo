@@ -39,14 +39,17 @@ export const getLastLazyLoadEvent = createSelector(
   (state) => state.lastLazyLoadEvent
 );
 
-export const { selectAll: getAllNotifications } = fromNotifications.notificationsAdapter.getSelectors(
-  getNotificationsEntitiesState
-);
-
 export const getNotificationLoadingGet = createSelector(
   getNotificationsEntitiesState,
   (state) => state.loadingGet
 );
+
+export const getNotificationLoadingGetAll = createSelector(
+  getNotificationsEntitiesState,
+  (state) => state.loadingGetAll
+);
+
+export const { selectAll: getAllNotifications } = fromNotifications.notificationsAdapter.getSelectors(getNotificationsEntitiesState);
 
 export const getNotificationById = (id: number) =>
   createSelector(

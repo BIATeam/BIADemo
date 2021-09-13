@@ -4,13 +4,8 @@
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
-    using System;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Job;
     using Hangfire.Server;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
 
     /// <summary>
     /// Sample class to use a hangfire task.

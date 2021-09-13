@@ -129,7 +129,7 @@
       },
       // Role
       {
-        "Name": "Roles_List",
+        "Names": [ "Roles_Options", "Roles_List" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
@@ -152,7 +152,7 @@
       },
       // User
       {
-        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Names": [ "User_Options","User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
         "Roles": [ "Admin" ]
       },
       // View
@@ -176,6 +176,10 @@
       {
         "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Notification_Update", "Notification_Create", "NotifiactionType_Options" ],
+        "Roles": [ "Admin"]
       }
     ]
   }

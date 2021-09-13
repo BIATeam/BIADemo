@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -40,6 +40,24 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             this.roleService = roleService;
             this.principal = principal as BIAClaimsPrincipal;
+        }
+
+
+
+        /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// /// <returns>The list of production sites.</returns>
+        [HttpGet("allOptions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Roles.Options)]
+        public async Task<IActionResult> GetAllOptions()
+        {
+            var results = await this.roleService.GetAllOptionsAsync();
+            return this.Ok(results);
         }
 
         /// <summary>

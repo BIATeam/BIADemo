@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -48,31 +49,54 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.Title = dto.Title;
             entity.CreatedDate = dto.CreatedDate;
             entity.Description = dto.Description;
-            entity.CreatedById = dto.CreatedById;
-            entity.TypeId = dto.TypeId;
+            entity.CreatedById = dto.CreatedBy?.Id;
+            entity.TypeId = dto.Type.Id;
 
-            entity.SiteId = dto.SiteId;
-
-            if (dto.NotifiedUserIds?.Any() == true)
+            if (dto.Site != null)
             {
-                entity.NotifiedUsers = new List<NotificationUser>();
+                entity.SiteId = dto.Site.Id;
+            }
 
-                foreach (var userId in dto.NotifiedUserIds)
+            // Mapping relationship *-* : ICollection<Airports>
+            if (dto.NotifiedUsers?.Any() == true)
+            {
+                foreach (var userDto in dto.NotifiedUsers.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var connectingAirport = entity.NotifiedUsers.FirstOrDefault(x => x.UserId == userDto.Id && x.NotificationId == dto.Id);
+                    if (connectingAirport != null)
+                    {
+                        entity.NotifiedUsers.Remove(connectingAirport);
+                    }
+                }
+
+                entity.NotifiedUsers = entity.NotifiedUsers ?? new List<NotificationUser>();
+                foreach (var userDto in dto.NotifiedUsers.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.NotifiedUsers.Add(new NotificationUser
-                    { UserId = userId, NotificationId = dto.Id });
+                    { UserId = userDto.Id, NotificationId = dto.Id });
                 }
             }
-            if (dto.NotifiedUserIds?.Any() == true)
-            {
-                entity.NotifiedRoles = new List<NotificationRole>();
 
-                foreach (var roleId in dto.NotifiedRoleIds)
+            // Mapping relationship *-* : ICollection<Airports>
+            if (dto.NotifiedRoles?.Any() == true)
+            {
+                foreach (var roleDto in dto.NotifiedRoles.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var connectingAirport = entity.NotifiedRoles.FirstOrDefault(x => x.RoleId == roleDto.Id && x.NotificationId == dto.Id);
+                    if (connectingAirport != null)
+                    {
+                        entity.NotifiedRoles.Remove(connectingAirport);
+                    }
+                }
+
+                entity.NotifiedRoles = entity.NotifiedRoles ?? new List<NotificationRole>();
+                foreach (var roleDto in dto.NotifiedRoles.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.NotifiedRoles.Add(new NotificationRole
-                    { RoleId = roleId, NotificationId = dto.Id });
+                    { RoleId = roleDto.Id, NotificationId = dto.Id });
                 }
             }
+
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
@@ -81,17 +105,42 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             return entity => new NotificationDto
             {
                 Id = entity.Id,
-                CreatedById = entity.CreatedById,
                 CreatedDate = entity.CreatedDate,
+
+                CreatedBy = entity.CreatedBy != null ? new OptionDto
+                {
+                    Id = entity.CreatedBy.Id,
+                    Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
+                }
+                : null,
+
                 Description = entity.Description,
                 Read = entity.Read,
                 Title = entity.Title,
-                TypeId = entity.TypeId,
+                Type = new OptionDto
+                {
+                    Id = entity.TypeId,
+                    Display = entity.Type.Code,
+                },
                 TargetJson = entity.TargetJson,
 
-                SiteId = entity.SiteId,
-                NotifiedRoleIds = entity.NotifiedRoles.Select(nu => nu.RoleId).ToList(),
-                NotifiedUserIds = entity.NotifiedUsers.Select(nu => nu.UserId).ToList(),
+                Site = new OptionDto
+                {
+                    Id = entity.Site.Id,
+                    Display = entity.Site.Title,
+                },
+
+                NotifiedRoles = entity.NotifiedRoles.Select(nr => new OptionDto
+                {
+                    Id = nr.Role.Id,
+                    Display = nr.Role.Code,
+                }).ToList(),
+
+                NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
+                {
+                    Id = nu.User.Id,
+                    Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
+                }).ToList(),
             };
         }
     }

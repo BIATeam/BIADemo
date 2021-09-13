@@ -1,8 +1,14 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { loadNotificationSuccess, loadAllNotificationsByPostSuccess, loadNotification, loadAllNotificationsByPost } from './notifications-actions';
+import {
+  loadSuccess,
+  loadAllByPostSuccess,
+  loadAllByPost,
+  load,
+  failure
+} from './notifications-actions';
 import { LazyLoadEvent } from 'primeng/api';
-import { Notification } from 'src/app/features/notifications/model/notification';
+import { Notification } from '../model/notification';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<Notification>({
@@ -27,6 +33,7 @@ export interface State extends EntityState<Notification> {
   currentNotification: Notification;
   lastLazyLoadEvent: LazyLoadEvent;
   loadingGet: boolean;
+  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State = notificationsAdapter.getInitialState({
@@ -34,28 +41,31 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
   totalCount: 0,
   currentNotification: <Notification>{},
   lastLazyLoadEvent: <LazyLoadEvent>{},
-  loadingGet: false
+  loadingGet: false,
+  loadingGetAll: false,
 });
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllNotificationsByPost, (state, { event }) => {
+  on(loadAllByPost, (state, { event }) => {
+    return { ...state, loadingGetAll: true };
+  }),
+  on(load, (state) => {
     return { ...state, loadingGet: true };
   }),
-  on(loadAllNotificationsByPostSuccess, (state, { result, event }) => {
+  on(loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = notificationsAdapter.setAll(result.data, state);
-    stateUpdated.currentNotification = <Notification>{};
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
-    stateUpdated.loadingGet = false;
+    stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadNotification, (state) => {
-    return { ...state, loadingGet: true };
-  }),
-  on(loadNotificationSuccess, (state, { notification }) => {
+  on(loadSuccess, (state, { notification }) => {
     return { ...state, currentNotification: notification, loadingGet: false };
-  })
+  }),
+  on(failure, (state, { error }) => {
+    return { ...state, loadingGetAll: false, loadingGet: false };
+  }),
 );
 
 export const getNotificationById = (id: number) => (state: State) => state.entities[id];

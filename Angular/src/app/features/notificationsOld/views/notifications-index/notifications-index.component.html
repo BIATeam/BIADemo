@@ -1,0 +1,20 @@
+<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <div fxFlex="100">
+    <bia-table-header [headerTitle]="'notification.listOf' | translate" [canExportCSV]="true" [canAdd]="false"
+      (exportCSV)="onExportCSV()" (delete)="onDelete()" [selectedElements]="selectedNotifications"></bia-table-header>
+
+    <button type="button" class="ui-button-secondary flat" pButton (click)="callWorkerWithNotification()"
+      pTooltip="{{ 'msg.showFilters' | translate }}" label="Call worker with notification"></button>
+
+    <bia-table-controller [defaultPageSize]="pageSize" [length]="totalCount$ | async" [columns]="columns"
+      [columnToDisplays]="displayedColumns" (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)" (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()" (viewChange)="onViewChange($event)"></bia-table-controller>
+    <bia-table [elements]="notifications$ | async" [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns" [pageSize]="pageSize" [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch" [globalSearchValue]="globalSearchValue" [canEdit]="true" [canSelectElement]="true"
+      (loadLazy)="onLoadLazy($event)" [viewPreference]="viewPreference"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)" (edit)="onEdit($event)"
+      [loading]="loading$ | async" [sortFieldValue]="'createdDate'" [sortOrderValue]="-1"></bia-table>
+  </div>
+</div>
