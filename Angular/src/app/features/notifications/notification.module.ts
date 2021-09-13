@@ -63,8 +63,8 @@ const ROUTES: Routes = [
               title: 'notification.edit',
               InjectComponent: NotificationEditComponent,
             },
-            component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
+            // component: PopupLayoutComponent,
+            component: FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -72,7 +72,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'bia.detail',
               canNavigate: true,
-              permission: Permission.Notification_Update,
+              permission: Permission.Notification_Read,
               title: 'notification.detail',
               InjectComponent: NotificationDetailComponent,
             },

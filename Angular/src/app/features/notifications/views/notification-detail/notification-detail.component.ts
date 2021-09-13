@@ -6,6 +6,8 @@ import { Notification } from '../../model/notification';
 import { AppState } from 'src/app/store/state';
 import { NotificationService } from '../../services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Permission } from 'src/app/shared/permission';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 @Component({
   selector: 'app-notification-detail',
@@ -15,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   private sub = new Subscription();
+  canEdit : boolean;
   loading$: Observable<boolean>;
   notification$: Observable<Notification | undefined>;
 
@@ -22,11 +25,14 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
     public notificationService: NotificationService,
   ) { }
 
   ngOnInit() {
     this.notification$ = this.notificationService.notification$;
+    this.canEdit = this.authService.hasPermission(Permission.Notification_Update);
+
   }
 
   ngOnDestroy() {
@@ -45,7 +51,6 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   }
 
   onEdit() {
-    this.router.navigate(['./edit'], { relativeTo: this.activatedRoute });
-    //this.router.navigate(['./edit'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
   }
 }
