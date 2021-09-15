@@ -173,7 +173,7 @@ In ngOnInit function of the two files:
 * **src\app\features\aircrafts\views\aircrafts-new-dialog\aircrafts-new-dialog.component.ts**
 For example, add the following lines two have the option list synchronized (for the type : PlaneType):
 ```typescript
-    this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions).pipe();
+    this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     this.store.dispatch(loadAllPlaneTypeOptions());
 ```
 

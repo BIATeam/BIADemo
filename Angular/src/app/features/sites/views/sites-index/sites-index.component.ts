@@ -191,17 +191,17 @@ export class SitesIndexComponent implements OnInit {
   }
 
   private initLoading() {
-    this.loading$ = this.store.select(getSiteLoadingGetAll).pipe();
+    this.loading$ = this.store.select(getSiteLoadingGetAll);
   }
 
   private initTotalCount() {
-    this.totalCount$ = this.store.select(getSitesTotalCount).pipe();
+    this.totalCount$ = this.store.select(getSitesTotalCount);
   }
 
   private initSites() {
     this.sites$ = this.store
       .select(getAllSites)
-      .pipe()
+      
       .pipe(map((siteInfos) => siteInfos.map((siteInfo) => this.toSiteListVM(siteInfo))));
   }
 

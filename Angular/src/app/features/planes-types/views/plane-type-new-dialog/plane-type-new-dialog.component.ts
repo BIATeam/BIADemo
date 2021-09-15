@@ -23,7 +23,7 @@ export class PlaneTypeNewDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayNewDialog)
-        .pipe()
+        
         .subscribe((x) => (this.display = x))
     );
   }

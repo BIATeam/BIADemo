@@ -25,9 +25,9 @@ export class NotificationOptionsService {
     constructor(
         private store: Store<AppState>,
     ) {
-        this.notificationTypeOptions$ = this.store.select(getAllNotificationTypeOptions).pipe();
-        this.roleOptions$ = this.store.select(getAllRoleOptions).pipe();
-        this.userOptions$ = this.store.select(getAllUserOptions).pipe();
+        this.notificationTypeOptions$ = this.store.select(getAllNotificationTypeOptions);
+        this.roleOptions$ = this.store.select(getAllRoleOptions);
+        this.userOptions$ = this.store.select(getAllUserOptions);
 
         // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.notificationTypeOptions$, this.roleOptions$, this.userOptions$]).pipe(

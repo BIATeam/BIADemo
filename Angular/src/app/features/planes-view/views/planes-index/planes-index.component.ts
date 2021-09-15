@@ -64,9 +64,9 @@ export class PlanesIndexComponent implements OnInit {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.planes$ = this.store.select(getAllPlanes).pipe();
-    this.totalCount$ = this.store.select(getPlanesTotalCount).pipe();
-    this.loading$ = this.store.select(getPlaneLoadingGetAll).pipe();
+    this.planes$ = this.store.select(getAllPlanes);
+    this.totalCount$ = this.store.select(getPlanesTotalCount);
+    this.loading$ = this.store.select(getPlaneLoadingGetAll);
     this.store.dispatch(loadAllView());
   }
 

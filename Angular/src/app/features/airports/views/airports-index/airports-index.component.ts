@@ -71,9 +71,9 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.airports$ = this.store.select(getAllAirports).pipe();
-    this.totalCount$ = this.store.select(getAirportsTotalCount).pipe();
-    this.loading$ = this.store.select(getAirportLoadingGetAll).pipe();
+    this.airports$ = this.store.select(getAllAirports);
+    this.totalCount$ = this.store.select(getAirportsTotalCount);
+    this.loading$ = this.store.select(getAirportLoadingGetAll);
     this.OnDisplay();
   }
 

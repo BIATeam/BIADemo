@@ -74,9 +74,9 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.notifications$ = this.store.select(getAllNotifications).pipe();
-    this.totalCount$ = this.store.select(getNotificationsTotalCount).pipe();
-    this.loading$ = this.store.select(getNotificationLoadingGetAll).pipe();
+    this.notifications$ = this.store.select(getAllNotifications);
+    this.totalCount$ = this.store.select(getNotificationsTotalCount);
+    this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.notificationOptionsService.loadAllOptions();
