@@ -22,8 +22,8 @@ export class MemberOptionsService {
     constructor(
         private store: Store<AppState>,
     ) {
-        this.userOptions$ = this.store.select(getAllUserOptions).pipe();
-        this.roleOptions$ = this.store.select(getAllRoleOptions).pipe();
+        this.userOptions$ = this.store.select(getAllUserOptions);
+        this.roleOptions$ = this.store.select(getAllRoleOptions);
 
         // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.userOptions$, this.roleOptions$]).pipe(
