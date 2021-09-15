@@ -27,7 +27,7 @@
           [style]="{ width: '100%' }"
           [showClear]="true"
         ></p-dropdown>
-        <label>{{ 'notification.type.title' | translate }}</label>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.type.title' | translate }}</label>
       </span>
     </div>
   </div>
@@ -103,7 +103,7 @@
     <div class="app-field-container" fxFlex="90">
       <span class="md-inputfield">
         <input formControlName="targetJson" type="text" pInputText maxlength="64" style ="width:100%"/>
-        <label><span class="bia-star-mandatory">*</span>{{ 'notification.targetJson' | translate }}</label>
+        <label>{{ 'notification.targetJson' | translate }}</label>
       </span>
     </div>
   </div>

@@ -1,10 +1,12 @@
 <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
   <div fxFlex="100">
-    <bia-table-header  *ngIf="(siteService.loading$ | async) === (false)"
-      [headerTitle]="('member.listOfSiteMembers' | translate) + (siteService.currentSite?.title)"
-      [canAdd]="canAdd"
-      [canBack]="true"
+    <bia-table-header
+      [headerTitle]="'member.listOfSiteMembers' | translate"
+      [canAdd]="canAdd&&!useCalcMode"
+      [canDelete]="canDelete"
+      [canExportCSV]="true"
       (create)="onCreate()"
+      (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedMembers"
     ></bia-table-header>
@@ -17,8 +19,10 @@
       (filter)="searchGlobalChanged($event)"
       (pageSizeChange)="onPageSizeChange($event)"
       (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
     ></bia-table-controller>
-    <bia-table
+    <bia-table *ngIf="!useCalcMode"
       [elements]="members$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -31,17 +35,28 @@
       [loading]="loading$ | async"
       (edit)="onEdit($event)"
       (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
+    <app-member-table *ngIf="useCalcMode"
+      [elements]="members$ | async"
+      [dictOptionDtos]="memberOptionsService.dictOptionDtos$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canAdd]="canAdd"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      (save)="onSave($event)"
+    ></app-member-table>
   </div>
 </div>
-<!-- begin popup mode -->
-<app-member-edit-dialog></app-member-edit-dialog>
-<app-member-new-dialog [site]="siteService.currentSite" *ngIf="(siteService.loading$ | async) === (false)"></app-member-new-dialog>
-<!-- end popup mode -->
-
-
-
-
-
-

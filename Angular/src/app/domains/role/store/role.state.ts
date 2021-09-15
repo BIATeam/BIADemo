@@ -38,3 +38,7 @@ export const getRoleById = (id: number) =>
     getRolesEntitiesState,
     fromRoles.getRoleById(id)
   );
+export function getAllRoleOptions(getAllRoleOptions: any): import("rxjs").OperatorFunction<import("../../../store/state").AppState, unknown> {
+  throw new Error('Function not implemented.');
+}
+

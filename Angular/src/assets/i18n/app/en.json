@@ -65,6 +65,7 @@
     "site_admin" : "Site administrator",
     "Begin BIADemo": "To remove in project from here",
     "site_admin" : "Airline administrator",
+    "pilot" : "Pilot",
     "End BIADemo": "To remove in project up to here",
     "title": "Role"
   },

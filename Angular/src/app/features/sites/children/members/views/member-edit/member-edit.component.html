@@ -1,0 +1,8 @@
+<app-member-form 
+    [member]="memberService.member$ | async" 
+    [roleOptions]="memberOptionsService.roleOptions$| async"
+    [userOptions]="memberOptionsService.userOptions$| async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-member-form>
+<bia-spinner *ngIf="memberService.loading$ | async" [overlay]="true"></bia-spinner>

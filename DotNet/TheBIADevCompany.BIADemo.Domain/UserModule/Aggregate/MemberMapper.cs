@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -43,11 +44,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             {
                 Id = entity.Id,
                 SiteId = entity.SiteId,
-                UserId = entity.UserId,
-                UserLastName = entity.User.LastName,
-                UserFirstName = entity.User.FirstName,
-                UserLogin = entity.User.Login,
-                Roles = entity.MemberRoles.Select(s => new MemberRoleDto { RoleId = s.RoleId, MemberId = entity.Id }),
+                User = new OptionDto
+                {
+                    Id = entity.User.Id,
+                    Display = entity.User.FirstName + " " + entity.User.LastName + " (" + entity.User.Login + ")",
+                },
+                Roles = entity.MemberRoles.Select(s => new OptionDto { Id = s.RoleId, Display = s.Role.Code }),
             };
         }
 
@@ -65,12 +67,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
             entity.Id = dto.Id;
             entity.SiteId = dto.SiteId;
-            entity.UserId = dto.UserId;
+            entity.UserId = dto.User.Id;
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Deleted))
             {
-                var memberRole =
-                    entity.MemberRoles.FirstOrDefault(f =>
-                        f.RoleId == roleDto.RoleId && f.MemberId == roleDto.MemberId);
+                var memberRole = entity.MemberRoles.FirstOrDefault(f => f.RoleId == roleDto.Id && f.MemberId == dto.User.Id);
                 if (memberRole == null)
                 {
                     continue;
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             entity.MemberRoles = entity.MemberRoles ?? new List<MemberRole>();
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
             {
-                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.RoleId, MemberId = roleDto.MemberId });
+                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.User.Id });
             }
         }
 

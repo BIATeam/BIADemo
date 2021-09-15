@@ -1,0 +1,6 @@
+<app-member-form 
+    [roleOptions]="memberOptionsService.roleOptions$| async"
+    [userOptions]="memberOptionsService.userOptions$| async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-member-form>
