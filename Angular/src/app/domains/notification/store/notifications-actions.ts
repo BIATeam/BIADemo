@@ -11,7 +11,7 @@ export const loadSuccess = createAction('[Domain Notifications] Load success', p
 
 export const failure = createAction('[Domain Notifications] Failure', props<{ error: any }>());
 
-export const loadUnreadNotificationCount = createAction('[Domain Notifications] Load unread notification count');
+export const loadUnreadNotificationIds = createAction('[Domain Notifications] Load unread notification ids');
 
-export const loadUnreadNotificationCountSuccess =
-    createAction('[Domain Notifications] Load unread notification count success', props<{ count: number }>());
+export const loadUnreadNotificationIdsSuccess =
+    createAction('[Domain Notifications] Load unread notification ids success', props<{ ids: number[] }>());

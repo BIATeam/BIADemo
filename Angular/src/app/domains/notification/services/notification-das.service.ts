@@ -11,8 +11,8 @@ export class NotificationDas extends AbstractDas<Notification> {
     super(injector, 'Notifications');
   }
 
-  getUnreadNotificationCount(): Observable<number> {
-    return this.http.get<number>(this.route + 'unreadCount');
+  getUnreadNotificationIds(): Observable<number[]> {
+    return this.http.get<number[]>(this.route + 'unreadIds');
   }
 }
 

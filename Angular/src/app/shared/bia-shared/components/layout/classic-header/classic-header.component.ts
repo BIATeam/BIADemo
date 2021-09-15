@@ -14,7 +14,7 @@ import { Role } from 'src/app/domains/role/model/role';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
-import { loadUnreadNotificationCount } from 'src/app/domains/notification/store/notifications-actions';
+import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
 
 @Component({
   selector: 'bia-classic-header',
@@ -115,7 +115,7 @@ export class ClassicHeaderComponent implements OnDestroy {
     private store: Store<AppState>
   ) {
     this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-    this.store.dispatch(loadUnreadNotificationCount());
+    this.store.dispatch(loadUnreadNotificationIds());
   }
 
   ngOnDestroy() {

@@ -241,13 +241,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>The number of unread notifications.</returns>
-        [HttpGet("unreadCount")]
+        [HttpGet("unreadIds")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Notifications.ListAccess)]
-        public async Task<IActionResult> GetUnreadCount()
+        public async Task<IActionResult> GetUnreadIds()
         {
             int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
             try
