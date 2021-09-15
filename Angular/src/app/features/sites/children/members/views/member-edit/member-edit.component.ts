@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/state';
 import { MemberService } from '../../services/member.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberOptionsService } from '../../services/member-options.service';
+import { SiteService } from 'src/app/features/sites/services/site.service';
 
 @Component({
   selector: 'app-member-edit',
@@ -23,6 +24,7 @@ export class MemberEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public memberOptionsService: MemberOptionsService,
     public memberService: MemberService,
+    public siteService: SiteService,
   ) { }
 
   ngOnInit() {

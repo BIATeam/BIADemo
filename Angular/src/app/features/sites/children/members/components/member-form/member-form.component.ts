@@ -24,6 +24,7 @@ export class MemberFormComponent implements OnInit, OnChanges {
   @Input() member: Member = <Member>{};
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
+  @Input() siteId : number;
 
   @Output() save = new EventEmitter<Member>();
   @Output() cancel = new EventEmitter();
@@ -65,6 +66,7 @@ export class MemberFormComponent implements OnInit, OnChanges {
       member.id = member.id > 0 ? member.id : 0;
       member.roles = BiaOptionService.Differential(member.roles, this.member?.roles);
       member.user = {...member.user}
+      member.siteId = this.siteId;
       this.save.emit(member);
       this.form.reset();
     }

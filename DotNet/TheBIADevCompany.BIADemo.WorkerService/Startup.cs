@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal() { });
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);

@@ -1,4 +1,7 @@
 export enum Permission {
+  // Begin BIADemo
+  Hangfire_Access = 'Hangfire_Access',
+  // End BIADemo
   Home_Access = 'Home_Access',
   Member_Create = 'Member_Create',
   Member_Delete = 'Member_Delete',

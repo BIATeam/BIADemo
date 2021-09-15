@@ -42,7 +42,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             IPrincipal principal)
             : base(repository)
         {
-            this.currentSiteId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().CurrentSiteId;
+            var userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            this.currentSiteId = userDataDto == null ? 0 : userDataDto.CurrentSiteId;
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
             this.filtersContext.Add(
                 AccessMode.Read, 
@@ -59,10 +60,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             notification.Read = true;
 
             // TODO : send SignalR to remove notification notification.Id
-
             return await this.UpdateAsync(notification);
         }
 
+        /// <inheritdoc/>
         public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
             // TODO : send SignalR to add the notification (depending on audience)
@@ -77,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public async Task<List<int>> GetUnreadIds(int userId)
         {
             var results = await this.Repository.GetAllResultAsync<int>(
-                selectResult: x => x.Id, 
+                selectResult: x => x.Id,
                 specification: this.filtersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
 
             return results.ToList();

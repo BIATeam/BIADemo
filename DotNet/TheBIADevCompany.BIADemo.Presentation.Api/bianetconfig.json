@@ -77,7 +77,7 @@
       // Begin BIADemo
       // Hangfire
       {
-        "Name": "Hangfire_Run_Worker",
+        "Names": ["Hangfire_Run_Worker", "Hangfire_Access"],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
       // Plane

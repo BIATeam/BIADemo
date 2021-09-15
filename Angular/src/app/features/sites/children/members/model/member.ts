@@ -4,4 +4,5 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 export interface Member extends BaseDto {
   user: OptionDto;
   roles: OptionDto[];
+  siteId: number;
 }

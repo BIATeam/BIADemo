@@ -11,9 +11,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
@@ -223,6 +223,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 if (!dto.Read)
                 {
                     dto = await this.notificationService.SetAsRead(dto);
+#if UseHubForClientInNotification
+                    await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+#endif
                 }
 
                 return this.Ok(dto);

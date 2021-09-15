@@ -5,6 +5,7 @@ import { Member } from '../../model/member';
 import { AppState } from 'src/app/store/state';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SiteService } from 'src/app/features/sites/services/site.service';
 
 @Component({
   selector: 'app-member-new',
@@ -18,6 +19,7 @@ export class MemberNewComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public memberOptionsService: MemberOptionsService,
+    public siteService: SiteService,
   ) {}
 
   ngOnInit() {
