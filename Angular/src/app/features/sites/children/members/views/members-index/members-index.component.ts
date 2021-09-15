@@ -76,9 +76,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.members$ = this.store.select(getAllMembers).pipe();
-    this.totalCount$ = this.store.select(getMembersTotalCount).pipe();
-    this.loading$ = this.store.select(getMemberLoadingGetAll).pipe();
+    this.members$ = this.store.select(getAllMembers);
+    this.totalCount$ = this.store.select(getMembersTotalCount);
+    this.loading$ = this.store.select(getMemberLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions();

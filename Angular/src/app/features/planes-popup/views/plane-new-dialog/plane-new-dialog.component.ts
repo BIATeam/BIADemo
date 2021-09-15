@@ -31,12 +31,12 @@ export class PlaneNewDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayNewDialog)
-        .pipe()
+        
         .subscribe((x) => (this.display = x))
     );
-    this.airportOptions$ = this.store.select(getAllAirportOptions).pipe();
+    this.airportOptions$ = this.store.select(getAllAirportOptions);
     this.store.dispatch(loadAllAirportOptions());
-    this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions).pipe();
+    this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     this.store.dispatch(loadAllPlaneTypeOptions());
   }
 

@@ -22,8 +22,8 @@ export class PlaneOptionsService {
     constructor(
         private store: Store<AppState>,
     ) {
-        this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions).pipe();
-        this.airportOptions$ = this.store.select(getAllAirportOptions).pipe();
+        this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
+        this.airportOptions$ = this.store.select(getAllAirportOptions);
 
         // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.planeTypeOptions$, this.airportOptions$]).pipe(

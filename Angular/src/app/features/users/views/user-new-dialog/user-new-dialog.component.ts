@@ -32,9 +32,9 @@ export class UserNewDialogComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   async ngOnInit() {
-    this.usersFromAD$ = this.store.select(getAllUsersFromAD).pipe();
+    this.usersFromAD$ = this.store.select(getAllUsersFromAD);
 
-    this.ldapDomains$ = this.store.select(getAllLdapDomain).pipe();
+    this.ldapDomains$ = this.store.select(getAllLdapDomain);
 
     this.store.dispatch(loadAllLdapDomains());
   }

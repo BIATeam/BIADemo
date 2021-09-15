@@ -114,7 +114,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   private initSites() {
-    this.sites$ = this.store.select(getAllSites).pipe();
+    this.sites$ = this.store.select(getAllSites);
   }
 
   private initRoles() {
