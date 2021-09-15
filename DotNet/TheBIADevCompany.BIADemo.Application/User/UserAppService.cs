@@ -86,8 +86,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>List of OptionDto.</returns>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            //return this.GetAllAsync<OptionDto, UserOptionMapper>(queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
-            return this.GetAllAsync<OptionDto, UserOptionMapper>();
+            return this.GetAllAsync<OptionDto, UserOptionMapper>(queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            //return this.GetAllAsync<OptionDto, UserOptionMapper>();
         }
 
         /// <inheritdoc cref="IUserAppService.GetAllAsync(string)"/>
