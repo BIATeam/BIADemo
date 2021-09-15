@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   failure,
   loadAllRoleOptions,
-  loadAllSuccess
+  loadAllRoleOptionsSuccess
 } from './role-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { RoleOptionDas } from '../services/role-option-das.service';
@@ -25,7 +25,7 @@ export class RoleOptionsEffects {
       /* 'Roles Reducers' will take care of the rest */
       switchMap(() =>
         this.roleDas.getList('allOptions').pipe(
-          map((roles) => loadAllSuccess({ roles })),
+          map((roles) => loadAllRoleOptionsSuccess({ roles })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(failure({ error: err }));

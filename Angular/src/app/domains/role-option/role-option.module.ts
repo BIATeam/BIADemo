@@ -7,7 +7,7 @@ import { RoleOptionsEffects } from './store/role-options-effects';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('domain-roles', reducers),
+    StoreModule.forFeature('domain-role-options', reducers),
     EffectsModule.forFeature([RoleOptionsEffects]),
   ]
 })
