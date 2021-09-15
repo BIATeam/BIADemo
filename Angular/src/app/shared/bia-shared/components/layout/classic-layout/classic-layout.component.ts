@@ -9,9 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
-import { Site } from 'src/app/domains/site/model/site';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
-import { Role } from 'src/app/domains/role/model/role';
+import { OptionDto } from '../../../model/option-dto';
 
 @Component({
   selector: 'bia-classic-layout',
@@ -35,10 +34,14 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  @Input() sites: Site;
+  @Input() sites: OptionDto[];
   @Input() siteId: number;
-  @Input() roles: Role[];
+  @Input() defaultSiteId: number;
+  
+  @Input() roles: OptionDto[];
   @Input() roleId: number;
+  @Input() defaultRoleId: number;
+
   @Input() environmentType: EnvironmentType;
 
   @Output() siteChange = new EventEmitter<number>();

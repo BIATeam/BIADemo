@@ -7,14 +7,13 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
-import { Site } from 'src/app/domains/site/model/site';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Role } from 'src/app/domains/role/model/role';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
 import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
+import { OptionDto } from '../../../model/option-dto';
 
 @Component({
   selector: 'bia-classic-header',
@@ -52,13 +51,14 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  allSites: Site[];
+  allSites: OptionDto[];
   @Input()
-  set sites(sites: Site[]) {
+  set sites(sites: OptionDto[]) {
     this.allSites = sites;
     this.initDropdownSite();
   }
-  currentSite: Site;
+  @Input() defaultSiteId: number;
+  currentSite: OptionDto;
   currentSiteId: number;
   @Input()
   set siteId(currentSiteId: number) {
@@ -67,13 +67,14 @@ export class ClassicHeaderComponent implements OnDestroy {
   }
 
 
-  allRoles: Role[];
+  allRoles: OptionDto[];
   @Input()
-  set roles(roles: Role[]) {
+  set roles(roles: OptionDto[]) {
     this.allRoles = roles;
     this.initDropdownRole();
   }
-  currentRole: Role;
+  @Input() defaultRoleId: number;
+  currentRole: OptionDto;
   currentRoleId: number;
   @Input()
   set roleId(currentRoleId: number) {

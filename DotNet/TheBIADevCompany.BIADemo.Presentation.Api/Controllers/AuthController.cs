@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
     /// <summary>
     /// The API controller used to authenticate users.
@@ -45,6 +46,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IRoleAppService roleAppService;
 
         /// <summary>
+        /// The User Right domain service.
+        /// </summary>
+        private readonly IUserRightDomainService userRightDomainService;
+
+        /// <summary>
         /// The logger.
         /// </summary>
         private readonly ILogger<AuthController> logger;
@@ -56,14 +62,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="userAppService">The user application service.</param>
         /// <param name="siteAppService">The site application service.</param>
         /// <param name="roleAppService">The role application service.</param>
+        /// <param name="userRightDomainService">The User Right domain service..</param>
         /// <param name="logger">The logger.</param>
-        public AuthController(IJwtFactory jwtFactory, IUserAppService userAppService, ISiteAppService siteAppService, IRoleAppService roleAppService, ILogger<AuthController> logger)
+        public AuthController(
+            IJwtFactory jwtFactory,
+            IUserAppService userAppService,
+            ISiteAppService siteAppService,
+            IRoleAppService roleAppService,
+            IUserRightDomainService userRightDomainService,
+            ILogger<AuthController> logger)
         {
             this.jwtFactory = jwtFactory;
             this.userAppService = userAppService;
             this.siteAppService = siteAppService;
             this.roleAppService = roleAppService;
             this.logger = logger;
+            this.userRightDomainService = userRightDomainService;
         }
 
         /// <summary>
@@ -95,6 +109,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LoginOnSite(int siteId, bool singleRoleMode = false, int roleId = 0)
         {
+            // user data
+            var userData = new UserDataDto();
+
             var identity = this.User.Identity;
             if (identity == null || !identity.IsAuthenticated)
             {
@@ -161,36 +178,63 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             List<string> userRights = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                if (siteId < 1)
-                {
-                    var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
-                    var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
-                    var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
+                var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
+                var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                    if (site != null)
+                userData.Sites = sites.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
+
+
+                if (site != null)
+                {
+                    if (site.IsDefault)
                     {
-                        siteId = site.Id;
+                        userData.DefaultSiteId = site.Id;
+                    }
+
+                    if (siteId > 0 && sites.Any(s => s.Id == siteId))
+                    {
+                        userData.CurrentSiteId = siteId;
+                    }
+                    else
+                    {
+                        userData.CurrentSiteId = site.Id;
                     }
                 }
 
-                if (singleRoleMode && roleId < 1)
+                if (userData.CurrentSiteId > 0)
                 {
-                    var roles = await this.roleAppService.GetMemberRolesAsync(siteId, userInfo.Id);
+                    var roles = await this.roleAppService.GetMemberRolesAsync(userData.CurrentSiteId, userInfo.Id);
+                    userData.Roles = roles.Select(r => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = r.Id, Display = r.Display }).ToList();
 
-                    var role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-
-                    if (role != null)
+                    if (singleRoleMode)
                     {
-                        roleId = role.Id;
-                    }
-                }
+                        var role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                        if (role != null)
+                        {
+                            if (role.IsDefault)
+                            {
+                                userData.DefaultRoleId = role.Id;
+                            }
 
-                if (siteId > 0)
-                {
-                    userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
+                            if (roleId > 0 && roles.Any(s => s.Id == roleId))
+                            {
+                                userData.CurrentRoleId = roleId;
+                            }
+                            else
+                            {
+                                userData.CurrentRoleId = role.Id;
+                            }
+                        }
+                    }
+
+                    var allRoles = userRolesFromUserDirectory;
+                    allRoles.AddRange(userData.Roles.Select(r => r.Display).ToList());
+                    userRights = this.userRightDomainService.TranslateRolesInRights(allRoles);
+                    //userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
                     if (userRights == null || !userRights.Any())
                     {
-                        this.logger.LogInformation("Unauthorized because no user rights for site : " + siteId);
+                        this.logger.LogInformation("Unauthorized because no user rights for site : " + userData.CurrentSiteId);
                         return this.Unauthorized("You don't have access to this site");
                     }
                 }
@@ -206,18 +250,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 this.logger.LogInformation("Unauthorized because No rights found");
                 return this.Unauthorized("No rights found");
-            }
-
-            // user data
-            var userData = new { CurrentSiteId = 0, CurrentRoleId = 0 };
-
-            if (siteId > 0)
-            {
-                userData = new
-                {
-                    CurrentSiteId = siteId,
-                    CurrentRoleId = roleId,
-                };
             }
 
             var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userRights, userData));

@@ -4,10 +4,6 @@ import { Subscription, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { isDevMode } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
-import { loadAllSites } from 'src/app/domains/site/store/sites-actions';
-import { loadAllRoles, loadMemberRoles } from 'src/app/domains/role/store/roles-actions';
 import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
@@ -18,7 +14,6 @@ export class BiaAppInitService implements OnDestroy {
   private sub: Subscription;
   constructor(
     private authService: AuthService,
-    private store: Store<AppState>,
     private notificationSignalRService: NotificationSignalRService) { }
 
   Init() {
@@ -38,13 +33,6 @@ export class BiaAppInitService implements OnDestroy {
           })
         )
         .subscribe(() => {
-          this.store.dispatch(loadAllSites());
-          this.store.dispatch(loadAllRoles());
-
-          if (environment.singleRoleMode === true) {
-            this.store.dispatch(loadMemberRoles({ siteId: this.authService.getCurrentSiteId() }));
-          }
-
           if (environment.enableNotifications === true) {
             this.notificationSignalRService.initialize();
           }

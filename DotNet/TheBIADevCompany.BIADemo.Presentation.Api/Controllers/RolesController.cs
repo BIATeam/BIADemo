@@ -61,21 +61,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Gets all existing roles.
         /// </summary>
-        /// <returns>The list of roles.</returns>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
-        {
-            var results = await this.roleService.GetAllAsync();
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
-            return this.Ok(results);
-        }
-
-        /// <summary>
-        /// Gets all existing roles.
-        /// </summary>
         /// <param name="siteId">The site identifier.</param>
         /// <returns>The list of roles.</returns>
         [HttpGet("{siteId}")]

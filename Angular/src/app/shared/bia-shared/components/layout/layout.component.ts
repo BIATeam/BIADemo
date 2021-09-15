@@ -11,17 +11,14 @@ import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
 import { Observable } from 'rxjs';
-import { Site } from 'src/app/domains/site/model/site';
-import { getAllSites } from 'src/app/domains/site/store/site.state';
 import { setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { filter, map } from 'rxjs/operators';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
-import { Role } from 'src/app/domains/role/model/role';
-import { getMemberRoles } from 'src/app/domains/role/store/role.state';
 import { APP_BASE_HREF } from '@angular/common';
 import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
+import { OptionDto } from '../../model/option-dto';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
@@ -39,10 +36,12 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
       [helpUrl]="helpUrl"
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
-      [sites]="sites$ | async"
+      [sites]="sites"
       [siteId]="currentSiteId"
-      [roles]="roles$ | async"
+      [defaultSiteId]="defaultSiteId"
+      [roles]="roles"
       [roleId]="currentRoleId"
+      [defaultRoleId]="defaultRoleId"
       [environmentType]="environmentType$ | async"
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
@@ -69,8 +68,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   headerLogos: string[];
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
-  sites$: Observable<Site[]>;
-  roles$: Observable<Role[]>;
+  sites: OptionDto[];
+  roles: OptionDto[];
+  defaultSiteId:number;
+  defaultRoleId:number;
   environmentType$: Observable<EnvironmentType | null>;
   currentSiteId: number;
   currentRoleId: number;
@@ -92,8 +93,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     }
 
     this.initEnvironmentType();
-    this.initSites();
-    this.initRoles();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
   }
@@ -113,13 +112,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initSites() {
-    this.sites$ = this.store.select(getAllSites);
-  }
-
-  private initRoles() {
-    this.roles$ = this.store.select(getMemberRoles);
-  }
 
   onSiteChange(siteId: number) {
     this.authService.setCurrentSiteId(siteId);
@@ -157,8 +149,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.isLoadingUserInfo = true;
     this.authService.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo) {
-        this.setCurrentSiteId(authInfo);
-        this.setcurrentRoleId(authInfo);
+        this.setSites(authInfo);
+        this.setRoles(authInfo);
         this.setUserName(authInfo);
         this.setLanguage(authInfo);
         this.filterNavByRole(authInfo);
@@ -168,18 +160,26 @@ export class LayoutComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setCurrentSiteId(authInfo: AuthInfo) {
+  private setSites(authInfo: AuthInfo) {
     if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
+      this.sites = authInfo.additionalInfos.userData.sites;
+      this.defaultSiteId =  authInfo.additionalInfos.userData.defaultSiteId;
       this.currentSiteId = authInfo.additionalInfos.userData.currentSiteId;
     } else {
+      this.sites = [];
       this.currentSiteId = 0;
+      this.defaultSiteId = 0;
     }
   }
 
-  private setcurrentRoleId(authInfo: AuthInfo) {
+  private setRoles(authInfo: AuthInfo) {
     if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
+      this.roles = authInfo.additionalInfos.userData.roles;
+      this.defaultRoleId =  authInfo.additionalInfos.userData.defaultRoleId;
       this.currentRoleId = authInfo.additionalInfos.userData.currentRoleId;
     } else {
+      this.roles = [];
+      this.defaultRoleId = 0;
       this.currentRoleId = 0;
     }
   }
