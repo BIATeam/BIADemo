@@ -17,7 +17,7 @@ export function reducers(state: AirportOptionsState | undefined, action: Action)
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getAirportsState = createFeatureSelector<AirportOptionsState>('domain-airports');
+export const getAirportsState = createFeatureSelector<AirportOptionsState>('domain-airport-options');
 
 export const getAirportOptionsEntitiesState = createSelector(
   getAirportsState,

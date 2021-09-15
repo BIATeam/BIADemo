@@ -7,7 +7,7 @@ import { NotificationTypeOptionsEffects } from './store/notification-type-option
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('domain-notification-types', reducers),
+    StoreModule.forFeature('domain-notification-type-options', reducers),
     EffectsModule.forFeature([NotificationTypeOptionsEffects]),
   ]
 })

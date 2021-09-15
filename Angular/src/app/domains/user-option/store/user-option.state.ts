@@ -17,7 +17,7 @@ export function reducers(state: UserOptionsState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getUsersState = createFeatureSelector<UserOptionsState>('domain-users');
+export const getUsersState = createFeatureSelector<UserOptionsState>('domain-user-options');
 
 export const getUserOptionsEntitiesState = createSelector(
   getUsersState,

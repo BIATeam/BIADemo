@@ -7,7 +7,7 @@ import { PlaneTypeOptionsEffects } from './store/plane-type-options-effects';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('domain-planes-types', reducers),
+    StoreModule.forFeature('domain-plane-type-options', reducers),
     EffectsModule.forFeature([PlaneTypeOptionsEffects]),
   ]
 })

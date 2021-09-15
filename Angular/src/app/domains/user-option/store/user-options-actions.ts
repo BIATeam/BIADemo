@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
-export const loadAllUserOptions = createAction('[Domain Users] Load all');
+export const loadAllUserOptions = createAction('[Domain User Options] Load all');
 
-export const loadAllSuccess = createAction('[Domain Users] Load all success', props<{ users: OptionDto[] }>());
+export const loadAllSuccess = createAction('[Domain User Options] Load all success', props<{ users: OptionDto[] }>());
 /*
-export const load = createAction('[Domain Users] Load', props<{ id: number }>());
+export const load = createAction('[Domain User Options] Load', props<{ id: number }>());
 
-export const loadSuccess = createAction('[Domain Users] Load success', props<{ user: UserOption }>());
+export const loadSuccess = createAction('[Domain User Options] Load success', props<{ user: UserOption }>());
 */
-export const failure = createAction('[Domain Users] Failure', props<{ error: any }>());
+export const failure = createAction('[Domain User Options] Failure', props<{ error: any }>());
 
 
 

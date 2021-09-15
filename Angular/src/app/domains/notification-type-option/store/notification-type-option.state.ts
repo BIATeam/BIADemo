@@ -17,7 +17,7 @@ export function reducers(state: NotificationTypeOptionsState | undefined, action
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getNotificationTypesState = createFeatureSelector<NotificationTypeOptionsState>('domain-notification-types');
+export const getNotificationTypesState = createFeatureSelector<NotificationTypeOptionsState>('domain-notification-type-options');
 
 export const getNotificationTypeOptionsEntitiesState = createSelector(
   getNotificationTypesState,

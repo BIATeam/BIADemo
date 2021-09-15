@@ -7,7 +7,7 @@ import { AirportOptionsEffects } from './store/airport-options-effects';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('domain-airports', reducers),
+    StoreModule.forFeature('domain-airport-options', reducers),
     EffectsModule.forFeature([AirportOptionsEffects]),
   ]
 })

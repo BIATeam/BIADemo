@@ -7,7 +7,7 @@ import { UserOptionsEffects } from './store/user-options-effects';
 
 @NgModule({
   imports: [
-    StoreModule.forFeature('domain-users', reducers),
+    StoreModule.forFeature('domain-user-options', reducers),
     EffectsModule.forFeature([UserOptionsEffects]),
   ]
 })
