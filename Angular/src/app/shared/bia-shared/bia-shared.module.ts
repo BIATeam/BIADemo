@@ -83,7 +83,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { ViewsEffects } from './features/view/store/views-effects';
 import { ViewFormComponent } from './features/view/components/view-form/view-form.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
-import { TranslateRoleLabelPipe } from './pipes/translate-role-label.pipe';
 import { PopupLayoutComponent } from './components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { PluckPipe } from './pipes/pluck.pipe';
@@ -177,7 +176,6 @@ const VIEW_COMPONENTS = [
 ];
 
 const PIPES = [
-  TranslateRoleLabelPipe,
   PluckPipe,
   JoinPipe
 ];

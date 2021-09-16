@@ -11,7 +11,6 @@ import { SitesIndexComponent } from './views/sites-index/sites-index.component';
 import { SiteFilterComponent } from './components/site-filter/site-filter.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserModule } from 'src/app/domains/user/user.module';
-import { RoleModule } from 'src/app/domains/role/role.module';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 import { UserFromADModule } from 'src/app/domains/user-from-AD/user-from-AD.module';
@@ -65,7 +64,6 @@ const ROUTES: Routes = [
   entryComponents: [SiteEditDialogComponent, SiteNewDialogComponent],
   imports: [
     SharedModule,
-    RoleModule,
     UserModule,
     UserFromADModule,
     RouterModule.forChild(ROUTES),

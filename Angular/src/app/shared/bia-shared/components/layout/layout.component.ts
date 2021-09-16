@@ -11,13 +11,12 @@ import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
 import { Observable } from 'rxjs';
-import { setDefaultSite } from 'src/app/domains/site/store/sites-actions';
+import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { filter, map } from 'rxjs/operators';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
 import { APP_BASE_HREF } from '@angular/common';
-import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
 import { OptionDto } from '../../model/option-dto';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 

@@ -22,3 +22,7 @@ export const setDefaultSite = createAction('[Domain Sites] Set default site', pr
 export const setDefaultSiteSuccess = createAction('[Domain Sites] Set default site success');
 
 export const failure = createAction('[Domain Sites] Failure', props<{ error: any }>());
+
+export const setDefaultRole = createAction('[Domain Role Options] Set default role', props<{ id: number, siteId: number }>());
+
+export const setDefaultRoleSuccess = createAction('[Domain Role Options] Set default role success');

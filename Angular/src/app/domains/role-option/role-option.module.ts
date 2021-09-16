@@ -9,6 +9,8 @@ import { RoleOptionsEffects } from './store/role-options-effects';
   imports: [
     StoreModule.forFeature('domain-role-options', reducers),
     EffectsModule.forFeature([RoleOptionsEffects]),
+  ],
+  providers: [
   ]
 })
 export class RoleOptionModule {}

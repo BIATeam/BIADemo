@@ -16,7 +16,6 @@ import { BiaThemeService } from './services/bia-theme.service';
 import { BiaTranslationService } from './services/bia-translation.service';
 import { BiaAppInitService } from './services/bia-app-init.service';
 import { SiteModule } from 'src/app/domains/site/site.module';
-import { RoleModule } from 'src/app/domains/role/role.module';
 import { EnvironmentConfigurationModule } from 'src/app/domains/environment-configuration/environment-configuration.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
@@ -27,7 +26,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [HttpClientModule, SiteModule, RoleModule, EnvironmentConfigurationModule];
+const MODULES = [HttpClientModule, SiteModule, EnvironmentConfigurationModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];

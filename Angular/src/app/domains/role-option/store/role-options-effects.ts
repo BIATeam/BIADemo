@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   failure,
   loadAllRoleOptions,
-  loadAllRoleOptionsSuccess
+  loadAllRoleOptionsSuccess,
 } from './role-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { RoleOptionDas } from '../services/role-option-das.service';
