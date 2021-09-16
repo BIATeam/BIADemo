@@ -12,7 +12,14 @@
     <div class="controls" fxLayout="row">
       <p-dropdown *ngIf="displayRoleList" [options]="allRoles" [(ngModel)]="currentRole" optionLabel="display"
         dataKey="id" (onChange)="onRoleChange()" placeholder="Select a role">
+        <ng-template let-item pTemplate="item">
+          {{ 'role.'+ item?.value.display.toLowerCase() | translate }}
+        </ng-template>
+        <ng-template let-selectedItem pTemplate="selectedItem">
+          {{ 'role.'+ selectedItem?.value.display.toLowerCase() | translate}}
+        </ng-template>
       </p-dropdown>
+
       <i *ngIf="displayRoleList === true && currentRole?.id !== defaultRoleId"
         class="ui-icon-star-border app-icon-header bia-pointer" (click)="onSetDefaultRole()"
         pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>

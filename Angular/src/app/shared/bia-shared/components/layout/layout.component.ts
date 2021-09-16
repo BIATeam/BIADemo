@@ -18,7 +18,6 @@ import { EnvironmentType } from 'src/app/domains/environment-configuration/model
 import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
 import { APP_BASE_HREF } from '@angular/common';
 import { OptionDto } from '../../model/option-dto';
-import { TranslateService } from '@ngx-translate/core';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
@@ -81,7 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService,
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
-    protected translateService: TranslateService,
     private store: Store<AppState>,
     // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
@@ -175,11 +173,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   private setRoles(authInfo: AuthInfo) {
     if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-      // translate after the change of language (requiered to wait event) => use setTimeout
-      setTimeout(() => {this.roles = authInfo.additionalInfos.userData.roles.map(role => {
-        role.display = this.translateService.instant(`role.${role.display.toLowerCase()}`);
-        return role;
-      });;});
+      this.roles = authInfo.additionalInfos.userData.roles;
       this.defaultRoleId =  authInfo.additionalInfos.userData.defaultRoleId;
       this.currentRoleId = authInfo.additionalInfos.userData.currentRoleId;
     } else {
