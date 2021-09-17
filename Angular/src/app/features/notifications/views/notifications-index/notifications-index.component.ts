@@ -200,7 +200,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           new PrimeTableColumn('title', 'notification.title'),
           new PrimeTableColumn('description', 'notification.description'),
           Object.assign(new PrimeTableColumn('type', 'notification.type.title'), {
-            type: PropType.OneToMany
+            type: PropType.OneToMany,
+            translateKey: 'notification.type.'
           }),
           Object.assign(new PrimeTableColumn('read', 'notification.read'), {
             isSearchable: false,
@@ -215,7 +216,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
             type: PropType.OneToMany
           }),
           Object.assign(new PrimeTableColumn('notifiedRoles', 'notification.notifiedRoles'), {
-            type: PropType.ManyToMany
+            type: PropType.ManyToMany,
+            translateKey: 'role.'
           }),
           Object.assign(new PrimeTableColumn('notifiedUsers', 'notification.notifiedUsers'), {
             type: PropType.ManyToMany

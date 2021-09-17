@@ -60,16 +60,16 @@
       <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
         <ng-container [ngSwitch]="col.type">
           <ng-container *ngSwitchCase="'OneToMany'">
-            {{ rowData[col.field]?.display }}
+            {{ rowData[col.field] | translateField: 'display' : col.translateKey : translateService.currentLang }}
           </ng-container>
           <ng-container *ngSwitchCase="'ManyToMany'">
-            {{ rowData[col.field] | pluck:"display" | join:", " }}
+            {{ rowData[col.field] | translateFields: 'display' : col.translateKey : translateService.currentLang }}
           </ng-container>
           <ng-container *ngSwitchCase="'Boolean'">
             <i class="ui-icon-check" *ngIf="rowData[col.field] === true"></i>
           </ng-container>
           <ng-container *ngSwitchDefault>
-            {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+            {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : col.translateKey? (col.translateKey + rowData[col.field].toLowerCase() | translate) : rowData[col.field] }}
           </ng-container>
         </ng-container>
       </td>

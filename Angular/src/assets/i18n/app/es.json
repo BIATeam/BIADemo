@@ -62,10 +62,10 @@
     "welcome": "BIA es una biblioteca de componentes, construida con el marco Angular"
   },
   "role": {
-    "site_admin" : "Administrador del sitio",
+    "Site_Admin" : "Administrador del sitio",
     "Begin BIADemo": "To remove in project from here",
-    "site_admin" : "Administrador de la aerolínea",
-    "pilot" : "Piloto",
+    "Site_Admin" : "Administrador de la aerolínea",
+    "Pilot" : "Piloto",
     "End BIADemo": "To remove in project up to here",
     "title": "Role"
   },

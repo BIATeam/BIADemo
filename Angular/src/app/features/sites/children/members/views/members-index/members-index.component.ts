@@ -204,8 +204,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
           Object.assign(new PrimeTableColumn('user', 'member.user'), {
             type: PropType.OneToMany
           }),
-          Object.assign(new PrimeTableColumn('roles', 'member.roles'), {
-            type: PropType.ManyToMany
+          Object.assign(new PrimeTableColumn('roles', 'member.rolesForSite'), {
+            type: PropType.ManyToMany,
+            translateKey: 'role.'
           })
         ]
       };

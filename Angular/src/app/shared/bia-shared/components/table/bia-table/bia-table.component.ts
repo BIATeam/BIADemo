@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { DEFAULT_VIEW, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { Observable, timer, of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-table',
@@ -60,7 +61,7 @@ export class BiaTableComponent implements OnChanges {
   private defaultPageSize: number;
   private defaultColumns: string[];
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public translateService : TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);

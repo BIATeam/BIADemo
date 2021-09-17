@@ -62,10 +62,10 @@
     "welcome": "BIA is a component library, built with the Angular framework"
   },
   "role": {
-    "site_admin" : "Site administrator",
+    "Site_Admin" : "Site administrator",
     "Begin BIADemo": "To remove in project from here",
-    "site_admin" : "Airline administrator",
-    "pilot" : "Pilot",
+    "Site_Admin" : "Airline administrator",
+    "Pilot" : "Pilot",
     "End BIADemo": "To remove in project up to here",
     "title": "Role"
   },

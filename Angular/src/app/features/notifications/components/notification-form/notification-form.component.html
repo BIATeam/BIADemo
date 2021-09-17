@@ -78,7 +78,22 @@
           datakey="id"
           [virtualScroll]="true"
           [style]="{ width: '100%' }"
-        ></p-multiSelect>
+        >
+          <ng-template let-values pTemplate="selectedItems">
+            <div *ngIf="values.length <= 0">&nbsp;</div>
+            <div *ngIf="values.length <= 3">
+              {{values | translateFields : 'display' : 'role.' : translateService.currentLang}}
+            </div>
+            <div *ngIf="values.length > 3">
+              {{values.length}} items selected
+            </div>
+          </ng-template>
+
+          <ng-template let-item pTemplate="item">
+            {{ item?.value | translateField : 'display' : 'role.' : translateService.currentLang }}
+          </ng-template>
+
+        </p-multiSelect>
         <label>{{ 'notification.notifiedRoles' | translate }}</label>
       </span>
     </div>

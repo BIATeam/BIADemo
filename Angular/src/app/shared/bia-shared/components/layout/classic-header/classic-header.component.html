@@ -13,10 +13,11 @@
       <p-dropdown *ngIf="displayRoleList" [options]="allRoles" [(ngModel)]="currentRole" optionLabel="display"
         dataKey="id" (onChange)="onRoleChange()" placeholder="Select a role">
         <ng-template let-item pTemplate="item">
-          {{ 'role.'+ item?.value.display.toLowerCase() | translate }}
+          {{ item?.value | translateField : 'display' : 'role.' : translateService.currentLang }}
         </ng-template>
         <ng-template let-selectedItem pTemplate="selectedItem">
-          {{ 'role.'+ selectedItem?.value.display.toLowerCase() | translate}}
+          {{ selectedItem?.value  | translateField : 'display' : 'role.' : translateService.currentLang }}
+          <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
         </ng-template>
       </p-dropdown>
 
