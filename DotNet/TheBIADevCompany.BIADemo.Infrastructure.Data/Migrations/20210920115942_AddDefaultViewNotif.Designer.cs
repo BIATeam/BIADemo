@@ -10,7 +10,7 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210920081120_AddDefaultViewNotif")]
+    [Migration("20210920115942_AddDefaultViewNotif")]
     partial class AddDefaultViewNotif
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -557,7 +557,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         {
                             Id = -1,
                             Name = "default",
-                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}'",
+                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
                             TableId = "notificationsGrid",
                             ViewType = 0
                         });

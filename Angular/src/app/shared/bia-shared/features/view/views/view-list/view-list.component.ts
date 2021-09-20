@@ -154,7 +154,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
     }
 
     this.selectedView =
-      this.selectedView > 0 && this.views.some((x) => x.id === this.selectedView) === true
+      this.selectedView != 0 && this.views.some((x) => x.id === this.selectedView) === true
         ? this.selectedView
         : defaultView;
     this.defaultView = defaultView;
@@ -165,7 +165,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
       this.selectedView = this.defaultView;
       this.viewChange.emit(preference);
     } else {
-      if (this.selectedView > 0) {
+      if (this.selectedView != 0) {
         const view = this.views.find((v) => v.id === this.selectedView);
         if (view) {
           this.saveViewState(view.preference);

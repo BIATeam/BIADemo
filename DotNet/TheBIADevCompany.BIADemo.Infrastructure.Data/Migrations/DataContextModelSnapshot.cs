@@ -555,7 +555,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         {
                             Id = -1,
                             Name = "default",
-                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}'",
+                            Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
                             TableId = "notificationsGrid",
                             ViewType = 0
                         });

@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 ViewType = 0,
                 TableId = "notificationsGrid",
                 Name = "default",
-                Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}'",
+                Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
             });
         }
 
