@@ -92,11 +92,37 @@ export class ViewListComponent implements OnInit, OnDestroy {
 
     let defaultView = 0;
     const currentSiteId = this.authService.getCurrentSiteId();
+    const systemViews = this.views.filter(
+      (v) =>
+        v.viewType === ViewType.System
+    );
     const siteViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.Site && (currentSiteId < 1 || v.viewSites.some((vs) => vs.siteId === currentSiteId))
     );
     const userViews = this.views.filter((v) => v.viewType === ViewType.User);
+    if (systemViews.length > 0) {
+      this.groupedViews= [{
+        label: this.translations['bia.views.system'],
+        items: systemViews.map((v) => {return { label: this.translations['bia.views.' + v.name], value: v.id }; })
+       }];
+
+      const systemDefault = systemViews.filter((v) =>
+        v.name === 'default')[0];
+      if (systemDefault) {
+        defaultView = systemDefault.id;
+      }
+    }
+    else
+    {
+      this.groupedViews = [
+        {
+          label: this.translations['bia.views.system'],
+          items: [{ label: this.translations['bia.views.default'], value: 0 }]
+        }
+      ];
+    }
+
     if (siteViews.length > 0) {
       this.groupedViews.push({
         label: this.translations['bia.views.site'],

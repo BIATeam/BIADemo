@@ -34,7 +34,7 @@ import { NotificationOptionsService } from '../../services/notification-options.
 export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
   useSignalR = true;
-  useView = false;
+  useView = true;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;

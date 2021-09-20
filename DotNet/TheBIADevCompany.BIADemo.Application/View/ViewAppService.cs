@@ -66,13 +66,14 @@ namespace TheBIADevCompany.BIADemo.Application.View
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
-                    filter: view => view.ViewType == ViewType.Site || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Site || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
             else
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
                     filter: view =>
+                    (view.ViewType == ViewType.System) ||
                     (view.ViewType == ViewType.Site && view.ViewSites.Any(viewSite => viewSite.Site.Members.Any(member => member.UserId == currentUserId))) ||
                     (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
