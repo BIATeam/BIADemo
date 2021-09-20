@@ -209,8 +209,11 @@ export class BiaTableComponent implements OnChanges {
   onStateSave(state: TableState) {
     if (this.table && Object.keys(state).length) {
       const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
-      const storage = this.table.getStorage();
-      storage.setItem(this.table.stateKey, JSON.stringify(customState));
+      if (this.table.stateKey != '')
+      {
+        const storage = this.table.getStorage();
+        storage.setItem(this.table.stateKey, JSON.stringify(customState));
+      }
     }
   }
 
