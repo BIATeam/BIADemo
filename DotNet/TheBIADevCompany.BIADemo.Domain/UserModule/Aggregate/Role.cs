@@ -20,21 +20,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the label in english.
-        /// </summary>
-        public string LabelEn { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label in french.
-        /// </summary>
-        public string LabelFr { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label in spanish.
-        /// </summary>
-        public string LabelEs { get; set; }
-
-        /// <summary>
         /// Gets or sets the code.
         /// </summary>
         public string Code { get; set; }

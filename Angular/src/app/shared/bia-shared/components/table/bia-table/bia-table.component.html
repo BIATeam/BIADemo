@@ -58,7 +58,7 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
-        <ng-container [ngSwitch]="col.type">
+        <ng-container [ngSwitch]="col.type" *ngIf="col != undefined">
           <ng-container *ngSwitchCase="'OneToMany'">
             {{ rowData[col.field] | translateField: 'display' : col.translateKey : translateService.currentLang }}
           </ng-container>
