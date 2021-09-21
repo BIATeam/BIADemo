@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { isDevMode } from '@angular/core';
 import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
-// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Injectable({
   providedIn: 'root'

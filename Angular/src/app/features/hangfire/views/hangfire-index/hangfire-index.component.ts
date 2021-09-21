@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { callWorkerWithNotification } from 'src/app/features/notificationsOld/store/notifications-actions';
 import { AppState } from 'src/app/store/state';
+import { callWorkerWithNotification } from '../../store/hangfire-actions';
 
 @Component({
   selector: 'app-hangfire-index',

@@ -4,7 +4,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 import { HangfireIndexComponent } from './views/hangfire-index/hangfire-index.component';
-import { AsPipe } from '../notificationsOld/components/notification-form/as.pipe';
 import { reducers } from './store/hangfire.state';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -25,17 +24,13 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    HangfireIndexComponent,
-    AsPipe],
+  declarations: [HangfireIndexComponent],
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('hangfire', reducers),
     EffectsModule.forFeature([HangfireEffects]),
   ],
-  providers: [
-    AsPipe
-  ]
+  providers: []
 })
 export class HangfireModule { }

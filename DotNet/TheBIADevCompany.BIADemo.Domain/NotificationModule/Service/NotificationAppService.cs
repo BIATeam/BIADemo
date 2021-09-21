@@ -33,20 +33,28 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         private readonly int userId;
 
         /// <summary>
+        /// The signalR Service.
+        /// </summary>
+        private readonly IClientForHubRepository clientForHubService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
+        /// <param name="clientForHubService">Client for hub.</param>
         public NotificationAppService(
             ITGenericRepository<Notification> repository,
-            IPrincipal principal)
+            IPrincipal principal, 
+            IClientForHubRepository clientForHubService)
             : base(repository)
         {
             var userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            this.clientForHubService = clientForHubService;
             this.currentSiteId = userDataDto == null ? 0 : userDataDto.CurrentSiteId;
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
             this.filtersContext.Add(
-                AccessMode.Read, 
+                AccessMode.Read,
                 new DirectSpecification<Notification>(n =>
                     n.SiteId == this.currentSiteId
                     && (n.NotifiedRoles.Count == 0 || n.NotifiedRoles.Any(r => r.Role.MemberRoles.Any(mr => mr.Member.UserId == this.userId)))
@@ -58,8 +66,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public async Task<NotificationDto> SetAsRead(NotificationDto notification)
         {
             notification.Read = true;
-
-            // TODO : send SignalR to remove notification notification.Id
+            _ = this.clientForHubService.SendMessage("notification-read", notification.Id.ToString());
             return await this.UpdateAsync(notification);
         }
 

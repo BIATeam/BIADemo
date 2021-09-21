@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { loadUnreadNotificationIdsSuccess } from '../store/notifications-actions';
+import { loadUnreadNotificationIdsSuccess, removeUnreadNotification } from '../store/notifications-actions';
 import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 
@@ -37,9 +37,10 @@ export class NotificationSignalRService {
       this.store.dispatch(loadUnreadNotificationIdsSuccess({ ids: JSON.parse(args).unreadCount }));
     });
 
-    this.signalRService.addMethod('notification-count', (ids) => {
+    this.signalRService.addMethod('notification-read', (id) => {
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
-      this.store.dispatch(loadUnreadNotificationIdsSuccess({ ids }));
+      var idNum: number = +id;
+      this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
   }
 

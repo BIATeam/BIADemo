@@ -21,7 +21,8 @@
     },
     "IIS": {
       "commandName": "IIS",
-      "workingDirectory": "hangfire"
+      "launchBrowser": true,
+      "launchUrl": "hangfire"
     }
   }
 }

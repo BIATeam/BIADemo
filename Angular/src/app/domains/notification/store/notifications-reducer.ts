@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { loadAllSuccess, loadSuccess, loadUnreadNotificationIds, loadUnreadNotificationIdsSuccess } from './notifications-actions';
+import { loadAllSuccess, loadSuccess, loadUnreadNotificationIds, loadUnreadNotificationIdsSuccess, removeUnreadNotification } from './notifications-actions';
 import { Notification } from '../model/notification';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
@@ -50,7 +50,17 @@ export const notificationReducers = createReducer<State>(
       loadingUnreadIds: false,
       unreadIds: ids
     };
-  })
-);
+  }),
+  on(removeUnreadNotification, (state, { id }) => {
+    const index = state.unreadIds.indexOf(id, 0);
+      let copyState = {
+        ...state
+      }
+      if (index > -1) {
+        copyState.unreadIds.splice(index, 1);
+      }
+      return  copyState
+
+  }));
 
 export const getNotificationById = (id: number) => (state: State) => state.entities[id];
