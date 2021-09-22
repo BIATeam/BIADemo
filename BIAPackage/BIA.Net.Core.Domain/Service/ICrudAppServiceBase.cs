@@ -32,8 +32,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
@@ -51,8 +52,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns></returns>
         Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
@@ -71,8 +73,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             int id = 0,
@@ -85,7 +88,7 @@ namespace BIA.Net.Core.Domain.Service
              where TOtherFilter : LazyLoadDto, new();
 
         /// <summary>
-        /// Get the DTO list.
+        /// Get the DTO list. (with a queryOrder)
         /// </summary>
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
@@ -94,8 +97,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="firstElement">First element to take.</param>
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
         Task<IEnumerable<TDto>> GetAllAsync(
             int id = 0,
@@ -110,7 +114,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = null);
 
         /// <summary>
-        /// Returns data in csv format.
+        /// Get the DTO list. (with an order By Expression and direction)
         /// </summary>
         /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
         /// <param name="ascending">Direction of Ordering.</param>
@@ -121,8 +125,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="ascending">Direction of Ordering.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>Data in csv format.</returns>
         Task<IEnumerable<TDto>> GetAllAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
             int id = 0,
@@ -142,8 +147,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="specification">Specification Used for Filtering Query.</param>
         /// <param name="filter">Filter Query.</param>
         /// <param name="includes">The list of includes.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO.</returns>
         Task<TDto> GetAsync(int id = 0,
             Specification<TEntity> specification = null,
@@ -157,6 +163,7 @@ namespace BIA.Net.Core.Domain.Service
         /// Transform the DTO into the corresponding entity and add it to the DB.
         /// </summary>
         /// <param name="dto">The DTO.</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO with id updated.</returns>
         Task<TDto> AddAsync(TDto dto,
             string mapperMode = null);
@@ -165,6 +172,9 @@ namespace BIA.Net.Core.Domain.Service
         /// Update an entity in DB with the DTO values.
         /// </summary>
         /// <param name="dto">The DTO.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
         Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update,
             string mapperMode = null);
@@ -173,15 +183,18 @@ namespace BIA.Net.Core.Domain.Service
         /// Remove an entity with its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveAsync(int id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The deleted DTO</returns>
+        Task<TDto> RemoveAsync(int id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
 
         /// <summary>
         /// Save the DTO in DB regarding to theirs state.
         /// </summary>
         /// <param name="dto"></param>
-        /// <returns></returns>
-        Task SaveAsync(TDto dto,
+        /// <returns>The saved DTO</returns>
+        Task<TDto> SaveAsync(TDto dto,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null);
@@ -190,8 +203,8 @@ namespace BIA.Net.Core.Domain.Service
         /// Save the list of DTO in DB regarding to theirs state.
         /// </summary>
         /// <param name="dtos">The list of DTO to save.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SaveAsync(IEnumerable<TDto> dtos,
+        /// <returns>The saved list of DTOs</returns>
+        Task<IEnumerable<TDto>> SaveAsync(IEnumerable<TDto> dtos,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null);

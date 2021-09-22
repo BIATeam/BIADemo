@@ -106,7 +106,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.notificationService.AddAsync(dto);
 #if UseHubForClientInNotification
-                await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-notifications", createdDto);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -143,7 +143,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.notificationService.UpdateAsync(dto);
 #if UseHubForClientInNotification
-                await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-notifications", updatedDto);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -181,9 +181,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.notificationService.RemoveAsync(id);
+                var deletedDto = await this.notificationService.RemoveAsync(id);
 #if UseHubForClientInNotification
-                await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+                await this.clientForHubService.SendMessage("refresh-notifications", deletedDto);
 #endif
                 return this.Ok();
             }
@@ -224,7 +224,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 {
                     dto = await this.notificationService.SetAsRead(dto);
 #if UseHubForClientInNotification
-                    await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
+                    await this.clientForHubService.SendMessage("refresh-notifications", dto);
 #endif
                 }
 

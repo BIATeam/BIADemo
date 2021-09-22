@@ -35,20 +35,9 @@ export class NotificationSignalRService {
   initialize() {
     this.signalRService.addMethod('notification-sent', (args) => {
       const notification: Notification = JSON.parse(args);
-      var userInfo = this.authService.getAdditionalInfos();
-      
-      var okSite : Boolean =  notification.site.id == userInfo.userData.currentSiteId
-      var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-      var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => this.authService.hasPermission(e.display)))
-
-
       if 
       (
-        okSite
-        &&
-        okUser
-        &&
-        okRole
+        this.IsInMyDisplay(notification)
       )
       {
         this.messageService.showInfo(notification.description);
@@ -61,6 +50,15 @@ export class NotificationSignalRService {
       var idNum: number = +id;
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
+  }
+
+  private IsInMyDisplay(notification: Notification) {
+    var userInfo = this.authService.getAdditionalInfos();
+    var okSite : Boolean =  notification.site.id == userInfo.userData.currentSiteId
+    var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
+    var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => this.authService.hasPermission(e.display)))
+
+    return okSite && okUser && okRole;
   }
 
   destroy() {

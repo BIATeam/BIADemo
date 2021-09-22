@@ -77,6 +77,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             var notification = base.AddAsync(dto, mapperMode);
             _ = this.clientForHubService.SendMessage("notification-sent", notification.Result);
+            _ = this.clientForHubService.SendMessage("refresh-notifications", notification.Result);
             return notification;
         }
 
