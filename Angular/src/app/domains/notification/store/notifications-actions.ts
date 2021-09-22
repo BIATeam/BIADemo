@@ -18,3 +18,6 @@ export const loadUnreadNotificationIdsSuccess =
 
 export const removeUnreadNotification =
     createAction('[Domain Notifications] Read notification id', props<{ id: number }>());
+
+export const addUnreadNotification =
+    createAction('[Domain Notifications] Add unread notification id', props<{ id: number }>());

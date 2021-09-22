@@ -160,7 +160,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }*/
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     if (this.siteService.currentSiteId > 0) {
-      const customEvent: any = { siteId: +this.siteService.currentSiteId, ...lazyLoadEvent };
+      const customEvent: any = { siteId: + this.siteService.currentSiteId, ...lazyLoadEvent };
       this.store.dispatch(loadAllByPost({ event: customEvent }));
     }
   }

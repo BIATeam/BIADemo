@@ -87,8 +87,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // End BIADemo
 
-            NotificationHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
-
             app.UseBiaWorkerFeatures(config =>
             {
                 config.Configuration = this.configuration;

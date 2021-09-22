@@ -101,7 +101,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                                 new PlaneHandlerRepository(hostContext.Configuration),
 
                         // End BIADemo
-                                new NotificationHandlerRepository(hostContext.Configuration),
                             });
                         }
 

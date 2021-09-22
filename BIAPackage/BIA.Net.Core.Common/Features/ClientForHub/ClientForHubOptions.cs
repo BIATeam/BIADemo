@@ -7,14 +7,12 @@ namespace BIA.Net.Core.Common.Features.ClientForHub
     public class ClientForHubOptions
     {
         // hub for clients options
-        public static bool IsActive { get; private set; }
+        private static bool isActive = false;
+        public static bool IsActive { get { return isActive; } private set { isActive = value; } }
         public static string SignalRUrl { get; private set; }
-
         public ClientForHubOptions()
         {
-            IsActive = false;
         }
-
         public static void Activate(string signalRUrl)
         {
             IsActive = true;

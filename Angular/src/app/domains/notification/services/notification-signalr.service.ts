@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { loadUnreadNotificationIdsSuccess, removeUnreadNotification } from '../store/notifications-actions';
+import { addUnreadNotification, removeUnreadNotification } from '../store/notifications-actions';
 import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -22,6 +23,7 @@ export class NotificationSignalRService {
   constructor(
     private store: Store<AppState>,
     private signalRService: BiaSignalRService,
+    private authService: AuthService,
     private messageService: BiaMessageService) {
     // Do nothing.
   }
@@ -33,8 +35,25 @@ export class NotificationSignalRService {
   initialize() {
     this.signalRService.addMethod('notification-sent', (args) => {
       const notification: Notification = JSON.parse(args);
-      this.messageService.showInfo(notification.description);
-      this.store.dispatch(loadUnreadNotificationIdsSuccess({ ids: JSON.parse(args).unreadCount }));
+      var userInfo = this.authService.getAdditionalInfos();
+      
+      var okSite : Boolean =  notification.site.id == userInfo.userData.currentSiteId
+      var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
+      var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => this.authService.hasPermission(e.display)))
+
+
+      if 
+      (
+        okSite
+        &&
+        okUser
+        &&
+        okRole
+      )
+      {
+        this.messageService.showInfo(notification.description);
+        this.store.dispatch(addUnreadNotification({ id: notification.id }));
+      }
     });
 
     this.signalRService.addMethod('notification-read', (id) => {

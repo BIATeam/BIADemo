@@ -14,7 +14,7 @@ namespace BIA.Net.Core.WorkerService.Features
         public DistributedCacheConfiguration DistributedCache { get; private set; }
         public SwaggerOptions Swagger { get; private set; }
         public HubForClientsOptions HubForClients { get; private set; }
-        public ClientForHubOptions ClientForHub { get; set; }
+        //public ClientForHubOptions ClientForHub { get; set; }
         public DelegateJobToWorkerOptions DelegateJobToWorker { get; private set; }
 
         public ApiFeaturesServiceOptions()

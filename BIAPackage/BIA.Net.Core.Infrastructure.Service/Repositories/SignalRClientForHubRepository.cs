@@ -11,9 +11,9 @@
 
     public class SignalRClientForHubRepository : IClientForHubRepository
     {
-        private HubConnection connection;
-        private bool starting = false;
-        private bool started = false;
+        private static HubConnection connection = null;
+        private static bool starting = false;
+        private static bool started = false;
 
         public SignalRClientForHubRepository()
         {
@@ -54,7 +54,10 @@
 
         public virtual void Dispose()
         {
-
+            if (connection != null)
+            {
+                connection.StopAsync();
+            }
         }
 
         /// <summary>

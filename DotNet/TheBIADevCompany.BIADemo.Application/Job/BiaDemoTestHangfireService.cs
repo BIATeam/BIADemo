@@ -81,6 +81,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Title = "RunLongTaskWithNotification",
                 NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1 } },
                 TargetJson = "{JobId = '" + jobId + "'}",
+                Read = false,
             };
 
             try
@@ -88,9 +89,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 notification.Type = new OptionDto { Id = (int)NotificationType.Success };
 
                 await this.notificationAppService.AddAsync(notification);
-                // TODO ? - SignalR Send
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 notification.Type = new OptionDto { Id = (int)NotificationType.Error };
 

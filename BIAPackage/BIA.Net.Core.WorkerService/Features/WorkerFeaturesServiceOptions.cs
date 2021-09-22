@@ -13,14 +13,14 @@ namespace BIA.Net.Core.WorkerService.Features
     {
         public IConfiguration Configuration { get; set; }
         public DistributedCacheConfiguration DistributedCache { get; set; }
-        public ClientForHubOptions ClientForHub { get; set; }
+        //public ClientForHubOptions ClientForHub { get; set; }
         public DatabaseHandlerOptions DatabaseHandler { get; set; }
         public HangfireServerOptions HangfireServer { get; set; }
 
         public WorkerFeaturesServiceOptions()
         {
             DistributedCache = new DistributedCacheConfiguration();
-            ClientForHub = new ClientForHubOptions();
+            //ClientForHub = new ClientForHubOptions();
             DatabaseHandler = new DatabaseHandlerOptions();
             HangfireServer = new HangfireServerOptions();
         }

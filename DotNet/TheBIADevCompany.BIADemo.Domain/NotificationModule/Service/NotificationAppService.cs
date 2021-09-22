@@ -15,6 +15,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
@@ -73,8 +75,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <inheritdoc/>
         public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
-            // TODO : send SignalR to add the notification (depending on audience)
-            return base.AddAsync(dto, mapperMode);
+            var notification = base.AddAsync(dto, mapperMode);
+            _ = this.clientForHubService.SendMessage("notification-sent", JsonConvert.SerializeObject(notification.Result, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            return notification;
         }
 
         /// <summary>
