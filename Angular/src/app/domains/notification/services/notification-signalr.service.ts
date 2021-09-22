@@ -34,7 +34,7 @@ export class NotificationSignalRService {
    */
   initialize() {
     this.signalRService.addMethod('notification-sent', (args) => {
-      const notification: Notification = JSON.parse(args);
+      const notification = this.parseNotification(args);
       var userInfo = this.authService.getAdditionalInfos();
       
       var okSite : Boolean =  notification.site.id == userInfo.userData.currentSiteId
@@ -65,6 +65,39 @@ export class NotificationSignalRService {
 
   destroy() {
     this.signalRService.removeMethod('notification-sent');
-    this.signalRService.removeMethod('notification-count');
+    this.signalRService.removeMethod('notification-read');
+  }
+
+  /**
+   * Parse notification from JSON to object. Applies custom logic after parsing.
+   */
+  private parseNotification(json: string): Notification {
+
+    const notification: Notification = JSON.parse(json);
+
+    const toCamelCase = (key: string, value: any) => {
+      if (value && typeof value === 'object') {
+        for (const k in value) {
+          if (/^[A-Z]/.test(k) && Object.hasOwnProperty.call(value, k)) {
+            value[k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+            delete value[k];
+          }
+        }
+      }
+      return value;
+    };
+
+    notification.target = JSON.parse(notification.targetJson, toCamelCase);
+
+    if (notification.target && notification.target.route) {
+      notification.target.route = notification.target.route.map(routeCommand => {
+        if (routeCommand === '[SELF_ID]') {
+          routeCommand = notification.id;
+        }
+        return routeCommand;
+      });
+    }
+
+    return notification;
   }
 }

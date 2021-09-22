@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 import { Platform } from '@angular/cdk/platform';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
@@ -14,6 +14,8 @@ import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
 import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
 import { OptionDto } from '../../../model/option-dto';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bia-classic-header',
@@ -113,7 +115,9 @@ export class ClassicHeaderComponent implements OnDestroy {
     public auth: AuthService,
     public translateService: TranslateService,
     private platform: Platform,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private biaMessageService: BiaMessageService,
+    private router: Router
   ) {
     this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
     this.store.dispatch(loadUnreadNotificationIds());
@@ -123,6 +127,15 @@ export class ClassicHeaderComponent implements OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  onNotificationClick(message: Message) {
+    if (message.data?.route) {
+      this.router.navigate(message.data.route);
+    } else {
+      this.router.navigate(['/notifications']);
+    }
+    this.biaMessageService.clear('bia-signalR');
   }
 
   toggleFullscreenMode() {

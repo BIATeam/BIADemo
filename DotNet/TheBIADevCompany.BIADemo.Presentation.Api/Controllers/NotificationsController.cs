@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInNotification
-        public NotificationsController(INotificationAppService notificationService, IPrincipal principal,  IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
 #else
         public NotificationsController(INotificationAppService notificationService)
 #endif

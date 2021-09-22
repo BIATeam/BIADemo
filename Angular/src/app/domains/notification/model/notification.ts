@@ -1,4 +1,4 @@
-import { OptionDto } from "src/app/shared/bia-shared/model/option-dto";
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Notification {
   id: number;
@@ -12,4 +12,9 @@ export interface Notification {
   notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
   targetJson: string;
+  target: NotificationTarget;
+}
+
+export interface NotificationTarget {
+  route: any[];
 }

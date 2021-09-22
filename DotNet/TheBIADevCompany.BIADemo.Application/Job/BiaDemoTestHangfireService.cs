@@ -10,9 +10,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.RepoContract;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
@@ -24,6 +26,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         private readonly INotificationAppService notificationAppService;
 
         /// <summary>
+        /// The signalR Service.
+        /// </summary>
+        private readonly IClientForHubRepository clientForHubService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BiaDemoTestHangfireService"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
@@ -32,10 +39,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
-            INotificationAppService notificationAppService)
+            INotificationAppService notificationAppService,
+            IClientForHubRepository clientForHubService)
             : base(configuration, logger)
         {
             this.notificationAppService = notificationAppService;
+            this.clientForHubService = clientForHubService;
         }
 
         /// <summary>
@@ -70,29 +79,36 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             await Task.Delay(2000);
 
-            string jobId = context.BackgroundJob.Id;
+            var data = new NotificationDataDto
+            {
+                Route = new string[] { "notifications", "[SELF_ID]", "edit" },
+            };
 
             var notification = new NotificationDto
             {
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
-                Description = "Run a long task and will send a notification when processed",
                 Site = new OptionDto { Id = siteId },
-                Title = "RunLongTaskWithNotification",
                 NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1 } },
-                TargetJson = "{JobId = '" + jobId + "'}",
                 Read = false,
+                TargetJson = JsonConvert.SerializeObject(data),
             };
 
             try
             {
                 notification.Type = new OptionDto { Id = (int)NotificationType.Success };
 
+                notification.Title = "notification.success.title";
+                notification.Description = "notification.success.description";
+
                 await this.notificationAppService.AddAsync(notification);
             }
             catch (Exception e)
             {
                 notification.Type = new OptionDto { Id = (int)NotificationType.Error };
+
+                notification.Title = "notification.error.title";
+                notification.Description = "notification.error.description";
 
                 await this.notificationAppService.AddAsync(notification);
             }

@@ -92,20 +92,25 @@
   "notification": {
     "listOf": "Notificaciones",
     "title": "Título",
+    "detail": "Detalle de la notificación",
     "description": "Descripción",
     "createdDate": "Fecha",
     "type": {
       "title": "Tipo",
-      "task": "Tarea",
-      "info": "Información",
-      "success": "Éxito",
-      "warning": "Advertencia",
-      "error": "Error"
+      "Task": "Tarea",
+      "Info": "Información",
+      "Success": "Éxito",
+      "Warning": "Advertencia",
+      "Error": "Error"
     },
     "read": "Leer",
     "createdBy": "Creado por",
     "notifiedRoles": "Roles notificados",
     "notifiedUsers": "Usuarios notificados",
-    "targetJson" : "Objetivo JSON"
+    "targetJson" : "Objetivo JSON",
+    "success": {
+      "title": "Notificación enviada con éxito",
+      "description": "Descripción a personalizar en las traducciones i18n para cada función"
+    }
   }
 }
