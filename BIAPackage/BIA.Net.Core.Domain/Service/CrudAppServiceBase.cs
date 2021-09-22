@@ -144,6 +144,16 @@ namespace BIA.Net.Core.Domain.Service
             return await this.UpdateAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
+        public virtual async Task<TDto> RemoveAsync(
+            int id, 
+            string accessMode = AccessMode.Delete, 
+            string queryMode = QueryMode.Delete, 
+            string mapperMode = null)
+        {
+            return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.BulkAddAsync"/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
@@ -168,21 +178,21 @@ namespace BIA.Net.Core.Domain.Service
             this.RemoveBulk<TDto, TMapper>(dtos);
         }
 
-        public virtual async Task SaveAsync(TDto dto,
+        public virtual async Task<TDto> SaveAsync(TDto dto,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
         {
-            await this.SaveAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.SaveAsync<TDto, TMapper>(dto, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.SaveAsync"/>
-        public virtual async Task SaveAsync(IEnumerable<TDto> dtos,
+        public virtual async Task<IEnumerable<TDto>> SaveAsync(IEnumerable<TDto> dtos,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
         {
-            await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.SaveAsync<TDto, TMapper>(dtos, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
     }
 }
