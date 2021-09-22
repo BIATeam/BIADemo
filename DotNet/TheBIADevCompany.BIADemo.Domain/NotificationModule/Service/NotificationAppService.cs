@@ -76,7 +76,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
             var notification = base.AddAsync(dto, mapperMode);
-            _ = this.clientForHubService.SendMessage("notification-sent", JsonConvert.SerializeObject(notification.Result, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            _ = this.clientForHubService.SendMessage("notification-sent", notification.Result);
             return notification;
         }
 

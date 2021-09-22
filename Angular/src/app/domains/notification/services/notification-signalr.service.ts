@@ -65,6 +65,6 @@ export class NotificationSignalRService {
 
   destroy() {
     this.signalRService.removeMethod('notification-sent');
-    this.signalRService.removeMethod('notification-count');
+    this.signalRService.removeMethod('notification-read');
   }
 }

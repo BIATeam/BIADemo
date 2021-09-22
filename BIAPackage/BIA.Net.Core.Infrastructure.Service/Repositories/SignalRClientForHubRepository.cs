@@ -7,7 +7,8 @@
     using BIA.Net.Core.Common.Features.ClientForHub;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.AspNetCore.SignalR.Client;
-
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     public class SignalRClientForHubRepository : IClientForHubRepository
     {
@@ -77,6 +78,11 @@
                 await Task.Delay(200);
             }
             await connection.InvokeAsync("SendMessage", action, jsonContext);
+        }
+
+        public async Task SendMessage(string action, object objectToSerialize)
+        {
+            await SendMessage(action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
     }
 }

@@ -14,5 +14,13 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
         Task SendMessage(string action, string jsonContext);
+
+        /// <summary>
+        /// Send Message.
+        /// </summary>
+        /// <param name="action">action to send</param>
+        /// <param name="objectToSerialize">context at json format</param>
+        /// <returns>Send message on an action</returns>
+        Task SendMessage(string action, object objectToSerialize);
     }
 }
