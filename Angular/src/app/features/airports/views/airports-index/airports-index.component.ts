@@ -53,7 +53,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'airportsGrid' : '';
+  tableStateKey = this.useView ? 'airportsGrid' : undefined;
 
 
   constructor(

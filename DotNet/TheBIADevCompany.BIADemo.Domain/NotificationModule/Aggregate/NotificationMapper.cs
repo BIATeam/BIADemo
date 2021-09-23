@@ -51,10 +51,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.Description = dto.Description;
             entity.CreatedById = dto.CreatedBy?.Id;
             entity.TypeId = dto.Type.Id;
-
-            if (dto.Site != null)
+            if (dto.SiteId != 0)
             {
-                entity.SiteId = dto.Site.Id;
+                entity.SiteId = dto.SiteId;
             }
 
             // Mapping relationship *-* : ICollection<Airports>
@@ -124,11 +123,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 },
                 TargetJson = entity.TargetJson,
 
-                Site = new OptionDto
-                {
-                    Id = entity.Site.Id,
-                    Display = entity.Site.Title,
-                },
+                SiteId = entity.SiteId,
 
                 NotifiedRoles = entity.NotifiedRoles.Select(nr => new OptionDto
                 {

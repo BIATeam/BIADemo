@@ -77,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
                 Description = "Run a long task and will send a notification when processed",
-                Site = new OptionDto { Id = siteId },
+                SiteId = siteId,
                 Title = "RunLongTaskWithNotification",
                 NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1 } },
                 TargetJson = "{JobId = '" + jobId + "'}",

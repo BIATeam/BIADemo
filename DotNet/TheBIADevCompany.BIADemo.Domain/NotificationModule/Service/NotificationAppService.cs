@@ -8,11 +8,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Newtonsoft.Json;
@@ -47,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <param name="clientForHubService">Client for hub.</param>
         public NotificationAppService(
             ITGenericRepository<Notification> repository,
-            IPrincipal principal, 
+            IPrincipal principal,
             IClientForHubRepository clientForHubService)
             : base(repository)
         {
@@ -68,15 +70,71 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public async Task<NotificationDto> SetAsRead(NotificationDto notification)
         {
             notification.Read = true;
-            _ = this.clientForHubService.SendMessage("notification-read", notification.Id.ToString());
+            //_ = this.clientForHubService.SendMessage("notification-removeUnread", notification.Id.ToString());
             return await this.UpdateAsync(notification);
+        }
+
+        public override async Task<NotificationDto> UpdateAsync(
+            NotificationDto dto,
+            string accessMode = AccessMode.Update,
+            string queryMode = QueryMode.Update,
+            string mapperMode = null)
+        {
+            if (dto != null)
+            {
+                var mapper = new NotificationMapper();
+
+                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
+                dto.SiteId = entity.SiteId;
+                if (entity == null)
+                {
+                    throw new ElementNotFoundException();
+                }
+
+                if (entity.Read && !dto.Read)
+                {
+                    _ = this.clientForHubService.SendMessage("notification-addUnread", dto);
+                }
+                else if (!entity.Read && dto.Read)
+                {
+                    _ = this.clientForHubService.SendMessage("notification-removeUnread", dto.Id);
+                }
+                /*else
+                {*/
+                    _ = this.clientForHubService.SendMessage("refresh-notifications", dto);
+                /*}*/
+
+                mapper.DtoToEntity(dto, entity, mapperMode);
+                this.Repository.Update(entity);
+                await this.Repository.UnitOfWork.CommitAsync();
+                dto.DtoState = DtoState.Unchanged;
+            }
+
+            return dto;
+        }
+
+        /// <inheritdoc/>
+        public override async Task<NotificationDto> RemoveAsync(
+            int id,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null)
+        {
+            var notification = await this.GetAsync(id);
+            await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            _ = this.clientForHubService.SendMessage("notification-removeUnread", notification.Id);
+            _ = this.clientForHubService.SendMessage("refresh-notifications", notification);
+            return notification;
         }
 
         /// <inheritdoc/>
         public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
             var notification = base.AddAsync(dto, mapperMode);
-            _ = this.clientForHubService.SendMessage("notification-sent", notification.Result);
+            if (!dto.Read)
+            {
+                _ = this.clientForHubService.SendMessage("notification-addUnread", notification.Result);
+            }
             _ = this.clientForHubService.SendMessage("refresh-notifications", notification.Result);
             return notification;
         }

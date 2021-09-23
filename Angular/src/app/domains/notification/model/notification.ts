@@ -8,7 +8,7 @@ export interface Notification {
   read: boolean;
   createdDate: string;
   createdBy: OptionDto | null;
-  site: OptionDto;
+  siteId: number;
   notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
   targetJson: string;

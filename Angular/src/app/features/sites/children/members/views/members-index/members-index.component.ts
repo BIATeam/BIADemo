@@ -56,7 +56,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'membersGrid' : '';
+  tableStateKey = this.useView ? 'membersGrid' : undefined;
 
 
   constructor(

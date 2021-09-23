@@ -115,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 // Mapping relationship 1-* : Site
                 Site = new SiteDto
                 {
-                    Id = entity.Site.Id,
+                    Id = entity.SiteId,
                     Title = entity.Site.Title,
                 },
 

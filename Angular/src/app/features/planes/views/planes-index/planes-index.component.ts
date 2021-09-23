@@ -56,7 +56,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'planesGrid' : '';
+  tableStateKey = this.useView ? 'planesGrid' : undefined;
 
 
   constructor(

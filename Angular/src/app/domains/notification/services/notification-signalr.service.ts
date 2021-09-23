@@ -33,7 +33,7 @@ export class NotificationSignalRService {
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    this.signalRService.addMethod('notification-sent', (args) => {
+    this.signalRService.addMethod('notification-addUnread', (args) => {
       const notification: Notification = JSON.parse(args);
       if 
       (
@@ -45,7 +45,7 @@ export class NotificationSignalRService {
       }
     });
 
-    this.signalRService.addMethod('notification-read', (id) => {
+    this.signalRService.addMethod('notification-removeUnread', (id) => {
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
       var idNum: number = +id;
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
@@ -54,7 +54,7 @@ export class NotificationSignalRService {
 
   private IsInMyDisplay(notification: Notification) {
     var userInfo = this.authService.getAdditionalInfos();
-    var okSite : Boolean =  notification.site.id == userInfo.userData.currentSiteId
+    var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
     var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
     var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => this.authService.hasPermission(e.display)))
 
@@ -62,7 +62,7 @@ export class NotificationSignalRService {
   }
 
   destroy() {
-    this.signalRService.removeMethod('notification-sent');
-    this.signalRService.removeMethod('notification-read');
+    this.signalRService.removeMethod('notification-addUnread');
+    this.signalRService.removeMethod('notification-removeUnread');
   }
 }

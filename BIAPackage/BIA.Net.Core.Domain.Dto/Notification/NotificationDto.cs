@@ -47,7 +47,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the site identifier.
         /// </summary>
-        public OptionDto Site { get; set; }
+        public int SiteId { get; set; }
 
         /// <summary>
         /// Gets or sets the role identifier to be notified, if any.

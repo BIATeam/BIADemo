@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using System.Linq.Expressions;
+    using System.Linq;
     using System;
 
 
@@ -336,14 +337,15 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
         {
+            var mapper = new TOtherMapper();
+
             var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), queryMode: queryMode);
+            var dto = new TOtherDto { Id = entity.Id };
             if (entity == null)
             {
                 throw new ElementNotFoundException();
             }
-            TOtherDto dto = new();
-            var mapper = new TOtherMapper();
-            mapper.DtoToEntity(dto, entity, mapperMode);
+            
             this.Repository.Remove(entity);
             await this.Repository.UnitOfWork.CommitAsync();
             return dto;

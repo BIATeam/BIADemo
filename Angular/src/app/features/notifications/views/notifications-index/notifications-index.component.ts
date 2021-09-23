@@ -55,7 +55,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'notificationsGrid' : '';
+  tableStateKey = this.useView ? 'notificationsGrid' : undefined;
 
 
   constructor(
