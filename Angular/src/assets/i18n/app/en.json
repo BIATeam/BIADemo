@@ -97,11 +97,11 @@
     "createdDate": "Date",
     "type": {
       "title": "Type",
-      "Task": "Task",
-      "Info": "Information",
-      "Success": "Success",
-      "Warning": "Warning",
-      "Error": "Error"
+      "task": "Task",
+      "info": "Information",
+      "success": "Success",
+      "warning": "Warning",
+      "error": "Error"
     },
     "read": "Read",
     "createdBy": "Created by",
