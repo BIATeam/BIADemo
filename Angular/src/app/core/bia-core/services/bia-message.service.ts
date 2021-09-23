@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
+import { Notification } from 'src/app/domains/notification/model/notification';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
 
@@ -8,7 +9,7 @@ const MESSAGE_LIFE_DEFAULT = 3000;
   providedIn: 'root'
 })
 export class BiaMessageService {
-  constructor(private translateService: TranslateService, private messageService: MessageService) {}
+  constructor(private translateService: TranslateService, private messageService: MessageService) { }
 
   showAddSuccess() {
     this.showSuccess(this.translateService.instant('biaMsg.addElementSuccess'));
@@ -59,5 +60,36 @@ export class BiaMessageService {
   showErrorDetail(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
     const summaryValue = this.translateService.instant('bia.error');
     this.messageService.add({ key: 'bia', severity: 'error', summary: summaryValue, detail: detailValue, life: life });
+  }
+
+  showNotification(notification: Notification) {
+    let severity: 'error' | 'success' | 'info' | 'warn';
+
+    switch (notification.type.display) {
+      case 'Success':
+        severity = 'success';
+        break;
+      case 'Warning':
+        severity = 'warn';
+        break;
+      case 'Error':
+        severity = 'error';
+        break;
+      default:
+        severity = 'info';
+        break;
+    }
+
+    this.messageService.add({
+      key: 'bia-signalR',
+      severity,
+      summary: this.translateService.instant(notification.title),
+      detail: this.translateService.instant(notification.description),
+      data: notification.target
+    });
+  }
+
+  clear(key: string) {
+    this.messageService.clear(key);
   }
 }

@@ -40,7 +40,7 @@ export class NotificationSignalRService {
         this.IsInMyDisplay(notification)
       )
       {
-        this.messageService.showInfo(notification.description);
+        this.messageService.showNotification(notification);
         this.store.dispatch(addUnreadNotification({ id: notification.id }));
       }
     });
@@ -65,4 +65,5 @@ export class NotificationSignalRService {
     this.signalRService.removeMethod('notification-addUnread');
     this.signalRService.removeMethod('notification-removeUnread');
   }
+
 }

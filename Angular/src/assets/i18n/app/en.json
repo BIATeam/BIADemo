@@ -92,20 +92,25 @@
   "notification": {
     "listOf": "Notifications",
     "title": "Title",
+    "detail": "Notification detail",
     "description": "Description",
     "createdDate": "Date",
     "type": {
       "title": "Type",
-      "task": "Task",
-      "info": "Information",
-      "success": "Success",
-      "warning": "Warning",
-      "error": "Error"
+      "Task": "Task",
+      "Info": "Information",
+      "Success": "Success",
+      "Warning": "Warning",
+      "Error": "Error"
     },
     "read": "Read",
     "createdBy": "Created by",
     "notifiedRoles": "Notified roles",
     "notifiedUsers": "Notified users",
-    "targetJson" : "Target JSON"
+    "targetJson" : "Target JSON",
+    "success": {
+      "title": "Notification sent successfully",
+      "description": "Description to be customised in i18n traductions for each feature"
+    }
   }
 }

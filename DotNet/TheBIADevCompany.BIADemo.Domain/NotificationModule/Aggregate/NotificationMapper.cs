@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using Newtonsoft.Json;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -51,6 +52,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.Description = dto.Description;
             entity.CreatedById = dto.CreatedBy?.Id;
             entity.TypeId = dto.Type.Id;
+            entity.TargetJson = dto.TargetJson;
             if (dto.SiteId != 0)
             {
                 entity.SiteId = dto.SiteId;

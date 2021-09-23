@@ -25,6 +25,7 @@ import { NotificationsSignalRService } from '../../services/notification-signalr
 import { NotificationsEffects } from '../../store/notifications-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { NotificationOptionsService } from '../../services/notification-options.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notifications-index',
@@ -74,7 +75,11 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.notifications$ = this.store.select(getAllNotifications);
+    this.notifications$ = this.store.select(getAllNotifications).pipe(map(notifications => notifications.map(notification => {
+      notification.title = this.translateService.instant(notification.title);
+      notification.description = this.translateService.instant(notification.description);
+      return notification;
+    })));
     this.totalCount$ = this.store.select(getNotificationsTotalCount);
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
@@ -92,22 +97,19 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       this.store.dispatch(loadAllByPost({ event: this.notificationListComponent.getLazyLoadMetadata() }));
     }
 
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.notificationsSignalRService.initialize();
       NotificationsEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       NotificationsEffects.useSignalR = false;
       this.notificationsSignalRService.destroy();
     }

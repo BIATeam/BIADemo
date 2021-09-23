@@ -80,13 +80,15 @@
           [style]="{ width: '100%' }"
         >
           <ng-template let-values pTemplate="selectedItems">
-            <div *ngIf="values.length <= 0">&nbsp;</div>
-            <div *ngIf="values.length <= 3">
-              {{values | translateFields : 'display' : 'role.' : translateService.currentLang}}
-            </div>
-            <div *ngIf="values.length > 3">
-              {{values.length}} items selected
-            </div>
+            <ng-container *ngIf="values">
+              <div *ngIf="values.length <= 0">&nbsp;</div>
+              <div *ngIf="values.length <= 3">
+                {{values | translateFields : 'display' : 'role.' : translateService.currentLang}}
+              </div>
+              <div *ngIf="values.length > 3">
+                {{values.length}} items selected
+              </div>
+            </ng-container>
           </ng-template>
 
           <ng-template let-item pTemplate="item">
