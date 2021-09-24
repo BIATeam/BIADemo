@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
@@ -80,9 +81,9 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             await Task.Delay(2000);
 
-            var data = new NotificationDataDto
+            var target = new NotificationDataDto
             {
-                Route = new string[] { "notifications", "[SELF_ID]", "edit" },
+                Route = new string[] { "examples", "hangfire" },
             };
 
             var notification = new NotificationDto
@@ -94,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Title = "notification.success.title",
                 NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
-                TargetJson = JsonConvert.SerializeObject(data),
+                Target = target,
             };
 
             //var notification = new NotificationDto

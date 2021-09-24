@@ -13,9 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using Newtonsoft.Json;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// The mapper used for user.
@@ -56,7 +54,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.Description = dto.Description;
             entity.CreatedById = dto.CreatedBy?.Id;
             entity.TypeId = dto.Type.Id;
-            entity.TargetJson = dto.TargetJson;
+            entity.TargetJson = JsonConvert.SerializeObject(dto.Target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
             if (dto.SiteId != 0)
             {
                 entity.SiteId = dto.SiteId;
@@ -107,6 +106,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationDto>> EntityToDto()
         {
+            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+
             return entity => new NotificationDto
             {
                 Id = entity.Id,
@@ -127,7 +128,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     Id = entity.TypeId,
                     Display = entity.Type.Code,
                 },
-                TargetJson = entity.TargetJson,
+
+                Target = JsonConvert.DeserializeObject<NotificationDataDto>(entity.TargetJson),
 
                 SiteId = entity.SiteId,
 
