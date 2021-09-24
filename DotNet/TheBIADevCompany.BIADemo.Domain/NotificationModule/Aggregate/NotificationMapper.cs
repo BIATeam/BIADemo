@@ -32,7 +32,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
-                    { "TypeId", notification => notification.TypeId },
+                    { "Type", notification => notification.Type },
+                    { "Read", notification => notification.Read },
+                    { "CreatedBy", notification => notification.CreatedBy },
+                    { "NotifiedRoles", notification => notification.NotifiedRoles.Select(x => x.Role.Code).OrderBy(x => x) },
+                    { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
         }

@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
@@ -91,10 +92,22 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Description = "notification.success.description",
                 SiteId = siteId,
                 Title = "notification.success.title",
-                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1 } },
+                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 TargetJson = JsonConvert.SerializeObject(data),
             };
+
+            //var notification = new NotificationDto
+            //{
+            //    CreatedBy = new OptionDto { Id = createdById },
+            //    CreatedDate = DateTime.Now,
+            //    Description = "notification.success.description",
+            //    SiteId = siteId,
+            //    Title = "notification.success.title",
+            //    NotifiedUsers = new List<OptionDto> { new OptionDto { Id = 2, DtoState = DtoState.Added } },
+            //    Read = false,
+            //    TargetJson = JsonConvert.SerializeObject(data),
+            //};
 
             try
             {
