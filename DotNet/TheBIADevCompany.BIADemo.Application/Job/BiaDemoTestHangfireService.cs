@@ -83,7 +83,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 
             var target = new NotificationDataDto
             {
-                Route = new string[] { "examples", "hangfire" },
+                //Route = new string[] { "examples", "hangfire" },
+                Route = new string[] { "examples", "planes", "30" , "edit" }
             };
 
             var notification = new NotificationDto
@@ -95,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Title = "notification.success.title",
                 NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
-                Target = target,
+                JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
             };
 
             //var notification = new NotificationDto
@@ -107,12 +108,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             //    Title = "notification.success.title",
             //    NotifiedUsers = new List<OptionDto> { new OptionDto { Id = 2, DtoState = DtoState.Added } },
             //    Read = false,
-            //    TargetJson = JsonConvert.SerializeObject(data),
+            //    JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
             //};
 
             try
             {
-                notification.Type = new OptionDto { Id = (int)NotificationType.Success };
+                notification.Type = new OptionDto { Id = (int)NotificationType.Task };
 
                 await this.notificationAppService.AddAsync(notification);
             }

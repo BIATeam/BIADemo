@@ -62,7 +62,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets ot sets the target info to load on notification click or custom action.
         /// </summary>
-        public NotificationDataDto Target { get; set; }
+        public string JData { get; set; }
 
     }
 }

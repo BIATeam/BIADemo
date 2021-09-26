@@ -35,7 +35,7 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
       createdBy: [this.element.createdBy?.id],
       notifiedRoles: [this.element.notifiedRoles],
       notifiedUsers: [this.element.notifiedUsers],
-      targetJson: [this.element.targetJson],
+      jData: [this.element.jData],
     });
   }
 

@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Domain.Dto.User
             CurrentSiteId = 0;
             DefaultSiteId = 0;
             Sites = new List<OptionDto>();
-            CurrentRoleId = 0;
+            CurrentRoleIds = new List<int>();
             DefaultRoleId = 0;
             Roles = new List<OptionDto>();
         }
@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the current site identifier.
         /// </summary>
-        public int CurrentRoleId { get; set; }
+        public List<int> CurrentRoleIds { get; set; }
 
         /// <summary>
         /// Gets or sets the current site identifier.

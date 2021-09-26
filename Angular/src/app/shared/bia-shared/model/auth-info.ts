@@ -17,7 +17,7 @@ export interface UserData {
   currentSiteId: number;
   defaultSiteId: number;
   sites: OptionDto[];
-  currentRoleId: number;
+  currentRoleIds: number[];
   defaultRoleId: number;
   roles: OptionDto[];
 }

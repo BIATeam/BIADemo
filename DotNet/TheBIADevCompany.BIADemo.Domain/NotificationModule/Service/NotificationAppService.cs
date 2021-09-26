@@ -128,14 +128,15 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         }
 
         /// <inheritdoc/>
-        public override Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
+        public override async Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
-            var notification = base.AddAsync(dto, mapperMode);
+            var notification = await base.AddAsync(dto, mapperMode);
+            notification = await this.GetAsync(notification.Id);
             if (!dto.Read)
             {
-                _ = this.clientForHubService.SendMessage("notification-addUnread", notification.Result);
+                _ = this.clientForHubService.SendMessage("notification-addUnread", notification);
             }
-            _ = this.clientForHubService.SendMessage("refresh-notifications", notification.Result);
+            _ = this.clientForHubService.SendMessage("refresh-notifications", notification);
             return notification;
         }
 

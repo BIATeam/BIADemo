@@ -11,5 +11,5 @@ export interface Notification {
   siteId: number;
   notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
-  targetJson: string;
+  jData: string;
 }

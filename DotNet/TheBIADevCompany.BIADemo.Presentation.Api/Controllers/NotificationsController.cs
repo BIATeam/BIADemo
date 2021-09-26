@@ -223,7 +223,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 {
                     dto = await this.notificationService.SetAsRead(dto);
 #if UseHubForClientInNotification
-                    await this.clientForHubService.SendMessage("refresh-notifications", dto);
+                    // await this.clientForHubService.SendMessage("refresh-notifications", dto);
 #endif
                 }
 

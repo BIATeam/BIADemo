@@ -34,7 +34,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
         this.setCurrentSiteId(authInfo.additionalInfos.userData.currentSiteId);
-        this.setCurrentRoleId(authInfo.additionalInfos.userData.currentRoleId);
+        if (environment.singleRoleMode && authInfo.additionalInfos.userData.currentRoleIds.length == 1)
+        {
+          this.setCurrentRoleId(authInfo.additionalInfos.userData.currentRoleIds[0]);
+        }
       }
     });
   }
@@ -156,11 +159,18 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected buildUrlLogin() {
     let url: string;
     const siteId = this.getCurrentSiteId();
-    const roleId = this.getCurrentRoleId();
     if (siteId > 0) {
-      if (roleId > 0) {
-        url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}/${roleId}`;
-      } else {
+      if (environment.singleRoleMode)
+      {
+        const roleId = this.getCurrentRoleId();
+        if (roleId > 0) {
+          url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}/${roleId}`;
+        } else {
+          url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
+        }
+
+      }
+      else {
         url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
       }
     } else {

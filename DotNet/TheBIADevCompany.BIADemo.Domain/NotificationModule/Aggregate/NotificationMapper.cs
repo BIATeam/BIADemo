@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.Description = dto.Description;
             entity.CreatedById = dto.CreatedBy?.Id;
             entity.TypeId = dto.Type.Id;
-            entity.TargetJson = JsonConvert.SerializeObject(dto.Target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            entity.JData = dto.JData;
 
             if (dto.SiteId != 0)
             {
@@ -129,7 +129,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     Display = entity.Type.Code,
                 },
 
-                Target = JsonConvert.DeserializeObject<NotificationDataDto>(entity.TargetJson),
+                JData = entity.JData,
 
                 SiteId = entity.SiteId,
 

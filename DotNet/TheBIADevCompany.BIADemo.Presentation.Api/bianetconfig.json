@@ -83,12 +83,12 @@
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Create", "Plane_Read", "Plane_Update", "Plane_Delete", "Plane_Save" ],
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "Site_Admin" ]
       },
       // Airport
       {
         "Name": "Airport_Options",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "Admin", "Site_Member" ]
       },
       {
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
@@ -97,7 +97,7 @@
       // PlaneType
       {
         "Name": "PlaneType_Options",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "Admin", "Site_Member" ]
       },
       {
         "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],

@@ -16,6 +16,7 @@ import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/no
 import { OptionDto } from '../../../model/option-dto';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
+import { UserData } from '../../../model/auth-info';
 
 @Component({
   selector: 'bia-classic-header',
@@ -53,34 +54,17 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  allSites: OptionDto[];
-  @Input()
-  set sites(sites: OptionDto[]) {
-    this.allSites = sites;
-    this.initDropdownSite();
-  }
-  @Input() defaultSiteId: number;
+
   currentSite: OptionDto;
-  currentSiteId: number;
-  @Input()
-  set siteId(currentSiteId: number) {
-    this.currentSiteId = currentSiteId;
-    this.initDropdownSite();
-  }
-
-
-  allRoles: OptionDto[];
-  @Input()
-  set roles(roles: OptionDto[]) {
-    this.allRoles = roles;
-    this.initDropdownRole();
-  }
-  @Input() defaultRoleId: number;
   currentRole: OptionDto;
-  currentRoleId: number;
+  _userData: UserData
+  get userData(): UserData {
+    return this._userData;
+  }
   @Input()
-  set roleId(currentRoleId: number) {
-    this.currentRoleId = currentRoleId;
+  set userData(value: UserData) {
+    this._userData = value;
+    this.initDropdownSite();
     this.initDropdownRole();
   }
 
@@ -181,8 +165,8 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownSite() {
     this.displaySiteList = false;
-    if (this.currentSiteId > 0 && this.allSites && this.allSites.length > 1) {
-      this.currentSite = this.allSites.filter((x) => x.id === this.currentSiteId)[0];
+    if (this.userData.currentSiteId > 0 && this.userData.sites && this.userData.sites.length > 1) {
+      this.currentSite = this.userData.sites.filter((x) => x.id === this.userData.currentSiteId)[0];
       this.displaySiteList = true;
     }
   }
@@ -197,9 +181,12 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownRole() {
     this.displayRoleList = false;
-    if (this.currentRoleId > 0 && this.allRoles && this.allRoles.length > 1) {
-      this.currentRole = this.allRoles.filter((x) => x.id === this.currentRoleId)[0];
-      this.displayRoleList = true;
+    if (environment.singleRoleMode)
+    {
+      if (this.userData.currentRoleIds && this.userData.currentRoleIds.length == 1 && this.userData.roles && this.userData.roles.length > 1) {
+        this.currentRole = this.userData.roles.filter((x) => x.id === this.userData.currentRoleIds[0])[0];
+        this.displayRoleList = true;
+      }
     }
   }
 

@@ -184,7 +184,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
                 userData.Sites = sites.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
 
-
                 if (site != null)
                 {
                     if (site.IsDefault)
@@ -219,17 +218,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
                             if (roleId > 0 && roles.Any(s => s.Id == roleId))
                             {
-                                userData.CurrentRoleId = roleId;
+                                userData.CurrentRoleIds = new List<int> { roleId };
                             }
                             else
                             {
-                                userData.CurrentRoleId = role.Id;
+                                userData.CurrentRoleIds = new List<int> { role.Id };
                             }
                         }
+                        else
+                        {
+                            userData.CurrentRoleIds = new List<int>();
+                        }
+                    }
+                    else
+                    {
+                        userData.CurrentRoleIds = roles.Select(r => r.Id).ToList();
                     }
 
                     var allRoles = userRolesFromUserDirectory;
-                    allRoles.AddRange(userData.Roles.Select(r => r.Display).ToList());
+                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Display).ToList());
                     userRights = this.userRightDomainService.TranslateRolesInRights(allRoles);
                     //userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
                     if (userRights == null || !userRights.Any())

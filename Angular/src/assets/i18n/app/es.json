@@ -100,14 +100,14 @@
       "task": "Tarea",
       "info": "Información",
       "success": "Éxito",
-      "warning": "Advertencia",
+      "warn": "Advertencia",
       "error": "Error"
     },
     "read": "Leer",
     "createdBy": "Creado por",
     "notifiedRoles": "Roles notificados",
     "notifiedUsers": "Usuarios notificados",
-    "targetJson" : "Objetivo JSON",
+    "jData" : "Datos en JSON",
     "success": {
       "title": "Notificación enviada con éxito",
       "description": "Descripción a personalizar en las traducciones i18n para cada función"

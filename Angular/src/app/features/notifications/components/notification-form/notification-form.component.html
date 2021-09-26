@@ -25,8 +25,14 @@
           optionLabel="display"
           datakey="id"
           [style]="{ width: '100%' }"
-          [showClear]="true"
-        ></p-dropdown>
+        >
+          <ng-template let-item pTemplate="item">
+            {{ item?.value | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
+          </ng-template>
+          <ng-template let-selectedItem pTemplate="selectedItem">
+            {{ selectedItem?.value  | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
+          </ng-template>
+        </p-dropdown>
         <label><span class="bia-star-mandatory">*</span>{{ 'notification.type.title' | translate }}</label>
       </span>
     </div>
@@ -117,10 +123,15 @@
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
-        <input formControlName="targetJson" type="text" pInputText maxlength="64" style ="width:100%"/>
-        <label>{{ 'notification.targetJson' | translate }}</label>
+    <div fxFlex="90">
+      <!-- <span class="md-inputfield">
+        <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
+        </textarea>
+        <label>{{ 'notification.jData' | translate }}</label>
+      </span> -->
+      <span style="left: 5px; top: -20px;font-size: 12px;color: #00839b;">{{ 'notification.jData' | translate }}</span>
+      <span class="p-float-label">
+          <textarea formControlName="jData" rows="5" [cols]="60" autoResize="autoResize" pInputTextarea style="width: 100%;"></textarea>
       </span>
     </div>
   </div>

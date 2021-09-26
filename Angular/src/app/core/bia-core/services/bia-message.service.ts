@@ -66,13 +66,13 @@ export class BiaMessageService {
     let severity: 'error' | 'success' | 'info' | 'warn';
 
     switch (notification.type.display) {
-      case 'Success':
+      case 'success':
         severity = 'success';
         break;
-      case 'Warning':
+      case 'warning':
         severity = 'warn';
         break;
-      case 'Error':
+      case 'error':
         severity = 'error';
         break;
       default:
@@ -85,7 +85,7 @@ export class BiaMessageService {
       severity,
       summary: this.translateService.instant(notification.title),
       detail: this.translateService.instant(notification.description),
-      data: notification.target
+      data: JSON.parse(notification.jData),
     });
   }
 

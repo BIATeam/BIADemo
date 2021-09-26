@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -81,8 +82,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public ICollection<NotificationUser> NotifiedUsers { get; set; }
 
         /// <summary>
-        /// Gets ot sets the route to load on notification click.
+        /// Gets or sets the route to load on notification click and potentialy other datas. It should be store at camelCase format.
         /// </summary>
-        public string TargetJson { get; set; }
+        public string JData { get; set; }
     }
 }

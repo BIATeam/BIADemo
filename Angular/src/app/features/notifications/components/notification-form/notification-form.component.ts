@@ -59,7 +59,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       createdBy: [this.notification.createdBy],
       notifiedRoles: [this.notification.notifiedRoles],
       notifiedUsers: [this.notification.notifiedUsers],
-      targetJson: [this.notification.targetJson],
+      jData: [this.notification.jData],
     });
   }
 

@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warning" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "error" });
         }
 

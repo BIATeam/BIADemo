@@ -125,8 +125,6 @@ namespace BIA.Net.Core.Domain
             Expression binaryExpression;
             var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 
-            //object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
-
             switch (criteria.ToLower())
             {
                 case "gt":
