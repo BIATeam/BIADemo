@@ -30,9 +30,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
-                    { "Type", notification => notification.Type },
+                    { "Type", notification => notification.Type.Code },
                     { "Read", notification => notification.Read },
-                    { "CreatedBy", notification => notification.CreatedBy },
+                    { "CreatedBy", notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
                     { "NotifiedPermissions", notification => notification.NotifiedPermissions.Select(x => x.Permission.Code).OrderBy(x => x) },
                     { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };

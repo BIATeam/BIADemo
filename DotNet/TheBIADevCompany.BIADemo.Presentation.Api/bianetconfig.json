@@ -75,6 +75,10 @@
     ],
     "Permissions": [
       {
+        "Names": [ "Admin" ],
+        "Roles": [ "Admin" ]
+      },
+      {
         "Names": [ "Site_Admin" ],
         "Roles": [ "Site_Admin" ]
       },
