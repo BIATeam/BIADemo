@@ -1,4 +1,4 @@
-// <copyright file="RolesController.cs" company="TheBIADevCompany">
+// <copyright file="PermissionsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -17,14 +17,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage roles.
+    /// The API controller used to manage permissions.
     /// </summary>
-    public class RolesController : BiaControllerBase
+    public class PermissionsController : BiaControllerBase
     {
         /// <summary>
-        /// The service role.
+        /// The service permission.
         /// </summary>
-        private readonly IRoleAppService roleService;
+        private readonly IPermissionAppService permissionService;
 
         /// <summary>
         /// The claims principal.
@@ -32,13 +32,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly BIAClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RolesController"/> class.
+        /// Initializes a new instance of the <see cref="PermissionsController"/> class.
         /// </summary>
-        /// <param name="roleService">The role service.</param>
+        /// <param name="permissionService">The permission service.</param>
         /// <param name="principal">The claims principal.</param>
-        public RolesController(IRoleAppService roleService, IPrincipal principal)
+        public PermissionsController(IPermissionAppService permissionService, IPrincipal principal)
         {
-            this.roleService = roleService;
+            this.permissionService = permissionService;
             this.principal = principal as BIAClaimsPrincipal;
         }
 
@@ -51,10 +51,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Roles.Options)]
+        [Authorize(Roles = Rights.Permissions.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.roleService.GetAllOptionsAsync();
+            var results = await this.permissionService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

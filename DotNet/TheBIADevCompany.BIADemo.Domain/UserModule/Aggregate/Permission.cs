@@ -1,4 +1,4 @@
-// <copyright file="Role.cs" company="TheBIADevCompany">
+// <copyright file="Permission.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class Role : VersionedTable, IEntity
+    public class Permission : VersionedTable, IEntity
     {
         /// <summary>
         /// Gets or sets the id.
@@ -25,9 +25,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the member roles.
+        /// Gets or sets the collection of notifications.
         /// </summary>
-        public virtual ICollection<MemberRole> MemberRoles { get; set; }
-
+        public virtual ICollection<NotificationPermission> NotificationPermissions { get; set; }
     }
 }

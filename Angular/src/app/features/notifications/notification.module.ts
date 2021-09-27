@@ -15,7 +15,7 @@ import { NotificationItemComponent } from './views/notification-item/notificatio
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { NotificationTableComponent } from './components/notification-table/notification-table.component';
-import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
+import { PermissionOptionModule } from 'src/app/domains/permission-option/permission-option.module';
 import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
 import { NotificationTypeOptionModule } from 'src/app/domains/notification-type-option/notification-type-option.module';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
@@ -110,7 +110,7 @@ const ROUTES: Routes = [
     StoreModule.forFeature('notifications', reducers),
     EffectsModule.forFeature([NotificationsEffects]),
     // Domain Modules:
-    RoleOptionModule,
+    PermissionOptionModule,
     NotificationTypeOptionModule,
     UserOptionModule
   ]

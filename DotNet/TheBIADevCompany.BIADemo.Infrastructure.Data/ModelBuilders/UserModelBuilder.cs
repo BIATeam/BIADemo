@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateMemberModel(modelBuilder);
             CreateUserModel(modelBuilder);
             CreateRoleModel(modelBuilder);
+            CreatePermissionModel(modelBuilder);
             CreateMemberRoleModel(modelBuilder);
         }
 
@@ -78,6 +79,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot" });
+
+            // End BIADemo
+        }
+
+        /// <summary>
+        /// Create the model for roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreatePermissionModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Permission>().HasKey(r => r.Id);
+            modelBuilder.Entity<Permission>().Property(r => r.Code).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot" });
+
+            // End BIADemo
         }
 
         /// <summary>

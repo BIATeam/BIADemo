@@ -94,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Description = "notification.success.description",
                 SiteId = siteId,
                 Title = "notification.success.title",
-                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
+                //NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
             };
@@ -119,9 +119,10 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             }
             catch (Exception e)
             {
-                notification.Type = new OptionDto { Id = (int)NotificationType.Error };
+                throw e;
+                /*notification.Type = new OptionDto { Id = (int)NotificationType.Error };
 
-                await this.notificationAppService.AddAsync(notification);
+                await this.notificationAppService.AddAsync(notification);*/
             }
         }
     }

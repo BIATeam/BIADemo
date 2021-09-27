@@ -217,9 +217,9 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           Object.assign(new PrimeTableColumn('createdBy', 'notification.createdBy'), {
             type: PropType.OneToMany
           }),
-          Object.assign(new PrimeTableColumn('notifiedRoles', 'notification.notifiedRoles'), {
+          Object.assign(new PrimeTableColumn('notifiedPermissions', 'notification.notifiedPermissions'), {
             type: PropType.ManyToMany,
-            translateKey: 'role.'
+            translateKey: 'permission.'
           }),
           Object.assign(new PrimeTableColumn('notifiedUsers', 'notification.notifiedUsers'), {
             type: PropType.ManyToMany

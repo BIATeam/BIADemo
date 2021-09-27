@@ -24,7 +24,7 @@ import { Notification } from '../../model/notification';
 export class NotificationFormComponent implements OnInit, OnChanges {
   @Input() notification: Notification = <Notification>{};
   @Input() userOptions: OptionDto[];
-  @Input() roleOptions: OptionDto[];
+  @Input() permissionOptions: OptionDto[];
   @Input() notificationTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
@@ -57,7 +57,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       read: [this.notification.read],
       createdDate: [this.notification.createdDate, Validators.required],
       createdBy: [this.notification.createdBy],
-      notifiedRoles: [this.notification.notifiedRoles],
+      notifiedPermissions: [this.notification.notifiedPermissions],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
     });
@@ -74,7 +74,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedRoles = BiaOptionService.Differential(notification.notifiedRoles, this.notification?.notifiedRoles);
+      notification.notifiedPermissions = BiaOptionService.Differential(notification.notifiedPermissions, this.notification?.notifiedPermissions);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
       this.save.emit(notification);

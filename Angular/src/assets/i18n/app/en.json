@@ -61,6 +61,14 @@
     "showFilters": "Show filters",
     "welcome": "BIA is a component library, built with the Angular framework"
   },
+  "permission": {
+    "Site_Admin" : "Site administrator",
+    "Begin BIADemo": "To remove in project from here",
+    "Site_Admin" : "Airline administrator",
+    "Pilot" : "Pilot",
+    "End BIADemo": "To remove in project up to here",
+    "title": "Permission"
+  },
   "role": {
     "Site_Admin" : "Site administrator",
     "Begin BIADemo": "To remove in project from here",
@@ -105,7 +113,7 @@
     },
     "read": "Read",
     "createdBy": "Created by",
-    "notifiedRoles": "Notified roles",
+    "notifiedPermissions": "Notified permissions",
     "notifiedUsers": "Notified users",
     "jData" : "Data in JSON",
     "success": {

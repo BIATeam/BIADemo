@@ -61,6 +61,14 @@
     "showFilters": "Mostrar filtros",
     "welcome": "BIA es una biblioteca de componentes, construida con el marco Angular"
   },
+  "permission": {
+    "Site_Admin" : "Administrador del sitio",
+    "Begin BIADemo": "To remove in project from here",
+    "Site_Admin" : "Administrador de la aerolínea",
+    "Pilot" : "Piloto",
+    "End BIADemo": "To remove in project up to here",
+    "title": "Permiso"
+  },
   "role": {
     "Site_Admin" : "Administrador del sitio",
     "Begin BIADemo": "To remove in project from here",
@@ -105,7 +113,7 @@
     },
     "read": "Leer",
     "createdBy": "Creado por",
-    "notifiedRoles": "Roles notificados",
+    "notifiedPermissions": "Permisos notificados",
     "notifiedUsers": "Usuarios notificados",
     "jData" : "Datos en JSON",
     "success": {

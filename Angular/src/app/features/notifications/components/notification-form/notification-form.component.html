@@ -78,8 +78,8 @@
       <span class="md-inputfield">
         <p-multiSelect
           defaultLabel="&nbsp;"
-          [options]="roleOptions"
-          formControlName="notifiedRoles"
+          [options]="permissionOptions"
+          formControlName="notifiedPermissions"
           optionLabel="display"
           datakey="id"
           [virtualScroll]="true"
@@ -89,7 +89,7 @@
             <ng-container *ngIf="values">
               <div *ngIf="values.length <= 0">&nbsp;</div>
               <div *ngIf="values.length <= 3">
-                {{values | translateFields : 'display' : 'role.' : translateService.currentLang}}
+                {{values | translateFields : 'display' : 'permission.' : translateService.currentLang}}
               </div>
               <div *ngIf="values.length > 3">
                 {{values.length}} items selected
@@ -98,11 +98,11 @@
           </ng-template>
 
           <ng-template let-item pTemplate="item">
-            {{ item?.value | translateField : 'display' : 'role.' : translateService.currentLang }}
+            {{ item?.value | translateField : 'display' : 'permission.' : translateService.currentLang }}
           </ng-template>
 
         </p-multiSelect>
-        <label>{{ 'notification.notifiedRoles' | translate }}</label>
+        <label>{{ 'notification.notifiedPermissions' | translate }}</label>
       </span>
     </div>
   </div>

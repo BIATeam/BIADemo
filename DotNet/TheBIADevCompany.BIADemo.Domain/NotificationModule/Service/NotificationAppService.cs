@@ -37,6 +37,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         private readonly int userId;
 
         /// <summary>
+        /// The claims principal.
+        /// </summary>
+        private readonly List<string> permissions;
+
+        /// <summary>
         /// The signalR Service.
         /// </summary>
         private readonly IClientForHubRepository clientForHubService;
@@ -57,13 +62,19 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.clientForHubService = clientForHubService;
             this.currentSiteId = userDataDto == null ? 0 : userDataDto.CurrentSiteId;
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
-            this.filtersContext.Add(
-                AccessMode.Read,
-                new DirectSpecification<Notification>(n =>
-                    n.SiteId == this.currentSiteId
-                    && (n.NotifiedRoles.Count == 0 || n.NotifiedRoles.Any(r => r.Role.MemberRoles.Any(mr => mr.Member.UserId == this.userId)))
-                    && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))
-                    ));
+
+            // Test if not service
+            //if (this.userId != 0)
+            {
+                this.permissions = (principal as BIAClaimsPrincipal).GetUserRights().ToList();
+                this.filtersContext.Add(
+                    AccessMode.Read,
+                    new DirectSpecification<Notification>(n =>
+                        n.SiteId == this.currentSiteId
+                        && (n.NotifiedPermissions.Count == 0 || n.NotifiedPermissions.Any(r => this.permissions.Contains(r.Permission.Code)))
+                        && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))
+                        ));
+            }
         }
 
         /// <inheritdoc/>
@@ -120,7 +131,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             string queryMode = QueryMode.Delete,
             string mapperMode = null)
         {
-            var notification = await this.GetAsync(id);
+            var notification = await this.GetAsync(id, accessMode: AccessMode.All);
             await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
             _ = this.clientForHubService.SendMessage("notification-removeUnread", notification.Id);
             _ = this.clientForHubService.SendMessage("refresh-notifications", notification);
@@ -131,7 +142,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public override async Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
         {
             var notification = await base.AddAsync(dto, mapperMode);
-            notification = await this.GetAsync(notification.Id);
+            notification = await this.GetAsync(notification.Id, accessMode: AccessMode.All);
             if (!dto.Read)
             {
                 _ = this.clientForHubService.SendMessage("notification-addUnread", notification);

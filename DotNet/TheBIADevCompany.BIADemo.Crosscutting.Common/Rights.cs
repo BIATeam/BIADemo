@@ -221,14 +221,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "Roles_Options";
 
             /// <summary>
-            /// The right to get all roles.
-            /// </summary>
-            public const string List = "Roles_List";
-
-            /// <summary>
             /// The right to get the roles of the current user.
             /// </summary>
             public const string ListForCurrentUser = "Roles_List_For_Current_User";
+        }
+
+        /// <summary>
+        /// The roles rights.
+        /// </summary>
+        public static class Permissions
+        {
+            /// <summary>
+            /// The right to access to the list of airports (options only).
+            /// </summary>
+            public const string Options = "Permissions_Options";
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ export class NotificationsSignalRService {
     var userInfo = this.authService.getAdditionalInfos();
     var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
     var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-    var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => true /*this.authService.hasPermission(e.display)*/))
+    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)))
 
     return okSite && okUser && okRole;
   }

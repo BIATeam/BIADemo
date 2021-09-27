@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="RoleOptionMapper.cs" company="TheBIADevCompany">
+// <copyright file="PermissionOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -14,10 +14,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class RoleOptionMapper : BaseMapper<OptionDto, Role>
+    public class PermissionOptionMapper : BaseMapper<OptionDto, Permission>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Role, OptionDto>> EntityToDto()
+        public override Expression<Func<Permission, OptionDto>> EntityToDto()
         {
             return entity => new OptionDto
             {

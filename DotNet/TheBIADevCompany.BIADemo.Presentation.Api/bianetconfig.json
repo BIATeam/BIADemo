@@ -74,10 +74,18 @@
       }
     ],
     "Permissions": [
+      {
+        "Names": [ "Site_Admin" ],
+        "Roles": [ "Site_Admin" ]
+      },
       // Begin BIADemo
+      {
+        "Names": [ "Pilot" ],
+        "Roles": [ "Pilot" ]
+      },
       // Hangfire
       {
-        "Names": ["Hangfire_Run_Worker", "Hangfire_Access"],
+        "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
       // Plane
@@ -127,6 +135,11 @@
         "Name": "Member_Set_Default_Role",
         "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
       },
+      // Permission
+      {
+        "Names": [ "Permissions_Options" ],
+        "Roles": [ "Admin", "Site_Admin" ]
+      },
       // Role
       {
         "Names": [ "Roles_Options", "Roles_List" ],
@@ -152,7 +165,7 @@
       },
       // User
       {
-        "Names": [ "User_Options","User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Names": [ "User_Options", "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
         "Roles": [ "Admin" ]
       },
       // View
@@ -179,7 +192,7 @@
       },
       {
         "Names": [ "Notification_Update", "Notification_Create", "NotifiactionType_Options" ],
-        "Roles": [ "Admin"]
+        "Roles": [ "Admin" ]
       }
     ]
   }
