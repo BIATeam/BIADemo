@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { SelectItem, TableState } from 'primeng/primeng';
+import { SelectItem, TableState } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
 
