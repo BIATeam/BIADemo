@@ -26,11 +26,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             get
             {
                 return new ExpressionCollection<Member>
-                   {
-                       { "Id", member => member.Id },
-                       { "SiteId", member => member.SiteId },
-                       { "UserId", member => member.UserId },
-                   };
+                {
+                    { "Id", member => member.Id },
+                    { "Roles", member => member.MemberRoles.Select(x => x.Role.Code).OrderBy(x => x) },
+                    { "User", member => member.User.FirstName + " " + member.User.LastName + " (" + member.User.Login + ")" },
+                };
             }
         }
 
