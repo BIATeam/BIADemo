@@ -1,0 +1,38 @@
+.layout-rightmenu {
+    &.p-sidebar {
+        top: 4rem;
+        height: calc(100% - 4rem);
+        overflow: auto;
+        transition: transform $transitionDuration;
+    }
+
+    .online-members {
+        img {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .next-events {
+        li {
+            border-radius: $borderRadius;
+            
+            &:hover {
+                background-color: $hoverBgColor;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+@media (max-width: $mobileBreakpoint) {
+    .layout-wrapper {
+        &.layout-topbar-mobile-active {
+            .layout-rightmenu {
+                top: 12rem;
+                height: calc(100% - 12rem);
+            }
+        }
+    }
+}

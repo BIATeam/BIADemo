@@ -15,4 +15,9 @@ $biaBgRowSelected:#E5F2F5;
 $biaBorderRowSelected: #7CBFCC;
 $biaTabColor: #1B998B;
 
-@import "../sass/theme/theme";
+// new variables in ultima v11
+$primaryTextColor:$biaFgTextColor;
+$primaryMenuTextColor: $primaryColor;
+$primaryLightestColor: $primaryLightColor;
+
+@import "../sass/theme/theme_light";
