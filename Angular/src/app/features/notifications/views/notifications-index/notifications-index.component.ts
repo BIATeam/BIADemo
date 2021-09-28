@@ -203,11 +203,11 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           new PrimeTableColumn('description', 'notification.description'),
           Object.assign(new PrimeTableColumn('type', 'notification.type.title'), {
             type: PropType.OneToMany,
-            translateKey: 'notification.type.'
+            translateKey: 'notification.type.',
+            searchPlaceholder: 'task|info|success|warn|error'
           }),
           Object.assign(new PrimeTableColumn('read', 'notification.read'), {
             isSearchable: false,
-            isSortable: false,
             type: PropType.Boolean
           }),
           Object.assign(new PrimeTableColumn('createdDate', 'notification.createdDate'), {

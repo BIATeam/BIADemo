@@ -206,7 +206,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new PrimeTableColumn('roles', 'member.rolesForSite'), {
             type: PropType.ManyToMany,
-            translateKey: 'role.'
+            translateKey: 'role.',
+            searchPlaceholder: 'Site_Admin|Pilot|...'
           })
         ]
       };
