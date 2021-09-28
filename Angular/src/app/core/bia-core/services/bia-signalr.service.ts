@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 
 /**
  * Service managing the SignalR connection.
@@ -29,7 +30,7 @@ export class BiaSignalRService {
   /**
    * Constructor.
    */
-  public constructor() {
+  public constructor(private authService: AuthService) {
     this.hubConnection = new HubConnectionBuilder().withUrl(environment.hubUrl).build();
 
     this.configureConnection();
@@ -48,7 +49,6 @@ export class BiaSignalRService {
       this.startConnection();
     }
   }
-
   public removeMethod(methodName: string): void {
     this.hubConnection.off(methodName);
     if (this.methods.indexOf(methodName) > -1) {
@@ -63,6 +63,42 @@ export class BiaSignalRService {
       }
     }, 500);
   }
+
+  public joinSiteGroup(groupName: string)
+  {
+    var userInfo = this.authService.getAdditionalInfos();
+    var currentSiteId = userInfo.userData.currentSiteId;
+    this.hubConnection.invoke("JoinGroup", currentSiteId + ">" + groupName)  //JoinGroup is C# method name
+      .catch(err => {
+          console.log(err);
+      });
+  }
+
+  public leaveSiteGroup(groupName: string)
+  {
+    var userInfo = this.authService.getAdditionalInfos();
+    var currentSiteId = userInfo.userData.currentSiteId;
+    this.hubConnection.invoke("LeaveGroup", currentSiteId + ">" + groupName)  //JoinGroup is C# method name
+      .catch(err => {
+          console.log(err);
+      });
+  }
+  public joinGroup(groupName: string)
+  {
+    this.hubConnection.invoke("JoinGroup", groupName)  //JoinGroup is C# method name
+      .catch(err => {
+          console.log(err);
+      });
+  }
+
+  public leaveGroup(groupName: string)
+  {
+    this.hubConnection.invoke("LeaveGroup", groupName)  //JoinGroup is C# method name
+      .catch(err => {
+          console.log(err);
+      });
+  }
+
 
   /**
    * Configure the connection behavior.

@@ -2,17 +2,18 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-// #define UseHubForClientInPlane
+#define UseHubForClientInPlane
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
@@ -43,6 +44,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
 #if UseHubForClientInPlane
         private readonly IClientForHubRepository clientForHubService;
+
+        /// <summary>
+        /// The current SiteId.
+        /// </summary>
+        private readonly int currentSiteId;
 #endif
 
         /// <summary>
@@ -50,14 +56,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
+        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInPlane
         public PlanesController(
-            IPlaneAppService planeService, IClientForHubRepository clientForHubService)
+            IPlaneAppService planeService, IClientForHubRepository clientForHubService, IPrincipal principal)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
+            this.currentSiteId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().CurrentSiteId;
             this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
@@ -146,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
+                await this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh -planes", string.Empty);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -183,7 +191,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -223,7 +231,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -262,8 +270,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     await this.planeService.RemoveAsync(id);
                 }
 
-#if UseHubForClientInPlaneType
-                await this.clientForHubService.Clients.All.SendAsync("refresh-planes", string.Empty);
+#if UseHubForClientInPlane
+                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -300,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendMessage("refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }

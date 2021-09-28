@@ -64,10 +64,11 @@
         /// <summary>
         /// Send Message.
         /// </summary>
+        /// <param name="groupName">group name</param>
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        public async Task SendMessage(string action, string jsonContext)
+        public async Task SendMessage(string groupName, string action, string jsonContext)
         {
             if (!starting && ! started)
             {
@@ -77,12 +78,30 @@
             {
                 await Task.Delay(200);
             }
-            await connection.InvokeAsync("SendMessage", action, jsonContext);
+            await connection.InvokeAsync("SendMessage", groupName, action, jsonContext);
         }
 
-        public async Task SendMessage(string action, object objectToSerialize)
+        public async Task SendMessage(string groupName, string action, object objectToSerialize)
         {
-            await SendMessage(action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(groupName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+        }
+
+        public async Task SendSiteMessage(int siteId, string groupName, string action, string jsonContext)
+        {
+            if (!starting && !started)
+            {
+                _ = StartAsync();
+            }
+            while (!started)
+            {
+                await Task.Delay(200);
+            }
+            await connection.InvokeAsync("SendSiteMessage", siteId, groupName, action, jsonContext);
+        }
+
+        public async Task SendSiteMessage(int siteId, string groupName, string action, object objectToSerialize)
+        {
+            await SendSiteMessage(siteId, groupName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
     }
 }

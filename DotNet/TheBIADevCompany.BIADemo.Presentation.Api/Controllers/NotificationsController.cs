@@ -182,7 +182,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var deletedDto = await this.notificationService.RemoveAsync(id);
 #if UseHubForClientInNotification
-                //await this.clientForHubService.SendMessage("refresh-notifications", deletedDto);
+                // await this.clientForHubService.SendMessage("refresh-notifications", deletedDto);
 #endif
                 return this.Ok();
             }

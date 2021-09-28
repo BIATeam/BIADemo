@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration)
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
-            "SELECT RowVersion FROM [dbo].[Planes]",
+            "SELECT SiteId FROM [dbo].[Planes]",
             string.Empty /* Information to pass to the reader in Plnane Change:  "SELECT TOP (1) [Id] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"*/,
             r => PlaneChange(r))
             {
@@ -52,8 +52,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            /* To read information use: int id = reader.GetInt32(0)  */
-            _ = clientForHubService.SendMessage("refresh-planes", string.Empty);
+            int siteId = reader.GetInt32(0);
+            _ = clientForHubService.SendSiteMessage(siteId, "planes", "refresh-planes", string.Empty);
         }
     }
 }

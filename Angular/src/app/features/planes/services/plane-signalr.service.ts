@@ -40,10 +40,12 @@ export class PlanesSignalRService {
         }
       );
     });
+    this.signalRService.joinSiteGroup("planes")
   }
 
   destroy() {
     console.log('%c [Planes] Unregister SignalR : refresh-planes', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-planes');
+    this.signalRService.leaveSiteGroup("planes")
   }
 }

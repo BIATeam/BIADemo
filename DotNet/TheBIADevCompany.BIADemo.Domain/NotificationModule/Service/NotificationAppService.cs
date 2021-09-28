@@ -96,24 +96,23 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                 var mapper = new NotificationMapper();
 
                 var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                dto.SiteId = entity.SiteId;
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
                 }
 
+                dto.SiteId = entity.SiteId;
+
                 if (entity.Read && !dto.Read)
                 {
-                    _ = this.clientForHubService.SendMessage("notification-addUnread", dto);
+                    _ = this.clientForHubService.SendSiteMessage(dto.SiteId, "notification-domain", "notification-addUnread", dto);
                 }
                 else if (!entity.Read && dto.Read)
                 {
-                    _ = this.clientForHubService.SendMessage("notification-removeUnread", dto.Id);
+                    _ = this.clientForHubService.SendSiteMessage(dto.SiteId, "notification-domain", "notification-removeUnread", dto.Id);
                 }
-                /*else
-                {*/
-                    _ = this.clientForHubService.SendMessage("refresh-notifications", dto);
-                /*}*/
+
+                _ = this.clientForHubService.SendSiteMessage(dto.SiteId, "notifications", "refresh-notifications", dto);
 
                 mapper.DtoToEntity(dto, entity, mapperMode);
                 this.Repository.Update(entity);
@@ -133,8 +132,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             var notification = await this.GetAsync(id, accessMode: AccessMode.All);
             await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
-            _ = this.clientForHubService.SendMessage("notification-removeUnread", notification.Id);
-            _ = this.clientForHubService.SendMessage("refresh-notifications", notification);
+            _ = this.clientForHubService.SendSiteMessage(notification.SiteId, "notification-domain", "notification-removeUnread", notification.Id);
+            _ = this.clientForHubService.SendSiteMessage(notification.SiteId, "notifications", "refresh-notifications", notification);
             return notification;
         }
 
@@ -145,9 +144,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             notification = await this.GetAsync(notification.Id, accessMode: AccessMode.All);
             if (!dto.Read)
             {
-                _ = this.clientForHubService.SendMessage("notification-addUnread", notification);
+                _ = this.clientForHubService.SendSiteMessage(notification.SiteId, "notification-domain", "notification-addUnread", notification);
             }
-            _ = this.clientForHubService.SendMessage("refresh-notifications", notification);
+            _ = this.clientForHubService.SendSiteMessage(notification.SiteId, "notifications", "refresh-notifications", notification);
             return notification;
         }
 

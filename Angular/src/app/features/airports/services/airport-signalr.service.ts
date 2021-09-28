@@ -40,10 +40,12 @@ export class AirportsSignalRService {
         }
       );
     });
+    this.signalRService.joinGroup("airports");
   }
 
   destroy() {
     console.log('%c [Airports] Unregister SignalR : refresh-airports', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-airports');
+    this.signalRService.leaveGroup("airports");
   }
 }

@@ -50,6 +50,7 @@ export class NotificationSignalRService {
       var idNum: number = +id;
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
+    this.signalRService.joinSiteGroup("notification-domain");
   }
 
   private IsInMyDisplay(notification: Notification) {
@@ -64,6 +65,7 @@ export class NotificationSignalRService {
   destroy() {
     this.signalRService.removeMethod('notification-addUnread');
     this.signalRService.removeMethod('notification-removeUnread');
+    this.signalRService.leaveSiteGroup("notification-domain");
   }
 
 }
