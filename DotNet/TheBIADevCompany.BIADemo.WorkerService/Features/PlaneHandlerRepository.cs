@@ -26,8 +26,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration)
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
-            "SELECT SiteId FROM [dbo].[Planes]",
-            string.Empty /* Information to pass to the reader in Plnane Change:  "SELECT TOP (1) [Id] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"*/,
+            "SELECT RowVersion FROM [dbo].[Planes]",
+            "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
             r => PlaneChange(r))
             {
             }

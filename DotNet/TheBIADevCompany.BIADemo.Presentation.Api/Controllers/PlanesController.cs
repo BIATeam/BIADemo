@@ -2,7 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlane
+// #define UseHubForClientInPlane
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
