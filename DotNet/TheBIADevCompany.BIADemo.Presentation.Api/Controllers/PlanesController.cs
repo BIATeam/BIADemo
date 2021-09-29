@@ -154,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh -planes", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -191,7 +191,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -231,7 +231,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -271,7 +271,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 }
 
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -308,7 +308,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendSiteMessage(this.currentSiteId, "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
 #endif
                 return this.Ok();
             }

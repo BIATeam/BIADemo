@@ -68,7 +68,7 @@
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        public async Task SendMessage(string groupName, string action, string jsonContext)
+        public async Task SendMessage(string featureName, string action, string jsonContext)
         {
             if (!starting && ! started)
             {
@@ -78,15 +78,15 @@
             {
                 await Task.Delay(200);
             }
-            await connection.InvokeAsync("SendMessage", groupName, action, jsonContext);
+            await connection.InvokeAsync("SendMessage", featureName, action, jsonContext);
         }
 
-        public async Task SendMessage(string groupName, string action, object objectToSerialize)
+        public async Task SendMessage(string featureName, string action, object objectToSerialize)
         {
-            await SendMessage(groupName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(featureName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
-        public async Task SendSiteMessage(int siteId, string groupName, string action, string jsonContext)
+        public async Task SendTargetedMessage(string parentId, string featureName, string action, string jsonContext)
         {
             if (!starting && !started)
             {
@@ -96,12 +96,12 @@
             {
                 await Task.Delay(200);
             }
-            await connection.InvokeAsync("SendSiteMessage", siteId, groupName, action, jsonContext);
+            await connection.InvokeAsync("SendTargetedMessage", parentId, featureName, action, jsonContext);
         }
 
-        public async Task SendSiteMessage(int siteId, string groupName, string action, object objectToSerialize)
+        public async Task SendTargetedMessage(string parentId, string featureName, string action, object objectToSerialize)
         {
-            await SendSiteMessage(siteId, groupName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendTargetedMessage(parentId, featureName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
     }
 }

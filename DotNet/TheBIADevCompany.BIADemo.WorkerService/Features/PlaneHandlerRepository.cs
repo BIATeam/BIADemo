@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             }
 
             int siteId = reader.GetInt32(0);
-            _ = clientForHubService.SendSiteMessage(siteId, "planes", "refresh-planes", string.Empty);
+            _ = clientForHubService.SendTargetedMessage(siteId.ToString(), "planes", "refresh-planes", string.Empty);
         }
     }
 }

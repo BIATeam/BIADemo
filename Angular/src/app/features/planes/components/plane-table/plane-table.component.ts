@@ -22,6 +22,7 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
     this.initForm();
+    this.form.value.siteId = authService.getCurrentSiteId();
   }
 
   public initForm() {
@@ -35,6 +36,8 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
       capacity: [this.element.capacity, Validators.required],
       connectingAirports: [this.element.connectingAirports],
       planeType: [this.element.planeType?.id],
+
+      siteId: [this.element.siteId], // the parent key
     });
   }
 

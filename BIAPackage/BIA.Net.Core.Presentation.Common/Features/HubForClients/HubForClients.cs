@@ -7,21 +7,21 @@ namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
 
     public class HubForClients : Hub
     {
-        public async Task SendMessage(string groupName, string action, string jsonContext)
+        public async Task SendMessage(string featureName, string action, string jsonContext)
         {
-            await this.Clients.Group(groupName).SendAsync(action, jsonContext);
+            await this.Clients.Group(featureName).SendAsync(action, jsonContext);
         }
-        public async Task SendSiteMessage(int siteId, string groupName, string action, string jsonContext)
+        public async Task SendTargetedMessage(string parentId, string featureName, string action, string jsonContext)
         {
-            await this.Clients.Group(siteId.ToString()+ ">" + groupName).SendAsync(action, jsonContext);
+            await this.Clients.Group(parentId.ToString()+ ">" + featureName).SendAsync(action, jsonContext);
         }
-        public Task JoinGroup(string groupName)
+        public Task JoinGroup(string featureName)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+            return Groups.AddToGroupAsync(Context.ConnectionId, featureName);
         }
-        public Task LeaveGroup(string groupName)
+        public Task LeaveGroup(string featureName)
         {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, featureName);
         }
     }
 }
