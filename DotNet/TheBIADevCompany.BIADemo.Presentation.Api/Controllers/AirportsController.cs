@@ -141,7 +141,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.airportService.AddAsync(dto);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendMessage("airports", "refresh-airports", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -178,7 +178,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.airportService.UpdateAsync(dto);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendMessage("airports", "refresh-airports", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -218,7 +218,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.airportService.RemoveAsync(id);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendMessage("airports", "refresh-airports", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
 #endif
                 return this.Ok();
             }
@@ -258,7 +258,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 }
 
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendMessage("airports", "refresh-airports", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
 #endif
                 return this.Ok();
             }
@@ -295,7 +295,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.airportService.SaveAsync(dtoList);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendMessage("airports", "refresh-airports", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
 #endif
                 return this.Ok();
             }

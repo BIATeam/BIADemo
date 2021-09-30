@@ -6,6 +6,8 @@ import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.se
 import { loadAllByPost } from '../store/members-actions';
 import { getLastLazyLoadEvent } from '../store/member.state';
 import { LazyLoadEvent } from 'primeng/api';
+import { SiteService } from '../../../services/site.service';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -17,12 +19,15 @@ import { LazyLoadEvent } from 'primeng/api';
     providedIn: 'root'
 })
 export class MembersSignalRService {
+
+  private targetedFeature : TargetedFeature;
+
   /**
    * Constructor.
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService) {
+  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private siteService: SiteService) {
     // Do nothing.
   }
 
@@ -40,10 +45,14 @@ export class MembersSignalRService {
         }
       );
     });
+    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName : "planes"};
+    this.signalRService.joinGroup(this.targetedFeature);
+
   }
 
   destroy() {
     console.log('%c [Members] Unregister SignalR : refresh-members', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-members');
+    this.signalRService.leaveGroup(this.targetedFeature)
   }
 }

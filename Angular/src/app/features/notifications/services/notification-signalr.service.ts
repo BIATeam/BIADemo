@@ -8,6 +8,7 @@ import { getLastLazyLoadEvent } from '../store/notification.state';
 import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Notification } from '../model/notification';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -19,6 +20,9 @@ import { Notification } from '../model/notification';
     providedIn: 'root'
 })
 export class NotificationsSignalRService {
+
+  private targetedFeature : TargetedFeature;
+
   /**
    * Constructor.
    * @param store the store.
@@ -52,6 +56,8 @@ export class NotificationsSignalRService {
         );
       }
     });
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notifications"};
+    this.signalRService.joinGroup(this.targetedFeature);
   }
   private IsInMyDisplay(notification: Notification) {
     var userInfo = this.authService.getAdditionalInfos();
@@ -64,5 +70,6 @@ export class NotificationsSignalRService {
   destroy() {
     console.log('%c [Notifications] Unregister SignalR : refresh-notifications', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-notifications');
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

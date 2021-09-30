@@ -70,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             entity.UserId = dto.User.Id;
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Deleted))
             {
-                var memberRole = entity.MemberRoles.FirstOrDefault(f => f.RoleId == roleDto.Id && f.MemberId == dto.User.Id);
+                var memberRole = entity.MemberRoles.FirstOrDefault(f => f.RoleId == roleDto.Id && f.MemberId == dto.Id);
                 if (memberRole == null)
                 {
                     continue;
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             entity.MemberRoles = entity.MemberRoles ?? new List<MemberRole>();
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
             {
-                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.User.Id });
+                entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.Id });
             }
         }
 

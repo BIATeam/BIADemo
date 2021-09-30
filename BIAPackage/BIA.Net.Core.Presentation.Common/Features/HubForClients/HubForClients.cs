@@ -2,26 +2,50 @@
 
 namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
 {
+    using BIA.Net.Core.Domain.Dto.Base;
     using Microsoft.AspNetCore.SignalR;
+    using Newtonsoft.Json;
     using System.Threading.Tasks;
 
     public class HubForClients : Hub
     {
-        public async Task SendMessage(string featureName, string action, string jsonContext)
+        public async Task SendMessage(string sTargetedFeature, string action, string jsonContext)
         {
-            await this.Clients.Group(featureName).SendAsync(action, jsonContext);
+            TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
+            if (string.IsNullOrEmpty(targetedFeature.ParentKey))
+            {
+                await this.Clients.Group(targetedFeature.FeatureName).SendAsync(action, jsonContext);
+            }
+            else
+            {
+                await this.Clients.Group(targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName).SendAsync(action, jsonContext);
+            }
         }
-        public async Task SendTargetedMessage(string parentId, string featureName, string action, string jsonContext)
+
+        public Task JoinGroup(string sTargetedFeature)
         {
-            await this.Clients.Group(parentId.ToString()+ ">" + featureName).SendAsync(action, jsonContext);
+            TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
+            if (string.IsNullOrEmpty(targetedFeature.ParentKey))
+            {
+                return Groups.AddToGroupAsync(Context.ConnectionId, targetedFeature.FeatureName);
+            }
+            else
+            {
+                return Groups.AddToGroupAsync(Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
+            }
         }
-        public Task JoinGroup(string featureName)
+        public Task LeaveGroup(string sTargetedFeature)
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, featureName);
-        }
-        public Task LeaveGroup(string featureName)
-        {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, featureName);
+            TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
+            if (string.IsNullOrEmpty(targetedFeature.ParentKey))
+            {
+                return Groups.RemoveFromGroupAsync(Context.ConnectionId, targetedFeature.FeatureName);
+            }
+            else
+            {
+                return Groups.RemoveFromGroupAsync(Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
+
+            }
         }
     }
 }

@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using BIA.Net.Core.Domain.Dto.Base;
     using System.Threading.Tasks;
     public interface IClientForHubRepository
     {
@@ -14,7 +15,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        Task SendMessage(string featureName,  string action, string jsonContext);
+        Task SendMessage(TargetedFeatureDto targetedFeature,  string action, string jsonContext=null);
 
         /// <summary>
         /// Send Message.
@@ -23,26 +24,17 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="action">action to send</param>
         /// <param name="objectToSerialize">context at json format</param>
         /// <returns>Send message on an action</returns>
-        Task SendMessage(string featureName, string action, object objectToSerialize);
+        Task SendMessage(TargetedFeatureDto targetedFeature, string action, object objectToSerialize);
 
         /// <summary>
         /// Send Message.
         /// </summary>
-        /// <param name="parentId">the parent Id</param>
-        /// <param name="featureName">the feature or domain name</param>
-        /// <param name="action">action to send</param>
-        /// <param name="jsonContext">context at json format</param>
-        /// <returns>Send message on an action</returns>
-        Task SendTargetedMessage(string parentId, string featureName, string action, string jsonContext);
-
-        /// <summary>
-        /// Send Message.
-        /// </summary>
-        /// <param name="parentId">the parent Id</param>
+        /// <param name="parentKey">the parent key</param>
         /// <param name="featureName">the feature or domain name</param>
         /// <param name="action">action to send</param>
         /// <param name="objectToSerialize">context at json format</param>
         /// <returns>Send message on an action</returns>
-        Task SendTargetedMessage(string parentId, string featureName, string action, object objectToSerialize);
+        Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null);
+
     }
 }

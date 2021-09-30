@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { environment } from 'src/environments/environment';
-import { AuthService } from './auth.service';
 
 /**
  * Service managing the SignalR connection.
@@ -23,20 +23,26 @@ export class BiaSignalRService {
    * You can access it through the 'getHubConnection()' method, so that every component/feature can add new event management,
    * without having to redefine every needed event and data structure in the domain.
    */
+
+
   private readonly hubConnection: HubConnection;
   private methods: string[];
+  private isStarting: boolean;
   private isStarted: boolean;
+  private targetedFeatures: TargetedFeature[];
 
   /**
    * Constructor.
    */
-  public constructor(private authService: AuthService) {
+  public constructor() {
     this.hubConnection = new HubConnectionBuilder().withUrl(environment.hubUrl).build();
 
     this.configureConnection();
 
     this.methods = [];
+    this.isStarting = false;
     this.isStarted = false;
+    this.targetedFeatures = [];
   }
 
   public addMethod(methodName: string, newMethod: (...args: any[]) => void): void {
@@ -44,8 +50,8 @@ export class BiaSignalRService {
     if (this.methods.indexOf(methodName) < 0) {
       this.methods.push(methodName);
     }
-    if (!this.isStarted) {
-      this.isStarted = true;
+    if (!this.isStarting) {
+      this.isStarting = true;
       this.startConnection();
     }
   }
@@ -58,59 +64,68 @@ export class BiaSignalRService {
     // We wait 500ms before stop the connection, to not do it if it is use in next screen
     setTimeout(() => {
       if (this.methods.length === 0) {
-        this.isStarted = false;
+        this.isStarting = false;
         this.hubConnection.stop();
       }
     }, 500);
   }
 
-  public joinSiteGroup(groupName: string)
+  public joinGroup(targetedFeature: TargetedFeature)
   {
-    var userInfo = this.authService.getAdditionalInfos();
-    var currentSiteId = userInfo.userData.currentSiteId;
-    this.hubConnection.invoke("JoinGroup", currentSiteId + ">" + groupName)  //JoinGroup is C# method name
+    if (this.targetedFeatures.indexOf(targetedFeature) === -1 ) { this.targetedFeatures.push(targetedFeature);}
+    if (this.isStarted)
+    {
+      this.invokeJoinGroup(targetedFeature);
+    }
+  }
+
+  private invokeJoinGroup(targetedFeature: TargetedFeature) {
+    this.hubConnection.invoke("JoinGroup", JSON.stringify(targetedFeature))
+      .then(() => {
+          console.log('%c [SignalRService] Join Group ' + targetedFeature.parentKey + ">" + targetedFeature.featureName, 'color: blue; font-weight: bold');
+        }
+      )
       .catch(err => {
-          console.log(err);
+        console.log(err);
       });
   }
 
-  public leaveSiteGroup(groupName: string)
+  public leaveGroup(targetedFeature: TargetedFeature)
   {
-    var userInfo = this.authService.getAdditionalInfos();
-    var currentSiteId = userInfo.userData.currentSiteId;
-    this.hubConnection.invoke("LeaveGroup", currentSiteId + ">" + groupName)  //JoinGroup is C# method name
-      .catch(err => {
-          console.log(err);
-      });
-  }
-  public joinGroup(groupName: string)
-  {
-    this.hubConnection.invoke("JoinGroup", groupName)  //JoinGroup is C# method name
-      .catch(err => {
-          console.log(err);
-      });
+    const index = this.targetedFeatures.indexOf(targetedFeature);
+    if (index > -1) 
+    {
+      this.targetedFeatures.slice(index)
+    } 
+    if (this.isStarted)
+    {
+      this.invokeLeaveGroup(targetedFeature);
+    }
   }
 
-  public leaveGroup(groupName: string)
-  {
-    this.hubConnection.invoke("LeaveGroup", groupName)  //JoinGroup is C# method name
+  private invokeLeaveGroup(targetedFeature: TargetedFeature) {
+    this.hubConnection.invoke("LeaveGroup", JSON.stringify(targetedFeature))
+      .then(() => {
+          console.log('%c [SignalRService] Leave Group ' + targetedFeature.parentKey + ">" + targetedFeature.featureName, 'color: blue; font-weight: bold');
+        }
+      )
       .catch(err => {
-          console.log(err);
+        console.log(err);
       });
   }
-
 
   /**
    * Configure the connection behavior.
    */
   private configureConnection(): void {
     this.hubConnection.onclose(async () => {
-      if (this.isStarted) {
+      if (this.isStarting) {
         console.log('%c [SignalRService] Hub connection closed. Try restarting it...', 'color: red; font-weight: bold');
         setTimeout((e) => {
           this.startConnection();
         }, 5000);
       } else {
+        this.isStarted = false;
         console.log('%c [SignalRService] Hub connection stoped', 'color: blue; font-weight: bold');
       }
     });
@@ -123,10 +138,14 @@ export class BiaSignalRService {
     this.hubConnection
       .start()
       .then(() => {
+        this.isStarted = true;
+        this.targetedFeatures.forEach(element => {
+          this.invokeJoinGroup(element);
+        });
         console.log('%c [SignalRService] Hub connection started', 'color: blue; font-weight: bold');
       })
       .catch((err: string) => {
-        if (this.isStarted) {
+        if (this.isStarting) {
           console.log(
             '%c [SignalRService] Error while establishing connection, retrying...' + err,
             'color: red; font-weight: bold'

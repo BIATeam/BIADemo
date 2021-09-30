@@ -5,6 +5,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Features.ClientForHub;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.AspNetCore.SignalR.Client;
     using Newtonsoft.Json;
@@ -64,11 +65,11 @@
         /// <summary>
         /// Send Message.
         /// </summary>
-        /// <param name="groupName">group name</param>
+        /// <param name="targetedFeature">target feature</param>
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        public async Task SendMessage(string featureName, string action, string jsonContext)
+        public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null)
         {
             if (!starting && ! started)
             {
@@ -78,30 +79,19 @@
             {
                 await Task.Delay(200);
             }
-            await connection.InvokeAsync("SendMessage", featureName, action, jsonContext);
+            await connection.InvokeAsync("SendMessage", JsonConvert.SerializeObject(targetedFeature), action, jsonContext);
         }
 
-        public async Task SendMessage(string featureName, string action, object objectToSerialize)
+        public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, object objectToSerialize)
         {
-            await SendMessage(featureName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(targetedFeature, action, objectToSerialize== null? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
-        public async Task SendTargetedMessage(string parentId, string featureName, string action, string jsonContext)
+        public async Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null)
         {
-            if (!starting && !started)
-            {
-                _ = StartAsync();
-            }
-            while (!started)
-            {
-                await Task.Delay(200);
-            }
-            await connection.InvokeAsync("SendTargetedMessage", parentId, featureName, action, jsonContext);
+            await SendMessage(new TargetedFeatureDto { ParentKey= parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+
         }
 
-        public async Task SendTargetedMessage(string parentId, string featureName, string action, object objectToSerialize)
-        {
-            await SendTargetedMessage(parentId, featureName, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
-        }
     }
 }
