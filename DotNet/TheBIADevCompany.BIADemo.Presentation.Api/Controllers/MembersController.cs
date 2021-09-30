@@ -1,6 +1,7 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
+#define UseHubForClientInMember
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
@@ -10,10 +11,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+#if UseHubForClientInMember
+    using BIA.Net.Core.Domain.RepoContract;
+#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+#if UseHubForClientInMember
+    using Microsoft.AspNetCore.SignalR;
+#endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -28,12 +35,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         private readonly IMemberAppService memberService;
 
+#if UseHubForClientInMember
+        /// <summary>
+        /// the client for hub (signalR) service.
+        /// </summary>
+        private readonly IClientForHubRepository clientForHubService;
+#endif
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MembersController"/> class.
         /// </summary>
         /// <param name="memberService">The member application service.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
+#if UseHubForClientInMember
+        public MembersController(
+            IMemberAppService memberService, IClientForHubRepository clientForHubService)
+#else
         public MembersController(IMemberAppService memberService)
+#endif
         {
+#if UseHubForClientInMember
+            this.clientForHubService = clientForHubService;
+#endif
             this.memberService = memberService;
         }
 
@@ -48,9 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         public async Task<IActionResult> GetAll([FromBody] MemberFilterDto filters)
         {
             var results = await this.memberService.GetRangeBySiteAsync(filters);
-
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Total.ToString());
-
             return this.Ok(results.Members);
         }
 
@@ -102,6 +123,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var createdDto = await this.memberService.AddAsync(dto);
+#if UseHubForClientInMember
+                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "members", "refresh-members");
+#endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
@@ -136,6 +160,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var updatedDto = await this.memberService.UpdateAsync(dto);
+#if UseHubForClientInMember
+                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "members", "refresh-members");
+#endif
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -172,7 +199,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.memberService.RemoveAsync(id);
+                var deletedDto = await this.memberService.RemoveAsync(id);
+#if UseHubForClientInMember
+                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "members", "refresh-members");
+#endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -205,11 +235,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                foreach (int id in ids)
-                {
-                    await this.memberService.RemoveAsync(id);
-                }
-
+                var dtos = await this.memberService.RemoveAsync(ids);
+#if UseHubForClientInMember
+                dtos.Select(m => m.SiteId).Distinct().ToList().ForEach( siteId =>
+                    {
+                        _ = this.clientForHubService.SendTargetedMessage(siteId.ToString(), "members", "refresh-members");
+                    }
+                );
+#endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)

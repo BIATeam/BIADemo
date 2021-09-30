@@ -154,6 +154,16 @@ namespace BIA.Net.Core.Domain.Service
             return await this.RemoveAsync<TDto, TMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
+        public virtual async Task<List<TDto>> RemoveAsync(
+            List<int> ids,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null)
+        {
+            return await this.RemoveAsync<TDto, TMapper>(ids, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+        }
+
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.BulkAddAsync"/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)

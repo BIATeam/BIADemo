@@ -18,9 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class MemberMapper : BaseMapper<MemberDto, Member>
     {
-        /// <summary>
-        /// Gets or sets the collection used for expressions to access fields.
-        /// </summary>
+        /// <inheritdoc/>
         public override ExpressionCollection<Member> ExpressionCollection
         {
             get
@@ -34,10 +32,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             }
         }
 
-        /// <summary>
-        /// Create a member DTO from an entity.
-        /// </summary>
-        /// <returns>The member DTO.</returns>
+        /// <inheritdoc/>
         public override Expression<Func<Member, MemberDto>> EntityToDto()
         {
             return entity => new MemberDto
@@ -53,11 +48,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             };
         }
 
-        /// <summary>
-        /// Create a member entity from a DTO.
-        /// </summary>
-        /// <param name="dto">The member DTO.</param>
-        /// <param name="entity">The entity to update.</param>
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Member entity, MemberDto dto)
+        {
+            dto.Id = entity.Id;
+            dto.SiteId = entity.SiteId;
+        }
+
+        /// <inheritdoc/>
         public override void DtoToEntity(MemberDto dto, Member entity)
         {
             if (entity == null)

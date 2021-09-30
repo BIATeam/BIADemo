@@ -45,7 +45,7 @@ export class MembersSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName : "planes"};
+    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName : "members"};
     this.signalRService.joinGroup(this.targetedFeature);
 
   }

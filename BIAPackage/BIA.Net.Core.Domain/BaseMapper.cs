@@ -60,6 +60,46 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
+        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.  
+        /// </summary>
+        /// <param name="entity">The entity to update with the DTO values.</param>
+        /// <param name="dto">The DTO to use.</param>
+        /// <param name="mapperMode">The mode of mapping.</param>
+        public virtual void MapEntityKeysInDto(TEntity entity, TDto dto, string mapperMode)
+        {
+            MapEntityKeysInDto(entity, dto);
+        }
+
+        /// <summary>
+        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.  
+        /// </summary>
+        /// <param name="entity">The entity to update with the DTO values.</param>
+        /// <param name="dto">The DTO to use.</param>
+        public virtual void MapEntityKeysInDto(TEntity entity, TDto dto)
+        {
+            dto.Id = entity.Id;
+        }
+
+        /// <summary>
+        /// Defining the includes to use in the key mapping before deleting related entities.
+        /// </summary>
+        /// <param name="mapperMode">The mode of mapping.</param>
+        /// <returns>The array of includes.</returns>
+        public virtual Expression<Func<TEntity, object>>[] IncludesForKeyMapping(string mapperMode)
+        {
+            return IncludesForKeyMapping();
+        }
+
+        /// <summary>
+        /// Defining the includes to use in the key mapping before deleting related entities.
+        /// </summary>
+        /// <returns>The array of includes.</returns>
+        public virtual Expression<Func<TEntity, object>>[] IncludesForKeyMapping()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Defining the includes to use in the update method when updating related entities.
         /// </summary>
         /// <returns>The array of includes.</returns>
