@@ -37,6 +37,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<Member>().HasOne(m => m.Site).WithMany(s => s.Members).HasForeignKey(m => m.SiteId);
             modelBuilder.Entity<Member>().HasOne(m => m.User).WithMany(u => u.Members).HasForeignKey(m => m.UserId);
+
+            modelBuilder.Entity<Member>().HasIndex(u => new { u.SiteId, u.UserId }).IsUnique();
         }
 
         /// <summary>
