@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 User = new OptionDto
                 {
                     Id = entity.User.Id,
-                    Display = entity.User.FirstName + " " + entity.User.LastName + " (" + entity.User.Login + ")",
+                    Display = entity.User.FirstName + " " + entity.User.LastName + " (" + entity.User.Login + ")" + (entity.User.IsActive ? string.Empty : " **Disabled**"),
                 },
                 Roles = entity.MemberRoles.Select(s => new OptionDto { Id = s.RoleId, Display = s.Role.Code }),
             };

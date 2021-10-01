@@ -54,20 +54,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all users using the filter.
-        /// </summary>
-        /// <param name="filter">Used to filter on lastname, firstname or login.</param>
-        /// <returns>The list of users.</returns>
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Users.List)]
-        public async Task<IActionResult> GetAll(string filter)
-        {
-            var results = await this.userService.GetAllAsync(filter);
-            return this.Ok(results);
-        }
-
-        /// <summary>
         /// Get all users.
         /// </summary>
         /// <param name="filters">The filters.</param>
@@ -77,10 +63,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [Authorize(Roles = Rights.Users.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] LazyLoadDto filters)
         {
-            var (results, total) = await this.userService.GetAllAsync(filters);
-
+            var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-
             return this.Ok(results);
         }
 
