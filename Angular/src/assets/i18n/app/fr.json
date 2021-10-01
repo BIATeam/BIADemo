@@ -87,7 +87,8 @@
     "firstName": "Prénom",
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
-    "login": "Login"
+    "login": "Login",
+    "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD."
   },
   "notification": {
     "listOf": "Notifications",

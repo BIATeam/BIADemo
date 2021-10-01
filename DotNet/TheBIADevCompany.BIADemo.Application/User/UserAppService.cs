@@ -225,9 +225,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
-        public async Task<string> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
+        public async Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
         {
-            string errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+            List<string> errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
             await this.SynchronizeWithADAsync();
             return errors;
         }

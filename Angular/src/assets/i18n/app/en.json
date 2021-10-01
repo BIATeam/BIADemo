@@ -87,7 +87,8 @@
     "firstName": "First Name",
     "lastName": "Last Name",
     "listOf": "List of users",
-    "login": "Login"
+    "login": "Login",
+    "cannotAddMember": "Cannot add member ${login} on ldap repository."
   },
   "notification": {
     "listOf": "Notifications",

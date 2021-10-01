@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<string> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users);
+        Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
         /// Remove a user in a group in AD.

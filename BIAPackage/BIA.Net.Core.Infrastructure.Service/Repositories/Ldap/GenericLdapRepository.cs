@@ -230,21 +230,17 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.AddUsersInGroup"/>
-        public async Task<string> AddUsersInGroup(IEnumerable<IUserFromDirectory> usersFromDirectory, string roleLabel)
+        public async Task<List<string>> AddUsersInGroup(IEnumerable<IUserFromDirectory> usersFromDirectory, string roleLabel)
         {
             List<string> listGroupCacheSidToRemove = new List<string>();
-            string errors = "";
+            List<string> errors = new List<string>();
             try
             {
                 foreach (var user in usersFromDirectory)
                 {
                     if (!AddUserInGroup(user, roleLabel, listGroupCacheSidToRemove))
                     {
-                        if (errors != "")
-                        {
-                            errors += "<BR>";
-                        }
-                        errors += "Cannot add member " + user.Domain + "\\" + user.Login + " on ldap repository.";
+                        errors.Add(user.Domain + "\\" + user.Login);
                     }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
