@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     /// </summary>
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
-        private readonly INotificationAppService notificationAppService;
+        private readonly INotificationDomainService notificationAppService;
 
         /// <summary>
         /// The signalR Service.
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
-            INotificationAppService notificationAppService,
+            INotificationDomainService notificationAppService,
             IClientForHubRepository clientForHubService)
             : base(configuration, logger)
         {
@@ -94,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Description = "notification.success.description",
                 SiteId = siteId,
                 Title = "notification.success.title",
-                //NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
+                NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
             };

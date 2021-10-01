@@ -100,14 +100,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { PermissionId = roleDto.Id, NotificationId = dto.Id });
                 }
             }
-
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationDto>> EntityToDto()
         {
-            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-
             return entity => new NotificationDto
             {
                 Id = entity.Id,
@@ -146,10 +143,31 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 }).ToList(),
             };
         }
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
-        public override Expression<Func<Notification, object>>[] IncludesForUpdate()
+
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Notification entity, NotificationDto dto)
+        {
+            dto.Id = entity.Id;
+            dto.SiteId = entity.SiteId;
+            dto.NotifiedPermissions = entity.NotifiedPermissions?.Select(nr => new OptionDto
+            {
+                Id = nr.PermissionId,
+                Display = nr.Permission?.Code,
+            }).ToList();
+
+            dto.NotifiedUsers = entity.NotifiedUsers?.Select(nu => new OptionDto
+            {
+                Id = nu.UserId,
+            }).ToList();
+        }
+
+        /// <inheritdoc/>
+        public override Expression<Func<Notification, object>>[] IncludesBeforeDelete()
         {
             return new Expression<Func<Notification, object>>[] { x => x.NotifiedPermissions, x => x.NotifiedUsers };
         }
+
+        // IncludesForUpdate done with the Query customizer because ...Select(..) not managed in .Net Core => it could be rechalenge with EF 6:
+        // x => x.NotifiedPermissions, x => x.NotifiedPermissions.Select(y => y.Permission), x => x.NotifiedUsers
     }
 }

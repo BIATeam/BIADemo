@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// The notification application service.
         /// </summary>
-        private readonly INotificationAppService notificationService;
+        private readonly INotificationDomainService notificationService;
         private readonly IPrincipal principal;
 
 #if UseHubForClientInNotification
@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInNotification
-        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationDomainService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
 #else
         public NotificationsController(INotificationAppService notificationService)
 #endif
@@ -221,7 +221,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 // If it's the first time this notification is read
                 if (!dto.Read)
                 {
-                    dto = await this.notificationService.SetAsRead(dto);
+                    await this.notificationService.SetAsRead(dto);
 #if UseHubForClientInNotification
                     // await this.clientForHubService.SendMessage("refresh-notifications", dto);
 #endif
@@ -287,10 +287,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                foreach (int id in ids)
-                {
-                    await this.notificationService.RemoveAsync(id);
-                }
+                await this.notificationService.RemoveAsync(ids);
 
 #if UseHubForClientInNotification
                 // await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);

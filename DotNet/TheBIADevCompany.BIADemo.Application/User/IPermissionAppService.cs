@@ -18,5 +18,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// /// <returns>The list of production sites.</returns>
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+
+        /// <summary>
+        /// Return list of ids of the translated permissions.
+        /// </summary>
+        /// <param name="permissions">the permission at string format.</param>
+        /// <returns>List of id.</returns>
+        IEnumerable<int> GetPermissionsIds(List<string> permissions);
     }
 }

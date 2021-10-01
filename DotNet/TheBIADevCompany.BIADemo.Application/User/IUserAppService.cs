@@ -66,14 +66,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// The list of right.
         /// </returns>
-        Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
+        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
 
         /// <summary>
         /// Translate the roles in rights.
         /// </summary>
         /// <param name="roles">List of roles.</param>
         /// <returns>Liste of rights.</returns>
-        List<string> TranslateRolesInRights(List<string> roles);
+        List<string> TranslateRolesInPermissions(List<string> roles);
 
         /// <summary>
         /// Get all roles for a user with its sid.

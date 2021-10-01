@@ -1,4 +1,4 @@
-// <copyright file="INotificationAppService.cs" company="TheBIADevCompany">
+// <copyright file="INotificationDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The interface defining the notification application service.
     /// </summary>
-    public interface INotificationAppService : ICrudAppServiceBase<NotificationDto, Notification, LazyLoadDto>
+    public interface INotificationDomainService : ICrudAppServiceBase<NotificationDto, Notification, LazyLoadDto>
     {
         /// <summary>
         /// Set the notification as read.

@@ -56,6 +56,21 @@ export class NotificationsSignalRService {
         );
       }
     });
+    this.signalRService.addMethod('refresh-notifications-several', (args) => {
+      const notifications: Notification[] = JSON.parse(args);
+      if 
+      (
+        notifications.some(notification => this.IsInMyDisplay(notification))
+      )
+      {
+        this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
+          (event) => {
+            console.log('%c [Notifications] RefreshSuccess', 'color: green; font-weight: bold');
+            this.store.dispatch(loadAllByPost({ event: <LazyLoadEvent>event }));
+          }
+        );
+      }
+    });
     this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notifications"};
     this.signalRService.joinGroup(this.targetedFeature);
   }
@@ -63,7 +78,7 @@ export class NotificationsSignalRService {
     var userInfo = this.authService.getAdditionalInfos();
     var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
     var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)))
+    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.id.toString())))
 
     return okSite && okUser && okRole;
   }

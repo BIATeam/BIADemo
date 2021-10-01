@@ -48,7 +48,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// The User Right domain service.
         /// </summary>
-        private readonly IUserRightDomainService userRightDomainService;
+        private readonly IUserPermissionDomainService userPermissionDomainService;
+
+        /// <summary>
+        /// The Permission service.
+        /// </summary>
+        private readonly IPermissionAppService permissionAppService;
 
         /// <summary>
         /// The logger.
@@ -62,14 +67,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="userAppService">The user application service.</param>
         /// <param name="siteAppService">The site application service.</param>
         /// <param name="roleAppService">The role application service.</param>
-        /// <param name="userRightDomainService">The User Right domain service..</param>
+        /// <param name="userPermissionDomainService">The User Right domain service.</param>
+        /// <param name="permissionAppService">The Permission service.</param>
         /// <param name="logger">The logger.</param>
         public AuthController(
             IJwtFactory jwtFactory,
             IUserAppService userAppService,
             ISiteAppService siteAppService,
             IRoleAppService roleAppService,
-            IUserRightDomainService userRightDomainService,
+            IUserPermissionDomainService userPermissionDomainService,
+            IPermissionAppService permissionAppService,
             ILogger<AuthController> logger)
         {
             this.jwtFactory = jwtFactory;
@@ -77,7 +84,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.siteAppService = siteAppService;
             this.roleAppService = roleAppService;
             this.logger = logger;
-            this.userRightDomainService = userRightDomainService;
+            this.userPermissionDomainService = userPermissionDomainService;
+            this.permissionAppService = permissionAppService;
         }
 
         /// <summary>
@@ -175,10 +183,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             // get user rights
-            List<string> userRights = null;
+            List<string> userPermissions = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
+                var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
                 var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
                 var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
@@ -235,11 +243,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                         userData.CurrentRoleIds = roles.Select(r => r.Id).ToList();
                     }
 
+                    // the main roles
                     var allRoles = userRolesFromUserDirectory;
+
+                    // add the sites roles (filter if singleRole mode is used)
                     allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Display).ToList());
-                    userRights = this.userRightDomainService.TranslateRolesInRights(allRoles);
-                    //userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
-                    if (userRights == null || !userRights.Any())
+
+                    // translate roles in permission
+                    userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
+
+                    // add the same permission in the id form.
+                    userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
+
+                    if (!userPermissions.Any())
                     {
                         this.logger.LogInformation("Unauthorized because no user rights for site : " + userData.CurrentSiteId);
                         return this.Unauthorized("You don't have access to this site");
@@ -248,18 +264,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             // For admin and non user
-            if (userRights == null)
+            if (userPermissions == null)
             {
-                userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
+                userPermissions = await this.userAppService.GetPermissionsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
             }
 
-            if (userRights == null || !userRights.Any())
+            if (userPermissions == null || !userPermissions.Any())
             {
                 this.logger.LogInformation("Unauthorized because No rights found");
                 return this.Unauthorized("No rights found");
             }
 
-            var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userRights, userData));
+            var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userPermissions, userData));
             if (claimsIdentity == null)
             {
                 this.logger.LogInformation("Unauthorized because claimsIdentity is null");

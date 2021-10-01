@@ -85,16 +85,16 @@ namespace BIA.Net.Core.Domain
         /// </summary>
         /// <param name="mapperMode">The mode of mapping.</param>
         /// <returns>The array of includes.</returns>
-        public virtual Expression<Func<TEntity, object>>[] IncludesForKeyMapping(string mapperMode)
+        public virtual Expression<Func<TEntity, object>>[] IncludesBeforeDelete(string mapperMode)
         {
-            return IncludesForKeyMapping();
+            return IncludesBeforeDelete();
         }
 
         /// <summary>
         /// Defining the includes to use in the key mapping before deleting related entities.
         /// </summary>
         /// <returns>The array of includes.</returns>
-        public virtual Expression<Func<TEntity, object>>[] IncludesForKeyMapping()
+        public virtual Expression<Func<TEntity, object>>[] IncludesBeforeDelete()
         {
             return null;
         }

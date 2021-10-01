@@ -1,4 +1,4 @@
-// <copyright file="UserRightDomainService.cs" company="TheBIADevCompany">
+// <copyright file="UserPermissionDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// <summary>
     /// The domain service used for user right.
     /// </summary>
-    public class UserRightDomainService : IUserRightDomainService
+    public class UserPermissionDomainService : IUserPermissionDomainService
     {
         /// <summary>
         /// The repository.
@@ -33,20 +33,20 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserRightDomainService"/> class.
+        /// Initializes a new instance of the <see cref="UserPermissionDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="adHelper">The AD helper.</param>
-        public UserRightDomainService(ITGenericRepository<Member> repository, IOptions<BiaNetSection> configuration, IUserDirectoryRepository<UserFromDirectory> adHelper)
+        public UserPermissionDomainService(ITGenericRepository<Member> repository, IOptions<BiaNetSection> configuration, IUserDirectoryRepository<UserFromDirectory> adHelper)
         {
             this.repository = repository;
             this.configuration = configuration.Value;
             this.userDirectoryHelper = adHelper;
         }
 
-        /// <inheritdoc cref="IUserRightDomainService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
+        /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
+        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
         {
             var specification = siteId > 0 ? MemberSpecification.SearchForSidAndSite(sid, siteId) : MemberSpecification.SearchForSid(sid);
 
@@ -76,16 +76,16 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 }
             }
 
-            return this.TranslateRolesInRights(roles);
+            return this.TranslateRolesInPermissions(roles);
         }
 
-        /// <inheritdoc cref="IUserRightDomainService.TranslateRolesInRights"/>
-        public List<string> TranslateRolesInRights(List<string> roles)
+        /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
+        public List<string> TranslateRolesInPermissions(List<string> roles)
         {
             var rights = this.configuration.Permissions.ToList();
-            var userRights1 = rights.Where(w => w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);
-            var userRights2 = rights.Where(w => w.Names != null && w.Roles.Any(a => roles.Contains(a))).SelectMany(s => s.Names);
-            return userRights1.Concat(userRights2).Distinct().ToList();
+            var userPermissions1 = rights.Where(w => w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);
+            var userPermissions2 = rights.Where(w => w.Names != null && w.Roles.Any(a => roles.Contains(a))).SelectMany(s => s.Names);
+            return userPermissions1.Concat(userPermissions2).Distinct().ToList();
         }
     }
 }

@@ -45,5 +45,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             return this.GetAllAsync<OptionDto, PermissionOptionMapper>();
         }
+
+        /// <summary>
+        /// Return list of ids of the translated permissions.
+        /// </summary>
+        /// <param name="permissions">the permission at string format.</param>
+        /// <returns>List of id.</returns>
+        public IEnumerable<int> GetPermissionsIds(List<string> permissions)
+        {
+            return this.GetAllAsync<OptionDto, PermissionOptionMapper>(filter: p => permissions.Contains(p.Code)).Result.Select(p => p.Id);
+        }
     }
 }

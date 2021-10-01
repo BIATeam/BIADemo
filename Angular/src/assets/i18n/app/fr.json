@@ -6,6 +6,7 @@
     "administration": "Administration",
     "airports": "Aéroports",
     "examples": "Exemples",
+    "hangfire": "Hangfire",
     "planes": "Avions",
     "planesPageMode": "Avions (Page)",
     "planesPopupMode": "Avions (Popup)",

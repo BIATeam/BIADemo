@@ -65,7 +65,7 @@ namespace BIA.Net.Core.Domain.Authentication
         /// Get the user rights in the claims.
         /// </summary>
         /// <returns>The user rights.</returns>
-        public virtual IEnumerable<string> GetUserRights()
+        public virtual IEnumerable<string> GetUserPermissions()
         {
             if (!this.HasClaim(x => x.Type == ClaimTypes.Role))
             {

@@ -1,4 +1,4 @@
-// <copyright file="NotificationUser.cs" company="TheBIADevCompany">
+// <copyright file="NotificationPermission.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

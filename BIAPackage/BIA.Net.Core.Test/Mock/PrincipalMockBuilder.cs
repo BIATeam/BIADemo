@@ -79,13 +79,13 @@ namespace BIA.Net.Core.Test.Mock
         }
 
         /// <summary>
-        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserRights"/> method.
+        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserPermissions"/> method.
         /// </summary>
         /// <param name="rights">The list of rights to return.</param>
         /// <returns>The updated mock builder.</returns>
-        public PrincipalMockBuilder MockPrincipalUserRights(IEnumerable<string> rights)
+        public PrincipalMockBuilder MockPrincipalUserPermissions(IEnumerable<string> rights)
         {
-            this.mock.Setup(p => p.GetUserRights())
+            this.mock.Setup(p => p.GetUserPermissions())
                 .Returns(rights);
 
             return this;

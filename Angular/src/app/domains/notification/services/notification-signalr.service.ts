@@ -54,6 +54,12 @@ export class NotificationSignalRService {
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
 
+    this.signalRService.addMethod('notification-removeSeveralUnread', (args) => {
+      const ids: number[] = JSON.parse(args);
+      console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
+      ids.forEach( idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
+    });
+
     this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notification-domain"};
     this.signalRService.joinGroup(this.targetedFeature);
   }

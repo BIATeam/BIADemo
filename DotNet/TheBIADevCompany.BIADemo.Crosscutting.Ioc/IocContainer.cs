@@ -79,10 +79,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain Layer
-            collection.AddTransient<IUserRightDomainService, UserRightDomainService>();
+            collection.AddTransient<IUserPermissionDomainService, UserPermissionDomainService>();
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
-            collection.AddTransient<INotificationAppService, NotificationAppService>();
-            collection.AddTransient<INotificationTypeAppService, NotificationTypeAppService>();
+            collection.AddTransient<INotificationDomainService, NotificationDomainService>();
+            collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -101,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddScoped(typeof(ITGenericRepository<>), typeof(TGenericRepositoryEF<>));
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
+            collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection)

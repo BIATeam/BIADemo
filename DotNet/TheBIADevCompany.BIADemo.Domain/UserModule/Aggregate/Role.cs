@@ -28,6 +28,5 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the member roles.
         /// </summary>
         public virtual ICollection<MemberRole> MemberRoles { get; set; }
-
     }
 }
