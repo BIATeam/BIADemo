@@ -29,7 +29,7 @@ export class MemberItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentMember).subscribe((member) => {
           if (member?.user) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = member.user;
+              routeData['breadcrumb'] = member.user.display;
             });
             this.layoutService.refreshBreadcrumb();
           }
