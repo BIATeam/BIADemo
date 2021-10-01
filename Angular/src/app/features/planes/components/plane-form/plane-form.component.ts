@@ -60,8 +60,7 @@ export class PlaneFormComponent implements OnInit, OnChanges {
       connectingAirports: [this.plane.connectingAirports],
       planeType: [this.plane.planeType?.id],
     });
-    // set the parent key => siteId from authService or other Id from parentService
-    this.form.value.siteId = this.authService.getCurrentSiteId(); 
+
   }
 
   onCancel() {
@@ -76,6 +75,9 @@ export class PlaneFormComponent implements OnInit, OnChanges {
       plane.isActive = plane.isActive ? plane.isActive : false;
       plane.connectingAirports = BiaOptionService.Differential(plane.connectingAirports, this.plane?.connectingAirports);
       plane.planeType = BiaOptionService.Clone(plane.planeType);
+
+      // force the parent key => siteId from authService or other Id from 'parent'Service
+      plane.siteId = this.authService.getCurrentSiteId(),
       this.save.emit(plane);
       this.form.reset();
     }

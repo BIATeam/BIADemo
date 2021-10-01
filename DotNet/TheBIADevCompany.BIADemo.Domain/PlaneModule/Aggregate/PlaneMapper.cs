@@ -131,6 +131,13 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             };
         }
 
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Plane entity, PlaneDto dto)
+        {
+            dto.Id = entity.Id;
+            dto.SiteId = entity.SiteId;
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {

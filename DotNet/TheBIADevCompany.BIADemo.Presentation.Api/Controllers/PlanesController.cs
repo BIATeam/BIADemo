@@ -2,7 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-// #define UseHubForClientInPlane
+#define UseHubForClientInPlane
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
@@ -44,11 +44,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
 #if UseHubForClientInPlane
         private readonly IClientForHubRepository clientForHubService;
-
-        /// <summary>
-        /// The current SiteId.
-        /// </summary>
-        private readonly int currentSiteId;
 #endif
 
         /// <summary>
@@ -59,13 +54,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInPlane
         public PlanesController(
-            IPlaneAppService planeService, IClientForHubRepository clientForHubService, IPrincipal principal)
+            IPlaneAppService planeService, IClientForHubRepository clientForHubService)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
-            this.currentSiteId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().CurrentSiteId;
             this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
@@ -154,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -191,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -229,9 +223,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.planeService.RemoveAsync(id);
+                var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok();
             }
@@ -265,13 +259,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                foreach (int id in ids)
-                {
-                    await this.planeService.RemoveAsync(id);
-                }
+                var deletedDtos = await this.planeService.RemoveAsync(ids);
 
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
+                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                });
 #endif
                 return this.Ok();
             }
@@ -306,9 +300,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.planeService.SaveAsync(dtoList);
+                var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                _ = this.clientForHubService.SendTargetedMessage(this.currentSiteId.ToString(), "planes", "refresh-planes", string.Empty);
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                });
 #endif
                 return this.Ok();
             }

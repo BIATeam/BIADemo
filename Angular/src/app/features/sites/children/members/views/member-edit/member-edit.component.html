@@ -2,7 +2,6 @@
     [member]="memberService.member$ | async" 
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
-    [siteId]="siteService.currentSite?.id"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-member-form>

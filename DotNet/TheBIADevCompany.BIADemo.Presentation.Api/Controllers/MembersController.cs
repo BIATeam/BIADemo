@@ -235,13 +235,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                var dtos = await this.memberService.RemoveAsync(ids);
+                var deletedDtos = await this.memberService.RemoveAsync(ids);
 #if UseHubForClientInMember
-                dtos.Select(m => m.SiteId).Distinct().ToList().ForEach( siteId =>
-                    {
-                        _ = this.clientForHubService.SendTargetedMessage(siteId.ToString(), "members", "refresh-members");
-                    }
-                );
+                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
+                });
 #endif
                 return this.Ok();
             }
@@ -276,7 +275,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.memberService.SaveAsync(dtoList);
+                var savedDtos = await this.memberService.SaveAsync(dtoList);
+#if UseHubForClientInMember
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
+                });
+#endif
                 return this.Ok();
             }
             catch (ArgumentNullException)
