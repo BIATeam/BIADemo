@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, LazyLoadDto, PlaneMapper>, IPlaneAppService
     {
         /// <summary>
-        /// The claims principal.
+        /// The current SiteId.
         /// </summary>
         private readonly int currentSiteId;
 
@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <inheritdoc/>
         public override Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
         {
-            dto.Site = new Domain.Dto.Site.SiteDto { Id = this.currentSiteId };
+ //           dto.SiteId = this.currentSiteId;
             return base.AddAsync(dto, mapperMode);
         }
 

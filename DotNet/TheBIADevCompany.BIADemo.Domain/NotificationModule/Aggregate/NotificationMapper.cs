@@ -30,10 +30,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
-                    { "Type", notification => notification.Type },
+                    { "Type", notification => notification.Type.Code },
                     { "Read", notification => notification.Read },
-                    { "CreatedBy", notification => notification.CreatedBy },
-                    { "NotifiedRoles", notification => notification.NotifiedRoles.Select(x => x.Role.Code).OrderBy(x => x) },
+                    { "CreatedBy", notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
+                    { "NotifiedPermissions", notification => notification.NotifiedPermissions.Select(x => x.Permission.Code).OrderBy(x => x) },
                     { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
@@ -82,32 +82,29 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             }
 
             // Mapping relationship *-* : ICollection<Airports>
-            if (dto.NotifiedRoles?.Any() == true)
+            if (dto.NotifiedPermissions?.Any() == true)
             {
-                foreach (var roleDto in dto.NotifiedRoles.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var roleDto in dto.NotifiedPermissions.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.NotifiedRoles.FirstOrDefault(x => x.RoleId == roleDto.Id && x.NotificationId == dto.Id);
+                    var connectingAirport = entity.NotifiedPermissions.FirstOrDefault(x => x.PermissionId == roleDto.Id && x.NotificationId == dto.Id);
                     if (connectingAirport != null)
                     {
-                        entity.NotifiedRoles.Remove(connectingAirport);
+                        entity.NotifiedPermissions.Remove(connectingAirport);
                     }
                 }
 
-                entity.NotifiedRoles = entity.NotifiedRoles ?? new List<NotificationRole>();
-                foreach (var roleDto in dto.NotifiedRoles.Where(w => w.DtoState == DtoState.Added))
+                entity.NotifiedPermissions = entity.NotifiedPermissions ?? new List<NotificationPermission>();
+                foreach (var roleDto in dto.NotifiedPermissions.Where(w => w.DtoState == DtoState.Added))
                 {
-                    entity.NotifiedRoles.Add(new NotificationRole
-                    { RoleId = roleDto.Id, NotificationId = dto.Id });
+                    entity.NotifiedPermissions.Add(new NotificationPermission
+                    { PermissionId = roleDto.Id, NotificationId = dto.Id });
                 }
             }
-
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationDto>> EntityToDto()
         {
-            var JsonSerializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-
             return entity => new NotificationDto
             {
                 Id = entity.Id,
@@ -133,10 +130,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 
                 SiteId = entity.SiteId,
 
-                NotifiedRoles = entity.NotifiedRoles.Select(nr => new OptionDto
+                NotifiedPermissions = entity.NotifiedPermissions.Select(nr => new OptionDto
                 {
-                    Id = nr.Role.Id,
-                    Display = nr.Role.Code,
+                    Id = nr.Permission.Id,
+                    Display = nr.Permission.Code,
                 }).ToList(),
 
                 NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
@@ -146,5 +143,31 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 }).ToList(),
             };
         }
+
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Notification entity, NotificationDto dto)
+        {
+            dto.Id = entity.Id;
+            dto.SiteId = entity.SiteId;
+            dto.NotifiedPermissions = entity.NotifiedPermissions?.Select(nr => new OptionDto
+            {
+                Id = nr.PermissionId,
+                Display = nr.Permission?.Code,
+            }).ToList();
+
+            dto.NotifiedUsers = entity.NotifiedUsers?.Select(nu => new OptionDto
+            {
+                Id = nu.UserId,
+            }).ToList();
+        }
+
+        /// <inheritdoc/>
+        public override Expression<Func<Notification, object>>[] IncludesBeforeDelete()
+        {
+            return new Expression<Func<Notification, object>>[] { x => x.NotifiedPermissions, x => x.NotifiedUsers };
+        }
+
+        // IncludesForUpdate done with the Query customizer because ...Select(..) not managed in .Net Core => it could be rechalenge with EF 6:
+        // x => x.NotifiedPermissions, x => x.NotifiedPermissions.Select(y => y.Permission), x => x.NotifiedUsers
     }
 }

@@ -21,7 +21,6 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
     public translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
-    this.initForm();
   }
 
   public initForm() {
@@ -45,6 +44,9 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
       plane.isActive = plane.isActive ? plane.isActive : false;
       plane.connectingAirports = BiaOptionService.Differential(plane.connectingAirports, this.element?.connectingAirports);
       plane.planeType = BiaOptionService.Clone(plane.planeType);
+
+      // force the parent key => siteId from authService or other Id from 'parent'Service
+      plane.siteId = this.authService.getCurrentSiteId(),
       this.save.emit(plane);
       this.form.reset();
     }

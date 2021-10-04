@@ -1,7 +1,7 @@
 <app-notification-form 
     [notification]="notificationService.notification$ | async" 
     [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
-    [roleOptions]="notificationOptionsService.roleOptions$ | async"
+    [permissionOptions]="notificationOptionsService.permissionOptions$ | async"
     [userOptions]="notificationOptionsService.userOptions$ | async"
     [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
     (cancel)="onCancelled()" 

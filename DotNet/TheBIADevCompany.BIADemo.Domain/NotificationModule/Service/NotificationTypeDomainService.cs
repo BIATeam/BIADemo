@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="PlaneTypeAppService.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTypeDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -15,13 +15,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeAppService : AppServiceBase<NotificationType>, INotificationTypeAppService
+    public class NotificationTypeDomainService : AppServiceBase<NotificationType>, INotificationTypeDomainService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationTypeAppService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationTypeDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public NotificationTypeAppService(ITGenericRepository<NotificationType> repository)
+        public NotificationTypeDomainService(ITGenericRepository<NotificationType> repository)
             : base(repository)
         {
         }

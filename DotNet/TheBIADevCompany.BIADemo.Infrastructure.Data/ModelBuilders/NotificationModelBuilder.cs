@@ -70,9 +70,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateNotificationRoleModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NotificationRole>().HasKey(nu => new { RoleId = nu.RoleId, NotificationId = nu.NotificationId });
-            modelBuilder.Entity<NotificationRole>().HasOne(nu => nu.Role).WithMany(u => u.NotificationRoles).HasForeignKey(nu => nu.RoleId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<NotificationRole>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedRoles).HasForeignKey(nu => nu.NotificationId);
+            modelBuilder.Entity<NotificationPermission>().HasKey(nu => new { PermissionId = nu.PermissionId, NotificationId = nu.NotificationId });
+            modelBuilder.Entity<NotificationPermission>().HasOne(nu => nu.Permission).WithMany(u => u.NotificationPermissions).HasForeignKey(nu => nu.PermissionId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NotificationPermission>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedPermissions).HasForeignKey(nu => nu.NotificationId);
         }
     }
 }

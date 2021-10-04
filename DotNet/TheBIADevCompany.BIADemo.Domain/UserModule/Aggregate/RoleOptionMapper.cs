@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="AirportOptionMapper.cs" company="TheBIADevCompany">
+// <copyright file="RoleOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

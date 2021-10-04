@@ -1,4 +1,3 @@
-import { Site } from 'src/app/domains/site/model/site';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Plane {
@@ -9,7 +8,6 @@ export interface Plane {
   firstFlightTime: Date;
   lastFlightDate: Date;
   capacity: number;
-  site: Site[];
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
 }

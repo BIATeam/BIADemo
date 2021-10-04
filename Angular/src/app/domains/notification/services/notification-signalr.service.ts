@@ -6,6 +6,7 @@ import { addUnreadNotification, removeUnreadNotification } from '../store/notifi
 import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -15,6 +16,9 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
  */
 @Injectable()
 export class NotificationSignalRService {
+
+  private targetedFeature : TargetedFeature;
+  
   /**
    * Constructor.
    * @param store the store.
@@ -25,7 +29,6 @@ export class NotificationSignalRService {
     private signalRService: BiaSignalRService,
     private authService: AuthService,
     private messageService: BiaMessageService) {
-    // Do nothing.
   }
 
   /**
@@ -50,13 +53,22 @@ export class NotificationSignalRService {
       var idNum: number = +id;
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
+
+    this.signalRService.addMethod('notification-removeSeveralUnread', (args) => {
+      const ids: number[] = JSON.parse(args);
+      console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
+      ids.forEach( idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
+    });
+
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notification-domain"};
+    this.signalRService.joinGroup(this.targetedFeature);
   }
 
   private IsInMyDisplay(notification: Notification) {
     var userInfo = this.authService.getAdditionalInfos();
     var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
     var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-    var okRole : Boolean =  (notification.notifiedRoles == undefined) || (notification.notifiedRoles.length == 0) || (notification.notifiedRoles.some(e => this.authService.hasPermission(e.display)))
+    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)))
 
     return okSite && okUser && okRole;
   }
@@ -64,6 +76,7 @@ export class NotificationSignalRService {
   destroy() {
     this.signalRService.removeMethod('notification-addUnread');
     this.signalRService.removeMethod('notification-removeUnread');
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 
 }

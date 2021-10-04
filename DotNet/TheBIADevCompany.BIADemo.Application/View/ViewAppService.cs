@@ -60,9 +60,9 @@ namespace TheBIADevCompany.BIADemo.Application.View
         public async Task<IEnumerable<ViewDto>> GetAllAsync()
         {
             int currentUserId = this.principal.GetUserId();
-            IEnumerable<string> currentUserRights = this.principal.GetUserRights();
+            IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserRights?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),

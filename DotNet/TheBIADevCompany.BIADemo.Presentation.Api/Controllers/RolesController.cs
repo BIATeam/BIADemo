@@ -57,24 +57,5 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             var results = await this.roleService.GetAllOptionsAsync();
             return this.Ok(results);
         }
-
-        /// <summary>
-        /// Gets all existing roles.
-        /// </summary>
-        /// <param name="siteId">The site identifier.</param>
-        /// <returns>The list of roles.</returns>
-        [HttpGet("{siteId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Roles.ListForCurrentUser)]
-        public async Task<IActionResult> GetAllMemberRoles(int siteId)
-        {
-            var userId = this.principal.GetUserId();
-
-            var results = await this.roleService.GetMemberRolesAsync(siteId, userId);
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
-            return this.Ok(results);
-        }
     }
 }

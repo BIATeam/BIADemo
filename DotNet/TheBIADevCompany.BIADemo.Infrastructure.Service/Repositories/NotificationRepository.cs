@@ -17,13 +17,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <seealso cref="BIA.Net.Core.Domain.INotificationRepository" />
     public class NotificationRepository : MailRepository, INotification
     {
-        private readonly INotificationAppService notificationAppService;
+        private readonly INotificationDomainService notificationAppService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationRepository"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="notificationAppService">The notification service.</param>
-        public NotificationRepository(IOptions<BiaNetSection> configuration, INotificationAppService notificationAppService)
+        public NotificationRepository(IOptions<BiaNetSection> configuration, INotificationDomainService notificationAppService)
             : base(configuration)
         {
             this.notificationAppService = notificationAppService;

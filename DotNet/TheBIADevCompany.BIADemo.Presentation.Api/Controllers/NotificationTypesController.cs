@@ -19,14 +19,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// The plane application service.
         /// </summary>
-        private readonly INotificationTypeAppService notificationTypeService;
+        private readonly INotificationTypeDomainService notificationTypeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypesController"/> class.
         /// </summary>
         /// <param name="notificationTypeService">The plane application service.</param>
         /// <param name="hubForClients">The hub for client.</param>
-        public NotificationTypesController(INotificationTypeAppService notificationTypeService)
+        public NotificationTypesController(INotificationTypeDomainService notificationTypeService)
         {
             this.notificationTypeService = notificationTypeService;
         }

@@ -74,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <summary>
         /// Gets or sets the role to be notified, if any.
         /// </summary>
-        public ICollection<NotificationRole> NotifiedRoles { get; set; }
+        public ICollection<NotificationPermission> NotifiedPermissions { get; set; }
 
         /// <summary>
         /// Gets or sets the list of users to be notified.

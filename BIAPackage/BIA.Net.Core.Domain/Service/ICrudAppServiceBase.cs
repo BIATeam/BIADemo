@@ -190,6 +190,16 @@ namespace BIA.Net.Core.Domain.Service
         Task<TDto> RemoveAsync(int id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
 
         /// <summary>
+        /// Remove an entity with its identifier.
+        /// </summary>
+        /// <param name="ids">The List of identifiers.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The deleted DTO</returns>
+        Task<List<TDto>> RemoveAsync(List<int> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+
+        /// <summary>
         /// Save the DTO in DB regarding to theirs state.
         /// </summary>
         /// <param name="dto"></param>

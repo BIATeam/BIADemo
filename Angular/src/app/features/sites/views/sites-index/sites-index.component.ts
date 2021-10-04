@@ -181,8 +181,6 @@ export class SitesIndexComponent implements OnInit {
       columns: [
         new PrimeTableColumn('title', 'site.title'),
         Object.assign(new PrimeTableColumn('siteAdmin', 'site.admins'), {
-          isSortable: false,
-          isSearchable: false
         })
       ]
     };

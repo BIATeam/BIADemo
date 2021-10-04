@@ -47,7 +47,7 @@
               pInputText
               class="input-search"
               type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-              placeholder="{{ col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+              placeholder="{{ col.searchPlaceholder != undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
               (input)="dt.filter($event.target.value, col.field, col.filterMode)"
               [value]="dt.filters[col.field]?.value"
               [ngClass]="{ 'ui-state-filled': dt.filters[col.field]?.value != '' }"

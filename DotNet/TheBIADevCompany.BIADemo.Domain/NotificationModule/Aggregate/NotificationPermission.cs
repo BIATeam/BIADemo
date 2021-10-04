@@ -1,4 +1,4 @@
-// <copyright file="NotificationUser.cs" company="TheBIADevCompany">
+// <copyright file="NotificationPermission.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// <summary>
     /// The NotificationUser entity.
     /// </summary>
-    public class NotificationRole : VersionedTable
+    public class NotificationPermission : VersionedTable
     {
         /// <summary>
         /// Gets or sets the notification identifier.
@@ -26,11 +26,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <summary>
         /// Gets or sets the identifier of the user.
         /// </summary>
-        public int RoleId { get; set; }
+        public int PermissionId { get; set; }
 
         /// <summary>
         /// Gets or sets the user.
         /// </summary>
-        public virtual Role Role { get; set; }
+        public virtual Permission Permission { get; set; }
     }
 }

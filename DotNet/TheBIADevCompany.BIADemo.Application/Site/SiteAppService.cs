@@ -42,19 +42,19 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetAllWithMembersAsync(SiteFilterDto filters)
         {
             UserDataDto userData = this.principal.GetUserData<UserDataDto>();
-            IEnumerable<string> currentUserRights = this.principal.GetUserRights();
-            int siteId = currentUserRights?.Any(x => x == Rights.Sites.AccessAll) == true ? default(int) : userData.CurrentSiteId;
+            IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
+            int siteId = currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true ? default(int) : userData.CurrentSiteId;
 
             return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters, siteId));
         }
 
         /// <inheritdoc cref="ISiteAppService.GetAllAsync"/>
-        public async Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userRights = null)
+        public async Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
         {
-            userRights = userRights != null ? userRights : this.principal.GetUserRights();
+            userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
-            if (userRights?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (userPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(new SiteMapper().EntityToDto(userId));
             }

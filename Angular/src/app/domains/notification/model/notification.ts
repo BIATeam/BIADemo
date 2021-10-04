@@ -9,7 +9,7 @@ export interface Notification {
   createdDate: string;
   createdBy: OptionDto | null;
   siteId: number;
-  notifiedRoles: OptionDto[];
+  notifiedPermissions: OptionDto[];
   notifiedUsers: OptionDto[];
   jData: string;
 }

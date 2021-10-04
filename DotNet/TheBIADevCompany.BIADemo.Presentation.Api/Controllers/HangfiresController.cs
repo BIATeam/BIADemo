@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {
-        private readonly INotificationAppService notificationAppService;
+        private readonly INotificationDomainService notificationAppService;
         private readonly IBiaDemoTestHangfireService demoTestHangfireService;
         private readonly BIAClaimsPrincipal principal;
 
@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         public HangfiresController(
             IBiaDemoTestHangfireService demoTestHangfireService,
-            INotificationAppService notificationAppService,
+            INotificationDomainService notificationAppService,
             IPrincipal principal)
         {
             this.notificationAppService = notificationAppService;

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
+import { BiaSignalRService} from 'src/app/core/bia-core/services/bia-signalr.service';
 import { loadAllByPost } from '../store/airports-actions';
 import { getLastLazyLoadEvent } from '../store/airport.state';
 import { LazyLoadEvent } from 'primeng/api';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -17,6 +18,9 @@ import { LazyLoadEvent } from 'primeng/api';
     providedIn: 'root'
 })
 export class AirportsSignalRService {
+
+  private targetedFeature : TargetedFeature;
+  
   /**
    * Constructor.
    * @param store the store.
@@ -40,10 +44,14 @@ export class AirportsSignalRService {
         }
       );
     });
+    this.targetedFeature = { parentKey: "", featureName : "airports"};
+
+    this.signalRService.joinGroup(this.targetedFeature);
   }
 
   destroy() {
     console.log('%c [Airports] Unregister SignalR : refresh-airports', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-airports');
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

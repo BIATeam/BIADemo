@@ -26,8 +26,8 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         /// Gets all asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="userRights">The user rights.</param>
+        /// <param name="userPermissions">The user rights.</param>
         /// <returns>all sites.</returns>
-        Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userRights = null);
+        Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null);
     }
 }

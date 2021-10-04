@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="INotificationTypeAppService.cs" company="TheBIADevCompany">
+// <copyright file="INotificationTypeDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface INotificationTypeAppService
+    public interface INotificationTypeDomainService
     {
         /// <summary>
         /// Return options.

@@ -4,12 +4,18 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
+    using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The interface defining the application service for user.
@@ -21,20 +27,34 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// /// <returns>The list of production sites.</returns>
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+        /*
+                /// <summary>
+                /// Get all existing users filtered.
+                /// </summary>
+                /// <param name="filters">Used to filter the users.</param>
+                /// <returns>The list of users found and the total number of user.</returns>
+                Task<(IEnumerable<UserDto> Users, int Total)> GetAllAsync(LazyLoadDto filters);
+        */
 
         /// <summary>
-        /// Get all existing users filtered.
+        /// Get the DTO list with paging and sorting.
         /// </summary>
-        /// <param name="filter">Used to filter the users.</param>
-        /// <returns>The list of users found.</returns>
-        Task<IEnumerable<UserDto>> GetAllAsync(string filter);
-
-        /// <summary>
-        /// Get all existing users filtered.
-        /// </summary>
-        /// <param name="filters">Used to filter the users.</param>
-        /// <returns>The list of users found and the total number of user.</returns>
-        Task<(IEnumerable<UserDto> Users, int Total)> GetAllAsync(LazyLoadDto filters);
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The list of DTO.</returns>
+        Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
+            LazyLoadDto filters = null,
+            int id = 0,
+            Specification<User> specification = null,
+            Expression<Func<User, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null);
 
         /// <summary>
         /// Get all rights for a user with its sid.
@@ -46,14 +66,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// The list of right.
         /// </returns>
-        Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
+        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
 
         /// <summary>
         /// Translate the roles in rights.
         /// </summary>
         /// <param name="roles">List of roles.</param>
         /// <returns>Liste of rights.</returns>
-        List<string> TranslateRolesInRights(List<string> roles);
+        List<string> TranslateRolesInPermissions(List<string> roles);
 
         /// <summary>
         /// Get all roles for a user with its sid.

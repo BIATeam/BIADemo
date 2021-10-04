@@ -52,7 +52,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the role identifier to be notified, if any.
         /// </summary>
-        public ICollection<OptionDto> NotifiedRoles { get; set; }
+        public ICollection<OptionDto> NotifiedPermissions { get; set; }
 
         /// <summary>
         /// Gets or sets the list of users id to be notified.

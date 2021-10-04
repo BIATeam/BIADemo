@@ -272,11 +272,12 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dto != null)
             {
+                var mapper = new TOtherMapper();
                 var entity = new TEntity();
-                new TOtherMapper().DtoToEntity(dto, entity, mapperMode);
+                mapper.DtoToEntity(dto, entity, mapperMode);
                 this.Repository.Add(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
-                dto.Id = entity.Id;
+                mapper.MapEntityKeysInDto(entity, dto);
             }
 
             return dto;
@@ -314,6 +315,7 @@ namespace BIA.Net.Core.Domain.Service
                 this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
+                mapper.MapEntityKeysInDto(entity, dto);
             }
 
             return dto;
@@ -339,8 +341,9 @@ namespace BIA.Net.Core.Domain.Service
         {
             var mapper = new TOtherMapper();
 
-            var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), queryMode: queryMode);
-            var dto = new TOtherDto { Id = entity.Id };
+            var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
+            var dto = new TOtherDto();
+            mapper.MapEntityKeysInDto(entity, dto);
             if (entity == null)
             {
                 throw new ElementNotFoundException();
@@ -349,6 +352,22 @@ namespace BIA.Net.Core.Domain.Service
             this.Repository.Remove(entity);
             await this.Repository.UnitOfWork.CommitAsync();
             return dto;
+        }
+
+        public virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
+            List<int> ids,
+            string accessMode = AccessMode.Delete,
+            string queryMode = QueryMode.Delete,
+            string mapperMode = null)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
+            where TOtherDto : BaseDto, new()
+        {
+            var dtos = new List<TOtherDto>();
+            foreach (int id in ids)
+            {
+                dtos.Add(await this.RemoveAsync<TOtherDto, TOtherMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
+            }
+            return dtos;
         }
 
         public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtos,
