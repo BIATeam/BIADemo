@@ -23,18 +23,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public interface IUserAppService
     {
         /// <summary>
+        /// Get all existing users filtered.
+        /// </summary>
+        /// <param name="filter">Used to filter the users.</param>
+        /// <returns>The list of users found.</returns>
+        Task<IEnumerable<UserDto>> GetAllAsync(string filter);
+
+        /// <summary>
         /// Gets all option that I can see.
         /// </summary>
         /// /// <returns>The list of production sites.</returns>
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
-        /*
-                /// <summary>
-                /// Get all existing users filtered.
-                /// </summary>
-                /// <param name="filters">Used to filter the users.</param>
-                /// <returns>The list of users found and the total number of user.</returns>
-                Task<(IEnumerable<UserDto> Users, int Total)> GetAllAsync(LazyLoadDto filters);
-        */
 
         /// <summary>
         /// Get the DTO list with paging and sorting.

@@ -84,6 +84,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
+        /// <inheritdoc cref="IUserAppService.GetAllAsync(string)"/>
+        public async Task<IEnumerable<UserDto>> GetAllAsync(string filter)
+        {
+            var specification = UserSpecification.Search(filter);
+            var result = await this.Repository.GetAllResultAsync(UserSelectBuilder.EntityToDto(), specification: specification);
+            return result.ToList();
+        }
+
         /// <summary>
         /// Return options.
         /// </summary>

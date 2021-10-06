@@ -54,6 +54,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
+        /// Gets all users using the filter.
+        /// </summary>
+        /// <param name="filter">Used to filter on lastname, firstname or login.</param>
+        /// <returns>The list of users.</returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = Rights.Users.List)]
+        public async Task<IActionResult> GetAll(string filter)
+        {
+            var results = await this.userService.GetAllAsync(filter);
+            return this.Ok(results);
+        }
+
+        /// <summary>
         /// Get all users.
         /// </summary>
         /// <param name="filters">The filters.</param>
