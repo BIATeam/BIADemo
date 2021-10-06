@@ -172,7 +172,7 @@ namespace BIA.Net.Core.Domain
                                 throw new ArgumentOutOfRangeException(nameof(criteria), criteria, null);
                         }
                     }
-                    catch(Exception e)
+                    catch(Exception)
                     {
                         return new FalseSpecification<TEntity>().SatisfiedBy();
                     }

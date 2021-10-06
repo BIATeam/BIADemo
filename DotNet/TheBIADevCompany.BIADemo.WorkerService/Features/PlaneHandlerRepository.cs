@@ -17,7 +17,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     /// </summary>
     public class PlaneHandlerRepository : DatabaseHandlerRepository
     {
-        private static IClientForHubRepository clientForHubService=null;
+        private static IClientForHubRepository clientForHubService = null;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneHandlerRepository"/> class.
         /// Constructor Set the trigger request.

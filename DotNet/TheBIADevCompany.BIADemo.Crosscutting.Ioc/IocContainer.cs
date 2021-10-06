@@ -73,6 +73,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+
             // End BIADemo
         }
 

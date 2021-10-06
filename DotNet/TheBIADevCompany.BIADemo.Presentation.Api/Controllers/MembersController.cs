@@ -67,6 +67,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>The list of members.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] MemberFilterDto filters)
         {
@@ -76,9 +77,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Total.ToString());
                 return this.Ok(results.Members);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return this.StatusCode(500, "Internal server error " + e.Message);
+                return this.StatusCode(500, "Internal server error ");
             }
         }
 

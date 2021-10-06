@@ -43,7 +43,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <inheritdoc/>
         public override Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
         {
- //           dto.SiteId = this.currentSiteId;
             return base.AddAsync(dto, mapperMode);
         }
 

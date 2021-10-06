@@ -416,6 +416,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Delete = "Notification_Delete";
         }
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -425,7 +426,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to access to the list of planes types (options only).
             /// </summary>
             public const string Options = "NotifiactionType_Options";
-
         }
     }
 }

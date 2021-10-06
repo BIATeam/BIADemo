@@ -19,7 +19,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.Specification;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using System.Linq.Expressions;
-    using System.Linq;
     using System;
 
 

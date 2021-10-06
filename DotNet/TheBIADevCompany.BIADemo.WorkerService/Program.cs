@@ -103,7 +103,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                         // End BIADemo
                             });
                         }
-
                     });
 
                     services.AddHostedService<Worker>();
@@ -149,7 +148,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                             config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
                             {
                                 new PlaneHandlerRepository(hostContext.Configuration),
-                                //new NotificationHandlerRepository(hostContext.Configuration, services.BuildServiceProvider().GetService<INotificationAppService>()),
                             });
                         }
 

@@ -1,4 +1,4 @@
-// <copyright file="IRoleAppService.cs" company="TheBIADevCompany">
+// <copyright file="IPermissionAppService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

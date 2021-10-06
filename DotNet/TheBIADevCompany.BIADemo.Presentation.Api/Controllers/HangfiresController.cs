@@ -7,10 +7,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
     using System.Security.Principal;
-    using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
@@ -34,6 +32,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
+        /// <param name="demoTestHangfireService">The demo service.</param>
+        /// <param name="notificationAppService">The notification service.</param>
+        /// <param name="principal">The principal.</param>
         public HangfiresController(
             IBiaDemoTestHangfireService demoTestHangfireService,
             INotificationDomainService notificationAppService,
@@ -87,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Hangfires.RunWorker)]
-        public async Task<IActionResult> CallWorkerWithNotification()
+        public IActionResult CallWorkerWithNotification()
         {
             try
             {

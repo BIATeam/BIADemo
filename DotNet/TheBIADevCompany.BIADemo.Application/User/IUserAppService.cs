@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(

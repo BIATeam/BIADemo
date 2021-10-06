@@ -1,4 +1,4 @@
-// <copyright file="NotificationCustomizer.cs" company="Safran">
+// <copyright file="NotificationQueryCustomizer.cs" company="Safran">
 //     Copyright (c) Safran. All rights reserved.
 // </copyright>
 

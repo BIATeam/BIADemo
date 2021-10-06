@@ -62,7 +62,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #endif
             this.notificationService = notificationService;
             this.principal = principal;
-
         }
 
         /// <summary>
@@ -104,9 +103,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var createdDto = await this.notificationService.AddAsync(dto);
-#if UseHubForClientInNotification
-                //await this.clientForHubService.SendMessage("refresh-notifications", createdDto);
-#endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
@@ -141,9 +137,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             try
             {
                 var updatedDto = await this.notificationService.UpdateAsync(dto);
-#if UseHubForClientInNotification
-                //await this.clientForHubService.SendMessage("refresh-notifications", updatedDto);
-#endif
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -180,10 +173,41 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                var deletedDto = await this.notificationService.RemoveAsync(id);
-#if UseHubForClientInNotification
-                // await this.clientForHubService.SendMessage("refresh-notifications", deletedDto);
-#endif
+                await this.notificationService.RemoveAsync(id);
+                return this.Ok();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Removes the specified notificationsType ids.
+        /// </summary>
+        /// <param name="ids">The notificationsType ids.</param>
+        /// <returns>The result of the remove.</returns>
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.Delete)]
+        public async Task<IActionResult> Remove([FromQuery] List<int> ids)
+        {
+            if (ids?.Any() != true)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.notificationService.RemoveAsync(ids);
+
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -222,9 +246,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 if (!dto.Read)
                 {
                     await this.notificationService.SetAsRead(dto);
-#if UseHubForClientInNotification
-                    // await this.clientForHubService.SendMessage("refresh-notifications", dto);
-#endif
                 }
 
                 return this.Ok(dto);
@@ -238,6 +259,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 return this.StatusCode(500, "Internal server error");
             }
         }
+
         /// <summary>
         /// Get unread notifications count.
         /// </summary>
@@ -256,43 +278,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var dto = await this.notificationService.GetUnreadIds(userId);
                 return this.Ok(dto);
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Removes the specified notificationsType ids.
-        /// </summary>
-        /// <param name="ids">The notificationsType ids.</param>
-        /// <returns>The result of the remove.</returns>
-        [HttpDelete]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Delete)]
-        public async Task<IActionResult> Remove([FromQuery] List<int> ids)
-        {
-            if (ids?.Any() != true)
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.notificationService.RemoveAsync(ids);
-
-#if UseHubForClientInNotification
-                // await this.clientForHubService.SendMessage("refresh-notifications", string.Empty);
-#endif
-                return this.Ok();
             }
             catch (ElementNotFoundException)
             {

@@ -4,10 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
-    using BIA.Net.Core.Domain.Dto.Option;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The interface defining the application service for role.

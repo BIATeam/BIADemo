@@ -109,30 +109,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.GetRangeAsync<UserDto, UserMapper, LazyLoadDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
-        /*
-        /// <inheritdoc cref="IUserAppService.GetAllAsync(TheBIADevCompany.BIADemo.Domain.Dto.Bia.LazyLoadDto)"/>
-        public async Task<(IEnumerable<UserDto> Users, int Total)> GetAllAsync(LazyLoadDto filters)
-        {
-            var mapper = new UserMapper();
-
-            var specification = SpecificationHelper.GetLazyLoad(
-                UserSpecification.SearchActive(),
-                mapper,
-                filters);
-
-            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1);
-
-            var results = await this.Repository.GetRangeResultAsync(
-                mapper.EntityToDto(),
-                specification: specification,
-                queryOrder: queryOrder,
-                firstElement: filters?.First ?? 0,
-                pageCount: filters?.Rows ?? 0);
-
-            return (results.Item1.ToList(), results.Item2);
-        }
-        */
-
         /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
         public async Task<List<string>> GetUserDirectoryRolesAsync(string sid)
         {

@@ -4,8 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
-    using Hangfire.Dashboard;
     using System.Net;
+    using Hangfire.Dashboard;
     using TheBIADevCompany.BIADemo.Application.User;
 
     /// <summary>
