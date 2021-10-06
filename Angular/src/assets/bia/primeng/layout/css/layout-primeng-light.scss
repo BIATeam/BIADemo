@@ -1,3 +1,4 @@
+/*
 $primaryColor: #00839b;
 $primaryDarkColor: #00536d;
 $primaryLightColor: #e0f0f3;
@@ -15,5 +16,8 @@ $biaBgColor: #fafafa;
 $biaBgHoverColor: rgba(0, 0, 0, 0.04);
 $biaFgTextColor: rgba(0,0,0,.87);
 $biaBorderColor: #bdbdbd;
+*/
+$biaFgTextColor: rgba(0,0,0,.87);
+$biaBgColor: #fafafa;
 
 @import '../../sass/layout/core/layout_light';

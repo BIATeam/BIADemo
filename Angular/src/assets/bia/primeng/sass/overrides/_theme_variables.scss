@@ -16,7 +16,13 @@ $contentIconColor: $biaFgTextColor; // #757575;
 
 $inputBorderColor: $biaFgTextColor; // #bdbdbd;
 // $inputInvalidBorderColor: #e62a10;
-// $inputBgColor: transparent;
+$inputBgColor: transparent;
+$inputBg: transparent;
+$inputFilledBg: transparent;
+// multi select
+$inputListHeaderBg: $primaryColor;
+// $inputOverlayHeaderBg: $inputListHeaderBg;
+@debug "inputListHeaderBg: #{$inputListHeaderBg}";
 // $inputErrorTextColor: #e62a10;
 // $inputBorderErrorColor: #e62a10;
 // $inputFieldLabelTextColor: #999999;

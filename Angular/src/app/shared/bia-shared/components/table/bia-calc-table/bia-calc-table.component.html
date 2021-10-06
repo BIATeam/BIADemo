@@ -42,7 +42,7 @@
       <tr *ngIf="showColSearch">
         <th *ngIf="canSelectElement"></th>
         <th *ngFor="let col of columns" [ngSwitch]="col.field">
-          <span *ngIf="col.isSearchable === true" class="md-inputfield">
+          <span *ngIf="col.isSearchable === true" class="p-float-label">
             <input
               pInputText
               class="input-search"
@@ -223,7 +223,7 @@
                     {{ formatDisplayName(rowData[col.field]) }}
                   </ng-container>
                   <ng-container *ngSwitchCase="'Boolean'">
-                    <i class="ui-icon-check" *ngIf="rowData[col.field] === true"></i>
+                    <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
                   </ng-container>
                   <ng-container *ngSwitchDefault>
                     {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}

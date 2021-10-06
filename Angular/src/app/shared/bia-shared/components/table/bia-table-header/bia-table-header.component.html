@@ -3,7 +3,7 @@
     <ng-container *ngIf="showBtnFilter">
       <button
         type="button"
-        icon="ui-icon-filter-list"
+        icon="pi pi-filter-list"
         class="ui-button-secondary flat"
         *ngIf="showFilter === false && haveFilter === false"
         pButton
@@ -12,7 +12,7 @@
       ></button>
       <button
         type="button"
-        icon="ui-icon-filter-list"
+        icon="pi pi-filter-list"
         *ngIf="showFilter === false && haveFilter === true"
         pButton
         (click)="toggleFilter()"

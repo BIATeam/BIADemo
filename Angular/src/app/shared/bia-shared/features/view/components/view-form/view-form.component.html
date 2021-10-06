@@ -1,12 +1,12 @@
 <form (submit)="onSubmit()" fxLayout="row" fxLayoutAlign="space-around end" [formGroup]="form">
   <div fxFlex="22">
-    <span class="md-inputfield">
+    <span class="p-float-label">
       <input formControlName="name" type="text" pInputText maxlength="50" />
       <label>{{ 'bia.views.name' | translate }}</label>
     </span>
   </div>
   <div fxFlex="70">
-    <span class="md-inputfield">
+    <span class="p-float-label">
       <input formControlName="description" type="text" pInputText maxlength="500" />
       <label>{{ 'bia.views.description' | translate }}</label>
     </span>

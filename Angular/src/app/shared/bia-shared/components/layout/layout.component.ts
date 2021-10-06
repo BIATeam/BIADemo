@@ -47,6 +47,7 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
       (roleChange)="onRoleChange($event)"
       (setDefaultSite)="onSetDefaultSite($event)"
       (setDefaultRole)="onSetDefaultRole($event)"
+      class="p-input-filled"
     >
       <router-outlet></router-outlet>
     </bia-classic-layout>

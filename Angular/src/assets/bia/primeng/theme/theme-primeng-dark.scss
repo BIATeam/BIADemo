@@ -6,6 +6,12 @@ $accentDarkColor: #020f21;
 $accentLightColor: #e1e5e9;
 $accentTextColor: #ffffff;
 
+
+$primaryLightestColor: #ECEFF1;
+$primaryTextColor:#212121;
+
+
+
 $biaBgColor: #0f1c28;
 $biaBgHoverColor: rgba(255, 255, 255, 0.04);
 $biaFgTextColor: #fff;
@@ -15,8 +21,6 @@ $biaBgRowSelected: #152c39;
 $biaBorderRowSelected: #265769;
 $biaTabColor: #1B998B;
 
-// new variables in ultima v11
-$primaryTextColor:$biaFgTextColor;
-$primaryLightestColor: $primaryLightColor;
+
 
 @import '../sass/theme/theme_dark';
