@@ -6,10 +6,24 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Linq;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+
+    public static class UserExtensions
+    {
+        /// <summary>
+        ///  Return the user format for display.
+        /// </summary>
+        /// <param name="user">the user</param>
+        /// <returns>the formated dispaly</returns>
+        public static string SelectDisplay(this User user)
+        {
+            return user.FirstName + " " + user.LastName + " (" + user.Login + ")";
+        }
+    }
 
     /// <summary>
     /// The user entity.

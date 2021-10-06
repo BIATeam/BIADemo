@@ -70,9 +70,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [Authorize(Roles = Rights.Members.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] MemberFilterDto filters)
         {
-            var results = await this.memberService.GetRangeBySiteAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Total.ToString());
-            return this.Ok(results.Members);
+            try
+            {
+                var results = await this.memberService.GetRangeBySiteAsync(filters);
+                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Total.ToString());
+                return this.Ok(results.Members);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(500, "Internal server error " + e.Message);
+            }
         }
 
         /// <summary>
