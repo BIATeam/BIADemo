@@ -100,6 +100,8 @@
     "cannotAddMember": "No se puede añadir el miembro ${login} en el repositorio ldap."
   },
   "notification": {
+    "action": "Action",
+    "add": "Añadir notificación",
     "listOf": "Notificaciones",
     "title": "Título",
     "detail": "Detalle de la notificación",

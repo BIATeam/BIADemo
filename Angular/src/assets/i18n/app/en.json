@@ -100,7 +100,10 @@
     "cannotAddMember": "Cannot add member ${login} on ldap repository."
   },
   "notification": {
-    "listOf": "Notifications",
+    "action": "Action",
+    "add": "Add notification",
+     "add": "Add notification",
+   "listOf": "Notifications",
     "title": "Title",
     "detail": "Notification detail",
     "description": "Description",

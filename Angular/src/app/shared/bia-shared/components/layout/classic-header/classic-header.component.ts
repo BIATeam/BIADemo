@@ -116,8 +116,10 @@ export class ClassicHeaderComponent implements OnDestroy {
   onNotificationClick(message: Message) {
     if (message.data?.route) {
       this.router.navigate(message.data.route);
+    } else if (message.data?.notificationId) {
+      this.router.navigate(['/notifications/',message.data?.notificationId, 'detail']);
     } else {
-      this.router.navigate(['/notifications']);
+      this.router.navigate(['/notifications/']);
     }
     this.biaMessageService.clear('bia-signalR');
   }

@@ -32,7 +32,6 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.notification$ = this.notificationService.notification$;
     this.canEdit = this.authService.hasPermission(Permission.Notification_Update);
-
   }
 
   ngOnDestroy() {
@@ -52,5 +51,27 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
 
   onEdit() {
     this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
+  }
+
+  canAction (notification : Notification)
+  {
+    if (notification.jData)
+    {
+      let data = JSON.parse(notification.jData);
+      if (data?.route) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  onAction(notification : Notification) {
+    if (notification.jData)
+    {
+      let data = JSON.parse(notification.jData);
+      if (data?.route) {
+        this.router.navigate(data.route);
+      }
+    }
   }
 }

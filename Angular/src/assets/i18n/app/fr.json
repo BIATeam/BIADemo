@@ -100,6 +100,8 @@
     "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD."
   },
   "notification": {
+    "action": "Action",
+    "add": "Ajouter notification",
     "listOf": "Notifications",
     "title": "Titre",
     "detail": "Détail de la notification",

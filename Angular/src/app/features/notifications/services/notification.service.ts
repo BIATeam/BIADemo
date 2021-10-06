@@ -39,6 +39,10 @@ export class NotificationService {
         this.store.dispatch(load({ id: id }));
     }
 
+    public get currentNotificationData(): string {
+        return this._currentNotification.jData;
+    }
+
     InitSub() {
         this.sub = new Subscription();
         this.sub.add(

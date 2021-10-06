@@ -80,12 +80,14 @@ export class BiaMessageService {
         break;
     }
 
+    let data = {notificationId : notification.id}; // = JSON.parse(notification.jData); Should passe by the detail view and click action.
+
     this.messageService.add({
       key: 'bia-signalR',
       severity,
       summary: this.translateService.instant(notification.title),
       detail: this.translateService.instant(notification.description),
-      data: JSON.parse(notification.jData),
+      data: data,
     });
   }
 
