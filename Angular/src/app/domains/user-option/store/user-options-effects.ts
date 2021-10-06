@@ -5,7 +5,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   failure,
   loadAllUserOptions,
-  loadAllSuccess
+  loadAllSuccess,
+  loadAllByFilter
 } from './user-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { UserOptionDas } from '../services/user-option-das.service';
@@ -33,6 +34,25 @@ export class UserOptionsEffects {
         )
       )
     )
+  );
+
+  loadAllByFilter$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(loadAllByFilter) /* When action is dispatched */,
+    /* startWith(loadAll()), */
+    /* Hit the Users Index endpoint of our REST API */
+    /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
+    /* 'Users Reducers' will take care of the rest */
+    switchMap((action) =>
+      this.userDas.getList('allOptions', {params:{filter:action.filter}}).pipe(
+        map((users) => loadAllSuccess({ users })),
+        catchError((err) => {
+          this.biaMessageService.showError();
+          return of(failure({ error: err }));
+        })
+      )
+    )
+  )
   );
 
   /*

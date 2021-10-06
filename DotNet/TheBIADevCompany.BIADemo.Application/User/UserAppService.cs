@@ -84,22 +84,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllAsync(string)"/>
-        public async Task<IEnumerable<UserDto>> GetAllAsync(string filter)
+        /// <inheritdoc/>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
-            var specification = UserSpecification.Search(filter);
-            var result = await this.Repository.GetAllResultAsync(UserSelectBuilder.EntityToDto(), specification: specification);
-            return result.ToList();
-        }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
-        {
-            return this.GetAllAsync<OptionDto, UserOptionMapper>(queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
-            //return this.GetAllAsync<OptionDto, UserOptionMapper>();
+            Specification<User> specification = null;
+            if (!string.IsNullOrEmpty(filter))
+            {
+                specification = UserSpecification.Search(filter);
+            }
+            return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
