@@ -1,3 +1,16 @@
+# $oldName = Read-Host "old project name ?"
+$oldName = 'BIADemo'
+# $newName = Read-Host "new project name ?"
+$newName = 'BIATemplate'
+
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\Angular")
+$oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
+
+Write-Host "old name: " $oldName
+Write-Host "new name: " $newName
+
+
 # Returns all line numbers containing the value passed as a parameter.
 function GetLineNumber($pattern, $file) {
   $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
@@ -109,49 +122,40 @@ function ReplaceProjectName {
   
 }
 
-# $oldName = Read-Host "old project name ?"
-$oldName = 'BIADemo'
-# $newName = Read-Host "new project name ?"
-$newName = 'BIATemplate'
+RemoveFolder -path $newPath
 
-Write-Host "old name: " $oldName
-Write-Host "new name: " $newName
+Write-Host "Copy from $oldPath to $newPath"
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination $newPath -Recurse -Force
 
+Set-Location -Path $newPath
 
-RemoveFolder -path 'Angular'
-
-$oldPath = "..\" + $oldName + "\Angular"
-Write-Host "Copy from .$oldPath"
-#Copy-Item $oldPath '.' -Recurse
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination '.\Angular' -Recurse -Force
-
-Set-Location -Path ./Angular
-
+New-Item -ItemType Directory -Path '.\docs'
 Write-Host "Zip plane"
 compress-archive -path '.\src\app\features\planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
-Write-Host "Zip plane popup"
-compress-archive -path '.\src\app\features\planes-popup\*' -destinationpath '.\docs\feature-planes-popup.zip' -compressionlevel optimal
-Write-Host "Zip plane page"
-compress-archive -path '.\src\app\features\planes-page\*' -destinationpath '.\docs\feature-planes-page.zip' -compressionlevel optimal
-Write-Host "Zip plane SignalR"
-compress-archive -path '.\src\app\features\planes-SignalR\*' -destinationpath '.\docs\feature-planes-SignalR.zip' -compressionlevel optimal
-Write-Host "Zip plane view"
-compress-archive -path '.\src\app\features\planes-view\*' -destinationpath '.\docs\feature-planes-view.zip' -compressionlevel optimal
-Write-Host "Zip plane calc"
-compress-archive -path '.\src\app\features\planes-calc\*' -destinationpath '.\docs\feature-planes-calc.zip' -compressionlevel optimal
-Write-Host "Zip airport"
-compress-archive -path '.\src\app\features\airports\*' -destinationpath '.\docs\feature-airports.zip' -compressionlevel optimal
-Write-Host "Zip airport"
+
+# Write-Host "Zip plane popup"
+# compress-archive -path '.\src\app\features\planes-popup\*' -destinationpath '.\docs\feature-planes-popup.zip' -compressionlevel optimal
+# Write-Host "Zip plane page"
+# compress-archive -path '.\src\app\features\planes-page\*' -destinationpath '.\docs\feature-planes-page.zip' -compressionlevel optimal
+# Write-Host "Zip plane SignalR"
+# compress-archive -path '.\src\app\features\planes-SignalR\*' -destinationpath '.\docs\feature-planes-SignalR.zip' -compressionlevel optimal
+# Write-Host "Zip plane view"
+# compress-archive -path '.\src\app\features\planes-view\*' -destinationpath '.\docs\feature-planes-view.zip' -compressionlevel optimal
+# Write-Host "Zip plane calc"
+# compress-archive -path '.\src\app\features\planes-calc\*' -destinationpath '.\docs\feature-planes-calc.zip' -compressionlevel optimal
+# Write-Host "Zip airport"
+# compress-archive -path '.\src\app\features\airports\*' -destinationpath '.\docs\feature-airports.zip' -compressionlevel optimal
+Write-Host "Zip airport option"
 compress-archive -path '.\src\app\domains\airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
-Write-Host "Zip site-children"
-New-Item '.\src\app\features\sites-children\views\site-item\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\views\site-item\*' -Destination '.\src\app\features\sites-children\views\site-item\' -Recurse -Force
-New-Item '.\src\app\features\sites-children\services\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\services\site.service.ts' -Destination '.\src\app\features\sites-children\services\' 
-New-Item '.\src\app\features\sites-children\children\' -Type Directory
-Copy-Item -Path '.\src\app\features\sites\new-crud.ps1' -Destination '.\src\app\features\sites-children\new-crud.ps1'
-compress-archive -path '.\src\app\features\sites-children\*' -destinationpath '.\docs\features-sites-children.zip' -compressionlevel optimal
-RemoveFolder -path '.\src\app\features\sites-children'
+# Write-Host "Zip site-children"
+# New-Item '.\src\app\features\sites-children\views\site-item\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\views\site-item\*' -Destination '.\src\app\features\sites-children\views\site-item\' -Recurse -Force
+# New-Item '.\src\app\features\sites-children\services\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\services\site.service.ts' -Destination '.\src\app\features\sites-children\services\' 
+# New-Item '.\src\app\features\sites-children\children\' -Type Directory
+# Copy-Item -Path '.\src\app\features\sites\new-crud.ps1' -Destination '.\src\app\features\sites-children\new-crud.ps1'
+# compress-archive -path '.\src\app\features\sites-children\*' -destinationpath '.\docs\features-sites-children.zip' -compressionlevel optimal
+# RemoveFolder -path '.\src\app\features\sites-children'
 
 Write-Host "RemoveFolder dist"
 RemoveFolder -path 'dist'
@@ -202,11 +206,11 @@ ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower()
 # ng build --aot
 
 
-Set-Location -Path ..
+Set-Location -Path $scriptPath
 
 
-Write-Host "Prepare the zip."
-compress-archive -path '.\Angular' -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# Write-Host "Prepare the zip."
+# compress-archive -path '.\Angular' -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
 
 
 Write-Host "Finish"

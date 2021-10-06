@@ -29,8 +29,12 @@
     },
     "Permissions": [
       {
-        "Name": "Hangfire_Dashboard",
+        "Name": "Hangfire_Dashboard_Admin",
         "Roles": [ "Admin" ]
+      },
+      {
+        "Name": "Hangfire_Dashboard_ReadOnly",
+        "Roles": [ "User" ]
       }
     ]
   }

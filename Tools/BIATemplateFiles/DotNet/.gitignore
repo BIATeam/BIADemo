@@ -52,7 +52,6 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
-**/Properties/launchSettings.json
 
 # StyleCop
 StyleCopReport.xml
@@ -135,13 +134,6 @@ _TeamCity*
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml
-
-
-#setting files (only template)
-appsettings.*.json
-bianetconfig.*.json
-!appsettings.Example*.json
-!bianetconfig.Example*.json
 
 # NCrunch
 _NCrunch_*

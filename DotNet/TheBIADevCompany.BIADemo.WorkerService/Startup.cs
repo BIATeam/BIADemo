@@ -90,7 +90,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             app.UseBiaWorkerFeatures(config =>
             {
                 config.Configuration = this.configuration;
-                config.HangfireServer.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard") };
+                config.HangfireServer.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, false, "Hangfire_Dashboard_Admin") };
+                config.HangfireServer.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
             });
 
         }
