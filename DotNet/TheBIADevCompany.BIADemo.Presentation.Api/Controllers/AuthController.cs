@@ -167,13 +167,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
                 userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
-                try
+                if (userInfo != null)
                 {
-                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
-                }
-                catch (Exception)
-                {
-                    this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
+                    try
+                    {
+                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
+                    }
+                    catch (Exception)
+                    {
+                        this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
+                    }
                 }
             }
 

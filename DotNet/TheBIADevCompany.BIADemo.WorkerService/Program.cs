@@ -5,18 +5,10 @@
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
-
-    // Begin BIADemo
     using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;
-
-    // End BIADemo
     using BIA.Net.Core.WorkerService.Features;
-
-    // Begin BIADemo
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-
-    // End BIADemo
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -97,6 +89,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                         {
                             config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
                             {
+                                // Add here all the Handler repository.
                         // Begin BIADemo
                                 new PlaneHandlerRepository(hostContext.Configuration),
 

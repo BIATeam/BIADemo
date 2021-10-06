@@ -23,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 

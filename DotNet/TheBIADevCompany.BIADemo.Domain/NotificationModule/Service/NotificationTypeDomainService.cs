@@ -1,4 +1,3 @@
-// BIADemo only
 // <copyright file="NotificationTypeDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>

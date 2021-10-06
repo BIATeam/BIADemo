@@ -13,9 +13,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Application.Job;
 
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Application.Plane;
 
     // End BIADemo
@@ -66,13 +66,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPermissionAppService, PermissionAppService>();
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
+            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
             // Begin BIADemo
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
-            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
             // End BIADemo
         }

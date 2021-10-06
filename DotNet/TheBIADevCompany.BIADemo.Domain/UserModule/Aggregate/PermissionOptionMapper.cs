@@ -1,9 +1,8 @@
-// BIADemo only
 // <copyright file="PermissionOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
     using System.Linq.Expressions;
