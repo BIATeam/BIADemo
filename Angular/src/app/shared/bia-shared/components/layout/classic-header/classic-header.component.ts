@@ -1,16 +1,22 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 import { Platform } from '@angular/cdk/platform';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, Message } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
-import { Site } from 'src/app/domains/site/model/site';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Role } from 'src/app/domains/role/model/role';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/state';
+import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
+import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
+import { OptionDto } from '../../../model/option-dto';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { Router } from '@angular/router';
+import { UserData } from '../../../model/auth-info';
 
 @Component({
   selector: 'bia-classic-header',
@@ -47,32 +53,18 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() allowThemeChange?: boolean;
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
-  allSites: Site[];
-  @Input()
-  set sites(sites: Site[]) {
-    this.allSites = sites;
-    this.initDropdownSite();
-  }
-  currentSite: Site;
-  currentSiteId: number;
-  @Input()
-  set siteId(currentSiteId: number) {
-    this.currentSiteId = currentSiteId;
-    this.initDropdownSite();
-  }
+  @Input() enableNotifications?: boolean;
 
-
-  allRoles: Role[];
-  @Input()
-  set roles(roles: Role[]) {
-    this.allRoles = roles;
-    this.initDropdownRole();
+  currentSite: OptionDto;
+  currentRole: OptionDto;
+  _userData: UserData
+  get userData(): UserData {
+    return this._userData;
   }
-  currentRole: Role;
-  currentRoleId: number;
   @Input()
-  set roleId(currentRoleId: number) {
-    this.currentRoleId = currentRoleId;
+  set userData(value: UserData) {
+    this._userData = value;
+    this.initDropdownSite();
     this.initDropdownRole();
   }
 
@@ -100,17 +92,36 @@ export class ClassicHeaderComponent implements OnDestroy {
   navMenuItems: MenuItem[];
   appIcon$: Observable<string>;
 
+  unreadNotificationCount$: Observable<number>;
+
   constructor(
     public layoutService: BiaClassicLayoutService,
     public auth: AuthService,
     public translateService: TranslateService,
     private platform: Platform,
-  ) { }
+    private store: Store<AppState>,
+    private biaMessageService: BiaMessageService,
+    private router: Router
+  ) {
+    this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
+    this.store.dispatch(loadUnreadNotificationIds());
+  }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
+
+  onNotificationClick(message: Message) {
+    if (message.data?.route) {
+      this.router.navigate(message.data.route);
+    } else if (message.data?.notificationId) {
+      this.router.navigate(['/notifications/',message.data?.notificationId, 'detail']);
+    } else {
+      this.router.navigate(['/notifications/']);
+    }
+    this.biaMessageService.clear('bia-signalR');
   }
 
   toggleFullscreenMode() {
@@ -156,8 +167,8 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownSite() {
     this.displaySiteList = false;
-    if (this.currentSiteId > 0 && this.allSites && this.allSites.length > 1) {
-      this.currentSite = this.allSites.filter((x) => x.id === this.currentSiteId)[0];
+    if (this.userData.currentSiteId > 0 && this.userData.sites && this.userData.sites.length > 1) {
+      this.currentSite = this.userData.sites.filter((x) => x.id === this.userData.currentSiteId)[0];
       this.displaySiteList = true;
     }
   }
@@ -172,9 +183,12 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownRole() {
     this.displayRoleList = false;
-    if (this.currentRoleId > 0 && this.allRoles && this.allRoles.length > 1) {
-      this.currentRole = this.allRoles.filter((x) => x.id === this.currentRoleId)[0];
-      this.displayRoleList = true;
+    if (environment.singleRoleMode)
+    {
+      if (this.userData.currentRoleIds && this.userData.currentRoleIds.length == 1 && this.userData.roles && this.userData.roles.length > 1) {
+        this.currentRole = this.userData.roles.filter((x) => x.id === this.userData.currentRoleIds[0])[0];
+        this.displayRoleList = true;
+      }
     }
   }
 

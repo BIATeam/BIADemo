@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
@@ -26,8 +26,8 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         /// Gets all asynchronous.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// <param name="userRights">The user rights.</param>
+        /// <param name="userPermissions">The user rights.</param>
         /// <returns>all sites.</returns>
-        Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userRights = null);
+        Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null);
     }
 }

@@ -1,7 +1,7 @@
-import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { Component, HostBinding, Inject, OnDestroy, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
-import { AuthInfo } from '../../model/auth-info';
+import { AuthInfo, UserData } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
@@ -11,17 +11,13 @@ import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
 import { Observable } from 'rxjs';
-import { Site } from 'src/app/domains/site/model/site';
-import { getAllSites } from 'src/app/domains/site/store/site.state';
-import { setDefaultSite } from 'src/app/domains/site/store/sites-actions';
+import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { filter, map } from 'rxjs/operators';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
-import { Role } from 'src/app/domains/role/model/role';
-import { getMemberRoles } from 'src/app/domains/role/store/role.state';
 import { APP_BASE_HREF } from '@angular/common';
-import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
+// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
   selector: 'app-bia-layout',
@@ -37,10 +33,8 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
       [appTitle]="appTitle"
       [helpUrl]="helpUrl"
       [reportUrl]="reportUrl"
-      [sites]="sites$ | async"
-      [siteId]="currentSiteId"
-      [roles]="roles$ | async"
-      [roleId]="currentRoleId"
+      [enableNotifications]="enableNotifications"
+      [userData]="userData"
       [environmentType]="environmentType$ | async"
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
@@ -52,7 +46,7 @@ import { setDefaultRole } from 'src/app/domains/role/store/roles-actions';
     </bia-classic-layout>
   `
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   isLoadingUserInfo = false;
 
@@ -62,15 +56,13 @@ export class LayoutComponent implements OnInit {
   companyName = environment.companyName;
   helpUrl = environment.helpUrl;
   reportUrl = environment.reportUrl;
+  enableNotifications = environment.enableNotifications;
   username = '';
   headerLogos: string[];
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
-  sites$: Observable<Site[]>;
-  roles$: Observable<Role[]>;
+  userData: UserData | null;
   environmentType$: Observable<EnvironmentType | null>;
-  currentSiteId: number;
-  currentRoleId: number;
 
   constructor(
     private biaTranslationService: BiaTranslationService,
@@ -78,16 +70,28 @@ export class LayoutComponent implements OnInit {
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
     private store: Store<AppState>,
+    // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) { }
 
   ngOnInit() {
+
+    if (this.enableNotifications) {
+      // this.initNotificationSignalRService();
+    }
+
     this.initEnvironmentType();
-    this.initSites();
-    this.initRoles();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
   }
+
+  ngOnDestroy() {
+    // this.notificationSignalRService.destroy();
+  }
+
+  // private initNotificationSignalRService() {
+  //   // this.notificationSignalRService.initialize();
+  // }
 
   private initEnvironmentType() {
     this.environmentType$ = this.store.select(getEnvironmentConfiguration).pipe(
@@ -96,13 +100,6 @@ export class LayoutComponent implements OnInit {
     );
   }
 
-  private initSites() {
-    this.sites$ = this.store.select(getAllSites).pipe();
-  }
-
-  private initRoles() {
-    this.roles$ = this.store.select(getMemberRoles);
-  }
 
   onSiteChange(siteId: number) {
     this.authService.setCurrentSiteId(siteId);
@@ -140,10 +137,9 @@ export class LayoutComponent implements OnInit {
     this.isLoadingUserInfo = true;
     this.authService.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo) {
-        this.setCurrentSiteId(authInfo);
-        this.setcurrentRoleId(authInfo);
-        this.setUserName(authInfo);
         this.setLanguage(authInfo);
+        this.setUserData(authInfo);
+        this.setUserName(authInfo);
         this.filterNavByRole(authInfo);
         this.setTheme(authInfo);
       }
@@ -151,19 +147,11 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  private setCurrentSiteId(authInfo: AuthInfo) {
+  private setUserData(authInfo: AuthInfo) {
     if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-      this.currentSiteId = authInfo.additionalInfos.userData.currentSiteId;
+      this.userData = authInfo.additionalInfos.userData;
     } else {
-      this.currentSiteId = 0;
-    }
-  }
-
-  private setcurrentRoleId(authInfo: AuthInfo) {
-    if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-      this.currentRoleId = authInfo.additionalInfos.userData.currentRoleId;
-    } else {
-      this.currentRoleId = 0;
+      this.userData = null;
     }
   }
 

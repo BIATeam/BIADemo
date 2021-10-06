@@ -9,10 +9,10 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
-    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -47,6 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="queryCustomizer">The query customizer.</param>
         public ViewAppService(ITGenericRepository<View> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
             : base(repository)
         {
@@ -60,19 +61,20 @@ namespace TheBIADevCompany.BIADemo.Application.View
         public async Task<IEnumerable<ViewDto>> GetAllAsync()
         {
             int currentUserId = this.principal.GetUserId();
-            IEnumerable<string> currentUserRights = this.principal.GetUserRights();
+            IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserRights?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
-                    filter: view => view.ViewType == ViewType.Site || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Site || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
             else
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
                     filter: view =>
+                    (view.ViewType == ViewType.System) ||
                     (view.ViewType == ViewType.Site && view.ViewSites.Any(viewSite => viewSite.Site.Members.Any(member => member.UserId == currentUserId))) ||
                     (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }

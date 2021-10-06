@@ -3,7 +3,7 @@
     <app-site-filter
       [hidden]="!showFilter"
       [fxFlexValue]="25"
-      [users]="users$ | async"
+      [userOptions]="userOptions$ | async"
       (searchUsers)="onSearchUsers($event)"
       (filter)="onFilter($event)"
       (close)="onCloseFilter()"

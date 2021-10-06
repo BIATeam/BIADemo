@@ -33,8 +33,8 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
   styleUrls: ['./planes-index.component.scss']
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = true;
-  useSignalR = false;
+  useCalcMode = false;
+  useSignalR = true;
   useView = false;
 
   @HostBinding('class.bia-flex') flex = true;
@@ -56,7 +56,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'planesGrid' : '';
+  tableStateKey = this.useView ? 'planesGrid' : undefined;
 
 
   constructor(
@@ -75,9 +75,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.planes$ = this.store.select(getAllPlanes).pipe();
-    this.totalCount$ = this.store.select(getPlanesTotalCount).pipe();
-    this.loading$ = this.store.select(getPlaneLoadingGetAll).pipe();
+    this.planes$ = this.store.select(getAllPlanes);
+    this.totalCount$ = this.store.select(getPlanesTotalCount);
+    this.loading$ = this.store.select(getPlaneLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.planeOptionsService.loadAllOptions();

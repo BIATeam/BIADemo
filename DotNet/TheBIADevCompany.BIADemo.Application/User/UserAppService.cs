@@ -7,31 +7,35 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : AppServiceBase<User>, IUserAppService
+    public class UserAppService : FilteredServiceBase<User>, IUserAppService
     {
         /// <summary>
         /// The user right domain service.
         /// </summary>
-        private readonly IUserRightDomainService userRightDomainService;
+        private readonly IUserPermissionDomainService userPermissionDomainService;
 
         /// <summary>
         /// The user synchronize domain service.
@@ -57,73 +61,70 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// Initializes a new instance of the <see cref="UserAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="userRightDomainService">The user right domain service.</param>
+        /// <param name="userPermissionDomainService">The user right domain service.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="logger">The logger.</param>
         public UserAppService(
             ITGenericRepository<User> repository,
-            IUserRightDomainService userRightDomainService,
+            IUserPermissionDomainService userPermissionDomainService,
             IUserSynchronizeDomainService userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger)
             : base(repository)
         {
-            this.userRightDomainService = userRightDomainService;
+            this.userPermissionDomainService = userPermissionDomainService;
             this.userSynchronizeDomainService = userSynchronizeDomainService;
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
+
+            this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllAsync(string)"/>
-        public async Task<IEnumerable<UserDto>> GetAllAsync(string filter)
+        /// <inheritdoc/>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
-            var specification = UserSpecification.Search(filter);
-            var result = await this.Repository.GetAllResultAsync(UserSelectBuilder.EntityToDto(), specification: specification);
-            return result.ToList();
+            Specification<User> specification = null;
+            if (!string.IsNullOrEmpty(filter))
+            {
+                specification = UserSpecification.Search(filter);
+            }
+
+            return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllAsync(TheBIADevCompany.BIADemo.Domain.Dto.Bia.LazyLoadDto)"/>
-        public async Task<(IEnumerable<UserDto> Users, int Total)> GetAllAsync(LazyLoadDto filters)
+        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
+        public async Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
+            LazyLoadDto filters = null,
+            int id = 0,
+            Specification<User> specification = null,
+            Expression<Func<User, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null)
         {
-            var mapper = new UserMapper();
-
-            var specification = SpecificationHelper.GetLazyLoad(
-                UserSpecification.SearchActive(),
-                mapper,
-                filters);
-
-            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1);
-
-            var results = await this.Repository.GetRangeResultAsync(
-                mapper.EntityToDto(),
-                specification: specification,
-                queryOrder: queryOrder,
-                firstElement: filters?.First ?? 0,
-                pageCount: filters?.Rows ?? 0);
-
-            return (results.Item1.ToList(), results.Item2);
+            return await this.GetRangeAsync<UserDto, UserMapper, LazyLoadDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
-        /// <inheritdoc cref="IUserRightDomainService.GetRightsForUserAsync"/>
+        /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
         public async Task<List<string>> GetUserDirectoryRolesAsync(string sid)
         {
             return await this.userDirectoryHelper.GetUserRolesBySid(sid);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
+        /// <inheritdoc cref="IUserAppService.GetPermissionsForUserAsync"/>
+        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
         {
-            return await this.userRightDomainService.GetRightsForUserAsync(userDirectoryRoles, sid, siteId, roleId);
+            return await this.userPermissionDomainService.GetPermissionsForUserAsync(userDirectoryRoles, sid, siteId, roleId);
         }
 
-        /// <inheritdoc cref="IUserAppService.TranslateRolesInRights"/>
-        public List<string> TranslateRolesInRights(List<string> roles)
+        /// <inheritdoc cref="IUserAppService.TranslateRolesInPermissions"/>
+        public List<string> TranslateRolesInPermissions(List<string> roles)
         {
-            return this.userRightDomainService.TranslateRolesInRights(roles);
+            return this.userPermissionDomainService.TranslateRolesInPermissions(roles);
         }
 
         /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
@@ -213,9 +214,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
-        public async Task<string> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
+        public async Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
         {
-            string errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+            List<string> errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
             await this.SynchronizeWithADAsync();
             return errors;
         }
@@ -267,25 +268,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 await this.GetCreateUserInfoAsync(user.Login);
             }
-        }
-
-        /// <summary>
-        /// Get the paging order.
-        /// </summary>
-        /// <param name="collection">The expression collection of entity.</param>
-        /// <param name="orderMember">The order member.</param>
-        /// <param name="ascending">If set to <c>true</c> [ascending].</param>
-        /// <returns>The paging order.</returns>
-        private QueryOrder<User> GetQueryOrder(ExpressionCollection<User> collection, string orderMember, bool ascending)
-        {
-            if (string.IsNullOrWhiteSpace(orderMember) || !collection.ContainsKey(orderMember))
-            {
-                return new QueryOrder<User>().OrderBy(entity => entity.Id);
-            }
-
-            var order = new QueryOrder<User>();
-            order.GetByExpression(collection[orderMember], ascending);
-            return order;
         }
     }
 }

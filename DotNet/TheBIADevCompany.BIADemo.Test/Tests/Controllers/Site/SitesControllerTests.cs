@@ -191,7 +191,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
                     },
                 });
 
-            this.principalBuilder.MockPrincipalUserRights(new List<string>
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Sites.AccessAll,
                 });

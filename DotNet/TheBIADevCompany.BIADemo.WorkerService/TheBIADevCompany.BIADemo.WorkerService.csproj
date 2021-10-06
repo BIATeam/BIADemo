@@ -9,10 +9,11 @@
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <ANCMPreConfiguredForIIS>true</ANCMPreConfiguredForIIS>
     <UserSecretsId>dotnet-TheBIADevCompany.BIADemo.WorkerService-6995F7EB-1398-40C6-9F6D-189FA0F468E9</UserSecretsId>
+    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.WorkerService" Version="3.4.2" />
+    <PackageReference Include="BIA.Net.Core.WorkerService" Version="3.4.0.1" />
     <PackageReference Include="Hangfire" Version="1.7.24" />
     <PackageReference Include="Hangfire.Core" Version="1.7.24" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.24" />
@@ -29,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
+    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -32,12 +32,12 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// <summary>
         /// Test <see cref="ISiteAppService.GetAllAsync"/> method when user has <see cref="Rights.Sites.AccessAll"/> rights.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserRights_AccessAllTest")]
-        public void GetAllAsync_UserRights_AccessAllTest()
+        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_AccessAllTest")]
+        public void GetAllAsync_UserPermissions_AccessAllTest()
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserRights(new List<string>
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Sites.AccessAll,
                 });
@@ -58,13 +58,13 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is not a member of any site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserRights_ListAccess_NotMemberTest")]
-        public void GetAllAsync_UserRights_ListAccess_NotMemberTest()
+        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_NotMemberTest")]
+        public void GetAllAsync_UserPermissions_ListAccess_NotMemberTest()
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
             this.principalBuilder.MockPrincipalUserId(1)
-                .MockPrincipalUserRights(new List<string>
+                .MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
                 });
@@ -85,13 +85,13 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllAsync_UserRights_ListAccess_MemberTest")]
-        public void GetAllAsync_UserRights_ListAccess_MemberTest()
+        [TestMethod("SiteAppServiceTests.GetAllAsync_UserPermissions_ListAccess_MemberTest")]
+        public void GetAllAsync_UserPermissions_ListAccess_MemberTest()
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
             this.principalBuilder.MockPrincipalUserId(1)
-                .MockPrincipalUserRights(new List<string>
+                .MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
                 });
@@ -119,12 +119,12 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
-        [TestMethod("SiteAppServiceTests.GetAllWithMembersAsync_UserRights_ListAccess_MemberTest")]
-        public void GetAllWithMembersAsync_UserRights_ListAccess_MemberTest()
+        [TestMethod("SiteAppServiceTests.GetAllWithMembersAsync_UserPermissions_ListAccess_MemberTest")]
+        public void GetAllWithMembersAsync_UserPermissions_ListAccess_MemberTest()
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserRights(new List<string>
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
                 })

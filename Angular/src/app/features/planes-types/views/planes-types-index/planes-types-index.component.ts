@@ -63,9 +63,9 @@ export class PlanesTypesIndexComponent implements OnInit {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.planesTypes$ = this.store.select(getAllPlanesTypes).pipe();
-    this.totalCount$ = this.store.select(getPlanesTypesTotalCount).pipe();
-    this.loading$ = this.store.select(getPlaneTypeLoadingGetAll).pipe();
+    this.planesTypes$ = this.store.select(getAllPlanesTypes);
+    this.totalCount$ = this.store.select(getPlanesTypesTotalCount);
+    this.loading$ = this.store.select(getPlaneTypeLoadingGetAll);
   }
 
   onCreate() {

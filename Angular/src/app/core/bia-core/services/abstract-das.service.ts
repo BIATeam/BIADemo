@@ -3,6 +3,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { GenericDas, HttpOptions } from './generic-das.service';
 import { Injector } from '@angular/core';
+import { map } from 'rxjs/operators';
 
 export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>> extends GenericDas {
 
@@ -14,16 +15,25 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
     return GenericDas.buildRoute(endpoint);
   }
 
-  get(id: string | number, options?: HttpOptions): Observable<TOut> {
-    return this.getItem<TOut>(id, options);
+  getList(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
+    return this.getListItems<TOut>(endpoint, options).pipe(map(items => {
+      items.map(item => {return this.translateItem(item);});
+      return items;}));
   }
 
-  getList(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
-    return this.getListItems<TOut>(endpoint, options);
+  get(id: string | number, options?: HttpOptions): Observable<TOut> {
+    return this.getItem<TOut>(id, options).pipe(map(item => {return this.translateItem(item);}));
+  }
+  
+  translateItem(item: TOut) {
+    return item;
   }
 
   getListByPost(event: LazyLoadEvent, endpoint: string = 'all'): Observable<DataResult<TOut[]>> {
-    return this.getListItemsByPost<TOut>(event, endpoint);
+    return this.getListItemsByPost<TOut>(event, endpoint).pipe(map(dataResult => {
+      dataResult.data.map(item => {return this.translateItem(item);});
+      return dataResult;
+    }));
   }
 
   save(items: TIn[], endpoint: string = 'save', options?: HttpOptions) {

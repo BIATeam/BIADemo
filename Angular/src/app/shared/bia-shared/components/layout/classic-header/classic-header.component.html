@@ -10,76 +10,40 @@
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls" fxLayout="row">
-      <p-dropdown
-      *ngIf="displayRoleList"
-      [options]="allRoles"
-      [(ngModel)]="currentRole"
-      optionLabel="labelEn"
-      dataKey="id"
-      (onChange)="onRoleChange()"
-      placeholder="Select a role"
-      >
-      <ng-template let-item pTemplate="item">
-        {{ item?.value | translateRoleLabel : translateService.currentLang }}
-      </ng-template>
-      <ng-template let-selectedItem pTemplate="selectedItem">
-        {{ selectedItem?.value | translateRoleLabel : translateService.currentLang }}
-      </ng-template>
-    </p-dropdown>
-      <i
-      *ngIf="displayRoleList === true && currentRole?.isDefault === false"
-        class="ui-icon-star-border app-icon-header bia-pointer"
-        (click)="onSetDefaultRole()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i *ngIf="displayRoleList === true && currentRole?.isDefault === true" class="ui-icon-star app-icon-header"></i>
-      <p-dropdown
-      *ngIf="displaySiteList === true"
-      [options]="allSites"
-      [(ngModel)]="currentSite"
-      optionLabel="title"
-      dataKey="id"
-      (onChange)="onSiteChange()"
-      ></p-dropdown>
-      <i
-        *ngIf="displaySiteList === true && currentSite?.isDefault === false"
-        class="ui-icon-star-border app-icon-header bia-pointer"
-        (click)="onSetDefaultSite()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i *ngIf="displaySiteList === true && currentSite?.isDefault === true" class="ui-icon-star app-icon-header"></i>
+      <p-dropdown *ngIf="displayRoleList" [options]="userData.roles" [(ngModel)]="currentRole" optionLabel="display"
+        dataKey="id" (onChange)="onRoleChange()" placeholder="Select a role">
+        <ng-template let-item pTemplate="item">
+          {{ item?.value | translateField : 'display' : 'role.' : translateService.currentLang }}
+        </ng-template>
+        <ng-template let-selectedItem pTemplate="selectedItem">
+          {{ selectedItem?.value  | translateField : 'display' : 'role.' : translateService.currentLang }}
+          <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
+        </ng-template>
+      </p-dropdown>
+
+      <i *ngIf="displayRoleList === true && currentRole?.id !== userData.defaultRoleId"
+        class="ui-icon-star-border app-icon-header bia-pointer" (click)="onSetDefaultRole()"
+        pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
+      <i *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId" class="ui-icon-star app-icon-header"></i>
+      <p-dropdown *ngIf="displaySiteList === true" [options]="userData.sites" [(ngModel)]="currentSite" optionLabel="display"
+        dataKey="id" (onChange)="onSiteChange()"></p-dropdown>
+      <i *ngIf="displaySiteList === true && currentSite?.id !== userData.defaultSiteId"
+        class="ui-icon-star-border app-icon-header bia-pointer" (click)="onSetDefaultSite()"
+        pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
+      <i *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId" class="ui-icon-star app-icon-header"></i>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
-      <i
-        class="ui-icon-refresh app-icon-header bia-pointer"
-        (click)="refresh()"
-        pTooltip="{{ 'bia.refresh' | translate }}"
-        tooltipPosition="bottom"
-      ></i>
-      <i
-        class="ui-icon-fullscreen app-full-screen app-icon-header bia-pointer"
-        (click)="toggleFullscreenMode()"
-        pTooltip="{{ 'bia.fullscreen' | translate }}"
-        tooltipPosition="left"
-      ></i>
+      <i class="ui-icon-refresh app-icon-header bia-pointer" (click)="refresh()"
+        pTooltip="{{ 'bia.refresh' | translate }}" tooltipPosition="bottom"></i>
+      <i class="ui-icon-fullscreen app-full-screen app-icon-header bia-pointer" (click)="toggleFullscreenMode()"
+        pTooltip="{{ 'bia.fullscreen' | translate }}" tooltipPosition="left"></i>
     </div>
   </div>
-  <div
-    *ngIf="(layoutService.mainBarHidden$ | async) === false"
-    class="mainbar mat-elevation-z2 bia-relative"
-    [ngClass]="cssClassEnv"
-    fxLayout="row"
-    fxLayoutAlign="stretch"
-  >
+  <div *ngIf="(layoutService.mainBarHidden$ | async) === false" class="mainbar mat-elevation-z2 bia-relative"
+    [ngClass]="cssClassEnv" fxLayout="row" fxLayoutAlign="stretch">
     <a class="mainbar project-title" routerLink="/">
       <div fxLayout="row" fxLayoutAlign="stretch center">
         <img class="app-logo" src="{{ urlAppIcon }}" />
-        <span
-          >{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span
-        >
+        <span>{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span>
       </div>
     </a>
     <ng-template let-mainBarPortal [ngIf]="layoutService.mainBarPortal$ | async" [ngIfElse]="classicMainBar">
@@ -87,19 +51,51 @@
     </ng-template>
   </div>
 </div>
-<i
-  *ngIf="fullscreenMode"
-  class="ui-icon-fullscreen-exit fullscreen-exit bia-mat-tiny-fab bia-pointer"
-  (click)="toggleFullscreenMode()"
-></i>
+<i *ngIf="fullscreenMode" class="ui-icon-fullscreen-exit fullscreen-exit bia-mat-tiny-fab bia-pointer"
+  (click)="toggleFullscreenMode()"></i>
 
 <ng-template #classicMainBar>
   <nav fxFlex fxLayoutAlign="center">
     <p-menubar [model]="navMenuItems"></p-menubar>
   </nav>
   <div class="action" fxLayoutAlign="space-evenly center">
-    <i *ngIf="reportUrl" class="ui-icon-insert-chart bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.report' | translate }}" (click)="openReport()"></i>
-    <i *ngIf="helpUrl" class="ui-icon-help bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}" (click)="openHelp()"></i>
+    <ng-container *ngIf="enableNotifications">
+      <div class="notifications">
+        <i class="ui-icon-notifications bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}"
+          [routerLink]="['/notifications']"></i>
+        <ng-container *ngIf="(unreadNotificationCount$ | async) as unreadNotificationCount">
+          <div *ngIf="unreadNotificationCount > 0" class="notification-count">
+            {{unreadNotificationCount$ | async}}
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+    <i *ngIf="reportUrl" class="ui-icon-insert-chart bia-mat-tiny-fab bia-pointer"
+      pTooltip="{{ 'bia.report' | translate }}" (click)="openReport()"></i>
+    <i *ngIf="helpUrl" class="ui-icon-help bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}"
+      (click)="openHelp()"></i>
   </div>
 </ng-template>
 <p-toast key="bia"></p-toast>
+<p-toast key="bia-signalR">
+  <ng-template let-message pTemplate="message">
+    <ng-container [ngSwitch]="message.severity">
+      <ng-container *ngSwitchCase="'success'">
+        <span class="ui-toast-icon pi pi-check"></span>
+      </ng-container>
+      <ng-container *ngSwitchCase="'warn'">
+        <span class="ui-toast-icon pi pi-exclamation-triangle"></span>
+      </ng-container>
+      <ng-container *ngSwitchCase="'error'">
+        <span class="ui-toast-icon pi pi-times-circle"></span>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <span class="ui-toast-icon pi pi-info-circle"></span>
+      </ng-container>
+    </ng-container>
+    <div class="ui-toast-message-text-content" (click)="onNotificationClick(message)">
+      <div class="ui-toast-summary">{{message.summary}}</div>
+      <div class="ui-toast-detail">{{message.detail}}</div>
+    </div>
+  </ng-template>
+</p-toast>

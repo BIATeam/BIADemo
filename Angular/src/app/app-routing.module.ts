@@ -87,6 +87,14 @@ const routes: Routes = [
                 },
                 loadChildren: () => import('./features/planes-types/plane-type.module').then((m) => m.PlaneTypeModule)
               },
+              {
+                path: 'hangfire',
+                data: {
+                  breadcrumb: 'app.hangfire',
+                  canNavigate: true
+                },
+                loadChildren: () => import('./features/hangfire/hangfire.module').then((m) => m.HangfireModule)
+              },
             ]
           },
           // End BIADemo
@@ -105,6 +113,14 @@ const routes: Routes = [
               canNavigate: true
             },
             loadChildren: () => import('./features/users/user.module').then((m) => m.UserModule)
+          },
+          {
+            path: 'notifications',
+            data: {
+              breadcrumb: 'app.notifications',
+              canNavigate: true
+            },
+            loadChildren: () => import('./features/notifications/notification.module').then((m) => m.NotificationModule)
           }
         ]
       }

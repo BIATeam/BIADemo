@@ -39,6 +39,8 @@ export class PrimeTableColumn {
   isSortable: boolean;
   isEditable: boolean;
   maxlength: number;
+  translateKey : string;
+  searchPlaceholder : string;
   get isDate() {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
   }

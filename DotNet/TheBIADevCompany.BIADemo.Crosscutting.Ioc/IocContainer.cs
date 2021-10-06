@@ -9,9 +9,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.IocContainer;
+    using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using TheBIADevCompany.BIADemo.Application.Job;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Plane;
@@ -20,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
@@ -60,6 +63,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<ISiteAppService, SiteAppService>();
             collection.AddTransient<IMemberAppService, MemberAppService>();
             collection.AddTransient<IRoleAppService, RoleAppService>();
+            collection.AddTransient<IPermissionAppService, PermissionAppService>();
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
 
@@ -67,6 +71,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
+            collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
+            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
             // End BIADemo
         }
@@ -74,8 +80,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain Layer
-            collection.AddTransient<IUserRightDomainService, UserRightDomainService>();
+            collection.AddTransient<IUserPermissionDomainService, UserPermissionDomainService>();
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
+            collection.AddTransient<INotificationDomainService, NotificationDomainService>();
+            collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -102,13 +110,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddScoped(typeof(ITGenericRepository<>), typeof(TGenericRepositoryEF<>));
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
+            collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection)
         {
             // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
-            collection.AddTransient<INotification, MailRepository>();
+            collection.AddTransient<INotification, NotificationRepository>();
+            collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
         }
     }
 }

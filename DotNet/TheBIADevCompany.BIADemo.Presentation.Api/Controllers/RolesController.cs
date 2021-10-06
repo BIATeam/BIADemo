@@ -7,8 +7,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -43,36 +43,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Gets all existing roles.
+        /// Gets all option that I can see.
         /// </summary>
-        /// <returns>The list of roles.</returns>
-        [HttpGet]
+        /// /// <returns>The list of production sites.</returns>
+        [HttpGet("allOptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAll()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Roles.Options)]
+        public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.roleService.GetAllAsync();
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
-            return this.Ok(results);
-        }
-
-        /// <summary>
-        /// Gets all existing roles.
-        /// </summary>
-        /// <param name="siteId">The site identifier.</param>
-        /// <returns>The list of roles.</returns>
-        [HttpGet("{siteId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Roles.ListForCurrentUser)]
-        public async Task<IActionResult> GetAllMemberRoles(int siteId)
-        {
-            var userId = this.principal.GetUserId();
-
-            var results = await this.roleService.GetMemberRolesAsync(siteId, userId);
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
+            var results = await this.roleService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

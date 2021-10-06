@@ -1,0 +1,47 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-dropdown
+          [options]="userOptions"
+          placeholder="&nbsp;"
+          formControlName="user"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+          [filter]="true"
+          [showClear]="true"
+        ></p-dropdown>
+        <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <label>{{ 'member.roles' | translate }}:</label>
+      <p-listbox
+        [options]="roleOptions"
+        [showToggleAll]="false"
+        formControlName="roles"
+        multiple="multiple"
+        checkbox="checkbox"
+        optionLabel="display"
+        [style]="{ width: '100%' }"
+      >
+        <ng-template let-item pTemplate="group">
+            {{item | translateField: 'label' : 'role.' : translateService.currentLang}}
+        </ng-template>
+      </p-listbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="ui-button-secondary"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

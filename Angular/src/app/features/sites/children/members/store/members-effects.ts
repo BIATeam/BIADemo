@@ -11,17 +11,17 @@ import {
   loadSuccess,
   remove,
   multiRemove,
-  update,
-  save
+  update
 } from './members-actions';
+import { MemberDas } from '../services/member-das.service';
 import { Store } from '@ngrx/store';
 import { getLastLazyLoadEvent } from './member.state';
 import { Member } from '../model/member';
-import { MemberDas } from '../services/member-das.service';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -30,6 +30,7 @@ import { LazyLoadEvent } from 'primeng/api';
 
 @Injectable()
 export class MembersEffects {
+  static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAllByPost),
@@ -71,7 +72,11 @@ export class MembersEffects {
         return this.memberDas.post(member).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            return loadAllByPost({ event: <LazyLoadEvent>event });
+            if (MembersEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -91,7 +96,11 @@ export class MembersEffects {
         return this.memberDas.put(member, member.id).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllByPost({ event: <LazyLoadEvent>event });
+            if (MembersEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -111,7 +120,11 @@ export class MembersEffects {
         return this.memberDas.delete(id).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllByPost({ event: <LazyLoadEvent>event });
+            if (MembersEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -131,30 +144,11 @@ export class MembersEffects {
         return this.memberDas.deletes(ids).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            // Uncomment this if you do not use SignalR to refresh
-            return loadAllByPost({ event: <LazyLoadEvent>event });
-            // Uncomment this if you use SignalR to refresh
-            // return biaSuccessWaitRefreshSignalR();
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(failure({ error: err }));
-          })
-        );
-      })
-    )
-  );
-
-  save$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(save),
-      pluck('members'),
-      concatMap((members) => of(members).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([members, event]) => {
-        return this.memberDas.save(members).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            return loadAllByPost({ event: <LazyLoadEvent>event });
+            if (MembersEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();

@@ -5,9 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System.Security.Principal;
-    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.WorkerService.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;

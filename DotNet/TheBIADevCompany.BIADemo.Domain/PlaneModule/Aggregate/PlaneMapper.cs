@@ -35,7 +35,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { "FirstFlightTime", plane => plane.FirstFlightDate },
                     { "LastFlightDate", plane => plane.LastFlightDate },
                     { "Capacity", plane => plane.Capacity },
-                    { "Site", plane => plane.Site.Title },
                     { "PlaneType", plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { "ConnectingAirports", plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
                 };
@@ -64,9 +63,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.Capacity = dto.Capacity;
 
             // Mapping relationship 1-* : Site
-            if (dto.Site != null)
+            if (dto.SiteId != 0)
             {
-                entity.SiteId = dto.Site.Id;
+                entity.SiteId = dto.SiteId;
             }
 
             // Mapping relationship 0..1-* : PlaneType
@@ -113,11 +112,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 Capacity = entity.Capacity,
 
                 // Mapping relationship 1-* : Site
-                Site = new SiteDto
-                {
-                    Id = entity.Site.Id,
-                    Title = entity.Site.Title,
-                },
+                SiteId = entity.SiteId,
 
                 // Mapping relationship 0..1-* : PlaneType
                 PlaneType = entity.PlaneType != null ? new OptionDto
@@ -134,6 +129,13 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     Display = ca.Airport.Name,
                 }).ToList(),
             };
+        }
+
+        /// <inheritdoc/>
+        public override void MapEntityKeysInDto(Plane entity, PlaneDto dto)
+        {
+            dto.Id = entity.Id;
+            dto.SiteId = entity.SiteId;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>

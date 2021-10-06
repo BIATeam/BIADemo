@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
     /// <summary>
     /// The API controller used to authenticate users.
@@ -45,6 +46,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IRoleAppService roleAppService;
 
         /// <summary>
+        /// The User Right domain service.
+        /// </summary>
+        private readonly IUserPermissionDomainService userPermissionDomainService;
+
+        /// <summary>
+        /// The Permission service.
+        /// </summary>
+        private readonly IPermissionAppService permissionAppService;
+
+        /// <summary>
         /// The logger.
         /// </summary>
         private readonly ILogger<AuthController> logger;
@@ -56,14 +67,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="userAppService">The user application service.</param>
         /// <param name="siteAppService">The site application service.</param>
         /// <param name="roleAppService">The role application service.</param>
+        /// <param name="userPermissionDomainService">The User Right domain service.</param>
+        /// <param name="permissionAppService">The Permission service.</param>
         /// <param name="logger">The logger.</param>
-        public AuthController(IJwtFactory jwtFactory, IUserAppService userAppService, ISiteAppService siteAppService, IRoleAppService roleAppService, ILogger<AuthController> logger)
+        public AuthController(
+            IJwtFactory jwtFactory,
+            IUserAppService userAppService,
+            ISiteAppService siteAppService,
+            IRoleAppService roleAppService,
+            IUserPermissionDomainService userPermissionDomainService,
+            IPermissionAppService permissionAppService,
+            ILogger<AuthController> logger)
         {
             this.jwtFactory = jwtFactory;
             this.userAppService = userAppService;
             this.siteAppService = siteAppService;
             this.roleAppService = roleAppService;
             this.logger = logger;
+            this.userPermissionDomainService = userPermissionDomainService;
+            this.permissionAppService = permissionAppService;
         }
 
         /// <summary>
@@ -95,6 +117,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LoginOnSite(int siteId, bool singleRoleMode = false, int roleId = 0)
         {
+            // user data
+            var userData = new UserDataDto();
+
             var identity = this.User.Identity;
             if (identity == null || !identity.IsAuthenticated)
             {
@@ -158,69 +183,99 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             // get user rights
-            List<string> userRights = null;
+            List<string> userPermissions = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                if (siteId < 1)
-                {
-                    var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
-                    var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
-                    var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
+                var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
+                var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                    if (site != null)
+                userData.Sites = sites.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
+
+                if (site != null)
+                {
+                    if (site.IsDefault)
                     {
-                        siteId = site.Id;
+                        userData.DefaultSiteId = site.Id;
+                    }
+
+                    if (siteId > 0 && sites.Any(s => s.Id == siteId))
+                    {
+                        userData.CurrentSiteId = siteId;
+                    }
+                    else
+                    {
+                        userData.CurrentSiteId = site.Id;
                     }
                 }
 
-                if (singleRoleMode && roleId < 1)
+                if (userData.CurrentSiteId > 0)
                 {
-                    var roles = await this.roleAppService.GetMemberRolesAsync(siteId, userInfo.Id);
+                    var roles = await this.roleAppService.GetMemberRolesAsync(userData.CurrentSiteId, userInfo.Id);
+                    userData.Roles = roles.Select(r => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = r.Id, Display = r.Display }).ToList();
 
-                    var role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-
-                    if (role != null)
+                    if (singleRoleMode)
                     {
-                        roleId = role.Id;
+                        var role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                        if (role != null)
+                        {
+                            if (role.IsDefault)
+                            {
+                                userData.DefaultRoleId = role.Id;
+                            }
+
+                            if (roleId > 0 && roles.Any(s => s.Id == roleId))
+                            {
+                                userData.CurrentRoleIds = new List<int> { roleId };
+                            }
+                            else
+                            {
+                                userData.CurrentRoleIds = new List<int> { role.Id };
+                            }
+                        }
+                        else
+                        {
+                            userData.CurrentRoleIds = new List<int>();
+                        }
                     }
-                }
-
-                if (siteId > 0)
-                {
-                    userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
-                    if (userRights == null || !userRights.Any())
+                    else
                     {
-                        this.logger.LogInformation("Unauthorized because no user rights for site : " + siteId);
+                        userData.CurrentRoleIds = roles.Select(r => r.Id).ToList();
+                    }
+
+                    // the main roles
+                    var allRoles = userRolesFromUserDirectory;
+
+                    // add the sites roles (filter if singleRole mode is used)
+                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Display).ToList());
+
+                    // translate roles in permission
+                    userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
+
+                    // add the same permission in the id form.
+                    userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
+
+                    if (!userPermissions.Any())
+                    {
+                        this.logger.LogInformation("Unauthorized because no user rights for site : " + userData.CurrentSiteId);
                         return this.Unauthorized("You don't have access to this site");
                     }
                 }
             }
 
             // For admin and non user
-            if (userRights == null)
+            if (userPermissions == null)
             {
-                userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
+                userPermissions = await this.userAppService.GetPermissionsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
             }
 
-            if (userRights == null || !userRights.Any())
+            if (userPermissions == null || !userPermissions.Any())
             {
                 this.logger.LogInformation("Unauthorized because No rights found");
                 return this.Unauthorized("No rights found");
             }
 
-            // user data
-            var userData = new { CurrentSiteId = 0, CurrentRoleId = 0 };
-
-            if (siteId > 0)
-            {
-                userData = new
-                {
-                    CurrentSiteId = siteId,
-                    CurrentRoleId = roleId,
-                };
-            }
-
-            var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userRights, userData));
+            var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userPermissions, userData));
             if (claimsIdentity == null)
             {
                 this.logger.LogInformation("Unauthorized because claimsIdentity is null");

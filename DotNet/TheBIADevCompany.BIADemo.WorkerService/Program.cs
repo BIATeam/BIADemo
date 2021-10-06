@@ -90,7 +90,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     {
                         config.Configuration = hostContext.Configuration;
 
-                        // Begin BIADemo
                         var biaNetSection = new BiaNetSection();
                         config.Configuration.GetSection("BiaNet").Bind(biaNetSection);
 
@@ -98,11 +97,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                         {
                             config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
                             {
+                        // Begin BIADemo
                                 new PlaneHandlerRepository(hostContext.Configuration),
-                            });
-                        }
 
                         // End BIADemo
+                            });
+                        }
                     });
 
                     services.AddHostedService<Worker>();

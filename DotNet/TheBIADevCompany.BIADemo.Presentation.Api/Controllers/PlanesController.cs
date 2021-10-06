@@ -9,15 +9,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInPlane
-    using BIA.Net.Core.Presentation.Common.Features.HubForClients;
+    using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -29,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
-    /// The API controller used to manage planes.
+    /// The API controller used to manage Planes.
     /// </summary>
     public class PlanesController : BiaControllerBase
     {
@@ -39,22 +43,24 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IPlaneAppService planeService;
 
 #if UseHubForClientInPlane
-        private readonly IHubContext<HubForClients> hubForClients;
+        private readonly IClientForHubRepository clientForHubService;
 #endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController"/> class.
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
-        /// <param name="hubForClients">The hub for client.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
+        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInPlane
-        public PlanesController(IPlaneAppService planeService, IHubContext<HubForClients> hubForClients)
+        public PlanesController(
+            IPlaneAppService planeService, IClientForHubRepository clientForHubService)
 #else
         public PlanesController(IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
-            this.hubForClients = hubForClients;
+            this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
         }
@@ -142,7 +148,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -179,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -217,9 +223,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.planeService.RemoveAsync(id);
+                var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.Ok();
             }
@@ -253,13 +259,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                foreach (int id in ids)
-                {
-                    await this.planeService.RemoveAsync(id);
-                }
+                var deletedDtos = await this.planeService.RemoveAsync(ids);
 
-#if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+#if UseHubForClientInPlane
+                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                });
 #endif
                 return this.Ok();
             }
@@ -294,9 +300,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.planeService.SaveAsync(dtoList);
+                var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                await this.hubForClients.Clients.All.SendAsync("refresh-planes", string.Empty);
+                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                {
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                });
 #endif
                 return this.Ok();
             }

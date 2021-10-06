@@ -23,7 +23,15 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         {
             get
             {
-                return new ExpressionCollection<Site> { { "Id", site => site.Id }, { "Title", site => site.Title }, };
+                return new ExpressionCollection<Site>
+                {
+                    { "Id", site => site.Id },
+                    { "Title", site => site.Title },
+                    {
+                        "SiteAdmin", site =>
+                        site.Members.Where(w => w.MemberRoles.Any(a => a.RoleId == (int)Role.SiteAdmin)).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
+                    },
+                };
             }
         }
 

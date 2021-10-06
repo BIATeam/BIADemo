@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the site.
         /// </summary>
-        public SiteDto Site { get; set; }
+        public int SiteId { get; set; }
 
         /// <summary>
         /// Gets or sets the list of connecting airports.

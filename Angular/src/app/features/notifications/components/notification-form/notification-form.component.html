@@ -1,0 +1,148 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-dropdown
+          [options]="notificationTypeOptions"
+          placeholder="&nbsp;"
+          formControlName="type"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+        >
+          <ng-template let-item pTemplate="item">
+            {{ item?.value | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
+          </ng-template>
+          <ng-template let-selectedItem pTemplate="selectedItem">
+            {{ selectedItem?.value  | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
+          </ng-template>
+        </p-dropdown>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.type.title' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <p-checkbox binary="true" formControlName="read" label="{{ 'notification.read' | translate }}"></p-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-calendar
+          biaLocale
+          formControlName="createdDate"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          dateFormat="yy-mm-dd"
+          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+        ></p-calendar>
+        <label><span class="bia-star-mandatory">*</span>{{ 'notification.createdDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-dropdown
+          [options]="userOptions"
+          placeholder="&nbsp;"
+          formControlName="createdBy"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+          [showClear]="true"
+        ></p-dropdown>
+        <label>{{ 'notification.createdBy' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="permissionOptions"
+          formControlName="notifiedPermissions"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+        >
+          <ng-template let-values pTemplate="selectedItems">
+            <ng-container *ngIf="values">
+              <div *ngIf="values.length <= 0">&nbsp;</div>
+              <div *ngIf="values.length <= 3">
+                {{values | translateFields : 'display' : 'permission.' : translateService.currentLang}}
+              </div>
+              <div *ngIf="values.length > 3">
+                {{values.length}} items selected
+              </div>
+            </ng-container>
+          </ng-template>
+
+          <ng-template let-item pTemplate="item">
+            {{ item?.value | translateField : 'display' : 'permission.' : translateService.currentLang }}
+          </ng-template>
+
+        </p-multiSelect>
+        <label>{{ 'notification.notifiedPermissions' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="md-inputfield">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="userOptions"
+          formControlName="notifiedUsers"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+        ></p-multiSelect>
+        <label>{{ 'notification.notifiedUsers' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div fxFlex="90">
+      <!-- <span class="md-inputfield">
+        <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
+        </textarea>
+        <label>{{ 'notification.jData' | translate }}</label>
+      </span> -->
+      <span style="left: 5px; top: -20px;font-size: 12px;color: #00839b;">{{ 'notification.jData' | translate }}</span>
+      <span class="p-float-label">
+          <textarea formControlName="jData" rows="5" [cols]="60" autoResize="autoResize" pInputTextarea style="width: 100%;"></textarea>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="ui-button-secondary"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

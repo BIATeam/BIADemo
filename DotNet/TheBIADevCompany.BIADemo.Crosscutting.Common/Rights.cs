@@ -216,14 +216,25 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Roles
         {
             /// <summary>
-            /// The right to get all roles.
+            /// The right to access to the list of airports (options only).
             /// </summary>
-            public const string List = "Roles_List";
+            public const string Options = "Roles_Options";
 
             /// <summary>
             /// The right to get the roles of the current user.
             /// </summary>
             public const string ListForCurrentUser = "Roles_List_For_Current_User";
+        }
+
+        /// <summary>
+        /// The roles rights.
+        /// </summary>
+        public static class Permissions
+        {
+            /// <summary>
+            /// The right to access to the list of airports (options only).
+            /// </summary>
+            public const string Options = "Permissions_Options";
         }
 
         /// <summary>
@@ -283,6 +294,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class Users
         {
+            /// <summary>
+            /// The right to access to the list of airports (options only).
+            /// </summary>
+            public const string Options = "User_Options";
+
             /// <summary>
             /// The right to access to the list of users.
             /// </summary>
@@ -368,6 +384,48 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to assign view to a site.
             /// </summary>
             public const string AssignToSite = "View_Assign_To_Site";
+        }
+
+        /// <summary>
+        /// The notifications rights.
+        /// </summary>
+        public static class Notifications
+        {
+            /// <summary>
+            /// The right to access to the list of notifications.
+            /// </summary>
+            public const string ListAccess = "Notification_List_Access";
+
+            /// <summary>
+            /// The right to read notifications.
+            /// </summary>
+            public const string Read = "Notification_Read";
+
+            /// <summary>
+            /// The right to create notifications.
+            /// </summary>
+            public const string Create = "Notification_Create";
+
+            /// <summary>
+            /// The right to update notifications.
+            /// </summary>
+            public const string Update = "Notification_Update";
+
+            /// <summary>
+            /// The right to delete notifications.
+            /// </summary>
+            public const string Delete = "Notification_Delete";
+        }
+
+        /// <summary>
+        /// The planes rights.
+        /// </summary>
+        public static class NotificationTypes
+        {
+            /// <summary>
+            /// The right to access to the list of planes types (options only).
+            /// </summary>
+            public const string Options = "NotifiactionType_Options";
         }
     }
 }

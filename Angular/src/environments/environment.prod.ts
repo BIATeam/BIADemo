@@ -2,7 +2,8 @@ import {NgxLoggerLevel} from 'ngx-logger';
 
 export const environment = {
   helpUrl: '',
-  reportUrl: '',
+  reportUrl: 'toto',
+  enableNotifications: true,
   apiUrl: '../WebApi/api',
   hubUrl: '../WebApi/HubForClients',
   urlAuth: '/api/Auth',

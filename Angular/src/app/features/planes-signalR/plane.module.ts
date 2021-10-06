@@ -37,7 +37,7 @@ const ROUTES: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('planes', reducers),
+    StoreModule.forFeature('planes-signalr', reducers),
     EffectsModule.forFeature([PlanesEffects])
   ],
   providers: [

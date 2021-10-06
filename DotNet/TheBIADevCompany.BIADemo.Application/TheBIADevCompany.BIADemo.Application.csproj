@@ -4,10 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
     <Copyright>Copyright © TheBIADevCompany 2021</Copyright>
+    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Application" Version="3.4.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
@@ -15,6 +15,7 @@
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain.Dto\TheBIADevCompany.BIADemo.Domain.Dto.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

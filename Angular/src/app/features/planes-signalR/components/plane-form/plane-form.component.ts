@@ -44,11 +44,11 @@ export class PlaneFormComponent implements OnInit, OnChanges {
     this.form = this.formBuilder.group({
       id: [this.plane.id],
       msn: [this.plane.msn, Validators.required],
-      isActive: [this.plane.isActive],
-      firstFlightDate: [this.plane.firstFlightDate, Validators.required],
-      firstFlightTime: [this.plane.firstFlightTime, Validators.required],
-      lastFlightDate: [this.plane.lastFlightDate],
-      capacity: [this.plane.capacity, Validators.required]
+      // isActive: [this.plane.isActive],
+      // firstFlightDate: [this.plane.firstFlightDate, Validators.required],
+      // firstFlightTime: [this.plane.firstFlightTime, Validators.required],
+      // lastFlightDate: [this.plane.lastFlightDate],
+      // capacity: [this.plane.capacity, Validators.required]
     });
   }
 

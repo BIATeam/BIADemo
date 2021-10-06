@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The interface defining the application service for role.
@@ -14,10 +14,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public interface IRoleAppService
     {
         /// <summary>
-        /// Get all existing roles.
+        /// Gets all option that I can see.
         /// </summary>
-        /// <returns>The list of roles.</returns>
-        Task<IEnumerable<RoleDto>> GetAllAsync();
+        /// /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
 
         /// <summary>
         /// Get all member roles.
@@ -25,6 +25,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="siteId">The site identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>The list of roles for this member.</returns>
-        Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int siteId, int userId);
+        Task<IEnumerable<OptionDefaultDto>> GetMemberRolesAsync(int siteId, int userId);
     }
 }

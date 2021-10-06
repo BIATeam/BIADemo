@@ -1,0 +1,6 @@
+<app-airport-form 
+    [airport]="airportService.airport$ | async" 
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-airport-form>
+<bia-spinner *ngIf="airportService.loading$ | async" [overlay]="true"></bia-spinner>

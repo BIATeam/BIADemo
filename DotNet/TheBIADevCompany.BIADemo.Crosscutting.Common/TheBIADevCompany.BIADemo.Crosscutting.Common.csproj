@@ -4,10 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
     <Copyright>Copyright © TheBIADevCompany 2021</Copyright>
+    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Common" Version="3.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
   </ItemGroup>
@@ -17,6 +17,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,18 @@
+<ng-container *ngIf="(notification$ |async) as notification">
+  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="space-evenly"  *ngIf="notification && notification.id">
+    <div><b>{{ 'notification.title' | translate }}</b><br />{{ notification.title | translate }}</div>
+    <div><b>{{ 'notification.description' | translate }}</b><br />{{ notification.description | translate }}
+    </div>
+    <div><b>{{ 'notification.createdDate' | translate }}</b><br />{{ notification.createdDate | date:'short' }}</div>
+    <div><b>{{ 'notification.type.title' | translate }}</b><br />{{ 'notification.type.' + notification.type.display | translate}}</div>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'notification.action' | translate }}" type="button" class="ui-button-primary"
+    (click)="onAction(notification)" *ngIf="canAction(notification)"></button>
+    <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="ui-button-secondary"
+      (click)="onEdit()" *ngIf="canEdit"></button>
+    <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="ui-button-secondary"
+      (click)="onCancelled()"></button>
+  </div>
+</ng-container>
+<bia-spinner *ngIf="loading$ | async" [overlay]="true"></bia-spinner>

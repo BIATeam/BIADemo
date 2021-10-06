@@ -49,16 +49,6 @@ export const getMemberLoadingGetAll = createSelector(
   (state) => state.loadingGetAll
 );
 
-export const getDisplayEditDialog = createSelector(
-  getMembersEntitiesState,
-  (state) => state.displayEditDialog
-);
-
-export const getDisplayNewDialog = createSelector(
-  getMembersEntitiesState,
-  (state) => state.displayNewDialog
-);
-
 export const { selectAll: getAllMembers } = fromMembers.membersAdapter.getSelectors(getMembersEntitiesState);
 
 export const getMemberById = (id: number) =>

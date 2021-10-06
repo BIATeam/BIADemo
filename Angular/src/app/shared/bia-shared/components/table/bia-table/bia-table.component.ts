@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { DEFAULT_VIEW, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { Observable, timer, of } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'bia-table',
@@ -60,7 +61,7 @@ export class BiaTableComponent implements OnChanges {
   private defaultPageSize: number;
   private defaultColumns: string[];
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public translateService : TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);
@@ -208,8 +209,11 @@ export class BiaTableComponent implements OnChanges {
   onStateSave(state: TableState) {
     if (this.table && Object.keys(state).length) {
       const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
-      const storage = this.table.getStorage();
-      storage.setItem(this.table.stateKey, JSON.stringify(customState));
+      if (this.table.stateKey != undefined && this.table.stateKey != '')
+      {
+        const storage = this.table.getStorage();
+        storage.setItem(this.table.stateKey, JSON.stringify(customState));
+      }
     }
   }
 
@@ -222,26 +226,29 @@ export class BiaTableComponent implements OnChanges {
 
   protected restoreStateTable() {
     if (this.table) {
-      const storage = this.table.getStorage();
-      const stateString = storage.getItem(this.table.stateKey);
-
-      if (stateString) {
-        const state: TableState = JSON.parse(stateString);
-        if (state && state.columnOrder) {
-          // tslint:disable-next-line: no-non-null-assertion
-          this.displayedColumns = this.configuration.columns.filter(
-            (col) => state.columnOrder && state.columnOrder.indexOf(col.field) > -1
-          );
-        }
-        this.table.restoreState();
-        this.table.sortSingle();
-
-        this.showColSearch = false;
-        if (this.table.hasFilter()) {
-          for (const key in this.table.filters) {
-            if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
-              this.showColSearch = true;
-              break;
+      if (this.table.stateKey != undefined && this.table.stateKey != '')
+      {
+        const storage = this.table.getStorage();
+        const stateString = storage.getItem(this.table.stateKey);
+  
+        if (stateString) {
+          const state: TableState = JSON.parse(stateString);
+          if (state && state.columnOrder) {
+            // tslint:disable-next-line: no-non-null-assertion
+            this.displayedColumns = this.configuration.columns.filter(
+              (col) => state.columnOrder && state.columnOrder.indexOf(col.field) > -1
+            );
+          }
+          this.table.restoreState();
+          this.table.sortSingle();
+  
+          this.showColSearch = false;
+          if (this.table.hasFilter()) {
+            for (const key in this.table.filters) {
+              if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
+                this.showColSearch = true;
+                break;
+              }
             }
           }
         }

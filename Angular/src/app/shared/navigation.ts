@@ -47,6 +47,11 @@ export const NAVIGATION: BiaNavigation[] = [
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes-calc']
       },
+      {
+        labelKey: 'app.hangfire',
+        permissions: [Permission.Hangfire_Access],
+        path: ['/examples/hangfire']
+      },
     ]
   },
   {

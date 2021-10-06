@@ -9,6 +9,7 @@ import {
   Input
 } from '@angular/core';
 import { User } from 'src/app/domains/user/model/user';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { SiteAdvancedFilter } from '../../model/site/site-advanced-filter';
 
 @Component({
@@ -19,7 +20,7 @@ import { SiteAdvancedFilter } from '../../model/site/site-advanced-filter';
 export class SiteFilterComponent implements OnInit {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() fxFlexValue: string;
-  @Input() users: User[];
+  @Input() userOptions: OptionDto[];
   @Input() hidden = false;
   @Output() close = new EventEmitter();
   @Output() searchUsers = new EventEmitter<string>();

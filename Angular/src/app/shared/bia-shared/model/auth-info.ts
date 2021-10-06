@@ -1,3 +1,5 @@
+import { OptionDto } from "./option-dto";
+
 export interface UserInfo {
   id: number;
   lastName?: string;
@@ -13,7 +15,11 @@ export interface UserProfile {
 
 export interface UserData {
   currentSiteId: number;
-  currentRoleId: number;
+  defaultSiteId: number;
+  sites: OptionDto[];
+  currentRoleIds: number[];
+  defaultRoleId: number;
+  roles: OptionDto[];
 }
 
 export interface AdditionalInfos {
