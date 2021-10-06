@@ -91,9 +91,9 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             {
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
-                Description = "notification.success.description",
+                Description = "Description and title are in english translation in i18n is deprecated. It will be done in database in next version.",
                 SiteId = siteId,
-                Title = "notification.success.title",
+                Title = "Long task run successfully",
                 NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),

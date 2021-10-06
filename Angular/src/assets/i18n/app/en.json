@@ -122,6 +122,7 @@
     "notifiedUsers": "Notified users",
     "jData" : "Data in JSON",
     "success": {
+      "deprecated:": "transaltion will be done in database in next version",
       "title": "Notification sent successfully",
       "description": "Description to be customised in i18n traductions for each feature"
     }
