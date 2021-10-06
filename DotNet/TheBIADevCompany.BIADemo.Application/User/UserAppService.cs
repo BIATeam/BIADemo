@@ -92,6 +92,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 specification = UserSpecification.Search(filter);
             }
+
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
