@@ -341,13 +341,14 @@ namespace BIA.Net.Core.Domain.Service
             var mapper = new TOtherMapper();
 
             var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
-            var dto = new TOtherDto();
-            mapper.MapEntityKeysInDto(entity, dto);
             if (entity == null)
             {
                 throw new ElementNotFoundException();
             }
-            
+
+            var dto = new TOtherDto();
+            mapper.MapEntityKeysInDto(entity, dto);
+
             this.Repository.Remove(entity);
             await this.Repository.UnitOfWork.CommitAsync();
             return dto;

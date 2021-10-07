@@ -34,15 +34,15 @@ export class MatomoInjector {
     window._paq.push(['enableLinkTracking']);
     (() => {
       window._paq.push(['setTrackerUrl', url + 'matomo.php']);
-      window._paq.push(['setSiteId', '1']);
+      window._paq.push(['setSiteId', siteId]);
       window._paq.push(['setCustomDimension', 1, siteName]);
       const d = document,
         g = d.createElement('script'),
         s = d.getElementsByTagName('script')[0];
       g.type = 'text/javascript';
       g.async = true;
-      g.src = url + 'matomo.js';
-      // g.src = 'http://localhost:4200/assets/bia/matomo/matomo.js';
+      // g.src = url + 'matomo.js';
+      g.src = './assets/bia/matomo/matomo.js';
       if (s.parentNode) {
         s.parentNode.insertBefore(g, s);
       }

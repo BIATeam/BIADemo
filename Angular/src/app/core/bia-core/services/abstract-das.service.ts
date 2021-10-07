@@ -17,12 +17,12 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
 
   getList(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
     return this.getListItems<TOut>(endpoint, options).pipe(map(items => {
-      items.map(item => {return this.translateItem(item);});
-      return items;}));
+      items.map(item => { return this.translateItem(item); });
+      return items; }));
   }
 
   get(id: string | number, options?: HttpOptions): Observable<TOut> {
-    return this.getItem<TOut>(id, options).pipe(map(item => {return this.translateItem(item);}));
+    return this.getItem<TOut>(id, options).pipe(map(item => { return this.translateItem(item); }));
   }
   
   translateItem(item: TOut) {

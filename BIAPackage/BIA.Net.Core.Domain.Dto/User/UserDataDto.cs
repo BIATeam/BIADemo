@@ -15,6 +15,7 @@ namespace BIA.Net.Core.Domain.Dto.User
         public UserDataDto()
         {
             CurrentSiteId = 0;
+            CurrentSiteTitle = "";
             DefaultSiteId = 0;
             Sites = new List<OptionDto>();
             CurrentRoleIds = new List<int>();
@@ -25,6 +26,11 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the current site identifier.
         /// </summary>
         public int CurrentSiteId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current site identifier.
+        /// </summary>
+        public string CurrentSiteTitle { get; set; }
 
         /// <summary>
         /// Gets or sets the current site identifier.

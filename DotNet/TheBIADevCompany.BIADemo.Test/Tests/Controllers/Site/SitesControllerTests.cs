@@ -183,13 +183,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             this.DbMock.InitDefaultSites();
 
             // Add member: required for the GetAll() method.
-            this.DbMock.AddUser(1, "John", "DOE", 1, 1, new List<MemberRole>
-                {
-                    new MemberRole()
-                    {
-                        MemberId = 1,
-                    },
-                });
+            this.DbMock.AddUser(1, "John", "DOE", 1, 1);
 
             this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {

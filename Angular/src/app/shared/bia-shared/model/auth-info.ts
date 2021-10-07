@@ -15,6 +15,7 @@ export interface UserProfile {
 
 export interface UserData {
   currentSiteId: number;
+  currentSiteTitle: string;
   defaultSiteId: number;
   sites: OptionDto[];
   currentRoleIds: number[];

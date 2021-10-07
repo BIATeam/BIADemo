@@ -205,10 +205,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     if (siteId > 0 && sites.Any(s => s.Id == siteId))
                     {
                         userData.CurrentSiteId = siteId;
+                        userData.CurrentSiteTitle = sites.First(s => s.Id == siteId).Title;
                     }
                     else
                     {
                         userData.CurrentSiteId = site.Id;
+                        userData.CurrentSiteTitle = site.Title;
                     }
                 }
 
