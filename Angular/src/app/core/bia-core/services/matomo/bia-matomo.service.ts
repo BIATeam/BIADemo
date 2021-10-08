@@ -40,7 +40,7 @@ export class BiaMatomoService implements OnDestroy {
 
     this.sub.add(
       environmentConfiguration$.subscribe((environmentConfiguration) => {
-        if (environmentConfiguration) {
+        if (environmentConfiguration && environmentConfiguration.urlMatomo && environmentConfiguration.urlMatomo != undefined) {
           this.matomoInjector.init(
             environmentConfiguration.urlMatomo, 
             this.authService.getCurrentSiteId().toString(), 
