@@ -92,7 +92,13 @@
     }
 
     .p-multiselect-items {
-        padding: $inputListPadding;
+        &:not(.p-multiselect-virtualscroll) { 
+            padding: $inputListPadding;
+        }
+
+        &.p-multiselect-virtualscroll .cdk-virtual-scroll-content-wrapper {
+            padding: $inputListPadding;
+        }
 
         .p-multiselect-item {
             margin: $inputListItemMargin;

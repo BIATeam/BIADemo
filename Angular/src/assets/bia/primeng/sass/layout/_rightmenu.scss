@@ -4,6 +4,11 @@
         height: calc(100% - 4rem);
         overflow: auto;
         transition: transform $transitionDuration;
+
+        .p-sidebar-header,
+        .p-sidebar-content {
+            padding: 0;
+        }
     }
 
     .online-members {
@@ -17,7 +22,7 @@
     .next-events {
         li {
             border-radius: $borderRadius;
-            
+
             &:hover {
                 background-color: $hoverBgColor;
                 cursor: pointer;

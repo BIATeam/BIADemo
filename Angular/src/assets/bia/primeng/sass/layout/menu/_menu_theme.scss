@@ -38,6 +38,15 @@
                             color: $activeMenuItemTextColor;
                         }
                     }
+
+                    a.active-menuitem-routerlink {
+                        background-color: $activeMenuItemBgColor;
+                        color: $activeMenuItemTextColor;
+
+                        > i {
+                            color: $activeMenuItemTextColor;
+                        }
+                    }
                 }
             }
         }

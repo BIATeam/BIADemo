@@ -59,6 +59,12 @@
             background: $submenuHeaderBg;
             font-weight: $submenuHeaderFontWeight;
         }
+
+        .p-listbox-empty-message {
+            padding: $inputListItemPadding;
+            color: $inputListItemTextColor;
+            background: $inputListItemBg;
+        }
     }
 
     &:not(.p-disabled) {

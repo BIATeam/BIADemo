@@ -1,12 +1,15 @@
 /* Add your variable customizations of theme here */
 @import './customs/common_variables';
 
+// //Global
+$borderRadius: 0;
+
 $contentBgColor: $biaBgColor;
 $dividerColor: $biaBorderColor; // panel border
 // $hoverBgColor:red; // Color when the cursor is moved over a line of a table.
 // $activeMenuItemBadgeColor: red;
 
-$primaryTextColor: $biaFgTextColor; // #ffffff;
+//$primaryTextColor: $biaFgTextColor; // #ffffff;
 // $headerBgColor: $primaryColor;
 // $headerTextColor: #ffffff;
 // $headerIconColor: #ffffff;
@@ -14,15 +17,13 @@ $contentBorderColor: $biaBorderColor; // #bdbdbd; table border
 $contentBgColor: $biaBgColor; // #ffffff; content panel
 $contentIconColor: $biaFgTextColor; // #757575;
 
+// //input
 $inputBorderColor: $biaFgTextColor; // #bdbdbd;
 // $inputInvalidBorderColor: #e62a10;
-$inputBgColor: transparent;
 $inputBg: transparent;
 $inputFilledBg: transparent;
-// multi select
-$inputListHeaderBg: $primaryColor;
-// $inputOverlayHeaderBg: $inputListHeaderBg;
-@debug "inputListHeaderBg: #{$inputListHeaderBg}";
+$inputFilledHoverBg: transparent;
+$inputFilledFocusBg: transparent;
 // $inputErrorTextColor: #e62a10;
 // $inputBorderErrorColor: #e62a10;
 // $inputFieldLabelTextColor: #999999;
@@ -55,3 +56,24 @@ $checkboxBorderColor: $biaFgTextColor; // #757575;
 
 // //data
 $dataTableRowBgColorEven: $biaBgHoverColor;
+
+// //menu breadcrumb
+$breadcrumbLastItemTextColor: $primaryColor;
+$breadcrumbItemTextColor: $accentDarkColor;
+$breadcrumbItemIconColor: $accentDarkColor;
+
+// // menubar
+
+// // datatable
+$tableHeaderCellHighlightTextColor: $primaryColor;
+$tableHeaderCellHighlightHoverBg: $tableHeaderBg;
+$tableHeaderCellHoverBg: $tableHeaderBg;
+$tableHeaderCellHighlightBg: $tableHeaderBg;
+$tableBodyCellBorder:1px solid rgb(215, 215, 215);
+
+// //megamenu
+$submenuHeaderBg: $primaryColor;
+$submenuHeaderTextColor: $primaryTextColor;
+
+
+

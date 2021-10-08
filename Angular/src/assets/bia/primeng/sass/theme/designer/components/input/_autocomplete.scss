@@ -58,7 +58,13 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
     box-shadow: $inputOverlayShadow;
 
     .p-autocomplete-items {
-        padding: $inputListPadding;
+        &:not(.p-autocomplete-virtualscroll) { 
+            padding: $inputListPadding;
+        }
+
+        &.p-autocomplete-virtualscroll .cdk-virtual-scroll-content-wrapper {
+            padding: $inputListPadding;
+        }
 
         .p-autocomplete-item {
             margin: $inputListItemMargin;
@@ -78,6 +84,12 @@ p-autocomplete.ng-dirty.ng-invalid > .p-autocomplete > .p-inputtext {
                 color: $highlightTextColor;
                 background: $highlightBg;
             }
+        }
+
+        .p-autocomplete-empty-message {
+            padding: $inputListItemPadding;
+            color: $inputListItemTextColor;
+            background: $inputListItemBg;
         }
 
         .p-autocomplete-item-group {

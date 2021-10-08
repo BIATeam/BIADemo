@@ -153,6 +153,16 @@
             @include scaledFontSize($primeIconFontSize, $scaleLG);
         }
     }
+
+    &.p-button-loading-label-only {
+        .p-button-label {
+            margin-left: $inlineSpacing;
+        }
+
+        .p-button-loading-icon {
+            margin-right: 0;
+        }
+    }
 }
 
 .p-fluid {

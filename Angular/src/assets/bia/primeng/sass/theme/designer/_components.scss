@@ -1,5 +1,6 @@
 @import '_mixins';
 @import '_common';
+@import '_colors';
 
 //Input
 @import './components/input/_autocomplete';
@@ -23,9 +24,11 @@
 @import './components/input/_selectbutton';
 @import './components/input/_slider';
 @import './components/input/_togglebutton';
+@import './components/input/_treeselect';
 
 //Button
 @import './components/button/_button';
+@import './components/button/_speeddial';
 @import './components/button/_splitbutton';
 
 //Data
@@ -67,6 +70,7 @@
 //Menu
 @import './components/menu/_breadcrumb';
 @import './components/menu/_contextmenu';
+@import './components/menu/_dock';
 @import './components/menu/_megamenu';
 @import './components/menu/_menu';
 @import './components/menu/_menubar';

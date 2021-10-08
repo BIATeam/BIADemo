@@ -43,6 +43,23 @@
                         }
                     }
                 }
+
+                .layout-topbar-actions-left {
+                    .layout-megamenu {
+                        &.p-megamenu {
+                            .p-megamenu-root-list {
+                                > .p-menuitem {
+                                    > .p-menuitem-link {
+                                        .p-submenu-icon {
+                                            margin-left: 0;
+                                            margin-right: .5rem;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

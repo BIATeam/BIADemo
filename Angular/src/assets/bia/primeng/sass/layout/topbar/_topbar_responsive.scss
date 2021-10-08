@@ -34,6 +34,8 @@
                         position: fixed;
                         left: 1rem;
                         right: 1rem;
+                        max-height: calc(100vh - 168px);
+                        overflow-y: scroll;
 
                         .p-megamenu-grid {
                             flex-wrap: wrap;

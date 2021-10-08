@@ -27,7 +27,7 @@
 
     &.p-dataview-list {
         .p-dataview-content {
-            > .p-grid > div {
+            > .grid > div {
                 border: $dataViewListItemBorder;
                 border-width: $dataViewListItemBorderWidth;
             }

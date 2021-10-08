@@ -118,13 +118,7 @@
     .p-megamenu-root-list {
       // margin-top: 17px;
     }
-    /*
-    .p-megamenu-root-list > li > a > .p-menuitem-text {
-      font-family: 'oswald-regular';
-      font-weight: 400 !important;
-      font-size: 18px !important;
-      text-transform: uppercase !important;
-    }*/
+
     .p-state-active {
       background-color: transparent;
     }
@@ -161,10 +155,21 @@
 
   p-dropdown  {
     .p-dropdown {
-      
+      min-width: 12.5em;
+      background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
+      .p-dropdown-label {
+        padding-top: 9px;
+        padding-bottom: 3px;
+        padding-left: 2px;
+      }
       background-color: transparent;
       .p-inputtext {
         color: white !important;
+      }
+    }
+    .p-dropdown:not(.p-disabled) {
+      &:hover   {
+        background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white)!important;
       }
     }
     .p-dropdown-trigger-icon {
@@ -172,8 +177,7 @@
     }
     
   }
+ 
 
-  .p-dropdown {
-    background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
-  }
 }
+

@@ -1,5 +1,5 @@
 p-tabview {
-  ul.ui-tabview-nav {
+  ul.p-tabview-nav {
     display: flex;
     border-radius: 0 !important;
     border: 0 !important;
@@ -17,12 +17,12 @@ p-tabview {
         color: $accentDarkColor !important;
         width: 100%;
         text-align: center;
-        .ui-tabview-title {
+        .p-tabview-title {
           font-family: 'oswald-light';
         }
       }
     }
-    > li.ui-state-active {
+    > li.p-state-active {
       background-color: $biaTabColor !important;
       a {
         color: $accentTextColor !important;
@@ -30,7 +30,7 @@ p-tabview {
     }
   }
 
-  .ui-tabview-panels {
+  .p-tabview-panels {
     background-color: $biaBgColor !important;
   }
 }

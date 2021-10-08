@@ -1,0 +1,7 @@
+.p-button {
+    &:disabled {
+        background-color: $primaryColor!important;
+        color: $primaryTextColor!important;
+        opacity: $disabledOpacity!important;
+    }
+}

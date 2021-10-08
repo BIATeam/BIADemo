@@ -1,3 +1,16 @@
+$colors: (
+    "blue": #2196F3,
+    "green": #689F38,
+    "yellow": #FBC02D,
+    "cyan": #00BCD4,
+    "pink": #E91E63,
+    "indigo": #4E5FBB,
+    "teal": #009688,
+    "orange": #FF9800,
+    "bluegray": #607D8B,
+    "purple": #9C27B0
+);
+
 $emphasis-high:rgba(255,255,255,.87);
 $emphasis-medium:rgba(255,255,255,.60);
 $emphasis-low:rgba(255,255,255,.38);
@@ -94,6 +107,12 @@ $inputOverlayHeaderBg:#2b2b2b;
 $inputOverlayBorder:0 none;
 $inputOverlayShadow:0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
 
+//password
+$passwordMeterBg:rgba($primaryColor, .32);
+$passwordWeakBg:#EF9A9A;
+$passwordMediumBg:#FFF59D;
+$passwordStrongBg:#C5E1A5;
+
 //button
 $buttonPadding:0.714rem 1rem;
 $buttonIconOnlyWidth:3rem;
@@ -112,7 +131,7 @@ $roundedButtonBorderRadius:2rem;
 
 $textButtonHoverBgOpacity:.04;
 $textButtonActiveBgOpacity:.16;
-$outlinedButtonBorder:1px solid;
+$outlinedButtonBorder:0 none;
 $plainButtonTextColor:$textSecondaryColor;
 $plainButtonHoverBgColor:rgba(255,255,255,.04);
 $plainButtonActiveBgColor:rgba(255,255,255,.16);
@@ -315,6 +334,7 @@ $inputSwitchSliderOnHoverBg:rgba($primaryColor, .5);
 $inputSwitchHandleOnBg:$primaryColor;
 
 //panel
+$panelHeaderBorderColor: rgba(255,255,255,.12) !default;
 $panelHeaderBorder:1px solid rgba(255,255,255,.12);
 $panelHeaderBg:#1e1e1e;
 $panelHeaderTextColor:$textColor;
@@ -326,6 +346,7 @@ $panelHeaderHoverBg:rgba($overlayColor,.04);
 $panelHeaderHoverBorderColor:rgba(255,255,255,.12);
 $panelHeaderTextHoverColor:$textColor;
 
+$panelContentBorderColor: rgba(255,255,255,.12) !default;
 $panelContentBorder:1px solid rgba(255,255,255,.12);
 $panelContentBg:#1e1e1e;
 $panelContentTextColor:$textColor;
@@ -502,6 +523,7 @@ $pickListBreakpoint:769px;
 
 //schedule
 $fullCalendarEventBg:$highlightBg;
+$fullCalendarEventBorderColor:$highlightBg !default;
 $fullCalendarEventBorder:1px solid $highlightBg;
 $fullCalendarEventTextColor:$highlightTextColor;
 
@@ -757,6 +779,29 @@ $skeletonAnimationBg:rgba(255,255,255,.04);
 //splitter
 $splitterGutterBg:hsla(0,0%,100%,.04);
 $splitterGutterHandleBg:hsla(0,0%,100%,.12);
+
+//speeddial
+$speedDialButtonWidth: 4rem !default;
+$speedDialButtonHeight: 4rem !default;
+$speedDialButtonIconFontSize: 2rem !default;
+$speedDialActionWidth: 3rem !default;
+$speedDialActionHeight: 3rem !default;
+$speedDialActionBg: $accentColor !default;
+$speedDialActionHoverBg: rgba($accentColor, .92) !default;
+$speedDialActionTextColor: #212121 !default;
+$speedDialActionTextHoverColor: #212121 !default;
+
+//dock
+$dockActionWidth: 4rem !default;
+$dockActionHeight: 4rem !default;
+$dockItemPadding: .5rem !default;
+$dockCurrentItemMargin: 1.5rem !default;
+$dockFirstItemsMargin: 1.3rem !default;
+$dockSecondItemsMargin: 0.9rem !default;
+$dockBg: rgba(255,255,255,.1) !default;
+$dockBorder: 1px solid rgba(255,255,255,0.2) !default;
+$dockPadding: .5rem .5rem !default;
+$dockBorderRadius: .5rem !default;
 
 :root {
     --surface-a:#1e1e1e;

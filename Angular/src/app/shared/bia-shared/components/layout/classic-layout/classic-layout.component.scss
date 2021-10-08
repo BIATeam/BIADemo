@@ -14,18 +14,4 @@
   padding-top: 0.1em;
 }
 
-:host ::ng-deep {
-  p-breadcrumb {
-    .pi,
-    .ui-menuitem-text {
-      font-size: 0.9em;
-      font-weight: 100;
-    }
-    .ui-widget-header {
-      border-width: 0px;
-    }
-    .ui-state-active {
-      background-color: transparent;
-    }
-  }
-}
+

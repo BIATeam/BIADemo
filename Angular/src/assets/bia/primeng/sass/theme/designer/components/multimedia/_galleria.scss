@@ -128,12 +128,8 @@
             }
         }
 
-        .p-galleria-thumbnail-item-content {
-            transition: $listItemTransition;
-            
-            &:focus {
+        .p-galleria-thumbnail-item-content:focus {
                 @include focused();
-            }
         }
     }
 }
