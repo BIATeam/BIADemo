@@ -38,6 +38,7 @@
     "@ngrx/store-devtools": "^9.2.0",
     "@ngx-translate/core": "^11.0.0",
     "@types/file-saver": "^2.0.1",
+    "angular-cli-ghpages": "^1.0.0-rc.2",
     "chart.js": "^2.9.4",
     "codelyzer": "^5.2.2",
     "deepmerge": "^4.2.2",
