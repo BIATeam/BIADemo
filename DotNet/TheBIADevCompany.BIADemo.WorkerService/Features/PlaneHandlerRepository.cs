@@ -5,8 +5,10 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
+    using System;
+    using System.Configuration;
     using System.Data.SqlClient;
-    using BIA.Net.Core.WorkerService.Features.ClientForHub;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
 
@@ -15,6 +17,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     /// </summary>
     public class PlaneHandlerRepository : DatabaseHandlerRepository
     {
+        private static IClientForHubRepository clientForHubService = null;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneHandlerRepository"/> class.
         /// Constructor Set the trigger request.
@@ -24,10 +28,19 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
             "SELECT RowVersion FROM [dbo].[Planes]",
-            string.Empty /* Information to pass to the reader in Plnane Change:  "SELECT TOP (1) [Id] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"*/,
+            "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
             r => PlaneChange(r))
             {
             }
+
+        /// <summary>
+        /// Configure the services.
+        /// </summary>
+        /// <param name="pClientForHubService">The client for hub service.</param>
+        public static void Configure(IClientForHubRepository pClientForHubService)
+        {
+            clientForHubService = pClientForHubService;
+        }
 
         /// <summary>
         /// Send message to the clients.
@@ -35,8 +48,13 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <param name="reader">the reader use to retrieve info send by th trigger.</param>
         public static void PlaneChange(SqlDataReader reader)
         {
-            /* To read information use: int id = reader.GetInt32(0)  */
-            _ = ClientForHubService.SendMessage("refresh-planes", string.Empty);
+            if (clientForHubService == null)
+            {
+                throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
+            }
+
+            int siteId = reader.GetInt32(0);
+            _ = clientForHubService.SendTargetedMessage(siteId.ToString(), "planes", "refresh-planes", string.Empty);
         }
     }
 }

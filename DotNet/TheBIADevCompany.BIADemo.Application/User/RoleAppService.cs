@@ -8,16 +8,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application;
-    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for role.
     /// </summary>
-    public class RoleAppService : AppServiceBase<Role>, IRoleAppService
+    public class RoleAppService : FilteredServiceBase<Role>, IRoleAppService
     {
         /// <summary>
         /// The claims principal.
@@ -35,30 +35,28 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.principal = principal as BIAClaimsPrincipal;
         }
 
-        /// <inheritdoc cref="IRoleAppService.GetAllAsync"/>
-        public async Task<IEnumerable<RoleDto>> GetAllAsync()
+        /// <summary>
+        /// Return options.
+        /// </summary>
+        /// <returns>List of OptionDto.</returns>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            var userId = this.principal.GetUserId();
-            return await this.Repository.GetAllResultAsync<RoleDto>(role => new RoleDto
-            {
-                Id = role.Id,
-                LabelEn = role.LabelEn,
-                LabelFr = role.LabelFr,
-                LabelEs = role.LabelEs,
-                IsDefault = role.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.IsDefault),
-            });
+            return this.GetAllAsync<OptionDto, RoleOptionMapper>();
         }
 
-        /// <inheritdoc cref="IRoleAppService.GetMemberRolesAsync"/>
-        public async Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int siteId, int userId)
+        /// <summary>
+        /// Return options.
+        /// </summary>
+        /// <param name="siteId">The site Id.</param>
+        /// <param name="userId">The user Id.</param>
+        /// <returns>List of OptionDto.</returns>
+        public async Task<IEnumerable<OptionDefaultDto>> GetMemberRolesAsync(int siteId, int userId)
         {
-            return await this.Repository.GetAllResultAsync<RoleDto>(
-                role => new RoleDto
+            return await this.Repository.GetAllResultAsync<OptionDefaultDto>(
+                role => new OptionDefaultDto
                 {
                     Id = role.Id,
-                    LabelEn = role.LabelEn,
-                    LabelFr = role.LabelFr,
-                    LabelEs = role.LabelEs,
+                    Display = role.Code,
                     IsDefault = role.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.IsDefault),
                 },
                 filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.SiteId == siteId && m.UserId == userId));

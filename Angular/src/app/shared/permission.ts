@@ -1,4 +1,7 @@
 export enum Permission {
+  // Begin BIADemo
+  Hangfire_Access = 'Hangfire_Access',
+  // End BIADemo
   Home_Access = 'Home_Access',
   Member_Create = 'Member_Create',
   Member_Delete = 'Member_Delete',
@@ -6,6 +9,11 @@ export enum Permission {
   Member_Read = 'Member_Read',
   Member_Save = 'Member_Save',
   Member_Update = 'Member_Update',
+  Notification_Create = 'Notification_Create',
+  Notification_List_Access = 'Notification_List_Access',
+  Notification_Delete = 'Notification_Delete',
+  Notification_Read = 'Notification_Read',
+  Notification_Update = 'Notification_Update',
   // Begin BIADemo
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',

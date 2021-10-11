@@ -1,12 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription, combineLatest, Observable } from 'rxjs';
-import { filter, first, skip } from 'rxjs/operators';
+import { Subscription, Observable } from 'rxjs';
+import { filter, skip } from 'rxjs/operators';
 import { EnvironmentConfiguration } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
-import { Site } from 'src/app/domains/site/model/site';
-import { getAllSites } from 'src/app/domains/site/store/site.state';
 import { AppState } from 'src/app/store/state';
 import { AuthService } from '../auth.service';
 import { MatomoInjector } from './matomo-injector.service';
@@ -38,14 +36,15 @@ export class BiaMatomoService implements OnDestroy {
   }
 
   private initMatomoInjector() {
-    const sites$ = this.getSites();
     const environmentConfiguration$ = this.getEnvironmentConfiguration();
 
     this.sub.add(
-      combineLatest([sites$, environmentConfiguration$]).subscribe(([sites, environmentConfiguration]) => {
-        const currentsite: Site = sites.filter((x) => x.id === this.authService.getCurrentSiteId())[0];
-        if (environmentConfiguration) {
-          this.matomoInjector.init(environmentConfiguration.urlMatomo, '1', currentsite ?  currentsite.title : '');
+      environmentConfiguration$.subscribe((environmentConfiguration) => {
+        if (environmentConfiguration && environmentConfiguration.urlMatomo && environmentConfiguration.urlMatomo != undefined) {
+          this.matomoInjector.init(
+            environmentConfiguration.urlMatomo, 
+            this.authService.getCurrentSiteId().toString(), 
+            this.authService.getAdditionalInfos().userData.currentSiteTitle);
         }
       })
     );
@@ -65,12 +64,6 @@ export class BiaMatomoService implements OnDestroy {
     );
   }
 
-  private getSites(): Observable<Site[]> {
-    return this.store.select(getAllSites).pipe(
-      filter((sites: Site[]) => sites && sites.length > 0),
-      first()
-    );
-  }
   private getEnvironmentConfiguration(): Observable<EnvironmentConfiguration | null> {
     return this.store.select(getEnvironmentConfiguration).pipe(filter((envConf) => !!envConf));
   }

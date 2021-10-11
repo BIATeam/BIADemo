@@ -2,17 +2,17 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
+
 namespace BIA.Net.Core.Domain
 {
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Specification;
+    using Microsoft.EntityFrameworkCore;
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
     /// The helpers for specifications.
@@ -64,16 +64,10 @@ namespace BIA.Net.Core.Domain
                     }
 
 
-                    Type type = expression.ReturnType;
-
-
                     matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                         expression,
                         value["matchMode"].ToString(),
-                        value["value"].ToString(),
-                        type);
-
-
+                        value["value"].ToString());
 
                     if (isGlobal)
                     {
@@ -120,7 +114,8 @@ namespace BIA.Net.Core.Domain
         /// <returns>The expression created dynamically.</returns>
         private static Expression<Func<TEntity, bool>>
             LazyDynamicFilterExpression<TEntity>(
-                LambdaExpression expression, string criteria, string value, Type valueType)
+                LambdaExpression expression, string criteria, string value)
+                    where TEntity : class
         {
             ConstantExpression valueExpression;
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
@@ -130,44 +125,64 @@ namespace BIA.Net.Core.Domain
             Expression binaryExpression;
             var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 
-            object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
-
             switch (criteria.ToLower())
             {
                 case "gt":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.GreaterThan(expressionBody, valueExpression);
-                    break;
-
                 case "lt":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.LessThan(expressionBody, valueExpression);
-                    break;
-
                 case "equals":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.Equal(expressionBody, valueExpression);
-                    break;
-
                 case "lte":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.LessThanOrEqual(expressionBody, valueExpression);
-                    break;
-
                 case "gte":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.GreaterThanOrEqual(expressionBody, valueExpression);
+                case "notequals":
+                    try 
+                    {
+                        //object valueFormated = AsType(value, expressionBody.Type);
+                        object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
+                        switch (criteria.ToLower())
+                        {
+                            case "gt":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.GreaterThan(expressionBody, valueExpression);
+                                break;
+
+                            case "lt":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.LessThan(expressionBody, valueExpression);
+                                break;
+
+                            case "equals":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.Equal(expressionBody, valueExpression);
+                                break;
+
+                            case "lte":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.LessThanOrEqual(expressionBody, valueExpression);
+                                break;
+
+                            case "gte":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.GreaterThanOrEqual(expressionBody, valueExpression);
+                                break;
+
+                            case "notequals":
+                                valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
+                                binaryExpression = Expression.NotEqual(expressionBody, valueExpression);
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException(nameof(criteria), criteria, null);
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        return new FalseSpecification<TEntity>().SatisfiedBy();
+                    }
                     break;
 
-                case "notequals":
-                    valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
-                    binaryExpression = Expression.NotEqual(expressionBody, valueExpression);
-                    break;
 
                 case "contains":
-                    if (IsCollectionType(valueType))
+                    if (IsCollectionType(expressionBody.Type))
                     {
-                        valueExpression = Expression.Constant(valueFormated);
+                        valueExpression = Expression.Constant(value);
                         method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         ParameterExpression pe = Expression.Parameter(typeof(string), "a");
                         var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
@@ -177,7 +192,7 @@ namespace BIA.Net.Core.Domain
                     }
                     else
                     {
-                        valueExpression = Expression.Constant(valueFormated);
+                        valueExpression = Expression.Constant(value);
                         method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
                         if (expressionBody.Type != typeof(string))
                         {
@@ -187,10 +202,33 @@ namespace BIA.Net.Core.Domain
                         binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
                     }
 
+                    // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
+                    // if (IsCollectionType(valueType))
+                    // {
+                    //    valueExpression = Expression.Constant(valueFormated);
+                    //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
+                    //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+                    //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+                    //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+
+                    //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
+                    // }
+                    // else
+                    // {
+                    //    if (expressionBody.Type != typeof(string))
+                    //    {
+                    //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+                    //    }
+
+                    //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
+                    //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
+                    //        expressionBody, Expression.Constant($"%{valueFormated}%"));
+                    // }
+
                     break;
 
                 case "startswith":
-                    valueExpression = Expression.Constant(valueFormated);
+                    valueExpression = Expression.Constant(value);
                     method = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
                     if (expressionBody.Type != typeof(string))
                     {
@@ -201,7 +239,7 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "endswith":
-                    valueExpression = Expression.Constant(valueFormated);
+                    valueExpression = Expression.Constant(value);
                     method = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
                     if (expressionBody.Type != typeof(string))
                     {

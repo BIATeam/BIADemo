@@ -4,8 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
-    using Hangfire.Dashboard;
     using System.Net;
+    using Hangfire.Dashboard;
     using TheBIADevCompany.BIADemo.Application.User;
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// </summary>
         private readonly IUserAppService userAppService;
 
-        private readonly string userRight;
+        private readonly string userPermission;
 
         private readonly bool authorizeAllLocal;
 
@@ -27,11 +27,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// </summary>
         /// <param name="userAppService">Service to get user right.</param>
         /// <param name="authorizeAllLocal">True if local connection authorize all user.</param>
-        /// <param name="userRight">right to use.</param>
-        public HangfireAuthorizationFilter(IUserAppService userAppService, bool authorizeAllLocal, string userRight)
+        /// <param name="userPermission">right to use.</param>
+        public HangfireAuthorizationFilter(IUserAppService userAppService, bool authorizeAllLocal, string userPermission)
         {
             this.userAppService = userAppService;
-            this.userRight = userRight;
+            this.userPermission = userPermission;
             this.authorizeAllLocal = authorizeAllLocal;
         }
 
@@ -52,10 +52,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 
             if (httpContext.User.Identity.IsAuthenticated)
             {
+#pragma warning disable CA1416 // Validate platform compatibility
                 var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
+#pragma warning restore CA1416 // Validate platform compatibility
                 var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(sid).Result;
-                var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
-                return userMainRights.Contains(this.userRight);
+                var userMainPermissions = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
+                return userMainPermissions.Contains(this.userPermission);
             }
             else
             {

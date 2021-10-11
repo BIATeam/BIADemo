@@ -1,11 +1,8 @@
-import { MemberRole } from './member-role';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Member extends BaseDto {
-  userId: number;
-  userFirstName: string;
-  userLastName: string;
-  userLogin: string;
+  user: OptionDto;
+  roles: OptionDto[];
   siteId: number;
-  roles: MemberRole[];
 }

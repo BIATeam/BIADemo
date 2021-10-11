@@ -2,7 +2,8 @@
   "BiaNet": {
     "Environment": {
       "Type": "PRD",
-      "UrlMatomo": "https://matomo.the-shared-tools-domain-name.bia/"
+      // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
+      "UrlMatomo": "https://matomo.the-shared-tools-domain-name.bia/matomo(torename)"
     },
     "ApiFeatures": {
       "HubForClients": {

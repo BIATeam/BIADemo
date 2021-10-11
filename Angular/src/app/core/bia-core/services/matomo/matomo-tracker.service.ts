@@ -41,7 +41,6 @@ export class MatomoTracker {
    * @param title Title of the document.
    */
   setDocumentTitle(title: string): void {
-    console.log('setDocumentTitle ' + title);
     window._paq.push(['setDocumentTitle', title]);
   }
 
@@ -51,7 +50,15 @@ export class MatomoTracker {
    * @param url URL to be reported for the page.
    */
   setCustomUrl(url: string): void {
-    console.log('setCustomUrl ' + url);
     window._paq.push(['setCustomUrl', url]);
+  }
+  
+  /**
+   * Track a downloaded file.
+   *
+   * @param description The description of the file downloaded.
+   */
+  trackDownload(description: string): void {
+    window._paq.push(['trackLink', window.location.href + ' - ' + description, 'download']);
   }
 }

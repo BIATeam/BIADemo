@@ -4,7 +4,6 @@
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using BIA.Net.Core.WorkerService.Features.ClientForHub;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -14,6 +13,7 @@
     using Hangfire.PostgreSql;
     using Hangfire.SqlServer;
     using Hangfire.Dashboard;
+    using BIA.Net.Core.Common.Features.ClientForHub;
 
     /// <summary>
     /// Add the standard service.
@@ -83,15 +83,15 @@
             // Client for hub
             if (biaNetSection?.WorkerFeatures?.ClientForHub?.IsActive == true)
             {
-                options.ClientForHub.Activate(biaNetSection.WorkerFeatures.ClientForHub.SignalRUrl);
+                ClientForHubOptions.Activate(biaNetSection.WorkerFeatures.ClientForHub.SignalRUrl);
             }
-            if (options.ClientForHub.IsActive)
+            /*if (ClientForHubOptions.IsActive)
             {
                 services.AddTransient<IHostedService, ClientForHubService>(provider =>
                 {
                     return new ClientForHubService(options.ClientForHub);
                 });
-            }
+            }*/
 
             // Hangfire Server
             if (biaNetSection?.WorkerFeatures?.HangfireServer?.IsActive == true)

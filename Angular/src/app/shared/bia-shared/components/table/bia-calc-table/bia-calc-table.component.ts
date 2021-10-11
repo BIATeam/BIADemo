@@ -35,7 +35,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService
   ) {
-    super(authService);
+    super(authService, translateService);
     this.initForm();
   }
 

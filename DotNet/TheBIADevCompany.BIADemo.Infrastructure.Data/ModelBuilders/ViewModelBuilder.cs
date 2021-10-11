@@ -35,6 +35,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<View>().Property(m => m.Description).HasMaxLength(500);
             modelBuilder.Entity<View>().Property(m => m.Preference).IsRequired();
             modelBuilder.Entity<View>().Property(m => m.ViewType).IsRequired();
+            modelBuilder.Entity<View>().HasData(new View
+            {
+                Id = -1, // the System view use negative Id. Warning verify that this id is never use for view in your project.
+                ViewType = 0,
+                TableId = "notificationsGrid",
+                Name = "default",
+                Preference = "{\"first\":0,\"rows\":10,\"sortField\":\"createdDate\",\"sortOrder\":-1,\"columnOrder\":[\"title\",\"description\",\"type\",\"read\",\"createdDate\",\"createdBy\"],\"selection\":[],\"filters\":{}}",
+            });
         }
 
         /// <summary>

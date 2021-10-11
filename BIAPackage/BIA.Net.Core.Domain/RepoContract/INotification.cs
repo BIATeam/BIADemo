@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using BIA.Net.Core.Domain.Dto.Notification;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -21,5 +22,8 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="ccs">The CCS.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null);
+
+        Task CreateNotification(NotificationDto notification);
+
     }
 }

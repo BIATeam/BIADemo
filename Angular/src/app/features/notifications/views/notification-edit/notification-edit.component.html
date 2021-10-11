@@ -1,0 +1,10 @@
+<app-notification-form 
+    [notification]="notificationService.notification$ | async" 
+    [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
+    [permissionOptions]="notificationOptionsService.permissionOptions$ | async"
+    [userOptions]="notificationOptionsService.userOptions$ | async"
+    [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-notification-form>
+<bia-spinner *ngIf="notificationService.loading$ | async" [overlay]="true"></bia-spinner>

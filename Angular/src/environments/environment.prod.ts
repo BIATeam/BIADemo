@@ -2,7 +2,8 @@ import {NgxLoggerLevel} from 'ngx-logger';
 
 export const environment = {
   helpUrl: '',
-  reportUrl: '',
+  reportUrl: 'toto',
+  enableNotifications: true,
   apiUrl: '../WebApi/api',
   hubUrl: '../WebApi/HubForClients',
   urlAuth: '/api/Auth',
@@ -15,7 +16,7 @@ export const environment = {
   production: true,
   appTitle: 'BIADemo',
   companyName: 'TheBIADevCompany',
-  version: '1.4.1',
+  version: '1.4.2',
   logging: {
     conf: {
       serverLoggingUrl: '../WebApi/api/logs',

@@ -17,7 +17,7 @@ export function reducers(state: PlaneTypeOptionsState | undefined, action: Actio
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getPlanesTypesState = createFeatureSelector<PlaneTypeOptionsState>('domain-planes-types');
+export const getPlanesTypesState = createFeatureSelector<PlaneTypeOptionsState>('domain-plane-type-options');
 
 export const getPlaneTypeOptionsEntitiesState = createSelector(
   getPlanesTypesState,

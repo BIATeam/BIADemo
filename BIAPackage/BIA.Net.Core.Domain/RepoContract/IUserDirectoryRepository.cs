@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="usersFromDirectory">The users list.</param>
         /// <param name="roleLabel">Label of the role.</param>
-        Task<string> AddUsersInGroup(IEnumerable<IUserFromDirectory> usersFromDirectory, string roleLabel);
+        Task<List<string>> AddUsersInGroup(IEnumerable<IUserFromDirectory> usersFromDirectory, string roleLabel);
 
         /// <summary>
         /// Remove a user in a group of the Ldap.

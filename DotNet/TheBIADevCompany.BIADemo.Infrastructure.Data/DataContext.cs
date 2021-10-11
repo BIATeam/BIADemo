@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
@@ -57,6 +58,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<View> Views { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Role DBSet.
+        /// </summary>
+        public DbSet<Notification> Notifications { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Role DBSet.
+        /// </summary>
+        public DbSet<NotificationType> NotificationTypes { get; set; }
+
         // Begin BIADemo
 
         /// <summary>
@@ -84,6 +95,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
+            NotificationModelBuilder.CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);

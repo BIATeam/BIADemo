@@ -22,6 +22,16 @@ namespace BIA.Net.Core.Common
             = new(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
+        /// Adds the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="expression">The expression.</param>
+        public void Add(string key, TElem elem)
+        {
+            this.internalDictionary.Add(key, elem);
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="TElem"/> with the specified key.
         /// </summary>
         /// <value>The <see cref="TElem"/>.</value>

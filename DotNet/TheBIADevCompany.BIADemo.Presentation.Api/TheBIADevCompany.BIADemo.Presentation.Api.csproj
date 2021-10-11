@@ -8,10 +8,15 @@
     <Copyright>TheBIADevCompany</Copyright>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <ANCMPreConfiguredForIIS>true</ANCMPreConfiguredForIIS>
+    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UseHubForClientInPlane|AnyCPU'">
+    <DefineConstants>TRACE;UseHubForClientInPlane</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Presentation.Api" Version="3.4.0" />
+    <PackageReference Include="BIA.Net.Core.Presentation.Api" Version="3.4.2" />
     <PackageReference Include="Hangfire" Version="1.7.24" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />

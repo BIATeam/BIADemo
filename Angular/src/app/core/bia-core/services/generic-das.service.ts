@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { DateHelperService } from './date-helper.service';
+import { MatomoTracker } from './matomo/matomo-tracker.service';
 
 export interface HttpOptions {
   headers?:
@@ -27,10 +28,12 @@ export interface HttpOptions {
 export abstract class GenericDas {
   public http: HttpClient;
   public route: string;
+  private matomoTracker: MatomoTracker;
 
   constructor(injector: Injector, endpoint: string) {
     this.http = injector.get<HttpClient>(HttpClient);
     this.route = GenericDas.buildRoute(endpoint);
+    this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
   }
 
   public static buildRoute(endpoint: string): string {
@@ -108,6 +111,7 @@ export abstract class GenericDas {
   }
 
   getItemFile(event: LazyLoadEvent, endpoint: string = 'csv'): Observable<any> {
+    this.matomoTracker.trackDownload('Export ' + endpoint);
     return this.http.post(`${this.route}${endpoint}`, event, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')

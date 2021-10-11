@@ -9,9 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
-import { Site } from 'src/app/domains/site/model/site';
 import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
-import { Role } from 'src/app/domains/role/model/role';
+import { UserData } from '../../../model/auth-info';
 
 @Component({
   selector: 'bia-classic-layout',
@@ -34,10 +33,9 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() companyName = 'BIA';
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
-  @Input() sites: Site;
-  @Input() siteId: number;
-  @Input() roles: Role[];
-  @Input() roleId: number;
+  @Input() enableNotifications?: boolean;
+  @Input() userData: UserData |null;
+
   @Input() environmentType: EnvironmentType;
 
   @Output() siteChange = new EventEmitter<number>();

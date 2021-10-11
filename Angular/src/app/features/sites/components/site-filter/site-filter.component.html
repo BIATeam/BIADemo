@@ -9,12 +9,12 @@
         <p-autoComplete
         [multiple]="false"
         [(ngModel)]="userSelected"
-        [suggestions]="users"
+        [suggestions]="userOptions"
         (completeMethod)="onSearchUsers($event)"
         [size]="30"
         [minLength]="2"
         placeholder="{{ 'site.selectUser' | translate }}"
-        field="displayName"
+        field="display"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
       ></p-autoComplete>

@@ -1,4 +1,5 @@
 ﻿using BIA.Net.Core.Common.Configuration.CommonFeature;
+using BIA.Net.Core.Common.Configuration.WorkerFeature;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,11 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Gets or sets the HubForClients feature configuration.
         /// </summary>
         public HubForClientsConfiguration HubForClients { get; set; }
+
+        /// Gets or sets the HubForClients feature configuration.
+        /// </summary>
+        public ClientForHubConfiguration ClientForHub { get; set; }
+
         /// <summary>
         /// Gets or sets the DelegateJobToWorker feature configuration.
         /// </summary>

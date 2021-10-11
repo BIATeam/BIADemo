@@ -65,13 +65,13 @@ export class PlanesIndexComponent implements OnInit {
   ngOnInit() {
     this.initTableConfiguration();
     this.setPermissions();
-    this.planes$ = this.store.select(getAllPlanes).pipe();
-    this.totalCount$ = this.store.select(getPlanesTotalCount).pipe();
-    this.loading$ = this.store.select(getPlaneLoadingGetAll).pipe();
+    this.planes$ = this.store.select(getAllPlanes);
+    this.totalCount$ = this.store.select(getPlanesTotalCount);
+    this.loading$ = this.store.select(getPlaneLoadingGetAll);
 
-    const airportOptions$ = this.store.select(getAllAirportOptions).pipe();
+    const airportOptions$ = this.store.select(getAllAirportOptions);
     this.store.dispatch(loadAllAirportOptions());
-    const planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions).pipe();
+    const planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
     this.store.dispatch(loadAllPlaneTypeOptions());
 
     this.dictOptionDtos$ = combineLatest([planeTypeOptions$, airportOptions$]).pipe(

@@ -177,6 +177,9 @@ Write-Host "RemoveFolder src\app\features\planes-calc"
 RemoveFolder -path 'src\app\features\planes-calc'
 Write-Host "RemoveFolder src\app\features\airports"
 RemoveFolder -path 'src\app\features\airports'
+Write-Host "RemoveFolder src\app\features\hangfire"
+RemoveFolder -path 'src\app\features\hangfire'
+
 Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
 Write-Host "RemoveFolder src\app\domains\plane-type-option"

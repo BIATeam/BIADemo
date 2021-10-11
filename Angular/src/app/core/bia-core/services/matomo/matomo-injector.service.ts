@@ -30,19 +30,20 @@ export class MatomoInjector {
    */
   init(url: string, siteId: string, siteName?: string) {
     console.log('MatomoInjector siteName:' + siteName);
+    window._paq.push(["setRequestMethod", "POST"]);
     window._paq.push(['trackPageView']);
     window._paq.push(['enableLinkTracking']);
     (() => {
-      window._paq.push(['setTrackerUrl', url + 'matomo.php']);
-      window._paq.push(['setSiteId', '1']);
+      window._paq.push(['setTrackerUrl', url + '.php']);
+      window._paq.push(['setSiteId', siteId]);
       window._paq.push(['setCustomDimension', 1, siteName]);
       const d = document,
         g = d.createElement('script'),
         s = d.getElementsByTagName('script')[0];
       g.type = 'text/javascript';
       g.async = true;
-      g.src = url + 'matomo.js';
-      // g.src = 'http://localhost:4200/assets/bia/matomo/matomo.js';
+      g.src = url + '.js';
+      //g.src = './assets/bia/matomo/matomo.js'; blocked by uBlock
       if (s.parentNode) {
         s.parentNode.insertBefore(g, s);
       }

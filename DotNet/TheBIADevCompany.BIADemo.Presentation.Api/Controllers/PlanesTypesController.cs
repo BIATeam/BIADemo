@@ -2,7 +2,7 @@
 // <copyright file="PlanesTypesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlaneType
+// #define UseHubForClientInPlaneType
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.RepoContract;
 #if UseHubForClientInPlaneType
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
 #endif
@@ -39,22 +40,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly IPlaneTypeAppService planeTypeService;
 
 #if UseHubForClientInPlaneType
-        private readonly IHubContext<HubForClients> hubForClients;
+        private readonly IClientForHubRepository clientForHubService;
 #endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesTypesController"/> class.
         /// </summary>
         /// <param name="planeTypeService">The plane application service.</param>
-        /// <param name="hubForClients">The hub for client.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInPlaneType
-        public PlanesTypesController(IPlaneTypeAppService planeTypeService, IHubContext<HubForClients> hubForClients)
+        public PlanesTypesController(IPlaneTypeAppService planeTypeService, IClientForHubRepository clientForHubService)
 #else
-        public PlanesController(IPlaneAppService planeService)
+        public PlanesTypesController(IPlaneTypeAppService planeTypeService)
 #endif
         {
 #if UseHubForClientInPlaneType
-            this.hubForClients = hubForClients;
+            this.clientForHubService = clientForHubService;
 #endif
             this.planeTypeService = planeTypeService;
         }
@@ -141,7 +142,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.planeTypeService.AddAsync(dto);
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage("planetypes", "refresh -planetypes", string.Empty);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -178,7 +179,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.planeTypeService.UpdateAsync(dto);
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -218,7 +219,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeTypeService.RemoveAsync(id);
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -258,7 +259,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 }
 
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -295,7 +296,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 await this.planeTypeService.SaveAsync(dtoList);
 #if UseHubForClientInPlaneType
-                await this.hubForClients.Clients.All.SendAsync("refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }

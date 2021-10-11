@@ -49,16 +49,6 @@ export const getAirportLoadingGetAll = createSelector(
   (state) => state.loadingGetAll
 );
 
-export const getDisplayEditDialog = createSelector(
-  getAirportsEntitiesState,
-  (state) => state.displayEditDialog
-);
-
-export const getDisplayNewDialog = createSelector(
-  getAirportsEntitiesState,
-  (state) => state.displayNewDialog
-);
-
 export const { selectAll: getAllAirports } = fromAirports.airportsAdapter.getSelectors(getAirportsEntitiesState);
 
 export const getAirportById = (id: number) =>

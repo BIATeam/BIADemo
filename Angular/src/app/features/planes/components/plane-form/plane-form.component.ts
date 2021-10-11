@@ -9,6 +9,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Plane } from '../../model/plane';
@@ -30,7 +31,8 @@ export class PlaneFormComponent implements OnInit, OnChanges {
 
   form: FormGroup;
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: FormBuilder,
+    private authService: AuthService) {
     this.initForm();
   }
 
@@ -58,6 +60,7 @@ export class PlaneFormComponent implements OnInit, OnChanges {
       connectingAirports: [this.plane.connectingAirports],
       planeType: [this.plane.planeType?.id],
     });
+
   }
 
   onCancel() {
@@ -72,6 +75,9 @@ export class PlaneFormComponent implements OnInit, OnChanges {
       plane.isActive = plane.isActive ? plane.isActive : false;
       plane.connectingAirports = BiaOptionService.Differential(plane.connectingAirports, this.plane?.connectingAirports);
       plane.planeType = BiaOptionService.Clone(plane.planeType);
+
+      // force the parent key => siteId from authService or other Id from 'parent'Service
+      plane.siteId = this.authService.getCurrentSiteId(),
       this.save.emit(plane);
       this.form.reset();
     }

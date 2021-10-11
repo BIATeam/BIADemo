@@ -10,6 +10,8 @@ import {
   loadAllSitesByUserSuccess,
   loadAllSuccess,
   loadSuccess,
+  setDefaultRole,
+  setDefaultRoleSuccess,
   setDefaultSite
 } from './sites-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -85,7 +87,20 @@ export class SitesEffects {
       )
     )
   );
-
+  setDefaultRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setDefaultRole),
+      switchMap(data =>
+        this.memberDas.setDefaultRole(data.id).pipe(
+          map(() => {
+            this.biaMessageService.showUpdateSuccess();
+            return setDefaultRoleSuccess();
+          })
+        )
+      )
+    )
+  );
+  
   constructor(
     private actions$: Actions,
     private siteDas: SiteDas,

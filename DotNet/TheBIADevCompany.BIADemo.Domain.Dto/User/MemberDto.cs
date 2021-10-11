@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used for members.
@@ -15,22 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public int UserId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user first name.
-        /// </summary>
-        public string UserFirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user last name.
-        /// </summary>
-        public string UserLastName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user login.
-        /// </summary>
-        public string UserLogin { get; set; }
+        public OptionDto User { get; set; }
 
         /// <summary>
         /// Gets or sets the site id.
@@ -40,6 +26,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         /// <summary>
         /// Gets or sets the role.
         /// </summary>
-        public IEnumerable<MemberRoleDto> Roles { get; set; }
+        public IEnumerable<OptionDto> Roles { get; set; }
     }
 }

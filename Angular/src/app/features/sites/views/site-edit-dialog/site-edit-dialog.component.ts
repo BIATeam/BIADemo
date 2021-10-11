@@ -21,8 +21,8 @@ export class SiteEditDialogComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.loading$ = this.store.select(getSiteLoadingGet).pipe();
-    this.site$ = this.store.select(getCurrentSite).pipe();
+    this.loading$ = this.store.select(getSiteLoadingGet);
+    this.site$ = this.store.select(getCurrentSite);
     this.sub.add(
       this.store
         .select(getDisplayEditDialog)

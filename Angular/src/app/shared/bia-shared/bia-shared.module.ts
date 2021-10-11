@@ -78,15 +78,18 @@ import { ViewSiteTableComponent } from './features/view/components/view-site-tab
 import { ViewUserTableComponent } from './features/view/components/view-user-table/view-user-table.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './features/view/store/view.state';
+import { reducers as notificationReducers } from '../../domains/notification/store/notification.state';
 import { EffectsModule } from '@ngrx/effects';
 import { ViewsEffects } from './features/view/store/views-effects';
 import { ViewFormComponent } from './features/view/components/view-form/view-form.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
-import { TranslateRoleLabelPipe } from './pipes/translate-role-label.pipe';
 import { PopupLayoutComponent } from './components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
 import { PluckPipe } from './pipes/pluck.pipe';
 import { JoinPipe } from './pipes/join.pipe';
+import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
+import { TranslateFieldsPipe } from './pipes/translate-fields.pipe';
+import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -135,7 +138,7 @@ const PRIMENG_MODULES = [
   ToggleButtonModule,
   ToolbarModule,
   TooltipModule,
-  FileUploadModule
+  FileUploadModule,
 ];
 
 const MODULES = [
@@ -175,21 +178,26 @@ const VIEW_COMPONENTS = [
 ];
 
 const PIPES = [
-  TranslateRoleLabelPipe,
   PluckPipe,
-  JoinPipe
+  JoinPipe,
+  TranslateFieldsPipe,
+  TranslateFieldPipe,
 ];
 
 const VIEW_IMPORTS = [StoreModule.forFeature('views', reducers), EffectsModule.forFeature([ViewsEffects])];
+const NOTIFICATION_IMPORTS = [
+  StoreModule.forFeature('domain-notifications', notificationReducers),
+  EffectsModule.forFeature([NotificationsEffects])
+];
 
 const SERVICES = [MessageService];
 
 @NgModule({
-  imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS],
+  imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS],
   declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
   exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...PIPES],
   providers: [...SERVICES]
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
-export class BiaSharedModule {}
+export class BiaSharedModule { }

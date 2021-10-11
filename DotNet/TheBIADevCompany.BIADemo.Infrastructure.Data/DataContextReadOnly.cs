@@ -1,4 +1,4 @@
-// <copyright file="DataContext.cs" company="TheBIADevCompany">
+// <copyright file="DataContextReadOnly.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     public class DataContextReadOnly : DataContext
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContext"/> class.
+        /// Initializes a new instance of the <see cref="DataContextReadOnly"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>

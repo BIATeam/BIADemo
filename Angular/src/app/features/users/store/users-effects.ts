@@ -23,6 +23,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getLastLazyLoadEvent } from './user.state';
 import { UserFromADDas } from 'src/app/domains/user-from-AD/services/user-from-AD-das.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -167,7 +168,20 @@ export class UsersEffects {
           }),
           catchError((err) => {
             if (err.status === 303) {
-              this.biaMessageService.showErrorDetail(err.error);
+              let errorMessage = '';
+              if (err.error) {
+                err.error.forEach((element: string) => {
+                  const currentError = `${this.translateService.instant('user.cannotAddMember')}`.replace(
+                    '${login}',
+                    element
+                  );
+                  if (errorMessage !== '') {
+                    errorMessage += '\n';
+                  }
+                  errorMessage += currentError;
+                });
+              }
+              this.biaMessageService.showErrorDetail(errorMessage);
             } else {
               this.biaMessageService.showError();
             }
@@ -183,6 +197,7 @@ export class UsersEffects {
     private userDas: UserDas,
     private userFromADDas: UserFromADDas,
     private biaMessageService: BiaMessageService,
+    private translateService: TranslateService,
     private store: Store<AppState>
   ) {}
 }

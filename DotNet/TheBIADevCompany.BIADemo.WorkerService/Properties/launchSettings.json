@@ -1,33 +1,28 @@
 {
   "iisSettings": {
     "windowsAuthentication": true,
-    "anonymousAuthentication": false,
+    "anonymousAuthentication": true,
     "iis": {
       "applicationUrl": "http://localhost/BIADemo/WorkerService",
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:54322/",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:54452/",
+      "sslPort": 44393
     }
   },
   "profiles": {
-    "IIS": {
-      "commandName": "IIS",
-      "launchBrowser": true,
-      "launchUrl": "hangfire",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "ancmHostingModel": "InProcess"
-    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "hangfire",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "hangfire"
     }
   }
 }
