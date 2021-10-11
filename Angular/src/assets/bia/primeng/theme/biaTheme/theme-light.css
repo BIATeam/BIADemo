@@ -3346,9 +3346,9 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
       outline-offset: 0;
       box-shadow: none; }
     .p-breadcrumb ul li .p-menuitem-link .p-menuitem-text {
-      color: #020f21; }
+      color: rgba(0, 0, 0, 0.87); }
     .p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon {
-      color: #020f21; }
+      color: rgba(0, 0, 0, 0.6); }
   .p-breadcrumb ul li.p-breadcrumb-chevron {
     margin: 0 0.5rem 0 0.5rem;
     color: rgba(0, 0, 0, 0.6); }
