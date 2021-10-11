@@ -28,6 +28,9 @@
     .nav-button {
       text-transform: uppercase;
     }
+    p-menubar {
+      margin-top: 0.5rem;
+    }
   }
 
   .action {
@@ -113,6 +116,10 @@
 .app-full-screen {
   margin-right: 16px;
   margin-left: 8px;
+}
+
+.pi-star-o {
+  padding-left: 0.5rem;
 }
 
 .app-icon-header {

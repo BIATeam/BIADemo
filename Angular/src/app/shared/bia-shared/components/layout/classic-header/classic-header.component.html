@@ -25,19 +25,19 @@
       </p-dropdown>
 
       <i *ngIf="displayRoleList === true && currentRole?.id !== userData.defaultRoleId"
-        class="pi pi-star-border app-icon-header bia-pointer" (click)="onSetDefaultRole()"
+        class="pi pi-star-o  app-icon-header bia-pointer" (click)="onSetDefaultRole()"
         pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
-      <i *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId" class="pi pi-star app-icon-header"></i>
+      <i *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId" class="pi pi-star-o  app-icon-header"></i>
       <p-dropdown *ngIf="displaySiteList === true" [options]="userData.sites" [(ngModel)]="currentSite" optionLabel="display"
         dataKey="id" (onChange)="onSiteChange()"></p-dropdown>
       <i *ngIf="displaySiteList === true && currentSite?.id !== userData.defaultSiteId"
-        class="pi pi-star-border app-icon-header bia-pointer" (click)="onSetDefaultSite()"
+        class="pi pi-star-o  app-icon-header bia-pointer" (click)="onSetDefaultSite()"
         pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
-      <i *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId" class="pi pi-star app-icon-header"></i>
+      <i *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId" class="pi pi-star-o  app-icon-header"></i>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i class="pi pi-refresh app-icon-header bia-pointer" (click)="refresh()"
         pTooltip="{{ 'bia.refresh' | translate }}" tooltipPosition="bottom"></i>
-      <i class="pi pi-fullscreen app-full-screen app-icon-header bia-pointer" (click)="toggleFullscreenMode()"
+      <i class="pi pi-window-maximize app-full-screen app-icon-header bia-pointer" (click)="toggleFullscreenMode()"
         pTooltip="{{ 'bia.fullscreen' | translate }}" tooltipPosition="left"></i>
     </div>
   </div>
@@ -54,7 +54,7 @@
     </ng-template>
   </div>
 </div>
-<i *ngIf="fullscreenMode" class="pi pi-fullscreen-exit fullscreen-exit bia-mat-tiny-fab bia-pointer"
+<i *ngIf="fullscreenMode" class="pi pi-window-minimize fullscreen-exit bia-mat-tiny-fab bia-pointer"
   (click)="toggleFullscreenMode()"></i>
 
 <ng-template #classicMainBar>
@@ -64,7 +64,7 @@
   <div class="action" fxLayoutAlign="space-evenly center">
     <ng-container *ngIf="enableNotifications">
       <div class="notifications">
-        <i class="pi pi-notifications bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}"
+        <i class="pi pi-bell bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}"
           [routerLink]="['/notifications']"></i>
         <ng-container *ngIf="(unreadNotificationCount$ | async) as unreadNotificationCount">
           <div *ngIf="unreadNotificationCount > 0" class="notification-count">
@@ -73,7 +73,7 @@
         </ng-container>
       </div>
     </ng-container>
-    <i *ngIf="reportUrl" class="pi pi-insert-chart bia-mat-tiny-fab bia-pointer"
+    <i *ngIf="reportUrl" class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
       pTooltip="{{ 'bia.report' | translate }}" (click)="openReport()"></i>
     <i *ngIf="helpUrl" class="pi pi-help bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}"
       (click)="openHelp()"></i>

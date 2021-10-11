@@ -3334,8 +3334,8 @@ p-togglebutton.ng-dirty.ng-invalid > .p-togglebutton.p-button {
   border-color: transparent; }
 
 .p-breadcrumb {
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.3);
+  border: 0;
   border-radius: 0;
   padding: 0.75rem; }
   .p-breadcrumb ul li .p-menuitem-link {
