@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Copyright>Copyright © BIA 2021</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.4.2.1</Version>
+    <Version>3.4.2.2</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -15,8 +15,11 @@
 
   <ItemGroup>
     <Compile Remove="Authentication\**" />
+    <Compile Remove="Features\ClientForHub\**" />
     <EmbeddedResource Remove="Authentication\**" />
+    <EmbeddedResource Remove="Features\ClientForHub\**" />
     <None Remove="Authentication\**" />
+    <None Remove="Features\ClientForHub\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,10 +43,6 @@
       <PackagePath></PackagePath>
       <Pack>True</Pack>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\ClientForHub\" />
   </ItemGroup>
 
 </Project>
