@@ -166,7 +166,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             UserInfoDto userInfo = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                try
+                {
+                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                }
+                catch (Exception)
+                {
+                    this.logger.LogWarning("Cannot create user... Probably database is read only...");
+                }
+
                 if (userInfo != null)
                 {
                     try
