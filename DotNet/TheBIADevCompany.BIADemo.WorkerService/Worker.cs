@@ -44,6 +44,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             ILogger<Worker> logger)
         {
             this.Configuration = configuration;
+            this.logger = logger;
             string projectName = configuration["Project:Name"];
 
             try
