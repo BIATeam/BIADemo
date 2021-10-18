@@ -28,9 +28,6 @@
     .nav-button {
       text-transform: uppercase;
     }
-    p-menubar {
-      margin-top: 0.5rem;
-    }
   }
 
   .action {
@@ -43,8 +40,8 @@
 
       .notification-count {
         position: absolute;
-        top: 0;
-        right: 15px;
+        top: 5px;
+        right: -5px;
         z-index: 10;
         color: white;
         background: $biaRed;
@@ -151,7 +148,7 @@
 
   p-megamenu {
     .p-menuitem-link {
-      padding-top: 0.3em;
+      padding-top: 0.45rem!important;
     }
     .p-megamenu-panel {
       width: 10em;
