@@ -3,11 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Begin BIATemplate only
 # Specific config files
 appsettings.*.json
 !appsettings.Example*.json
 bianetconfig.*.json
 !bianetconfig.Example*.json
+# End BIATemplate only
 
 # User-specific files
 *.suo
@@ -140,13 +142,6 @@ _TeamCity*
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml
-
-
-#setting files (only template)
-appsettings.*.json
-bianetconfig.*.json
-!appsettings.Example*.json
-!bianetconfig.Example*.json
 
 # NCrunch
 _NCrunch_*
