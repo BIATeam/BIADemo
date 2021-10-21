@@ -5,30 +5,6 @@ body .p-table .p-table-tbody > tr:nth-child(even) {
   background-color: $biaBgColor;
 }
 
-p-datatable {
-  .p-datatable-tbody {
-    > tr {
-      .p-highlight {
-        background-color: $biaBgRowSelected !important;
-        border-color: $biaBorderRowSelected !important;
-        color: $biaFgTextColor !important;
-      }
-    }
-  }
-  &.p-datatable-striped {
-    .p-datatable-tbody {
-        > tr:nth-child(even) {
-            background: $tableBodyRowEvenBg;
-
-            &.p-highlight {
-                background: $highlightBg;
-                color: $highlightTextColor;
-                border-color: $biaBorderRowSelected !important;
-            }
-        }
-      }
-    }
-}
 p-celleditor {
   .p-inputtext {
     padding:0;

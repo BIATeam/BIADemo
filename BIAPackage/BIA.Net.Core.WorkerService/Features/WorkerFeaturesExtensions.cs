@@ -160,7 +160,10 @@
                 //    /*.RequireAuthorization(HangfirePolicyName)*/;
                 //});
 
-
+                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
+                {
+                    DashboardTitle = () => options.HangfireServer.ServerName,
+                });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
                     Authorization = options.HangfireServer.Authorization
