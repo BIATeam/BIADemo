@@ -117,12 +117,12 @@
     },
     "read": "Lue",
     "createdBy": "Créé par",
-    "notifiedPermissions": "Autorisations notifiés",
+    "notifiedPermissions": "Autorisations notifiées",
     "notifiedUsers": "Utilisateurs notifiés",
     "jData" : "Données en JSON",
     "success": {
-      "deprecated:": "transaltion will be done in database in next version",
-      "title": "Succés envoie de notification",
+      "deprecated:": "translation will be done in database in next version",
+      "title": "Succès envoi de notification",
       "description": "Description à customiser dans les traductions i18n pour chaque feature"
     }
   }
