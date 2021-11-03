@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -137,5 +138,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="users">The users.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
+
+        /// <summary>
+        /// Generates CSV content.
+        /// </summary>
+        /// <param name="filters">Represents the columns and their traductions.</param>
+        /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
+        Task<byte[]> ExportCSV(FileFiltersDto filters);
     }
 }

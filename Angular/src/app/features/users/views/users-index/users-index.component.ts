@@ -12,6 +12,9 @@ import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { UserDas } from 'src/app/domains/user/services/user-das.service';
+import { TranslateService } from '@ngx-translate/core';
+import FileSaver from 'file-saver';
 
 @Component({
   selector: 'app-users-index',
@@ -33,6 +36,7 @@ export class UsersIndexComponent implements OnInit {
   canSync = false;
   canDelete = false;
   canAdd = false;
+  canExport = false;
   viewPreference: string;
 
   tableConfiguration: BiaListConfig = {
@@ -51,8 +55,10 @@ export class UsersIndexComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private userDas: UserDas,
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
     this.setPermissions();
@@ -70,7 +76,7 @@ export class UsersIndexComponent implements OnInit {
     }
   }
 
-onSelectedElementsChanged(planesTypes: User[]) {
+  onSelectedElementsChanged(planesTypes: User[]) {
     this.selectedUsers = planesTypes;
   }
 
@@ -104,9 +110,19 @@ onSelectedElementsChanged(planesTypes: User[]) {
     this.viewPreference = viewPreference;
   }
 
+  onExportCSV() {
+    const columns: { [key: string]: string } = {};
+    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    const customEvent: any = { columns: columns, ...this.userListComponent.getLazyLoadMetadata() };
+    this.userDas.getFile(customEvent).subscribe((data) => {
+      FileSaver.saveAs(data, this.translateService.instant('app.users') + '.csv');
+    });
+  }
+
   private setPermissions() {
     this.canSync = this.authService.hasPermission(Permission.User_Sync);
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);
+    this.canExport = this.authService.hasPermission(Permission.User_List_Access);
   }
 }

@@ -8,10 +8,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -267,6 +270,47 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 await this.GetCreateUserInfoAsync(user.Login);
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<byte[]> ExportCSV(FileFiltersDto filters)
+        {
+            // We ignore paging to return all records
+            filters.First = 0;
+            filters.Rows = 0;
+
+            var queryFilter = new LazyLoadDto
+            {
+                Filters = filters.Filters,
+                GlobalFilter = filters.GlobalFilter,
+                SortField = filters.SortField,
+                SortOrder = filters.SortOrder,
+            };
+
+            var query = await this.GetRangeAsync(filters: queryFilter);
+
+            List<object[]> records = query.Results.Select(user => new object[]
+            {
+                user.LastName,
+                user.FirstName,
+                user.Login,
+            }).ToList();
+
+            List<string> columnHeaders = null;
+            if (filters is FileFiltersDto fileFilters)
+            {
+                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
+            }
+
+            StringBuilder csv = new StringBuilder();
+            records.ForEach(line =>
+            {
+                csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+            });
+
+            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
+            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            return buffer;
         }
     }
 }

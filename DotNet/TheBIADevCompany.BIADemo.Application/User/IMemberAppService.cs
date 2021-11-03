@@ -35,5 +35,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="roleId">The role identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task SetDefaultRoleAsync(int roleId);
+
+        /// <summary>
+        /// Generates CSV content.
+        /// </summary>
+        /// <param name="filters">Represents the columns and their traductions.</param>
+        /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
+        Task<byte[]> ExportCSV(MemberFileFilterDto filters);
     }
 }
