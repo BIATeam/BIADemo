@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 // enable windows authentication on IISExpress ("windowsAuthentication": true,
                 // "anonymousAuthentication": true,)
                 app.UseCors(x => x
-                    .WithOrigins(this.biaNetSection.Jwt.Audience)
+                    .WithOrigins(this.biaNetSection.Jwt.Audience.Split(","))
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
