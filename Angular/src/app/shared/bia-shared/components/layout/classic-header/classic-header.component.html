@@ -27,13 +27,13 @@
       <i *ngIf="displayRoleList === true && currentRole?.id !== userData.defaultRoleId"
         class="pi pi-star-o  app-icon-header bia-pointer" (click)="onSetDefaultRole()"
         pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
-      <i *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId" class="pi pi-star-o  app-icon-header"></i>
+      <i *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId" class="pi pi-star app-icon-header"></i>
       <p-dropdown *ngIf="displaySiteList === true" [options]="userData.sites" [(ngModel)]="currentSite" optionLabel="display"
         dataKey="id" (onChange)="onSiteChange()"></p-dropdown>
       <i *ngIf="displaySiteList === true && currentSite?.id !== userData.defaultSiteId"
         class="pi pi-star-o  app-icon-header bia-pointer" (click)="onSetDefaultSite()"
         pTooltip="{{ 'bia.defineDefault' | translate }}" tooltipPosition="bottom" placeholder="Top"></i>
-      <i *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId" class="pi pi-star-o  app-icon-header"></i>
+      <i *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId" class="pi pi-star app-icon-header"></i>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i class="pi pi-refresh app-icon-header bia-pointer" (click)="refresh()"
         pTooltip="{{ 'bia.refresh' | translate }}" tooltipPosition="bottom"></i>

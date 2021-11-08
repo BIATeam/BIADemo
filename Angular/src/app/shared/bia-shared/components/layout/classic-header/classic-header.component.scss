@@ -179,9 +179,10 @@
     .p-dropdown {
       min-width: 12.5em;
       background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
+      padding-bottom: 2px;
       .p-dropdown-label {
-        padding-top: 9px;
-        padding-bottom: 3px;
+        padding-top: 2px;
+        padding-bottom: 2px;
         padding-left: 2px;
       }
       background-color: transparent;
