@@ -19,7 +19,7 @@ export class ViewSiteTableComponent implements OnChanges {
   @Input() canAssign = false;
 
   get viewSelected(): View {
-    if (this.table) {
+    if (this.table && this.table.selection) {
       return this.table.selection as View;
     }
     return {} as View;

@@ -1,8 +1,10 @@
-body .p-table .p-table-tbody > tr {
+body .p-datatable .p-datatable-tbody > tr {
   background: $biaBgHoverColor;
+  border: 1px solid #d7d7d7;
 }
-body .p-table .p-table-tbody > tr:nth-child(even) {
+body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
   background-color: $biaBgColor;
+  border: 1px solid #d7d7d7;
 }
 
 p-celleditor {

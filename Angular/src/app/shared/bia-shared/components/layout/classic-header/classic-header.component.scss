@@ -40,8 +40,8 @@
 
       .notification-count {
         position: absolute;
-        top: 5px;
-        right: -5px;
+        top: -4px;
+        right: 12px;
         z-index: 10;
         color: white;
         background: $biaRed;
@@ -148,7 +148,8 @@
 
   p-megamenu {
     .p-menuitem-link {
-      padding-top: 0.45rem!important;
+      // padding-top: 0.45rem!important;
+      padding-top: 0.3em!important;
     }
     .p-megamenu-panel {
       width: 10em;
@@ -200,7 +201,5 @@
     }
     
   }
- 
-
 }
 

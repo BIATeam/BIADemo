@@ -41,14 +41,13 @@ bia-classic-layout {
       url('~/assets/bia/bg-default.jpg');
   }
 
-  
-  &.no-margin{
+  &.no-margin {
     section.content {
       display: flex;
       flex-flow: column;
       bia-classic-page-layout {
         align-items: stretch;
-    
+
         div.mat-elevation-z2 {
           margin-top: 0;
           max-width: 100% !important;
@@ -100,13 +99,14 @@ bia-table-controller {
 }
 
 // For view
-app-view-list
-{
-  .pi pi-star-border.ng-star-inserted {
-    font-size: 1.1em;
+app-view-list {
+  .pi-star-o {
+    &.ng-star-inserted {
+      font-size: 0.8em;
+      padding-left: 2px;
+    }
   }
   .pi pi-edit {
     font-size: 1.3em;
   }
 }
-
