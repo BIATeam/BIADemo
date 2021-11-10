@@ -34,7 +34,7 @@ import { SiteService } from 'src/app/features/sites/services/site.service';
 })
 export class MembersIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
-  useSignalR = true;
+  useSignalR = false;
   useView = false;
 
   @HostBinding('class.bia-flex') flex = true;

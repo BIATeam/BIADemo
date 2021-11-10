@@ -218,8 +218,45 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
         public async Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
         {
-            List<string> errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
-            await this.SynchronizeWithADAsync();
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
+            List<string> errors = new List<string>();
+            if (ldapGroups != null && ldapGroups.Count > 0)
+            {
+                errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                await this.SynchronizeWithADAsync();
+            }
+            else
+            {
+                foreach (var userFormDirectoryDto in users)
+                {
+                    try
+                    {
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
+
+                        if (foundUser == null)
+                        {
+                            var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(userFormDirectoryDto.Sid);
+
+                            // Create the missing user
+                            User user = new User();
+                            UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
+                            this.Repository.Add(user);
+                        }
+                        else if (!foundUser.IsActive)
+                        {
+                            foundUser.IsActive = true;
+                            this.Repository.Update(foundUser);
+                        }
+
+                        await this.Repository.UnitOfWork.CommitAsync();
+                    }
+                    catch (Exception e)
+                    {
+                        errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
+                    }
+                }
+            }
+
             return errors;
         }
 

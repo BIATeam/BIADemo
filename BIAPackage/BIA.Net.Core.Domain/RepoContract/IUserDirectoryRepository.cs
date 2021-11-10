@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using BIA.Net.Core.Common.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -41,6 +42,13 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="role">The role label.</param>
         /// <returns>The list of users.</returns>
         Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel);
+
+        /// <summary>
+        /// Return the list of Ldap Groups corresponding to the role.
+        /// </summary>
+        /// <param name="roleLabel">the role.</param>
+        /// <returns>The list of Ldap Groups.</returns>
+        List<LdapGroup> GetLdapGroupsForRole(string roleLabel);
 
         /// <summary>
         /// Return the roles from Ad and fake

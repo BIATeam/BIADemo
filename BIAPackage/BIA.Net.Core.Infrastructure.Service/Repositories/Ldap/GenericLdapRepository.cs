@@ -309,15 +309,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
         {
-            Role role = this.configuration.Roles.Where(w => w.Type == "Ldap" && w.Label == roleLabel).FirstOrDefault();
-            if (role != null)
+            var userLdapGroups = this.GetLdapGroupsForRole(roleLabel);
+           // Role role = this.configuration.Roles.Where(w => w.Type == "Ldap" && w.Label == roleLabel).FirstOrDefault();
+            if (userLdapGroups != null && userLdapGroups.Count() >0)
             {
                 LdapGroup ldapGroup;
                 PrincipalContext context;
-                ldapGroup = role.LdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
+                ldapGroup = userLdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
                 if (ldapGroup == null)
                 {
-                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + role.Label);
+                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + roleLabel);
                     return null;
                 }
                 context = PrepareDomainContext(ldapGroup.Domain).Result;
@@ -480,21 +481,27 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
         public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
         {
-            var roleUser = this.configuration.Roles.Where(w =>( w.Type == "Ldap" || w.Type == "Synchro") && w.Label == role).FirstOrDefault();
+            List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
             List<string> listUsersSid = new List<string>();
-            if (roleUser.LdapGroups == null || roleUser.LdapGroups.Count() == 0)
+            if (userLdapGroups == null || userLdapGroups.Count() == 0)
             {
                 return listUsersSid;
             }
 
             List<string> listTreatedGroupSid = new List<string>();
             var resolveTasks = new List<Task>();
-            foreach (var ldapGroup in roleUser.LdapGroups)
+            foreach (var ldapGroup in userLdapGroups)
             {
                 resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup));
             }
             await Task.WhenAll(resolveTasks);
             return listUsersSid;
+        }
+
+        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
+        public List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
+        {
+            return this.configuration.Roles.Where(w => (w.Type == "Ldap" || w.Type == "Synchro") && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
         }
 
         private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)

@@ -1,7 +1,7 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInMember
+// #define UseHubForClientInMember
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
