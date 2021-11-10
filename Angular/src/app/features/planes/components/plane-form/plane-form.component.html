@@ -20,8 +20,9 @@
           formControlName="firstFlightDate"
           placeholder="&nbsp;"
           [showButtonBar]="true"
+          appendTo="body"
           dateFormat="yy-mm-dd"
-          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
         ></p-calendar>
         <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightDate' | translate }}</label>
       </span>
@@ -35,7 +36,7 @@
           showTime="true"
           [timeOnly]="true"
           placeholder="&nbsp;"
-          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
         ></p-calendar>
         <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightTime' | translate }}</label>
       </span>
@@ -51,7 +52,8 @@
           placeholder="DateTime"
           dateFormat="yy-mm-dd"
           placeholder="&nbsp;"
-          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
+          appendTo="body"
         ></p-calendar>
         <label>{{ 'plane.lastFlightDate' | translate }}</label>
       </span>

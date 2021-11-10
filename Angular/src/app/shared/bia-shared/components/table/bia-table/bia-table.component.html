@@ -36,7 +36,7 @@
         </th>
       </ng-container>
     </tr>
-    <tr *ngIf="showColSearch">
+    <tr *ngIf="showColSearch" class="searchTR">
       <th *ngIf="canSelectElement"></th>
       <th *ngFor="let col of columns" [ngSwitch]="col.field">
         <span *ngIf="col.isSearchable === true" class="p-float-label">

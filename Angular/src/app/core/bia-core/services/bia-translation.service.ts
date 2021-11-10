@@ -1,5 +1,6 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { PrimeNGConfig } from 'primeng/api';
 // import * as deepmerge from 'deepmerge';
 import { forkJoin, Observable, of, BehaviorSubject } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
@@ -44,7 +45,7 @@ export class BiaTranslationService {
     .asObservable()
     .pipe(map((x) => this.getDateFormatByCulture(x)));
 
-  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string) {}
+  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string, private primeNgConfig: PrimeNGConfig) {}
 
   getLangSelected(): string | null {
     return localStorage.getItem(STORAGE_LANG_KEY);
@@ -90,6 +91,7 @@ export class BiaTranslationService {
         localStorage.setItem(STORAGE_LANG_KEY, culture);
       } catch {}
     });
+    this.translate.get('primeng').subscribe(res => this.primeNgConfig.setTranslation(res));
   }
 
   registerLazyTranslateService(translateService: TranslateService) {
