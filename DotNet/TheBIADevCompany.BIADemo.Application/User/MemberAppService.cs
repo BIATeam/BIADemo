@@ -9,7 +9,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
@@ -91,6 +93,44 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     await this.Repository.UnitOfWork.CommitAsync();
                 }
             }
+        }
+
+        /// <inheritdoc cref="IMemberAppService.ExportCSV(MemberFilterDto)"/>
+        public async Task<byte[]> ExportCSV(MemberFileFilterDto filters)
+        {
+            // We ignore paging to return all records
+            filters.First = 0;
+            filters.Rows = 0;
+
+            var queryFilter = new MemberFilterDto
+            {
+                Filters = filters.Filters,
+                SiteId = filters.SiteId,
+            };
+
+            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(queryFilter));
+
+            List<object[]> records = query.Results.Select(member => new object[]
+            {
+                member.User.Display,
+                string.Join("; ", member.Roles.Select(r => r.Display)),
+            }).ToList();
+
+            List<string> columnHeaders = null;
+            if (filters is MemberFileFilterDto fileFilters)
+            {
+                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
+            }
+
+            StringBuilder csv = new StringBuilder();
+            records.ForEach(line =>
+                    {
+                        csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                    });
+
+            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
+            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            return buffer;
         }
     }
 }

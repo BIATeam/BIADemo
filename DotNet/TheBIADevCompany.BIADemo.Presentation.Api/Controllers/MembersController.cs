@@ -379,5 +379,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 return this.StatusCode(500, "Internal server error");
             }
         }
+
+        /// <summary>
+        /// Generates a csv file according to the filters.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csv")]
+        [Authorize(Roles = Rights.Members.ListAccess)]
+        public virtual async Task<IActionResult> GetFileCSV([FromBody] MemberFileFilterDto filters)
+        {
+            var buffer = await this.memberService.ExportCSV(filters);
+            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
+            return this.File(buffer, "text/csv;charset=utf-8", fileName);
+        }
     }
 }

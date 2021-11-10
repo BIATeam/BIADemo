@@ -4,11 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -83,23 +85,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             var results = await this.userService.GetAllADUserAsync(filter, ldapName);
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
-            return this.Ok(results);
-        }
-
-        /// <summary>
-        /// Gets all users in AD using the filter.
-        /// </summary>
-        /// <param name="filter">Used to filter on lastname, firstname or login.</param>
-        /// <returns>The list of users.</returns>
-        [HttpGet("ldapDomains")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Users.ListAD)]
-        public async Task<IActionResult> GetAllLdapUsersDomains()
-        {
-            var results = await this.userService.GetAllLdapUsersDomains();
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count.ToString());
 
             return this.Ok(results);
         }
@@ -217,6 +202,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             await this.userService.SynchronizeWithADAsync(fullSynchro);
 
             return this.Ok();
+        }
+
+        /// <summary>
+        /// Generates a csv file according to the filters.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csv")]
+        [Authorize(Roles = Rights.Users.ListAccess)]
+        public virtual async Task<IActionResult> GetFile([FromBody] FileFiltersDto filters)
+        {
+            byte[] buffer = await this.userService.ExportCSV(filters);
+            string fileName = $"Users-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
+            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", fileName);
         }
     }
 }
