@@ -233,20 +233,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
 
-                        if (foundUser == null)
-                        {
-                            var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(userFormDirectoryDto.Sid);
-
-                            // Create the missing user
-                            User user = new User();
-                            UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                            this.Repository.Add(user);
-                        }
-                        else if (!foundUser.IsActive)
-                        {
-                            foundUser.IsActive = true;
-                            this.Repository.Update(foundUser);
-                        }
+                        await this.userSynchronizeDomainService.AddOrActiveUserFromAD(userFormDirectoryDto.Sid, foundUser);
 
                         await this.Repository.UnitOfWork.CommitAsync();
                     }
@@ -263,19 +250,28 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
+            List<string> errors = new List<string>();
             var user = await this.Repository.GetEntityAsync(id: id);
-
-            if (user == null)
+            if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                return "User not found in database";
+                if (user == null)
+                {
+                    return "User not found in database";
+                }
+
+                List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
+
+                await this.SynchronizeWithADAsync();
+                if (notRemovedUser.Count != 0)
+                {
+                    return "Not able to remove user. (Probably define in sub group)";
+                }
             }
-
-            List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
-
-            await this.SynchronizeWithADAsync();
-            if (notRemovedUser.Count != 0)
+            else
             {
-                return "Not able to remove user. (Probably define in sub group)";
+                this.userSynchronizeDomainService.DeactivateUser(user);
+                await this.Repository.UnitOfWork.CommitAsync();
             }
 
             return string.Empty;

@@ -72,8 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                     if (!usersSidInDirectory.Contains(user.Sid) && user.IsActive)
                     {
-                        user.IsActive = false;
-                        this.repository.Update(user);
+                        this.DeactivateUser(user);
                     }
 
                     if (fullSynchro && usersSidInDirectory.Contains(user.Sid))
@@ -84,31 +83,48 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                 await Task.WhenAll(resynchronizeTasks);
 
-                var usersToAdd = new List<User>();
-
                 foreach (string sid in usersSidInDirectory)
                 {
                     var foundUser = users.FirstOrDefault(a => a.Sid == sid);
 
-                    if (foundUser == null)
-                    {
-                        var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
-
-                        // Create the missing user
-                        User user = new User();
-                        UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                        usersToAdd.Add(user);
-                    }
-                    else if (!foundUser.IsActive)
-                    {
-                        foundUser.IsActive = true;
-                        this.repository.Update(foundUser);
-                    }
+                    await this.AddOrActiveUserFromAD(sid, foundUser);
                 }
 
-                this.repository.AddRange(usersToAdd);
-
                 await this.repository.UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Deactivaye a user.
+        /// </summary>
+        /// <param name="user">The user to deactivate.</param>
+        public void DeactivateUser(User user)
+        {
+            user.IsActive = false;
+            this.repository.Update(user);
+        }
+
+        /// <summary>
+        /// Add or active User from AD
+        /// </summary>
+        /// <param name="sid">the sid in Directory.</param>
+        /// <param name="foundUser">the User if exist in repository.</param>
+        /// <returns>The async task.</returns>
+        public async Task AddOrActiveUserFromAD(string sid, User foundUser)
+        {
+            if (foundUser == null)
+            {
+                var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
+
+                // Create the missing user
+                User user = new User();
+                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
+                this.repository.Add(user);
+            }
+            else if (!foundUser.IsActive)
+            {
+                foundUser.IsActive = true;
+                this.repository.Update(foundUser);
             }
         }
 
