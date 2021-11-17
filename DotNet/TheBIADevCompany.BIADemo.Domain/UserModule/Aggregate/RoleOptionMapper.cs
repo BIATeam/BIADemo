@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The mapper used for plane.
+    /// The mapper used for role option.
     /// </summary>
     public class RoleOptionMapper : BaseMapper<OptionDto, Role>
     {

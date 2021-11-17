@@ -12,19 +12,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
-    /// The API controller used to manage planes.
+    /// The API controller used to manage notification type.
     /// </summary>
     public class NotificationTypesController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The notification type application service.
         /// </summary>
         private readonly INotificationTypeDomainService notificationTypeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypesController"/> class.
         /// </summary>
-        /// <param name="notificationTypeService">The plane application service.</param>
+        /// <param name="notificationTypeService">The notification type application service.</param>
         /// <param name="hubForClients">The hub for client.</param>
         public NotificationTypesController(INotificationTypeDomainService notificationTypeService)
         {

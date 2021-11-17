@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The interface defining the application service for plane.
+    /// The interface defining the application service for notification type.
     /// </summary>
     public interface INotificationTypeDomainService
     {

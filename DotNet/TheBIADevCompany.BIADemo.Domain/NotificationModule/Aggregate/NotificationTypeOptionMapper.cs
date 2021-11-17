@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The mapper used for plane.
+    /// The mapper used for notification type.
     /// </summary>
     public class NotificationTypeOptionMapper : BaseMapper<OptionDto, NotificationType>
     {

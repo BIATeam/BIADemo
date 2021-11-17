@@ -80,10 +80,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin" });
+            modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            // Begin BIADemo
+            if (false)
+            {
+            // End BIADemo
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
 
             // Begin BIADemo
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot" });
+            }
+
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot", Label = "Pilot" });
 
             // End BIADemo
         }

@@ -9,7 +9,7 @@
 
 		<Copyright>Copyright © TheBIADevCompany 2021</Copyright>
 
-		<Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
+		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -17,13 +17,6 @@
 		<DebugType>portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
 		<DefineConstants>TRACE</DefineConstants>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UseHubForClientInPlane|AnyCPU'">
-	  <OutputPath />
-	  <DebugType>portable</DebugType>
-	  <DebugSymbols>true</DebugSymbols>
-	  <DefineConstants>TRACE</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

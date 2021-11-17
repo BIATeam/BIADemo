@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
-    /// The API controller used to manage planes.
+    /// The API controller used to manage hangfire.
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {

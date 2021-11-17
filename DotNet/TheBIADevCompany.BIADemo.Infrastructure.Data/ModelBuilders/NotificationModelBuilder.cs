@@ -45,12 +45,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateNotificationTypeModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
-            modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "error" });
+            modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
+            modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task", Label ="Task" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info", Label = "Info" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success", Label = "Success" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn", Label = "Warn" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "error", Label = "Error" });
         }
 
         /// <summary>

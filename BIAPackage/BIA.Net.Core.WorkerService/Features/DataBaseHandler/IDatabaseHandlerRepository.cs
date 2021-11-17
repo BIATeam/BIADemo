@@ -1,4 +1,4 @@
-﻿// <copyright file="PlaneHandlerRepository.cs" company="BIA">
+﻿// <copyright file="DatabaseHandlerRepository.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 

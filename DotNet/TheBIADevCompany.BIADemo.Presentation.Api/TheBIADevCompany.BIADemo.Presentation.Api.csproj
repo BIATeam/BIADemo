@@ -8,11 +8,7 @@
     <Copyright>TheBIADevCompany</Copyright>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <ANCMPreConfiguredForIIS>true</ANCMPreConfiguredForIIS>
-    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='UseHubForClientInPlane|AnyCPU'">
-    <DefineConstants>TRACE;UseHubForClientInPlane</DefineConstants>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

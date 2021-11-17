@@ -9,7 +9,7 @@
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <ANCMPreConfiguredForIIS>true</ANCMPreConfiguredForIIS>
     <UserSecretsId>dotnet-TheBIADevCompany.BIADemo.WorkerService-6995F7EB-1398-40C6-9F6D-189FA0F468E9</UserSecretsId>
-    <Configurations>Debug;Release;UseHubForClientInPlane</Configurations>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
