@@ -34,7 +34,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
-  useSignalR = true;
+  useSignalR = false;
   useView = false;
 
   @HostBinding('class.bia-flex') flex = true;
@@ -89,10 +89,6 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.planeListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.planeListComponent.getLazyLoadMetadata() }));
-    }
-
     if (this.useView)
     {
       this.store.dispatch(loadAllView());
@@ -190,7 +186,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('msn', 'plane.msn'),

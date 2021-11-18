@@ -207,7 +207,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var deletedDto = await this.memberService.RemoveAsync(id);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "members", "refresh-members");
 #endif
@@ -243,7 +245,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var deletedDtos = await this.memberService.RemoveAsync(ids);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -283,7 +287,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -387,7 +393,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public virtual async Task<IActionResult> GetFileCSV([FromBody] MemberFileFilterDto filters)
+        public virtual async Task<IActionResult> GetFileCSV([FromBody] MemberFilterDto filters)
         {
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

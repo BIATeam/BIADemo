@@ -12,12 +12,13 @@ import { catchError, switchMap, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { BiaTranslationService } from '../services/bia-translation.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
 
-  constructor(public authService: AuthService) {}
+  constructor(private biaTranslationService: BiaTranslationService, public authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
@@ -58,7 +59,8 @@ export class TokenInterceptor implements HttpInterceptor {
     return request.clone({
       withCredentials: false,
       setHeaders: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
+        'Accept-Language' : this.biaTranslationService.getLangSelected() !== null ? this.biaTranslationService.getLangSelected()! : ""
       }
     });
   }

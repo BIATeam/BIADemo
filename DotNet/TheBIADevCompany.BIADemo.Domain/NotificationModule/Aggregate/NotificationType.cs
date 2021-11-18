@@ -4,8 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 {
-    using BIA.Net.Core.Domain;
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
 
     /// <summary>

@@ -1,4 +1,4 @@
-// <copyright file="Role.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTypeTranslation.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

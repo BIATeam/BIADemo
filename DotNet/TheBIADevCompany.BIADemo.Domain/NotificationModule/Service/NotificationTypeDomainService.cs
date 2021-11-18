@@ -31,7 +31,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <returns>List of OptionDto.</returns>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.Repository.GetAllResultAsync(selectResult: new NotificationTypeOptionMapper().EntityToDto());
+            NotificationTypeOptionMapper mapper = this.InitMapper<OptionDto, NotificationTypeOptionMapper>();
+            return this.Repository.GetAllResultAsync(selectResult: mapper.EntityToDto());
         }
     }
 }

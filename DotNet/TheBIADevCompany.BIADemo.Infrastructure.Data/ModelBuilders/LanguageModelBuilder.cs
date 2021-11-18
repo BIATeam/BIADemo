@@ -1,4 +1,4 @@
-// <copyright file="NotificationModelBuilder.cs" company="TheBIADevCompany">
+// <copyright file="LanguageModelBuilder.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -48,14 +48,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().HasKey(r => r.Id);
             modelBuilder.Entity<RoleTranslation>().Property(r => r.RoleId).IsRequired();
             modelBuilder.Entity<RoleTranslation>().Property(r => r.LanguageId).IsRequired();
+
             // Begin BIADemo
             if (false)
             {
+#pragma warning disable CS0162 // Unreachable code detected
             // End BIADemo
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = 2, Id = 101, Label = "Administrateur du site" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = 3, Id = 102, Label = "Administrador del sitio" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = 4, Id = 103, Label = "Seitenadministrator" });
+
             // Begin BIADemo
+#pragma warning restore CS0162 // Unreachable code detected
             }
 
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = 2, Id = 101, Label = "Administrateur de la compagnie" });

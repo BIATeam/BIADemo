@@ -82,10 +82,6 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.airportListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.airportListComponent.getLazyLoadMetadata() }));
-    }
-
     if (this.useView)
     {
       this.store.dispatch(loadAllView());
@@ -183,7 +179,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('name', 'airport.name'),

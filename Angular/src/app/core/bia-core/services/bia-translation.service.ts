@@ -40,9 +40,10 @@ export class BiaTranslationService {
   private translationsLoaded: { [lang: string]: boolean } = {};
   private lazyTranslateServices: TranslateService[] = [];
   private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getLangSelected());
-  public culture$: Observable<DateFormat> = this.cultureSubject
+  public currentCultureDateFormat$: Observable<DateFormat> = this.cultureSubject
     .asObservable()
     .pipe(map((x) => this.getDateFormatByCulture(x)));
+  public currentCulture$: Observable<string | null> = this.cultureSubject.asObservable();
 
   constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string) {}
 
@@ -63,7 +64,7 @@ export class BiaTranslationService {
   // NOTE: Check if it's still usefull
   loadAndChangeLanguage(lang: string, defaultLang?: string) {
     const culture = lang;
-    this.cultureSubject.next(culture);
+    
     lang = lang.split('-')[0];
     const translationLoaders$ = [];
     const translateServices = [this.translate, ...this.lazyTranslateServices];
@@ -89,6 +90,7 @@ export class BiaTranslationService {
       try {
         localStorage.setItem(STORAGE_LANG_KEY, culture);
       } catch {}
+      this.cultureSubject.next(culture);
     });
   }
 

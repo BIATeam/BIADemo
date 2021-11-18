@@ -81,13 +81,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+
             // Begin BIADemo
             if (false)
             {
+#pragma warning disable CS0162 // Unreachable code detected
             // End BIADemo
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
 
             // Begin BIADemo
+#pragma warning restore CS0162 // Unreachable code detected
             }
 
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });

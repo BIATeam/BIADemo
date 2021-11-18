@@ -127,7 +127,7 @@ export class PlanesTypesIndexComponent implements OnInit {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('title', 'planeType.title'),

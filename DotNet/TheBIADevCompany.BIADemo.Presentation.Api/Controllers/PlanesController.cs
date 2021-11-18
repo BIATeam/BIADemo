@@ -2,8 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlane
-
+// #define UseHubForClientInPlane
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
@@ -35,6 +34,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// <summary>
     /// The API controller used to manage Planes.
     /// </summary>
+ #if !UseHubForClientInPlane
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "UseHubForClientInPlane not set")]
+#endif
     public class PlanesController : BiaControllerBase
     {
         /// <summary>

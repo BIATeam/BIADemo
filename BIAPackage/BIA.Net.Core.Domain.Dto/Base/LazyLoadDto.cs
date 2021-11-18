@@ -38,6 +38,11 @@ namespace BIA.Net.Core.Domain.Dto.Base
         public Dictionary<string, Dictionary<string, object>> Filters { get; set; }
 
         /// <summary>
+        /// Gets or sets the list of columns that are display.
+        /// </summary>
+        public Dictionary<string, string> Columns { get; set; }
+
+        /// <summary>
         /// Gets or sets the global filter.
         /// </summary>
         public object GlobalFilter { get; set; }

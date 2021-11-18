@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -18,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class MemberMapper : BaseMapper<MemberDto, Member>
     {
+
         /// <inheritdoc/>
         public override ExpressionCollection<Member> ExpressionCollection
         {
@@ -26,7 +28,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 return new ExpressionCollection<Member>
                 {
                     { "Id", member => member.Id },
-                    { "Roles", member => member.MemberRoles.Select(x => x.Role.Code).OrderBy(x => x) },
+                    { "Roles", member => member.MemberRoles.Select(x =>
+                        x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label
+                    ).OrderBy(x => x) },
                     { "User", member => member.User.FirstName + " " + member.User.LastName + " (" + member.User.Login + ")" },
                 };
             }
@@ -44,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     Id = entity.User.Id,
                     Display = entity.User.SelectDisplay() + (entity.User.IsActive ? string.Empty : " **Disabled**"),
                 },
-                Roles = entity.MemberRoles.Select(s => new OptionDto { Id = s.RoleId, Display = s.Role.Code }),
+                Roles = entity.MemberRoles.Select(x => new OptionDto { Id = x.RoleId, Display = x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label }),
             };
         }
 

@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
             modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task", Label ="Task" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task", Label = "Task" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info", Label = "Info" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success", Label = "Success" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn", Label = "Warn" });

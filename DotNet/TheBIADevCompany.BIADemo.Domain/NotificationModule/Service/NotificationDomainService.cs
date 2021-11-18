@@ -99,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             if (dto != null)
             {
-                var mapper = new NotificationMapper();
+                NotificationMapper mapper = this.InitMapper<NotificationDto, NotificationMapper>();
 
                 var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
                 if (entity == null)

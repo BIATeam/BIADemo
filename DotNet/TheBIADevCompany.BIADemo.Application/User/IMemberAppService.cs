@@ -41,6 +41,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> ExportCSV(MemberFileFilterDto filters);
+        Task<byte[]> ExportCSV(MemberFilterDto filters);
     }
 }

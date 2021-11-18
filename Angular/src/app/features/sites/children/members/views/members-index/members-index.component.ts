@@ -83,6 +83,13 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions();
     }
+
+    //Reload dat
+    let isinit = true;
+    this.biaTranslationService.currentCulture$.subscribe(event => {
+        if (isinit) isinit = false;
+        else this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
+      })
   }
 
   ngOnDestroy() {
@@ -90,9 +97,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.memberListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.memberListComponent.getLazyLoadMetadata() }));
-    }
 
     if (this.useView)
     {
@@ -185,7 +189,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+    const customEvent: any = { siteId: + this.siteService.currentSiteId, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
     this.memberDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });
@@ -198,16 +202,14 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           Object.assign(new PrimeTableColumn('user', 'member.user'), {
             type: PropType.OneToMany
           }),
           Object.assign(new PrimeTableColumn('roles', 'member.rolesForSite'), {
-            type: PropType.ManyToMany,
-            translateKey: 'role.',
-            searchPlaceholder: 'Site_Admin|Pilot|...'
+            type: PropType.ManyToMany
           })
         ]
       };

@@ -33,11 +33,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        /// <param name="queryCustomizer">The query customizer.</param>
-        public MemberAppService(ITGenericRepository<Member> repository, IPrincipal principal/*, IMemberQueryCustomizer queryCustomizer*/)
+        /// <param name="userContext">The user context.</param>
+        public MemberAppService(ITGenericRepository<Member> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+            this.userContext = userContext;
 
             // Include already add with the mapper MemberMapper
             // this.Repository.QueryCustomizer = queryCustomizer
@@ -96,19 +97,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.ExportCSV(MemberFilterDto)"/>
-        public async Task<byte[]> ExportCSV(MemberFileFilterDto filters)
+        public async Task<byte[]> ExportCSV(MemberFilterDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
             filters.Rows = 0;
 
-            var queryFilter = new MemberFilterDto
-            {
-                Filters = filters.Filters,
-                SiteId = filters.SiteId,
-            };
-
-            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(queryFilter));
+            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
 
             List<object[]> records = query.Results.Select(member => new object[]
             {
@@ -117,9 +112,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is MemberFileFilterDto fileFilters)
+            if (filters.Columns != null && filters.Columns.Count > 0)
             {
-                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
+                columnHeaders = filters.Columns.Select(x => x.Value).ToList();
             }
 
             StringBuilder csv = new StringBuilder();
