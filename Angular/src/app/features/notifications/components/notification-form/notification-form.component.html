@@ -26,12 +26,6 @@
           datakey="id"
           [style]="{ width: '100%' }"
         >
-          <ng-template let-item pTemplate="item">
-            {{ item?.value | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
-          </ng-template>
-          <ng-template let-selectedItem pTemplate="selectedItem">
-            {{ selectedItem?.value  | translateField : 'display' : 'notification.type.' : translateService.currentLang }}
-          </ng-template>
         </p-dropdown>
         <label><span class="bia-star-mandatory">*</span>{{ 'notification.type.title' | translate }}</label>
       </span>
@@ -85,22 +79,6 @@
           [virtualScroll]="true"
           [style]="{ width: '100%' }"
         >
-          <ng-template let-values pTemplate="selectedItems">
-            <ng-container *ngIf="values">
-              <div *ngIf="values.length <= 0">&nbsp;</div>
-              <div *ngIf="values.length <= 3">
-                {{values | translateFields : 'display' : 'permission.' : translateService.currentLang}}
-              </div>
-              <div *ngIf="values.length > 3">
-                {{values.length}} items selected
-              </div>
-            </ng-container>
-          </ng-template>
-
-          <ng-template let-item pTemplate="item">
-            {{ item?.value | translateField : 'display' : 'permission.' : translateService.currentLang }}
-          </ng-template>
-
         </p-multiSelect>
         <label>{{ 'notification.notifiedPermissions' | translate }}</label>
       </span>

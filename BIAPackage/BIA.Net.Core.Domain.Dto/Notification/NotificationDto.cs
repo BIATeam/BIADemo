@@ -64,5 +64,9 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// </summary>
         public string JData { get; set; }
 
+        /// <summary>
+        /// Gets ot sets the notification translations
+        /// </summary>
+        public ICollection<NotificationTranslationDto> NotificationTranslations;
     }
 }

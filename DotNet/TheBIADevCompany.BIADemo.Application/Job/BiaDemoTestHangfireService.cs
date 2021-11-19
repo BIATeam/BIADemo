@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
     /// Sample class to use a hangfire task.
@@ -79,15 +80,21 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             {
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
-                Description = "Description and title are in english translation in i18n is deprecated. It will be done in database in next version.",
+                Description = "Review the plane with id 30.",
                 SiteId = siteId,
-                Title = "Long task run successfully",
+                Title = "Review plane",
+                Type = new OptionDto { Id = (int)NotificationType.Task },
                 NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                NotificationTranslations = new List<NotificationTranslationDto>
+                {
+                    new NotificationTranslationDto() { LanguageId = LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "Avión de revisión", Description = "Revise el avión con id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
+                },
             };
 
-            notification.Type = new OptionDto { Id = (int)NotificationType.Task };
             await this.notificationAppService.AddAsync(notification);
         }
 

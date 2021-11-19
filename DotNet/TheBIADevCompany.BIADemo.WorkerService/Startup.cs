@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Principal;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.WorkerService.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal() { });
+            services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);

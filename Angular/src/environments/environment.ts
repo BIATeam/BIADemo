@@ -24,5 +24,5 @@ export const environment = {
       serverLogLevel: NgxLoggerLevel.ERROR
     }
   },
-  singleRoleMode: false
+  singleRoleMode: true
 };

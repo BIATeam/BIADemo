@@ -52,13 +52,16 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <param name="principal">The claims principal.</param>
         /// <param name="clientForHubService">Client for hub.</param>
         /// <param name="queryCustomizer">Query customizer to include permission at update.</param>
+        /// <param name="userContext">The user context.</param>
         public NotificationDomainService(
             ITGenericRepository<Notification> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,
-            INotificationQueryCustomizer queryCustomizer)
+            INotificationQueryCustomizer queryCustomizer,
+            UserContext userContext)
             : base(repository)
         {
+            this.userContext = userContext;
             this.Repository.QueryCustomizer = queryCustomizer;
             var userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.clientForHubService = clientForHubService;

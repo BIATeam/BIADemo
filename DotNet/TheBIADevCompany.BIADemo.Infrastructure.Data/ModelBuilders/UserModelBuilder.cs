@@ -107,10 +107,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Permission>().HasKey(r => r.Id);
             modelBuilder.Entity<Permission>().Property(r => r.Code).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin" });
+            modelBuilder.Entity<Permission>().Property(r => r.Label).IsRequired().HasMaxLength(50);
 
             // Begin BIADemo
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot" });
+            if (false)
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+            // End BIADemo
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
+
+            // Begin BIADemo
+#pragma warning restore CS0162 // Unreachable code detected
+            }
+
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot", Label = "Pilot" });
 
             // End BIADemo
         }

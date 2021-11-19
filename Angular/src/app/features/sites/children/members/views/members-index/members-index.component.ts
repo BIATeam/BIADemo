@@ -2,7 +2,7 @@ import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/c
 import { Store } from '@ngrx/store';
 import { getAllMembers, getMembersTotalCount, getMemberLoadingGetAll } from '../../store/member.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/members-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '../../model/member';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -36,9 +36,11 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
   useSignalR = false;
   useView = false;
+  useRefreshAtLanguageChange = true;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) memberListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -74,6 +76,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.sub = new Subscription();
+
     this.initTableConfiguration();
     this.setPermissions();
     this.members$ = this.store.select(getAllMembers);
@@ -84,15 +88,23 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
       this.memberOptionsService.loadAllOptions();
     }
 
-    //Reload dat
-    let isinit = true;
-    this.biaTranslationService.currentCulture$.subscribe(event => {
-        if (isinit) isinit = false;
-        else this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
-      })
+    if (this.useRefreshAtLanguageChange)
+    {
+      //Reload data if language change.
+      let isinit = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            if (isinit) isinit = false;
+            else this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
+          })
+      )
+    }
   }
 
   ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.OnHide();
   }
 

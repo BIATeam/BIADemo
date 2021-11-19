@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20211119100228_Translation for notification")]
+    partial class Translationfornotification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,81 +562,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.PermissionTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Label")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("PermissionId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("PermissionTranslation");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 101,
-                            Label = "Administrateur de la compagnie",
-                            LanguageId = 2,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Label = "Administrador de la aerolínea",
-                            LanguageId = 3,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Label = "Fluglinienadministrator",
-                            LanguageId = 4,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Label = "Pilote",
-                            LanguageId = 2,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Label = "Piloto",
-                            LanguageId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            Id = 203,
-                            Label = "Pilot",
-                            LanguageId = 4,
-                            PermissionId = 2
-                        });
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
                 {
                     b.Property<int>("Id")
@@ -776,11 +703,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -794,14 +716,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Code = "Site_Admin",
-                            Label = "Airline administrator"
+                            Code = "Site_Admin"
                         },
                         new
                         {
                             Id = 2,
-                            Code = "Pilot",
-                            Label = "Pilot"
+                            Code = "Pilot"
                         });
                 });
 
@@ -1183,25 +1103,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.PermissionTranslation", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", "Permission")
-                        .WithMany("PermissionTranslations")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Permission");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.Language", "Language")
@@ -1336,8 +1237,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", b =>
                 {
                     b.Navigation("NotificationPermissions");
-
-                    b.Navigation("PermissionTranslations");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>

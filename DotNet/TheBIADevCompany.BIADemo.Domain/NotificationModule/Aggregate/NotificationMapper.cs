@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Option;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
 
     /// <summary>
     /// The mapper used for user.
@@ -27,13 +28,16 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             {
                 return new ExpressionCollection<Notification>
                 {
-                    { "Title", notification => notification.Title },
-                    { "Description", notification => notification.Description },
+                    { "Title", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
+                    { "Description", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
-                    { "Type", notification => notification.Type.Code },
+                    { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { "Read", notification => notification.Read },
                     { "CreatedBy", notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
-                    { "NotifiedPermissions", notification => notification.NotifiedPermissions.Select(x => x.Permission.Code).OrderBy(x => x) },
+                    {
+                        "NotifiedPermissions", notification => notification.NotifiedPermissions.Select(x =>
+                        x.Permission.PermissionTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Permission.Label).OrderBy(x => x)
+                    },
                     { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
@@ -61,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 entity.SiteId = dto.SiteId;
             }
 
-            // Mapping relationship *-* : ICollection<Airports>
+            // Mapping relationship *-* : ICollection<OptionDto> NotifiedUsers
             if (dto.NotifiedUsers?.Any() == true)
             {
                 foreach (var userDto in dto.NotifiedUsers.Where(x => x.DtoState == DtoState.Deleted))
@@ -81,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 }
             }
 
-            // Mapping relationship *-* : ICollection<Airports>
+            // Mapping relationship *-* : ICollection<OptionDto> NotifiedPermissions
             if (dto.NotifiedPermissions?.Any() == true)
             {
                 foreach (var roleDto in dto.NotifiedPermissions.Where(x => x.DtoState == DtoState.Deleted))
@@ -100,6 +104,36 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { PermissionId = roleDto.Id, NotificationId = dto.Id });
                 }
             }
+
+            // Mapping relationship *-1 : ICollection<NotificationTranslationDto> NotificationTranslation
+            if (dto.NotificationTranslations?.Any() == true)
+            {
+                foreach (var notificationTranslationDto in dto.NotificationTranslations.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var notificationTranslation = entity.NotificationTranslations.FirstOrDefault(x => x.LanguageId == notificationTranslationDto.LanguageId && x.NotificationId == dto.Id);
+                    if (notificationTranslation != null)
+                    {
+                        entity.NotificationTranslations.Remove(notificationTranslation);
+                    }
+                }
+
+                foreach (var notificationTranslationDto in dto.NotificationTranslations.Where(x => x.DtoState == DtoState.Modified))
+                {
+                    var notificationTranslation = entity.NotificationTranslations.FirstOrDefault(x => x.LanguageId == notificationTranslationDto.LanguageId && x.NotificationId == dto.Id);
+                    if (notificationTranslation != null)
+                    {
+                        notificationTranslation.Title = notificationTranslationDto.Title;
+                        notificationTranslation.Description = notificationTranslationDto.Description;
+                    }
+                }
+
+                entity.NotificationTranslations = entity.NotificationTranslations ?? new List<NotificationTranslation>();
+                foreach (var notificationTranslationDto in dto.NotificationTranslations.Where(w => w.DtoState == DtoState.Added))
+                {
+                    entity.NotificationTranslations.Add(new NotificationTranslation
+                    { LanguageId = notificationTranslationDto.LanguageId, NotificationId = dto.Id, Title = notificationTranslationDto.Title, Description = notificationTranslationDto.Description });
+                }
+            }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
@@ -108,6 +142,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             return entity => new NotificationDto
             {
                 Id = entity.Id,
+                Title = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
+                Description = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
                 CreatedDate = entity.CreatedDate,
 
                 CreatedBy = entity.CreatedBy != null ? new OptionDto
@@ -117,23 +153,21 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 }
                 : null,
 
-                Description = entity.Description,
                 Read = entity.Read,
-                Title = entity.Title,
                 Type = new OptionDto
                 {
                     Id = entity.TypeId,
-                    Display = entity.Type.Code,
+                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
                 },
 
                 JData = entity.JData,
 
                 SiteId = entity.SiteId,
 
-                NotifiedPermissions = entity.NotifiedPermissions.Select(nr => new OptionDto
+                NotifiedPermissions = entity.NotifiedPermissions.Select(np => new OptionDto
                 {
-                    Id = nr.Permission.Id,
-                    Display = nr.Permission.Code,
+                    Id = np.Permission.Id,
+                    Display = np.Permission.PermissionTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? np.Permission.Label,
                 }).ToList(),
 
                 NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto

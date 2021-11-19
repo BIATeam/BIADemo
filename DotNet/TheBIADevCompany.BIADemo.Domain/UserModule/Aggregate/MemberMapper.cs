@@ -19,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class MemberMapper : BaseMapper<MemberDto, Member>
     {
-
         /// <inheritdoc/>
         public override ExpressionCollection<Member> ExpressionCollection
         {
@@ -28,9 +27,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 return new ExpressionCollection<Member>
                 {
                     { "Id", member => member.Id },
-                    { "Roles", member => member.MemberRoles.Select(x =>
-                        x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label
-                    ).OrderBy(x => x) },
+                    {
+                        "Roles", member => member.MemberRoles.Select(x =>
+                        x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label).OrderBy(x => x)
+                    },
                     { "User", member => member.User.FirstName + " " + member.User.LastName + " (" + member.User.Login + ")" },
                 };
             }
