@@ -84,7 +84,11 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(getPlaneLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
-      this.planeOptionsService.loadAllOptions();
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            this.planeOptionsService.loadAllOptions();
+        })
+      )
     }
     if (this.useRefreshAtLanguageChange)
     {

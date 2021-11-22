@@ -22,17 +22,14 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public notificationService: NotificationService,
     private layoutService: BiaClassicLayoutService,
-    private biaTranslationService: BiaTranslationService) { }
+    private biaTranslationService: BiaTranslationService,
+  ) { }
 
   ngOnInit() {
-    this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
-    //Reload data if language change.
-    let isinit = true;
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(event => {
-          if (isinit) isinit = false;
-          else this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
-        })
+          this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
+      })
     )
 
     this.sub.add

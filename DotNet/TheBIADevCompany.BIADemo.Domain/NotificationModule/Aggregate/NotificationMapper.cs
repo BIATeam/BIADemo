@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
@@ -28,8 +29,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             {
                 return new ExpressionCollection<Notification>
                 {
-                    { "Title", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
-                    { "Description", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
+                    { "Title", notification => notification.Title },
+                    { "Description", notification => notification.Description },
+                    { "TitleTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
+                    { "DescriptionTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
                     { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { "Read", notification => notification.Read },
@@ -137,45 +140,102 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Notification, NotificationDto>> EntityToDto()
+        public override Expression<Func<Notification, NotificationDto>> EntityToDto(string mapperMode)
         {
-            return entity => new NotificationDto
+            if (mapperMode == MapperMode.Item)
             {
-                Id = entity.Id,
-                Title = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
-                Description = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
-                CreatedDate = entity.CreatedDate,
-
-                CreatedBy = entity.CreatedBy != null ? new OptionDto
+                return entity => new NotificationDto
                 {
-                    Id = entity.CreatedBy.Id,
-                    Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
-                }
-                : null,
+                    Id = entity.Id,
+                    Title = entity.Title,
+                    Description = entity.Description,
+                    TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
+                    DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
 
-                Read = entity.Read,
-                Type = new OptionDto
+                    CreatedDate = entity.CreatedDate,
+
+                    CreatedBy = entity.CreatedBy != null ? new OptionDto
+                    {
+                        Id = entity.CreatedBy.Id,
+                        Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
+                    } : null,
+
+                    Read = entity.Read,
+                    Type = new OptionDto
+                    {
+                        Id = entity.TypeId,
+                        Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                    },
+
+                    JData = entity.JData,
+
+                    SiteId = entity.SiteId,
+
+                    NotifiedPermissions = entity.NotifiedPermissions.Select(np => new OptionDto
+                    {
+                        Id = np.Permission.Id,
+                        Display = np.Permission.PermissionTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? np.Permission.Label,
+                    }).ToList(),
+
+                    NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
+                    {
+                        Id = nu.User.Id,
+                        Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
+                    }).ToList(),
+
+                    NotificationTranslations = entity.NotificationTranslations.Select(nt => new NotificationTranslationDto
+                    {
+                        Id = nt.Id,
+                        LanguageId = nt.LanguageId,
+                        Title = nt.Title,
+                        Description = nt.Description,
+                    }).ToList(),
+                };
+            }
+            else
+            {
+                return entity => new NotificationDto
                 {
-                    Id = entity.TypeId,
-                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
-                },
+                    Id = entity.Id,
+                    Title = entity.Title,
+                    Description = entity.Description,
+                    TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
+                    DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
 
-                JData = entity.JData,
+                    CreatedDate = entity.CreatedDate,
 
-                SiteId = entity.SiteId,
+                    CreatedBy = entity.CreatedBy != null ? new OptionDto
+                    {
+                        Id = entity.CreatedBy.Id,
+                        Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
+                    } : null,
 
-                NotifiedPermissions = entity.NotifiedPermissions.Select(np => new OptionDto
-                {
-                    Id = np.Permission.Id,
-                    Display = np.Permission.PermissionTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? np.Permission.Label,
-                }).ToList(),
+                    Read = entity.Read,
+                    Type = new OptionDto
+                    {
+                        Id = entity.TypeId,
+                        Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                    },
 
-                NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
-                {
-                    Id = nu.User.Id,
-                    Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
-                }).ToList(),
-            };
+                    JData = entity.JData,
+
+                    SiteId = entity.SiteId,
+
+                    NotifiedPermissions = entity.NotifiedPermissions.Select(np => new OptionDto
+                    {
+                        Id = np.Permission.Id,
+                        Display = np.Permission.PermissionTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? np.Permission.Label,
+                    }).ToList(),
+
+                    NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
+                    {
+                        Id = nu.User.Id,
+                        Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
+                    }).ToList(),
+                };
+            }
+
+
         }
 
         /// <inheritdoc/>

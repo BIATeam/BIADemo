@@ -88,7 +88,11 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
-      this.notificationOptionsService.loadAllOptions();
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            this.notificationOptionsService.loadAllOptions();
+        })
+      )
     }
     if (this.useRefreshAtLanguageChange)
     {
@@ -213,8 +217,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'notification.title'),
-          new PrimeTableColumn('description', 'notification.description'),
+          new PrimeTableColumn('titleTranslated', 'notification.title'),
+          new PrimeTableColumn('descriptionTranslated', 'notification.description'),
           Object.assign(new PrimeTableColumn('type', 'notification.type.title'), {
             type: PropType.OneToMany,
           }),

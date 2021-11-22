@@ -239,7 +239,7 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read, 
             string queryMode = QueryMode.Read,
-            string mapperMode = null)
+            string mapperMode = MapperMode.Item)
 
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()

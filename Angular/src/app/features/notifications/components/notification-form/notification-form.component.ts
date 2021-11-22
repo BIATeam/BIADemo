@@ -8,10 +8,11 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Notification } from '../../model/notification';
+import { NotificationTranslation } from '../../model/notification-translation';
 
 @Component({
   selector: 'app-notification-form',
@@ -30,6 +31,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
+  notificationTranslations: FormArray;
 
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
@@ -43,12 +45,15 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       this.form.reset();
       if (this.notification) {
         this.form.patchValue({ ...this.notification });
+        this.notificationTranslations.clear();
+        if (this.notification.notificationTranslations) 
+          this.notification.notificationTranslations.forEach((notificationTranslation) => { this.notificationTranslations.push(this.createTranslation(notificationTranslation)) });
       }
     }
   }
 
   private initForm() {
-    this.form = this.formBuilder.group({
+    var group : any = {
       id: [this.notification.id],
       title: [this.notification.title, Validators.required],
       description: [this.notification.description, Validators.required],
@@ -59,7 +64,23 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       notifiedPermissions: [this.notification.notifiedPermissions],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
+      notificationTranslations: this.formBuilder.array([  ])
+    }
+
+    this.form = this.formBuilder.group(group);
+    this.notificationTranslations = this.form.get('notificationTranslations') as FormArray;
+  }
+
+  createTranslation(notificationTranslation : NotificationTranslation): FormGroup {
+    return this.formBuilder.group({
+      languageId: notificationTranslation.languageId,
+      description: notificationTranslation.description,
+      title: notificationTranslation.title
     });
+  }
+
+  addItem(): void {
+    this.notificationTranslations.push(this.createTranslation({languageId:0, title:'', description:''}));
   }
 
   onCancel() {
