@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
+    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;

@@ -1,22 +1,70 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center" fxFlex="100">
     <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
-          <span class="md-inputfield">
-            <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
-            <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
-          </span>
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
-          <span class="md-inputfield">
-            <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
-            <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
-          </span>
-        </div>
-      </div>
+      <p-fieldset legend="{{ 'bia.translatedFields' | translate }}Translated Fields">
+        <p-tabView>
+          <p-tabPanel header="Default (English)">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <div class="app-field-container" fxFlex="90">
+                <span class="md-inputfield">
+                  <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
+                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+                </span>
+              </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center">
+              <div class="app-field-container" fxFlex="90">
+                <span class="md-inputfield">
+                  <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
+                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+                </span>
+              </div>
+            </div>
+          </p-tabPanel>
+          <ng-container formArrayName="notificationTranslations" *ngFor="let item of notificationTranslations['controls']; let i = index;">
+            <p-tabPanel [header]="item.value.languageId">
+              <div [formGroupName]="i">
+                <input formControlName="languageId" type="hidden" />
+                <div fxLayout="row" fxLayoutAlign="center">
+                  <div class="app-field-container" fxFlex="90">
+                    <span class="md-inputfield">
+                      <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
+                      <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+                    </span>
+                  </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center">
+                  <div class="app-field-container" fxFlex="90">
+                    <span class="md-inputfield">
+                      <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
+                      <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+                <button pButton type="button" label="{{ 'bia.translation.delete' | translate }}" (click)="removeItem(i)"></button>
+              </div>
+            </p-tabPanel>
+          </ng-container>
+          <p-tabPanel header="+" >
+            <p-dropdown
+              [options]="languageOptions"
+              placeholder="&nbsp;"
+              formControlName="languageToAdd"
+              optionLabel="display"
+              datakey="id"
+              [style]="{ width: '100%' }"
+            >
+            </p-dropdown>
+            <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+              <button pButton type="button" label="{{ 'bia.translation.add' | translate }}" (click)="addItem()"></button>
+            </div>
+            
+          </p-tabPanel>
+        </p-tabView>
+      </p-fieldset>
+
       <div fxLayout="row" fxLayoutAlign="center">
         <div class="app-field-container" fxFlex="90">
           <span class="md-inputfield">
@@ -115,39 +163,6 @@
           </span>
         </div>
       </div>
-    </div>
-    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
-      <div formArrayName="notificationTranslations" *ngFor="let item of notificationTranslations['controls']; let i = index;">
-        <p-fieldset legend="Header">
-          <div [formGroupName]="i">
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
-                <span class="md-inputfield">
-                  <input formControlName="languageId" type="text" pInputText maxlength="64" style ="width:100%"/>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'app.language' | translate }}</label>
-                </span>
-              </div>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
-                <span class="md-inputfield">
-                  <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
-                </span>
-              </div>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
-                <span class="md-inputfield">
-                  <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
-                </span>
-              </div>
-            </div>
-          </div>
-        </p-fieldset>
-      </div>
-      <button type="button" (click)="addItem()">Add Translation</button>
     </div>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">

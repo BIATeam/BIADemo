@@ -58,6 +58,12 @@
     "theme": "Theme",
     "themeDark": "Dark",
     "themeLight": "Light",
+    "translation": 
+    {  
+      "add" :"Add translation",
+      "delete" :"Delete translation",
+      "translatedFields" : "Translated fields"
+    },
     "views": {
       "default": "Default view",
       "defineDefault": "Set default",

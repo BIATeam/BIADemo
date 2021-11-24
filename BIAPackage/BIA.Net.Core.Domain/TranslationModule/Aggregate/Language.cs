@@ -2,12 +2,9 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
+namespace BIA.Net.Core.Domain.TranslationModule.Aggregate
 {
-    using System.Collections.Generic;
-
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
     /// The role entity.

@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The application service used for role.
+    /// The application service used for permission.
     /// </summary>
     public class PermissionAppService : FilteredServiceBase<Permission>, IPermissionAppService
     {

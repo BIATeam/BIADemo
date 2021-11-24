@@ -58,6 +58,12 @@
     "theme": "Aspecto",
     "themeDark": "Dark",
     "themeLight": "Light",
+    "translation": 
+    {  
+      "add" :"Agregar traducción",
+      "delete" :"Eliminar traducción",
+      "translatedFields" : "Campos traducidos"
+    },
     "views": {
       "default": "Vista predeterminada",
       "defineDefault": "Establecer por defecto",

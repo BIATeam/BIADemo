@@ -153,6 +153,11 @@
         "Name": "Roles_List_For_Current_User",
         "Roles": [ "User", "Admin", "Site_Admin" ]
       },
+      // Language
+      {
+        "Name": "Languages_Options",
+        "Roles": [ "User", "Admin" ]
+      },
       // Ldap Domain
       {
         "Name": "LdapDomains_List",

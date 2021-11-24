@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.IocContainer
 {
+    using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
@@ -38,13 +39,12 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
-
+            collection.AddTransient<ILanguageAppService, LanguageAppService>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain
-
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

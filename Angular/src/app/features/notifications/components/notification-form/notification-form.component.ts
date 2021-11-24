@@ -26,6 +26,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
   @Input() userOptions: OptionDto[];
   @Input() permissionOptions: OptionDto[];
   @Input() notificationTypeOptions: OptionDto[];
+  @Input() languageOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
   @Output() cancel = new EventEmitter();
@@ -83,6 +84,10 @@ export class NotificationFormComponent implements OnInit, OnChanges {
     this.notificationTranslations.push(this.createTranslation({languageId:0, title:'', description:''}));
   }
 
+  removeItem(index : number): void {
+    this.notificationTranslations.removeAt(index);
+  }
+
   onCancel() {
     this.form.reset();
     this.cancel.next();
@@ -100,6 +105,11 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       this.save.emit(notification);
       this.form.reset();
     }
+  }
+
+  lang(item : any)
+  {
+    console.log (item);
   }
 }
 

@@ -3,7 +3,7 @@
     [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
     [permissionOptions]="notificationOptionsService.permissionOptions$ | async"
     [userOptions]="notificationOptionsService.userOptions$ | async"
-    [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
+    [languageOptions]="notificationOptionsService.languageOptions$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-notification-form>

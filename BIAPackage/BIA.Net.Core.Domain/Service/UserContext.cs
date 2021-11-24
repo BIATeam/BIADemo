@@ -5,6 +5,7 @@ namespace BIA.Net.Core.Domain.Service
 {
     using Microsoft.Extensions.Primitives;
     using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
@@ -25,7 +26,11 @@ namespace BIA.Net.Core.Domain.Service
         public UserContext(string acceptedLanguage)
         {
             Culture = acceptedLanguage;
-            Language = Culture.Split("-")[0];
+            Language = Culture.Split(",")[0].Split("-")[0];
+            if (String.IsNullOrEmpty(Language) || Language.Count() != 2)
+            {
+                Language = "en";
+            }
         }
     }
 }

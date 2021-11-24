@@ -35,11 +35,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets or sets the language DBSet.
-        /// </summary>
-        public DbSet<Language> Languages { get; set; }
-
-        /// <summary>
         /// Gets or sets the Site DBSet.
         /// </summary>
         public DbSet<Site> Sites { get; set; }

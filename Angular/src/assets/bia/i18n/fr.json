@@ -58,6 +58,12 @@
     "theme": "Thème",
     "themeDark": "Foncé",
     "themeLight": "Clair",
+    "translation": 
+    {  
+      "add" :"Ajouter translation",
+      "delete" :"Supprimer translation",
+      "translatedFields" : "Champs traduits"
+    },
     "views": {
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",

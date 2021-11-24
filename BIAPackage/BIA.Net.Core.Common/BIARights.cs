@@ -18,6 +18,17 @@ namespace BIA.Net.Core.Common
             /// The right to get all LDAP domains.
             /// </summary>
             public const string List = "LdapDomains_List";
-        }  
+        }
+
+        /// <summary>
+        /// The LDAP domains rights.
+        /// </summary>
+        public static class Languages
+        {
+            /// <summary>
+            /// The right to get all LDAP domains.
+            /// </summary>
+            public const string Options = "Languages_Options";
+        }
     }
 }
