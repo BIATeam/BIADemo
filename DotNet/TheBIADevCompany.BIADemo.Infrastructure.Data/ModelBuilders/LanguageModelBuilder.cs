@@ -57,6 +57,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<RoleTranslation>().HasIndex(u => new { u.RoleId, u.LanguageId }).IsUnique();
 
+            modelBuilder.Entity<RoleTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+
             // Begin BIADemo
             if (false)
             {
@@ -93,6 +95,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<PermissionTranslation>().HasIndex(u => new { u.PermissionId, u.LanguageId }).IsUnique();
 
+            modelBuilder.Entity<PermissionTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+
             // Begin BIADemo
             if (false)
             {
@@ -128,6 +132,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationTypeTranslation>().Property(r => r.LanguageId).IsRequired();
             modelBuilder.Entity<NotificationTypeTranslation>().HasIndex(u => new { u.NotificationTypeId, u.LanguageId }).IsUnique();
 
+            modelBuilder.Entity<NotificationTypeTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+
             modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Tâche" });
             modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Tarea" });
             modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Aufgabe" });
@@ -159,6 +165,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationTranslation>().Property(r => r.NotificationId).IsRequired();
             modelBuilder.Entity<NotificationTranslation>().Property(r => r.LanguageId).IsRequired();
             modelBuilder.Entity<NotificationTranslation>().HasIndex(u => new { u.NotificationId, u.LanguageId }).IsUnique();
+
+            modelBuilder.Entity<NotificationTranslation>().Property(m => m.Title).IsRequired().HasMaxLength(100);
+            modelBuilder.Entity<NotificationTranslation>().Property(m => m.Description).IsRequired().HasMaxLength(256);
         }
     }
 }

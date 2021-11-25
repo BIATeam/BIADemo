@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Notification>().HasKey(m => m.Id);
             modelBuilder.Entity<Notification>().Property(m => m.Title).IsRequired().HasMaxLength(100);
-            modelBuilder.Entity<Notification>().Property(m => m.Description).HasMaxLength(256);
+            modelBuilder.Entity<Notification>().Property(m => m.Description).IsRequired().HasMaxLength(256);
             modelBuilder.Entity<Notification>().Property(m => m.TypeId).IsRequired();
             modelBuilder.Entity<Notification>().Property(m => m.CreatedDate).IsRequired();
         }
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
             modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
-            modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<NotificationType>().Property(r => r.Label).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task", Label = "Task" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info", Label = "Info" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success", Label = "Success" });

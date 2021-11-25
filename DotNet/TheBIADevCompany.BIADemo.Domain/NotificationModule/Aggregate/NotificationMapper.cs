@@ -185,6 +185,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 
                     NotificationTranslations = entity.NotificationTranslations.Select(nt => new NotificationTranslationDto
                     {
+                        DtoState = DtoState.Unchanged,
                         Id = nt.Id,
                         LanguageId = nt.LanguageId,
                         Title = nt.Title,

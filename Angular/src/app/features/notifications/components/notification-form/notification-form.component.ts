@@ -10,6 +10,8 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
 import { Notification } from '../../model/notification';
@@ -93,6 +95,8 @@ export class NotificationFormComponent implements OnInit, OnChanges {
 
   createTranslation(notificationTranslation : NotificationTranslation): FormGroup {
     return this.formBuilder.group({
+      id: notificationTranslation.id,
+      DtoState : notificationTranslation.dtoState,
       languageId: notificationTranslation.languageId,
       description: notificationTranslation.description,
       title: notificationTranslation.title
@@ -100,8 +104,8 @@ export class NotificationFormComponent implements OnInit, OnChanges {
   }
 
   addTranslation(): void {
-    const form = this.form.value;
-    this.notificationTranslations.push(this.createTranslation({languageId:form.languageToAdd.id, title:'', description:''}));
+    const formValue = this.form.value;
+    this.notificationTranslations.push(this.createTranslation({id: 0, languageId:formValue.languageToAdd.id, title:'', description:'', dtoState: DtoState.Added }));
     this.computeMissingTranslation();
   }
 
@@ -122,6 +126,33 @@ export class NotificationFormComponent implements OnInit, OnChanges {
     return this.languageOptions.find(lo => lo.id == id)?.display;
   }
 
+  
+  public static DifferentialTranslation<T extends BaseDto>(newList: T[], oldList: T[]) {
+    let differential: T[] = [];
+    if (oldList && Array.isArray(oldList)) {
+      // Delete items
+      const toDelete = oldList
+        .filter((s) => !newList || !newList.map(x => x.id).includes(s.id))
+        .map((s) => <T>{ ...s, dtoState: DtoState.Deleted });
+
+      if (toDelete) {
+        differential = differential.concat(toDelete);
+      }
+    }
+
+    if (newList) {
+      // Add items
+      const toAdd = newList
+        ?.filter((s) => !oldList || !oldList.map(x => x.id).includes(s.id))
+        .map((s) => <T>{ ...s, dtoState: DtoState.Added });
+
+      if (toAdd) {
+        differential = differential.concat(toAdd);
+      }
+    }
+    return differential;
+  }
+
 
   onCancel() {
     this.form.reset();
@@ -137,6 +168,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       notification.notifiedPermissions = BiaOptionService.Differential(notification.notifiedPermissions, this.notification?.notifiedPermissions);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
+      notification.notificationTranslations = NotificationFormComponent.DifferentialTranslation(notification.notificationTranslations, this.notification?.notificationTranslations);
       this.save.emit(notification);
       this.form.reset();
     }
