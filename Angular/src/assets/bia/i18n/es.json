@@ -60,8 +60,9 @@
     "themeLight": "Light",
     "translation": 
     {  
-      "add" :"Agregar traducción",
-      "delete" :"Eliminar traducción",
+      "add" : "Agregar traducción",
+      "addAll" : "Agregar todas las traducciones",
+      "delete" : "Eliminar traducción",
       "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },

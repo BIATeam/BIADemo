@@ -60,8 +60,9 @@
     "themeLight": "Clair",
     "translation": 
     {  
-      "add" :"Ajouter translation",
-      "delete" :"Supprimer translation",
+      "add" : "Ajouter traduction",
+      "addAll" :  "Ajouter toutes les traductions",
+      "delete" : "Supprimer traduction",
       "language": "Langage",
       "translatedFields" : "Champs traduits"
     },

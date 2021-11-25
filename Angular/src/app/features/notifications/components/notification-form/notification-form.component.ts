@@ -96,7 +96,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
   createTranslation(notificationTranslation : NotificationTranslation): FormGroup {
     return this.formBuilder.group({
       id: notificationTranslation.id,
-      DtoState : notificationTranslation.dtoState,
+      dtoState : notificationTranslation.dtoState,
       languageId: notificationTranslation.languageId,
       description: notificationTranslation.description,
       title: notificationTranslation.title
@@ -109,17 +109,38 @@ export class NotificationFormComponent implements OnInit, OnChanges {
     this.computeMissingTranslation();
   }
 
+  addAllTranslation(): void {
+    this.missingLanguageOptions.forEach(lo => 
+      this.notificationTranslations.push(this.createTranslation({id: 0, languageId:lo.id, title:'', description:'', dtoState: DtoState.Added }))
+    );
+    this.computeMissingTranslation();
+  }
+
   removeTranslation(index : number): void {
     this.notificationTranslations.removeAt(index);
     this.computeMissingTranslation();
   }
 
-  
+  changeTranslation(index : number): void {
+    if (this.notificationTranslations.at(index).value.dtoState === DtoState.Unchanged )
+    {
+      this.notificationTranslations.at(index).value.dtoState = DtoState.Modified;
+    }
+    this.computeMissingTranslation();
+  }
+
+  public missingTranslation: boolean = false;
   private computeMissingTranslation() {
     this.missingLanguageOptions = this.languageOptions.filter(
       lo => !this.notificationTranslations.value.find((nt: { languageId: number; }) => nt.languageId == lo.id)
          && ! APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta == lo.id)
     );
+    if (this.missingLanguageOptions.length > 0) {
+      this.missingTranslation = true;
+    }
+    else {
+      this.missingTranslation = false;
+    }
   }
 
   labelTranslation(id : number) : string | undefined {
@@ -127,7 +148,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
   }
 
   
-  public static DifferentialTranslation<T extends BaseDto>(newList: T[], oldList: T[]) {
+  public static Differential<T extends BaseDto>(newList: T[], oldList: T[]) {
     let differential: T[] = [];
     if (oldList && Array.isArray(oldList)) {
       // Delete items
@@ -140,7 +161,17 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       }
     }
 
-    if (newList) {
+    if (newList && Array.isArray(newList)) {
+      const toAddOrUpdate = newList
+      ?.filter((s) => s.dtoState === DtoState.Added || s.dtoState === DtoState.Modified)
+
+      if (toAddOrUpdate) {
+        differential = differential.concat(toAddOrUpdate);
+      }
+    }
+
+/*
+    if (newList && Array.isArray(newList)) {
       // Add items
       const toAdd = newList
         ?.filter((s) => !oldList || !oldList.map(x => x.id).includes(s.id))
@@ -150,6 +181,19 @@ export class NotificationFormComponent implements OnInit, OnChanges {
         differential = differential.concat(toAdd);
       }
     }
+
+
+    if (oldList && Array.isArray(oldList) && newList && Array.isArray(newList)) {
+      // Add items
+      const toModify = newList
+        ?.filter((s) => oldList.map(x => x.id).includes(s.id))
+        .map((s) => <T>{ ...s, dtoState: DtoState.Added });
+
+      if (toAdd) {
+        differential = differential.concat(toAdd);
+      }
+    }*/
+
     return differential;
   }
 
@@ -168,7 +212,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       notification.notifiedPermissions = BiaOptionService.Differential(notification.notifiedPermissions, this.notification?.notifiedPermissions);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
-      notification.notificationTranslations = NotificationFormComponent.DifferentialTranslation(notification.notificationTranslations, this.notification?.notificationTranslations);
+      notification.notificationTranslations = NotificationFormComponent.Differential(notification.notificationTranslations, this.notification?.notificationTranslations);
       this.save.emit(notification);
       this.form.reset();
     }
