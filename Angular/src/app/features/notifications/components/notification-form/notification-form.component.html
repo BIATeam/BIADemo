@@ -51,6 +51,9 @@
             </p-tabPanel>
           </ng-container>
           <p-tabPanel header="+" *ngIf="missingLanguageOptions?.length > 0">
+            <ng-template pTemplate = "header">
+              <i class="pi pi-plus"></i>
+            </ng-template>
             <div fxLayout="row" fxLayoutAlign="center">
               <div class="app-field-container" fxFlex="90">
                 <span class="md-inputfield">

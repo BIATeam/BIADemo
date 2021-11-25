@@ -98,8 +98,8 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       id: notificationTranslation.id,
       dtoState : notificationTranslation.dtoState,
       languageId: notificationTranslation.languageId,
-      description: notificationTranslation.description,
-      title: notificationTranslation.title
+      description: [notificationTranslation.description, Validators.required],
+      title: [notificationTranslation.title, Validators.required]
     });
   }
 
