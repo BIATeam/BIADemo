@@ -1,9 +1,9 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center" fxFlex="100">
     <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
-      <p-fieldset legend="{{ 'bia.translatedFields' | translate }}Translated Fields">
+      <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabView>
-          <p-tabPanel header="Default (English)">
+          <p-tabPanel header="{{ 'translation.defaultLanguage' | translate }}">
             <div fxLayout="row" fxLayoutAlign="center">
               <div class="app-field-container" fxFlex="90">
                 <span class="md-inputfield">
@@ -22,7 +22,7 @@
             </div>
           </p-tabPanel>
           <ng-container formArrayName="notificationTranslations" *ngFor="let item of notificationTranslations['controls']; let i = index;">
-            <p-tabPanel [header]="item.value.languageId">
+            <p-tabPanel [header]="labelTranslation(item.value.languageId)">
               <div [formGroupName]="i">
                 <input formControlName="languageId" type="hidden" />
                 <div fxLayout="row" fxLayoutAlign="center">
@@ -43,22 +43,31 @@
                 </div>
               </div>
               <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
-                <button pButton type="button" label="{{ 'bia.translation.delete' | translate }}" (click)="removeItem(i)"></button>
+                <button pButton type="button" label="{{ 'bia.translation.delete' | translate }}" (click)="removeTranslation(i)"></button>
               </div>
             </p-tabPanel>
           </ng-container>
-          <p-tabPanel header="+" >
-            <p-dropdown
-              [options]="languageOptions"
-              placeholder="&nbsp;"
-              formControlName="languageToAdd"
-              optionLabel="display"
-              datakey="id"
-              [style]="{ width: '100%' }"
-            >
-            </p-dropdown>
+          <p-tabPanel header="+" *ngIf="missingLanguageOptions?.length > 0">
+            <div fxLayout="row" fxLayoutAlign="center">
+              <div class="app-field-container" fxFlex="90">
+                <span class="md-inputfield">
+                  <p-dropdown
+                      [options]="missingLanguageOptions"
+                      placeholder="&nbsp;"
+                      formControlName="languageToAdd"
+                      optionLabel="display"
+                      datakey="id"
+                      [style]="{ width: '100%' }"
+                      (onChange)= "onSelectionLanguage()"
+                    >
+                    </p-dropdown>
+                  <label><span class="bia-star-mandatory">*</span>{{ 'bia.translation.language' | translate }}</label>
+                </span>
+              </div>
+            </div>
+
             <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
-              <button pButton type="button" label="{{ 'bia.translation.add' | translate }}" (click)="addItem()"></button>
+              <button pButton type="button" label="{{ 'bia.translation.add' | translate }}" (click)="addTranslation()" [disabled]="!selectionLanguage"></button>
             </div>
             
           </p-tabPanel>

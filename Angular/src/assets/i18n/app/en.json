@@ -91,6 +91,10 @@
     "selectUser": "Select a user",
     "title": "Title"
   },
+  "translation": 
+  {  
+    "defaultLanguage" :"Default (English)"
+  },
   "user": {
     "add": "Add user",
     "firstName": "First Name",

@@ -1,4 +1,5 @@
 export const APP_SUPPORTED_TRANSLATIONS = ['es-ES', 'fr-FR', 'en-GB', 'es-MX', 'en-US'];
+export const APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY = [1] // English is default value (see translation.defaultLanguage in i18n) so we do not add it manualy.
 export const DEFAULT_PAGE_SIZE = 10;
 
 export const ROUTE_DATA_BREADCRUMB = 'breadcrumb';

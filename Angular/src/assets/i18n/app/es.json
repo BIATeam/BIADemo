@@ -91,6 +91,10 @@
     "selectUser": "Selecciona un usuario",
     "title": "Title"
   },
+  "translation": 
+  {  
+    "defaultLanguage" :"Defecto (Inglesa)"
+  },
   "user": {
     "add": "Añadir usuario",
     "firstName": "Nombre",

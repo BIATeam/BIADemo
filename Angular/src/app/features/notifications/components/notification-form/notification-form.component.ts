@@ -11,6 +11,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
 import { Notification } from '../../model/notification';
 import { NotificationTranslation } from '../../model/notification-translation';
 
@@ -33,6 +34,7 @@ export class NotificationFormComponent implements OnInit, OnChanges {
 
   form: FormGroup;
   notificationTranslations: FormArray;
+  missingLanguageOptions: OptionDto[];
 
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
@@ -48,7 +50,10 @@ export class NotificationFormComponent implements OnInit, OnChanges {
         this.form.patchValue({ ...this.notification });
         this.notificationTranslations.clear();
         if (this.notification.notificationTranslations) 
+        {
           this.notification.notificationTranslations.forEach((notificationTranslation) => { this.notificationTranslations.push(this.createTranslation(notificationTranslation)) });
+          this.computeMissingTranslation();
+        }
       }
     }
   }
@@ -65,11 +70,25 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       notifiedPermissions: [this.notification.notifiedPermissions],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
-      notificationTranslations: this.formBuilder.array([  ])
+      notificationTranslations: this.formBuilder.array([  ]),
+      languageToAdd : []
     }
 
     this.form = this.formBuilder.group(group);
     this.notificationTranslations = this.form.get('notificationTranslations') as FormArray;
+  }
+
+
+  protected selectionLanguage: boolean = false;
+  protected onSelectionLanguage(): void {
+    if (this.form.value.languageToAdd?.id > 0)
+    {
+      this.selectionLanguage = true;
+    }
+    else{
+      this.selectionLanguage = true;
+    }
+    
   }
 
   createTranslation(notificationTranslation : NotificationTranslation): FormGroup {
@@ -80,13 +99,29 @@ export class NotificationFormComponent implements OnInit, OnChanges {
     });
   }
 
-  addItem(): void {
-    this.notificationTranslations.push(this.createTranslation({languageId:0, title:'', description:''}));
+  addTranslation(): void {
+    const form = this.form.value;
+    this.notificationTranslations.push(this.createTranslation({languageId:form.languageToAdd.id, title:'', description:''}));
+    this.computeMissingTranslation();
   }
 
-  removeItem(index : number): void {
+  removeTranslation(index : number): void {
     this.notificationTranslations.removeAt(index);
+    this.computeMissingTranslation();
   }
+
+  
+  private computeMissingTranslation() {
+    this.missingLanguageOptions = this.languageOptions.filter(
+      lo => !this.notificationTranslations.value.find((nt: { languageId: number; }) => nt.languageId == lo.id)
+         && ! APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta == lo.id)
+    );
+  }
+
+  labelTranslation(id : number) : string | undefined {
+    return this.languageOptions.find(lo => lo.id == id)?.display;
+  }
+
 
   onCancel() {
     this.form.reset();

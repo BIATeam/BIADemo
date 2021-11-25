@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllLanguageOptions } from 'src/app/domains/language-option/store/language-option.state';
+import { loadAllLanguageOptions } from 'src/app/domains/language-option/store/language-options-actions';
 import { getAllNotificationTypeOptions } from 'src/app/domains/notification-type-option/store/notification-type-option.state';
 import { loadAllNotificationTypeOptions } from 'src/app/domains/notification-type-option/store/notification-type-options-actions';
 import { getAllPermissionOptions } from 'src/app/domains/permission-option/store/permission-option.state';
@@ -50,5 +51,6 @@ export class NotificationOptionsService {
         this.store.dispatch(loadAllNotificationTypeOptions());
         this.store.dispatch(loadAllPermissionOptions());
         this.store.dispatch(loadAllUserOptions());
+        this.store.dispatch(loadAllLanguageOptions());
     }
 }

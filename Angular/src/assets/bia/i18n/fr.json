@@ -62,6 +62,7 @@
     {  
       "add" :"Ajouter translation",
       "delete" :"Supprimer translation",
+      "language": "Langage",
       "translatedFields" : "Champs traduits"
     },
     "views": {
@@ -93,7 +94,7 @@
     "confirmDelete": "Voulez-vous supprimer cet enregistrement?",
     "deleteElementSuccess": "Élément supprimé avec succès",
     "errorOccurredWhileProccessing": "Une erreur s'est produite lors du traitement de votre demande",
-    "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Google Chrome.",
+    "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Edge ou Google Chrome.",
     "infoBeforeGetLatestVersion": "L'application va se recharger dans quelques secondes afin de récupérer la dernière version.",
     "invalidForm": "Formulaire non valide",
     "syncElementSuccess": "Synchronisation terminée",

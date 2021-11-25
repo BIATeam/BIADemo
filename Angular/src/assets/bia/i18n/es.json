@@ -62,6 +62,7 @@
     {  
       "add" :"Agregar traducción",
       "delete" :"Eliminar traducción",
+      "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },
     "views": {
@@ -93,7 +94,7 @@
     "confirmDelete": "¿Quieres eliminar este registro?",
     "deleteElementSuccess": "Elemento eliminado con éxito",
     "errorOccurredWhileProccessing": "Se produjo un error al procesar su solicitud",
-    "ieWarning": "[Modo degradado] Su navegador (Internet Explorer) está desactualizado. Para una mejor experiencia, recomendamos usar Google Chrome.",
+    "ieWarning": "[Modo degradado] Su navegador (Internet Explorer) está desactualizado. Para una mejor experiencia, recomendamos usar Edge o Google Chrome.",
     "infoBeforeGetLatestVersion": "La aplicación se recargará en unos segundos para recuperar la última versión.",
     "invalidForm": "Forma invalida",
     "syncElementSuccess": "Sincronización completada",
