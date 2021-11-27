@@ -28,9 +28,6 @@
         optionLabel="display"
         [style]="{ width: '100%' }"
       >
-        <ng-template let-item pTemplate="group">
-            {{item | translateField: 'label' : 'role.' : translateService.currentLang}}
-        </ng-template>
       </p-listbox>
     </div>
   </div>

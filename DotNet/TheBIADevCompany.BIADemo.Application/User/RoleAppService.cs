@@ -29,10 +29,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
-        public RoleAppService(ITGenericRepository<Role> repository, IPrincipal principal)
+        public RoleAppService(ITGenericRepository<Role> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+            this.userContext = userContext;
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     /// <summary>
     /// Class used to update the model builder for notification domain.
     /// </summary>
-    public static class LanguageModelBuilder
+    public static class TranslationModelBuilder
     {
         /// <summary>
         /// Create the user model.

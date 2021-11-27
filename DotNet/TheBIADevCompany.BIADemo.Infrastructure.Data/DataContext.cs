@@ -103,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            LanguageModelBuilder.CreateModel(modelBuilder);
+            TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);

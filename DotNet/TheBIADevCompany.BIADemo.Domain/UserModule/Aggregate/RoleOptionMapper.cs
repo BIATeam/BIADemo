@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -21,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.Code,
+                Display = entity.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
             };
         }
     }
