@@ -137,9 +137,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             if (userInfo != null)
             {
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
+                this.SelectDefaultLanguage(userInfo);
+
                 return userInfo;
             }
 
@@ -161,13 +160,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     LastName = user.LastName,
                     Country = user.Country,
                 };
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
+                this.SelectDefaultLanguage(userInfo);
             }
 
             return userInfo;
         }
+
 
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
         public async Task<UserProfileDto> GetUserProfileAsync(string login)
@@ -344,6 +342,22 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
             var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
+        }
+
+
+        private void SelectDefaultLanguage(UserInfoDto userInfo)
+        {
+            userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == userInfo.Country))
+                .Select(s => s.Code)
+                .FirstOrDefault();
+
+            if (userInfo.Language == null)
+            {
+                // Select the default culture
+                userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == "default"))
+                    .Select(s => s.Code)
+                    .FirstOrDefault();
+            }
         }
     }
 }

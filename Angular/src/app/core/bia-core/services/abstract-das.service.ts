@@ -21,10 +21,10 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
       return items; }));
   }
 
-  get(id: string | number, options?: HttpOptions): Observable<TOut> {
+  get(id?: string | number, options?: HttpOptions): Observable<TOut> {
     return this.getItem<TOut>(id, options).pipe(map(item => { return this.translateItem(item); }));
   }
-  
+
   translateItem(item: TOut) {
     return item;
   }

@@ -16,9 +16,9 @@ import { BiaThemeService } from './services/bia-theme.service';
 import { BiaTranslationService } from './services/bia-translation.service';
 import { BiaAppInitService } from './services/bia-app-init.service';
 import { SiteModule } from 'src/app/domains/site/site.module';
-import { EnvironmentConfigurationModule } from 'src/app/domains/environment-configuration/environment-configuration.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
+import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return (): Promise<any> => {
@@ -26,7 +26,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [HttpClientModule, SiteModule, EnvironmentConfigurationModule];
+const MODULES = [HttpClientModule, SiteModule, AppSettingsModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];

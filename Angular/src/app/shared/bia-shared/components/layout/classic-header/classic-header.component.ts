@@ -7,7 +7,6 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
-import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
@@ -17,6 +16,8 @@ import { OptionDto } from '../../../model/option-dto';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../model/auth-info';
+import { RoleDto } from '../../../model/role';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 
 @Component({
   selector: 'bia-classic-header',
@@ -35,9 +36,9 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input()
-  set environmentType(env: EnvironmentType) {
-    if (env) {
-      this.cssClassEnv = `env-${env.toLowerCase()}`;
+  set appSettings(settings: AppSettings) {
+    if (settings) {
+      this.cssClassEnv = `env-${settings.environment.type.toLowerCase()}`;
     }
   }
   @Input()
@@ -54,9 +55,11 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
+  @Input() languageId: Number;
+
 
   currentSite: OptionDto;
-  currentRole: OptionDto;
+  currentRole: RoleDto;
   _userData: UserData
   get userData(): UserData {
     return this._userData;
@@ -75,6 +78,7 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Output() roleChange = new EventEmitter<number>();
   @Output() setDefaultRole = new EventEmitter<number>();
 
+  
   usernameParam: { name: string };
   navigations: BiaNavigation[];
   fullscreenMode = false;

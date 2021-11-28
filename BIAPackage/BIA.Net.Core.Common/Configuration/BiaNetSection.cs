@@ -59,8 +59,8 @@ namespace BIA.Net.Core.Common.Configuration
         public UserProfile UserProfile { get; set; }
 
         /// <summary>
-        /// Gets or sets the languages configuration.
+        /// Gets or sets the cultures configuration.
         /// </summary>
-        public IEnumerable<Language> Languages { get; set; }
+        public IEnumerable<Culture> Cultures { get; set; }
     }
 }

@@ -225,7 +225,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 if (userData.CurrentSiteId > 0)
                 {
                     var roles = await this.roleAppService.GetMemberRolesAsync(userData.CurrentSiteId, userInfo.Id);
-                    userData.Roles = roles.Select(r => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = r.Id, Display = r.Display }).ToList();
+                    userData.Roles = roles.ToList();
 
                     if (singleRoleMode)
                     {
@@ -260,7 +260,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     var allRoles = userRolesFromUserDirectory;
 
                     // add the sites roles (filter if singleRole mode is used)
-                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Display).ToList());
+                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
 
                     // translate roles in permission
                     userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);

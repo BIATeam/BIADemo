@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
     public class OptionDefaultDto : OptionDto
     {
         /// <summary>
-        /// Gets or sets the display.
+        /// Gets or sets is the defaul value.
         /// </summary>
         public bool IsDefault { get; set; }
     }

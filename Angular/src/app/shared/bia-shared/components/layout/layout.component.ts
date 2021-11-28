@@ -13,10 +13,10 @@ import { AppState } from '../../../../store/state';
 import { Observable } from 'rxjs';
 import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
-import { filter, map } from 'rxjs/operators';
-import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
-import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
 import { APP_BASE_HREF } from '@angular/common';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 // import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
@@ -35,7 +35,8 @@ import { APP_BASE_HREF } from '@angular/common';
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
       [userData]="userData"
-      [environmentType]="environmentType$ | async"
+      [appSettings]="appSettings$ | async"
+      [languageId]="languageId$ | async"
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
       (roleChange)="onRoleChange($event)"
@@ -62,10 +63,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
   userData: UserData | null;
-  environmentType$: Observable<EnvironmentType | null>;
+  appSettings$: Observable<AppSettings | null>;
+  languageId$: Observable<Number>;
 
   constructor(
-    private biaTranslationService: BiaTranslationService,
+    public biaTranslationService: BiaTranslationService,
     private navigationService: NavigationService,
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
@@ -80,9 +82,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
       // this.initNotificationSignalRService();
     }
 
-    this.initEnvironmentType();
+    this.initAppSettings();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
+    this.languageId$ = this.biaTranslationService.languageId$;
   }
 
   ngOnDestroy() {
@@ -93,11 +96,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   //   // this.notificationSignalRService.initialize();
   // }
 
-  private initEnvironmentType() {
-    this.environmentType$ = this.store.select(getEnvironmentConfiguration).pipe(
-      filter((envConf) => !!envConf),
-      map((envConf) => (envConf ? envConf.type : null))
-    );
+  private initAppSettings() {
+    this.store.dispatch(loadDomainAppSettings());
+    this.appSettings$ = this.store.select(getAppSettings);
   }
 
 
