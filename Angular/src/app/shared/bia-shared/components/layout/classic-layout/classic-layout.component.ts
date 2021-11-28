@@ -10,7 +10,6 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
 import { UserData } from '../../../model/auth-info';
-import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 
 @Component({
   selector: 'bia-classic-layout',
@@ -35,9 +34,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
   @Input() userData: UserData |null;
-
-  @Input() appSettings: AppSettings;
-  @Input() languageId: Number;
 
   @Output() siteChange = new EventEmitter<number>();
   @Output() roleChange = new EventEmitter<number>();

@@ -17,7 +17,7 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { Router } from '@angular/router';
 import { UserData } from '../../../model/auth-info';
 import { RoleDto } from '../../../model/role';
-import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'bia-classic-header',
@@ -36,12 +36,6 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input()
-  set appSettings(settings: AppSettings) {
-    if (settings) {
-      this.cssClassEnv = `env-${settings.environment.type.toLowerCase()}`;
-    }
-  }
-  @Input()
   set menus(navigations: BiaNavigation[]) {
     if (navigations && navigations.length > 0) {
       this.navigations = navigations;
@@ -55,7 +49,6 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  @Input() languageId: Number;
 
 
   currentSite: OptionDto;
@@ -88,6 +81,7 @@ export class ClassicHeaderComponent implements OnDestroy {
   displaySiteList = false;
   displayRoleList = false;
   cssClassEnv: string;
+  languageId: number;
   singleRoleMode = environment.singleRoleMode;
 
   private sub = new Subscription();
@@ -105,10 +99,21 @@ export class ClassicHeaderComponent implements OnDestroy {
     private platform: Platform,
     private store: Store<AppState>,
     private biaMessageService: BiaMessageService,
+    public biaTranslationService: BiaTranslationService,
     private router: Router
   ) {
     this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
     this.store.dispatch(loadUnreadNotificationIds());
+    biaTranslationService.appSettings$.subscribe(appSettings => {
+      if(appSettings) {
+        this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
+      }
+    })
+    biaTranslationService.languageId$.subscribe(languageId => {
+      if(languageId) {
+        this.languageId = languageId;
+      }
+    })
   }
 
   ngOnDestroy() {

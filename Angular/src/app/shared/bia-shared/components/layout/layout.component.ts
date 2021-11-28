@@ -10,14 +10,10 @@ import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
-import { Observable } from 'rxjs';
 import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
-import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
 import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
-// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
   selector: 'app-bia-layout',
@@ -35,8 +31,6 @@ import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
       [userData]="userData"
-      [appSettings]="appSettings$ | async"
-      [languageId]="languageId$ | async"
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
       (roleChange)="onRoleChange($event)"
@@ -63,8 +57,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
   userData: UserData | null;
-  appSettings$: Observable<AppSettings | null>;
-  languageId$: Observable<Number>;
 
   constructor(
     public biaTranslationService: BiaTranslationService,
@@ -85,7 +77,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.initAppSettings();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
-    this.languageId$ = this.biaTranslationService.languageId$;
   }
 
   ngOnDestroy() {
@@ -98,7 +89,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   private initAppSettings() {
     this.store.dispatch(loadDomainAppSettings());
-    this.appSettings$ = this.store.select(getAppSettings);
   }
 
 

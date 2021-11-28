@@ -48,7 +48,7 @@ export class BiaTranslationService{
   public appSettings$: Observable<AppSettings | null> = this.store.select(getAppSettings);
   public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([this.currentCulture$, this.appSettings$])
     .pipe(map(([currentCulture, appSettings]) => this.getDateFormatByCulture(currentCulture, appSettings)));
-  public languageId$: Observable<Number> = combineLatest([this.currentCulture$, this.appSettings$])
+  public languageId$: Observable<number> = combineLatest([this.currentCulture$, this.appSettings$])
     .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings)));
 
   constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string,private store: Store<AppState>) {}
@@ -143,7 +143,7 @@ export class BiaTranslationService{
     }
     return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat };
   }
-  private getLanguageId(code: string | null, appSettings : AppSettings| null): Number {
+  private getLanguageId(code: string | null, appSettings : AppSettings| null): number {
     let LanguageId = 0;
     if (appSettings != null)
     {
