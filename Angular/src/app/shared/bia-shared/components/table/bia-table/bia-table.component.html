@@ -60,7 +60,7 @@
       <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
         <ng-container [ngSwitch]="col.type" *ngIf="col != undefined">
           <ng-container *ngSwitchCase="'OneToMany'">
-            {{ rowData[col.field] }}
+            {{ rowData[col.field]?.display }}
           </ng-container>
           <ng-container *ngSwitchCase="'ManyToMany'">
             {{ rowData[col.field] | pluck: 'display'| join: ', ' }}
