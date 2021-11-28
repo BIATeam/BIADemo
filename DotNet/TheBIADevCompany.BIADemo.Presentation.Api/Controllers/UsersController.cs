@@ -199,7 +199,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [Authorize(Roles = Rights.Users.Sync)]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
-            await this.userService.SynchronizeWithADAsync(fullSynchro);
+            try
+            {
+                await this.userService.SynchronizeWithADAsync(fullSynchro);
+            }
+            catch (Exception)
+            {
+                return this.Problem("Error during synchronize. Retry Synchronize.");
+            }
 
             return this.Ok();
         }

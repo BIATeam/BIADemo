@@ -166,7 +166,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return userInfo;
         }
 
-
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
         public async Task<UserProfileDto> GetUserProfileAsync(string login)
         {
@@ -221,7 +220,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
                 errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
-                await this.SynchronizeWithADAsync();
+                try
+                {
+                    await this.SynchronizeWithADAsync();
+                }
+                catch (Exception)
+                {
+                    errors.Add("Error during synchronize. Retry Synchronize.");
+                }
             }
             else
             {
@@ -235,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                         await this.Repository.UnitOfWork.CommitAsync();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
                     }
@@ -249,7 +255,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<string> RemoveInGroupAsync(int id)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            List<string> errors = new List<string>();
             var user = await this.Repository.GetEntityAsync(id: id);
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
@@ -261,6 +266,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
 
                 await this.SynchronizeWithADAsync();
+                try
+                {
+                    await this.SynchronizeWithADAsync();
+                }
+                catch (Exception)
+                {
+                    return "Error during synchronize. Retry Synchronize.";
+                }
+
                 if (notRemovedUser.Count != 0)
                 {
                     return "Not able to remove user. (Probably define in sub group)";
@@ -343,7 +357,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
         }
-
 
         private void SelectDefaultLanguage(UserInfoDto userInfo)
         {

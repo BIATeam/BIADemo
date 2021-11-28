@@ -288,7 +288,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 listGroupCacheSidToRemove.Add(group.Sid.Value);
                             }
 
-
                             return true;
                         }
                         catch (Exception e)
@@ -504,26 +503,39 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return this.configuration.Roles.Where(w => (w.Type == "Ldap" || w.Type == "Synchro") && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
         }
 
+        static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
         private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)
         {
-            GroupPrincipal groupPrincipal = null;
-            try
-            {
-                PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
-                if (ctx != null)
+            string sid = "";
+            localCacheGroupSid.TryGetValue(ldapGroup.Domain + ":" + ldapGroup.LdapName,out sid);
+
+            if (string.IsNullOrEmpty(sid))
+            { 
+                GroupPrincipal groupPrincipal = null;
+                try
                 {
-                    groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                    PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
+                    if (ctx != null)
+                    {
+                        groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
+                    throw e;
+                }
+                if (groupPrincipal != null)
+                {
+                    this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
+                    sid = groupPrincipal.Sid.Value;
+                    localCacheGroupSid.Add(ldapGroup.Domain + ":" + ldapGroup.LdapName, sid);
                 }
             }
-            catch (Exception e)
-            {
-                this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
-            }
-            if (groupPrincipal != null)
-            {
-                this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
 
-                await this.GetAllUsersSidFromGroupRecursivelyAsync(groupPrincipal.Sid.Value, ldapGroup, listUsersSid, listTreatedGroupSid);
+            if (!string.IsNullOrEmpty(sid))
+            { 
+                await this.GetAllUsersSidFromGroupRecursivelyAsync(sid, ldapGroup, listUsersSid, listTreatedGroupSid);
             }
         }
 
