@@ -13,7 +13,6 @@ import { AppState } from '../../../../store/state';
 import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 
 @Component({
   selector: 'app-bia-layout',
@@ -73,8 +72,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (this.enableNotifications) {
       // this.initNotificationSignalRService();
     }
-
-    this.initAppSettings();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
   }
@@ -83,13 +80,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // this.notificationSignalRService.destroy();
   }
 
-  // private initNotificationSignalRService() {
-  //   // this.notificationSignalRService.initialize();
-  // }
-
-  private initAppSettings() {
-    this.store.dispatch(loadDomainAppSettings());
-  }
 
 
   onSiteChange(siteId: number) {
