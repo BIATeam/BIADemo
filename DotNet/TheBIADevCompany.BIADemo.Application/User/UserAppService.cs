@@ -313,7 +313,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             foreach (var user in users)
             {
-                await this.GetCreateUserInfoAsync(user.Login);
+                await this.GetCreateUserInfoAsync(user.Sid);
             }
         }
 

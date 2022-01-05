@@ -115,11 +115,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             if (foundUser == null)
             {
                 var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
-
-                // Create the missing user
-                User user = new User();
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                this.repository.Add(user);
+                if (userFormDirectory != null)
+                {
+                    // Create the missing user
+                    User user = new User();
+                    UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
+                    this.repository.Add(user);
+                }
             }
             else if (!foundUser.IsActive)
             {
