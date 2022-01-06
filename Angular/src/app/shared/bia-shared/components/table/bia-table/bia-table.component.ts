@@ -195,6 +195,7 @@ export class BiaTableComponent implements OnChanges {
   onFilter() {
     if (this.table) {
       this.filter.emit(this.table.totalRecords);
+      this.table.saveState();
     }
   }
 
