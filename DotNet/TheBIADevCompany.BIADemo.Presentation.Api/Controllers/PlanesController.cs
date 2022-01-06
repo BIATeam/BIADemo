@@ -2,8 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlane
-
+// #define UseHubForClientInPlane
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
@@ -35,6 +34,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// <summary>
     /// The API controller used to manage Planes.
     /// </summary>
+ #if !UseHubForClientInPlane
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "UseHubForClientInPlane not set")]
+#endif
     public class PlanesController : BiaControllerBase
     {
         /// <summary>
@@ -326,10 +328,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        public virtual async Task<IActionResult> GetFile([FromBody] FileFiltersDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] LazyLoadDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BIAConstants.Csv.Extension}");

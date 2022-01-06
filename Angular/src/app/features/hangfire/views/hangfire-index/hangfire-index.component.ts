@@ -11,7 +11,7 @@ import { callWorkerWithNotification } from '../../store/hangfire-actions';
 export class HangfireIndexComponent implements OnInit {
   @HostBinding('class.bia-flex') flex = true;
 
-  constructor(private store: Store<AppState>,) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {

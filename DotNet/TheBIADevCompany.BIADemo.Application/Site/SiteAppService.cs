@@ -54,13 +54,14 @@ namespace TheBIADevCompany.BIADemo.Application.Site
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
+            SiteMapper mapper = this.InitMapper<SiteDto, SiteMapper>();
             if (userPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
             {
-                return await this.Repository.GetAllResultAsync(new SiteMapper().EntityToDto(userId));
+                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
             }
             else
             {
-                return await this.Repository.GetAllResultAsync(new SiteMapper().EntityToDto(userId), specification: new DirectSpecification<Site>(site => site.Members.Any(member => member.UserId == userId)));
+                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Site>(site => site.Members.Any(member => member.UserId == userId)));
             }
         }
     }

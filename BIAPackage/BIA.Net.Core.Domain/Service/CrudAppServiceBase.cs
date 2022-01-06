@@ -122,7 +122,7 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.Read,
-            string mapperMode = null)
+            string mapperMode = MapperMode.Item)
         {
             return await this.GetAsync<TDto, TMapper>(id: id, specification: specification, filter:filter, includes:includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode) ;
         }

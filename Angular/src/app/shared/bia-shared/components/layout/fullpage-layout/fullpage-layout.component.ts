@@ -26,7 +26,7 @@ export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit
   public $displayPageComponent: BehaviorSubject<boolean>;
   public displayPageComponent: boolean;
   protected dynamicComponent: ComponentRef<any>;
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class.bia-flex') flex = false;
 
   ngOnInit() {
     this.$displayPageComponent = new BehaviorSubject<boolean>(true);

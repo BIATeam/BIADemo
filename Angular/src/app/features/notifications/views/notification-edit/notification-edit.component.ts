@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/state';
 import { NotificationService } from '../../services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationOptionsService } from '../../services/notification-options.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'app-notification-edit',
@@ -23,10 +24,15 @@ export class NotificationEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public notificationOptionsService: NotificationOptionsService,
     public notificationService: NotificationService,
+    private biaTranslationService: BiaTranslationService,
   ) { }
 
   ngOnInit() {
-    this.notificationOptionsService.loadAllOptions();
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(event => {
+          this.notificationOptionsService.loadAllOptions();
+      })
+    );
   }
 
   ngOnDestroy() {

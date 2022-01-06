@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The interface defining the application service for role.
@@ -25,6 +26,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="siteId">The site identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>The list of roles for this member.</returns>
-        Task<IEnumerable<OptionDefaultDto>> GetMemberRolesAsync(int siteId, int userId);
+        Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int siteId, int userId);
     }
 }

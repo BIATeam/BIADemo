@@ -61,7 +61,7 @@ export class BiaTableComponent implements OnChanges {
   private defaultPageSize: number;
   private defaultColumns: string[];
 
-  constructor(public authService: AuthService, public translateService : TranslateService) {}
+  constructor(public authService: AuthService, public translateService: TranslateService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);
@@ -195,6 +195,7 @@ export class BiaTableComponent implements OnChanges {
   onFilter() {
     if (this.table) {
       this.filter.emit(this.table.totalRecords);
+      this.table.saveState();
     }
   }
 
@@ -209,8 +210,7 @@ export class BiaTableComponent implements OnChanges {
   onStateSave(state: TableState) {
     if (this.table && Object.keys(state).length) {
       const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
-      if (this.table.stateKey != undefined && this.table.stateKey != '')
-      {
+      if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
         storage.setItem(this.table.stateKey, JSON.stringify(customState));
       }
@@ -226,11 +226,10 @@ export class BiaTableComponent implements OnChanges {
 
   protected restoreStateTable() {
     if (this.table) {
-      if (this.table.stateKey != undefined && this.table.stateKey != '')
-      {
+      if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
         const stateString = storage.getItem(this.table.stateKey);
-  
+
         if (stateString) {
           const state: TableState = JSON.parse(stateString);
           if (state && state.columnOrder) {
@@ -241,7 +240,7 @@ export class BiaTableComponent implements OnChanges {
           }
           this.table.restoreState();
           this.table.sortSingle();
-  
+
           this.showColSearch = false;
           if (this.table.hasFilter()) {
             for (const key in this.table.filters) {

@@ -17,7 +17,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   private sub = new Subscription();
-  canEdit : boolean;
+  canEdit: boolean;
   loading$: Observable<boolean>;
   notification$: Observable<Notification | undefined>;
 
@@ -53,11 +53,9 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
   }
 
-  canAction (notification : Notification)
-  {
-    if (notification.jData)
-    {
-      let data = JSON.parse(notification.jData);
+  canAction (notification: Notification) {
+    if (notification.jData) {
+      const data = JSON.parse(notification.jData);
       if (data?.route) {
         return true;
       }
@@ -65,10 +63,9 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  onAction(notification : Notification) {
-    if (notification.jData)
-    {
-      let data = JSON.parse(notification.jData);
+  onAction(notification: Notification) {
+    if (notification.jData) {
+      const data = JSON.parse(notification.jData);
       if (data?.route) {
         this.router.navigate(data.route);
       }

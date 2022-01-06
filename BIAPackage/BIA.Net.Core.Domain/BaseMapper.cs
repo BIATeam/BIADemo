@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The class used to define the base mapper.
@@ -18,6 +19,9 @@ namespace BIA.Net.Core.Domain
         where TDto : BaseDto
         where TEntity : class, IEntity
     {
+
+        public UserContext UserContext { get; set; }
+
         /// <summary>
         /// Create an entity from a DTO.
         /// </summary>

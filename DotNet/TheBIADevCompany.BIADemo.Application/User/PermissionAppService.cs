@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The application service used for role.
+    /// The application service used for permission.
     /// </summary>
     public class PermissionAppService : FilteredServiceBase<Permission>, IPermissionAppService
     {
@@ -29,10 +29,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
-        public PermissionAppService(ITGenericRepository<Permission> repository, IPrincipal principal)
+        /// <param name="userContext">The user context.</param>
+        public PermissionAppService(ITGenericRepository<Permission> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+            this.userContext = userContext;
         }
 
         /// <summary>

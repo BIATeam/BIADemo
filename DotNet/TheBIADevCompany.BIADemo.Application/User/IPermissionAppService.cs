@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The interface defining the application service for role.
+    /// The interface defining the application service for permission.
     /// </summary>
     public interface IPermissionAppService
     {

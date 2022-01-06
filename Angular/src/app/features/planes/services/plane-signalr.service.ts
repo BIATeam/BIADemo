@@ -19,15 +19,14 @@ import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
     providedIn: 'root'
 })
 export class PlanesSignalRService {
-  
-  private targetedFeature : TargetedFeature;
+  private targetedFeature: TargetedFeature;
 
   /**
    * Constructor.
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService : AuthService) {
+  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService: AuthService) {
   }
 
   /**
@@ -44,13 +43,13 @@ export class PlanesSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "planes"};
-    this.signalRService.joinGroup(this.targetedFeature)
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'planes'};
+    this.signalRService.joinGroup(this.targetedFeature);
   }
 
   destroy() {
     console.log('%c [Planes] Unregister SignalR : refresh-planes', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-planes');
-    this.signalRService.leaveGroup(this.targetedFeature)
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

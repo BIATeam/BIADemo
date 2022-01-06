@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
@@ -17,14 +18,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchGetAll(MemberFilterDto filter)
+        public static Specification<Member> SearchGetAll(LazyLoadDto filter)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 
-            if (filter.SiteId != 0)
+            if (filter.ParentIds != null && filter.ParentIds.Length > 0)
             {
                 specification &= new DirectSpecification<Member>(s =>
-                    s.SiteId == filter.SiteId);
+                    s.SiteId == int.Parse(filter.ParentIds[0]));
             }
 
             return specification;
@@ -33,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Search member for login.
         /// </summary>
-        /// <param name="login">The login.</param>
+        /// <param name="sid">The sid.</param>
         /// <returns>The specification.</returns>
         public static Specification<Member> SearchForSid(string sid)
         {

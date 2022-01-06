@@ -20,9 +20,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// Initializes a new instance of the <see cref="NotificationTypeDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public NotificationTypeDomainService(ITGenericRepository<NotificationType> repository)
+        /// <param name="userContext">The user context.</param>
+        public NotificationTypeDomainService(ITGenericRepository<NotificationType> repository, UserContext userContext)
             : base(repository)
         {
+            this.userContext = userContext;
         }
 
         /// <summary>
@@ -31,7 +33,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <returns>List of OptionDto.</returns>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.Repository.GetAllResultAsync(selectResult: new NotificationTypeOptionMapper().EntityToDto());
+            NotificationTypeOptionMapper mapper = this.InitMapper<OptionDto, NotificationTypeOptionMapper>();
+            return this.Repository.GetAllResultAsync(selectResult: mapper.EntityToDto());
         }
     }
 }

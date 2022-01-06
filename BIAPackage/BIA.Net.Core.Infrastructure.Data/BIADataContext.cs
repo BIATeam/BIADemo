@@ -11,6 +11,7 @@
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
 
     public class BIADataContext : DbContext, IQueryableUnitOfWork
     {
@@ -30,6 +31,14 @@
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Gets or sets the language DBSet.
+        /// </summary>
+        public DbSet<Language> Languages { get; set; }
+
+        /// <summary>
+        /// Gets or sets the distibued cache DBSet.
+        /// </summary>
         public virtual DbSet<DistCache> DistCache { get; set; }
 
         /// <summary>

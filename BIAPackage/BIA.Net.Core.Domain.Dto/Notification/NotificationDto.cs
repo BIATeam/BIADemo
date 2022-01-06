@@ -20,9 +20,19 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         public string Title { get; set; }
 
         /// <summary>
+        /// Gets or sets the title translated.
+        /// </summary>
+        public string TitleTranslated { get; set; }
+
+        /// <summary>
         /// Gets or sets the description.
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description translated.
+        /// </summary>
+        public string DescriptionTranslated { get; set; }
 
         /// <summary>
         /// Gets or sets the notification type identifier.
@@ -64,5 +74,9 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// </summary>
         public string JData { get; set; }
 
+        /// <summary>
+        /// Gets ot sets the notification translations
+        /// </summary>
+        public ICollection<NotificationTranslationDto> NotificationTranslations { get; set; }
     }
 }

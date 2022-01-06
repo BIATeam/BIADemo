@@ -51,18 +51,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string mapperMode = null);
 
         /// <summary>
-        /// Get all rights for a user with its sid.
-        /// </summary>
-        /// <param name="userDirectoryRoles">The user roles in user directory.</param>
-        /// <param name="sid">The user sid.</param>
-        /// <param name="siteId">The site identifier.</param>
-        /// <param name="roleId">The role identifier.</param>
-        /// <returns>
-        /// The list of right.
-        /// </returns>
-        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
-
-        /// <summary>
         /// Translate the roles in rights.
         /// </summary>
         /// <param name="roles">List of roles.</param>
@@ -144,6 +132,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> ExportCSV(FileFiltersDto filters);
+        Task<byte[]> ExportCSV(LazyLoadDto filters);
     }
 }

@@ -19,6 +19,8 @@ import { PermissionOptionModule } from 'src/app/domains/permission-option/permis
 import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
 import { NotificationTypeOptionModule } from 'src/app/domains/notification-type-option/notification-type-option.module';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { LanguageOptionModule } from 'src/app/domains/language-option/language-option.module';
 
 const ROUTES: Routes = [
   {
@@ -106,13 +108,15 @@ const ROUTES: Routes = [
   ],
   imports: [
     SharedModule,
+    ReactiveFormsModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('notifications', reducers),
     EffectsModule.forFeature([NotificationsEffects]),
     // Domain Modules:
     PermissionOptionModule,
     NotificationTypeOptionModule,
-    UserOptionModule
+    UserOptionModule,
+    LanguageOptionModule
   ]
 })
 export class NotificationModule {

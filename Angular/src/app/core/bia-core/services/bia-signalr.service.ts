@@ -70,19 +70,19 @@ export class BiaSignalRService {
     }, 500);
   }
 
-  public joinGroup(targetedFeature: TargetedFeature)
-  {
-    if (this.targetedFeatures.indexOf(targetedFeature) === -1 ) { this.targetedFeatures.push(targetedFeature);}
-    if (this.isStarted)
-    {
+  public joinGroup(targetedFeature: TargetedFeature) {
+    if (this.targetedFeatures.indexOf(targetedFeature) === -1 ) {
+      this.targetedFeatures.push(targetedFeature);
+    }
+    if (this.isStarted) {
       this.invokeJoinGroup(targetedFeature);
     }
   }
 
   private invokeJoinGroup(targetedFeature: TargetedFeature) {
-    this.hubConnection.invoke("JoinGroup", JSON.stringify(targetedFeature))
+    this.hubConnection.invoke('JoinGroup', JSON.stringify(targetedFeature))
       .then(() => {
-          console.log('%c [SignalRService] Join Group ' + targetedFeature.parentKey + ">" + targetedFeature.featureName, 'color: blue; font-weight: bold');
+          console.log('%c [SignalRService] Join Group ' + targetedFeature.parentKey + '>' + targetedFeature.featureName, 'color: blue; font-weight: bold');
         }
       )
       .catch(err => {
@@ -90,23 +90,20 @@ export class BiaSignalRService {
       });
   }
 
-  public leaveGroup(targetedFeature: TargetedFeature)
-  {
+  public leaveGroup(targetedFeature: TargetedFeature) {
     const index = this.targetedFeatures.indexOf(targetedFeature);
-    if (index > -1) 
-    {
-      this.targetedFeatures.slice(index)
-    } 
-    if (this.isStarted)
-    {
+    if (index > -1) {
+      this.targetedFeatures.slice(index);
+    }
+    if (this.isStarted) {
       this.invokeLeaveGroup(targetedFeature);
     }
   }
 
   private invokeLeaveGroup(targetedFeature: TargetedFeature) {
-    this.hubConnection.invoke("LeaveGroup", JSON.stringify(targetedFeature))
+    this.hubConnection.invoke('LeaveGroup', JSON.stringify(targetedFeature))
       .then(() => {
-          console.log('%c [SignalRService] Leave Group ' + targetedFeature.parentKey + ">" + targetedFeature.featureName, 'color: blue; font-weight: bold');
+          console.log('%c [SignalRService] Leave Group ' + targetedFeature.parentKey + '>' + targetedFeature.featureName, 'color: blue; font-weight: bold');
         }
       )
       .catch(err => {

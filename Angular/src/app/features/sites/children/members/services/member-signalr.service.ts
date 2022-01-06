@@ -20,7 +20,7 @@ import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 })
 export class MembersSignalRService {
 
-  private targetedFeature : TargetedFeature;
+  private targetedFeature: TargetedFeature;
 
   /**
    * Constructor.
@@ -45,7 +45,7 @@ export class MembersSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName : "members"};
+    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName: 'members'};
     this.signalRService.joinGroup(this.targetedFeature);
 
   }
@@ -53,6 +53,6 @@ export class MembersSignalRService {
   destroy() {
     console.log('%c [Members] Unregister SignalR : refresh-members', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-members');
-    this.signalRService.leaveGroup(this.targetedFeature)
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

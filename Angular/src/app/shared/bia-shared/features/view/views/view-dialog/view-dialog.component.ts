@@ -80,7 +80,6 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayViewDialog)
-        
         .subscribe((tableStateKeySelected) => (this.display = this.tableStateKey === tableStateKeySelected))
     );
   }

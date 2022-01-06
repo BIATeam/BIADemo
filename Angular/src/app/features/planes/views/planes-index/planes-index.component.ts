@@ -2,7 +2,7 @@ import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/c
 import { Store } from '@ngrx/store';
 import { getAllPlanes, getPlanesTotalCount, getPlaneLoadingGetAll } from '../../store/plane.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/planes-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Plane } from '../../model/plane';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -34,11 +34,13 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
-  useSignalR = true;
-  useView = false;
+  useSignalR = false;
+  useView = true;
+  useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) planeListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -57,7 +59,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
-
+  parentIds: string[];
 
   constructor(
     private store: Store<AppState>,
@@ -73,6 +75,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.sub = new Subscription();
+
     this.initTableConfiguration();
     this.setPermissions();
     this.planes$ = this.store.select(getAllPlanes);
@@ -80,35 +84,49 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(getPlaneLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
-      this.planeOptionsService.loadAllOptions();
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            this.planeOptionsService.loadAllOptions();
+        })
+      );
     }
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
+      let isinit = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
+            }
+          })
+      );
+    }
+    this.parentIds = [];
   }
 
   ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.OnHide();
   }
 
   OnDisplay() {
-    if (this.planeListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.planeListComponent.getLazyLoadMetadata() }));
-    }
-
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.planesSignalRService.initialize();
       PlanesEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       PlanesEffects.useSignalR = false;
       this.planesSignalRService.destroy();
     }
@@ -155,6 +173,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
+    lazyLoadEvent.parentIds = this.parentIds;
     this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 
@@ -177,7 +196,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
+    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
     this.planeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });
@@ -190,7 +209,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('msn', 'plane.msn'),

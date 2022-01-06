@@ -34,8 +34,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
         this.setCurrentSiteId(authInfo.additionalInfos.userData.currentSiteId);
-        if (environment.singleRoleMode && authInfo.additionalInfos.userData.currentRoleIds.length == 1)
-        {
+        if (environment.singleRoleMode && authInfo.additionalInfos.userData.currentRoleIds.length === 1) {
           this.setCurrentRoleId(authInfo.additionalInfos.userData.currentRoleIds[0]);
         }
       }
@@ -160,17 +159,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     let url: string;
     const siteId = this.getCurrentSiteId();
     if (siteId > 0) {
-      if (environment.singleRoleMode)
-      {
+      if (environment.singleRoleMode) {
         const roleId = this.getCurrentRoleId();
         if (roleId > 0) {
           url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}/${roleId}`;
         } else {
           url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
         }
-
-      }
-      else {
+      } else {
         url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
       }
     } else {

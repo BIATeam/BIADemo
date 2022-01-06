@@ -82,26 +82,19 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.airportListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.airportListComponent.getLazyLoadMetadata() }));
-    }
-
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.airportsSignalRService.initialize();
       AirportsEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       AirportsEffects.useSignalR = false;
       this.airportsSignalRService.destroy();
     }
@@ -183,7 +176,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('name', 'airport.name'),

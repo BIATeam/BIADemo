@@ -423,7 +423,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class NotificationTypes
         {
             /// <summary>
-            /// The right to access to the list of planes types (options only).
+            /// The right to access to the list of notifications types (options only).
             /// </summary>
             public const string Options = "NotifiactionType_Options";
         }

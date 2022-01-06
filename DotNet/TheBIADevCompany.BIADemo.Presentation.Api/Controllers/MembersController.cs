@@ -1,7 +1,7 @@
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInMember
+// #define UseHubForClientInMember
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -69,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] MemberFilterDto filters)
+        public async Task<IActionResult> GetAll([FromBody] LazyLoadDto filters)
         {
             try
             {
@@ -207,7 +208,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var deletedDto = await this.memberService.RemoveAsync(id);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "members", "refresh-members");
 #endif
@@ -243,7 +246,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var deletedDtos = await this.memberService.RemoveAsync(ids);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -283,7 +288,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -383,11 +390,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public virtual async Task<IActionResult> GetFileCSV([FromBody] MemberFileFilterDto filters)
+        public virtual async Task<IActionResult> GetFileCSV([FromBody] LazyLoadDto filters)
         {
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

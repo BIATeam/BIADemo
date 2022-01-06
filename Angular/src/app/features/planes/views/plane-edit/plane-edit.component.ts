@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/state';
 import { PlaneService } from '../../services/plane.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PlaneOptionsService } from '../../services/plane-options.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'app-plane-edit',
@@ -23,10 +24,15 @@ export class PlaneEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public planeOptionsService: PlaneOptionsService,
     public planeService: PlaneService,
+    private biaTranslationService: BiaTranslationService,
   ) { }
 
   ngOnInit() {
-    this.planeOptionsService.loadAllOptions();
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(event => {
+          this.planeOptionsService.loadAllOptions();
+      })
+    );
   }
 
   ngOnDestroy() {

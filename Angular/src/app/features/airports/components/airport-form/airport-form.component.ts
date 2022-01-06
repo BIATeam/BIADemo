@@ -48,7 +48,7 @@ export class AirportFormComponent implements OnInit, OnChanges {
   private initForm() {
     this.form = this.formBuilder.group({
       id: [this.airport.id],
-      name: [this.airport.name, Validators.required],      
+      name: [this.airport.name, Validators.required],
       city: [this.airport.city, Validators.required],
     });
   }

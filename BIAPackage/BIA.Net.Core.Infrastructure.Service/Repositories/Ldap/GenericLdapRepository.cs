@@ -6,6 +6,7 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
@@ -288,7 +289,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 listGroupCacheSidToRemove.Add(group.Sid.Value);
                             }
 
-
                             return true;
                         }
                         catch (Exception e)
@@ -309,15 +309,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
         {
-            Role role = this.configuration.Roles.Where(w => w.Type == "Ldap" && w.Label == roleLabel).FirstOrDefault();
-            if (role != null)
+            var userLdapGroups = this.GetLdapGroupsForRole(roleLabel);
+           // Role role = this.configuration.Roles.Where(w => w.Type == "Ldap" && w.Label == roleLabel).FirstOrDefault();
+            if (userLdapGroups != null && userLdapGroups.Count() >0)
             {
                 LdapGroup ldapGroup;
                 PrincipalContext context;
-                ldapGroup = role.LdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
+                ldapGroup = userLdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
                 if (ldapGroup == null)
                 {
-                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + role.Label);
+                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + roleLabel);
                     return null;
                 }
                 context = PrepareDomainContext(ldapGroup.Domain).Result;
@@ -480,16 +481,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
         public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
         {
-            var roleUser = this.configuration.Roles.Where(w =>( w.Type == "Ldap" || w.Type == "Synchro") && w.Label == role).FirstOrDefault();
+            List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
             List<string> listUsersSid = new List<string>();
-            if (roleUser.LdapGroups == null || roleUser.LdapGroups.Count() == 0)
+            if (userLdapGroups == null || userLdapGroups.Count() == 0)
             {
                 return listUsersSid;
             }
 
             List<string> listTreatedGroupSid = new List<string>();
             var resolveTasks = new List<Task>();
-            foreach (var ldapGroup in roleUser.LdapGroups)
+            foreach (var ldapGroup in userLdapGroups)
             {
                 resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup));
             }
@@ -497,26 +498,49 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return listUsersSid;
         }
 
+        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
+        public List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
+        {
+            return this.configuration.Roles.Where(w => (w.Type == "Ldap" || w.Type == "Synchro") && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
+        }
+
+        static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
+        object syncLocalCacheGroupSid = new Object();
         private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)
         {
-            GroupPrincipal groupPrincipal = null;
-            try
+            string sid = "";
+            lock (syncLocalCacheGroupSid)
             {
-                PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
-                if (ctx != null)
+                localCacheGroupSid.TryGetValue(ldapGroup.Domain + ":" + ldapGroup.LdapName, out sid);
+
+                if (string.IsNullOrEmpty(sid))
                 {
-                    groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                    GroupPrincipal groupPrincipal = null;
+                    try
+                    {
+                        PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
+                        if (ctx != null)
+                        {
+                            groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
+                        throw e;
+                    }
+                    if (groupPrincipal != null)
+                    {
+                        this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
+                        sid = groupPrincipal.Sid.Value;
+                        localCacheGroupSid.Add(ldapGroup.Domain + ":" + ldapGroup.LdapName, sid);
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
-            }
-            if (groupPrincipal != null)
-            {
-                this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
 
-                await this.GetAllUsersSidFromGroupRecursivelyAsync(groupPrincipal.Sid.Value, ldapGroup, listUsersSid, listTreatedGroupSid);
+            if (!string.IsNullOrEmpty(sid))
+            { 
+                await this.GetAllUsersSidFromGroupRecursivelyAsync(sid, ldapGroup, listUsersSid, listTreatedGroupSid);
             }
         }
 
@@ -569,15 +593,41 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Return the role from Ad and fake
         /// </summary>
-        /// <param name="login">le login of the user</param>
+        /// <param name="sid">le sid of the user</param>
         /// <returns>list of roles</returns>
         public async Task<List<string>> GetUserRolesBySid(string sid)
         {
             var rolesSection = this.configuration.Roles;
 
-            var adRoles = new List<string>();
+            var adRoles = new ConcurrentBag<string>();
 
-            Parallel.ForEach(rolesSection, role =>
+            var roleTasks = rolesSection.Select(async role =>
+            {
+                switch (role.Type)
+                {
+                    case "Fake":
+                        return role.Label;
+
+                    case "Ldap":
+                        var result = await IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
+                        {
+                            return role.Label;
+                        }
+                        break;
+                }
+                return null;
+            });
+            var roles = await Task.WhenAll(roleTasks);
+            foreach (var role in roles)
+            {
+                if (role!= null)
+                {
+                    adRoles.Add(role);
+                }
+            }
+
+            Parallel.ForEach(rolesSection, async role =>
             {
                 switch (role.Type)
                 {
@@ -586,7 +636,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         break;
 
                     case "Ldap":
-                        if (IsSidInGroups(role.LdapGroups, sid).Result)
+                        var result = await IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
                         {
                             adRoles.Add(role.Label);
                         }
@@ -594,7 +645,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
             });
 
-            return adRoles;
+            return adRoles.ToList();
         }
 
         private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)

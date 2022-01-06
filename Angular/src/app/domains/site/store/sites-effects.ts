@@ -100,7 +100,7 @@ export class SitesEffects {
       )
     )
   );
-  
+
   constructor(
     private actions$: Actions,
     private siteDas: SiteDas,

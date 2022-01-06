@@ -35,7 +35,6 @@ export class PlaneEditDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayEditDialog)
-        
         .subscribe((x) => (this.display = x))
     );
     this.airportOptions$ = this.store.select(getAllAirportOptions);

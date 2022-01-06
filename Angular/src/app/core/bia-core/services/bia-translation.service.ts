@@ -1,9 +1,13 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 // import * as deepmerge from 'deepmerge';
-import { forkJoin, Observable, of, BehaviorSubject } from 'rxjs';
+import { forkJoin, Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { AppState } from 'src/app/store/state';
 
 // export const BIA_DEFAULT_LOCALE_ID = new InjectionToken('biaDefaultLocaleId');
 const TRANSLATION_LANG_KEY = '@@lang';
@@ -41,11 +45,14 @@ export class BiaTranslationService {
   private translationsLoaded: { [lang: string]: boolean } = {};
   private lazyTranslateServices: TranslateService[] = [];
   private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getLangSelected());
-  public culture$: Observable<DateFormat> = this.cultureSubject
-    .asObservable()
-    .pipe(map((x) => this.getDateFormatByCulture(x)));
+  public currentCulture$: Observable<string | null> = this.cultureSubject.asObservable();
+  public appSettings$: Observable<AppSettings | null> = this.store.select(getAppSettings);
+  public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([this.currentCulture$, this.appSettings$])
+    .pipe(map(([currentCulture, appSettings]) => this.getDateFormatByCulture(currentCulture, appSettings)));
+  public languageId$: Observable<number> = combineLatest([this.currentCulture$, this.appSettings$])
+    .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings)));
 
-  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string, private primeNgConfig: PrimeNGConfig) {}
+  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string, private store: Store<AppState>, private primeNgConfig: PrimeNGConfig) {}
 
   getLangSelected(): string | null {
     return localStorage.getItem(STORAGE_LANG_KEY);
@@ -64,7 +71,7 @@ export class BiaTranslationService {
   // NOTE: Check if it's still usefull
   loadAndChangeLanguage(lang: string, defaultLang?: string) {
     const culture = lang;
-    this.cultureSubject.next(culture);
+
     lang = lang.split('-')[0];
     const translationLoaders$ = [];
     const translateServices = [this.translate, ...this.lazyTranslateServices];
@@ -90,6 +97,7 @@ export class BiaTranslationService {
       try {
         localStorage.setItem(STORAGE_LANG_KEY, culture);
       } catch {}
+      this.cultureSubject.next(culture);
     });
     this.translate.get('primeng').subscribe(res => this.primeNgConfig.setTranslation(res));
   }
@@ -113,39 +121,43 @@ export class BiaTranslationService {
     );
   }
 
-  private getDateFormatByCulture(culture: string | null): DateFormat {
-    let dateFormat = '';
-    let timeFormat = '';
-    switch (culture) {
-      case 'de-DE':
-        dateFormat = 'dd.MM.yyyy';
-        timeFormat = 'HH:mm';
-        break;
-      case 'es-ES':
-        dateFormat = 'dd/MM/yyyy';
-        timeFormat = 'H:mm';
-        break;
-      case 'fr-FR':
-        dateFormat = 'dd/MM/yyyy';
-        timeFormat = 'HH:mm';
-        break;
-      case 'en-GB':
-        dateFormat = 'dd/MM/yyyy';
-        timeFormat = 'HH:mm';
-        break;
-      case 'es-MX':
-        dateFormat = 'dd/MM/yyyy';
-        timeFormat = 'hh:mm a';
-        break;
-      case 'en-US':
-        dateFormat = 'MM/dd/yyyy';
-        timeFormat = 'h:mm a';
-        break;
-      default:
-        dateFormat = 'yyyy-MM-dd';
-        timeFormat = 'HH:mm';
-        break;
+  private getDateFormatByCulture(code: string | null, appSettings: AppSettings| null): DateFormat {
+    let dateFormat = 'yyyy-MM-dd';
+    let timeFormat = 'HH:mm';
+    if (appSettings != null) {
+      let culture;
+
+      if (code == null) {
+        culture = appSettings.cultures.filter(c => c.acceptedCodes.indexOf('default') > -1)[0];
+      }
+      if (culture == null) {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
+      }
+
+      if (culture) {
+        dateFormat = culture.dateFormat;
+        timeFormat = culture.timeFormat;
+      }
     }
     return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat };
+  }
+  private getLanguageId(code: string | null, appSettings: AppSettings| null): number {
+    let LanguageId = 0;
+    if (appSettings != null) {
+      let culture;
+
+      if (code == null) {
+        culture = appSettings.cultures.filter(c => c.acceptedCodes.indexOf('default') > -1)[0];
+      }
+
+      if (culture == null) {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
+      }
+
+      if (culture) {
+        LanguageId = culture.languageId;
+      }
+    }
+    return LanguageId;
   }
 }

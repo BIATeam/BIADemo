@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             // Mapping relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
-            // Mapping relationship *-* : ICollection<Airports>
+            // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
             if (dto.ConnectingAirports?.Any() == true)
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))

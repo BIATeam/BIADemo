@@ -7,7 +7,6 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
-import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
@@ -17,6 +16,8 @@ import { OptionDto } from '../../../model/option-dto';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../model/auth-info';
+import { RoleDto } from '../../../model/role';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'bia-classic-header',
@@ -35,12 +36,6 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input()
-  set environmentType(env: EnvironmentType) {
-    if (env) {
-      this.cssClassEnv = `env-${env.toLowerCase()}`;
-    }
-  }
-  @Input()
   set menus(navigations: BiaNavigation[]) {
     if (navigations && navigations.length > 0) {
       this.navigations = navigations;
@@ -55,9 +50,10 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
 
+
   currentSite: OptionDto;
-  currentRole: OptionDto;
-  _userData: UserData
+  currentRole: RoleDto;
+  _userData: UserData;
   get userData(): UserData {
     return this._userData;
   }
@@ -84,6 +80,7 @@ export class ClassicHeaderComponent implements OnDestroy {
   displaySiteList = false;
   displayRoleList = false;
   cssClassEnv: string;
+  languageId: number;
   singleRoleMode = environment.singleRoleMode;
 
   private sub = new Subscription();
@@ -101,10 +98,21 @@ export class ClassicHeaderComponent implements OnDestroy {
     private platform: Platform,
     private store: Store<AppState>,
     private biaMessageService: BiaMessageService,
+    public biaTranslationService: BiaTranslationService,
     private router: Router
   ) {
     this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
     this.store.dispatch(loadUnreadNotificationIds());
+    biaTranslationService.appSettings$.subscribe(appSettings => {
+      if (appSettings) {
+        this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
+      }
+    });
+    biaTranslationService.languageId$.subscribe(languageId => {
+      if (languageId) {
+        this.languageId = languageId;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -117,7 +125,7 @@ export class ClassicHeaderComponent implements OnDestroy {
     if (message.data?.route) {
       this.router.navigate(message.data.route);
     } else if (message.data?.notificationId) {
-      this.router.navigate(['/notifications/',message.data?.notificationId, 'detail']);
+      this.router.navigate(['/notifications/', message.data?.notificationId, 'detail']);
     } else {
       this.router.navigate(['/notifications/']);
     }
@@ -183,9 +191,10 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownRole() {
     this.displayRoleList = false;
-    if (environment.singleRoleMode)
-    {
-      if (this.userData.currentRoleIds && this.userData.currentRoleIds.length == 1 && this.userData.roles && this.userData.roles.length > 1) {
+    if (environment.singleRoleMode) {
+      if (this.userData.currentRoleIds &&
+        this.userData.currentRoleIds.length === 1 &&
+        this.userData.roles && this.userData.roles.length > 1) {
         this.currentRole = this.userData.roles.filter((x) => x.id === this.userData.currentRoleIds[0])[0];
         this.displayRoleList = true;
       }

@@ -13,13 +13,13 @@
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls" fxLayout="row">
-      <p-dropdown *ngIf="displayRoleList" [options]="userData.roles" [(ngModel)]="currentRole" optionLabel="display"
+      <p-dropdown *ngIf="displayRoleList" [options]="userData.roles" [(ngModel)]="currentRole" optionLabel="label"
         dataKey="id" (onChange)="onRoleChange()" placeholder="Select a role">
         <ng-template let-item pTemplate="item">
-          {{ item?.value | translateField : 'display' : 'role.' : translateService.currentLang }}
+          {{ item?.value | translateField : 'label' : 'roleTranslations' : languageId }}
         </ng-template>
         <ng-template let-selectedItem pTemplate="selectedItem">
-          {{ selectedItem?.value  | translateField : 'display' : 'role.' : translateService.currentLang }}
+          {{ selectedItem?.value  | translateField : 'label' : 'roleTranslations' : languageId }}
           <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
         </ng-template>
       </p-dropdown>

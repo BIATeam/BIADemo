@@ -10,14 +10,9 @@ import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
-import { Observable } from 'rxjs';
 import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
-import { filter, map } from 'rxjs/operators';
-import { EnvironmentType } from 'src/app/domains/environment-configuration/model/environment-configuration';
-import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
 import { APP_BASE_HREF } from '@angular/common';
-// import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 
 @Component({
   selector: 'app-bia-layout',
@@ -35,7 +30,6 @@ import { APP_BASE_HREF } from '@angular/common';
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
       [userData]="userData"
-      [environmentType]="environmentType$ | async"
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
       (roleChange)="onRoleChange($event)"
@@ -63,10 +57,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
   userData: UserData | null;
-  environmentType$: Observable<EnvironmentType | null>;
 
   constructor(
-    private biaTranslationService: BiaTranslationService,
+    public biaTranslationService: BiaTranslationService,
     private navigationService: NavigationService,
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
@@ -80,8 +73,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     if (this.enableNotifications) {
       // this.initNotificationSignalRService();
     }
-
-    this.initEnvironmentType();
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
   }
@@ -90,16 +81,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // this.notificationSignalRService.destroy();
   }
 
-  // private initNotificationSignalRService() {
-  //   // this.notificationSignalRService.initialize();
-  // }
-
-  private initEnvironmentType() {
-    this.environmentType$ = this.store.select(getEnvironmentConfiguration).pipe(
-      filter((envConf) => !!envConf),
-      map((envConf) => (envConf ? envConf.type : null))
-    );
-  }
 
 
   onSiteChange(siteId: number) {

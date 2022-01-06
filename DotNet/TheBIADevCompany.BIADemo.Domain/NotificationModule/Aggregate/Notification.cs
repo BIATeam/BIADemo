@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -85,5 +86,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// Gets or sets the route to load on notification click and potentialy other datas. It should be store at camelCase format.
         /// </summary>
         public string JData { get; set; }
+
+        /// <summary>
+        /// Gets or sets the notification translations.
+        /// </summary>
+        public virtual ICollection<NotificationTranslation> NotificationTranslations { get; set; }
     }
 }

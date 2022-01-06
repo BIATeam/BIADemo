@@ -3,8 +3,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription, Observable } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
-import { EnvironmentConfiguration } from 'src/app/domains/environment-configuration/model/environment-configuration';
-import { getEnvironmentConfiguration } from 'src/app/domains/environment-configuration/store/environment-configuration.state';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
 import { AppState } from 'src/app/store/state';
 import { AuthService } from '../auth.service';
 import { MatomoInjector } from './matomo-injector.service';
@@ -36,14 +36,16 @@ export class BiaMatomoService implements OnDestroy {
   }
 
   private initMatomoInjector() {
-    const environmentConfiguration$ = this.getEnvironmentConfiguration();
+    const appSettings$ = this.getAppSettings();
 
     this.sub.add(
-      environmentConfiguration$.subscribe((environmentConfiguration) => {
-        if (environmentConfiguration && environmentConfiguration.urlMatomo && environmentConfiguration.urlMatomo != undefined) {
+      appSettings$.subscribe((appSettings) => {
+        if (appSettings && appSettings.environment.urlMatomo &&
+          appSettings.environment.urlMatomo !== undefined &&
+          appSettings.environment.urlMatomo !== '') {
           this.matomoInjector.init(
-            environmentConfiguration.urlMatomo, 
-            this.authService.getCurrentSiteId().toString(), 
+            appSettings.environment.urlMatomo,
+            this.authService.getCurrentSiteId().toString(),
             this.authService.getAdditionalInfos().userData.currentSiteTitle);
         }
       })
@@ -64,7 +66,7 @@ export class BiaMatomoService implements OnDestroy {
     );
   }
 
-  private getEnvironmentConfiguration(): Observable<EnvironmentConfiguration | null> {
-    return this.store.select(getEnvironmentConfiguration).pipe(filter((envConf) => !!envConf));
+  private getAppSettings(): Observable<AppSettings | null> {
+    return this.store.select(getAppSettings).pipe(filter((envConf) => !!envConf));
   }
 }

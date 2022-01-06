@@ -156,6 +156,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             // get roles
             var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
 
+            // the main roles
+            var allRoles = userRolesFromUserDirectory;
+
             if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
@@ -194,10 +197,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             // get user rights
-            List<string> userPermissions = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
                 var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
+
                 var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
                 var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
@@ -225,7 +228,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 if (userData.CurrentSiteId > 0)
                 {
                     var roles = await this.roleAppService.GetMemberRolesAsync(userData.CurrentSiteId, userInfo.Id);
-                    userData.Roles = roles.Select(r => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = r.Id, Display = r.Display }).ToList();
+                    userData.Roles = roles.ToList();
 
                     if (singleRoleMode)
                     {
@@ -256,36 +259,32 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                         userData.CurrentRoleIds = roles.Select(r => r.Id).ToList();
                     }
 
-                    // the main roles
-                    var allRoles = userRolesFromUserDirectory;
-
                     // add the sites roles (filter if singleRole mode is used)
-                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Display).ToList());
+                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
 
-                    // translate roles in permission
-                    userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
-
-                    // add the same permission in the id form.
-                    userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
-
-                    if (!userPermissions.Any())
-                    {
-                        this.logger.LogInformation("Unauthorized because no user rights for site : " + userData.CurrentSiteId);
-                        return this.Unauthorized("You don't have access to this site");
-                    }
+                    // add computed roles (can be customized)
+                    allRoles.Add(Constants.Role.SiteMember);
                 }
             }
 
-            // For admin and non user
-            if (userPermissions == null)
+            if (allRoles == null || !allRoles.Any())
             {
-                userPermissions = await this.userAppService.GetPermissionsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
+                this.logger.LogInformation("Unauthorized because no role found");
+                return this.Unauthorized("No role found");
             }
+
+            List<string> userPermissions = null;
+
+            // translate roles in permission
+            userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
+
+            // add the same permission in the id form.
+            userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
 
             if (userPermissions == null || !userPermissions.Any())
             {
-                this.logger.LogInformation("Unauthorized because No rights found");
-                return this.Unauthorized("No rights found");
+                this.logger.LogInformation("Unauthorized because no permission found");
+                return this.Unauthorized("No permission found");
             }
 
             var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userPermissions, userData));

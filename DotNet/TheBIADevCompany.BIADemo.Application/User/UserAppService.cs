@@ -117,12 +117,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.userDirectoryHelper.GetUserRolesBySid(sid);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetPermissionsForUserAsync"/>
-        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
-        {
-            return await this.userPermissionDomainService.GetPermissionsForUserAsync(userDirectoryRoles, sid, siteId, roleId);
-        }
-
         /// <inheritdoc cref="IUserAppService.TranslateRolesInPermissions"/>
         public List<string> TranslateRolesInPermissions(List<string> roles)
         {
@@ -137,9 +131,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             if (userInfo != null)
             {
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
+                this.SelectDefaultLanguage(userInfo);
+
                 return userInfo;
             }
 
@@ -161,9 +154,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     LastName = user.LastName,
                     Country = user.Country,
                 };
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
+                this.SelectDefaultLanguage(userInfo);
             }
 
             return userInfo;
@@ -218,27 +209,75 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
         public async Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
         {
-            List<string> errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
-            await this.SynchronizeWithADAsync();
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
+            List<string> errors = new List<string>();
+            if (ldapGroups != null && ldapGroups.Count > 0)
+            {
+                errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                try
+                {
+                    await this.SynchronizeWithADAsync();
+                }
+                catch (Exception)
+                {
+                    errors.Add("Error during synchronize. Retry Synchronize.");
+                }
+            }
+            else
+            {
+                foreach (var userFormDirectoryDto in users)
+                {
+                    try
+                    {
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
+
+                        await this.userSynchronizeDomainService.AddOrActiveUserFromAD(userFormDirectoryDto.Sid, foundUser);
+
+                        await this.Repository.UnitOfWork.CommitAsync();
+                    }
+                    catch (Exception)
+                    {
+                        errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
+                    }
+                }
+            }
+
             return errors;
         }
 
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
             var user = await this.Repository.GetEntityAsync(id: id);
-
-            if (user == null)
+            if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                return "User not found in database";
+                if (user == null)
+                {
+                    return "User not found in database";
+                }
+
+                List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
+
+                await this.SynchronizeWithADAsync();
+                try
+                {
+                    await this.SynchronizeWithADAsync();
+                }
+                catch (Exception)
+                {
+                    return "Error during synchronize. Retry Synchronize.";
+                }
+
+                if (notRemovedUser.Count != 0)
+                {
+                    return "Not able to remove user. (Probably define in sub group)";
+                }
             }
-
-            List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
-
-            await this.SynchronizeWithADAsync();
-            if (notRemovedUser.Count != 0)
+            else
             {
-                return "Not able to remove user. (Probably define in sub group)";
+                this.userSynchronizeDomainService.DeactivateUser(user);
+                await this.Repository.UnitOfWork.CommitAsync();
             }
 
             return string.Empty;
@@ -268,12 +307,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             foreach (var user in users)
             {
-                await this.GetCreateUserInfoAsync(user.Login);
+                await this.GetCreateUserInfoAsync(user.Sid);
             }
         }
 
         /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(FileFiltersDto filters)
+        public async Task<byte[]> ExportCSV(LazyLoadDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
@@ -297,7 +336,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is FileFiltersDto fileFilters)
+            if (filters is LazyLoadDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }
@@ -311,6 +350,21 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
             var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
+        }
+
+        private void SelectDefaultLanguage(UserInfoDto userInfo)
+        {
+            userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == userInfo.Country))
+                .Select(s => s.Code)
+                .FirstOrDefault();
+
+            if (userInfo.Language == null)
+            {
+                // Select the default culture
+                userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == "default"))
+                    .Select(s => s.Code)
+                    .FirstOrDefault();
+            }
         }
     }
 }

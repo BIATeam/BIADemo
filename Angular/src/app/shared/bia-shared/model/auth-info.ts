@@ -1,4 +1,5 @@
-import { OptionDto } from "./option-dto";
+import { OptionDto } from './option-dto';
+import { RoleDto } from './role';
 
 export interface UserInfo {
   id: number;
@@ -20,7 +21,7 @@ export interface UserData {
   sites: OptionDto[];
   currentRoleIds: number[];
   defaultRoleId: number;
-  roles: OptionDto[];
+  roles: RoleDto[];
 }
 
 export interface AdditionalInfos {

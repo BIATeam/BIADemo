@@ -8,12 +8,12 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>
-    /// Class used to update the model builder for plane domain.
+    /// Class used to update the model builder for distributed cache domain.
     /// </summary>
     public static class DistCacheModelBuilder
     {
         /// <summary>
-        /// Create the model for planes.
+        /// Create the model for distributed cache.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         public static void CreateDistCacheModel(ModelBuilder modelBuilder)

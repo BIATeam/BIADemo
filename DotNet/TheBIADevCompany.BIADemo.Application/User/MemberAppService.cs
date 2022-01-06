@@ -13,6 +13,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -21,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for member.
     /// </summary>
-    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, MemberFilterDto, MemberMapper>, IMemberAppService
+    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, LazyLoadDto, MemberMapper>, IMemberAppService
     {
         /// <summary>
         /// The claims principal.
@@ -33,18 +35,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        /// <param name="queryCustomizer">The query customizer.</param>
-        public MemberAppService(ITGenericRepository<Member> repository, IPrincipal principal/*, IMemberQueryCustomizer queryCustomizer*/)
+        /// <param name="userContext">The user context.</param>
+        public MemberAppService(ITGenericRepository<Member> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+            this.userContext = userContext;
 
             // Include already add with the mapper MemberMapper
             // this.Repository.QueryCustomizer = queryCustomizer
         }
 
         /// <inheritdoc cref="IMemberAppService.GetRangeBySiteAsync"/>
-        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(MemberFilterDto filters)
+        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(LazyLoadDto filters)
         {
             return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }
@@ -95,20 +98,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc cref="IMemberAppService.ExportCSV(MemberFilterDto)"/>
-        public async Task<byte[]> ExportCSV(MemberFileFilterDto filters)
+        /// <inheritdoc cref="IMemberAppService.ExportCSV(LazyLoadDto)"/>
+        public async Task<byte[]> ExportCSV(LazyLoadDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
             filters.Rows = 0;
 
-            var queryFilter = new MemberFilterDto
-            {
-                Filters = filters.Filters,
-                SiteId = filters.SiteId,
-            };
-
-            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(queryFilter));
+            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
 
             List<object[]> records = query.Results.Select(member => new object[]
             {
@@ -117,9 +114,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is MemberFileFilterDto fileFilters)
+            if (filters.Columns != null && filters.Columns.Count > 0)
             {
-                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
+                columnHeaders = filters.Columns.Select(x => x.Value).ToList();
             }
 
             StringBuilder csv = new StringBuilder();

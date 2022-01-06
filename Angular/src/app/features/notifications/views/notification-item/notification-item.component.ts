@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../services/notification.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   templateUrl: './notification-item.component.html',
@@ -20,10 +21,17 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>,
     private route: ActivatedRoute,
     public notificationService: NotificationService,
-    private layoutService: BiaClassicLayoutService) { }
+    private layoutService: BiaClassicLayoutService,
+    private biaTranslationService: BiaTranslationService,
+  ) { }
 
   ngOnInit() {
-    this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(event => {
+          this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
+      })
+    );
+
     this.sub.add
       (
         this.store.select(getCurrentNotification).subscribe((notification) => {

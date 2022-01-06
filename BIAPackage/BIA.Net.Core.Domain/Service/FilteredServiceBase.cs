@@ -70,7 +70,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
-            var mapper = new TOtherMapper();
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
 
             var spec = SpecificationHelper.GetLazyLoad(
                 GetFilterSpecification(accessMode, filtersContext) & specification,
@@ -121,8 +121,9 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
         {
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
-                selectResult: new TOtherMapper().EntityToDto(mapperMode),
+                selectResult: mapper.EntityToDto(mapperMode),
                 id: id,
                 specification: GetFilterSpecification(accessMode, filtersContext) & specification, 
                 filter: filter, 
@@ -165,8 +166,9 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
         {
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
-                 new TOtherMapper().EntityToDto(mapperMode),
+                mapper.EntityToDto(mapperMode),
                 orderByExpression,
                 ascending,
                 id: id,
@@ -193,7 +195,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherFilterDto : LazyLoadDto, new()
         {
             List<string> columnHeaders = null;
-            if (filters is FileFiltersDto fileFilters)
+            if (filters is LazyLoadDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }
@@ -204,7 +206,8 @@ namespace BIA.Net.Core.Domain.Service
 
             IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id:id, specification: specification, filter:filter, accessMode: accessMode, queryMode: queryMode)).results;
 
-            List<object[]> records = results.Select(new TOtherMapper().DtoToRecord(mapperMode)).ToList();
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode)).ToList();
 
             StringBuilder csv = new ();
             records.ForEach(line =>
@@ -236,15 +239,15 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read, 
             string queryMode = QueryMode.Read,
-            string mapperMode = null)
+            string mapperMode = MapperMode.Item)
 
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
         {
-            var mapper = new TOtherMapper();
-            var result = await this.Repository.GetResultAsync(mapper.EntityToDto(mapperMode), 
-                id: id, 
-                specification: GetFilterSpecification(accessMode, filtersContext) & specification, 
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            var result = await this.Repository.GetResultAsync(mapper.EntityToDto(mapperMode),
+                id: id,
+                specification: GetFilterSpecification(accessMode, filtersContext) & specification,
                 filter: filter,
                 includes: includes,
                 queryMode: queryMode);
@@ -271,7 +274,7 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dto != null)
             {
-                var mapper = new TOtherMapper();
+                TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
                 var entity = new TEntity();
                 mapper.DtoToEntity(dto, entity, mapperMode);
                 this.Repository.Add(entity);
@@ -302,7 +305,7 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dto != null)
             {
-                var mapper = new TOtherMapper();
+                TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
 
                 var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
                 if (entity == null)
@@ -338,7 +341,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
         {
-            var mapper = new TOtherMapper();
+            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
 
             var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
             if (entity == null)
@@ -496,7 +499,8 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    new TOtherMapper().DtoToEntity(item, converted);
+                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
 
@@ -515,7 +519,8 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    new TOtherMapper().DtoToEntity(item, converted);
+                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
 
@@ -534,7 +539,8 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    new TOtherMapper().DtoToEntity(item, converted);
+                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
 

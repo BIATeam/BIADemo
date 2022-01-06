@@ -58,6 +58,14 @@
     "theme": "Thème",
     "themeDark": "Foncé",
     "themeLight": "Clair",
+    "translation": 
+    {  
+      "add" : "Ajouter traduction",
+      "addAll" :  "Ajouter toutes les traductions",
+      "delete" : "Supprimer traduction",
+      "language": "Langage",
+      "translatedFields" : "Champs traduits"
+    },
     "views": {
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",
@@ -87,7 +95,7 @@
     "confirmDelete": "Voulez-vous supprimer cet enregistrement?",
     "deleteElementSuccess": "Élément supprimé avec succès",
     "errorOccurredWhileProccessing": "Une erreur s'est produite lors du traitement de votre demande",
-    "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Google Chrome.",
+    "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Edge ou Google Chrome.",
     "infoBeforeGetLatestVersion": "L'application va se recharger dans quelques secondes afin de récupérer la dernière version.",
     "invalidForm": "Formulaire non valide",
     "syncElementSuccess": "Synchronisation terminée",

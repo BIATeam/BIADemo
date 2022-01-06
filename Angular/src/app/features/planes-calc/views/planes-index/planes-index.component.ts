@@ -147,7 +147,7 @@ export class PlanesIndexComponent implements OnInit {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           Object.assign(new PrimeTableColumn('id', 'bia.id'), {

@@ -42,8 +42,8 @@ export abstract class GenericDas {
     return environment.apiUrl + route;
   }
 
-  getItem<TOut>(id: string | number, options?: HttpOptions): Observable<TOut> {
-    return this.http.get<TOut>(`${this.route}${id}`, options).pipe(
+  getItem<TOut>(id?: string | number, options?: HttpOptions): Observable<TOut> {
+    return this.http.get<TOut>(id ? `${this.route}${id}` : `${this.route}`, options).pipe(
       map((data) => {
         DateHelperService.fillDate(data);
         return data;

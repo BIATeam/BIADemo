@@ -2,7 +2,7 @@ import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/c
 import { Store } from '@ngrx/store';
 import { getAllMembers, getMembersTotalCount, getMemberLoadingGetAll } from '../../store/member.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/members-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '../../model/member';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -34,11 +34,13 @@ import { SiteService } from 'src/app/features/sites/services/site.service';
 })
 export class MembersIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
-  useSignalR = true;
+  useSignalR = false;
   useView = false;
+  useRefreshAtLanguageChange = true;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) memberListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -57,6 +59,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'membersGrid' : undefined;
+  parentIds: string[];
 
 
   constructor(
@@ -74,6 +77,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.sub = new Subscription();
+
     this.initTableConfiguration();
     this.setPermissions();
     this.members$ = this.store.select(getAllMembers);
@@ -83,33 +88,45 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions();
     }
+
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
+      let isinit = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
+            }
+          })
+      );
+    }
+    this.parentIds = ['' + this.siteService.currentSiteId];
   }
 
   ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.OnHide();
   }
 
   OnDisplay() {
-    if (this.memberListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.memberListComponent.getLazyLoadMetadata() }));
-    }
 
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.membersSignalRService.initialize();
       MembersEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       MembersEffects.useSignalR = false;
       this.membersSignalRService.destroy();
     }
@@ -155,14 +172,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
   }
 
-  /*onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
-  }*/
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    if (this.siteService.currentSiteId > 0) {
-      const customEvent: any = { siteId: + this.siteService.currentSiteId, ...lazyLoadEvent };
-      this.store.dispatch(loadAllByPost({ event: customEvent }));
-    }
+    lazyLoadEvent.parentIds = this.parentIds;
+    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 
 
@@ -185,7 +197,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+
     this.memberDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });
@@ -198,16 +211,14 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           Object.assign(new PrimeTableColumn('user', 'member.user'), {
             type: PropType.OneToMany
           }),
           Object.assign(new PrimeTableColumn('roles', 'member.rolesForSite'), {
-            type: PropType.ManyToMany,
-            translateKey: 'role.',
-            searchPlaceholder: 'Site_Admin|Pilot|...'
+            type: PropType.ManyToMany
           })
         ]
       };

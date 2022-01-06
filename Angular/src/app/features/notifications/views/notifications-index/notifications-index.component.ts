@@ -2,7 +2,7 @@ import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/c
 import { Store } from '@ngrx/store';
 import { getAllNotifications, getNotificationsTotalCount, getNotificationLoadingGetAll } from '../../store/notification.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/notifications-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from '../../model/notification';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -25,7 +25,6 @@ import { NotificationsSignalRService } from '../../services/notification-signalr
 import { NotificationsEffects } from '../../store/notifications-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { NotificationOptionsService } from '../../services/notification-options.service';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-notifications-index',
@@ -36,9 +35,11 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
   useSignalR = true;
   useView = true;
+  useRefreshAtLanguageChange = true;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -73,30 +74,49 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.sub = new Subscription();
+
     this.initTableConfiguration();
     this.setPermissions();
-    this.notifications$ = this.store.select(getAllNotifications).pipe(map(notifications => notifications.map(notification => {
+    /*this.notifications$ = this.store.select(getAllNotifications).pipe(map(notifications => notifications.map(notification => {
       notification.title = this.translateService.instant(notification.title);
       notification.description = this.translateService.instant(notification.description);
       return notification;
-    })));
+    })));*/
+    this.notifications$ = this.store.select(getAllNotifications);
     this.totalCount$ = this.store.select(getNotificationsTotalCount);
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
-      this.notificationOptionsService.loadAllOptions();
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            this.notificationOptionsService.loadAllOptions();
+        })
+      );
+    }
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
+      let isinit = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
+            }
+          })
+      );
     }
   }
 
   ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.OnHide();
   }
 
   OnDisplay() {
-    if (this.notificationListComponent !== undefined) {
-      this.store.dispatch(loadAllByPost({ event: this.notificationListComponent.getLazyLoadMetadata() }));
-    }
-
     if (this.useView) {
       this.store.dispatch(loadAllView());
     }
@@ -196,15 +216,13 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.culture$.subscribe((dateFormat) => {
+    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'notification.title'),
-          new PrimeTableColumn('description', 'notification.description'),
+          new PrimeTableColumn('titleTranslated', 'notification.title'),
+          new PrimeTableColumn('descriptionTranslated', 'notification.description'),
           Object.assign(new PrimeTableColumn('type', 'notification.type.title'), {
             type: PropType.OneToMany,
-            translateKey: 'notification.type.',
-            searchPlaceholder: 'task|info|success|warn|error'
           }),
           Object.assign(new PrimeTableColumn('read', 'notification.read'), {
             isSearchable: false,
@@ -219,7 +237,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new PrimeTableColumn('notifiedPermissions', 'notification.notifiedPermissions'), {
             type: PropType.ManyToMany,
-            translateKey: 'permission.'
           }),
           Object.assign(new PrimeTableColumn('notifiedUsers', 'notification.notifiedUsers'), {
             type: PropType.ManyToMany

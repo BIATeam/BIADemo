@@ -316,10 +316,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        public virtual async Task<IActionResult> GetFile([FromBody] FileFiltersDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] LazyLoadDto filters)
         {
             byte[] buffer = await this.airportService.GetCsvAsync(filters);
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Airports{BIAConstants.Csv.Extension}");

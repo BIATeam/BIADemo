@@ -151,7 +151,7 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.Read,
-            string mapperMode = null);
+            string mapperMode = MapperMode.Item);
 
         /// <summary>
         /// Transform the DTO into the corresponding entity and add it to the DB.

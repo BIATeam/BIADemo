@@ -18,14 +18,14 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 @Injectable()
 export class PlanesSignalRService {
 
-  private targetedFeature : TargetedFeature;
+  private targetedFeature: TargetedFeature;
 
   /**
    * Constructor.
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService : AuthService) {
+  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService: AuthService) {
     // Do nothing.
   }
 
@@ -43,7 +43,7 @@ export class PlanesSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "planes"};
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'planes'};
     this.signalRService.joinGroup(this.targetedFeature);
 
   }
@@ -51,6 +51,6 @@ export class PlanesSignalRService {
   destroy() {
     console.log('%c [PlanesSignalR] Unregister refresh-planes', 'color: purple; font-weight: bold');
     this.signalRService.removeMethod('refresh-planes');
-    this.signalRService.leaveGroup(this.targetedFeature)
+    this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

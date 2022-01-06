@@ -88,7 +88,6 @@ import { FullPageLayoutComponent } from './components/layout/fullpage-layout/ful
 import { PluckPipe } from './pipes/pluck.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
-import { TranslateFieldsPipe } from './pipes/translate-fields.pipe';
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 
 const PRIMENG_MODULES = [
@@ -180,7 +179,6 @@ const VIEW_COMPONENTS = [
 const PIPES = [
   PluckPipe,
   JoinPipe,
-  TranslateFieldsPipe,
   TranslateFieldPipe,
 ];
 

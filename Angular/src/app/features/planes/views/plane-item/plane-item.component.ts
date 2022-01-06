@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PlaneService } from '../../services/plane.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   templateUrl: './plane-item.component.html',
@@ -20,10 +21,16 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>,
     private route: ActivatedRoute,
     public planeService: PlaneService,
-    private layoutService: BiaClassicLayoutService) { }
+    private layoutService: BiaClassicLayoutService,
+    private biaTranslationService: BiaTranslationService,
+  ) { }
 
   ngOnInit() {
-    this.planeService.currentPlaneId = this.route.snapshot.params.planeId;
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(event => {
+        this.planeService.currentPlaneId = this.route.snapshot.params.planeId;
+      })
+    );
     this.sub.add
       (
         this.store.select(getCurrentPlane).subscribe((plane) => {

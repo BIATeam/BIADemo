@@ -3,7 +3,8 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export const loadAllPermissionOptions = createAction('[Domain Permission Options] Load all');
 
-export const loadAllPermissionOptionsSuccess = createAction('[Domain Permission Options] Load all success', props<{ permissions: OptionDto[] }>());
+export const loadAllPermissionOptionsSuccess = createAction(
+    '[Domain Permission Options] Load all success', props<{ permissions: OptionDto[] }>());
 /*
 export const load = createAction('[Domain Permission Options] Load', props<{ id: number }>());
 

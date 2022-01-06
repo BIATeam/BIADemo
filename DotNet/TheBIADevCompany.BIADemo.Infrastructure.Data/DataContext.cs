@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
@@ -49,6 +50,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Role> Roles { get; set; }
 
         /// <summary>
+        /// Gets or sets the Role DBSet.
+        /// </summary>
+        public DbSet<RoleTranslation> RoleTranslations { get; set; }
+
+        /// <summary>
         /// Gets or sets the Member DBSet.
         /// </summary>
         public DbSet<Member> Members { get; set; }
@@ -59,14 +65,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<View> Views { get; set; }
 
         /// <summary>
-        /// Gets or sets the Role DBSet.
+        /// Gets or sets the notification DBSet.
         /// </summary>
         public DbSet<Notification> Notifications { get; set; }
 
         /// <summary>
-        /// Gets or sets the Role DBSet.
+        /// Gets or sets the notification type DBSet.
         /// </summary>
         public DbSet<NotificationType> NotificationTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the notification type DBSet.
+        /// </summary>
+        public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
         // Begin BIADemo
 
@@ -92,6 +103,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
