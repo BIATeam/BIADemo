@@ -30,7 +30,7 @@ export class AppSettingsEffects {
   );
 
   constructor(
-    private actions$: Actions, 
+    private actions$: Actions,
     private appSettingsDas: AppSettingsDas,
     private biaMessageService: BiaMessageService
   ) {}

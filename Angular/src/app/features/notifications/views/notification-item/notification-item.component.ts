@@ -30,7 +30,7 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
       this.biaTranslationService.currentCulture$.subscribe(event => {
           this.notificationService.currentNotificationId = this.route.snapshot.params.notificationId;
       })
-    )
+    );
 
     this.sub.add
       (

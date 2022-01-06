@@ -21,7 +21,7 @@ import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 })
 export class NotificationsSignalRService {
 
-  private targetedFeature : TargetedFeature;
+  private targetedFeature: TargetedFeature;
 
   /**
    * Constructor.
@@ -29,9 +29,9 @@ export class NotificationsSignalRService {
    * @param signalRService the service managing the SignalR connection.
    */
   constructor(
-     private store: Store<AppState>, 
+     private store: Store<AppState>,
      private signalRService: BiaSignalRService,
-     private authService: AuthService,) {
+     private authService: AuthService) {
     // Do nothing.
   }
 
@@ -43,11 +43,7 @@ export class NotificationsSignalRService {
     console.log('%c [Notifications] Register SignalR : refresh-notifications', 'color: purple; font-weight: bold');
     this.signalRService.addMethod('refresh-notifications', (args) => {
       const notification: Notification = JSON.parse(args);
-      if 
-      (
-        this.IsInMyDisplay(notification)
-      )
-      {
+      if (this.IsInMyDisplay(notification)) {
         this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
           (event) => {
             console.log('%c [Notifications] RefreshSuccess', 'color: green; font-weight: bold');
@@ -58,11 +54,10 @@ export class NotificationsSignalRService {
     });
     this.signalRService.addMethod('refresh-notifications-several', (args) => {
       const notifications: Notification[] = JSON.parse(args);
-      if 
+      if
       (
         notifications.some(notification => this.IsInMyDisplay(notification))
-      )
-      {
+      ) {
         this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
           (event) => {
             console.log('%c [Notifications] RefreshSuccess', 'color: green; font-weight: bold');
@@ -71,14 +66,18 @@ export class NotificationsSignalRService {
         );
       }
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notifications"};
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'notifications'};
     this.signalRService.joinGroup(this.targetedFeature);
   }
   private IsInMyDisplay(notification: Notification) {
-    var userInfo = this.authService.getAdditionalInfos();
-    var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
-    var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.id.toString())))
+    const userInfo = this.authService.getAdditionalInfos();
+    const okSite: Boolean = notification.siteId === userInfo.userData.currentSiteId;
+    const okUser: Boolean = (notification.notifiedUsers === undefined) ||
+    (notification.notifiedUsers.length === 0) ||
+    (notification.notifiedUsers.some(u => u.id === userInfo.userInfo.id));
+    const okRole: Boolean = (notification.notifiedPermissions === undefined) ||
+    (notification.notifiedPermissions.length === 0) ||
+    (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.id.toString())));
 
     return okSite && okUser && okRole;
   }

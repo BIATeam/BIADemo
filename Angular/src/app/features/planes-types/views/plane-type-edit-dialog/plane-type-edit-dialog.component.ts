@@ -26,7 +26,6 @@ export class PlaneTypeEditDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayEditDialog)
-        
         .subscribe((x) => (this.display = x))
     );
   }

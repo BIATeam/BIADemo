@@ -80,7 +80,7 @@ export class BiaMessageService {
         break;
     }
 
-    let data = {notificationId : notification.id}; // = JSON.parse(notification.jData); Should passe by the detail view and click action.
+    const data = {notificationId : notification.id}; // = JSON.parse(notification.jData); Should passe by the detail view and click action.
 
     this.messageService.add({
       key: 'bia-signalR',

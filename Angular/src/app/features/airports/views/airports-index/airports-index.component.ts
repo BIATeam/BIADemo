@@ -82,22 +82,19 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.airportsSignalRService.initialize();
       AirportsEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       AirportsEffects.useSignalR = false;
       this.airportsSignalRService.destroy();
     }

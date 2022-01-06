@@ -17,12 +17,12 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
 
   getList(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
     return this.getListItems<TOut>(endpoint, options).pipe(map(items => {
-      items.map(item => { return this.translateItem(item); });
+      items.map(item => this.translateItem(item));
       return items; }));
   }
 
   get(id?: string | number, options?: HttpOptions): Observable<TOut> {
-    return this.getItem<TOut>(id, options).pipe(map(item => { return this.translateItem(item); }));
+    return this.getItem<TOut>(id, options).pipe(map(item => this.translateItem(item)));
   }
 
   translateItem(item: TOut) {
@@ -31,7 +31,7 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
 
   getListByPost(event: LazyLoadEvent, endpoint: string = 'all'): Observable<DataResult<TOut[]>> {
     return this.getListItemsByPost<TOut>(event, endpoint).pipe(map(dataResult => {
-      dataResult.data.map(item => {return this.translateItem(item);});
+      dataResult.data.map(item => this.translateItem(item));
       return dataResult;
     }));
   }

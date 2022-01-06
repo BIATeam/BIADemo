@@ -1,6 +1,4 @@
-
-export interface TargetedFeature
-{
-  featureName : string;
+export interface TargetedFeature {
+  featureName: string;
   parentKey: string;
 }

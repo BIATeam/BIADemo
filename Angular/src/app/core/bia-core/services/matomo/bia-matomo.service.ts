@@ -40,10 +40,12 @@ export class BiaMatomoService implements OnDestroy {
 
     this.sub.add(
       appSettings$.subscribe((appSettings) => {
-        if (appSettings && appSettings.environment.urlMatomo && appSettings.environment.urlMatomo != undefined&& appSettings.environment.urlMatomo != "") {
+        if (appSettings && appSettings.environment.urlMatomo &&
+          appSettings.environment.urlMatomo !== undefined &&
+          appSettings.environment.urlMatomo !== '') {
           this.matomoInjector.init(
-            appSettings.environment.urlMatomo, 
-            this.authService.getCurrentSiteId().toString(), 
+            appSettings.environment.urlMatomo,
+            this.authService.getCurrentSiteId().toString(),
             this.authService.getAdditionalInfos().userData.currentSiteTitle);
         }
       })

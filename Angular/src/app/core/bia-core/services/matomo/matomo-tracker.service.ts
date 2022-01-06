@@ -52,7 +52,7 @@ export class MatomoTracker {
   setCustomUrl(url: string): void {
     window._paq.push(['setCustomUrl', url]);
   }
-  
+
   /**
    * Track a downloaded file.
    *

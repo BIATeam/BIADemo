@@ -17,8 +17,8 @@ import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 @Injectable()
 export class NotificationSignalRService {
 
-  private targetedFeature : TargetedFeature;
-  
+  private targetedFeature: TargetedFeature;
+
   /**
    * Constructor.
    * @param store the store.
@@ -38,11 +38,7 @@ export class NotificationSignalRService {
   initialize() {
     this.signalRService.addMethod('notification-addUnread', (args) => {
       const notification: Notification = JSON.parse(args);
-      if 
-      (
-        this.IsInMyDisplay(notification)
-      )
-      {
+      if (this.IsInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
         this.store.dispatch(addUnreadNotification({ id: notification.id }));
       }
@@ -50,7 +46,7 @@ export class NotificationSignalRService {
 
     this.signalRService.addMethod('notification-removeUnread', (id) => {
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
-      var idNum: number = +id;
+      const idNum: number = +id;
       this.store.dispatch(removeUnreadNotification({ id: idNum }));
     });
 
@@ -60,15 +56,19 @@ export class NotificationSignalRService {
       ids.forEach( idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
     });
 
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : "notification-domain"};
+    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'notification-domain'};
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
   private IsInMyDisplay(notification: Notification) {
-    var userInfo = this.authService.getAdditionalInfos();
-    var okSite : Boolean =  notification.siteId == userInfo.userData.currentSiteId
-    var okUser : Boolean =  (notification.notifiedUsers == undefined) || (notification.notifiedUsers.length == 0) || (notification.notifiedUsers.some(u => u.id==userInfo.userInfo.id))
-    var okRole : Boolean =  (notification.notifiedPermissions == undefined) || (notification.notifiedPermissions.length == 0) || (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)))
+    const userInfo = this.authService.getAdditionalInfos();
+    const okSite: Boolean = notification.siteId === userInfo.userData.currentSiteId;
+    const okUser: Boolean = (notification.notifiedUsers === undefined) ||
+    (notification.notifiedUsers.length === 0) ||
+    (notification.notifiedUsers.some(u => u.id === userInfo.userInfo.id));
+    const okRole: Boolean = (notification.notifiedPermissions === undefined) ||
+    (notification.notifiedPermissions.length === 0) ||
+    (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)));
 
     return okSite && okUser && okRole;
   }

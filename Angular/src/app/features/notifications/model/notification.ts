@@ -1,5 +1,5 @@
-import { OptionDto } from "src/app/shared/bia-shared/model/option-dto";
-import { NotificationTranslation } from "./notification-translation";
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { NotificationTranslation } from './notification-translation';
 
 export interface Notification {
   id: number;

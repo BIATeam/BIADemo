@@ -19,8 +19,8 @@ import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 })
 export class AirportsSignalRService {
 
-  private targetedFeature : TargetedFeature;
-  
+  private targetedFeature: TargetedFeature;
+
   /**
    * Constructor.
    * @param store the store.
@@ -44,7 +44,7 @@ export class AirportsSignalRService {
         }
       );
     });
-    this.targetedFeature = { parentKey: "", featureName : "airports"};
+    this.targetedFeature = { parentKey: '', featureName : 'airports'};
 
     this.signalRService.joinGroup(this.targetedFeature);
   }

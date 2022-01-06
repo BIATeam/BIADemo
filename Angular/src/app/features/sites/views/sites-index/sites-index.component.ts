@@ -199,7 +199,6 @@ export class SitesIndexComponent implements OnInit {
   private initSites() {
     this.sites$ = this.store
       .select(getAllSites)
-      
       .pipe(map((siteInfos) => siteInfos.map((siteInfo) => this.toSiteListVM(siteInfo))));
   }
 

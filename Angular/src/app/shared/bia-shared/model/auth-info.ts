@@ -1,5 +1,5 @@
-import { OptionDto } from "./option-dto";
-import { RoleDto } from "./role";
+import { OptionDto } from './option-dto';
+import { RoleDto } from './role';
 
 export interface UserInfo {
   id: number;

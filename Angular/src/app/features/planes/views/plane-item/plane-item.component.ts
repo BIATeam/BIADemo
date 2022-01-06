@@ -30,7 +30,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
       this.biaTranslationService.currentCulture$.subscribe(event => {
         this.planeService.currentPlaneId = this.route.snapshot.params.planeId;
       })
-    )
+    );
     this.sub.add
       (
         this.store.select(getCurrentPlane).subscribe((plane) => {

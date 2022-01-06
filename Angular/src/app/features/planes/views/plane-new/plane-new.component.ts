@@ -30,7 +30,7 @@ export class PlaneNewComponent implements OnInit, OnDestroy  {
       this.biaTranslationService.currentCulture$.subscribe(event => {
           this.planeOptionsService.loadAllOptions();
       })
-    )
+    );
   }
 
   ngOnDestroy() {
@@ -38,7 +38,7 @@ export class PlaneNewComponent implements OnInit, OnDestroy  {
       this.sub.unsubscribe();
     }
   }
-  
+
   onSubmitted(planeToCreate: Plane) {
     this.store.dispatch(create({ plane: planeToCreate }));
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });

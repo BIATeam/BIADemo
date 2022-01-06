@@ -40,7 +40,7 @@ export interface DateFormat {
 @Injectable({
   providedIn: 'root'
 })
-export class BiaTranslationService{
+export class BiaTranslationService {
   private translationsLoaded: { [lang: string]: boolean } = {};
   private lazyTranslateServices: TranslateService[] = [];
   private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getLangSelected());
@@ -51,7 +51,7 @@ export class BiaTranslationService{
   public languageId$: Observable<number> = combineLatest([this.currentCulture$, this.appSettings$])
     .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings)));
 
-  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string,private store: Store<AppState>) {}
+  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string, private store: Store<AppState>) {}
 
   getLangSelected(): string | null {
     return localStorage.getItem(STORAGE_LANG_KEY);
@@ -70,7 +70,7 @@ export class BiaTranslationService{
   // NOTE: Check if it's still usefull
   loadAndChangeLanguage(lang: string, defaultLang?: string) {
     const culture = lang;
-    
+
     lang = lang.split('-')[0];
     const translationLoaders$ = [];
     const translateServices = [this.translate, ...this.lazyTranslateServices];
@@ -119,47 +119,40 @@ export class BiaTranslationService{
     );
   }
 
-  private getDateFormatByCulture(code: string | null, appSettings : AppSettings| null): DateFormat {
+  private getDateFormatByCulture(code: string | null, appSettings: AppSettings| null): DateFormat {
     let dateFormat = 'yyyy-MM-dd';
     let timeFormat = 'HH:mm';
-    if (appSettings != null)
-    {
+    if (appSettings != null) {
       let culture;
 
-      if (code == null)
-      {
-        culture = appSettings.cultures.filter(c=> c.acceptedCodes.indexOf("default")> -1)[0];
+      if (code == null) {
+        culture = appSettings.cultures.filter(c => c.acceptedCodes.indexOf('default') > -1)[0];
       }
-      if (culture == null)
-      {
-        culture = appSettings.cultures.filter(c=> c.code == code)[0];
+      if (culture == null) {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
       }
 
-      if (culture)
-      {
+      if (culture) {
         dateFormat = culture.dateFormat;
         timeFormat = culture.timeFormat;
       }
     }
     return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat };
   }
-  private getLanguageId(code: string | null, appSettings : AppSettings| null): number {
+  private getLanguageId(code: string | null, appSettings: AppSettings| null): number {
     let LanguageId = 0;
-    if (appSettings != null)
-    {
+    if (appSettings != null) {
       let culture;
 
-      if (code == null)
-      {
-        culture = appSettings.cultures.filter(c=> c.acceptedCodes.indexOf("default")> -1)[0];
-      }
-      if (culture == null)
-      {
-        culture = appSettings.cultures.filter(c=> c.code == code)[0];
+      if (code == null) {
+        culture = appSettings.cultures.filter(c => c.acceptedCodes.indexOf('default') > -1)[0];
       }
 
-      if (culture)
-      {
+      if (culture == null) {
+        culture = appSettings.cultures.filter(c => c.code === code)[0];
+      }
+
+      if (culture) {
         LanguageId = culture.languageId;
       }
     }

@@ -89,16 +89,18 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
       this.memberOptionsService.loadAllOptions();
     }
 
-    if (this.useRefreshAtLanguageChange)
-    {
-      //Reload data if language change.
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
       let isinit = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) isinit = false;
-            else this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
+            }
           })
-      )
+      );
     }
     this.parentIds = ['' + this.siteService.currentSiteId];
   }
@@ -112,22 +114,19 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
   OnDisplay() {
 
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.membersSignalRService.initialize();
       MembersEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       MembersEffects.useSignalR = false;
       this.membersSignalRService.destroy();
     }
@@ -174,7 +173,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    lazyLoadEvent.parentIds = this.parentIds
+    lazyLoadEvent.parentIds = this.parentIds;
     this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 
@@ -199,7 +198,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
     const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
-    
+
     this.memberDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });

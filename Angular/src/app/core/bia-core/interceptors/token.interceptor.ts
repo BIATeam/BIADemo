@@ -56,11 +56,12 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private addToken(request: HttpRequest<any>, token: string) {
+    const langSelected = this.biaTranslationService.getLangSelected();
     return request.clone({
       withCredentials: false,
       setHeaders: {
         Authorization: `Bearer ${token}`,
-        'Accept-Language' : this.biaTranslationService.getLangSelected() !== null ? this.biaTranslationService.getLangSelected()! : ""
+        'Accept-Language' : ( langSelected !== null) ? langSelected : ''
       }
     });
   }

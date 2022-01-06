@@ -32,7 +32,7 @@ export class PlaneEditComponent implements OnInit, OnDestroy {
       this.biaTranslationService.currentCulture$.subscribe(event => {
           this.planeOptionsService.loadAllOptions();
       })
-    )
+    );
   }
 
   ngOnDestroy() {

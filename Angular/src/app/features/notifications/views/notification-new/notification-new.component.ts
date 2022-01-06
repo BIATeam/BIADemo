@@ -29,7 +29,7 @@ export class NotificationNewComponent implements OnInit, OnDestroy {
       this.biaTranslationService.currentCulture$.subscribe(event => {
           this.notificationOptionsService.loadAllOptions();
       })
-    )
+    );
   }
 
   ngOnDestroy() {

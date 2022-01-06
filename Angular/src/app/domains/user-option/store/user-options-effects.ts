@@ -44,7 +44,7 @@ export class UserOptionsEffects {
     /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
     /* 'Users Reducers' will take care of the rest */
     switchMap((action) =>
-      this.userDas.getList('allOptions', {params:{filter:action.filter}}).pipe(
+      this.userDas.getList('allOptions', {params: {filter: action.filter}}).pipe(
         map((users) => loadAllSuccess({ users })),
         catchError((err) => {
           this.biaMessageService.showError();

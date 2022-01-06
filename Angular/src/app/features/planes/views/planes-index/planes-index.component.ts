@@ -88,18 +88,20 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
         this.biaTranslationService.currentCulture$.subscribe(event => {
             this.planeOptionsService.loadAllOptions();
         })
-      )
+      );
     }
-    if (this.useRefreshAtLanguageChange)
-    {
-      //Reload data if language change.
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
       let isinit = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) isinit = false;
-            else this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
+            }
           })
-      )
+      );
     }
     this.parentIds = [];
   }
@@ -112,22 +114,19 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   OnDisplay() {
-    if (this.useView)
-    {
+    if (this.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       this.planesSignalRService.initialize();
       PlanesEffects.useSignalR = true;
     }
   }
 
   OnHide() {
-    if (this.useSignalR)
-    {
+    if (this.useSignalR) {
       PlanesEffects.useSignalR = false;
       this.planesSignalRService.destroy();
     }
@@ -174,7 +173,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    lazyLoadEvent.parentIds = this.parentIds
+    lazyLoadEvent.parentIds = this.parentIds;
     this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 

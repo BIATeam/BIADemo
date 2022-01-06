@@ -92,18 +92,20 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
         this.biaTranslationService.currentCulture$.subscribe(event => {
             this.notificationOptionsService.loadAllOptions();
         })
-      )
+      );
     }
-    if (this.useRefreshAtLanguageChange)
-    {
-      //Reload data if language change.
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
       let isinit = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) isinit = false;
-            else this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
+            }
           })
-      )
+      );
     }
   }
 

@@ -38,7 +38,7 @@ export class MemberTableComponent extends BiaCalcTableComponent implements OnCha
       const member: Member = <Member>this.form.value;
       member.id = member.id > 0 ? member.id : 0;
       member.roles = BiaOptionService.Differential(member.roles, this.element?.roles);
-      member.user = {...member.user}
+      member.user = {...member.user};
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
       member.siteId = this.siteService.currentSiteId;
