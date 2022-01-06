@@ -17,7 +17,7 @@ import {
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { SiteDas } from '../services/site-das.service';
 import { MemberDas } from '../services/member-das.service';
-import { LazyLoadEvent } from 'primeng';
+import { LazyLoadEvent } from 'primeng/api';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place

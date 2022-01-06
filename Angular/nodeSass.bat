@@ -1,0 +1,2 @@
+node-sass .\src\assets\bia\primeng\theme\biaTheme\theme-dark.scss .\src\assets\bia\primeng\theme\biaTheme\theme-dark.css && node-sass .\src\assets\bia\primeng\layout\css\layout-dark.scss .\src\assets\bia\primeng\layout\css\layout-dark.css && node-sass .\src\assets\bia\primeng\theme\biaTheme\theme-light.scss .\src\assets\bia\primeng\theme\biaTheme\theme-light.css &&  node-sass .\src\assets\bia\primeng\layout\css\layout-light.scss .\src\assets\bia\primeng\layout\css\layout-light.css 
+

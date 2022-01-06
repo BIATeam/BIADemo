@@ -6,8 +6,10 @@ import { RouterModule } from '@angular/router';
 import biaLocaleEn from '../../assets/bia/i18n/en.json';
 import biaLocaleEs from '../../assets/bia/i18n/es.json';
 import biaLocaleFr from '../../assets/bia/i18n/fr.json';
-import { BiaCoreModule } from './bia-core/bia-core.module.js';
-import { BiaTranslationService } from './bia-core/services/bia-translation.service.js';
+// import { BiaCoreModule } from './bia-core/bia-core.module.js';
+import { BiaCoreModule } from './bia-core/bia-core.module';
+// import { BiaTranslationService } from './bia-core/services/bia-translation.service.js';
+import { BiaTranslationService } from './bia-core/services/bia-translation.service';
 
 @NgModule({
   imports: [RouterModule, BiaCoreModule]

@@ -1,7 +1,7 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <input formControlName="msn" type="text" pInputText maxlength="64" />
         <label><span class="bia-star-mandatory">*</span>{{ 'plane.msn' | translate }}</label>
       </span>
@@ -14,7 +14,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <p-calendar
           biaLocale
           formControlName="firstFlightDate"
@@ -28,7 +28,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <p-calendar
           formControlName="firstFlightTime"
           showTime="true"
@@ -41,7 +41,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <p-calendar
           biaLocale
           formControlName="lastFlightDate"
@@ -56,7 +56,7 @@
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <input formControlName="capacity" type="number" pInputText />
         <label><span class="bia-star-mandatory">*</span>{{ 'plane.capacity' | translate }}</label>
       </span>
@@ -68,7 +68,7 @@
       pButton
       label="{{ 'bia.cancel' | translate }}"
       type="button"
-      class="ui-button-secondary"
+      class="p-button-outlined"
       (click)="onCancel()"
     ></button>
   </div>

@@ -8,6 +8,8 @@ body {
   flex-direction: column;
   height: initial;
   min-height: 100vh;
+  line-height: 1.5em!important;
+  letter-spacing: 0.25px;
 
   @import './scss/bia/bia-variables';
   @import './scss/bia/light-variables';

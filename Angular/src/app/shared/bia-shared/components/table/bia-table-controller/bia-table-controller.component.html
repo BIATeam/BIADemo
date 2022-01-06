@@ -1,6 +1,6 @@
 <div fxLayout="row" fxLayoutAlign="space-between center">
-  <div fxLayout="row" fxFlex="25" fxLayoutAlign="baseline" fxLayoutGap="20px">
-    <span>
+  <div fxLayout="row" fxFlex="25" fxLayoutAlign="baseline" fxLayoutGap="20px" class="result-contenair">
+    <span class="result">
       <strong>{{
         length | i18nPlural: resultMessageMapping:translateService.currentLang | translate: { length: length }
       }}</strong>
@@ -31,11 +31,11 @@
         [style]="{ width: '300px' }"
       ></p-multiSelect>
     </div>
-    <span class="md-inputfield">
+    <span class="p-float-label">
       <input pInputText type="text" [formControl]="filterCtrl" [value]="globalFilter" />
       <label for="name">{{ 'bia.search' | translate }}</label>
-      <i class="ui-icon-search bia-pointer"></i>
+      <i class="pi pi-search bia-pointer"></i>
     </span>
-    <i class="ui-icon-filter-list bia-pointer" (click)="onToggleSearch()"></i>
+    <i class="pi pi-filter bia-pointer" (click)="onToggleSearch()"></i>
   </div>
 </div>

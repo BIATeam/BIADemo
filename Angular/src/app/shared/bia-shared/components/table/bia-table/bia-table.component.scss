@@ -1,6 +1,17 @@
 :host {
   flex-direction: column;
 }
+:host ::ng-deep {
+  p-table {
+    .searchTR {
+      .p-float-label {
+        .p-inputtext {
+          padding-top: 2px!important;
+        }
+      }
+    }
+  }
+}
 
 .input-search {
   width: 99%;

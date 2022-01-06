@@ -3,13 +3,29 @@
   flex-direction: column;
   padding-left: 35px;
   padding-right: 35px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 8px;
+  padding-bottom: 17px;
   margin-bottom: 0px;
   margin-left: -35px;
   margin-right: -35px;
 }
 
+:host ::ng-deep {
+  p-dropdown {
+    .p-dropdown-label {
+      padding: 0.125rem !important;
+    }
+  }
+  p-multiselect {
+    .p-multiselect-label {
+      padding: 0.125rem !important;
+    }
+  }
+}
+
+.result-contenair {
+  padding-top: 15px;
+}
 .options {
   padding-top: 20px;
 }
@@ -23,9 +39,15 @@ span,
 label {
   font-family: 'oswald-light';
 }
-
-:host ::ng-deep {
-  .ui-multiselect {
-    vertical-align: middle;
-  }
+.result {
+  margin-top: 1px;
+}
+.pi-filter {
+  margin-bottom: 10px;
+}
+.p-dropdown-label {
+  padding: 0.125rem !important;
+}
+.p-multiselect .p-multiselect-label {
+  padding: 0.125rem !important;
 }

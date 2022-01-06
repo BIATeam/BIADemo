@@ -28,7 +28,7 @@ bia-classic-header {
       color: $biaAccentColor;
     }
 
-    .ui-menubar-root-list .ui-state-active {
+    .p-menubar-root-list .p-state-active {
       text-decoration: underline;
     }
   }
@@ -41,27 +41,13 @@ bia-classic-layout {
       url('~/assets/bia/bg-default.jpg');
   }
 
-  p-breadcrumb {
-    .pi,
-    .ui-menuitem-text {
-      color: $biaTextBreadcrumbColor !important;
-    }
-    .ui-widget-header {
-      background-color: $biaBgBreadcrumbColor;
-    }
-    li:last-child .ui-menuitem-text {
-      color: $biaPrimaryColor !important;
-      font-weight: bold;
-    }
-  }
-  
-  &.no-margin{
+  &.no-margin {
     section.content {
       display: flex;
       flex-flow: column;
       bia-classic-page-layout {
         align-items: stretch;
-    
+
         div.mat-elevation-z2 {
           margin-top: 0;
           max-width: 100% !important;
@@ -104,7 +90,7 @@ bia-table-controller {
   p-celleditor input {
     width: 100%;
   }
-  .ui-table-tbody td {
+  .p-datatable-tbody td {
     position: relative;
     .bia-star-mandatory {
       position: absolute;
@@ -113,12 +99,14 @@ bia-table-controller {
 }
 
 // For view
-app-view-list
-{
-  .ui-icon-star-border.ng-star-inserted {
-    font-size: 1.1em;
+app-view-list {
+  .pi-star-o {
+    &.ng-star-inserted {
+      font-size: 0.8em;
+      padding-left: 2px;
+    }
   }
-  .ui-icon-edit {
+  .pi pi-edit {
     font-size: 1.3em;
   }
 }

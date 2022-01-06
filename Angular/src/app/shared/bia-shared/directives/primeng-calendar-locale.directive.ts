@@ -3,7 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { PrimeLocale } from '../model/prime-locale';
 import { TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs/operators';
-import { Calendar } from 'primeng';
+import { Calendar } from 'primeng/calendar';
 
 @Directive({
   selector: '[biaLocale]'

@@ -1,23 +1,33 @@
 <ng-template #template>
-  <div [hidden]="hidden" class="app-search-filter" fxFlex="{{ fxFlexValue }}">
-    <div fxLayout="row" fxLayoutAlign="stretch center">
-      <i class="ui-icon-clear bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i>
-      <h3>{{ 'bia.filters' | translate }}</h3>
+  <div [hidden]="hidden" class=" app-search-filter" fxFlex="{{ fxFlexValue }}">
+    <button
+    type="button"
+    icon="pi pi-times"
+    class="p-button-rounded p-button-text flat"
+    pButton
+    (click)="onClose()"
+    pTooltip="{{ 'msg.showFilters' | translate }}"
+  ></button>
+    <div class="header" fxLayout="row" fxLayoutAlign="stretch center">
+      <!--  <i class="pi pi-times bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i> -->
+      <h1>{{ 'bia.filters' | translate }}</h1>
     </div>
     <div fxLayout="row" fxLayoutAlign="center">
       <div class="app-filter-container" fxFlex="90">
+        <span class="p-float-label">
         <p-autoComplete
-        [multiple]="false"
-        [(ngModel)]="userSelected"
-        [suggestions]="userOptions"
-        (completeMethod)="onSearchUsers($event)"
-        [size]="30"
-        [minLength]="2"
-        placeholder="{{ 'site.selectUser' | translate }}"
-        field="display"
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
-      ></p-autoComplete>
+          [multiple]="false"
+          [(ngModel)]="userSelected"
+          [suggestions]="userOptions"
+          (completeMethod)="onSearchUsers($event)"
+          [size]="30"
+          [minLength]="2"
+          field="display"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+        ></p-autoComplete>
+        <label>{{ 'site.selectUser' | translate }}</label>
+      </span>
       </div>
     </div>
 
@@ -26,7 +36,7 @@
         pButton
         label="{{ 'bia.reset' | translate }}"
         fxFlex="33"
-        class="ui-button-secondary"
+        class="p-button-outlined"
         (click)="onReset()"
       ></button>
       <button pButton label="{{ 'bia.filter' | translate }}" fxFlex="33" (click)="onFilter()"></button>

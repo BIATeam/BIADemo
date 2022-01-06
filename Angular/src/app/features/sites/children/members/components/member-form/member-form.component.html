@@ -1,7 +1,7 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="md-inputfield">
+      <span class="p-float-label">
         <p-dropdown
           [options]="userOptions"
           placeholder="&nbsp;"
@@ -40,7 +40,7 @@
       pButton
       label="{{ 'bia.cancel' | translate }}"
       type="button"
-      class="ui-button-secondary"
+      class="p-button-secondary"
       (click)="onCancel()"
     ></button>
   </div>

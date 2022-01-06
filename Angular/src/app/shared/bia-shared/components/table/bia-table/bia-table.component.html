@@ -19,6 +19,7 @@
   [sortOrder]="sortOrderValue"
   (onStateSave)="onStateSave($event)"
   (selectionChange)="onSelectionChange()"
+  styleClass="p-datatable-striped"
 >
   <ng-template pTemplate="header" let-columns>
     <tr>
@@ -35,10 +36,10 @@
         </th>
       </ng-container>
     </tr>
-    <tr *ngIf="showColSearch">
+    <tr *ngIf="showColSearch" class="searchTR">
       <th *ngIf="canSelectElement"></th>
       <th *ngFor="let col of columns" [ngSwitch]="col.field">
-        <span *ngIf="col.isSearchable === true" class="md-inputfield">
+        <span *ngIf="col.isSearchable === true" class="p-float-label">
           <input
             pInputText
             class="input-search"
@@ -46,7 +47,7 @@
             placeholder="{{ col.searchPlaceholder != undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
             (input)="dt.filter($event.target.value, col.field, col.filterMode)"
             [value]="dt.filters[col.field]?.value"
-            [ngClass]="{ 'ui-state-filled': dt.filters[col.field]?.value != '' }"
+            [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value != '' }"
           />
         </span>
       </th>
@@ -66,7 +67,7 @@
             {{ rowData[col.field] | translateFields: 'display' : col.translateKey : translateService.currentLang }}
           </ng-container>
           <ng-container *ngSwitchCase="'Boolean'">
-            <i class="ui-icon-check" *ngIf="rowData[col.field] === true"></i>
+            <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
           </ng-container>
           <ng-container *ngSwitchDefault>
             {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : col.translateKey? (col.translateKey + rowData[col.field].toLowerCase() | translate) : rowData[col.field] }}

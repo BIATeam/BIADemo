@@ -41,6 +41,7 @@ import { APP_BASE_HREF } from '@angular/common';
       (roleChange)="onRoleChange($event)"
       (setDefaultSite)="onSetDefaultSite($event)"
       (setDefaultRole)="onSetDefaultRole($event)"
+      class="p-input-filled"
     >
       <router-outlet></router-outlet>
     </bia-classic-layout>

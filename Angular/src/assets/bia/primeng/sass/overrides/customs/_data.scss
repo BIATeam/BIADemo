@@ -1,12 +1,24 @@
-body .ui-table .ui-table-tbody > tr {
+body .p-datatable .p-datatable-tbody > tr {
   background: $biaBgHoverColor;
+  border: 1px solid #d7d7d7;
 }
-body .ui-table .ui-table-tbody > tr:nth-child(even) {
+body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
   background-color: $biaBgColor;
+  border: 1px solid #d7d7d7;
 }
 
+
+p-celleditor {
+  .p-inputtext {
+    padding:0;
+  }
+  .p-multiselect-label {
+    padding:0!important;
+  }
+  
+}
 p-table {
-  .ui-widget-overlay {
+  .p-widget-overlay {
     background-color: $biaBgColor !important;
   }
   table {
@@ -14,31 +26,6 @@ p-table {
       tr:first-child th {
         border-top-width: 0px !important;
         font-weight: 800 !important;
-      }
-      th {
-        background-color: $biaBgColor !important;
-        color: $biaTitleColor !important;
-        &.ui-state-highlight {
-          color: $primaryColor !important;
-        }
-        .pi-sort-alt:before {
-          color: $biaTitleColor !important;
-        }
-
-        .pi-sort-amount-up-alt:before,
-        .pi-sort-amount-down:before {
-          color: $primaryColor !important;
-        }
-      }
-    }
-    tbody {
-      tr.ui-state-highlight {
-        background-color: $biaBgRowSelected !important;
-        border-color: $biaBorderRowSelected !important;
-        // border-style: solid !important;
-        // border-bottom-width: thin !important;
-        // border-top-width: thin !important;
-        color: $biaFgTextColor !important;
       }
     }
 
@@ -49,34 +36,30 @@ p-table {
       border-right-width: 0px !important;
     }
 
-    // td {
-    //   font-weight: 300;
-    //   padding: 0.614em 0.857em !important;
-    // }
   }
 }
 
-p-paginator .ui-paginator {
+p-paginator .p-paginator {
   border-left-width: 0px !important;
   border-right-width: 0px !important;
   border-top-width: 0px !important;
   border-bottom-width: 0px !important;
   background-color: $biaBgColor !important;
 
-  .ui-paginator-prev:before,
-  .ui-paginator-next:before,
-  .ui-paginator-last:before,
-  .ui-paginator-first:before,
-  .ui-paginator-element {
+  .p-paginator-prev:before,
+  .p-paginator-next:before,
+  .p-paginator-last:before,
+  .p-paginator-first:before,
+  .p-paginator-element {
     color: $biaFgTextColor !important;
   }
 
-  .ui-paginator-pages {
+  .p-paginator-pages {
     a {
       border-radius: 0 !important;
       -webkit-border-radius: 0 !important;
     }
-    a.ui-state-active {
+    a.p-state-active {
       background-color: $primaryColor !important;
       // color: $biaBgColor !important;
       color: $accentTextColor !important;
@@ -84,6 +67,6 @@ p-paginator .ui-paginator {
   }
 }
 
-body .ui-dataview .ui-dataview-header {
+body .p-dataview .p-dataview-header {
   background-color: $contentBgColor;
 }

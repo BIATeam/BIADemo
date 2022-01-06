@@ -7,11 +7,11 @@
     <div><b>{{ 'notification.type.title' | translate }}</b><br />{{ 'notification.type.' + notification.type.display | translate}}</div>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
-    <button pButton label="{{ 'notification.action' | translate }}" type="button" class="ui-button-primary"
+    <button pButton label="{{ 'notification.action' | translate }}" type="button" class="p-button-primary"
     (click)="onAction(notification)" *ngIf="canAction(notification)"></button>
-    <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="ui-button-secondary"
+    <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="p-button-secondary"
       (click)="onEdit()" *ngIf="canEdit"></button>
-    <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="ui-button-secondary"
+    <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="p-button-secondary"
       (click)="onCancelled()"></button>
   </div>
 </ng-container>

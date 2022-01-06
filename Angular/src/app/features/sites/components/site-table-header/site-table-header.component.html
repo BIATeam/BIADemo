@@ -3,8 +3,8 @@
     <ng-container *ngIf="showBtnFilter">
       <button
         type="button"
-        icon="ui-icon-filter-list"
-        class="ui-button-secondary flat"
+        icon="pi pi-filter"
+        class="p-button-outlined flat"
         *ngIf="showFilter === false && haveFilter === false"
         pButton
         (click)="toggleFilter()"
@@ -12,7 +12,7 @@
       ></button>
       <button
         type="button"
-        icon="ui-icon-filter-list"
+        icon="pi pi-filter"
         *ngIf="showFilter === false && haveFilter === true"
         pButton
         (click)="toggleFilter()"
@@ -30,7 +30,7 @@
       pButton
       [disabled]="nbSelectedElements !== 1"
       *ngIf="canEdit"
-      class="ui-button-secondary"
+      class="p-button-outlined"
       label="{{ 'site.edit' | translate }}"
       (click)="edit.emit()"
     ></button>
@@ -41,12 +41,12 @@
   <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
     <button
       pButton
-      class="ui-button-secondary"
+      class="p-button-outlined"
       label="{{ 'bia.back' | translate }}"
       (click)="onBack()"
       *ngIf="canBack"
     ></button>
-    <button pButton *ngIf="canExportCSV" class="ui-button-secondary" label="CSV" (click)="exportCSV.emit()"></button>
+    <button pButton *ngIf="canExportCSV" class="p-button-outlined" label="CSV" (click)="exportCSV.emit()"></button>
     <button pButton *ngIf="canAdd" label="{{ 'bia.add' | translate }}" (click)="onCreate()"></button>
   </div>
 </div>
