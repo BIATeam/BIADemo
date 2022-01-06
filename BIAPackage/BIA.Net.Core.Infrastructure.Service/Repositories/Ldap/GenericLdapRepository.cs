@@ -6,6 +6,7 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
@@ -504,32 +505,36 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
+        object syncLocalCacheGroupSid = new Object();
         private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)
         {
             string sid = "";
-            localCacheGroupSid.TryGetValue(ldapGroup.Domain + ":" + ldapGroup.LdapName,out sid);
+            lock (syncLocalCacheGroupSid)
+            {
+                localCacheGroupSid.TryGetValue(ldapGroup.Domain + ":" + ldapGroup.LdapName, out sid);
 
-            if (string.IsNullOrEmpty(sid))
-            { 
-                GroupPrincipal groupPrincipal = null;
-                try
+                if (string.IsNullOrEmpty(sid))
                 {
-                    PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
-                    if (ctx != null)
+                    GroupPrincipal groupPrincipal = null;
+                    try
                     {
-                        groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                        PrincipalContext ctx = PrepareDomainContext(ldapGroup.Domain).Result;
+                        if (ctx != null)
+                        {
+                            groupPrincipal = GroupPrincipal.FindByIdentity(ctx, ldapGroup.LdapName);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
-                    throw e;
-                }
-                if (groupPrincipal != null)
-                {
-                    this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
-                    sid = groupPrincipal.Sid.Value;
-                    localCacheGroupSid.Add(ldapGroup.Domain + ":" + ldapGroup.LdapName, sid);
+                    catch (Exception e)
+                    {
+                        this.logger.LogWarning(e, "Could not join Domain :" + ldapGroup.Domain);
+                        throw e;
+                    }
+                    if (groupPrincipal != null)
+                    {
+                        this.logger.LogInformation("Group " + ldapGroup.LdapName + " found in domain " + ldapGroup.Domain);
+                        sid = groupPrincipal.Sid.Value;
+                        localCacheGroupSid.Add(ldapGroup.Domain + ":" + ldapGroup.LdapName, sid);
+                    }
                 }
             }
 
@@ -588,15 +593,41 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Return the role from Ad and fake
         /// </summary>
-        /// <param name="login">le login of the user</param>
+        /// <param name="sid">le sid of the user</param>
         /// <returns>list of roles</returns>
         public async Task<List<string>> GetUserRolesBySid(string sid)
         {
             var rolesSection = this.configuration.Roles;
 
-            var adRoles = new List<string>();
+            var adRoles = new ConcurrentBag<string>();
 
-            Parallel.ForEach(rolesSection, role =>
+            var roleTasks = rolesSection.Select(async role =>
+            {
+                switch (role.Type)
+                {
+                    case "Fake":
+                        return role.Label;
+
+                    case "Ldap":
+                        var result = await IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
+                        {
+                            return role.Label;
+                        }
+                        break;
+                }
+                return null;
+            });
+            var roles = await Task.WhenAll(roleTasks);
+            foreach (var role in roles)
+            {
+                if (role!= null)
+                {
+                    adRoles.Add(role);
+                }
+            }
+
+            Parallel.ForEach(rolesSection, async role =>
             {
                 switch (role.Type)
                 {
@@ -605,7 +636,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         break;
 
                     case "Ldap":
-                        if (IsSidInGroups(role.LdapGroups, sid).Result)
+                        var result = await IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
                         {
                             adRoles.Add(role.Label);
                         }
@@ -613,7 +645,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
             });
 
-            return adRoles;
+            return adRoles.ToList();
         }
 
         private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)

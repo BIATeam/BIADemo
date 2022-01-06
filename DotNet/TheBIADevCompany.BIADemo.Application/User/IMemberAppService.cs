@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -13,14 +14,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The interface defining the application service for member.
     /// </summary>
-    public interface IMemberAppService : ICrudAppServiceBase<MemberDto, Member, MemberFilterDto>
+    public interface IMemberAppService : ICrudAppServiceBase<MemberDto, Member, LazyLoadDto>
     {
         /// <summary>
         /// Get the list of MemberDto with paging and sorting.
         /// </summary>
         /// <param name="filters">The filters.</param>
         /// <returns>The list of MemberDto.</returns>
-        Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(MemberFilterDto filters);
+        Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(LazyLoadDto filters);
 
         /// <summary>
         /// Sets the default site.
@@ -41,6 +42,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> ExportCSV(MemberFilterDto filters);
+        Task<byte[]> ExportCSV(LazyLoadDto filters);
     }
 }

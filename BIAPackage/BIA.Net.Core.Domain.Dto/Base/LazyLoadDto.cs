@@ -13,6 +13,11 @@ namespace BIA.Net.Core.Domain.Dto.Base
     public class LazyLoadDto
     {
         /// <summary>
+        /// Gets or sets the parent ids.
+        /// </summary>
+        public string[] ParentIds { get; set; }
+
+        /// <summary>
         /// Gets or sets the number of the first element to return.
         /// </summary>
         public int? First { get; set; }
@@ -38,14 +43,14 @@ namespace BIA.Net.Core.Domain.Dto.Base
         public Dictionary<string, Dictionary<string, object>> Filters { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of columns that are display.
-        /// </summary>
-        public Dictionary<string, string> Columns { get; set; }
-
-        /// <summary>
         /// Gets or sets the global filter.
         /// </summary>
         public object GlobalFilter { get; set; }
+
+        /// <summary>
+        /// Name of the property and her translation for file export.
+        /// </summary>
+        public Dictionary<string, string> Columns { get; set; }
 
         /// <summary>
         /// Returns a string that represents of the current object.
@@ -60,5 +65,6 @@ namespace BIA.Net.Core.Domain.Dto.Base
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
             return trace.ToString();
         }
+
     }
 }

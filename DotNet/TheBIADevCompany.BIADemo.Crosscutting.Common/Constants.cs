@@ -52,9 +52,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Role
         {
             /// <summary>
-            /// The name of the user role.
+            /// The user role code.
             /// </summary>
             public const string User = "User";
+
+            /// <summary>
+            /// The site member role code.
+            /// </summary>
+            public const string SiteMember = "Site_Member";
         }
 
         /// <summary>

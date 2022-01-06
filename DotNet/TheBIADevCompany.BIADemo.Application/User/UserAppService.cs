@@ -117,12 +117,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.userDirectoryHelper.GetUserRolesBySid(sid);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetPermissionsForUserAsync"/>
-        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
-        {
-            return await this.userPermissionDomainService.GetPermissionsForUserAsync(userDirectoryRoles, sid, siteId, roleId);
-        }
-
         /// <inheritdoc cref="IUserAppService.TranslateRolesInPermissions"/>
         public List<string> TranslateRolesInPermissions(List<string> roles)
         {
@@ -318,7 +312,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(FileFiltersDto filters)
+        public async Task<byte[]> ExportCSV(LazyLoadDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
@@ -342,7 +336,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is FileFiltersDto fileFilters)
+            if (filters is LazyLoadDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }

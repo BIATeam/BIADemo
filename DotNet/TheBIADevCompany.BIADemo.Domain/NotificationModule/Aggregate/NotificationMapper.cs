@@ -158,7 +158,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     {
                         Id = entity.CreatedBy.Id,
                         Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
-                    } : null,
+                    }
+                    : null,
 
                     Read = entity.Read,
                     Type = new OptionDto
@@ -209,7 +210,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     {
                         Id = entity.CreatedBy.Id,
                         Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
-                    } : null,
+                    }
+                    : null,
 
                     Read = entity.Read,
                     Type = new OptionDto
@@ -235,8 +237,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     }).ToList(),
                 };
             }
-
-
         }
 
         /// <inheritdoc/>

@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -69,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] MemberFilterDto filters)
+        public async Task<IActionResult> GetAll([FromBody] LazyLoadDto filters)
         {
             try
             {
@@ -389,11 +390,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public virtual async Task<IActionResult> GetFileCSV([FromBody] MemberFilterDto filters)
+        public virtual async Task<IActionResult> GetFileCSV([FromBody] LazyLoadDto filters)
         {
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

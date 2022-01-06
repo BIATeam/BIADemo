@@ -35,7 +35,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 export class PlanesIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
   useSignalR = false;
-  useView = false;
+  useView = true;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;
@@ -59,7 +59,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
-
+  parentIds: string[];
 
   constructor(
     private store: Store<AppState>,
@@ -101,6 +101,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
           })
       )
     }
+    this.parentIds = [];
   }
 
   ngOnDestroy() {
@@ -173,6 +174,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
+    lazyLoadEvent.parentIds = this.parentIds
     this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 
@@ -195,7 +197,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
+    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
     this.planeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });

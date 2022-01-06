@@ -214,11 +214,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="FileFiltersDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Users.ListAccess)]
-        public virtual async Task<IActionResult> GetFile([FromBody] FileFiltersDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] LazyLoadDto filters)
         {
             byte[] buffer = await this.userService.ExportCSV(filters);
             string fileName = $"Users-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

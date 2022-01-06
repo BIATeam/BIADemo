@@ -119,8 +119,16 @@
       },
       // Plane
       {
-        "Names": [ "Plane_List_Access", "Plane_Create", "Plane_Read", "Plane_Update", "Plane_Delete", "Plane_Save" ],
-        "Roles": [ "Site_Admin" ]
+        "Names": [ "Plane_List_Access", "Plane_Read" ],
+        "Roles": [ "User" ]
+      },
+      {
+        "Names": [ "Plane_Update", "Plane_Save" ],
+        "Roles": [ "Site_Admin", "Pilot" ]
+      },
+      {
+        "Names": [ "Plane_Create", "Plane_Delete" ],
+        "Roles": [ "Site_Admin", "Pilot" ]
       },
       // Airport
       {
@@ -167,11 +175,15 @@
       // Permission
       {
         "Names": [ "Permissions_Options" ],
-        "Roles": [ "Admin", "Site_Admin" ]
+        "Roles": [ "User" ]
       },
       // Role
       {
-        "Names": [ "Roles_Options", "Roles_List" ],
+        "Names": [ "Roles_Options" ],
+        "Roles": [ "User" ]
+      },
+      {
+        "Names": [ "Roles_List" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
@@ -199,17 +211,21 @@
       },
       // User
       {
-        "Names": [ "User_Options", "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Names": [ "User_Options" ],
+        "Roles": [ "User" ]
+      },
+      {
+        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
         "Roles": [ "Admin" ]
       },
       // View
       {
         "Name": "View_List",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "User" ]
       },
       {
         "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "User" ]
       },
       {
         "Names": [ "View_Add_SiteView", "View_Update_SiteView", "View_Set_Default_SiteView", "View_Assign_To_Site" ],
@@ -222,7 +238,7 @@
       // Notifications
       {
         "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        "Roles": [ "User" ]
       },
       {
         "Names": [ "Notification_Update", "Notification_Create", "NotifiactionType_Options" ],

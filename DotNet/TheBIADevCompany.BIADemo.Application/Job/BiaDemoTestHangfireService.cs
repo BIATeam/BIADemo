@@ -89,9 +89,9 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotificationTranslations = new List<NotificationTranslationDto>
                 {
-                    new NotificationTranslationDto() { LanguageId = (int)LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = (int)LanguageId.Spanish, Title = "Avión de revisión", Description = "Revise el avión con id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = (int)LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "Avión de revisión", Description = "Revise el avión con id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
                 },
             };
 

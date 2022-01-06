@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         }
 
         /// <summary>
-        /// Add or active User from AD
+        /// Add or active User from AD.
         /// </summary>
         /// <param name="sid">the sid in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>

@@ -1,4 +1,4 @@
-// <copyright file="LanguageModelBuilder.cs" company="TheBIADevCompany">
+// <copyright file="TranslationModelBuilder.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

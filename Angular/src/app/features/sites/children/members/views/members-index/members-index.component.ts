@@ -59,6 +59,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'membersGrid' : undefined;
+  parentIds: string[];
 
 
   constructor(
@@ -99,6 +100,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
           })
       )
     }
+    this.parentIds = ['' + this.siteService.currentSiteId];
   }
 
   ngOnDestroy() {
@@ -171,14 +173,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
   }
 
-  /*onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
-  }*/
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    if (this.siteService.currentSiteId > 0) {
-      const customEvent: any = { siteId: + this.siteService.currentSiteId, ...lazyLoadEvent };
-      this.store.dispatch(loadAllByPost({ event: customEvent }));
-    }
+    lazyLoadEvent.parentIds = this.parentIds
+    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
   }
 
 
@@ -201,7 +198,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { siteId: + this.siteService.currentSiteId, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+    
     this.memberDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });

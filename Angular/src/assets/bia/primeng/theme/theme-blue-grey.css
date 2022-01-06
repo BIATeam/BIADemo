@@ -32122,7 +32122,7 @@ body .ui-table .ui-table-tfoot > tr > td:last-child {
   border-right: 1px solid #bdbdbd;
 }
 body .ui-table .ui-table-loading-icon {
-  color: #ffffff;
+  color: #000000;
 }
 body .ui-table .ui-table-globalfilter-container .ui-inputtext {
   background-color: transparent;
