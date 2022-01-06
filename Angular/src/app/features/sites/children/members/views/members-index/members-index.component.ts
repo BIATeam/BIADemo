@@ -26,6 +26,7 @@ import { MembersEffects } from '../../store/members-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { SiteService } from 'src/app/features/sites/services/site.service';
+import { PagingAndFilterDto } from 'src/app/shared/bia-shared/model/paging-and-filter';
 
 @Component({
   selector: 'app-members-index',
@@ -173,8 +174,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    lazyLoadEvent.parentIds = this.parentIds;
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
+    const pagingAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
   }
 
 
@@ -197,9 +198,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
+    const columnsAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
 
-    this.memberDas.getFile(customEvent).subscribe((data) => {
+    this.memberDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });
   }

@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
-            LazyLoadDto filters = null,
+            PagingAndFilterDto filters = null,
             int id = 0,
             Specification<User> specification = null,
             Expression<Func<User, bool>> filter = null,
@@ -132,6 +132,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> ExportCSV(LazyLoadDto filters);
+        Task<byte[]> ExportCSV(PagingAndFilterDto filters);
     }
 }

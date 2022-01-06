@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchGetAll(LazyLoadDto filter)
+        public static Specification<Member> SearchGetAll(PagingAndFilterDto filter)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 

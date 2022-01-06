@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, LazyLoadDto, PlaneMapper>, IPlaneAppService
+    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, PagingAndFilterDto, PlaneMapper>, IPlaneAppService
     {
         /// <summary>
         /// The current SiteId.
@@ -44,16 +44,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public override Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
         {
             return base.AddAsync(dto, mapperMode);
-        }
-
-        /// <summary>
-        /// Return a range to use in Calc SpreadSheet.
-        /// </summary>
-        /// <param name="filters">The filter.</param>
-        /// <returns><see cref="Task"/>Representing the asynchronous operation.</returns>
-        public async Task<(IEnumerable<PlaneDto> Results, int Total)> GetRangeForCalcAsync(LazyLoadDto filters = null)
-        {
-            return await this.GetRangeAsync<PlaneDto, PlaneMapper, LazyLoadDto>(filters: filters);
         }
     }
 }

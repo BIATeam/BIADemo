@@ -15,13 +15,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IPlaneAppService : ICrudAppServiceBase<PlaneDto, Plane, LazyLoadDto>
+    public interface IPlaneAppService : ICrudAppServiceBase<PlaneDto, Plane, PagingAndFilterDto>
     {
-        /// <summary>
-        /// Return a range to use in Calc SpreadSheet.
-        /// </summary>
-        /// <param name="filters">The filter.</param>
-        /// <returns><see cref="Task"/>Representing the asynchronous operation.</returns>
-        Task<(IEnumerable<PlaneDto> Results, int Total)> GetRangeForCalcAsync(LazyLoadDto filters = null);
+
     }
 }

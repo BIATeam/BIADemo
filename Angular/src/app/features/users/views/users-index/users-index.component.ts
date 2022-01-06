@@ -15,6 +15,7 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { UserDas } from 'src/app/domains/user/services/user-das.service';
 import { TranslateService } from '@ngx-translate/core';
 import FileSaver from 'file-saver';
+import { PagingAndFilterDto } from 'src/app/shared/bia-shared/model/paging-and-filter';
 
 @Component({
   selector: 'app-users-index',
@@ -113,8 +114,8 @@ export class UsersIndexComponent implements OnInit {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.userListComponent.getLazyLoadMetadata() };
-    this.userDas.getFile(customEvent).subscribe((data) => {
+    const columnsAndFilter: PagingAndFilterDto = { columns: columns, ...this.userListComponent.getLazyLoadMetadata() };
+    this.userDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.users') + '.csv');
     });
   }

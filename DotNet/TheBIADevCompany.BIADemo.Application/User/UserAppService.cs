@@ -100,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
         public async Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
-            LazyLoadDto filters = null,
+            PagingAndFilterDto filters = null,
             int id = 0,
             Specification<User> specification = null,
             Expression<Func<User, bool>> filter = null,
@@ -108,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string queryMode = QueryMode.ReadList,
             string mapperMode = null)
         {
-            return await this.GetRangeAsync<UserDto, UserMapper, LazyLoadDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.GetRangeAsync<UserDto, UserMapper, PagingAndFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
@@ -312,13 +312,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(LazyLoadDto filters)
+        public async Task<byte[]> ExportCSV(PagingAndFilterDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
             filters.Rows = 0;
 
-            var queryFilter = new LazyLoadDto
+            var queryFilter = new PagingAndFilterDto
             {
                 Filters = filters.Filters,
                 GlobalFilter = filters.GlobalFilter,
@@ -336,7 +336,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is LazyLoadDto fileFilters)
+            if (filters is PagingAndFilterDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }

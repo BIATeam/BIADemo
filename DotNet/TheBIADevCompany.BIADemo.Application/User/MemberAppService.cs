@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for member.
     /// </summary>
-    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, LazyLoadDto, MemberMapper>, IMemberAppService
+    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, PagingAndFilterDto, MemberMapper>, IMemberAppService
     {
         /// <summary>
         /// The claims principal.
@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.GetRangeBySiteAsync"/>
-        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(LazyLoadDto filters)
+        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(PagingAndFilterDto filters)
         {
             return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }
@@ -98,8 +98,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc cref="IMemberAppService.ExportCSV(LazyLoadDto)"/>
-        public async Task<byte[]> ExportCSV(LazyLoadDto filters)
+        /// <inheritdoc cref="IMemberAppService.ExportCSV(PagingAndFilterDto)"/>
+        public async Task<byte[]> ExportCSV(PagingAndFilterDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;

@@ -195,7 +195,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherFilterDto : LazyLoadDto, new()
         {
             List<string> columnHeaders = null;
-            if (filters is LazyLoadDto fileFilters)
+            if (filters is PagingAndFilterDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }

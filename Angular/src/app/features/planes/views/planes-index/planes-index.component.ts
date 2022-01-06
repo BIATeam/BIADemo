@@ -26,6 +26,7 @@ import { PlanesSignalRService } from '../../services/plane-signalr.service';
 import { PlanesEffects } from '../../store/planes-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PlaneOptionsService } from '../../services/plane-options.service';
+import { PagingAndFilterDto } from 'src/app/shared/bia-shared/model/paging-and-filter';
 
 @Component({
   selector: 'app-planes-index',
@@ -173,8 +174,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    lazyLoadEvent.parentIds = this.parentIds;
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
+    const pagingAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
   }
 
   searchGlobalChanged(value: string) {
@@ -196,8 +197,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: LazyLoadEvent = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
-    this.planeDas.getFile(customEvent).subscribe((data) => {
+    const columnsAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
+    this.planeDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });
   }

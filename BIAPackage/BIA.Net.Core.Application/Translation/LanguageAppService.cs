@@ -18,11 +18,6 @@ namespace BIA.Net.Core.Application.Translation
     public class LanguageAppService : FilteredServiceBase<Language>, ILanguageAppService
     {
         /// <summary>
-        /// The claims principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LanguageAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
