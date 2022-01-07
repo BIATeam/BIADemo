@@ -264,5 +264,22 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 
         // IncludesForUpdate done with the Query customizer because ...Select(..) not managed in .Net Core => it could be rechalenge with EF 6:
         // x => x.NotifiedPermissions, x => x.NotifiedPermissions.Select(y => y.Permission), x => x.NotifiedUsers
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Func<NotificationDto, object[]> DtoToRecord()
+        {
+            return x => (new object[]
+            {
+                CSVString(x.Title),
+                CSVString(x.Description),
+                CSVString(x.Type?.Display),
+                x.Read ? "X" : string.Empty,
+                x.CreatedDate.ToString("yyyy-MM-dd"),
+                CSVString(x.CreatedBy?.Display),
+                CSVString(string.Join(" - ", x.NotifiedPermissions?.Select(ca => ca.Display).ToList())),
+                CSVString(string.Join(" - ", x.NotifiedUsers?.Select(ca => ca.Display).ToList())),
+                CSVString(x.JData),
+            });
+        }
     }
 }
