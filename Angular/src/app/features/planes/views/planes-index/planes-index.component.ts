@@ -43,9 +43,10 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(PlaneTableComponent, { static: false }) planeTableComponent: PlaneTableComponent;
-  
   private get planeListComponent() {
-    if(this.biaTableComponent!=undefined) return this.biaTableComponent;
+    if (this.biaTableComponent !== undefined) {
+      return this.biaTableComponent;
+    }
     return this.planeTableComponent;
   }
 
@@ -205,7 +206,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const columnsAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
+    const columnsAndFilter: PagingFilterFormatDto = {
+      parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
+    };
     this.planeDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });

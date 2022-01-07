@@ -198,8 +198,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const columnsAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata() };
-
+    const columnsAndFilter: PagingFilterFormatDto = {
+      parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata()
+    };
     this.memberDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.members') + '.csv');
     });

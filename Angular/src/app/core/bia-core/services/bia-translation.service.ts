@@ -52,7 +52,12 @@ export class BiaTranslationService {
   public languageId$: Observable<number> = combineLatest([this.currentCulture$, this.appSettings$])
     .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings)));
 
-  constructor(private translate: TranslateService, @Inject(LOCALE_ID) localeId: string, private store: Store<AppState>, private primeNgConfig: PrimeNGConfig) {}
+  constructor(
+    private translate: TranslateService,
+    @Inject(LOCALE_ID) localeId: string,
+    private store: Store<AppState>,
+    private primeNgConfig: PrimeNGConfig
+  ) {}
 
   getLangSelected(): string | null {
     return localStorage.getItem(STORAGE_LANG_KEY);

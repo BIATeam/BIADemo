@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StandardEncoder } from './standard-encoder';
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 // Workaroud issue: https://github.com/angular/angular/issues/11058
 // Because dot.NET interpret '+' as space

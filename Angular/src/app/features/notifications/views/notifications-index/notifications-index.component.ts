@@ -207,7 +207,9 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const columnsAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata() };
+    const columnsAndFilter: PagingFilterFormatDto = {
+      parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
+    };
     this.notificationDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.notifications') + '.csv');
     });
