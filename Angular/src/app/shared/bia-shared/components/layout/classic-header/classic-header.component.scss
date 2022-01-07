@@ -34,6 +34,10 @@
     padding-right: 8px;
     width: 80px;
 
+    .pi {
+      font-size: 1.5rem;
+    }
+
     .notifications {
       position: relative;
       display: flex;
@@ -41,7 +45,7 @@
       .notification-count {
         position: absolute;
         top: -4px;
-        right: 12px;
+        right: 15px;
         z-index: 10;
         color: white;
         background: $biaRed;
