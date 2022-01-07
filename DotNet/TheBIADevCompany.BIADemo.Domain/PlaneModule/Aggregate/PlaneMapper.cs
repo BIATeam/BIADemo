@@ -131,6 +131,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             };
         }
 
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Func<PlaneDto, object[]> DtoToRecord()
+        {
+            return x => (new object[]
+            {
+                CSVString(x.Msn),
+                x.IsActive ? "X" : string.Empty,
+                x.FirstFlightDate.ToString("yyyy-MM-dd"),
+                x.FirstFlightTime.ToString("hh:mm"),
+                x.LastFlightDate?.ToString("yyyy-MM-dd hh:mm"),
+                x.Capacity.ToString(),
+                CSVString(x.PlaneType?.Display),
+                CSVString(string.Join(" - ", x.ConnectingAirports?.Select(ca => ca.Display).ToList())),
+            });
+        }
+
         /// <inheritdoc/>
         public override void MapEntityKeysInDto(Plane entity, PlaneDto dto)
         {

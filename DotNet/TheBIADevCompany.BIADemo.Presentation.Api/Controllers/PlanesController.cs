@@ -85,23 +85,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         }
 
         /// <summary>
-        /// Get all planes with filters containing id for Calc SpreadSheet.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <returns>The list of planes.</returns>
-        [HttpPost("allforcalc")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.ListAccess)]
-        public async Task<IActionResult> GetAllForCalc([FromBody] PagingAndFilterDto filters)
-        {
-            var (results, total) = await this.planeService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-            return this.Ok(results);
-        }
-
-        /// <summary>
         /// Get a plane by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>

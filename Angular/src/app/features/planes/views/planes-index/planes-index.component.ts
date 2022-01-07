@@ -27,6 +27,7 @@ import { PlanesEffects } from '../../store/planes-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingAndFilterDto } from 'src/app/shared/bia-shared/model/paging-and-filter';
+import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
 
 @Component({
   selector: 'app-planes-index',
@@ -40,7 +41,14 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;
-  @ViewChild(BiaTableComponent, { static: false }) planeListComponent: BiaTableComponent;
+  @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
+  @ViewChild(PlaneTableComponent, { static: false }) planeTableComponent: PlaneTableComponent;
+  
+  private get planeListComponent() {
+    if(this.biaTableComponent!=undefined) return this.biaTableComponent;
+    return this.planeTableComponent;
+  }
+
   private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';

@@ -139,5 +139,11 @@ namespace BIA.Net.Core.Domain
         {
             throw new NotImplementedException("This mapper is not build to generate reccords, or the implementation of DtoToRecord is missing.");
         }
+
+        public static string CSVString(string x)
+        {
+            if (x == null) return "";
+            return "=\"" + x.Replace("\"", "\"\"") + "\"";
+        }
     }
 }

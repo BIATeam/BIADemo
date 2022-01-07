@@ -17,6 +17,5 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public interface IPlaneAppService : ICrudAppServiceBase<PlaneDto, Plane, PagingAndFilterDto>
     {
-
     }
 }
