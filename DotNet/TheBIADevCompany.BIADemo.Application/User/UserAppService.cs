@@ -100,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
         public async Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
-            PagingAndFilterDto filters = null,
+            PagingFilterFormatDto filters = null,
             int id = 0,
             Specification<User> specification = null,
             Expression<Func<User, bool>> filter = null,
@@ -108,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string queryMode = QueryMode.ReadList,
             string mapperMode = null)
         {
-            return await this.GetRangeAsync<UserDto, UserMapper, PagingAndFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
@@ -312,13 +312,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(PagingAndFilterDto filters)
+        public async Task<byte[]> ExportCSV(PagingFilterFormatDto filters)
         {
             // We ignore paging to return all records
             filters.First = 0;
             filters.Rows = 0;
 
-            var queryFilter = new PagingAndFilterDto
+            var queryFilter = new PagingFilterFormatDto
             {
                 Filters = filters.Filters,
                 GlobalFilter = filters.GlobalFilter,
@@ -336,7 +336,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }).ToList();
 
             List<string> columnHeaders = null;
-            if (filters is PagingAndFilterDto fileFilters)
+            if (filters is PagingFilterFormatDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }

@@ -137,13 +137,13 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             return x => (new object[]
             {
                 CSVString(x.Msn),
-                x.IsActive ? "X" : string.Empty,
-                x.FirstFlightDate.ToString("yyyy-MM-dd"),
-                x.FirstFlightTime.ToString("hh:mm"),
-                x.LastFlightDate?.ToString("yyyy-MM-dd hh:mm"),
-                x.Capacity.ToString(),
+                CSVBool(x.IsActive),
+                CSVDate(x.FirstFlightDate),
+                CSVTime(x.FirstFlightTime),
+                CSVDateTime(x.LastFlightDate),
+                CSVNumber(x.Capacity),
                 CSVString(x.PlaneType?.Display),
-                CSVString(string.Join(" - ", x.ConnectingAirports?.Select(ca => ca.Display).ToList())),
+                CSVList(x.ConnectingAirports),
             });
         }
 

@@ -6,8 +6,10 @@ namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
 
     /// <summary>
@@ -142,8 +144,32 @@ namespace BIA.Net.Core.Domain
 
         public static string CSVString(string x)
         {
-            if (x == null) return "";
-            return "=\"" + x.Replace("\"", "\"\"") + "\"";
+            return "\"=\"\"" + x?.Replace("\"", "\"\"\"\"") + "\"\"\"";
+        }
+        public static string CSVList(ICollection<OptionDto> x)
+        {
+            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
+        }
+        
+        public static string CSVDate(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd");
+        }
+        public static string CSVTime(DateTime? x)
+        {
+            return x?.ToString("hh:mm");
+        }
+        public static string CSVDateTime(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd hh:mm");
+        }
+        public static string CSVBool(bool x)
+        {
+            return x ? "X" : string.Empty;
+        }
+        public static string CSVNumber(int x)
+        {
+            return x.ToString();
         }
     }
 }

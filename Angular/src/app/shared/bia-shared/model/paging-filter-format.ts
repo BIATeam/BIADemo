@@ -1,6 +1,6 @@
 import { LazyLoadEvent } from 'primeng/api';
 
-export interface PagingAndFilterDto extends LazyLoadEvent {
+export interface PagingFilterFormatDto extends LazyLoadEvent {
   parentIds?: string[];
   columns?: { [key: string]: string };
 }

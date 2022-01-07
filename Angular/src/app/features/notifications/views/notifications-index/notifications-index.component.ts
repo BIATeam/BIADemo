@@ -25,6 +25,7 @@ import { NotificationsSignalRService } from '../../services/notification-signalr
 import { NotificationsEffects } from '../../store/notifications-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { NotificationOptionsService } from '../../services/notification-options.service';
+import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 
 @Component({
   selector: 'app-notifications-index',
@@ -58,6 +59,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'notificationsGrid' : undefined;
+  parentIds: string[];
 
 
   constructor(
@@ -74,6 +76,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.parentIds = [];
     this.sub = new Subscription();
 
     this.initTableConfiguration();
@@ -181,7 +184,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
+    const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
   }
 
   searchGlobalChanged(value: string) {
@@ -203,8 +207,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.notificationListComponent.getLazyLoadMetadata() };
-    this.notificationDas.getFile(customEvent).subscribe((data) => {
+    const columnsAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata() };
+    this.notificationDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.notifications') + '.csv');
     });
   }

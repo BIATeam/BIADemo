@@ -64,7 +64,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Users.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingAndFilterDto filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
@@ -218,7 +218,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Users.ListAccess)]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingAndFilterDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.userService.ExportCSV(filters);
             string fileName = $"Users-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

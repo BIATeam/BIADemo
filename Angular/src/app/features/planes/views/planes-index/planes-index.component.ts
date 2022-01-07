@@ -26,7 +26,7 @@ import { PlanesSignalRService } from '../../services/plane-signalr.service';
 import { PlanesEffects } from '../../store/planes-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PlaneOptionsService } from '../../services/plane-options.service';
-import { PagingAndFilterDto } from 'src/app/shared/bia-shared/model/paging-and-filter';
+import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
 
 @Component({
@@ -84,6 +84,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.parentIds = [];
     this.sub = new Subscription();
 
     this.initTableConfiguration();
@@ -112,7 +113,6 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
           })
       );
     }
-    this.parentIds = [];
   }
 
   ngOnDestroy() {
@@ -182,7 +182,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const pagingAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
     this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
   }
 
@@ -205,7 +205,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const columnsAndFilter: PagingAndFilterDto = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
+    const columnsAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
     this.planeDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });

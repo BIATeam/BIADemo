@@ -70,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingAndFilterDto filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             try
             {
@@ -394,7 +394,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Members.ListAccess)]
-        public virtual async Task<IActionResult> GetFileCSV([FromBody] PagingAndFilterDto filters)
+        public virtual async Task<IActionResult> GetFileCSV([FromBody] PagingFilterFormatDto filters)
         {
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";

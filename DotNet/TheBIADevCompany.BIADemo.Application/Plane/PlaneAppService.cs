@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, PagingAndFilterDto, PlaneMapper>, IPlaneAppService
+    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
     {
         /// <summary>
         /// The current SiteId.

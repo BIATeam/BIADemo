@@ -58,8 +58,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             return x => new object[]
             {
-                x.Title,
-                x.CertificationDate,
+                CSVString(x.Title),
+                CSVDateTime(x.CertificationDate),
             };
         }
     }

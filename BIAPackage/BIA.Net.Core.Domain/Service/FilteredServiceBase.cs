@@ -188,14 +188,14 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = null
+            string mapperMode = "Csv"
             )
             where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
             where TOtherDto : BaseDto, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
             List<string> columnHeaders = null;
-            if (filters is PagingAndFilterDto fileFilters)
+            if (filters is PagingFilterFormatDto fileFilters)
             {
                 columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
             }

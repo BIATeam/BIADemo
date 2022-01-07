@@ -1,4 +1,4 @@
-﻿// <copyright file="LazyLoadDto.cs" company="BIA">
+﻿// <copyright file="PagingFilterFormatDto.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
-    public class PagingAndFilterDto : LazyLoadDto
+    public class PagingFilterFormatDto : LazyLoadDto
     {
         /// <summary>
         /// Gets or sets the parent ids.

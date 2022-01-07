@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class AirportAppService : CrudAppServiceBase<AirportDto, Airport, LazyLoadDto, AirportMapper>, IAirportAppService
+    public class AirportAppService : CrudAppServiceBase<AirportDto, Airport, PagingFilterFormatDto, AirportMapper>, IAirportAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AirportAppService"/> class.
