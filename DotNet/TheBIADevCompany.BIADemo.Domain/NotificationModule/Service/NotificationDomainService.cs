@@ -79,6 +79,12 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             }
 
             this.filtersContext.Add(
+                AccessMode.All,
+                new DirectSpecification<Notification>(n =>
+                    (n.NotifiedPermissions.Count == 0 || n.NotifiedPermissions.Any(r => this.permissions.Contains(r.Permission.Code)))
+                    && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
+
+            this.filtersContext.Add(
                     AccessMode.Read,
                     new DirectSpecification<Notification>(n =>
                         n.SiteId == this.currentSiteId
