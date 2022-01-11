@@ -1,4 +1,4 @@
-import { ComponentPortal, ComponentType, Portal, TemplatePortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal, ComponentType, Portal, TemplatePortal } from '@angular/cdk/portal';
 import {
   Injectable,
   Injector,
@@ -101,7 +101,13 @@ export class BiaClassicLayoutService {
       if (data) {
         const injectionTokens = new WeakMap<any, any>([[BIA_LAYOUT_DATA, data]]);
         if (injector !== undefined) {
-          finalInjector = new PortalInjector(injector, injectionTokens);
+          // finalInjector = new PortalInjector(injector, injectionTokens);
+          finalInjector = Injector.create({
+            parent: injector,
+            providers: [
+                { provide: injectionTokens, useValue: data }
+            ]
+        });
         }
       }
       portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector, componentFactoryResolver);

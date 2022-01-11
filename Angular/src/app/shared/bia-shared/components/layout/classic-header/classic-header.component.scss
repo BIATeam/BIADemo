@@ -137,6 +137,11 @@
     background-color: transparent !important;
   }
 
+  p-menubar .p-menubar{
+    .p-menubar-start {
+      margin-right: auto;
+    }
+  }
   p-megamenu {
     .p-megamenu {
       padding: 0;
