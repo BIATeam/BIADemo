@@ -123,9 +123,9 @@
                     else
                     {
                         services.AddSignalR().AddRedis(options.HubForClients.RedisConnectionString,
-                        rediOptions =>
+                        redisOptions =>
                         {
-                            rediOptions.Configuration.ChannelPrefix = options.HubForClients.RedisChannelPrefix;
+                            redisOptions.Configuration.ChannelPrefix = options.HubForClients.RedisChannelPrefix;
                         });
                     }
                 }
