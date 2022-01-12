@@ -6,7 +6,7 @@ import { Site } from 'src/app/domains/site/model/site';
 import { Table } from 'primeng/table';
 
 @Component({
-  selector: 'app-view-site-table',
+  selector: 'bia-view-site-table',
   templateUrl: './view-site-table.component.html',
   styleUrls: ['./view-site-table.component.scss']
 })

@@ -3,7 +3,7 @@ import { View } from '../../model/view';
 import { Table } from 'primeng/table';
 
 @Component({
-  selector: 'app-view-user-table',
+  selector: 'bia-view-user-table',
   templateUrl: './view-user-table.component.html',
   styleUrls: ['./view-user-table.component.scss']
 })

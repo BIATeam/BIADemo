@@ -17,9 +17,9 @@
     <p-tabPanel header="{{ 'bia.views.user' | translate | uppercase }}" *ngIf="canSetUserView()">
       <div class="app-div-view-form" *ngIf="canAddUserView === true || canUpdateUserView === true">
         <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
-        <app-view-form [view]="userViewSelected" (save)="onSaveUserView($event)"></app-view-form>
+        <bia-view-form [view]="userViewSelected" (save)="onSaveUserView($event)"></bia-view-form>
       </div>
-      <app-view-user-table
+      <bia-view-user-table
         [views]="views$ | async"
         [canDelete]="canDeleteUserView"
         [canSetDefault]="canSetDefaultUserView"
@@ -27,7 +27,7 @@
         (delete)="onDeleteUserView($event)"
         (setDefault)="onSetDefaultUserView($event)"
         (viewSelect)="onUserViewSelected($event)"
-      ></app-view-user-table>
+      ></bia-view-user-table>
     </p-tabPanel>
     <p-tabPanel
       header="{{ 'bia.views.site' | translate | uppercase }} {{
@@ -47,9 +47,9 @@
       <ng-container *ngIf="siteSelected">
         <div class="app-div-view-form" *ngIf="canAddSiteView === true || canUpdateSiteView === true">
           <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
-          <app-view-form [view]="siteViewSelected" (save)="onSaveSiteView($event)"></app-view-form>
+          <bia-view-form [view]="siteViewSelected" (save)="onSaveSiteView($event)"></bia-view-form>
         </div>
-        <app-view-site-table
+        <bia-view-site-table
           [views]="viewSites$ | async"
           [siteSelected]="siteSelected"
           [canDelete]="canDeleteSiteView"
@@ -60,7 +60,7 @@
           (delete)="onDeleteSiteView($event)"
           (setDefault)="onSetDefaultSiteView($event)"
           (viewSelect)="onSiteViewSelected($event)"
-        ></app-view-site-table>
+        ></bia-view-site-table>
       </ng-container>
     </p-tabPanel>
   </p-tabView>

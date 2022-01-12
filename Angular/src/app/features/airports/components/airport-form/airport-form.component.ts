@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -19,7 +18,7 @@ import { Airport } from '../../model/airport';
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class AirportFormComponent implements OnInit, OnChanges {
+export class AirportFormComponent implements OnChanges {
   @Input() airport: Airport = <Airport>{};
   @Input() airportOptions: OptionDto[];
   @Input() airportTypeOptions: OptionDto[];
@@ -31,9 +30,6 @@ export class AirportFormComponent implements OnInit, OnChanges {
 
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
-  }
-
-  ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {

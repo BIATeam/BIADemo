@@ -6,7 +6,7 @@
       [userOptions]="userOptions$ | async"
       (searchUsers)="onSearchUsers($event)"
       (filter)="onFilter($event)"
-      (close)="onCloseFilter()"
+      (closeFilter)="onCloseFilter()"
     ></app-site-filter>
     <div fxFlex="100">
       <app-site-table-header

@@ -1,13 +1,13 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { View } from '../../model/view';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-view-form',
+  selector: 'bia-view-form',
   templateUrl: './view-form.component.html',
   styleUrls: ['./view-form.component.scss']
 })
-export class ViewFormComponent implements OnInit, OnChanges {
+export class ViewFormComponent implements OnChanges {
   @Input() view: View = <View>{};
 
   @Output() save = new EventEmitter<View>();
@@ -18,8 +18,6 @@ export class ViewFormComponent implements OnInit, OnChanges {
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.view) {

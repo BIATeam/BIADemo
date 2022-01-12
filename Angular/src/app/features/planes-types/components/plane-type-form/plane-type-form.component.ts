@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -17,7 +16,7 @@ import { PlaneType } from '../../model/plane-type';
   styleUrls: ['./plane-type-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaneTypeFormComponent implements OnInit, OnChanges {
+export class PlaneTypeFormComponent implements OnChanges {
   @Input() planeType: PlaneType = <PlaneType>{};
 
   @Output() save = new EventEmitter<PlaneType>();
@@ -28,8 +27,6 @@ export class PlaneTypeFormComponent implements OnInit, OnChanges {
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.planeType) {

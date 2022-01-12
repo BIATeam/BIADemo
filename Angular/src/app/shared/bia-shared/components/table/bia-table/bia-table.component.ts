@@ -233,7 +233,7 @@ export class BiaTableComponent implements OnChanges {
         if (stateString) {
           const state: TableState = JSON.parse(stateString);
           if (state && state.columnOrder) {
-            // tslint:disable-next-line: no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             this.displayedColumns = this.configuration.columns.filter(
               (col) => state.columnOrder && state.columnOrder.indexOf(col.field) > -1
             );

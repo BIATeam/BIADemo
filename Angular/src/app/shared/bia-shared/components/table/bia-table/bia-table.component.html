@@ -44,10 +44,10 @@
             pInputText
             class="input-search"
             type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-            placeholder="{{ col.searchPlaceholder != undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+            placeholder="{{ col.searchPlaceholder !== undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
             (input)="dt.filter($event.target.value, col.field, col.filterMode)"
             [value]="dt.filters[col.field]?.value"
-            [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value != '' }"
+            [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value !== '' }"
           />
         </span>
       </th>
@@ -59,7 +59,7 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
-        <ng-container [ngSwitch]="col.type" *ngIf="col != undefined">
+        <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined">
           <ng-container *ngSwitchCase="'OneToMany'">
             {{ rowData[col.field]?.display }}
           </ng-container>

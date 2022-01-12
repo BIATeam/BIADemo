@@ -22,7 +22,7 @@ export class SiteFilterComponent implements OnInit {
   @Input() fxFlexValue: string;
   @Input() userOptions: OptionDto[];
   @Input() hidden = false;
-  @Output() close = new EventEmitter();
+  @Output() closeFilter = new EventEmitter();
   @Output() searchUsers = new EventEmitter<string>();
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 
@@ -36,7 +36,7 @@ export class SiteFilterComponent implements OnInit {
   }
 
   onClose() {
-    this.close.emit();
+    this.closeFilter.emit();
   }
 
   onReset() {

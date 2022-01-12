@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -17,7 +16,7 @@ import { Plane } from '../../model/plane';
   styleUrls: ['./plane-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PlaneFormComponent implements OnInit, OnChanges {
+export class PlaneFormComponent implements OnChanges {
   @Input() plane: Plane = <Plane>{};
 
   @Output() save = new EventEmitter<Plane>();
@@ -28,8 +27,6 @@ export class PlaneFormComponent implements OnInit, OnChanges {
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.plane) {

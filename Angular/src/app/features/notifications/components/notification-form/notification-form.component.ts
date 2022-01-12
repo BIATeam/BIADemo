@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -24,7 +23,7 @@ import { NotificationTranslation } from '../../model/notification-translation';
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class NotificationFormComponent implements OnInit, OnChanges {
+export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
   @Input() userOptions: OptionDto[];
   @Input() permissionOptions: OptionDto[];
@@ -65,35 +64,9 @@ export class NotificationFormComponent implements OnInit, OnChanges {
       }
     }
 
-/*
-    if (newList && Array.isArray(newList)) {
-      // Add items
-      const toAdd = newList
-        ?.filter((s) => !oldList || !oldList.map(x => x.id).includes(s.id))
-        .map((s) => <T>{ ...s, dtoState: DtoState.Added });
-
-      if (toAdd) {
-        differential = differential.concat(toAdd);
-      }
-    }
-
-
-    if (oldList && Array.isArray(oldList) && newList && Array.isArray(newList)) {
-      // Add items
-      const toModify = newList
-        ?.filter((s) => oldList.map(x => x.id).includes(s.id))
-        .map((s) => <T>{ ...s, dtoState: DtoState.Added });
-
-      if (toAdd) {
-        differential = differential.concat(toAdd);
-      }
-    }*/
-
     return differential;
   }
 
-  ngOnInit() {
-  }
   ngOnChanges(changes: SimpleChanges) {
     if (this.notification) {
       this.form.reset();

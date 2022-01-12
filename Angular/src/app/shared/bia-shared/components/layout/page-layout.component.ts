@@ -1,7 +1,7 @@
 import { Component, HostBinding } from '@angular/core';
 
 @Component({
-  selector: 'app-bia-page-layout',
+  selector: 'bia-page-layout',
   template: `
     <bia-classic-page-layout>
       <router-outlet></router-outlet>

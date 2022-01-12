@@ -8,7 +8,7 @@ import { filter } from 'rxjs/operators';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
 
 @Component({
-  selector: 'full-page-layout',
+  selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
 })
 export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit {

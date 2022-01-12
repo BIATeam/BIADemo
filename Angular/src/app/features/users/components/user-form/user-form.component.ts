@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -19,7 +18,7 @@ import { UserFilter } from '../../model/UserFilter';
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserFormComponent implements OnInit, OnChanges {
+export class UserFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();
   @Output() save = new EventEmitter<User[]>();
   @Output() cancel = new EventEmitter();
@@ -33,8 +32,6 @@ export class UserFormComponent implements OnInit, OnChanges {
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.users && changes.users) {

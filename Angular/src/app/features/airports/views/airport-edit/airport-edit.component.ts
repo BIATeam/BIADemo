@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { update } from '../../store/airports-actions';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './airport-edit.component.html',
   styleUrls: ['./airport-edit.component.scss']
 })
-export class AirportEditComponent implements OnInit, OnDestroy {
+export class AirportEditComponent implements OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   private sub = new Subscription();
 
@@ -22,9 +22,6 @@ export class AirportEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public airportService: AirportService,
   ) { }
-
-  ngOnInit() {
-  }
 
   ngOnDestroy() {
     if (this.sub) {

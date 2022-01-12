@@ -32,7 +32,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
 import { loadAllSites } from 'src/app/domains/site/store/sites-actions';
 
 @Component({
-  selector: 'app-view-dialog',
+  selector: 'bia-view-dialog',
   templateUrl: './view-dialog.component.html',
   styleUrls: ['./view-dialog.component.scss'],
   providers: [ConfirmationService]

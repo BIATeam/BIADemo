@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -17,7 +16,7 @@ import { Site } from '../../model/site/site';
   styleUrls: ['./site-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SiteFormComponent implements OnInit, OnChanges {
+export class SiteFormComponent implements OnChanges {
   @Input() site: Site = <Site>{};
 
   @Output() save = new EventEmitter<Site>();
@@ -28,8 +27,6 @@ export class SiteFormComponent implements OnInit, OnChanges {
   constructor(public formBuilder: FormBuilder) {
     this.initForm();
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.site) {

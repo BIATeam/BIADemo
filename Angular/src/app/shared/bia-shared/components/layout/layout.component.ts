@@ -1,4 +1,4 @@
-import { Component, HostBinding, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo, UserData } from '../../model/auth-info';
@@ -15,7 +15,7 @@ import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
 
 @Component({
-  selector: 'app-bia-layout',
+  selector: 'bia-layout',
   template: `
     <bia-spinner [overlay]="true" *ngIf="isLoadingUserInfo"></bia-spinner>
     <bia-classic-layout
@@ -41,7 +41,7 @@ import { APP_BASE_HREF } from '@angular/common';
     </bia-classic-layout>
   `
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit {
   @HostBinding('class.bia-flex') flex = true;
   isLoadingUserInfo = false;
 
@@ -76,12 +76,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
   }
-
-  ngOnDestroy() {
-    // this.notificationSignalRService.destroy();
-  }
-
-
 
   onSiteChange(siteId: number) {
     this.authService.setCurrentSiteId(siteId);

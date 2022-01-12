@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { create } from '../../store/planes-actions';
 import { Plane } from '../../model/plane';
@@ -10,12 +10,10 @@ import { Location } from '@angular/common';
   templateUrl: './plane-new.component.html',
   styleUrls: ['./plane-new.component.scss']
 })
-export class PlaneNewComponent implements OnInit {
+export class PlaneNewComponent {
   plane: Plane;
 
   constructor(private store: Store<AppState>, private location: Location) {}
-
-  ngOnInit() {}
 
   onSubmitted(planeToCreate: Plane) {
     this.store.dispatch(create({ plane: planeToCreate }));

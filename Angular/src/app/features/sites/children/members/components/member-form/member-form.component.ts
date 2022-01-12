@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
@@ -22,7 +21,7 @@ import { Member } from '../../model/member';
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class MemberFormComponent implements OnInit, OnChanges {
+export class MemberFormComponent implements OnChanges {
   @Input() member: Member = <Member>{};
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
@@ -37,9 +36,6 @@ export class MemberFormComponent implements OnInit, OnChanges {
     public translateService: TranslateService,
     public siteService: SiteService) {
     this.initForm();
-  }
-
-  ngOnInit() {
   }
 
   ngOnChanges(changes: SimpleChanges) {

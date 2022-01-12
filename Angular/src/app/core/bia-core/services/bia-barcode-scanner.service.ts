@@ -39,7 +39,6 @@ export class BiaBarcodeScannerService implements OnDestroy {
       map((events) =>
         // We could filter at the beginning, but it may interfere with debounceTime
         events.filter((evt) => {
-          // tslint:disable-next-line: deprecation
           const code = evt.which || evt.keyCode;
           return [SHIFT, CONTROL, ALT].indexOf(code) === -1;
         })
@@ -92,7 +91,6 @@ export class BiaBarcodeScannerService implements OnDestroy {
       events.shift();
     }
     return events.reduce((acc, evt) => {
-      // tslint:disable-next-line: deprecation
       const code = evt.which || evt.keyCode;
       if (isKeyence && code >= 48 && code <= 57) {
         acc += `${code - 48}`; // Convert bad keyence codes to numbers
@@ -104,7 +102,6 @@ export class BiaBarcodeScannerService implements OnDestroy {
   }
 
   private isKeyence(events: KeyboardEvent[]) {
-    // tslint:disable-next-line: deprecation
     const code = events[0].which || events[0].keyCode;
     return events[0].ctrlKey && code === 192;
   }

@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 
 @Component({
-  selector: 'app-view-list',
+  selector: 'bia-view-list',
   templateUrl: './view-list.component.html',
   styleUrls: ['./view-list.component.scss']
 })

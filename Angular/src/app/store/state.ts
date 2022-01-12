@@ -3,7 +3,7 @@ import { storeLogger } from 'ngrx-store-logger';
 import { InjectionToken } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-// tslint:disable-next-line: no-empty-interface
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppState {
   // more state here
 }

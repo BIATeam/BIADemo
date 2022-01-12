@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { update } from '../../store/planes-actions';
 import { Subscription } from 'rxjs';
@@ -12,7 +12,7 @@ import { PlaneService } from '../../services/plane.service';
   templateUrl: './plane-edit.component.html',
   styleUrls: ['./plane-edit.component.scss']
 })
-export class PlaneEditComponent implements OnInit, OnDestroy {
+export class PlaneEditComponent implements OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   private sub = new Subscription();
 
@@ -21,9 +21,6 @@ export class PlaneEditComponent implements OnInit, OnDestroy {
     private location: Location,
     public planeService: PlaneService
   ) { }
-
-  ngOnInit() {
-  }
 
   ngOnDestroy() {
     if (this.sub) {
