@@ -81,6 +81,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            modelBuilder
+                .Entity<Role>()
+                .HasMany(p => p.Permissions)
+                .WithMany(p => p.Roles)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("PermissionId");
+                    cs.MapRightKey("RoleId");
+                    cs.ToTable("RoleId");
+                });
+                // .UsingEntity(j => j.ToTable("RoleId"));
 
             // Begin BIADemo
             if (false)
@@ -88,13 +99,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #pragma warning disable CS0162 // Unreachable code detected
             // End BIADemo
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
+            modelBuilder.Entity<Role>().HasMany(r => r.Permissions).WithMany(p => p.Roles).UsingEntity(j => j.HasData(new { PermissionId = 1, RoleId = 1 }));
 
             // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
             }
 
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
+            modelBuilder.Entity<Role>().HasMany(r => r.Permissions).WithMany(p => p.Roles).UsingEntity(j => j.HasData(new { PermissionId = 1, RoleId = 1 }));
+
             modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot", Label = "Pilot" });
+            modelBuilder.Entity<Role>().HasMany(r => r.Permissions).WithMany(p => p.Roles).UsingEntity(j => j.HasData(new { PermissionId = 2, RoleId = 2 }));
 
             // End BIADemo
         }
