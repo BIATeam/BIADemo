@@ -43,6 +43,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the permissions associed to the role.
         /// </summary>
-        public virtual ICollection<Role> Roles { get; set; }
+        public virtual ICollection<PermissionRole> PermissionRoles { get; set; }
     }
 }
