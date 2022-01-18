@@ -163,13 +163,38 @@ function RemoveFolder {
   }
 }
 
+function CopyModel {
+  param (
+    [string]$modelName,
+    [string]$folderpath,
+    [string]$fileName
+  )
+	$destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+	If (!(Test-Path -path $destinationFolder)) {New-Item -ItemType Directory -Path $destinationFolder}
+	$destinationFile = $destinationFolder + '\' + $fileName
+	$sourceFile = '.\' + $folderpath + '\' + $fileName
+	Copy-Item -path $sourceFile -Destination $destinationFile
+}
+
+
 RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
 Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
 
-
 Set-Location -Path $newPath
+
+Write-Host "Zip plane"
+
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api\Controllers' 'PlanesController.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'PlaneAppService.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'IPlaneAppService.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'PlaneMapper.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'Plane.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain.Dto\Plane' 'PlaneDto.cs'
+
+compress-archive -path '.\docs\crud-planes\*' -destinationpath '.\docs\crud-planes.zip' -compressionlevel optimal
+
 
 
 Write-Host "Remove .vs"
