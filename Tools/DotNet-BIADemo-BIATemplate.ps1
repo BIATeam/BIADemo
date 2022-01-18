@@ -174,6 +174,13 @@ function CopyModel {
 	$destinationFile = $destinationFolder + '\' + $fileName
 	$sourceFile = '.\' + $folderpath + '\' + $fileName
 	Copy-Item -path $sourceFile -Destination $destinationFile
+
+	$searchWord = '// BIADemo only'
+	$starts = GetLineNumber -pattern $searchWord -file $destinationFile
+	if ($starts -eq 1)
+	{
+		DeleteLine -start 1 -end 1 -file $destinationFile
+	}
 }
 
 
@@ -194,8 +201,7 @@ CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain.Dto\Plane' 'PlaneDto.cs'
 
 compress-archive -path '.\docs\crud-planes\*' -destinationpath '.\docs\crud-planes.zip' -compressionlevel optimal
-
-
+Remove-Item '.\docs\crud-planes' -Recurse -Force -Confirm:$false
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
