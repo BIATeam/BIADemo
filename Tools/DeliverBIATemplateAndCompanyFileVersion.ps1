@@ -22,20 +22,22 @@ Get-ChildItem $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filte
 		Write-Host "Copy file to $targetFile"
 		New-Item -ItemType File -Path $targetFile -Force;
         Copy-Item $_.FullName -destination $targetFile
-        Remove-Item $_.FullName
+        # Remove-Item $_.FullName
     }
 	
 
-$sourceDir = Resolve-Path -Path "$scriptPath\BIATemplateFiles"
-$targetDir = Resolve-Path -Path "$scriptPath\..\..\$templateName"
-Write-Host "Copy from $sourceDir to $targetDir"
-Get-ChildItem -File $sourceDir -recurse |`
-    foreach{
-        $targetFile = $targetDir.Path + $_.FullName.SubString($sourceDir.Path.Length)
+# $sourceDir = Resolve-Path -Path "$scriptPath\BIATemplateFiles"
+# $targetDir = Resolve-Path -Path "$scriptPath\..\..\$templateName"
+# Write-Host "Copy from $sourceDir to $targetDir"
+# Get-ChildItem -File $sourceDir -recurse |`
+    # foreach{
+        # $targetFile = $targetDir.Path + $_.FullName.SubString($sourceDir.Path.Length)
 
-		Write-Host "Copy file " $_.FullName " to $targetFile"
-		New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        Copy-Item $_.FullName -destination $targetFile
-    }
+		# Write-Host "Copy file " $_.FullName " to $targetFile"
+		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
+        # Copy-Item $_.FullName -destination $targetFile
+    # }
 
 
+write-host "finish"
+pause
