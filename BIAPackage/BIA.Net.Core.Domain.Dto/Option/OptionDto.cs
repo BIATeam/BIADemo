@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
     /// <summary>
     /// The DTO used to represent a airport.
     /// </summary>
-    public class OptionDto : BaseDto
+    public class OptionDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the display.

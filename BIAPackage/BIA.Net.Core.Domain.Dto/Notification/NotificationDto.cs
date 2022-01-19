@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class NotificationDto : BaseDto
+    public class NotificationDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the title.

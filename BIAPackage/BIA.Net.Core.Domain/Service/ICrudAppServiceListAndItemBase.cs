@@ -19,10 +19,10 @@ namespace BIA.Net.Core.Domain.Service
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
-    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TFilterDto>
-        where TDto : BaseDto, new()
-        where TListItemDto : BaseDto, new()
-        where TEntity : class, IEntity, new()
+    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto>
+        where TDto : BaseDto<TKey>, new()
+        where TListItemDto : BaseDto<TKey>, new()
+        where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
     {
         /// <summary>

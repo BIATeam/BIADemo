@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
     /// <summary>
     /// The DTO used to manage site.
     /// </summary>
-    public class SiteDto : BaseDto
+    public class SiteDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the title.

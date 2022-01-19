@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     /// <summary>
     /// The application service used for site.
     /// </summary>
-    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, SiteFilterDto, SiteMapper>, ISiteAppService
+    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, SiteFilterDto, SiteMapper>, ISiteAppService
     {
         /// <summary>
         /// The claims principal.
@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public SiteAppService(ITGenericRepository<Site> repository, IPrincipal principal)
+        public SiteAppService(ITGenericRepository<Site, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             UserDataDto userData = this.principal.GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
-            int siteId = currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true ? default(int) : userData.CurrentSiteId;
+            int siteId = currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true ? default : userData.CurrentSiteId;
 
             return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters, siteId));
         }

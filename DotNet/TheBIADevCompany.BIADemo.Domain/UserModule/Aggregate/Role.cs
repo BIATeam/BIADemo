@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class Role : VersionedTable, IEntity
+    public class Role : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The interface defining the application service for member.
     /// </summary>
-    public interface IMemberAppService : ICrudAppServiceBase<MemberDto, Member, PagingFilterFormatDto>
+    public interface IMemberAppService : ICrudAppServiceBase<MemberDto, Member, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Get the list of MemberDto with paging and sorting.

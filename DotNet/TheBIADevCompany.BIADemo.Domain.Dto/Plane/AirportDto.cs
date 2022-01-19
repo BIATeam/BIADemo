@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// <summary>
     /// The DTO used to represent a airport.
     /// </summary>
-    public class AirportDto : BaseDto
+    public class AirportDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the name of the airport.

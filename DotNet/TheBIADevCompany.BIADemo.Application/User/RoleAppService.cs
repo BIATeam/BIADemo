@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for role.
     /// </summary>
-    public class RoleAppService : FilteredServiceBase<Role>, IRoleAppService
+    public class RoleAppService : FilteredServiceBase<Role, int>, IRoleAppService
     {
         /// <summary>
         /// The claims principal.
@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
         /// <param name="userContext">The user context.</param>
-        public RoleAppService(ITGenericRepository<Role> repository, IPrincipal principal, UserContext userContext)
+        public RoleAppService(ITGenericRepository<Role, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;

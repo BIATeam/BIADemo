@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The member entity.
     /// </summary>
-    public class Member : VersionedTable, IEntity
+    public class Member : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

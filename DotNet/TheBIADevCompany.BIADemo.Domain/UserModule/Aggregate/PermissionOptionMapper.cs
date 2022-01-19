@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The mapper used for permission option.
     /// </summary>
-    public class PermissionOptionMapper : BaseMapper<OptionDto, Permission>
+    public class PermissionOptionMapper : BaseMapper<OptionDto, Permission, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Permission, OptionDto>> EntityToDto()

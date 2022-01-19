@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class RoleDto : BaseDto
+    public class RoleDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets is the defaul value.

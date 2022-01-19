@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The airport entity.
     /// </summary>
-    public class Airport : VersionedTable, IEntity
+    public class Airport : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

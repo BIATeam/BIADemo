@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class PermissionTranslation : VersionedTable, IEntity
+    public class PermissionTranslation : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

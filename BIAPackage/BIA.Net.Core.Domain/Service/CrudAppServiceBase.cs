@@ -29,18 +29,18 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
     /// <typeparam name="TMapper">The mapper used between entity and DTO.</typeparam>
-    public abstract class CrudAppServiceBase<TDto, TEntity, TFilterDto, TMapper> : FilteredServiceBase<TEntity>, ICrudAppServiceBase<TDto, TEntity, TFilterDto>
-        where TDto : BaseDto, new()
-        where TEntity : class, IEntity, new()
+    public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : FilteredServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
+        where TDto : BaseDto<TKey>, new()
+        where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity>, new()
+        where TMapper : BaseMapper<TDto, TEntity, TKey>, new()
     {
         /// <summary>
         /// Initializes a new instance of the <see
         /// cref="CrudAppServiceBase{TDto,TEntity,TFilterDto,TMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        protected CrudAppServiceBase(ITGenericRepository<TEntity> repository)
+        protected CrudAppServiceBase(ITGenericRepository<TEntity, TKey> repository)
             : base(repository)
         {
         }
@@ -48,7 +48,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
         public virtual async Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -60,7 +60,7 @@ namespace BIA.Net.Core.Domain.Service
 
 
         public async Task<IEnumerable<TDto>> GetAllAsync(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -74,8 +74,8 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetAllAsync<TDto, TMapper>(id: id, specification: specification, filter: filter, queryOrder: queryOrder, firstElement: firstElement, pageCount:pageCount,includes:includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
-            int id = 0,
+        public async Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
@@ -85,12 +85,12 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null)
         {
-            return await this.GetAllAsync<TDto, TMapper, TKey>(orderByExpression, ascending, id: id, specification: specification, filter: filter, firstElement: firstElement, pageCount: pageCount, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
+            return await this.GetAllAsync<TDto, TMapper>(orderByExpression, ascending, id: id, specification: specification, filter: filter, firstElement: firstElement, pageCount: pageCount, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         public virtual async Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -103,7 +103,7 @@ namespace BIA.Net.Core.Domain.Service
 
         public virtual async Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -116,7 +116,7 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetAsync"/>
-        public virtual async Task<TDto> GetAsync(int id = 0,
+        public virtual async Task<TDto> GetAsync(TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -146,7 +146,7 @@ namespace BIA.Net.Core.Domain.Service
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
         public virtual async Task<TDto> RemoveAsync(
-            int id, 
+            TKey id, 
             string accessMode = AccessMode.Delete, 
             string queryMode = QueryMode.Delete, 
             string mapperMode = null)
@@ -156,7 +156,7 @@ namespace BIA.Net.Core.Domain.Service
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.RemoveAsync"/>
         public virtual async Task<List<TDto>> RemoveAsync(
-            List<int> ids,
+            List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null)

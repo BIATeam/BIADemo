@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class AirportOptionMapper : BaseMapper<OptionDto, Airport>
+    public class AirportOptionMapper : BaseMapper<OptionDto, Airport, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Airport, OptionDto>> EntityToDto()

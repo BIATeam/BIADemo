@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <summary>
         /// The repository.
         /// </summary>
-        private readonly ITGenericRepository<User> repository;
+        private readonly ITGenericRepository<User, int> repository;
 
         /// <summary>
         /// The AD helper.
@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="adHelper">The AD helper.</param>
-        public UserSynchronizeDomainService(ITGenericRepository<User> repository, IUserDirectoryRepository<UserFromDirectory> adHelper)
+        public UserSynchronizeDomainService(ITGenericRepository<User, int> repository, IUserDirectoryRepository<UserFromDirectory> adHelper)
         {
             this.repository = repository;
             this.userDirectoryHelper = adHelper;

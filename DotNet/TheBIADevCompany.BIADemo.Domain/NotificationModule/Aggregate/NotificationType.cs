@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// <summary>
     /// The NotificationType entity.
     /// </summary>
-    public class NotificationType : VersionedTable, IEntity
+    public class NotificationType : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the identifier.

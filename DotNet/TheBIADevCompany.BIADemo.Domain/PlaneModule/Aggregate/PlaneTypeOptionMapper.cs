@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class PlaneTypeOptionMapper : BaseMapper<OptionDto, PlaneType>
+    public class PlaneTypeOptionMapper : BaseMapper<OptionDto, PlaneType, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<PlaneType, OptionDto>> EntityToDto()

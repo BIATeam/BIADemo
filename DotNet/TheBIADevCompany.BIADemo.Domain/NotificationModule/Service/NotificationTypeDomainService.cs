@@ -14,14 +14,14 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeDomainService : AppServiceBase<NotificationType>, INotificationTypeDomainService
+    public class NotificationTypeDomainService : AppServiceBase<NotificationType, int>, INotificationTypeDomainService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypeDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationTypeDomainService(ITGenericRepository<NotificationType> repository, UserContext userContext)
+        public NotificationTypeDomainService(ITGenericRepository<NotificationType, int> repository, UserContext userContext)
             : base(repository)
         {
             this.userContext = userContext;

@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for member.
     /// </summary>
-    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, PagingFilterFormatDto, MemberMapper>, IMemberAppService
+    public class MemberAppService : CrudAppServiceBase<MemberDto, Member, int, PagingFilterFormatDto, MemberMapper>, IMemberAppService
     {
         /// <summary>
         /// The claims principal.
@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="userContext">The user context.</param>
-        public MemberAppService(ITGenericRepository<Member> repository, IPrincipal principal, UserContext userContext)
+        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;

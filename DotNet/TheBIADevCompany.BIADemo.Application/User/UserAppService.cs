@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : FilteredServiceBase<User>, IUserAppService
+    public class UserAppService : FilteredServiceBase<User, int>, IUserAppService
     {
         /// <summary>
         /// The user right domain service.
@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="logger">The logger.</param>
         public UserAppService(
-            ITGenericRepository<User> repository,
+            ITGenericRepository<User, int> repository,
             IUserPermissionDomainService userPermissionDomainService,
             IUserSynchronizeDomainService userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,

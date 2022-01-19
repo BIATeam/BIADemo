@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <summary>
         /// The repository.
         /// </summary>
-        private readonly ITGenericRepository<Member> repository;
+        private readonly ITGenericRepository<Member, int> repository;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="adHelper">The AD helper.</param>
-        public UserPermissionDomainService(ITGenericRepository<Member> repository, IOptions<BiaNetSection> configuration, IUserDirectoryRepository<UserFromDirectory> adHelper)
+        public UserPermissionDomainService(ITGenericRepository<Member, int> repository, IOptions<BiaNetSection> configuration, IUserDirectoryRepository<UserFromDirectory> adHelper)
         {
             this.repository = repository;
             this.configuration = configuration.Value;

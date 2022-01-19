@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class NotificationDomainService : CrudAppServiceBase<NotificationDto, Notification, LazyLoadDto, NotificationMapper>, INotificationDomainService
+    public class NotificationDomainService : CrudAppServiceBase<NotificationDto, Notification, int, LazyLoadDto, NotificationMapper>, INotificationDomainService
     {
         /// <summary>
         /// The claims principal.
@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <param name="queryCustomizer">Query customizer to include permission at update.</param>
         /// <param name="userContext">The user context.</param>
         public NotificationDomainService(
-            ITGenericRepository<Notification> repository,
+            ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,
             INotificationQueryCustomizer queryCustomizer,

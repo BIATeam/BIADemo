@@ -14,16 +14,16 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     /// <summary>
     /// The mapper used for site.
     /// </summary>
-    public class SiteInfoMapper : BaseMapper<SiteInfoDto, Site>
+    public class SiteInfoMapper : BaseMapper<SiteInfoDto, Site, int>
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<Site> ExpressionCollection
+        public override ExpressionCollection<Site, int> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Site>
+                return new ExpressionCollection<Site, int>
                 {
                     { "Id", site => site.Id },
                     { "Title", site => site.Title },

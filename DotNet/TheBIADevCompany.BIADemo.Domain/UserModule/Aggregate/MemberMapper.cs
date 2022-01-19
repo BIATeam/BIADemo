@@ -17,14 +17,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The mapper used for member.
     /// </summary>
-    public class MemberMapper : BaseMapper<MemberDto, Member>
+    public class MemberMapper : BaseMapper<MemberDto, Member, int>
     {
         /// <inheritdoc/>
-        public override ExpressionCollection<Member> ExpressionCollection
+        public override ExpressionCollection<Member, int> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Member>
+                return new ExpressionCollection<Member, int>
                 {
                     { "Id", member => member.Id },
                     {

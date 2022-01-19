@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class RoleTranslationDto : BaseDto
+    public class RoleTranslationDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the language id.

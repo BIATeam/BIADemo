@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Domain.TranslationModule.Aggregate
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class Language : VersionedTable, IEntity
+    public class Language : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

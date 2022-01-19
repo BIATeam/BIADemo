@@ -17,13 +17,13 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class AirportAppService : CrudAppServiceBase<AirportDto, Airport, PagingFilterFormatDto, AirportMapper>, IAirportAppService
+    public class AirportAppService : CrudAppServiceBase<AirportDto, Airport, int, PagingFilterFormatDto, AirportMapper>, IAirportAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AirportAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        public AirportAppService(ITGenericRepository<Airport> repository)
+        public AirportAppService(ITGenericRepository<Airport, int> repository)
             : base(repository)
         {
         }

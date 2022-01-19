@@ -84,14 +84,14 @@ namespace BIA.Net.Core.Domain.Authentication
         {
             if (!this.HasClaim(x => x.Type == ClaimTypes.UserData))
             {
-                return default(T);
+                return default;
             }
 
             string json = this.FindFirst(x => x.Type == ClaimTypes.UserData).Value;
 
             if (string.IsNullOrWhiteSpace(json))
             {
-                return default(T);
+                return default;
             }
 
             return JsonConvert.DeserializeObject<T>(json);

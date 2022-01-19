@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class ViewAppService : AppServiceBase<View>, IViewAppService
+    public class ViewAppService : AppServiceBase<View, int>, IViewAppService
     {
         /// <summary>
         /// The claims principal.
@@ -48,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <param name="principal">The principal.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="queryCustomizer">The query customizer.</param>
-        public ViewAppService(ITGenericRepository<View> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
+        public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;

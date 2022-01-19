@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The plane entity.
     /// </summary>
-    public class PlaneType : VersionedTable, IEntity
+    public class PlaneType : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

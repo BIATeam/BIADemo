@@ -21,8 +21,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// <summary>
     /// The class representing a GenericRepository.
     /// </summary>
-    public class TGenericRepositoryEF<TEntity> : ITGenericRepository<TEntity>
-        where TEntity : class, IEntity 
+    public class TGenericRepositoryEF<TEntity, TKey> : ITGenericRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// The unit of work.
@@ -131,7 +131,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>The <see cref="TEntity"/>.</returns>
         public async Task<TEntity> GetEntityAsync(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -151,7 +151,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         public async Task<TResult> GetResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, 
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -173,7 +173,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>All TEntity.</returns>
         public async Task<IEnumerable<TEntity>> GetAllEntityAsync(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder= null,
@@ -182,7 +182,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             Expression<Func<TEntity, object>>[] includes = null,
             string queryMode =null)
         {
-            var result = this.GetAllElementsAsync<int, TEntity>(x => x, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = this.GetAllElementsAsync<TEntity>(x => x, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
             return await result.ToListAsync();
         }
 
@@ -199,9 +199,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression,
+        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending = true,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
@@ -232,7 +232,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>All TEntity.</returns>
         public async Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -245,7 +245,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             this.CheckArgument(selectResult);
 
             // Call Private Methods
-            var result = this.GetAllElementsAsync<int, TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = this.GetAllElementsAsync<TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
             return await result.ToListAsync();
         }
 
@@ -263,10 +263,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        public async Task<IEnumerable<TResult>> GetAllResultAsync<TKey, TResult>(Expression<Func<TEntity, TResult>> selectResult,
+        public async Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult,
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
@@ -298,7 +298,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
         public async Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -310,7 +310,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             // Checking arguments for this query
             this.CheckArgument(selectResult);
 
-            var result = await this.GetAllElementsAndCountAsync<int, TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = await this.GetAllElementsAndCountAsync<TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
 
             return result;
         }
@@ -335,7 +335,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryOrder">The queryOrder.</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, int id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null)
+        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null)
         {
             IQueryable<TEntity> objectSet = PrepareFilteredQuery(id, specification, filter, queryMode);
 
@@ -369,7 +369,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryOrder">The queryOrder.</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetAllElementsAsync<TKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, int id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode =null)
+        private IQueryable<TResult> GetAllElementsAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode =null)
         {
             IQueryable<TEntity> objectSet = PrepareFilteredQuery(id, specification, filter, queryMode);
 
@@ -378,7 +378,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
 
-        private IQueryable<TEntity> PrepareFilteredQuery(int id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode)
+        public bool Compare(TKey x, TKey y)
+        {
+            return EqualityComparer<TKey>.Default.Equals(x, y);
+        }
+
+        private IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode)
         {
             // Create IObjectSet for this particular type and query this
             IQueryable<TEntity> objectSet = this.RetrieveSet();
@@ -389,12 +394,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             // Add Specification condition
-            if (specification != null || id != 0)
+            if (specification != null || !Compare(id, default))
             {
                 Specification<TEntity> spec = null;
-                if (id != 0)
+                if (!Compare(id, default))
                 {
-                    spec = new DirectSpecification<TEntity>(x => x.Id == id);
+                    spec = new DirectSpecification<TEntity>(x => Compare(x.Id, id));
                 }
                 if (specification != null)
                 {
@@ -430,7 +435,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="queryOrder">The queryOrder.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetElements<TKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        private IQueryable<TResult> GetElements<TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             objectSet = CustomizeQueryAfter(objectSet, includes, queryMode);
 
@@ -442,7 +447,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
 
             if (queryOrder != null)
             {
-                objectSet = objectSet.ApplyQueryOrder(queryOrder);
+                objectSet = objectSet.ApplyQueryOrder<TEntity, TKey>(queryOrder);
             }
 
             // Cut Result for Paging

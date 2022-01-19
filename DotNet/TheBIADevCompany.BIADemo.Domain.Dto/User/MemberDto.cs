@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// <summary>
     /// The DTO used for members.
     /// </summary>
-    public class MemberDto : BaseDto
+    public class MemberDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the user id.

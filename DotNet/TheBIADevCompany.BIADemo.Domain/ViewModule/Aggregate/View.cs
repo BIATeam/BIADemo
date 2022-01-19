@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
     /// <summary>
     /// The View entity.
     /// </summary>
-    public class View : VersionedTable, IEntity
+    public class View : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the identifier.

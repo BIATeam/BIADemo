@@ -17,9 +17,9 @@ namespace BIA.Net.Core.Domain
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class BaseMapper<TDto, TEntity> : BaseEntityMapper<TEntity>
-        where TDto : BaseDto
-        where TEntity : class, IEntity
+    public abstract class BaseMapper<TDto, TEntity, TKey> : BaseEntityMapper<TEntity, TKey>
+        where TDto : BaseDto<TKey>
+        where TEntity : class, IEntity<TKey>
     {
 
         public UserContext UserContext { get; set; }

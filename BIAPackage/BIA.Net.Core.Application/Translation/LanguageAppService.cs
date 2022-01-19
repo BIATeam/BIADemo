@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Application.Translation
     /// <summary>
     /// The application service used for language.
     /// </summary>
-    public class LanguageAppService : FilteredServiceBase<Language>, ILanguageAppService
+    public class LanguageAppService : FilteredServiceBase<Language, int>, ILanguageAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageAppService"/> class.
@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Application.Translation
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
         /// <param name="userContext">The user context.</param>
-        public LanguageAppService(ITGenericRepository<Language> repository)
+        public LanguageAppService(ITGenericRepository<Language, int> repository)
             : base(repository)
         {
         }

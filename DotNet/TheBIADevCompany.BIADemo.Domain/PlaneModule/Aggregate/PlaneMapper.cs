@@ -18,15 +18,15 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class PlaneMapper : BaseMapper<PlaneDto, Plane>
+    public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
-        public override ExpressionCollection<Plane> ExpressionCollection
+        public override ExpressionCollection<Plane, int> ExpressionCollection
         {
             // It is not necessary to implement this function if you to not use the mapper for filtered list. In BIADemo it is use only for Calc SpreadSheet.
             get
             {
-                return new ExpressionCollection<Plane>
+                return new ExpressionCollection<Plane, int>
                 {
                     { "Id", plane => plane.Id },
                     { "Msn", plane => plane.Msn },

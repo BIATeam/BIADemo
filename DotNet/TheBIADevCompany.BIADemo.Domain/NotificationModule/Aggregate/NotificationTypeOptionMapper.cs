@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// <summary>
     /// The mapper used for notification type.
     /// </summary>
-    public class NotificationTypeOptionMapper : BaseMapper<OptionDto, NotificationType>
+    public class NotificationTypeOptionMapper : BaseMapper<OptionDto, NotificationType, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<NotificationType, OptionDto>> EntityToDto()

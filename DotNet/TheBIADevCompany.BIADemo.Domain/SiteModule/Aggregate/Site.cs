@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     /// <summary>
     /// The site entity.
     /// </summary>
-    public class Site : VersionedTable, IEntity
+    public class Site : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.

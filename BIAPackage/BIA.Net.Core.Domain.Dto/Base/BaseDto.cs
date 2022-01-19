@@ -7,12 +7,12 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// <summary>
     /// The base class for DTO.
     /// </summary>
-    public class BaseDto
+    public class BaseDto<TKey>
     {
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
-        public int Id { get; set; }
+        public TKey Id { get; set; }
 
         /// <summary>
         /// Gets or sets the state of the DTO regarding to the DB context.

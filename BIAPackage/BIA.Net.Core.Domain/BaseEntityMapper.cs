@@ -15,13 +15,13 @@ namespace BIA.Net.Core.Domain
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class BaseEntityMapper<TEntity>
-        where TEntity : class, IEntity
+    public abstract class BaseEntityMapper<TEntity,TKey>
+        where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// Gets the collection used for expressions to access fields.
         /// </summary>
-        public virtual ExpressionCollection<TEntity> ExpressionCollection
+        public virtual ExpressionCollection<TEntity, TKey> ExpressionCollection
         {
             get
             {

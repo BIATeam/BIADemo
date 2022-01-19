@@ -11,7 +11,7 @@ namespace BIA.Net.Core.Domain.Dto.Option
     /// <summary>
     /// The DTO used to represent a airport.
     /// </summary>
-    public class AppSettingsDto : BaseDto
+    public class AppSettingsDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the authentication configuration.

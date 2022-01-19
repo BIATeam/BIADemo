@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
 
-    public interface ITGenericRepository<TEntity> where TEntity : class, IEntity
+    public interface ITGenericRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// Get or set the Query customizer.
@@ -61,7 +61,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>All TEntity.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntityAsync(int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TEntity>> GetAllEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Get All Elements Ordered By.
@@ -76,7 +76,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntityAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TEntity>> GetAllEntityAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Gets the by spec and count.
@@ -92,7 +92,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering and Includes.
@@ -111,7 +111,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        Task<IEnumerable<TResult>> GetAllResultAsync<TKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Gets the by spec and count.
@@ -127,7 +127,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Get an entity with it's identifier.
@@ -139,7 +139,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>The <see cref="TEntity"/>.</returns>
 
-        Task<TEntity> GetEntityAsync(int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<TEntity> GetEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Get a dto with it's identifier.
@@ -151,7 +151,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="filter">Filter Query.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        Task<TResult> GetResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, int id = 0, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<TResult> GetResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
         
         /// <summary>
         /// Remove an item to the current context.

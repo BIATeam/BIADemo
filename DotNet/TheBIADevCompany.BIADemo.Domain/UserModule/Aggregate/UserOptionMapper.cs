@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The mapper used for user option.
     /// </summary>
-    public class UserOptionMapper : BaseMapper<OptionDto, User>
+    public class UserOptionMapper : BaseMapper<OptionDto, User, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<User, OptionDto>> EntityToDto()

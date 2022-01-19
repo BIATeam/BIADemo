@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The application service used for plane.
     /// </summary>
-    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
+    public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, int, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
     {
         /// <summary>
         /// The current SiteId.
@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="planeQueryCustomizer">The plane query customizer for include.</param>
-        public PlaneAppService(ITGenericRepository<Plane> repository, IPrincipal principal)
+        public PlaneAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.currentSiteId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().CurrentSiteId;

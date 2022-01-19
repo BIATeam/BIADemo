@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// <summary>
     /// The interface defining the application service for plane.
     /// </summary>
-    public interface IAirportAppService : ICrudAppServiceBase<AirportDto, Airport, PagingFilterFormatDto>
+    public interface IAirportAppService : ICrudAppServiceBase<AirportDto, Airport, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Return options.

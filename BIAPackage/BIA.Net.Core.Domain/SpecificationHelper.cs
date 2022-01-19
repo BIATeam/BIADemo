@@ -30,11 +30,11 @@ namespace BIA.Net.Core.Domain
         /// </param>
         /// <param name="dto">The lazy DTO.</param>
         /// <returns>The specification updated.</returns>
-        public static Specification<TEntity> GetLazyLoad<TEntity, TMatcher>(Specification<TEntity> specification, TMatcher matcher, LazyLoadDto dto)
-        where TEntity : class, IEntity, new()
-        where TMatcher : BaseEntityMapper<TEntity>, new()
+        public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, LazyLoadDto dto)
+        where TEntity : class, IEntity<TKey>, new()
+        where TMapper : BaseEntityMapper<TEntity, TKey>, new()
         {
-            ExpressionCollection<TEntity> whereClauses = matcher.ExpressionCollection;
+            ExpressionCollection<TEntity, TKey> whereClauses = matcher.ExpressionCollection;
 
             if (dto?.Filters == null)
             {

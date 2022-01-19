@@ -11,8 +11,8 @@ namespace BIA.Net.Core.Domain.Service
     /// <summary>
     /// The base class for all application service.
     /// </summary>
-    public abstract class AppServiceBase<TEntity>
-                where TEntity : class, IEntity
+    public abstract class AppServiceBase<TEntity, TKey>
+                where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// The unit of work.
@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Domain.Service
         /// Initializes a new instance of the <see cref="AppServiceBase"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        protected AppServiceBase(ITGenericRepository<TEntity> repository)
+        protected AppServiceBase(ITGenericRepository<TEntity, TKey> repository)
         {
             this.Repository = repository;
         }
@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Gets the repository.
         /// </summary>
-        protected ITGenericRepository<TEntity> Repository { get; }
+        protected ITGenericRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
         /// Init the mapper and the user context
@@ -40,8 +40,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper"></typeparam>
         /// <returns></returns>
         protected TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
-            where TOtherDto : BaseDto, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
+            where TOtherDto : BaseDto<TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
         {
             TOtherMapper mapper = new TOtherMapper();
             if (this.userContext != null)

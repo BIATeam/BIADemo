@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for permission.
     /// </summary>
-    public class PermissionAppService : FilteredServiceBase<Permission>, IPermissionAppService
+    public class PermissionAppService : FilteredServiceBase<Permission, int>, IPermissionAppService
     {
         /// <summary>
         /// The claims principal.
@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
         /// <param name="userContext">The user context.</param>
-        public PermissionAppService(ITGenericRepository<Permission> repository, IPrincipal principal, UserContext userContext)
+        public PermissionAppService(ITGenericRepository<Permission, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;

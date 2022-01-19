@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Domain.TranslationModule.Aggregate
     /// <summary>
     /// The mapper used for permission option.
     /// </summary>
-    public class LanguageOptionMapper : BaseMapper<OptionDto, Language>
+    public class LanguageOptionMapper : BaseMapper<OptionDto, Language, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Language, OptionDto>> EntityToDto()

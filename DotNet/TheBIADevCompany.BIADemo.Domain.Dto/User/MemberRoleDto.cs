@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// <summary>
     /// The DTO used for member roles.
     /// </summary>
-    public class MemberRoleDto : BaseDto
+    public class MemberRoleDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the member id.

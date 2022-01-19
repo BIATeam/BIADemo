@@ -26,8 +26,8 @@ namespace BIA.Net.Core.Domain.Service
     /// The base class for all CRUD application service.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class FilteredServiceBase<TEntity> : AppServiceBase<TEntity>
-        where TEntity : class, IEntity, new()
+    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
         /// The filters
@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Domain.Service
         /// cref="FilteredServiceBase{TEntity}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        protected FilteredServiceBase(ITGenericRepository<TEntity> repository)
+        protected FilteredServiceBase(ITGenericRepository<TEntity, TKey> repository)
             : base(repository)
         {
             this.filtersContext = new Dictionary<string, Specification<TEntity>>();
@@ -60,19 +60,19 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The list of DTO.</returns>
         public virtual async Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read, 
             string queryMode = QueryMode.ReadList,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
 
-            var spec = SpecificationHelper.GetLazyLoad(
+            var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
                 GetFilterSpecification(accessMode, filtersContext) & specification,
                 mapper,
                 filters);
@@ -108,7 +108,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -118,8 +118,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
@@ -153,8 +153,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper, TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, 
-            int id = 0,
+        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
@@ -163,8 +163,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
@@ -183,15 +183,15 @@ namespace BIA.Net.Core.Domain.Service
 
         public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = "Csv"
             )
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
             List<string> columnHeaders = null;
@@ -233,7 +233,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO.</returns>
         public virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -241,8 +241,8 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.Read,
             string mapperMode = MapperMode.Item)
 
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             var result = await this.Repository.GetResultAsync(mapper.EntityToDto(mapperMode),
@@ -269,8 +269,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The DTO with id updated.</returns>
         public virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             if (dto != null)
             {
@@ -300,8 +300,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Update, 
             string queryMode = QueryMode.Update,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             if (dto != null)
             {
@@ -334,12 +334,12 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTO</returns>
         public virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
-            int id,
+            TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
 
@@ -358,15 +358,15 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         public virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
-            List<int> ids,
+            List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             var dtos = new List<TOtherDto>();
-            foreach (int id in ids)
+            foreach (TKey id in ids)
             {
                 dtos.Add(await this.RemoveAsync<TOtherDto, TOtherMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
             }
@@ -377,8 +377,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             var dtoList = dtos.ToList();
             List<TOtherDto> returnDto = new List<TOtherDto>();
@@ -406,8 +406,8 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherDto returnDto = dto;
             switch (dto.DtoState)
@@ -444,7 +444,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="orderMember">The order member.</param>
         /// <param name="ascending">If set to <c>true</c> [ascending].</param>
         /// <returns>The paging order.</returns>
-        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending)
+        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity, TKey> collection, string orderMember, bool ascending)
         {
             if (string.IsNullOrWhiteSpace(orderMember) || !collection.ContainsKey(orderMember))
             {
@@ -489,8 +489,8 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         public void AddBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
             {
@@ -509,8 +509,8 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         public void UpdateBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
             {
@@ -529,8 +529,8 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         public void RemoveBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity>, new()
-            where TOtherDto : BaseDto, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
             {
@@ -548,7 +548,7 @@ namespace BIA.Net.Core.Domain.Service
             }
         }
 
-        public async Task RemoveBulkAsync(IEnumerable<int> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        public async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
         {
             var entity = await this.Repository.GetAllEntityAsync(specification: GetFilterSpecification(accessMode, filtersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
             if (entity == null)

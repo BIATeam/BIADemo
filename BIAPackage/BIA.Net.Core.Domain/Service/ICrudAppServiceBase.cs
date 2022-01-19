@@ -20,9 +20,9 @@ namespace BIA.Net.Core.Domain.Service
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
-    public interface ICrudAppServiceBase<TDto, TEntity, TFilterDto>
-        where TDto : BaseDto, new()
-        where TEntity : class, IEntity, new()
+    public interface ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
+        where TDto : BaseDto<TKey>, new()
+        where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
     {
         /// <summary>
@@ -38,7 +38,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -58,7 +58,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns></returns>
         Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -78,7 +78,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
@@ -102,7 +102,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
         Task<IEnumerable<TDto>> GetAllAsync(
-            int id = 0,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             QueryOrder<TEntity> queryOrder = null,
@@ -129,8 +129,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TDto>> GetAllAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
-            int id = 0,
+        Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             int firstElement = 0,
@@ -151,7 +151,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO.</returns>
-        Task<TDto> GetAsync(int id = 0,
+        Task<TDto> GetAsync(TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -187,7 +187,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTO</returns>
-        Task<TDto> RemoveAsync(int id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+        Task<TDto> RemoveAsync(TKey id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -197,7 +197,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTO</returns>
-        Task<List<TDto>> RemoveAsync(List<int> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+        Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
 
         /// <summary>
         /// Save the DTO in DB regarding to theirs state.
@@ -233,7 +233,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Remove entities in DB from the list of ids.
         /// </summary>
-        Task RemoveBulkAsync(IEnumerable<int> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
+        Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
 
         /// <summary>
         /// Transform the DTO into the corresponding entities and delete these to the DB.

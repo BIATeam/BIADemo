@@ -12,16 +12,16 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// <summary>
     /// The mapper used for user.
     /// </summary>
-    public class UserMapper : BaseMapper<UserDto, User>
+    public class UserMapper : BaseMapper<UserDto, User, int>
     {
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<User> ExpressionCollection
+        public override ExpressionCollection<User, int> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<User>
+                return new ExpressionCollection<User, int>
                    {
                        { "Id", user => user.Id },
                        { "LastName", user => user.LastName },
