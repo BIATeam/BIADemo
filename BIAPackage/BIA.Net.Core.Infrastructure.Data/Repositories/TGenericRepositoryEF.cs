@@ -399,7 +399,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 Specification<TEntity> spec = null;
                 if (!Compare(id, default))
                 {
-                    spec = new DirectSpecification<TEntity>(x => Compare(x.Id, id));
+                    spec = new DirectSpecification<TEntity>(x => (object)x.Id == (object)id);
                 }
                 if (specification != null)
                 {
