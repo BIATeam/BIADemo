@@ -145,21 +145,21 @@
   <ng-template let-message pTemplate="message">
     <ng-container [ngSwitch]="message.severity">
       <ng-container *ngSwitchCase="'success'">
-        <span class="p-toast-icon pi pi-check"></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
       </ng-container>
       <ng-container *ngSwitchCase="'warn'">
-        <span class="p-toast-icon pi pi-exclamation-triangle"></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
       </ng-container>
       <ng-container *ngSwitchCase="'error'">
-        <span class="p-toast-icon pi pi-times-circle"></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
       </ng-container>
       <ng-container *ngSwitchDefault>
-        <span class="p-toast-icon pi pi-info-circle"></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
       </ng-container>
     </ng-container>
-    <div class="p-toast-message-text-content" (click)="onNotificationClick(message)">
-      <div class="p-toast-summary">{{ message.summary }}</div>
-      <div class="p-toast-detail">{{ message.detail }}</div>
+    <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted" (click)="onNotificationClick(message)">
+      <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
+      <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
     </div>
   </ng-template>
 </p-toast>

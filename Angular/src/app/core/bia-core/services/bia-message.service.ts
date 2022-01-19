@@ -88,6 +88,7 @@ export class BiaMessageService {
       summary: this.translateService.instant(notification.title),
       detail: this.translateService.instant(notification.description),
       data: data,
+      sticky: true
     });
   }
 
