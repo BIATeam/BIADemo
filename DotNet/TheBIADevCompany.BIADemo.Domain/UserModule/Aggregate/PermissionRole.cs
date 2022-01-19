@@ -1,4 +1,4 @@
-// <copyright file="MemberRole.cs" company="TheBIADevCompany">
+// <copyright file="PermissionRole.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

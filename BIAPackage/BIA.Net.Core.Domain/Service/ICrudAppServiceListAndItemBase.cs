@@ -124,7 +124,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync<TKey>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+        Task<IEnumerable<TListItemDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
             int id = 0,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,

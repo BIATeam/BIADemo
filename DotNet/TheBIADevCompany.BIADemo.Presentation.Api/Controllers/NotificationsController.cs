@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var (results, total) = await this.notificationService.GetRangeAsync(filters,accessMode: AccessMode.All);
+                var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
