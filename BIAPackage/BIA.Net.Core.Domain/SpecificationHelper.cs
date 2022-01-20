@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>The specification updated.</returns>
         public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, LazyLoadDto dto)
         where TEntity : class, IEntity<TKey>, new()
-        where TMapper : BaseEntityMapper<TEntity, TKey>, new()
+        where TMapper : BaseEntityMapper<TEntity>, new()
         {
             ExpressionCollection<TEntity> whereClauses = matcher.ExpressionCollection;
 

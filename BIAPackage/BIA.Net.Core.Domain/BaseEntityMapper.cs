@@ -15,8 +15,7 @@ namespace BIA.Net.Core.Domain
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class BaseEntityMapper<TEntity,TKey>
-        where TEntity : class, IEntity<TKey>
+    public abstract class BaseEntityMapper<TEntity>
     {
         /// <summary>
         /// Gets the collection used for expressions to access fields.
