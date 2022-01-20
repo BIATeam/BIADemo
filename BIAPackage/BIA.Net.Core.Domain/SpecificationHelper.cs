@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Domain
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseEntityMapper<TEntity, TKey>, new()
         {
-            ExpressionCollection<TEntity, TKey> whereClauses = matcher.ExpressionCollection;
+            ExpressionCollection<TEntity> whereClauses = matcher.ExpressionCollection;
 
             if (dto?.Filters == null)
             {

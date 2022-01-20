@@ -23,11 +23,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     public class NotificationMapper : BaseMapper<NotificationDto, Notification, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
-        public override ExpressionCollection<Notification, int> ExpressionCollection
+        public override ExpressionCollection<Notification> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Notification, int>
+                return new ExpressionCollection<Notification>
                 {
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },

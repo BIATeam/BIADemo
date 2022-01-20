@@ -444,7 +444,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="orderMember">The order member.</param>
         /// <param name="ascending">If set to <c>true</c> [ascending].</param>
         /// <returns>The paging order.</returns>
-        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity, TKey> collection, string orderMember, bool ascending)
+        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending)
         {
             if (string.IsNullOrWhiteSpace(orderMember) || !collection.ContainsKey(orderMember))
             {

@@ -19,11 +19,11 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<Site, int> ExpressionCollection
+        public override ExpressionCollection<Site> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Site, int>
+                return new ExpressionCollection<Site>
                 {
                     { "Id", site => site.Id },
                     { "Title", site => site.Title },

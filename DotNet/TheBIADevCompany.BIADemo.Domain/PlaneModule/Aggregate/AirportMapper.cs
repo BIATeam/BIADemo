@@ -16,11 +16,11 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     public class AirportMapper : BaseMapper<AirportDto, Airport, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
-        public override ExpressionCollection<Airport, int> ExpressionCollection
+        public override ExpressionCollection<Airport> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Airport, int>
+                return new ExpressionCollection<Airport>
                 {
                     { "Id", planeType => planeType.Id },
                     { "Name", planeType => planeType.Name },

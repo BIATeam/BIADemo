@@ -21,7 +21,7 @@ namespace BIA.Net.Core.Domain
         /// <summary>
         /// Gets the collection used for expressions to access fields.
         /// </summary>
-        public virtual ExpressionCollection<TEntity, TKey> ExpressionCollection
+        public virtual ExpressionCollection<TEntity> ExpressionCollection
         {
             get
             {

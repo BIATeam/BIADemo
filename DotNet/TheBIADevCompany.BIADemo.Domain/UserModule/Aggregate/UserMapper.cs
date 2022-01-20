@@ -17,11 +17,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
-        public override ExpressionCollection<User, int> ExpressionCollection
+        public override ExpressionCollection<User> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<User, int>
+                return new ExpressionCollection<User>
                    {
                        { "Id", user => user.Id },
                        { "LastName", user => user.LastName },

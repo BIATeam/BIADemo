@@ -20,11 +20,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     public class MemberMapper : BaseMapper<MemberDto, Member, int>
     {
         /// <inheritdoc/>
-        public override ExpressionCollection<Member, int> ExpressionCollection
+        public override ExpressionCollection<Member> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Member, int>
+                return new ExpressionCollection<Member>
                 {
                     { "Id", member => member.Id },
                     {
