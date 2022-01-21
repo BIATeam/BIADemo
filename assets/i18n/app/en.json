@@ -31,15 +31,15 @@
     "add": "Add plane",
     "capacity": "Capacity",
     "connectingAirports": "Connecting Airports",
+    "deliveryDate": "Delivery Date",
     "edit": "Edit plane",
-    "firstFlightDate": "First flight date",
-    "firstFlightTime": "First flight time",
     "isActive": "Active",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
     "planeType": "Plane Type",
-    "site": "Airline"
+    "site": "Airline",
+    "syncTime": "Synchronization time"
   },
   "planeType": {
     "add": "Add type of planes",
@@ -62,22 +62,6 @@
     "showFilters": "Show filters",
     "welcome": "BIA is a component library, built with the Angular framework"
   },
-  "permission": {
-    "Site_Admin" : "Site administrator",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Airline administrator",
-    "Pilot" : "Pilot",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Permission"
-  },
-  "role": {
-    "Site_Admin" : "Site administrator",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Airline administrator",
-    "Pilot" : "Pilot",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Role"
-  },
   "site": {
     "add": "Add site",
     "admins": "Administrators",
@@ -90,6 +74,10 @@
     "End BIADemo" : "To remove in project up to here",
     "selectUser": "Select a user",
     "title": "Title"
+  },
+  "translation": 
+  {  
+    "defaultLanguage" :"Default (English)"
   },
   "user": {
     "add": "Add user",

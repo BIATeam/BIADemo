@@ -31,15 +31,15 @@
     "add": "Ajouter avion",
     "capacity": "Capacité",
     "connectingAirports": "Aéroports de connection",
+    "deliveryDate": "Date de livraison",
     "edit": "Modifier avion",
-    "firstFlightDate": "Date du premier vol",
-    "firstFlightTime": "Heure du premier vol",
     "isActive": "Actif",
     "lastFlightDate": "Date du dernier vol",
     "listOf": "Liste des avions",
     "msn": "Msn",
     "planeType": "Type d'avions",
-    "site": "Compagnie aérienne"
+    "site": "Compagnie aérienne",
+    "syncTime": "Heure de synchronisation"
   },
   "planeType": {
     "add": "Ajouter type d'avions",
@@ -62,22 +62,6 @@
     "showFilters": "Afficher les filtres",
     "welcome": "BIA est une librarie de composants, construite avec le framework Angular"
   },
-  "permission": {
-    "Site_Admin" : "Administrateur du site",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Administrateur de la compagnie",
-    "Pilot" : "Pilote",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Autorisation"
-  },
-  "role": {
-    "Site_Admin" : "Administrateur du site",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Administrateur de la compagnie",
-    "Pilot" : "Pilote",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Role"
-  },
   "site": {
     "add": "Ajouter site",
     "admins": "Administrateurs",
@@ -90,6 +74,10 @@
     "End BIADemo": "To remove in project up to here",
     "selectUser": "Sélectionner un utilisateur",
     "title": "Titre"
+  },
+  "translation": 
+  {  
+    "defaultLanguage" :"Defaut (Anglais)"
   },
   "user": {
     "add": "Ajouter utilisateur",
@@ -117,12 +105,12 @@
     },
     "read": "Lue",
     "createdBy": "Créé par",
-    "notifiedPermissions": "Autorisations notifiés",
+    "notifiedPermissions": "Autorisations notifiées",
     "notifiedUsers": "Utilisateurs notifiés",
     "jData" : "Données en JSON",
     "success": {
-      "deprecated:": "transaltion will be done in database in next version",
-      "title": "Succés envoie de notification",
+      "deprecated:": "translation will be done in database in next version",
+      "title": "Succès envoi de notification",
       "description": "Description à customiser dans les traductions i18n pour chaque feature"
     }
   }

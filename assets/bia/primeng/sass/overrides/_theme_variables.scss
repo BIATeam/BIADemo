@@ -1,12 +1,16 @@
 /* Add your variable customizations of theme here */
 @import './customs/common_variables';
 
+// //Global
+$borderRadius: 0;
+$font-size:16px;
+
 $contentBgColor: $biaBgColor;
 $dividerColor: $biaBorderColor; // panel border
 // $hoverBgColor:red; // Color when the cursor is moved over a line of a table.
 // $activeMenuItemBadgeColor: red;
 
-$primaryTextColor: $biaFgTextColor; // #ffffff;
+//$primaryTextColor: $biaFgTextColor; // #ffffff;
 // $headerBgColor: $primaryColor;
 // $headerTextColor: #ffffff;
 // $headerIconColor: #ffffff;
@@ -14,9 +18,14 @@ $contentBorderColor: $biaBorderColor; // #bdbdbd; table border
 $contentBgColor: $biaBgColor; // #ffffff; content panel
 $contentIconColor: $biaFgTextColor; // #757575;
 
+// //input
 $inputBorderColor: $biaFgTextColor; // #bdbdbd;
 // $inputInvalidBorderColor: #e62a10;
-// $inputBgColor: transparent;
+$inputBg: transparent;
+$inputFilledBg: transparent;
+$inputFilledHoverBg: transparent;
+$inputFilledFocusBg: transparent;
+// $inputPadding: 0.125rem 0.125rem;
 // $inputErrorTextColor: #e62a10;
 // $inputBorderErrorColor: #e62a10;
 // $inputFieldLabelTextColor: #999999;
@@ -31,8 +40,8 @@ $inputBorderColor: $biaFgTextColor; // #bdbdbd;
 // $inputGroupTextColor: $textSecondaryColor;
 // $inputGroupIconColor: $textSecondaryColor;
 // $inputGroupAddonMinWidth: 2 * $fontSize;
-// $checkboxWidth: 18px;
-// $checkboxHeight: 18px;
+$checkboxWidth:  1.429em;
+$checkboxHeight: 1.429em;
 // $inputGroupPadding: 2px 2px 1px 2px;
 // $inputGroupIconFontSize: 1.5em;
 
@@ -49,3 +58,35 @@ $checkboxBorderColor: $biaFgTextColor; // #757575;
 
 // //data
 $dataTableRowBgColorEven: $biaBgHoverColor;
+
+// //menu breadcrumb
+$breadcrumbPadding:0.5rem;
+$breadcrumbLastItemTextColor: $primaryColor;
+$breadcrumbItemTextColor: $biaTitleColor;
+$breadcrumbBg:hsla(0,0%,100%,.3);
+$breadcrumbBorder:0;
+
+// // menubar
+$horizontalMenuPadding: 0.90rem 0.5rem 0.3rem 0.5rem;
+
+// // datatable
+$tableHeaderCellHighlightTextColor: $primaryColor;
+$tableHeaderCellHighlightHoverBg: $tableHeaderBg;
+$tableHeaderCellHoverBg: $tableHeaderBg;
+$tableHeaderCellHighlightBg: $tableHeaderBg;
+$tableBodyCellBorder:1px solid rgb(215, 215, 215);
+$tableBodyRowEvenBg: $biaBgColor;
+
+// //megamenu
+$submenuHeaderBg: $primaryColor;
+$submenuHeaderTextColor: $primaryTextColor;
+
+$tableBodyCellBorderWidth: 0;
+$primeIconFontSize:1.1rem;
+
+// $buttonPadding:0.35rem 0.8rem;
+$buttonPadding:0 1em;
+$buttonIconOnlyPadding:0.35rem 0.8rem;
+
+// dropdown
+$submenuHeaderPadding: 3px 6px;

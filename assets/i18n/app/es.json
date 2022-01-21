@@ -31,15 +31,15 @@
     "add": "Añadir plano",
     "capacity": "Capacidad",
     "connectingAirports": "Aeropuertos de conexión",
+    "deliveryDate": "Fecha de entrega",
     "edit": "Editar plano",
-    "firstFlightDate": "Fecha del primer vuelo",
-    "firstFlightTime": "Tiempo del primer vuelo",
     "isActive": "Activo",
     "lastFlightDate": "Última fecha de vuelo",
     "listOf": "Lista de planos",
     "msn": "Msn",
     "planeType": "Tipos de planos",
-    "site": "Aerolínea"
+    "site": "Aerolínea",
+    "syncTime": "Tiempo de sincronización"
   },
   "planeType": {
     "add": "Añadir tipos de planos",
@@ -62,22 +62,6 @@
     "showFilters": "Mostrar filtros",
     "welcome": "BIA es una biblioteca de componentes, construida con el marco Angular"
   },
-  "permission": {
-    "Site_Admin" : "Administrador del sitio",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Administrador de la aerolínea",
-    "Pilot" : "Piloto",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Permiso"
-  },
-  "role": {
-    "Site_Admin" : "Administrador del sitio",
-    "Begin BIADemo": "To remove in project from here",
-    "Site_Admin" : "Administrador de la aerolínea",
-    "Pilot" : "Piloto",
-    "End BIADemo": "To remove in project up to here",
-    "title": "Role"
-  },
   "site": {
     "add": "Añadir sitios",
     "admins": "Administradores",
@@ -90,6 +74,10 @@
     "End BIADemo" : "To remove in project up to here",
     "selectUser": "Selecciona un usuario",
     "title": "Title"
+  },
+  "translation": 
+  {  
+    "defaultLanguage" :"Defecto (Inglesa)"
   },
   "user": {
     "add": "Añadir usuario",
