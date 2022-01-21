@@ -35,9 +35,9 @@ import { PlaneTableComponent } from 'src/app/features/planes/components/plane-ta
   styleUrls: ['./planes-index.component.scss']
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = true;
+  useCalcMode = false;
   useSignalR = false;
-  useView = true;
+  useView = false;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;
