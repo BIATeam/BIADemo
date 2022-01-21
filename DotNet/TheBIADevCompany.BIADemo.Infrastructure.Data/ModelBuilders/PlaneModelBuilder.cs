@@ -36,8 +36,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().Property(p => p.PlaneTypeId).IsRequired(false); // relationship 0..1-*
             modelBuilder.Entity<Plane>().Property(p => p.Msn).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<Plane>().Property(p => p.IsActive).IsRequired();
-            modelBuilder.Entity<Plane>().Property(p => p.FirstFlightDate).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.LastFlightDate).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.DeliveryDate).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.SyncTime).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.Capacity).IsRequired();
         }
 

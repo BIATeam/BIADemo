@@ -40,6 +40,11 @@ namespace BIA.Net.Core.Common.Configuration
         public string TimeFormat { get; set; }
 
         /// <summary>
+        /// Gets or sets the Time Format with second.
+        /// </summary>
+        public string TimeFormatSec { get; set; }
+
+        /// <summary>
         /// Gets or sets the language Code.
         /// </summary>
         public string LanguageCode { get; set; }

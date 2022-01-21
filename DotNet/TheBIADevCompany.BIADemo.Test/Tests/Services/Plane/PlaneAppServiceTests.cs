@@ -76,8 +76,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             // Add new plane.
             int id = 3;
             int capacity = 333;
-            DateTime firstFlightDate = new DateTime(2003, 3, 3);
-            DateTime firstFlightTime = new DateTime(2003, 3, 3, 12, 0, 0);
+            DateTime deliveryDate = new DateTime(1990, 10, 10);
+            string syncTime = "12:00";
             bool isActive = false;
             DateTime lastFlightDate = new DateTime(2013, 4, 4);
             string msn = "AB-0001";
@@ -86,10 +86,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             {
                 Id = id,
                 Capacity = capacity,
-                FirstFlightDate = firstFlightDate,
-                FirstFlightTime = firstFlightTime,
                 IsActive = isActive,
                 LastFlightDate = lastFlightDate,
+                DeliveryDate = deliveryDate,
+                SyncTime = syncTime,
                 Msn = msn,
             }).Result;
             Assert.IsNotNull(dto);
@@ -101,7 +101,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             // Check that the plane has been correctly stored in DB.
             Plane plane = this.DbMock.GetPlane(id);
             Assert.AreEqual(capacity, plane.Capacity);
-            Assert.AreEqual(firstFlightTime, plane.FirstFlightDate);
+            Assert.AreEqual(deliveryDate, plane.DeliveryDate);
+            Assert.AreEqual(syncTime, plane.SyncTime);
             Assert.AreEqual(id, plane.Id);
             Assert.AreEqual(isActive, plane.IsActive);
             Assert.AreEqual(lastFlightDate, plane.LastFlightDate);

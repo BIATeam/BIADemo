@@ -89,6 +89,7 @@ import { PluckPipe } from './pipes/pluck.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
+import { FormatValuePipe } from './pipes/format-value.pipe';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -180,6 +181,7 @@ const PIPES = [
   PluckPipe,
   JoinPipe,
   TranslateFieldPipe,
+  FormatValuePipe,
 ];
 
 const VIEW_IMPORTS = [StoreModule.forFeature('views', reducers), EffectsModule.forFeature([ViewsEffects])];

@@ -165,6 +165,41 @@
                       dateFormat="yy-mm-dd"
                     ></p-calendar>
                   </ng-container>
+                  <ng-container *ngSwitchCase="'TimeOnly'">
+                    <p-calendar
+                      biaLocale
+                      [formControlName]="col.field"
+                      placeholder="&nbsp;"
+                      (onShow)="onShowCalendar()"
+                      (onSelect)="onChange()"
+                      (onBlur)="onBlurCalendar()"
+                      appendTo="body"
+                      readonlyInput="true"
+                      [style]="{ width: '100%' }"
+                      [inputStyle]="{ width: '100%' }"
+                      showTime="true"
+                      dataType="string"
+                      [timeOnly]="true"
+                    ></p-calendar>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'TimeSecOnly'">
+                    <p-calendar
+                      biaLocale
+                      [formControlName]="col.field"
+                      placeholder="&nbsp;"
+                      (onShow)="onShowCalendar()"
+                      (onSelect)="onChange()"
+                      (onBlur)="onBlurCalendar()"
+                      appendTo="body"
+                      readonlyInput="true"
+                      [style]="{ width: '100%' }"
+                      [inputStyle]="{ width: '100%' }"
+                      showTime="true"
+                      showSeconds="true"
+                      dataType="string"
+                      [timeOnly]="true"
+                    ></p-calendar>
+                  </ng-container>
                   <ng-container *ngSwitchCase="'DateTime'">
                     <p-calendar
                       biaLocale
@@ -204,7 +239,7 @@
                       {{ formatDisplayName(rowData[col.field]) }}
                     </ng-container>
                     <ng-container *ngSwitchDefault>
-                      {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+                      {{ rowData[col.field] | formatValue: col }}
                     </ng-container>
                   </ng-container>
                 </ng-container>
@@ -227,7 +262,7 @@
                     <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
                   </ng-container>
                   <ng-container *ngSwitchDefault>
-                    {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+                    {{ rowData[col.field] | formatValue: col }}
                   </ng-container>
                 </ng-container>
               </ng-template>

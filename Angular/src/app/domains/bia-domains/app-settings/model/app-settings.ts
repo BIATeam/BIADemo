@@ -23,6 +23,7 @@ export interface Culture {
   isDefaultForCountryCodes: string [];
   dateFormat: string;
   timeFormat: string;
+  timeFormatSec: string;
   languageCode: string;
   languageId: number;
 }

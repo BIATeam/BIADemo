@@ -70,7 +70,7 @@
             <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
           </ng-container>
           <ng-container *ngSwitchDefault>
-            {{ col.isDate === true ? (rowData[col.field] | date: col.formatDate) : rowData[col.field] }}
+            {{ rowData[col.field] | formatValue: col }}
           </ng-container>
         </ng-container>
       </td>

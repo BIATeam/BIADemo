@@ -15,6 +15,8 @@ export enum PropType {
   Date = 'Date',
   DateTime = 'DateTime',
   Time = 'Time',
+  TimeOnly = 'TimeOnly',
+  TimeSecOnly = 'TimeSecOnly',
   Number = 'Number',
   Boolean = 'Boolean',
   String = 'String',
@@ -43,6 +45,13 @@ export class PrimeTableColumn {
   searchPlaceholder: string;
   get isDate() {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
+  }
+  get filterPlaceHolder() {
+    if (this.searchPlaceholder !== undefined)
+    {
+      return this.searchPlaceholder;
+    }
+    return this.isDate === true ? 'bia.dateIso8601' : '';
   }
 
   constructor(field: string, header: string, maxlength = 255) {

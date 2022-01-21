@@ -31,15 +31,15 @@
     "add": "Añadir plano",
     "capacity": "Capacidad",
     "connectingAirports": "Aeropuertos de conexión",
+    "deliveryDate": "Fecha de entrega",
     "edit": "Editar plano",
-    "firstFlightDate": "Fecha del primer vuelo",
-    "firstFlightTime": "Tiempo del primer vuelo",
     "isActive": "Activo",
     "lastFlightDate": "Última fecha de vuelo",
     "listOf": "Lista de planos",
     "msn": "Msn",
     "planeType": "Tipos de planos",
-    "site": "Aerolínea"
+    "site": "Aerolínea",
+    "syncTime": "Tiempo de sincronización"
   },
   "planeType": {
     "add": "Añadir tipos de planos",

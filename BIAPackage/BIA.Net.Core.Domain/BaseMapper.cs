@@ -159,6 +159,14 @@ namespace BIA.Net.Core.Domain
         {
             return x?.ToString("hh:mm");
         }
+        public static string CSVTime(TimeSpan? x)
+        {
+            return x?.ToString("hh:mm");
+        }
+        public static string CSVTime(string x)
+        {
+            return x;
+        }
         public static string CSVDateTime(DateTime? x)
         {
             return x?.ToString("yyyy-MM-dd hh:mm");

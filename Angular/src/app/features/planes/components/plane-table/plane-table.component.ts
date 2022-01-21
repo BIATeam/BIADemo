@@ -28,9 +28,9 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
       id: [this.element.id], // This field is mandatory. Do not remove it.
       msn: [this.element.msn, Validators.required],
       isActive: [this.element.isActive],
-      firstFlightDate: [this.element.firstFlightDate, Validators.required],
-      firstFlightTime: [this.element.firstFlightTime, Validators.required],
       lastFlightDate: [this.element.lastFlightDate],
+      deliveryDate: [this.element.deliveryDate],
+      syncTime: [this.element.syncTime],
       capacity: [this.element.capacity, Validators.required],
       connectingAirports: [this.element.connectingAirports],
       planeType: [this.element.planeType?.id],

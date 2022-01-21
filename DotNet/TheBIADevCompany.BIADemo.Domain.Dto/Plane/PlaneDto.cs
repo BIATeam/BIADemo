@@ -27,19 +27,19 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets the first flight date only.
-        /// </summary>
-        public DateTime FirstFlightDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the first flight time only.
-        /// </summary>
-        public DateTime FirstFlightTime { get; set; }
-
-        /// <summary>
         /// Gets or sets the last flight date and time.
         /// </summary>
         public DateTime? LastFlightDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delivery date.
+        /// </summary>
+        public DateTime? DeliveryDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the daily synchronisation hour.
+        /// </summary>
+        public string SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity.

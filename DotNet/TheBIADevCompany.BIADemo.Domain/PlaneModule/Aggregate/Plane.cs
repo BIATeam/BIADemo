@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
@@ -31,14 +32,21 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// Gets or sets the first flight date.
-        /// </summary>
-        public DateTime FirstFlightDate { get; set; }
-
-        /// <summary>
         /// Gets or sets the last flight date.
         /// </summary>
         public DateTime? LastFlightDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delivery date.
+        /// </summary>
+        [Column(TypeName="date")]
+        public DateTime? DeliveryDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the daily synchronisation hour.
+        /// </summary>
+        [Column(TypeName = "time")]
+        public TimeSpan? SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity.

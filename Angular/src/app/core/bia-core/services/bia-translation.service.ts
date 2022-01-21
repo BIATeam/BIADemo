@@ -32,6 +32,7 @@ export interface DateFormat {
   dateFormat: string;
   dateTimeFormat: string;
   timeFormat: string;
+  timeFormatSec: string
 }
 
 // Same as @ngx-translate/http-loader but keep the previous translations (usefull for lazy loading of translation)
@@ -129,6 +130,7 @@ export class BiaTranslationService {
   private getDateFormatByCulture(code: string | null, appSettings: AppSettings| null): DateFormat {
     let dateFormat = 'yyyy-MM-dd';
     let timeFormat = 'HH:mm';
+    let timeFormatSec ="HH:mm:ss"
     if (appSettings != null) {
       let culture;
 
@@ -142,9 +144,10 @@ export class BiaTranslationService {
       if (culture) {
         dateFormat = culture.dateFormat;
         timeFormat = culture.timeFormat;
+        timeFormatSec = culture.timeFormatSec;
       }
     }
-    return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat };
+    return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat, timeFormatSec: timeFormatSec };
   }
   private getLanguageId(code: string | null, appSettings: AppSettings| null): number {
     let LanguageId = 0;

@@ -17,36 +17,6 @@
       <span class="p-float-label">
         <p-calendar
           biaLocale
-          formControlName="firstFlightDate"
-          placeholder="&nbsp;"
-          [showButtonBar]="true"
-          appendTo="body"
-          dateFormat="yy-mm-dd"
-          [inputStyle]="{'width':'100%'}"
-        ></p-calendar>
-        <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightDate' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-calendar
-          formControlName="firstFlightTime"
-          showTime="true"
-          [timeOnly]="true"
-          placeholder="&nbsp;"
-          [inputStyle]="{'width':'100%'}"
-        ></p-calendar>
-        <label><span class="bia-star-mandatory">*</span>{{ 'plane.firstFlightTime' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-calendar
-          biaLocale
           formControlName="lastFlightDate"
           showTime="true"
           placeholder="DateTime"
@@ -56,6 +26,38 @@
           appendTo="body"
         ></p-calendar>
         <label>{{ 'plane.lastFlightDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-calendar
+          biaLocale
+          formControlName="deliveryDate"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          appendTo="body"
+          dateFormat="yy-mm-dd"
+          [inputStyle]="{'width':'100%'}"
+        ></p-calendar>
+        <label>{{ 'plane.deliveryDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-calendar
+          formControlName="syncTime"
+          showTime="true"
+          showSeconds="true"
+          [timeOnly]="true"
+          placeholder="&nbsp;"
+          dataType="string"
+          [inputStyle]="{'width':'100%'}"
+        ></p-calendar>
+        <label>{{ 'plane.syncTime' | translate }}</label>
       </span>
     </div>
   </div>

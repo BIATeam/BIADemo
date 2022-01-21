@@ -31,15 +31,15 @@
     "add": "Add plane",
     "capacity": "Capacity",
     "connectingAirports": "Connecting Airports",
+    "deliveryDate": "Delivery Date",
     "edit": "Edit plane",
-    "firstFlightDate": "First flight date",
-    "firstFlightTime": "First flight time",
     "isActive": "Active",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
     "planeType": "Plane Type",
-    "site": "Airline"
+    "site": "Airline",
+    "syncTime": "Synchronization time"
   },
   "planeType": {
     "add": "Add type of planes",

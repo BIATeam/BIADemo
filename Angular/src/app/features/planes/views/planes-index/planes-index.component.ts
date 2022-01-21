@@ -35,7 +35,7 @@ import { PlaneTableComponent } from 'src/app/features/planes/components/plane-ta
   styleUrls: ['./planes-index.component.scss']
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = false;
+  useCalcMode = true;
   useSignalR = false;
   useView = true;
   useRefreshAtLanguageChange = false;
@@ -230,19 +230,17 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
             isSortable: false,
             type: PropType.Boolean
           }),
-          Object.assign(new PrimeTableColumn('firstFlightDate', 'plane.firstFlightDate'), {
-            type: PropType.Date,
-            formatDate: dateFormat.dateFormat
-          }),
-          Object.assign(new PrimeTableColumn('firstFlightTime', 'plane.firstFlightTime'), {
-            isSearchable: false,
-            isSortable: false,
-            type: PropType.Time,
-            formatDate: dateFormat.timeFormat
-          }),
           Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
             type: PropType.DateTime,
             formatDate: dateFormat.dateTimeFormat
+          }),
+          Object.assign(new PrimeTableColumn('deliveryDate', 'plane.deliveryDate'), {
+            type: PropType.Date,
+            formatDate: dateFormat.dateFormat
+          }),
+          Object.assign(new PrimeTableColumn('syncTime', 'plane.syncTime'), {
+            type: PropType.TimeSecOnly,
+            formatDate: dateFormat.timeFormatSec
           }),
           Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
             type: PropType.Number,

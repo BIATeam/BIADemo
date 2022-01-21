@@ -31,9 +31,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { "Id", plane => plane.Id },
                     { "Msn", plane => plane.Msn },
                     { "IsActive", plane => plane.IsActive },
-                    { "FirstFlightDate", plane => plane.FirstFlightDate },
-                    { "FirstFlightTime", plane => plane.FirstFlightDate },
                     { "LastFlightDate", plane => plane.LastFlightDate },
+                    { "DeliveryDate", plane => plane.DeliveryDate },
+                    { "SyncTime", plane => plane.SyncTime },
                     { "Capacity", plane => plane.Capacity },
                     { "PlaneType", plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { "ConnectingAirports", plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
@@ -52,14 +52,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.Id = dto.Id;
             entity.Msn = dto.Msn;
             entity.IsActive = dto.IsActive;
-            entity.FirstFlightDate = new DateTime(
-                dto.FirstFlightDate.Year,
-                dto.FirstFlightDate.Month,
-                dto.FirstFlightDate.Day,
-                dto.FirstFlightTime.Hour,
-                dto.FirstFlightTime.Minute,
-                dto.FirstFlightTime.Second);
             entity.LastFlightDate = dto.LastFlightDate;
+            entity.DeliveryDate = dto.DeliveryDate;
+            entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime);
             entity.Capacity = dto.Capacity;
 
             // Mapping relationship 1-* : Site
@@ -100,15 +95,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 Id = entity.Id,
                 Msn = entity.Msn,
                 IsActive = entity.IsActive,
-                FirstFlightDate = entity.FirstFlightDate.Date,
-                FirstFlightTime = new DateTime(
-                    entity.FirstFlightDate.Year,
-                    entity.FirstFlightDate.Month,
-                    entity.FirstFlightDate.Day,
-                    entity.FirstFlightDate.Hour,
-                    entity.FirstFlightDate.Minute,
-                    entity.FirstFlightDate.Second),
                 LastFlightDate = entity.LastFlightDate,
+                DeliveryDate = entity.DeliveryDate,
+                SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
                 Capacity = entity.Capacity,
 
                 // Mapping relationship 1-* : Site
@@ -138,9 +127,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 CSVString(x.Msn),
                 CSVBool(x.IsActive),
-                CSVDate(x.FirstFlightDate),
-                CSVTime(x.FirstFlightTime),
                 CSVDateTime(x.LastFlightDate),
+                CSVDate(x.DeliveryDate),
+                CSVTime(x.SyncTime),
                 CSVNumber(x.Capacity),
                 CSVString(x.PlaneType?.Display),
                 CSVList(x.ConnectingAirports),
