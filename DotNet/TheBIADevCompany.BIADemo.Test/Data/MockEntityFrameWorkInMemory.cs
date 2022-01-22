@@ -149,6 +149,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 SiteId = 1,
                 Id = 2,
                 Capacity = 300,
+                SyncTime = TimeSpan.Parse("12:00"),
                 DeliveryDate = new DateTime(2001, 2, 3),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,

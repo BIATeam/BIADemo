@@ -399,7 +399,23 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 Specification<TEntity> spec = null;
                 if (!Compare(id, default))
                 {
-                    spec = new DirectSpecification<TEntity>(x => (object)x.Id == (object)id);
+                    // Specific cast requiered for unitary test with Mock data
+                    if (id is int)
+                    {
+                        spec = new DirectSpecification<TEntity>(x => (int)(object)x.Id == (int)(object)id);
+                    }
+                    else if (id is long)
+                    {
+                        spec = new DirectSpecification<TEntity>(x => (long)(object)x.Id == (long)(object)id);
+                    }
+                    else if (id is Guid)
+                    {
+                        spec = new DirectSpecification<TEntity>(x => (Guid)(object)x.Id == (Guid)(object)id);
+                    }
+                    else
+                    {
+                        spec = new DirectSpecification<TEntity>(x => (object)x.Id == (object)id);
+                    }
                 }
                 if (specification != null)
                 {

@@ -77,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             int id = 3;
             int capacity = 333;
             DateTime deliveryDate = new DateTime(1990, 10, 10);
-            string syncTime = "12:00";
+            string syncTime = "12:00:00";
             bool isActive = false;
             DateTime lastFlightDate = new DateTime(2013, 4, 4);
             string msn = "AB-0001";
@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             Plane plane = this.DbMock.GetPlane(id);
             Assert.AreEqual(capacity, plane.Capacity);
             Assert.AreEqual(deliveryDate, plane.DeliveryDate);
-            Assert.AreEqual(syncTime, plane.SyncTime);
+            Assert.AreEqual(TimeSpan.Parse(syncTime), plane.SyncTime);
             Assert.AreEqual(id, plane.Id);
             Assert.AreEqual(isActive, plane.IsActive);
             Assert.AreEqual(lastFlightDate, plane.LastFlightDate);
