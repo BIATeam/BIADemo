@@ -114,6 +114,7 @@
                 <i
                   class="pi pi-bell bia-mat-tiny-fab bia-pointer"
                   pTooltip="{{ 'bia.notifications' | translate }}"
+                  tooltipPosition="left"
                   [routerLink]="['/notifications']"
                 ></i>
                 <ng-container *ngIf="unreadNotificationCount$ | async as unreadNotificationCount">
@@ -127,6 +128,7 @@
               *ngIf="reportUrl"
               class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
               pTooltip="{{ 'bia.report' | translate }}"
+              tooltipPosition="left"
               (click)="openReport()"
             ></i>
             <i
