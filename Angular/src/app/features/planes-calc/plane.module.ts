@@ -30,7 +30,7 @@ const ROUTES: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('planes-mode-calc', reducers),
+    StoreModule.forFeature('feature-planes-calc', reducers),
     EffectsModule.forFeature([PlanesEffects]),
     // Domain Modules:
     AirportOptionModule,

@@ -150,29 +150,23 @@ export class PlanesIndexComponent implements OnInit {
     this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          Object.assign(new PrimeTableColumn('id', 'bia.id'), {
-            isEditable: false,
-            type: PropType.Number
-          }),
           new PrimeTableColumn('msn', 'plane.msn'),
           Object.assign(new PrimeTableColumn('isActive', 'plane.isActive'), {
             isSearchable: false,
             isSortable: false,
             type: PropType.Boolean
           }),
-          Object.assign(new PrimeTableColumn('firstFlightDate', 'plane.firstFlightDate'), {
-            type: PropType.Date,
-            formatDate: dateFormat.dateFormat
-          }),
-          Object.assign(new PrimeTableColumn('firstFlightTime', 'plane.firstFlightTime'), {
-            isSearchable: false,
-            isSortable: false,
-            type: PropType.Time,
-            formatDate: dateFormat.timeFormat
-          }),
           Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
             type: PropType.DateTime,
             formatDate: dateFormat.dateTimeFormat
+          }),
+          Object.assign(new PrimeTableColumn('deliveryDate', 'plane.deliveryDate'), {
+            type: PropType.Date,
+            formatDate: dateFormat.dateFormat
+          }),
+          Object.assign(new PrimeTableColumn('syncTime', 'plane.syncTime'), {
+            type: PropType.TimeSecOnly,
+            formatDate: dateFormat.timeFormatSec
           }),
           Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
             type: PropType.Number,

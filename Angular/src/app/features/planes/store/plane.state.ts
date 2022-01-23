@@ -17,7 +17,7 @@ export function reducers(state: PlanesState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getPlanesState = createFeatureSelector<PlanesState>('planes');
+export const getPlanesState = createFeatureSelector<PlanesState>('feature-planes');
 
 export const getPlanesEntitiesState = createSelector(
   getPlanesState,

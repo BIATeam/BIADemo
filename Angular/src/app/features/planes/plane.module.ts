@@ -91,7 +91,7 @@ const ROUTES: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('planes', reducers),
+    StoreModule.forFeature('feature-planes', reducers),
     EffectsModule.forFeature([PlanesEffects]),
     // Domain Modules:
     AirportOptionModule,
