@@ -2,7 +2,8 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
-      [canAdd]="canAdd"
+      [canAdd]="canAdd&&!useCalcMode"
+      [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
@@ -19,8 +20,9 @@
       (pageSizeChange)="onPageSizeChange($event)"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
     ></bia-table-controller>
-    <bia-table
+    <bia-table *ngIf="!useCalcMode"
       [elements]="planes$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -34,11 +36,27 @@
       (edit)="onEdit($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
+    <app-plane-table *ngIf="useCalcMode"
+      [elements]="planes$ | async"
+      [dictOptionDtos]="planeOptionsService.dictOptionDtos$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canAdd]="canAdd"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      (save)="onSave($event)"
+    ></app-plane-table>
   </div>
 </div>
-<!-- begin popup mode -->
-<app-plane-edit-dialog></app-plane-edit-dialog>
-<app-plane-new-dialog></app-plane-new-dialog>
-<!-- end popup mode -->

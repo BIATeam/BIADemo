@@ -22,6 +22,7 @@ import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { useSignalR } from '../plane.contants';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -30,7 +31,6 @@ import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-a
 
 @Injectable()
 export class PlanesEffects {
-  static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAllByPost),
@@ -72,7 +72,7 @@ export class PlanesEffects {
         return this.planeDas.post(plane).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (PlanesEffects.useSignalR) {
+            if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -96,7 +96,7 @@ export class PlanesEffects {
         return this.planeDas.put(plane, plane.id).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (PlanesEffects.useSignalR) {
+            if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -120,7 +120,7 @@ export class PlanesEffects {
         return this.planeDas.delete(id).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (PlanesEffects.useSignalR) {
+            if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -144,7 +144,7 @@ export class PlanesEffects {
         return this.planeDas.deletes(ids).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (PlanesEffects.useSignalR) {
+            if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return loadAllByPost({ event: <LazyLoadEvent>event });

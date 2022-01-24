@@ -23,11 +23,6 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/planes']
       },
       {
-        labelKey: 'app.planesPopupMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-popup']
-      },
-      {
         labelKey: 'app.planesPageMode',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes-page']

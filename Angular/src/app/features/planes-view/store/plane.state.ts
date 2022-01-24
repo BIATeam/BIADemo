@@ -1,5 +1,6 @@
 import * as fromPlanes from './planes-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import { storeKey } from '../plane.contants';
 
 export interface PlanesState {
   planes: fromPlanes.State;
@@ -17,7 +18,7 @@ export function reducers(state: PlanesState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getPlanesState = createFeatureSelector<PlanesState>('planes-mode-view');
+export const getPlanesState = createFeatureSelector<PlanesState>(storeKey);
 
 export const getPlanesEntitiesState = createSelector(
   getPlanesState,

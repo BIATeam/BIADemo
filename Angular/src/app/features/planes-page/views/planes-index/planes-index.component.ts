@@ -1,8 +1,8 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllPlanes, getPlanesTotalCount, getPlaneLoadingGetAll } from '../../store/plane.state';
-import { multiRemove, loadAllByPost } from '../../store/planes-actions';
-import { Observable } from 'rxjs';
+import { multiRemove, loadAllByPost, update, create } from '../../store/planes-actions';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Plane } from '../../model/plane';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -15,22 +15,42 @@ import {
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlaneDas } from '../../services/plane-das.service';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { PlanesSignalRService } from '../../services/plane-signalr.service';
+import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
+import { PlaneOptionsService } from '../../services/plane-options.service';
+import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
+import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
+import { useCalcMode, useSignalR, useView } from '../../plane.contants';
 
 @Component({
   selector: 'app-planes-index',
   templateUrl: './planes-index.component.html',
   styleUrls: ['./planes-index.component.scss']
 })
-export class PlanesIndexComponent implements OnInit {
+export class PlanesIndexComponent implements OnInit, OnDestroy {
+  useCalcMode = useCalcMode;
+  useSignalR = useSignalR;
+  useView = useView;
+  useRefreshAtLanguageChange = false;
+
   @HostBinding('class.bia-flex') flex = true;
-  @ViewChild(BiaTableComponent, { static: false }) planeListComponent: BiaTableComponent;
+  @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
+  @ViewChild(PlaneTableComponent, { static: false }) planeTableComponent: PlaneTableComponent;
+  private get planeListComponent() {
+    if (this.biaTableComponent !== undefined) {
+      return this.biaTableComponent;
+    }
+    return this.planeTableComponent;
+  }
+
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -43,40 +63,111 @@ export class PlanesIndexComponent implements OnInit {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  createPlaneRoute = '/examples/planes-page/create';
-  indexPlaneRoute = '/examples/planes-page/';
   tableConfiguration: BiaListConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
+  popupTitle: string;
+  tableStateKey = this.useView ? 'planesGrid' : undefined;
+  parentIds: string[];
 
   constructor(
     private store: Store<AppState>,
     private router: Router,
+    public activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private planeDas: PlaneDas,
     private translateService: TranslateService,
-    private biaTranslationService: BiaTranslationService
-  ) {}
+    private biaTranslationService: BiaTranslationService,
+    private planesSignalRService: PlanesSignalRService,
+    public planeOptionsService: PlaneOptionsService,
+  ) {
+  }
 
   ngOnInit() {
+    this.parentIds = [];
+    this.sub = new Subscription();
+
     this.initTableConfiguration();
     this.setPermissions();
     this.planes$ = this.store.select(getAllPlanes);
     this.totalCount$ = this.store.select(getPlanesTotalCount);
     this.loading$ = this.store.select(getPlaneLoadingGetAll);
+    this.OnDisplay();
+    if (this.useCalcMode) {
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            this.planeOptionsService.loadAllOptions();
+        })
+      );
+    }
+    if (this.useRefreshAtLanguageChange) {
+      // Reload data if language change.
+      let isinit = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+            if (isinit) {
+              isinit = false;
+            } else {
+              this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
+            }
+          })
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    this.OnHide();
+  }
+
+  OnDisplay() {
+    if (this.useView) {
+      this.store.dispatch(loadAllView());
+    }
+
+
+    if (this.useSignalR) {
+      this.planesSignalRService.initialize();
+    }
+  }
+
+  OnHide() {
+    if (this.useSignalR) {
+      this.planesSignalRService.destroy();
+    }
   }
 
   onCreate() {
-    this.router.navigate([this.createPlaneRoute]);
+    if (!this.useCalcMode) {
+      this.router.navigate(['../create'], { relativeTo: this.activatedRoute });
+    }
   }
 
   onEdit(planeId: number) {
-    this.router.navigate([this.indexPlaneRoute + planeId + '/edit']);
+    if (!this.useCalcMode) {
+      this.router.navigate(['../' + planeId + '/edit'], { relativeTo: this.activatedRoute });
+    }
+  }
+
+  onSave(plane: Plane) {
+    if (this.useCalcMode) {
+      if (plane?.id > 0) {
+        if (this.canEdit) {
+          this.store.dispatch(update({ plane: plane }));
+        }
+      } else {
+        if (this.canAdd) {
+          this.store.dispatch(create({ plane: plane }));
+        }
+      }
+    }
   }
 
   onDelete() {
-    if (this.selectedPlanes) {
+    if (this.selectedPlanes && this.canDelete) {
       this.store.dispatch(multiRemove({ ids: this.selectedPlanes.map((x) => x.id) }));
     }
   }
@@ -90,7 +181,8 @@ export class PlanesIndexComponent implements OnInit {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    this.store.dispatch(loadAllByPost({ event: lazyLoadEvent }));
+    const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
   }
 
   searchGlobalChanged(value: string) {
@@ -112,8 +204,10 @@ export class PlanesIndexComponent implements OnInit {
   onExportCSV() {
     const columns: { [key: string]: string } = {};
     this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
-    const customEvent: any = { columns: columns, ...this.planeListComponent.getLazyLoadMetadata() };
-    this.planeDas.getFile(customEvent).subscribe((data) => {
+    const columnsAndFilter: PagingFilterFormatDto = {
+      parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
+    };
+    this.planeDas.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
     });
   }
@@ -134,23 +228,27 @@ export class PlanesIndexComponent implements OnInit {
             isSortable: false,
             type: PropType.Boolean
           }),
-          Object.assign(new PrimeTableColumn('firstFlightDate', 'plane.firstFlightDate'), {
+          Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
+            type: PropType.DateTime,
+            formatDate: dateFormat.dateTimeFormat
+          }),
+          Object.assign(new PrimeTableColumn('deliveryDate', 'plane.deliveryDate'), {
             type: PropType.Date,
             formatDate: dateFormat.dateFormat
           }),
-          Object.assign(new PrimeTableColumn('firstFlightTime', 'plane.firstFlightTime'), {
-            isSearchable: false,
-            isSortable: false,
-            type: PropType.Date,
-            formatDate: dateFormat.timeFormat
-          }),
-          Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
-            type: PropType.Date,
-            formatDate: dateFormat.dateTimeFormat
+          Object.assign(new PrimeTableColumn('syncTime', 'plane.syncTime'), {
+            type: PropType.TimeSecOnly,
+            formatDate: dateFormat.timeFormatSec
           }),
           Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
             type: PropType.Number,
             filterMode: PrimeNGFiltering.Equals
+          }),
+          Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
+            type: PropType.OneToMany
+          }),
+          Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
+            type: PropType.ManyToMany
           })
         ]
       };

@@ -79,8 +79,8 @@ function TransformCrud
 }
 
 # Begin Only for page mode
-ReplaceInFiles " (CalcMode)" ""
-ReplaceInFiles "-mode-calc" ""
+ReplaceInFiles " (PageMode)" ""
+ReplaceInFiles "-mode-page" ""
 $old = "examples/" + $oldRealSelectorPlural
 ReplaceInFiles  $old $newRealSelectorPlural
 # End Only for page mode

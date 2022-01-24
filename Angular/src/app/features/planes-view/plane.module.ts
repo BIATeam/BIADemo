@@ -12,49 +12,63 @@ import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
+import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
+import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
+import { PlaneTableComponent } from './components/plane-table/plane-table.component';
+import { storeKey, usePopup } from './plane.contants';
 
 const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Plane_List_Access
+      permission: Permission.Plane_List_Access,
+      InjectComponent: PlanesIndexComponent
     },
-    component: PlanesIndexComponent,
-    canActivate: [PermissionGuard]
-  },
-  {
-    path: 'create',
-    data: {
-      breadcrumb: 'bia.add',
-      canNavigate: false,
-      permission: Permission.Plane_Create
-    },
-    component: PlaneNewComponent,
-    canActivate: [PermissionGuard]
-  },
-  {
-    path: ':planeId',
-    data: {
-      breadcrumb: '',
-      canNavigate: true,
-    },
-    component: PlaneItemComponent,
+    component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
+    // [Calc] : The children are not used in calc
     children: [
       {
-        path: 'edit',
+        path: 'create',
         data: {
-          breadcrumb: 'bia.edit',
-          canNavigate: true,
-          permission: Permission.Plane_Update
+          breadcrumb: 'bia.add',
+          canNavigate: false,
+          permission: Permission.Plane_Create,
+          title: 'plane.add',
+          InjectComponent: PlaneNewComponent,
         },
-        component: PlaneEditComponent,
-        canActivate: [PermissionGuard]
+        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
       },
       {
-        path: '',
-        redirectTo: 'edit'
+        path: ':planeId',
+        data: {
+          breadcrumb: '',
+          canNavigate: true,
+        },
+        component: PlaneItemComponent,
+        canActivate: [PermissionGuard],
+        children: [
+          {
+            path: 'edit',
+            data: {
+              breadcrumb: 'bia.edit',
+              canNavigate: true,
+              permission: Permission.Plane_Update,
+              title: 'plane.edit',
+              InjectComponent: PlaneEditComponent,
+            },
+            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            canActivate: [PermissionGuard],
+          },
+          {
+            path: '',
+            redirectTo: 'edit'
+          },
+        ]
       },
     ]
   },
@@ -63,17 +77,27 @@ const ROUTES: Routes = [
 
 @NgModule({
   declarations: [
-    PlaneFormComponent,
-    PlanesIndexComponent,
     PlaneItemComponent,
+    PlanesIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
+    // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
+    PlaneFormComponent,
     PlaneNewComponent,
-    PlaneEditComponent
+    PlaneEditComponent,
+    // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
+    PlaneTableComponent,
   ],
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('planes-mode-view', reducers),
-    EffectsModule.forFeature([PlanesEffects])
+    StoreModule.forFeature(storeKey, reducers),
+    EffectsModule.forFeature([PlanesEffects]),
+    // Domain Modules:
+    AirportOptionModule,
+    PlaneTypeOptionModule,
   ]
 })
-export class PlaneModule { }
+
+export class PlaneModule {
+}
+

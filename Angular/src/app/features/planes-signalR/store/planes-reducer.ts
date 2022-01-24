@@ -5,10 +5,6 @@ import {
   loadAllByPostSuccess,
   loadAllByPost,
   load,
-  openDialogEdit,
-  closeDialogEdit,
-  openDialogNew,
-  closeDialogNew,
   failure
 } from './planes-actions';
 import { LazyLoadEvent } from 'primeng/api';
@@ -38,8 +34,6 @@ export interface State extends EntityState<Plane> {
   lastLazyLoadEvent: LazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
-  displayEditDialog: boolean;
-  displayNewDialog: boolean;
 }
 
 export const INIT_STATE: State = planesAdapter.getInitialState({
@@ -49,24 +43,10 @@ export const INIT_STATE: State = planesAdapter.getInitialState({
   lastLazyLoadEvent: <LazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
-  displayEditDialog: false,
-  displayNewDialog: false
 });
 
 export const planeReducers = createReducer<State>(
   INIT_STATE,
-  on(openDialogNew, (state) => {
-    return { ...state, displayNewDialog: true };
-  }),
-  on(closeDialogNew, (state) => {
-    return { ...state, displayNewDialog: false };
-  }),
-  on(openDialogEdit, (state) => {
-    return { ...state, displayEditDialog: true };
-  }),
-  on(closeDialogEdit, (state) => {
-    return { ...state, displayEditDialog: false };
-  }),
   on(loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),

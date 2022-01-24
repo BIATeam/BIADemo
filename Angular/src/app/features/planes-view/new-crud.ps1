@@ -78,9 +78,12 @@ function TransformCrud
 	ReplaceInFiles $oldSelector $newSelector
 }
 
-# Begin Only for view mode
-ReplaceInFiles " (ViewMode)" ""
-# End Only for view mode
+# Begin Only for page mode
+ReplaceInFiles " (PageMode)" ""
+ReplaceInFiles "-mode-page" ""
+$old = "examples/" + $oldRealSelectorPlural
+ReplaceInFiles  $old $newRealSelectorPlural
+# End Only for page mode
 
 # Security if the new name contain the old name
 $SecuredSelector = "zzzzzzzzzz" + "zzzzzzzzzz"; #splited in 2 to not be replace by current script

@@ -23,7 +23,6 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PlanesSignalRService } from '../../services/plane-signalr.service';
-import { PlanesEffects } from '../../store/planes-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
@@ -132,13 +131,11 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
     if (this.useSignalR) {
       this.planesSignalRService.initialize();
-      PlanesEffects.useSignalR = true;
     }
   }
 
   OnHide() {
     if (this.useSignalR) {
-      PlanesEffects.useSignalR = false;
       this.planesSignalRService.destroy();
     }
   }

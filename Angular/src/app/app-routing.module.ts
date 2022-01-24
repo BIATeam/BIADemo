@@ -31,14 +31,6 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-popup',
-                data: {
-                  breadcrumb: 'app.planes',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-popup/plane.module').then((m) => m.PlaneModule)
-              },
-              {
                 path: 'planes-page',
                 data: {
                   breadcrumb: 'app.planes',
