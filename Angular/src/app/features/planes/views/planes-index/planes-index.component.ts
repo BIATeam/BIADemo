@@ -28,6 +28,7 @@ import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
+import { useCalcMode, useSignalR, useView } from '../../plane.contants';
 
 @Component({
   selector: 'app-planes-index',
@@ -35,9 +36,9 @@ import { PlaneTableComponent } from 'src/app/features/planes/components/plane-ta
   styleUrls: ['./planes-index.component.scss']
 })
 export class PlanesIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = false;
-  useSignalR = false;
-  useView = false;
+  useCalcMode = useCalcMode;
+  useSignalR = useSignalR;
+  useView = useView;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;

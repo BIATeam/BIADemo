@@ -17,6 +17,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
+import { storeKey, usePopup } from './plane.contants';
 
 const ROUTES: Routes = [
   {
@@ -39,8 +40,7 @@ const ROUTES: Routes = [
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
         },
-        component: PopupLayoutComponent,
-        // component: FullPageLayoutComponent,
+        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -61,8 +61,7 @@ const ROUTES: Routes = [
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
             },
-            component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
+            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -91,13 +90,14 @@ const ROUTES: Routes = [
   imports: [
     SharedModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('feature-planes', reducers),
+    StoreModule.forFeature(storeKey, reducers),
     EffectsModule.forFeature([PlanesEffects]),
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,
   ]
 })
+
 export class PlaneModule {
 }
 
