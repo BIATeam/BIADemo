@@ -35,24 +35,6 @@ export class AirportOptionsEffects {
     )
   );
 
-  /*
-  load$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(load),
-      pluck('id'),
-      switchMap((id) =>
-        this.airportDas.get(id).pipe(
-          map((airport) => loadSuccess({ airport })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-  */
-
   constructor(
     private actions$: Actions,
     private airportDas: AirportOptionDas,

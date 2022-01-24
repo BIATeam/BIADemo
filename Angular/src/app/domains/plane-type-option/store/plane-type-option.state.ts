@@ -1,5 +1,6 @@
 import * as fromPlaneTypeOptions from './plane-type-options-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import { storeKey } from '../plane-type-option.contants';
 
 export interface PlaneTypeOptionsState {
   planeTypeOptions: fromPlaneTypeOptions.State;
@@ -17,7 +18,7 @@ export function reducers(state: PlaneTypeOptionsState | undefined, action: Actio
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getPlanesTypesState = createFeatureSelector<PlaneTypeOptionsState>('domain-plane-type-options');
+export const getPlanesTypesState = createFeatureSelector<PlaneTypeOptionsState>(storeKey);
 
 export const getPlaneTypeOptionsEntitiesState = createSelector(
   getPlanesTypesState,

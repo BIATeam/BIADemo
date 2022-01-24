@@ -1,5 +1,6 @@
 import * as fromAirportOptions from './airport-options-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import { storeKey } from '../airport-option.contants';
 
 export interface AirportOptionsState {
   airportOptions: fromAirportOptions.State;
@@ -17,7 +18,7 @@ export function reducers(state: AirportOptionsState | undefined, action: Action)
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getAirportsState = createFeatureSelector<AirportOptionsState>('domain-airport-options');
+export const getAirportsState = createFeatureSelector<AirportOptionsState>(storeKey);
 
 export const getAirportOptionsEntitiesState = createSelector(
   getAirportsState,
