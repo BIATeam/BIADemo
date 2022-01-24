@@ -79,10 +79,10 @@ const ROUTES: Routes = [
 @NgModule({
   declarations: [
     PlaneItemComponent,
-    // [Calc] : NOT used for calc (4 lines).
+    PlanesIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
     PlaneFormComponent,
-    PlanesIndexComponent,
     PlaneNewComponent,
     PlaneEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
