@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { Plane } from '../model/plane';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { storeKey } from '../plane.contants';
+import { storeKey } from '../plane.constants';
 
 export const loadAllByPost = createAction('[' + storeKey +'] Load all by post', props<{ event: LazyLoadEvent }>());
 

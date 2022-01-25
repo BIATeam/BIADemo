@@ -1,6 +1,6 @@
 import * as fromPlanes from './planes-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-import { storeKey } from '../plane.contants';
+import { storeKey } from '../plane.constants';
 
 export interface PlanesState {
   planes: fromPlanes.State;

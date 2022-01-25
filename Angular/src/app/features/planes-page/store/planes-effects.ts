@@ -22,7 +22,7 @@ import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useSignalR } from '../plane.contants';
+import { useSignalR } from '../plane.constants';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place

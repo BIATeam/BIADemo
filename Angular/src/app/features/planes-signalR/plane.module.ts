@@ -17,7 +17,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
-import { storeKey, usePopup } from './plane.contants';
+import { storeKey, usePopup } from './plane.constants';
 
 const ROUTES: Routes = [
   {
