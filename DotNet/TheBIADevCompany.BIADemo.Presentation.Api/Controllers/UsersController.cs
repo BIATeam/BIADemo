@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 // <copyright file="UsersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -80,8 +81,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [HttpGet("fromAD")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Users.ListAD)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null)
         {
+            if (filter.Contains('\n') || ldapName.Contains('\n'))
+            {
+                return this.BadRequest();
+            }
+
             var results = await this.userService.GetAllADUserAsync(filter, ldapName);
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());

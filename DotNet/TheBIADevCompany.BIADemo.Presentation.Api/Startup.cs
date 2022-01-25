@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
+    using System;
     using System.Security.Principal;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
@@ -60,6 +61,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = CookieSecurePolicy.None;
+            });
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
+                options.MaxAge = TimeSpan.FromDays(365); // One year expiry
+            });
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

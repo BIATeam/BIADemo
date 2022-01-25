@@ -74,9 +74,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var results = await this.memberService.GetRangeBySiteAsync(filters);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Total.ToString());
-                return this.Ok(results.Members);
+                var (results, total) = await this.memberService.GetRangeBySiteAsync(filters);
+                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+                return this.Ok(results);
             }
             catch (Exception)
             {

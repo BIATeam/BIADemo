@@ -54,6 +54,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.Secure = CookieSecurePolicy.None;
+            });
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

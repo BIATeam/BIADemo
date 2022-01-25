@@ -12,7 +12,7 @@
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
-        private readonly BiaNetSection configuration;
+        private readonly AppSettingsDto appSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LdapDomainsController"/> class.
@@ -20,7 +20,7 @@
         /// <param name="configuration">The configuration.</param>
         public AppSettingsController(IOptions<BiaNetSection> configuration)
         {
-            this.configuration = configuration.Value;
+            this.appSettings = new AppSettingsDto { Environment = configuration.Value.Environment, Cultures = configuration.Value.Cultures };
         }
 
         /// <summary>
@@ -31,7 +31,7 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return this.Ok(new AppSettingsDto { Environment=this.configuration.Environment, Cultures= this.configuration.Cultures});
+            return this.Ok(appSettings);
         }
     }
 }
