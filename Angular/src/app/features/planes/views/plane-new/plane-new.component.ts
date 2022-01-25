@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { create } from '../../store/planes-actions';
+import { FeaturePlanesActions } from '../../store/planes-actions';
 import { Plane } from '../../model/plane';
 import { AppState } from 'src/app/store/state';
 import { PlaneOptionsService } from '../../services/plane-options.service';
@@ -40,7 +40,7 @@ export class PlaneNewComponent implements OnInit, OnDestroy  {
   }
 
   onSubmitted(planeToCreate: Plane) {
-    this.store.dispatch(create({ plane: planeToCreate }));
+    this.store.dispatch(FeaturePlanesActions.create({ plane: planeToCreate }));
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 

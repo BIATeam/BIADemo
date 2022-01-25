@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { update } from '../../store/planes-actions';
+import { FeaturePlanesActions } from '../../store/planes-actions';
 import { Subscription } from 'rxjs';
 import { Plane } from '../../model/plane';
 import { AppState } from 'src/app/store/state';
@@ -42,7 +42,7 @@ export class PlaneEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(planeToUpdate: Plane) {
-    this.store.dispatch(update({ plane: planeToUpdate }));
+    this.store.dispatch(FeaturePlanesActions.update({ plane: planeToUpdate }));
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 

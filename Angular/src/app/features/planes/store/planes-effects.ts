@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  create,
-  failure,
-  load,
-  loadAllByPost,
-  loadAllByPostSuccess,
-  loadSuccess,
-  remove,
-  multiRemove,
-  update
-} from './planes-actions';
+import { FeaturePlanesActions } from './planes-actions';
 import { PlaneDas } from '../services/plane-das.service';
 import { Store } from '@ngrx/store';
 import { getLastLazyLoadEvent } from './plane.state';
@@ -33,14 +23,14 @@ import { useSignalR } from '../plane.constants';
 export class PlanesEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByPost),
+      ofType(FeaturePlanesActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
         this.planeDas.getListByPost(event).pipe(
-          map((result: DataResult<Plane[]>) => loadAllByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<Plane[]>) => FeaturePlanesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         )
       )
@@ -49,14 +39,14 @@ export class PlanesEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(FeaturePlanesActions.load),
       pluck('id'),
       switchMap((id) => {
         return this.planeDas.get(id).pipe(
-          map((plane) => loadSuccess({ plane })),
+          map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
       })
@@ -65,7 +55,7 @@ export class PlanesEffects {
 
   create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(create),
+      ofType(FeaturePlanesActions.create),
       pluck('plane'),
       concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
@@ -75,12 +65,12 @@ export class PlanesEffects {
             if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
       })
@@ -89,7 +79,7 @@ export class PlanesEffects {
 
   update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(update),
+      ofType(FeaturePlanesActions.update),
       pluck('plane'),
       concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
@@ -99,12 +89,12 @@ export class PlanesEffects {
             if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
       })
@@ -113,7 +103,7 @@ export class PlanesEffects {
 
   destroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(remove),
+      ofType(FeaturePlanesActions.remove),
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
@@ -123,12 +113,12 @@ export class PlanesEffects {
             if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
       })
@@ -137,7 +127,7 @@ export class PlanesEffects {
 
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(multiRemove),
+      ofType(FeaturePlanesActions.multiRemove),
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
@@ -147,12 +137,12 @@ export class PlanesEffects {
             if (useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
       })

@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllPlanes, getPlanesTotalCount, getPlaneLoadingGetAll } from '../../store/plane.state';
-import { multiRemove, loadAllByPost, update, create } from '../../store/planes-actions';
+import { FeaturePlanesActions } from '../../store/planes-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Plane } from '../../model/plane';
@@ -156,11 +156,11 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       if (plane?.id > 0) {
         if (this.canEdit) {
-          this.store.dispatch(update({ plane: plane }));
+          this.store.dispatch(FeaturePlanesActions.update({ plane: plane }));
         }
       } else {
         if (this.canAdd) {
-          this.store.dispatch(create({ plane: plane }));
+          this.store.dispatch(FeaturePlanesActions.create({ plane: plane }));
         }
       }
     }
@@ -168,7 +168,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onDelete() {
     if (this.selectedPlanes && this.canDelete) {
-      this.store.dispatch(multiRemove({ ids: this.selectedPlanes.map((x) => x.id) }));
+      this.store.dispatch(FeaturePlanesActions.multiRemove({ ids: this.selectedPlanes.map((x) => x.id) }));
     }
   }
 
@@ -182,7 +182,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
-    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
+    this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event: pagingAndFilter }));
   }
 
   searchGlobalChanged(value: string) {

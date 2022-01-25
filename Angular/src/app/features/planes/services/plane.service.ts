@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../model/plane';
 import { getCurrentPlane, getPlaneLoadingGet } from '../store/plane.state';
-import { load } from '../store/planes-actions';
+import { FeaturePlanesActions } from '../store/planes-actions';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +36,7 @@ export class PlaneService {
     }
     public set currentPlaneId(id: number) {
         this._currentPlaneId = Number(id);
-        this.store.dispatch(load({ id: id }));
+        this.store.dispatch(FeaturePlanesActions.load({ id: id }));
     }
 
     InitSub() {
