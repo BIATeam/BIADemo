@@ -4,12 +4,14 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
+    using System;
     using System.Security.Principal;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.WorkerService.Features;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
@@ -54,9 +56,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
+            services.AddHsts(options =>
+            {
+                options.Preload = true;
+                options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
+                options.MaxAge = TimeSpan.FromDays(365); // One year expiry
+            });
             services.Configure<CookiePolicyOptions>(options =>
             {
-                options.Secure = CookieSecurePolicy.None;
+                options.Secure = CookieSecurePolicy.Always;
+                options.HttpOnly = HttpOnlyPolicy.Always;
             });
 
             // Used to get a unique identifier for each HTTP request and track it.
