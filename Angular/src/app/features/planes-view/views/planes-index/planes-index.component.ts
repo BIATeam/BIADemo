@@ -91,8 +91,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.initTableConfiguration();
     this.setPermissions();
     this.planes$ = this.store.select(getAllPlanes);
-    this.totalCount$ = this.store.select(getPlanesTotalCount);
-    this.loading$ = this.store.select(getPlaneLoadingGetAll);
+    this.totalCount$ = this.store.select<number>(getPlanesTotalCount);
+    this.loading$ = this.store.select<boolean>(getPlaneLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.sub.add(

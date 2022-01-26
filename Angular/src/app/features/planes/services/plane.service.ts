@@ -14,7 +14,7 @@ export class PlaneService {
         private store: Store<AppState>,
     ) {
         this.InitSub();
-        this.loading$ = this.store.select(getPlaneLoadingGet);
+        this.loading$ = this.store.select<boolean>(getPlaneLoadingGet);
         this.plane$ = this.store.select(getCurrentPlane);
     }
     private _currentPlane: Plane;

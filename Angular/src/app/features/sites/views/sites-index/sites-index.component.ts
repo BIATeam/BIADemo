@@ -189,11 +189,11 @@ export class SitesIndexComponent implements OnInit {
   }
 
   private initLoading() {
-    this.loading$ = this.store.select(getSiteLoadingGetAll);
+    this.loading$ = this.store.select<boolean>(getSiteLoadingGetAll);
   }
 
   private initTotalCount() {
-    this.totalCount$ = this.store.select(getSitesTotalCount);
+    this.totalCount$ = this.store.select<number>(getSitesTotalCount);
   }
 
   private initSites() {

@@ -14,7 +14,7 @@ export class MemberService {
         private store: Store<AppState>,
     ) {
         this.InitSub();
-        this.loading$ = this.store.select(getMemberLoadingGet);
+        this.loading$ = this.store.select<boolean>(getMemberLoadingGet);
         this.member$ = this.store.select(getCurrentMember);
     }
     private _currentMember: Member;

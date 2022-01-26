@@ -14,7 +14,7 @@ export class SiteService {
         private store: Store<AppState>,
     ) {
         this.InitSub();
-        this.loading$ = this.store.select(getSiteLoadingGet);
+        this.loading$ = this.store.select<boolean>(getSiteLoadingGet);
     }
     private _currentSite: Site;
     private _currentSiteId: number;

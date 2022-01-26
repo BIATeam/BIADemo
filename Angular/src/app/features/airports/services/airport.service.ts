@@ -14,7 +14,7 @@ export class AirportService {
         private store: Store<AppState>,
     ) {
         this.InitSub();
-        this.loading$ = this.store.select(getAirportLoadingGet);
+        this.loading$ = this.store.select<boolean>(getAirportLoadingGet);
         this.airport$ = this.store.select(getCurrentAirport);
     }
     private _currentAirport: Airport;

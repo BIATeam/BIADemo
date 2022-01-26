@@ -64,8 +64,8 @@ export class PlanesTypesIndexComponent implements OnInit {
     this.initTableConfiguration();
     this.setPermissions();
     this.planesTypes$ = this.store.select(getAllPlanesTypes);
-    this.totalCount$ = this.store.select(getPlanesTypesTotalCount);
-    this.loading$ = this.store.select(getPlaneTypeLoadingGetAll);
+    this.totalCount$ = this.store.select<number>(getPlanesTypesTotalCount);
+    this.loading$ = this.store.select<boolean>(getPlaneTypeLoadingGetAll);
   }
 
   onCreate() {
