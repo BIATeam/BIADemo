@@ -56,12 +56,14 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
+
             services.AddHsts(options =>
             {
                 options.Preload = true;
                 options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
                 options.MaxAge = TimeSpan.FromDays(365); // One year expiry
             });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.Secure = CookieSecurePolicy.Always;

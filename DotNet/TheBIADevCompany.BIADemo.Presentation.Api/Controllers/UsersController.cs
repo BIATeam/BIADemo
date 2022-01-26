@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 // <copyright file="UsersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -11,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
