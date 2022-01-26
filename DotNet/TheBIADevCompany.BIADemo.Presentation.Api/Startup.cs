@@ -68,11 +68,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
                 options.MaxAge = TimeSpan.FromDays(365); // One year expiry
             });
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.Secure = CookieSecurePolicy.Always;
-                options.HttpOnly = HttpOnlyPolicy.Always;
-            });
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
