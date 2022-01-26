@@ -84,16 +84,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null)
         {
-            if (filter.Contains('\n') || ldapName.Contains('\n'))
+            if (!filter.Contains('\n'))
             {
-                return this.BadRequest();
+                var results = await this.userService.GetAllADUserAsync(filter, ldapName);
+
+                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
+
+                return this.Ok(results);
             }
 
-            var results = await this.userService.GetAllADUserAsync(filter, ldapName);
-
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, results.Count().ToString());
-
-            return this.Ok(results);
+            return this.BadRequest();
         }
 
         /// <summary>
