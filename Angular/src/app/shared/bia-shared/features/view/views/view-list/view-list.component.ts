@@ -73,8 +73,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onViewChange(event: any) {
-    this.selectedView = event.value;
+  onViewChange() {
     this.updateFilterValues();
   }
 

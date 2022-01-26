@@ -3,7 +3,7 @@
   [(ngModel)]="selectedView"
   [style]="{ 'min-width': '150px' }"
   [group]="true"
-  (onChange)="onViewChange($event)"
+  (onChange)="onViewChange()"
 >
   <ng-template let-item pTemplate="selectedItem">
     <span>{{ item.label }}</span>
