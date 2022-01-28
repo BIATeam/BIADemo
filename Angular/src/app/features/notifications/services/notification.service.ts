@@ -14,7 +14,7 @@ export class NotificationService {
         private store: Store<AppState>,
     ) {
         this.InitSub();
-        this.loading$ = this.store.select<boolean>(getNotificationLoadingGet);
+        this.loading$ = this.store.select(getNotificationLoadingGet);
         this.notification$ = this.store.select(getCurrentNotification);
     }
     private _currentNotification: Notification;

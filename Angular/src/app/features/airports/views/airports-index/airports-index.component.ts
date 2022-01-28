@@ -72,8 +72,8 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
     this.initTableConfiguration();
     this.setPermissions();
     this.airports$ = this.store.select(getAllAirports);
-    this.totalCount$ = this.store.select<number>(getAirportsTotalCount);
-    this.loading$ = this.store.select<boolean>(getAirportLoadingGetAll);
+    this.totalCount$ = this.store.select(getAirportsTotalCount);
+    this.loading$ = this.store.select(getAirportLoadingGetAll);
     this.OnDisplay();
   }
 

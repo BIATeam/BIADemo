@@ -87,8 +87,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       return notification;
     })));*/
     this.notifications$ = this.store.select(getAllNotifications);
-    this.totalCount$ = this.store.select<number>(getNotificationsTotalCount);
-    this.loading$ = this.store.select<boolean>(getNotificationLoadingGetAll);
+    this.totalCount$ = this.store.select(getNotificationsTotalCount);
+    this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.sub.add(

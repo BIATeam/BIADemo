@@ -64,7 +64,7 @@ export class UsersIndexComponent implements OnInit {
   ngOnInit() {
     this.setPermissions();
     this.users$ = this.store.select(getAllUsers);
-    this.totalCount$ = this.store.select<number>(getUsersTotalCount);
+    this.totalCount$ = this.store.select(getUsersTotalCount);
   }
 
   onCreate() {

@@ -21,7 +21,7 @@ export class PlaneTypeEditDialogComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.loading$ = this.store.select<boolean>(getPlaneTypeLoadingGet);
+    this.loading$ = this.store.select(getPlaneTypeLoadingGet);
     this.planeType$ = this.store.select(getCurrentPlaneType);
     this.sub.add(
       this.store

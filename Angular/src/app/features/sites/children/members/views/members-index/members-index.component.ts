@@ -83,8 +83,8 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.initTableConfiguration();
     this.setPermissions();
     this.members$ = this.store.select(getAllMembers);
-    this.totalCount$ = this.store.select<number>(getMembersTotalCount);
-    this.loading$ = this.store.select<boolean>(getMemberLoadingGetAll);
+    this.totalCount$ = this.store.select(getMembersTotalCount);
+    this.loading$ = this.store.select(getMemberLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions();
