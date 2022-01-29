@@ -12,5 +12,7 @@ namespace BIA.Net.Core.Common.Configuration
         public string Type { get; set; }
 
         public string UrlMatomo { get; set; }
+
+        public string[] UrlsAdditionalJS { get; set; }
     }
 }

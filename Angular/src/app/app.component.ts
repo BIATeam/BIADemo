@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { BiaExternalJsService } from './core/bia-core/services/bia-external-js.service';
 import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.service';
 
 @Component({
@@ -11,12 +12,14 @@ import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.ser
 export class AppComponent implements OnInit {
   constructor(
     private biaMatomoService: BiaMatomoService,
+    private biaExternalJsService: BiaExternalJsService,
     private primeNgConfig: PrimeNGConfig,
     private translateService: TranslateService
   ) {}
 
   ngOnInit() {
     this.biaMatomoService.init();
+    this.biaExternalJsService.init();
     this.translateService.get('primeng').subscribe(res => this.primeNgConfig.setTranslation(res));
   }
 }

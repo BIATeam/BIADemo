@@ -14,6 +14,7 @@ export interface AppSettings {
 export interface Environment {
   type: EnvironmentType;
   urlMatomo: string;
+  urlsAdditionalJS: string[];
 }
 
 export interface Culture {
