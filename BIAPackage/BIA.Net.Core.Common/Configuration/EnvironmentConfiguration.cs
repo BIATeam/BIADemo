@@ -14,5 +14,7 @@ namespace BIA.Net.Core.Common.Configuration
         public string UrlMatomo { get; set; }
 
         public string[] UrlsAdditionalJS { get; set; }
+
+        public string[] UrlsAdditionalCSS { get; set; }
     }
 }
