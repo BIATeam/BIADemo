@@ -182,14 +182,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             Expression<Func<TEntity, object>>[] includes = null,
             string queryMode =null)
         {
-            var result = this.GetAllElementsAsync<TEntity>(x => x, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = this.GetAllElementsAsync<int, TEntity>(x => x, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
             return await result.ToListAsync();
         }
 
         /// <summary>
         /// Get All Elements Ordered By.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordered Field.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordered Field.</typeparam>
         /// <param name="orderByExpression">Ordered Expression.</param>
         /// <param name="ascending">Direction of sort.</param>
         /// <param name="specification">Specification Used to filter query.</param>
@@ -199,7 +199,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements.</returns>
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(Expression<Func<TEntity, TKey>> orderByExpression,
+        public async Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(Expression<Func<TEntity, TOrderKey>> orderByExpression,
             bool ascending = true,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -245,14 +245,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             this.CheckArgument(selectResult);
 
             // Call Private Methods
-            var result = this.GetAllElementsAsync<TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = this.GetAllElementsAsync<int, TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
             return await result.ToListAsync();
         }
 
         /// <summary>
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering and Includes.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordering.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordering.</typeparam>
         /// <typeparam name="TResult">Type of Selected return.</typeparam>
         /// <param name="selectResult">Lambda Expression for Select on query.</param>
         /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
@@ -263,8 +263,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        public async Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult,
-            Expression<Func<TEntity, TKey>> orderByExpression,
+        public async Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult,
+            Expression<Func<TEntity, TOrderKey>> orderByExpression,
             bool ascending,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -310,7 +310,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             // Checking arguments for this query
             this.CheckArgument(selectResult);
 
-            var result = await this.GetAllElementsAndCountAsync<TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
+            var result = await this.GetAllElementsAndCountAsync<int, TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode);
 
             return result;
         }
@@ -319,7 +319,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering,
         /// Paging and Includes.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordering.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordering.</typeparam>
         /// <typeparam name="TResult">Type of Selected return.</typeparam>
         /// <param name="selectResult">Lambda Expression for Select on query.</param>
         /// <param name="specification">Specification Used for Filtering Query.</param>
@@ -335,7 +335,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryOrder">The queryOrder.</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null)
+        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null)
         {
             IQueryable<TEntity> objectSet = PrepareFilteredQuery(id, specification, filter, queryMode);
 
@@ -355,7 +355,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering,
         /// Paging and Includes.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordering.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordering.</typeparam>
         /// <typeparam name="TResult">Type of Selected return.</typeparam>
         /// <param name="selectResult">Lambda Expression for Select on query.</param>
         /// <param name="specification">Specification Used for Filtering Query.</param>
@@ -369,7 +369,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryOrder">The queryOrder.</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetAllElementsAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode =null)
+        private IQueryable<TResult> GetAllElementsAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode =null)
         {
             IQueryable<TEntity> objectSet = PrepareFilteredQuery(id, specification, filter, queryMode);
 
@@ -451,7 +451,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="queryOrder">The queryOrder.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetElements<TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        private IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             objectSet = CustomizeQueryAfter(objectSet, includes, queryMode);
 

@@ -66,7 +66,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <summary>
         /// Get All Elements Ordered By.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordered Field.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordered Field.</typeparam>
         /// <param name="orderByExpression">Ordered Expression.</param>
         /// <param name="ascending">Direction of sort.</param>
         /// <param name="specification">Specification Used to filter query.</param>
@@ -76,7 +76,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <returns>List of Elements.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntityAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Gets the by spec and count.
@@ -97,7 +97,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <summary>
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering and Includes.
         /// </summary>
-        /// <typeparam name="TKey">Type of Ordering.</typeparam>
+        /// <typeparam name="TOrderKey">Type of Ordering.</typeparam>
         /// <typeparam name="TResult">Type of Selected return.</typeparam>
         /// <param name="selectResult">Lambda Expression for Select on query.</param>
         /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
@@ -111,7 +111,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="includes">The list of includes.</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
 
         /// <summary>
         /// Gets the by spec and count.
