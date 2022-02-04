@@ -107,7 +107,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 },
                 contextLifetime: ServiceLifetime.Transient);
 
-            collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();

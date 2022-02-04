@@ -7,7 +7,7 @@ import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.ser
 @Component({
   selector: 'app-root',
   template: '<router-outlet></router-outlet>',
-  styles: [':host { min-height: 100vh; display: flex; }']
+  styles: [':host { min-height: 100vh; display: flex; flex-direction: column; }']
 })
 export class AppComponent implements OnInit {
   constructor(

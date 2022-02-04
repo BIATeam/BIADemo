@@ -7,6 +7,7 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
     using Microsoft.Extensions.Configuration;
@@ -55,6 +56,7 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
         {
+            collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             // Infrastructure Data
         }
 
