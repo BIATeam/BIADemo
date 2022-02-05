@@ -12,7 +12,12 @@
     "build:aot2": "ng build --aot --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
     "build:prod": "ng build --configuration production --base-href /BIADemo/App/",
     "build:prod2": "ng build --configuration production --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
-    "deploy": "ng deploy --base-href=/BIADemo/"
+    "deploy": "ng deploy --base-href=/BIADemo/",
+    "theme-dark": "node-sass ./src/assets/bia/primeng/theme/biaTheme/theme-dark.scss ./src/assets/bia/primeng/theme/biaTheme/theme-dark.css --output-style compressed",
+    "theme-light": "node-sass ./src/assets/bia/primeng/theme/biaTheme/theme-light.scss ./src/assets/bia/primeng/theme/biaTheme/theme-light.css --output-style compressed",
+    "layout-dark": "node-sass ./src/assets/bia/primeng/layout/css/layout-dark.scss ./src/assets/bia/primeng/layout/css/layout-dark.css --output-style compressed",
+    "layout-light": "node-sass ./src/assets/bia/primeng/layout/css/layout-light.scss ./src/assets/bia/primeng/layout/css/layout-light.css --output-style compressed",
+    "all-styles": "npm run theme-dark && npm run theme-light && npm run layout-dark && npm run layout-light"
   },
   "private": true,
   "dependencies": {
