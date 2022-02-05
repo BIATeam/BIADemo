@@ -22,22 +22,15 @@ Get-ChildItem $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filte
 		Write-Host "Copy file to $targetFile"
 		New-Item -ItemType File -Path $targetFile -Force;
         Copy-Item $_.FullName -destination $targetFile
-        # Remove-Item $_.FullName
     }
-	
 
-# $sourceDir = Resolve-Path -Path "$scriptPath\BIATemplateFiles"
-# $targetDir = Resolve-Path -Path "$scriptPath\..\..\$templateName"
-# Write-Host "Copy from $sourceDir to $targetDir"
-# Get-ChildItem -File $sourceDir -recurse |`
-    # foreach{
-        # $targetFile = $targetDir.Path + $_.FullName.SubString($sourceDir.Path.Length)
-
-		# Write-Host "Copy file " $_.FullName " to $targetFile"
-		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        # Copy-Item $_.FullName -destination $targetFile
-    # }
-
+$oldPath= "$sourceDir\Angular\src\assets\bia\primeng\sass"
+$newPath= "$targetDir\Angular\src\assets\bia\primeng\sass"
+Get-Item -Path "$oldPath\*" -Exclude ('overrides') |`
+    foreach{
+        $target = $newPath + $_.FullName.SubString($oldPath.Length);
+        Copy-Item $_.FullName -destination $target -Recurse -Force
+    }
 
 write-host "finish"
 pause

@@ -185,10 +185,10 @@ RemoveFolder -path 'src\app\domains\airport-option'
 Write-Host "RemoveFolder src\app\domains\plane-type-option"
 RemoveFolder -path 'src\app\domains\plane-type-option'
 
-Write-Host "RemoveFolder src\assets\bia\primeng\sass"
-RemoveFolder -path 'src\assets\bia\primeng\sass'
-RemoveByExtension -path 'src\assets\bia\primeng\layout\css' -extension '*.scss'
-RemoveByExtension -path 'src\assets\bia\primeng\theme' -extension '*.scss'
+#Write-Host "RemoveFolder src\assets\bia\primeng\sass"
+#RemoveFolder -path 'src\assets\bia\primeng\sass'
+#RemoveByExtension -path 'src\assets\bia\primeng\layout\css' -extension '*.scss'
+#RemoveByExtension -path 'src\assets\bia\primeng\theme' -extension '*.scss'
 
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles

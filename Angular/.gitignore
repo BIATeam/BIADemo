@@ -2,10 +2,8 @@
 
 # Begin BIATemplate only
 #PrimeNg Ultima src
-/src/assets/bia/primeng/sass/layout
-/src/assets/bia/primeng/sass/theme
-/src/assets/bia/primeng/sass/variables
-/src/assets/bia/primeng/sass/_fonts.scss
+/src/assets/bia/primeng/sass
+!/src/assets/bia/primeng/sass/overrides
 
 #Temp CSS generated
 /src/assets/bia/primeng/layout/css/layout-dark.css
