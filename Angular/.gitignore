@@ -1,11 +1,19 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Begin BIATemplate only
 #PrimeNg Ultima src
 /src/assets/bia/primeng/sass/layout
 /src/assets/bia/primeng/sass/theme
 /src/assets/bia/primeng/sass/variables
 /src/assets/bia/primeng/sass/_fonts.scss
 
+#Temp CSS generated
+/src/assets/bia/primeng/layout/css/layout-dark.css
+/src/assets/bia/primeng/layout/css/layout-light.css
+/src/assets/bia/primeng/theme/biaTheme/theme-dark.css
+/src/assets/bia/primeng/theme/biaTheme/theme-light.css
+
+# End BIATemplate only
 
 # compiled output
 /dist
