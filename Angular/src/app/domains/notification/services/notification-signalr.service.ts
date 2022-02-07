@@ -70,7 +70,7 @@ export class NotificationSignalRService {
     const okRole: Boolean = (notification.notifiedPermissions === undefined) ||
     (notification.notifiedPermissions === null) ||
     (notification.notifiedPermissions.length === 0) ||
-    (notification.notifiedPermissions.some(e => this.authService.hasPermission(e.display)));
+    (notification.notifiedPermissions.some(e => this.authService.hasPermission('' + e.id)));
 
     return okSite && okUser && okRole;
   }
