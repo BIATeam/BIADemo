@@ -29,6 +29,10 @@ $newPath= "$targetDir\Angular\src\assets\bia\primeng\sass"
 Get-Item -Path "$oldPath\*" -Exclude ('overrides') |`
     foreach{
         $target = $newPath + $_.FullName.SubString($oldPath.Length);
+		if (Test-Path $target) {
+			Write-Host "delete " $target " folder"
+			Remove-Item $target -Recurse -Force -Confirm:$false
+		}
         Copy-Item $_.FullName -destination $target -Recurse -Force
     }
 
