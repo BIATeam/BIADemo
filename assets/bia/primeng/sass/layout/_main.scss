@@ -1,0 +1,59 @@
+html {
+    height: 100%;
+    font-size: $fontSize;
+}
+
+body {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 1rem;
+    color: $textColor;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 0;
+    margin: 0;
+    background-color: $bodyBgColor;
+    min-height: 100%;
+
+    a {
+        text-decoration: none;
+        color: $textSecondaryColor;
+    }
+}
+
+.layout-mask {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 996;
+    width: 100%;
+    height: 100%;
+    animation-duration: $animationDuration;
+    animation-timing-function: $animationTimingFunction;
+    animation-fill-mode: forwards;
+}
+
+.layout-wrapper {
+    .layout-main {
+        padding-top: 4rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100vh;
+
+        .layout-content {
+            padding: 2rem;
+            padding-top: 1rem;
+            flex: 1 1 0;
+        }
+    }
+}
+
+.layout-ajax-loader-icon {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    font-size: 2rem;
+    color: $textSecondaryColor;
+    z-index: 999;
+}
