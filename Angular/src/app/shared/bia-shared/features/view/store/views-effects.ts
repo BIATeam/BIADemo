@@ -72,7 +72,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(addUserView),
       switchMap((view: View) =>
-        this.userViewDas.post(view).pipe(
+        this.userViewDas.post({ item: view }).pipe(
           switchMap((viewAdded) => {
             this.biaMessageService.showAddSuccess();
             return [setViewSuccess(viewAdded), loadAllView()];
@@ -90,7 +90,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(updateUserView),
       switchMap((view: View) =>
-        this.userViewDas.put(view, view.id).pipe(
+        this.userViewDas.put({ item: view, id: view.id }).pipe(
           switchMap((viewUpdated) => {
             this.biaMessageService.showUpdateSuccess();
             return [setViewSuccess(viewUpdated), loadAllView()];
@@ -108,7 +108,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(updateSiteView),
       switchMap((view: SiteView) =>
-        this.siteViewDas.put(view, view.id).pipe(
+        this.siteViewDas.put({ item: view, id: view.id }).pipe(
           switchMap((viewUpdated) => {
             this.biaMessageService.showUpdateSuccess();
             return [setViewSuccess(viewUpdated), loadAllView()];
@@ -163,7 +163,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(addSiteView),
       switchMap((view: SiteView) =>
-        this.siteViewDas.post(view).pipe(
+        this.siteViewDas.post({ item: view }).pipe(
           switchMap((viewAdded) => {
             this.biaMessageService.showAddSuccess();
             return [setViewSuccess(viewAdded), loadAllView()];

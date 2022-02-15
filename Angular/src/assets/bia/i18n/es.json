@@ -98,6 +98,9 @@
     "ieWarning": "[Modo degradado] Su navegador (Internet Explorer) está desactualizado. Para una mejor experiencia, recomendamos usar Edge o Google Chrome.",
     "infoBeforeGetLatestVersion": "La aplicación se recargará en unos segundos para recuperar la última versión.",
     "invalidForm": "Forma invalida",
+    "serverAvailable": "Servidor disponible",
+    "ServerUnavailable": "Servidor no disponible",
+    "serverUnavailableDataSaveLocally": "Servidor no disponible. datos guardados localmente",
     "syncElementSuccess": "Sincronización completada",
     "updateElementSuccess": "Elemento actualizado con éxito",
     "userAlreadyAssociatedSite": "Este usuario ya está asociado a este sitio"

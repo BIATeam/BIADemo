@@ -67,7 +67,7 @@ export class SitesEffects {
       pluck('site'),
       concatMap((site) => of(site).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([site, event]) => {
-        return this.siteDas.post(site).pipe(
+        return this.siteDas.post({ item: site }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -87,7 +87,7 @@ export class SitesEffects {
       pluck('site'),
       concatMap((site) => of(site).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([site, event]) => {
-        return this.siteDas.put(site, site.id).pipe(
+        return this.siteDas.put({ item: site, id: site.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllByPost({ event: <LazyLoadEvent>event });

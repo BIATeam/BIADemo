@@ -19,6 +19,7 @@ import { SiteModule } from 'src/app/domains/site/site.module';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
 import { NotificationSignalRService } from 'src/app/domains/notification/services/notification-signalr.service';
 import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return (): Promise<any> => {
@@ -26,7 +27,7 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [HttpClientModule, SiteModule, AppSettingsModule];
+const MODULES = [HttpClientModule, SiteModule, AppSettingsModule, ServiceWorkerModule];
 
 /* Warning: the order matters */
 const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];

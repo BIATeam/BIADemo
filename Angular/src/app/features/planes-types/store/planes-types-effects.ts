@@ -67,7 +67,7 @@ export class PlanesTypesEffects {
       pluck('planeType'),
       concatMap((planeType) => of(planeType).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([planeType, event]) => {
-        return this.planeTypeDas.post(planeType).pipe(
+        return this.planeTypeDas.post({ item: planeType }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             // Uncomment this if you do not use SignalR to refresh
@@ -90,7 +90,7 @@ export class PlanesTypesEffects {
       pluck('planeType'),
       concatMap((planeType) => of(planeType).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([planeType, event]) => {
-        return this.planeTypeDas.put(planeType, planeType.id).pipe(
+        return this.planeTypeDas.put({ item: planeType, id: planeType.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             // Uncomment this if you do not use SignalR to refresh

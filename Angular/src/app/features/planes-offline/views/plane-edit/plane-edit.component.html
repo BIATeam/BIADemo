@@ -1,0 +1,8 @@
+<app-plane-form 
+    [plane]="planeService.plane$ | async" 
+    [airportOptions]="planeOptionsService.airportOptions$ | async"
+    [planeTypeOptions]="planeOptionsService.planeTypeOptions$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-plane-form>
+<bia-spinner *ngIf="planeService.loading$ | async" [overlay]="true"></bia-spinner>

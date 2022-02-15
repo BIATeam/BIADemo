@@ -13,6 +13,7 @@
     "planesViewMode": "Avions (Vue)",
     "planesSignalRMode": "Avions (SignalR)",
     "planesCalcMode": "Avions (Tableur)",
+    "planesOfflineMode": "Avions (Hors ligne)",
     "planesTypes": "Types d'avions",
     "sites": "Compagnies aérienne",
     "End BIADemo": "To remove in project up to here",

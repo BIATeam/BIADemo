@@ -98,6 +98,9 @@
     "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Edge ou Google Chrome.",
     "infoBeforeGetLatestVersion": "L'application va se recharger dans quelques secondes afin de récupérer la dernière version.",
     "invalidForm": "Formulaire non valide",
+    "serverAvailable": "Serveur disponible",
+    "ServerUnavailable": "Serveur indisponible",
+    "serverUnavailableDataSaveLocally": "Serveur indisponible. données enregistrées localement",
     "syncElementSuccess": "Synchronisation terminée",
     "updateElementSuccess": "Élément mis à jour avec succès",
     "userAlreadyAssociatedSite": "Cet utilisateur est déjà associé à ce site"

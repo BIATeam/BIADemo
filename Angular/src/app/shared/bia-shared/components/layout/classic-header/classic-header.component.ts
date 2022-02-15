@@ -101,8 +101,10 @@ export class ClassicHeaderComponent implements OnDestroy {
     public biaTranslationService: BiaTranslationService,
     private router: Router
   ) {
-    this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-    this.store.dispatch(loadUnreadNotificationIds());
+    if (environment.enableNotifications === true) {
+      this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
+      this.store.dispatch(loadUnreadNotificationIds());
+    }
     biaTranslationService.appSettings$.subscribe(appSettings => {
       if (appSettings) {
         this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;

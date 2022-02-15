@@ -69,7 +69,7 @@ export class MembersEffects {
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.post(member).pipe(
+        return this.memberDas.post({ item: member }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (MembersEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class MembersEffects {
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.put(member, member.id).pipe(
+        return this.memberDas.put({ item: member, id: member.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (MembersEffects.useSignalR) {

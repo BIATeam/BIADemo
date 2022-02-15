@@ -1,0 +1,13 @@
+@import '../../../../../scss/bia/bia-variables';
+
+:host {
+  display: contents;
+}
+
+.offline {
+  color: $biaRed;
+}
+
+.online {
+  color: $biaGreen;
+}

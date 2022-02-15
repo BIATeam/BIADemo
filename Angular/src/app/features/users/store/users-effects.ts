@@ -81,7 +81,7 @@ export class UsersEffects {
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.post(user).pipe(
+        return this.userDas.post({ item: user }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             return loadAllByPost({ event: event });
@@ -101,7 +101,7 @@ export class UsersEffects {
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.put(user, user.id).pipe(
+        return this.userDas.put({ item: user, id: user.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllByPost({ event: event });

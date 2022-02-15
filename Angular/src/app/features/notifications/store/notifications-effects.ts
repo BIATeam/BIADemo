@@ -69,7 +69,7 @@ export class NotificationsEffects {
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
-        return this.notificationDas.post(notification).pipe(
+        return this.notificationDas.post({ item: notification }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (NotificationsEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class NotificationsEffects {
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
-        return this.notificationDas.put(notification, notification.id).pipe(
+        return this.notificationDas.put({ item: notification, id: notification.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (NotificationsEffects.useSignalR) {

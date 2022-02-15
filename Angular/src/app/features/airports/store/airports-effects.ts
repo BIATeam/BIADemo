@@ -69,7 +69,7 @@ export class AirportsEffects {
       pluck('airport'),
       concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([airport, event]) => {
-        return this.airportDas.post(airport).pipe(
+        return this.airportDas.post({ item: airport }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (AirportsEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class AirportsEffects {
       pluck('airport'),
       concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([airport, event]) => {
-        return this.airportDas.put(airport, airport.id).pipe(
+        return this.airportDas.put({ item: airport, id: airport.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (AirportsEffects.useSignalR) {

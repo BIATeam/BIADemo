@@ -27,6 +27,7 @@ import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views
 import { MemberOptionsService } from '../../services/member-options.service';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-members-index',
@@ -92,14 +93,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
-      let isinit = true;
       this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) {
-              isinit = false;
-            } else {
-              this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
-            }
+        this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
+          this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
           })
       );
     }

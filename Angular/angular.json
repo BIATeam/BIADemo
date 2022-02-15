@@ -43,7 +43,8 @@
               "src/favicon.ico",
               "src/assets",
               "src/config.json",
-              "src/web.config"
+              "src/web.config",
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/primeng/resources/primeng.min.css",
@@ -60,7 +61,9 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "serviceWorker": true,
+            "ngswConfigPath": "ngsw-config.json"
           },
           "configurations": {
             "production": {

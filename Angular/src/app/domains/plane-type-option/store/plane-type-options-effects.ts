@@ -9,6 +9,7 @@ import {
 } from './plane-type-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { PlaneTypeOptionDas } from '../services/plane-type-option-das.service';
+import { OnlineOfflineService } from 'src/app/core/bia-core/services/online-offline.service';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc
@@ -27,7 +28,9 @@ export class PlaneTypeOptionsEffects {
         this.planeTypeDas.getList('allOptions').pipe(
           map((planesTypes) => loadAllSuccess({ planesTypes })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            if (OnlineOfflineService.isModeEnabled !== true || OnlineOfflineService.isServerAvailable(err) === true) {
+              this.biaMessageService.showError();
+            }
             return of(failure({ error: err }));
           })
         )

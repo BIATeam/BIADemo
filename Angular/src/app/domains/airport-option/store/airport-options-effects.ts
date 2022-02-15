@@ -2,13 +2,10 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  failure,
-  loadAllAirportOptions,
-  loadAllSuccess
-} from './airport-options-actions';
+import { failure, loadAllAirportOptions, loadAllSuccess } from './airport-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { AirportOptionDas } from '../services/airport-option-das.service';
+import { OnlineOfflineService } from 'src/app/core/bia-core/services/online-offline.service';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc
@@ -27,7 +24,9 @@ export class AirportOptionsEffects {
         this.airportDas.getList('allOptions').pipe(
           map((airports) => loadAllSuccess({ airports })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            if (OnlineOfflineService.isModeEnabled !== true || OnlineOfflineService.isServerAvailable(err) === true) {
+              this.biaMessageService.showError();
+            }
             return of(failure({ error: err }));
           })
         )

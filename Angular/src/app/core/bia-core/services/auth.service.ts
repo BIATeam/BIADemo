@@ -1,15 +1,17 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
-import { map, filter, take, switchMap } from 'rxjs/operators';
+import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
 import { AuthInfo, AdditionalInfos } from 'src/app/shared/bia-shared/model/auth-info';
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
+import { OnlineOfflineService } from './online-offline.service';
 
 const STORAGE_SITEID_KEY = 'currentSiteId';
 const STORAGE_RELOADED_KEY = 'isReloaded';
 const STORAGE_ROLEID_KEY = 'currentRoleId';
+const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -149,8 +151,22 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const url: string = this.buildUrlLogin();
     return this.http.get<AuthInfo>(url).pipe(
       map((authInfo: AuthInfo) => {
+        if (OnlineOfflineService.isModeEnabled === true) {
+          localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(authInfo));
+        }
         this.authInfoSubject.next(authInfo);
         return authInfo;
+      }),
+      catchError((err) => {
+        let authInfo: AuthInfo = <AuthInfo>{};
+        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(err) !== true) {
+          const jsonAuthInfo: string | null = localStorage.getItem(STORAGE_AUTHINFO_KEY);
+          if (jsonAuthInfo) {
+            authInfo = JSON.parse(jsonAuthInfo);
+          }
+        }
+        this.authInfoSubject.next(authInfo);
+        return of(authInfo);
       })
     );
   }
@@ -202,6 +218,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.getFrontEndVersion().pipe(
       map((version: string) => {
         return version === environment.version;
+      }),
+      catchError((err) => {
+        if (OnlineOfflineService.isServerAvailable(err) !== true) {
+          return of(true);
+        }
+        return of(false);
       })
     );
   }

@@ -6,7 +6,7 @@
 
 .topbar {
   height: 35px;
-  color: white!important;
+  color: white !important;
 }
 
 .logos {
@@ -129,6 +129,14 @@
 }
 
 :host ::ng-deep {
+  bia-online-offline-icon {
+    i {
+      margin-left: 8px;
+      margin-right: 8px;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
   .p-component {
     border-width: 0px !important;
   }
@@ -137,7 +145,7 @@
     background-color: transparent !important;
   }
 
-  p-menubar .p-menubar{
+  p-menubar .p-menubar {
     .p-menubar-start {
       margin-right: auto;
     }
@@ -158,7 +166,7 @@
   p-megamenu {
     .p-menuitem-link {
       // padding-top: 0.45rem!important;
-      padding-top: 0.3em!important;
+      padding-top: 0.3em !important;
     }
     .p-megamenu-panel {
       width: 10em;
@@ -185,7 +193,7 @@
     }
   }
 
-  p-dropdown  {
+  p-dropdown {
     .p-dropdown {
       min-width: 12.5em;
       background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
@@ -201,13 +209,12 @@
       }
     }
     .p-dropdown:not(.p-disabled) {
-      &:hover   {
-        background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white)!important;
+      &:hover {
+        background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white) !important;
       }
     }
     .p-dropdown-trigger-icon {
       color: white !important;
     }
-    
   }
 }

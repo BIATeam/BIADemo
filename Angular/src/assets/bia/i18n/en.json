@@ -98,6 +98,9 @@
     "ieWarning": "[Degraded mode] Your browser (internet explorer) is outdated. For a better experience, we recommend upgrading to the latest Edge or Google Chrome.",
     "infoBeforeGetLatestVersion": "The application will reload in a few seconds in order to retrieve the latest version.",
     "invalidForm": "Invalid form",
+    "serverAvailable": "Server Available",
+    "ServerUnavailable": "ServerUnavailable",
+    "serverUnavailableDataSaveLocally": "Server unavailable. data save locally",
     "syncElementSuccess": "Synchronization completed",
     "updateElementSuccess": "Item updated successfully",
     "userAlreadyAssociatedSite": "This user is already associated with this site"

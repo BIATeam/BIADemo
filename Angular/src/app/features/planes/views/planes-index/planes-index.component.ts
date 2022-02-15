@@ -28,6 +28,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
 import { useCalcMode, useSignalR, useView } from '../../plane.constants';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-planes-index',
@@ -103,14 +104,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     }
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
-      let isinit = true;
       this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) {
-              isinit = false;
-            } else {
-              this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
-            }
+        this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
+          this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
           })
       );
     }
