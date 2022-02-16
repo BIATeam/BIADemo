@@ -78,6 +78,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the notification type DBSet.
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
+        /// <summary>
+        /// Gets or sets the notification translation DBSet.
+        /// </summary>
+        public DbSet<NotificationTranslation> NotificationTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permission translation DBSet.
+        /// </summary>
+        public DbSet<PermissionTranslation> PermissionTranslations { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permissions DBSet.
+        /// </summary>
+        public DbSet<Permission> Permissions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permissions of the roles DBSet.
+        /// </summary>
+        public DbSet<PermissionRole> PermissionRole { get; set; }
 
         // Begin BIADemo
 

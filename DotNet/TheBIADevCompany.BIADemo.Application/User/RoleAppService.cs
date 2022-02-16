@@ -22,20 +22,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public class RoleAppService : FilteredServiceBase<Role, int>, IRoleAppService
     {
         /// <summary>
-        /// The claims principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RoleAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        /// <param name="principal">The principal.</param>
         /// <param name="userContext">The user context.</param>
-        public RoleAppService(ITGenericRepository<Role, int> repository, IPrincipal principal, UserContext userContext)
+        public RoleAppService(ITGenericRepository<Role, int> repository, UserContext userContext)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
             this.userContext = userContext;
         }
 

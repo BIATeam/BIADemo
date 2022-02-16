@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Initializes a new instance of the <see cref="NotificationTypesController"/> class.
         /// </summary>
         /// <param name="notificationTypeService">The notification type application service.</param>
-        /// <param name="hubForClients">The hub for client.</param>
         public NotificationTypesController(INotificationTypeDomainService notificationTypeService)
         {
             this.notificationTypeService = notificationTypeService;
