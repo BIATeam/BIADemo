@@ -24,7 +24,7 @@ export class PermissionOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Permissions Reducers' will take care of the rest */
       switchMap(() =>
-        this.permissionDas.getList('allOptions').pipe(
+        this.permissionDas.getList({ endpoint: 'allOptions' }).pipe(
           map((permissions) => loadAllPermissionOptionsSuccess({ permissions })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -41,7 +41,7 @@ export class PermissionOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.permissionDas.get(id).pipe(
+        this.permissionDas.get({ id: id }).pipe(
           map((permission) => loadSuccess({ permission })),
           catchError((err) => {
             this.biaMessageService.showError();

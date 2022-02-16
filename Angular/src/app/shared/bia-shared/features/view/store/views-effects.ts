@@ -54,7 +54,7 @@ export class ViewsEffects {
       ofType(removeUserView) /* When action is dispatched */,
       pluck('id'),
       switchMap((id) => {
-        return this.userViewDas.delete(id).pipe(
+        return this.userViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllView();
@@ -145,7 +145,7 @@ export class ViewsEffects {
       ofType(removeSiteView) /* When action is dispatched */,
       pluck('id'),
       switchMap((id) => {
-        return this.siteViewDas.delete(id).pipe(
+        return this.siteViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllView();

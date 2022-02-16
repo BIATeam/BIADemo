@@ -26,7 +26,7 @@ enum HTTPMethod {
 })
 export class OnlineOfflineService {
 
-  protected serverAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  protected serverAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public serverAvailable$: Observable<boolean> = this.serverAvailableSubject.asObservable();
   public static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
 

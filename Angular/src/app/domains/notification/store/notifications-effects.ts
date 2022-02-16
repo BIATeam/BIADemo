@@ -41,7 +41,7 @@ export class NotificationsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.notificationDas.get(id).pipe(
+        this.notificationDas.get({ id: id }).pipe(
           map((notification) => loadSuccess({ notification })),
           catchError((err) => {
             this.biaMessageService.showError();

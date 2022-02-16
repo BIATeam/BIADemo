@@ -25,7 +25,7 @@ export class PlaneTypeOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'PlanesTypes Reducers' will take care of the rest */
       switchMap(() =>
-        this.planeTypeDas.getList('allOptions').pipe(
+        this.planeTypeDas.getList({ endpoint: 'allOptions', offlineMode: OnlineOfflineService.isModeEnabled }).pipe(
           map((planesTypes) => loadAllSuccess({ planesTypes })),
           catchError((err) => {
             if (OnlineOfflineService.isModeEnabled !== true || OnlineOfflineService.isServerAvailable(err) === true) {
@@ -44,7 +44,7 @@ export class PlaneTypeOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.planeTypeDas.get(id).pipe(
+        this.planeTypeDas.get({ id: id }).pipe(
           map((planeType) => loadSuccess({ planeType })),
           catchError((err) => {
             this.biaMessageService.showError();

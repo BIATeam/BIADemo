@@ -25,7 +25,7 @@ export class UserOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Users Reducers' will take care of the rest */
       switchMap(() =>
-        this.userDas.getList('allOptions').pipe(
+        this.userDas.getList({ endpoint: 'allOptions' }).pipe(
           map((users) => loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -37,22 +37,22 @@ export class UserOptionsEffects {
   );
 
   loadAllByFilter$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(loadAllByFilter) /* When action is dispatched */,
-    /* startWith(loadAll()), */
-    /* Hit the Users Index endpoint of our REST API */
-    /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
-    /* 'Users Reducers' will take care of the rest */
-    switchMap((action) =>
-      this.userDas.getList('allOptions', {params: {filter: action.filter}}).pipe(
-        map((users) => loadAllSuccess({ users })),
-        catchError((err) => {
-          this.biaMessageService.showError();
-          return of(failure({ error: err }));
-        })
+    this.actions$.pipe(
+      ofType(loadAllByFilter) /* When action is dispatched */,
+      /* startWith(loadAll()), */
+      /* Hit the Users Index endpoint of our REST API */
+      /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
+      /* 'Users Reducers' will take care of the rest */
+      switchMap((action) =>
+        this.userDas.getList({ endpoint: 'allOptions', options:  { params: { filter: action.filter } } }).pipe(
+          map((users) => loadAllSuccess({ users })),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(failure({ error: err }));
+          })
+        )
       )
     )
-  )
   );
 
   /*
@@ -61,7 +61,7 @@ export class UserOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.userDas.get(id).pipe(
+        this.userDas.get({ id: id }).pipe(
           map((user) => loadSuccess({ user })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -77,5 +77,5 @@ export class UserOptionsEffects {
     private actions$: Actions,
     private userDas: UserOptionDas,
     private biaMessageService: BiaMessageService
-  ) {}
+  ) { }
 }

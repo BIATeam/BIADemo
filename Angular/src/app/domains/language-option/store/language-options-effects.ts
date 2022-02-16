@@ -24,7 +24,7 @@ export class LanguageOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Languages Reducers' will take care of the rest */
       switchMap(() =>
-        this.languageDas.getList('allOptions').pipe(
+        this.languageDas.getList({ endpoint: 'allOptions' }).pipe(
           map((languages) => loadAllSuccess({ languages })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -41,7 +41,7 @@ export class LanguageOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.languageDas.get(id).pipe(
+        this.languageDas.get({ id: id }).pipe(
           map((language) => loadSuccess({ language })),
           catchError((err) => {
             this.biaMessageService.showError();

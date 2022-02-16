@@ -46,7 +46,7 @@ export class SitesEffects {
       ofType(loadAllSitesByUser),
       pluck('userId'),
       switchMap((userId) =>
-        this.siteDas.getListByPost(<LazyLoadEvent>{ userId: userId }).pipe(
+        this.siteDas.getListByPost({ event: <LazyLoadEvent>{ userId: userId } }).pipe(
           map((result) => loadAllSitesByUserSuccess({ sites: result.data })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -62,7 +62,7 @@ export class SitesEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.siteDas.get(id).pipe(
+        this.siteDas.get({ id: id }).pipe(
           map((site) => loadSuccess({ site })),
           catchError((err) => {
             this.biaMessageService.showError();

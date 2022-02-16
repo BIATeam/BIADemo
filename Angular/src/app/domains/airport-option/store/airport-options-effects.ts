@@ -21,7 +21,7 @@ export class AirportOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Airports Reducers' will take care of the rest */
       switchMap(() =>
-        this.airportDas.getList('allOptions').pipe(
+        this.airportDas.getList({ endpoint: 'allOptions', offlineMode: OnlineOfflineService.isModeEnabled }).pipe(
           map((airports) => loadAllSuccess({ airports })),
           catchError((err) => {
             if (OnlineOfflineService.isModeEnabled !== true || OnlineOfflineService.isServerAvailable(err) === true) {

@@ -24,7 +24,7 @@ export class RoleOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Roles Reducers' will take care of the rest */
       switchMap(() =>
-        this.roleDas.getList('allOptions').pipe(
+        this.roleDas.getList({ endpoint: 'allOptions' }).pipe(
           map((roles) => loadAllRoleOptionsSuccess({ roles })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -41,7 +41,7 @@ export class RoleOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.roleDas.get(id).pipe(
+        this.roleDas.get({ id: id }).pipe(
           map((role) => loadSuccess({ role })),
           catchError((err) => {
             this.biaMessageService.showError();

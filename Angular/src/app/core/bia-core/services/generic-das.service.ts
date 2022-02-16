@@ -30,47 +30,40 @@ export interface HttpOptions {
 interface HttpParam {
   offlineMode?: boolean;
   options?: HttpOptions;
+  endpoint?: string;
 }
 
-// interface GetParam extends HttpParam {
-//   id?: string | number; 
-//   endpoint: '';
-// }
+export interface GetParam extends HttpParam {
+  id?: string | number;
+}
 
-// interface GetListParam extends HttpParam{
-//   endpoint: '';
-// }
+export interface GetListParam extends HttpParam {
+}
 
-// interface GetListByPostParam extends HttpParam {
-// event: LazyLoadEvent;
-// endpoint: 'all';
-// }
+export interface GetListByPostParam extends HttpParam {
+  event: LazyLoadEvent;
+}
 
-// interface SaveParam<TIn> extends HttpParam {
-//   items: TIn[],
-//   endpoint: 'save';
-// }
+export interface SaveParam<TIn> extends HttpParam {
+  items: TIn[],
+}
 
 export interface PutParam<TIn> extends HttpParam {
   item: TIn;
   id: string | number;
-  endpoint?: '';
 }
 
 export interface PostParam<TIn> extends HttpParam {
   item: TIn;
-  endpoint?: '';
 }
 
-// interface DeleteParam<TIn> extends HttpParam {
-//   id: string | number;
-//   endpoint: '';
-// }
+export interface DeleteParam extends HttpParam {
+  id: string | number;
+}
 
-// interface DeletesParam<TIn> extends HttpParam {
-//   ids: string[] | number[];
-//   endpoint: '';
-// }
+export interface DeletesParam extends HttpParam {
+  ids: string[] | number[];
+}
 
 export abstract class GenericDas {
   public http: HttpClient;
@@ -93,55 +86,53 @@ export abstract class GenericDas {
     return environment.apiUrl + route;
   }
 
-  getItem<TOut>(id?: string | number, options?: HttpOptions): Observable<TOut> {
-    return this.http.get<TOut>(id ? `${this.route}${id}` : `${this.route}`, options).pipe(
+  getItem<TOut>(param?: GetParam): Observable<TOut> {
+    if (param) {
+      param.endpoint = param.endpoint ?? '';
+    }
+
+    const url = `${this.route}${param?.endpoint}${param?.id}`;
+
+    let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map((data) => {
         DateHelperService.fillDate(data);
+        this.translateItem(data);
         return data;
       })
     );
+
+    if (param?.offlineMode === true && OnlineOfflineService.isModeEnabled === true) {
+      obs$ = this.getWithCatchErrorOffline(obs$, url);
+      obs$.pipe(first()).subscribe((result: TOut) => {
+        this.clearDataByUrl(url);
+        this.addDataTtem(url, result);
+      });
+    }
+
+    return obs$;
   }
 
-  getListItems<TOut>(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
-    return this.http.get<TOut[]>(`${this.route}${endpoint}`, options).pipe(
-      map((datas) => {
-        datas.forEach((data) => {
-          DateHelperService.fillDate(data);
-        });
-        return datas;
-      })
-    );
-  }
+  getListItems<TOut>(param?: GetListParam): Observable<TOut[]> {
+    if (param) {
+      param.endpoint = param.endpoint ?? '';
+    }
+    const url = `${this.route}${param?.endpoint}`;
 
-  getListItems2<TOut>(endpoint: string = '', options?: HttpOptions): Observable<TOut[]> {
-    const url = `${this.route}${endpoint}`;
-    const obs$ = this.http.get<TOut[]>(url, options).pipe(
-      map((datas) => {
-        datas.forEach((data) => {
-          DateHelperService.fillDate(data);
+    let obs$ = this.http.get<TOut[]>(url, param?.options).pipe(
+      map((items) => {
+        items.forEach((item) => {
+          DateHelperService.fillDate(item);
+          this.translateItem(item);
         });
-        return datas;
-      }),
-      catchError((error) => {
-        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
-          return from(this.db.datas.filter(function (x) {
-            return x.url === url;
-          }).toArray()).pipe(
-            map((dataItems: DataItem[]) => dataItems.map((dataItem) => dataItem.data))
-          );
-        }
-        return throwError(error);
-      })
-    );
+        return items;
+      }));
 
-    if (OnlineOfflineService.isModeEnabled === true) {
+    if (param?.offlineMode === true && OnlineOfflineService.isModeEnabled === true) {
+      obs$ = this.getListWithCatchErrorOffline(obs$, url);
       obs$.pipe(first()).subscribe((results: TOut[]) => {
-        this.db.datas.filter(function (x) {
-          return x.url === url;
-        }).delete();
-        results.forEach((res) => {
-          const data: DataItem = <DataItem>{ url: url, data: res };
-          this.db.datas?.add(data);
+        this.clearDataByUrl(url);
+        results.forEach((result) => {
+          this.addDataTtem(url, result);
         });
       });
     }
@@ -149,16 +140,20 @@ export abstract class GenericDas {
     return obs$;
   }
 
-  getListItemsByPost<TOut>(event: LazyLoadEvent, endpoint: string = 'all'): Observable<DataResult<TOut[]>> {
-    if (!event) {
+  getListItemsByPost<TOut>(param: GetListByPostParam): Observable<DataResult<TOut[]>> {
+    if (!param.event) {
       return of();
     }
-    return this.http.post<TOut[]>(`${this.route}${endpoint}`, event, { observe: 'response' }).pipe(
+
+    param.endpoint = param.endpoint ?? 'all';
+
+    return this.http.post<TOut[]>(`${this.route}${param.endpoint}`, param.event, { observe: 'response' }).pipe(
       map((resp: HttpResponse<TOut[]>) => {
         const totalCount = Number(resp.headers.get('X-Total-Count'));
         const datas = resp.body ? resp.body : [];
         datas.forEach((data) => {
           DateHelperService.fillDate(data);
+          this.translateItem(data);
         });
 
         const dataResult = {
@@ -170,13 +165,20 @@ export abstract class GenericDas {
     );
   }
 
-  saveItem<TIn, TOut>(items: TIn[], endpoint: string = 'save', options?: HttpOptions) {
-    if (items) {
-      items.forEach((item) => {
+  saveItem<TIn, TOut>(param: SaveParam<TIn>) {
+    param.endpoint = param.endpoint ?? 'save';
+    if (param.items) {
+      param.items.forEach((item) => {
         DateHelperService.fillDate(item);
       });
     }
-    return this.http.post<TOut>(`${this.route}${endpoint}`, items, options);
+
+    if (param.offlineMode === true) {
+      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options));
+    } else {
+      return this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options);
+    }
   }
 
   putItem<TIn, TOut>(param: PutParam<TIn>) {
@@ -185,9 +187,9 @@ export abstract class GenericDas {
 
     if (param.offlineMode === true) {
       param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.execWithCatchErrorOffline(this.http.put<TOut>(`${this.route}${param.id}`, param.item, param.options));
+      return this.setWithCatchErrorOffline(this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options));
     } else {
-      return this.http.put<TOut>(`${this.route}${param.id}`, param.item, param.options);
+      return this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options);
     }
   }
 
@@ -197,28 +199,32 @@ export abstract class GenericDas {
 
     if (param.offlineMode === true) {
       param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.execWithCatchErrorOffline(this.http.post<TOut>(this.route, param.item, param.options));
+      return this.setWithCatchErrorOffline(this.http.post<TOut>(this.route, param.item, param.options));
     } else {
       return this.http.post<TOut>(this.route, param.item, param.options);
     }
   }
 
-  deleteItem(id: string | number, options?: HttpOptions) {
-    return this.http.delete<void>(`${this.route}${id}`, options);
+  deleteItem(param: DeleteParam) {
+    param.endpoint = param.endpoint ?? '';
+
+    if (param.offlineMode === true) {
+      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options));
+    } else {
+      return this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options);
+    }
   }
 
-  deleteItemWithRetry(id: string | number, options?: HttpOptions) {
-    options = OnlineOfflineService.addHttpHeaderRetry(options);
-    return this.execWithCatchErrorOffline(this.deleteItem(id, options));
-  }
+  deleteItems(param: DeletesParam) {
+    param.endpoint = param.endpoint ?? '';
 
-  deleteItems(ids: string[] | number[], options?: HttpOptions) {
-    return this.http.delete<void>(`${this.route}?ids=${ids.join('&ids=')}`, options);
-  }
-
-  deleteItemsWithRetry(ids: string[] | number[], options?: HttpOptions) {
-    options = OnlineOfflineService.addHttpHeaderRetry(options);
-    return this.execWithCatchErrorOffline(this.deleteItems(ids, options));
+    if (param.offlineMode === true) {
+      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options));
+    } else {
+      return this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options);
+    }
   }
 
   getItemFile(event: LazyLoadEvent, endpoint: string = 'csv'): Observable<any> {
@@ -229,8 +235,12 @@ export abstract class GenericDas {
     });
   }
 
-  protected execWithCatchErrorOffline(verbMethod: Observable<any>) {
-    return verbMethod.pipe(
+  translateItem<TOut>(item: TOut) {
+    return item;
+  }
+
+  protected setWithCatchErrorOffline(obs$: Observable<any>) {
+    return obs$.pipe(
       catchError((error) => {
         if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
           return NEVER;
@@ -238,5 +248,46 @@ export abstract class GenericDas {
         return throwError(error);
       })
     );
+  }
+
+  protected getListWithCatchErrorOffline(obs$: Observable<any>, url: string) {
+    return obs$.pipe(
+      catchError((error) => {
+        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
+          return from(this.db.datas.filter(function (x) {
+            return x.url === url;
+          }).toArray()).pipe(
+            map((dataItems: DataItem[]) => dataItems.map((dataItem) => dataItem.data))
+          );
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  protected getWithCatchErrorOffline(obs$: Observable<any>, url: string) {
+    return obs$.pipe(
+      catchError((error) => {
+        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
+          return from(this.db.datas.filter(function (x) {
+            return x.url === url;
+          }).first()).pipe(
+            map((dataItem: DataItem | undefined) => dataItem ? dataItem.data : undefined)
+          );
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+  protected clearDataByUrl(url: string) {
+    this.db.datas.filter(function (x) {
+      return x.url === url;
+    }).delete();
+  }
+
+  protected addDataTtem(url: string, result: any) {
+    const data: DataItem = <DataItem>{ url: url, data: result };
+    this.db.datas?.add(data);
   }
 }
