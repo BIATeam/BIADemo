@@ -19,7 +19,7 @@
     "styles-layout-light": "node-sass ./src/assets/bia/primeng/layout/css/layout-light.scss ./src/assets/bia/primeng/layout/css/layout-light.css --output-style compressed",
     "styles": "npm run styles-theme-dark && npm run styles-theme-light && npm run styles-layout-dark && npm run styles-layout-light",
     "stats-compute": "ng build --configuration production --base-href /ESuitePortal/AppPortal/ --statsJson=true",
-    "stats-display": "webpack-bundle-analyzer --port 4200 dist/eSuitePortal/stats.json",
+    "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
     "stats": "npm run stats-compute && npm run stats-display"
   },
   "private": true,
