@@ -68,7 +68,7 @@ export class MemberFormComponent implements OnChanges {
       member.user = {...member.user};
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      member.siteId = this.siteService.currentSiteId;
+      member.teamId = this.siteService.currentSiteId;
       this.save.emit(member);
       this.form.reset();
     }

@@ -83,7 +83,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Description = "Review the plane with id 30.",
                 SiteId = siteId,
                 Title = "Review plane",
-                Type = new OptionDto { Id = (int)NotificationType.Task },
+                Type = new OptionDto { Id = (int)NotificationTypeId.Task },
                 NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
                 Read = false,
                 JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),

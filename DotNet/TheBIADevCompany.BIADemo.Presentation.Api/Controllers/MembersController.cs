@@ -24,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -333,7 +334,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.memberService.SetDefaultSiteAsync(id);
+                await this.memberService.SetDefaultTeamAsync(id, TeamTypeId.Site);
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -370,7 +371,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.memberService.SetDefaultRoleAsync(id);
+                await this.memberService.SetDefaultRoleAsync(id, TeamTypeId.Site);
                 return this.Ok();
             }
             catch (ArgumentNullException)

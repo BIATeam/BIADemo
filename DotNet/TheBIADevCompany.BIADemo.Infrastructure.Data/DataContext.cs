@@ -45,6 +45,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<User> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of team DBSet.
+        /// </summary>
+        public DbSet<Team> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of team DBSet.
+        /// </summary>
+        public DbSet<TeamType> TeamTypes { get; set; }
+
+        /// <summary>
         /// Gets or sets the Role DBSet.
         /// </summary>
         public DbSet<Role> Roles { get; set; }
@@ -70,6 +80,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Notification> Notifications { get; set; }
 
         /// <summary>
+        /// Gets or sets the notification translation DBSet.
+        /// </summary>
+        public DbSet<NotificationTranslation> NotificationTranslations { get; set; }
+
+        /// <summary>
         /// Gets or sets the notification type DBSet.
         /// </summary>
         public DbSet<NotificationType> NotificationTypes { get; set; }
@@ -78,15 +93,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the notification type DBSet.
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
-        /// <summary>
-        /// Gets or sets the notification translation DBSet.
-        /// </summary>
-        public DbSet<NotificationTranslation> NotificationTranslations { get; set; }
-
-        /// <summary>
-        /// Gets or sets the permission translation DBSet.
-        /// </summary>
-        public DbSet<PermissionTranslation> PermissionTranslations { get; set; }
 
         /// <summary>
         /// Gets or sets the permissions DBSet.
@@ -94,9 +100,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Permission> Permissions { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions of the roles DBSet.
+        /// Gets or sets the permission translation DBSet.
         /// </summary>
-        public DbSet<PermissionRole> PermissionRole { get; set; }
+        public DbSet<PermissionTranslation> PermissionTranslations { get; set; }
 
         // Begin BIADemo
 

@@ -71,12 +71,12 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         #region Users methods
 
         /// <inheritdoc cref="IDataUsers.AddMember(int, int, int, ICollection{MemberRole})"/>
-        public void AddMember(int id, int siteId, int userId, ICollection<MemberRole> roles)
+        public void AddMember(int id, int teamId, int userId, ICollection<MemberRole> roles)
         {
             this.GetDbContext().Members.Add(new Member()
             {
                 Id = id,
-                SiteId = siteId,
+                TeamId = teamId,
                 UserId = userId,
                 MemberRoles = roles,
             });

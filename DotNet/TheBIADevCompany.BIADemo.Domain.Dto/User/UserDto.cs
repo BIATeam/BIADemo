@@ -32,10 +32,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         /// Gets or sets the GUID.
         /// </summary>
         public Guid Guid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the site ids associated to this user.
-        /// </summary>
-        public IEnumerable<int> SiteIds { get; set; }
     }
 }

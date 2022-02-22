@@ -1,5 +1,5 @@
-// <copyright file="NotificationQueryCustomizer.cs" company="Safran">
-//     Copyright (c) Safran. All rights reserved.
+// <copyright file="NotificationQueryCustomizer.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer

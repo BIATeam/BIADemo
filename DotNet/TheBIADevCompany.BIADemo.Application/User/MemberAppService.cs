@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -53,18 +54,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.SetDefaultSite"/>
-        public async Task SetDefaultSiteAsync(int siteId)
+        public async Task SetDefaultTeamAsync(int teamId, TeamTypeId teamTypeId)
         {
             int userId = this.principal.GetUserId();
-            if (userId > 0 && siteId > 0)
+            if (userId > 0 && teamId > 0)
             {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId)).ToList();
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == (int)teamTypeId)).ToList();
 
                 if (members?.Any() == true)
                 {
                     foreach (Member member in members)
                     {
-                        member.IsDefault = member.SiteId == siteId;
+                        member.IsDefault = member.TeamId == teamId;
                         this.Repository.Update(member);
                     }
 
@@ -74,12 +75,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
-        public async Task SetDefaultRoleAsync(int roleId)
+        public async Task SetDefaultRoleAsync(int roleId, TeamTypeId teamTypeId)
         {
             int userId = this.principal.GetUserId();
             if (userId > 0 && roleId > 0)
             {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == (int)teamTypeId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
 
                 if (members?.Any() == true)
                 {

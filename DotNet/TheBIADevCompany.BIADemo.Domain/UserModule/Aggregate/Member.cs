@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Collections.Generic;
 
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>
     /// The member entity.
@@ -30,14 +29,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the site.
+        /// Gets or sets the team.
         /// </summary>
-        public virtual Site Site { get; set; }
+        public virtual Team Team { get; set; }
 
         /// <summary>
-        /// Gets or sets the site id.
+        /// Gets or sets the team id.
         /// </summary>
-        public int SiteId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the site is the default one.

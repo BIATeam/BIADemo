@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -26,16 +27,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Sets the default site.
         /// </summary>
-        /// <param name="siteId">The site identifier.</param>
+        /// <param name="teamId">The team identifier.</param>
+        /// <param name="teamTypeId">The team type identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultSiteAsync(int siteId);
+        Task SetDefaultTeamAsync(int teamId, TeamTypeId teamTypeId);
 
         /// <summary>
         /// Sets the default role.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>
+        /// <param name="teamTypeId">The team type identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultRoleAsync(int roleId);
+        Task SetDefaultRoleAsync(int roleId, TeamTypeId teamTypeId);
 
         /// <summary>
         /// Generates CSV content.

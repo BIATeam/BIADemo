@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
             if (siteId > 0)
             {
                 specification &= new DirectSpecification<Site>(s =>
-                    s.Members.Any(a => a.SiteId == siteId));
+                    s.Members.Any(a => a.TeamId == siteId));
             }
 
             return specification;

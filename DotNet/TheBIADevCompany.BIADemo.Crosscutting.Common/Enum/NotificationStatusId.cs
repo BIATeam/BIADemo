@@ -1,4 +1,4 @@
-// <copyright file="NotificationStatus.cs" company="TheBIADevCompany">
+// <copyright file="NotificationStatusId.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// <summary>
     /// The enumeration of all notification statuses.
     /// </summary>
-    public enum NotificationStatus
+    public enum NotificationStatusId
     {
         /// <summary>
         /// The pending status.

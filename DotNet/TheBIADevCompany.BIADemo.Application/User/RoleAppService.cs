@@ -44,10 +44,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Return options.
         /// </summary>
-        /// <param name="siteId">The site Id.</param>
+        /// <param name="teamId">The team Id.</param>
         /// <param name="userId">The user Id.</param>
         /// <returns>List of OptionDto.</returns>
-        public async Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int siteId, int userId)
+        public async Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int teamId, int userId)
         {
             return await this.Repository.GetAllResultAsync<RoleDto>(
                 entity => new RoleDto
@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         DtoState = DtoState.Unchanged,
                     }).ToList(),
                 },
-                filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.SiteId == siteId && m.UserId == userId));
+                filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.TeamId == teamId && m.UserId == userId));
         }
     }
 }
