@@ -93,8 +93,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateTeamTypeModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
-            modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(20);
+            modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 1, Name = "Site" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 2, Name = "AircraftMaintenanceCompany" });
+
+            // End BIADemo
         }
 
         /// <summary>

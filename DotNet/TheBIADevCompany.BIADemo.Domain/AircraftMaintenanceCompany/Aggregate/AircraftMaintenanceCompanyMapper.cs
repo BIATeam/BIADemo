@@ -67,10 +67,10 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             });
         }
 
-        /// <inheritdoc/>
-        public override void MapEntityKeysInDto(AircraftMaintenanceCompany entity, AircraftMaintenanceCompanyDto dto)
-        {
-            dto.Id = entity.Id;
-        }
+        ///// <inheritdoc/>
+        //public override void MapEntityKeysInDto(AircraftMaintenanceCompany entity, AircraftMaintenanceCompanyDto dto)
+        //{
+        //    dto.Id = entity.Id;
+        //}
     }
 }

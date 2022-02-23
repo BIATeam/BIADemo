@@ -121,8 +121,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 return this.ValidationProblem();
             }
-            catch (Exception e)
+            catch (Exception)
             {
+                // BE CAREFULL on messages in output consol because the exception not always contains the error in case of inheritance.
                 return this.StatusCode(500, "Internal server error");
             }
         }
