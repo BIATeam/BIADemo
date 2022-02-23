@@ -3,6 +3,7 @@
     "members": "Miembros",
     "sites": "Sitios",
     "Begin BIADemo" : "To remove in project from here",
+    "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
     "administration" : "Administración",
     "airports": "Aeropuertos",
     "examples": "Ejemplos",
@@ -20,6 +21,12 @@
     "notifications": "Notificaciones"
   },
   "Begin BIADemo" : "To remove in project from here",
+  "aircraftMaintenanceCompany": {
+    "add": "Añadir empresa de mantenimiento de aeronaves",
+    "edit": "Editar empresa de mantenimiento de aeronaves",
+    "listOf": "Lista de empresas de mantenimiento de aeronaves",
+    "name": "Name"
+  },
   "airport": {
     "add": "Añadir aeropuerto",
     "city" : "Ciudad",

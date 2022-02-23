@@ -4,6 +4,7 @@
     "sites": "Sites",
     "Begin BIADemo": "To remove in project from here",
     "administration": "Administration",
+    "aircraft-maintenance-companies": "Entreprises de maintenance aéronautique",
     "airports": "Aéroports",
     "examples": "Exemples",
     "hangfire": "Hangfire",
@@ -20,6 +21,12 @@
     "notifications": "Notifications"
   },
   "Begin BIADemo": "To remove in project from here",
+  "aircraftMaintenanceCompany": {
+    "add": "Ajouter entreprise de maintenance aéronautique",
+    "edit": "Modifier entreprise de maintenance aéronautique",
+    "listOf": "Liste des entreprises de maintenance aéronautique",
+    "name": "Nom"
+  },
   "airport": {
     "add": "Ajouter aéroport",
     "city": "Ville",

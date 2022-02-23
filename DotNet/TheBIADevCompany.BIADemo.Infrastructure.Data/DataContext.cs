@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     // Begin BIADemo
@@ -107,6 +108,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         // Begin BIADemo
 
         /// <summary>
+        /// Gets or sets the Aircraft Maintenance Company DBSet.
+        /// </summary>
+        public DbSet<AircraftMaintenanceCompany> AircraftMaintenanceCompanies { get; set; }
+
+        /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<Plane> Planes { get; set; }
@@ -136,6 +142,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
+            AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
             this.OnEndModelCreating(modelBuilder);

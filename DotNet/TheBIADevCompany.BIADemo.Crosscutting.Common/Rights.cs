@@ -80,6 +80,42 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // Begin BIADemo
 
         /// <summary>
+        /// The aircraft maintenance companies rights.
+        /// </summary>
+        public static class AircraftMaintenanceCompanies
+        {
+            /// <summary>
+            /// The right to access to the list of aircraft maintenance companies.
+            /// </summary>
+            public const string ListAccess = "AircraftMaintenanceCompany_List_Access";
+
+            /// <summary>
+            /// The right to create aircraft maintenance companies.
+            /// </summary>
+            public const string Create = "AircraftMaintenanceCompany_Create";
+
+            /// <summary>
+            /// The right to read aircraft maintenance companies.
+            /// </summary>
+            public const string Read = "AircraftMaintenanceCompany_Read";
+
+            /// <summary>
+            /// The right to update aircraft maintenance companies.
+            /// </summary>
+            public const string Update = "AircraftMaintenanceCompany_Update";
+
+            /// <summary>
+            /// The right to delete aircraft maintenance companies.
+            /// </summary>
+            public const string Delete = "AircraftMaintenanceCompany_Delete";
+
+            /// <summary>
+            /// The right to save aircraft maintenance companies.
+            /// </summary>
+            public const string Save = "AircraftMaintenanceCompany_Save";
+        }
+
+        /// <summary>
         /// The planes rights.
         /// </summary>
         public static class Planes

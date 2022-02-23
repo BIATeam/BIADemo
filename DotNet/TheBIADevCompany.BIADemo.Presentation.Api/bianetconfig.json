@@ -136,6 +136,11 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin", "Pilot" ]
       },
+      // Aircraft Maintenance Company
+      {
+        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
+        "Roles": [ "Admin", "AircraftMaintenanceCompany_Admin" ]
+      },
       // Airport
       {
         "Name": "Airport_Options",

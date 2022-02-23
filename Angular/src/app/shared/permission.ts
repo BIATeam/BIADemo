@@ -15,6 +15,13 @@ export enum Permission {
   Notification_Read = 'Notification_Read',
   Notification_Update = 'Notification_Update',
   // Begin BIADemo
+  AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
+  AircraftMaintenanceCompany_Delete = 'AircraftMaintenanceCompany_Delete',
+  AircraftMaintenanceCompany_List_Access = 'AircraftMaintenanceCompany_List_Access',
+  AircraftMaintenanceCompany_Read = 'AircraftMaintenanceCompany_Read',
+  AircraftMaintenanceCompany_Save = 'AircraftMaintenanceCompany_Save',
+  AircraftMaintenanceCompany_Update = 'AircraftMaintenanceCompany_Update',
+
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
   Plane_List_Access = 'Plane_List_Access',

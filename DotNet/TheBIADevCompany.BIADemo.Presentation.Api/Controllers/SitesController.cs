@@ -121,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 return this.ValidationProblem();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return this.StatusCode(500, "Internal server error");
             }

@@ -70,6 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;
+            entity.TeamTypeId = (int)TeamTypeId.Site;
         }
 
         /// <summary>

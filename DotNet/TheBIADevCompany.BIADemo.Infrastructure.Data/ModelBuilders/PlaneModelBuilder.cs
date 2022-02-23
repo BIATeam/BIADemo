@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateModel(ModelBuilder modelBuilder)
         {
             CreatePlaneModel(modelBuilder);
-            CreatePlanTypeModel(modelBuilder);
+            CreatePlaneTypeModel(modelBuilder);
             CreateAirportModel(modelBuilder);
             CreatePlanesAirportsModel(modelBuilder);
         }
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for planes.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreatePlanTypeModel(ModelBuilder modelBuilder)
+        private static void CreatePlaneTypeModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PlaneType>().HasKey(p => p.Id);
             modelBuilder.Entity<PlaneType>().Property(p => p.Title).IsRequired().HasMaxLength(64);

@@ -13,5 +13,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Value for site.
         /// </summary>
         Site = 1,
+
+        // Begin BIADemo
+
+        /// <summary>
+        /// Value for Aircraft Maintenance Company.
+        /// </summary>
+        AircraftMaintenanceCompany = 2,
+
+        // End BIADemo
     }
 }
