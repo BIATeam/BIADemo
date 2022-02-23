@@ -10,7 +10,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { SiteService } from 'src/app/features/sites/services/site.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Member } from '../../model/member';
 
@@ -25,6 +24,8 @@ export class MemberFormComponent implements OnChanges {
   @Input() member: Member = <Member>{};
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
+  @Input() teamId: number;
+  @Input() teamType: number;
 
   @Output() save = new EventEmitter<Member>();
   @Output() cancel = new EventEmitter();
@@ -33,8 +34,7 @@ export class MemberFormComponent implements OnChanges {
 
   constructor(
     public formBuilder: FormBuilder,
-    public translateService: TranslateService,
-    public siteService: SiteService) {
+    public translateService: TranslateService) {
     this.initForm();
   }
 
@@ -68,7 +68,7 @@ export class MemberFormComponent implements OnChanges {
       member.user = {...member.user};
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      member.teamId = this.siteService.currentSiteId;
+      member.teamId = this.teamId;
       this.save.emit(member);
       this.form.reset();
     }

@@ -151,6 +151,7 @@ const MODULES = [
   HttpClientModule
 ];
 
+
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
@@ -185,6 +186,7 @@ const PIPES = [
 ];
 
 const VIEW_IMPORTS = [StoreModule.forFeature('views', reducers), EffectsModule.forFeature([ViewsEffects])];
+
 const NOTIFICATION_IMPORTS = [
   StoreModule.forFeature('domain-notifications', notificationReducers),
   EffectsModule.forFeature([NotificationsEffects])

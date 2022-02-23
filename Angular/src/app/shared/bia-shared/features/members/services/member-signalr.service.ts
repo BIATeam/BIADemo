@@ -6,7 +6,6 @@ import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.se
 import { loadAllByPost } from '../store/members-actions';
 import { getLastLazyLoadEvent } from '../store/member.state';
 import { LazyLoadEvent } from 'primeng/api';
-import { SiteService } from '../../../services/site.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
@@ -27,7 +26,7 @@ export class MembersSignalRService {
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private siteService: SiteService) {
+  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService) {
     // Do nothing.
   }
 
@@ -35,7 +34,7 @@ export class MembersSignalRService {
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize() {
+  initialize(parentKey:string) {
     console.log('%c [Members] Register SignalR : refresh-members', 'color: purple; font-weight: bold');
     this.signalRService.addMethod('refresh-members', () => {
       this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
@@ -45,7 +44,7 @@ export class MembersSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.siteService.currentSiteId.toString() , featureName: 'members'};
+    this.targetedFeature = {parentKey: parentKey, featureName: 'members'};
     this.signalRService.joinGroup(this.targetedFeature);
 
   }

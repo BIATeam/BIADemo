@@ -44,7 +44,7 @@ const ROUTES: Routes = [
           permission: Permission.Member_List_Access
         },
         loadChildren: () =>
-          import('./children/members/member.module').then((m) => m.MemberModule)
+          import('./children/members/member.module').then((m) => m.SiteMemberModule)
       },
     ]
   },

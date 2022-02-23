@@ -1,7 +1,8 @@
-<app-member-form  *ngIf="(siteService.loading$ | async) === (false)"
+<app-member-form
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
-    [siteId]="siteService.currentSite?.id"
+    [teamId]="teamId"
+    [teamType]="teamType"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-member-form>
