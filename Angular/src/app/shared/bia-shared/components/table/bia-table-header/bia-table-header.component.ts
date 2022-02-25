@@ -28,7 +28,8 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
 
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  actionButtonsTemplate: TemplateRef<any>;
+  actionOnSelectedTemplate: TemplateRef<any>;
+  actionOnListTemplate: TemplateRef<any>;
   
   nbSelectedElements = 0;
 
@@ -43,9 +44,12 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   ngAfterContentInit() {
     this.templates.forEach((item) => {
         switch(item.getType()) {
-            case 'actionButtons':
-                this.actionButtonsTemplate = item.template;
-            break;
+          case 'actionOnSelected':
+            this.actionOnSelectedTemplate = item.template;
+          break;
+          case 'actionOnList':
+            this.actionOnListTemplate = item.template;
+          break;
         }
     });
 }

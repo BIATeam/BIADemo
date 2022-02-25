@@ -10,14 +10,14 @@
       (delete)="onDelete()"
       [selectedElements]="selectedAircraftMaintenanceCompanies"
     >
-    <ng-template pTemplate="actionButtons">
+    <ng-template pTemplate="actionOnSelected">
       <button
       pButton
-      [disabled]="selectedAircraftMaintenanceCompanies.length !== 1"
+      [disabled]="selectedAircraftMaintenanceCompanies?.length !== 1"
       *ngIf="canEdit"
       class="p-button-outlined"
       label="{{ 'bia.edit' | translate }}"
-      (click)="onEdit($event)"></button>
+      (click)="onEdit()"></button>
     </ng-template>
   </bia-table-header>
     <bia-table-controller
