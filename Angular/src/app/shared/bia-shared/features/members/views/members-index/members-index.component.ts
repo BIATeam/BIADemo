@@ -33,6 +33,8 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
   styleUrls: ['./members-index.component.scss']
 })
 export class MembersIndexComponent implements OnInit, OnDestroy {
+  public teamTypeId: number;
+
   useCalcMode = false;
   useSignalR = false;
   useView = false;
@@ -94,7 +96,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.select(getMemberLoadingGetAll);
     this.OnDisplay();
     if (this.useCalcMode) {
-      this.memberOptionsService.loadAllOptions();
+      this.memberOptionsService.loadAllOptions(this.teamTypeId);
     }
 
     if (this.useRefreshAtLanguageChange) {

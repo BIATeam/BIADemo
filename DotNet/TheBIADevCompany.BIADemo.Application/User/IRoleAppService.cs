@@ -17,8 +17,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+        /// <param name="teamTypeId">The team type id.</param>
+        /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId);
 
         /// <summary>
         /// Get all member roles.

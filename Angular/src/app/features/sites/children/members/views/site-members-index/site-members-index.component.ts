@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/features/members/views/members-index/members-index.component';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-members-index',
@@ -16,6 +17,7 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
   }
 
   ngOnInit() {
+    this.teamTypeId=TeamTypeId.Site;
     super.ngOnInit();
     this.parentIds = ['' + this.siteService.currentSiteId];
   }

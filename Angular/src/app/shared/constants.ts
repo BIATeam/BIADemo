@@ -20,3 +20,9 @@ export enum ViewType {
   User = 2
 }
 
+export enum TeamTypeId {
+  Site = 1,
+  // Begin BIADemo  
+  AircraftMaintenanceCompany = 2,
+  // End BIADemo
+}

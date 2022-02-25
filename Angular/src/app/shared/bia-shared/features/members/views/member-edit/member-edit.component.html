@@ -3,7 +3,6 @@
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
     [teamId]="teamId"
-    [teamType]="teamType"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-member-form>

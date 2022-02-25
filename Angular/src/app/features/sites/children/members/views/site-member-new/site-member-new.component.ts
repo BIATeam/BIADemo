@@ -1,6 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { MemberNewComponent } from 'src/app/shared/bia-shared/features/members/views/member-new/member-new.component';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-member-new',
@@ -18,7 +19,7 @@ export class SiteMemberNewComponent extends MemberNewComponent implements OnInit
 
   ngOnInit() {
     if (this.siteService.currentSite!= null) this.teamId = this.siteService.currentSite.id;
-    this.teamType=1;
+    this.teamTypeId=TeamTypeId.Site;
     super.ngOnInit();
   }
 }

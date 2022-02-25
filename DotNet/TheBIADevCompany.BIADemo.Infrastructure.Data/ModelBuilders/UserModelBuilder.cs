@@ -126,6 +126,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot", Label = "Pilot" });
 
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 101, Code = "Team_Leader", Label = "Team leader" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 102, Code = "Operator", Label = "Operator" });
+
             // End BIADemo
         }
 
@@ -142,6 +145,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Begin BIADemo
             modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 2 });
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 101 });
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 102 });
 
             // End BIADemo
         }
@@ -160,6 +165,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Begin BIADemo
             modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 2, RoleId = 2 });
+            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 101, RoleId = 101 });
+            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 102, RoleId = 102 });
 
             // End BIADemo
         }
@@ -187,6 +194,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot", Label = "Pilot" });
+
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 101, Code = "Team_Leader", Label = "Team leader" });
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 102, Code = "Operator", Label = "Operator" });
 
             // End BIADemo
         }

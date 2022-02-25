@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class MemberNewComponent implements OnInit {
   public teamId: number;
-  public teamType: number;
+  public teamTypeId: number;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -27,7 +27,7 @@ export class MemberNewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.memberOptionsService.loadAllOptions();
+    this.memberOptionsService.loadAllOptions(this.teamTypeId);
   }
 
   onSubmitted(memberToCreate: Member) {

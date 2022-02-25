@@ -6,6 +6,7 @@ import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-mai
 import { MemberEditComponent } from 'src/app/shared/bia-shared/features/members/views/member-edit/member-edit.component';
 import { MemberOptionsService } from 'src/app/shared/bia-shared/features/members/services/member-options.service';
 import { MemberService } from 'src/app/shared/bia-shared/features/members/services/member.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-member-edit',
@@ -26,7 +27,7 @@ export class AircraftMaintenanceCompanyMemberEditComponent extends MemberEditCom
 
   ngOnInit() {
     if (this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompany!= null) this.teamId = this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompany.id;
-    this.teamType=1;
+    this.teamTypeId=TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
   }
 }

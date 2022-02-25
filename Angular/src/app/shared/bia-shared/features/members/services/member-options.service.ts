@@ -37,8 +37,8 @@ export class MemberOptionsService {
         );
     }
 
-    loadAllOptions() {
+    loadAllOptions(teamTypeId:number) {
         this.store.dispatch(loadAllUserOptions());
-        this.store.dispatch(loadAllRoleOptions());
+        this.store.dispatch(loadAllRoleOptions({ teamTypeId: teamTypeId }));
     }
 }

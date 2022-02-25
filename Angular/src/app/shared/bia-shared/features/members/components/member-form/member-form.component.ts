@@ -25,7 +25,6 @@ export class MemberFormComponent implements OnChanges {
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
   @Input() teamId: number;
-  @Input() teamType: number;
 
   @Output() save = new EventEmitter<Member>();
   @Output() cancel = new EventEmitter();

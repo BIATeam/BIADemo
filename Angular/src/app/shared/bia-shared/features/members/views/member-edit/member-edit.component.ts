@@ -17,7 +17,7 @@ export class MemberEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   protected sub = new Subscription();
   public teamId: number;
-  public teamType: number;
+  public teamTypeId: number;
   
   constructor(
     protected store: Store<AppState>,
@@ -28,7 +28,7 @@ export class MemberEditComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.memberOptionsService.loadAllOptions();
+    this.memberOptionsService.loadAllOptions(this.teamTypeId);
   }
 
   ngOnDestroy() {
