@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SiteMembersIndexComponent } from './views/members-index/members-index.component';
+import { SiteMembersIndexComponent } from './views/site-members-index/site-members-index.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { SiteMemberNewComponent } from './views/member-new/member-new.component';
-import { SiteMemberEditComponent } from './views/member-edit/member-edit.component';
+import { SiteMemberNewComponent } from './views/site-member-new/site-member-new.component';
+import { SiteMemberEditComponent } from './views/site-member-edit/site-member-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
-import { SiteMemberItemComponent } from './views/member-item/member-item.component';
+import { SiteMemberItemComponent } from './views/site-member-item/site-member-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { MemberModule } from 'src/app/shared/bia-shared/features/members/member.module';

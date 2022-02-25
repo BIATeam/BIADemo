@@ -1,7 +1,7 @@
-$oldRealSelector = 'member'
-$oldRealSelectorPlural = 'members'
-$newRealSelector = read-host "new crud name? (singular)"
-$newRealSelectorPlural = read-host "new crud name? (plural)"
+$oldRealSelector = 'site'
+$oldRealSelectorPlural = 'sites'
+$newRealSelector = read-host "new team name? (singular)"
+$newRealSelectorPlural = read-host "new team name? (plural)"
 $oldRealSelector = $oldRealSelector.ToLower();
 $newRealSelector = $newRealSelector.ToLower();
 $oldRealSelectorPlural = $oldRealSelectorPlural.ToLower();

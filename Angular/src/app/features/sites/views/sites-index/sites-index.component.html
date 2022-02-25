@@ -9,19 +9,24 @@
       (closeFilter)="onCloseFilter()"
     ></app-site-filter>
     <div fxFlex="100">
-      <app-site-table-header
-        [headerTitle]="'site.listOf' | translate"
-        [haveFilter]="haveFilter"
-        [showFilter]="showFilter"
-        [showBtnFilter]="true"
-        [canAdd]="canAdd"
-        [canEdit]="canEdit"
-        (create)="onCreate()"
-        (openFilter)="onOpenFilter()"
-        (delete)="onDelete()"
-        (edit)="onEdit()"
-        [selectedElements]="selectedSites"
-      ></app-site-table-header>
+      <bia-table-header
+      [headerTitle]="'site.listOf' | translate"
+      [canAdd]="canAdd"
+      [canDelete]="canDelete"
+      [canExportCSV]="false"
+      (create)="onCreate()"
+      (delete)="onDelete()"
+      [selectedElements]="selectedSites">
+        <ng-template pTemplate="actionOnSelected">
+          <button
+          pButton
+          [disabled]="selectedSites?.length !== 1"
+          *ngIf="canEdit"
+          class="p-button-outlined"
+          label="{{ 'site.edit' | translate }}"
+          (click)="onEdit()"></button>
+        </ng-template>
+      </bia-table-header>
       <bia-table-controller
         [defaultPageSize]="defaultPageSize"
         [length]="totalCount$ | async"
