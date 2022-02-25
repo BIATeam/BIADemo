@@ -58,7 +58,7 @@ const ROUTES: Routes = [
               permission: Permission.Member_List_Access
             },
             loadChildren: () =>
-              import('./children/members/member.module').then((m) => m.AircraftMaintenanceCompanyMemberModule)
+              import('./children/members/aircraft-maintenance-company-member.module').then((m) => m.AircraftMaintenanceCompanyMemberModule)
           },
           {
             path: 'edit',
