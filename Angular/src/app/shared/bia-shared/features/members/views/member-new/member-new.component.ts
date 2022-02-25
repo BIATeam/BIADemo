@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { create } from '../../store/members-actions';
 import { Member } from '../../model/member';
@@ -15,12 +15,16 @@ export class MemberNewComponent implements OnInit {
   public teamId: number;
   public teamType: number;
 
-  constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    protected activatedRoute: ActivatedRoute,
-    public memberOptionsService: MemberOptionsService,
-  ) {}
+  protected store: Store<AppState>;
+  protected router: Router;
+  protected activatedRoute: ActivatedRoute;
+  public memberOptionsService: MemberOptionsService;
+  constructor( injector: Injector ) {
+    this.store = injector.get<Store<AppState>>(Store);
+    this.router = injector.get<Router>(Router);
+    this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
+    this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
+  }
 
   ngOnInit() {
     this.memberOptionsService.loadAllOptions();

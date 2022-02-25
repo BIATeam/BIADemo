@@ -144,9 +144,16 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     }
   }
 
-  onEdit(aircraftMaintenanceCompanyId: number) {
-    if (!this.useCalcMode) {
-      this.router.navigate(['../' + aircraftMaintenanceCompanyId + '/edit'], { relativeTo: this.activatedRoute });
+  onEdit() {
+    if (this.selectedAircraftMaintenanceCompanies.length == 1) {
+      this.router.navigate(['../' + this.selectedAircraftMaintenanceCompanies[0].id + '/edit'], { relativeTo: this.activatedRoute });
+    }
+  }
+
+  
+  onManageMember(aircraftMaintenanceCompanyId: number) {
+    if (aircraftMaintenanceCompanyId && aircraftMaintenanceCompanyId > 0) {
+      this.router.navigate(['../' + aircraftMaintenanceCompanyId + '/members'], { relativeTo: this.activatedRoute });
     }
   }
 

@@ -1,22 +1,22 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { SiteService } from 'src/app/features/sites/services/site.service';
+import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/features/members/views/members-index/members-index.component';
 
 @Component({
-  selector: 'app-site-members-index',
+  selector: 'app-aircraft-maintenance-company-members-index',
   templateUrl: '../../../../../../shared/bia-shared/features/members/views/members-index/members-index.component.html',
   styleUrls: ['../../../../../../shared/bia-shared/features/members/views/members-index/members-index.component.scss']
 })
-export class SiteMembersIndexComponent extends MembersIndexComponent implements OnInit {
+export class AircraftMaintenanceCompanyMembersIndexComponent extends MembersIndexComponent implements OnInit {
   constructor(
     injector: Injector,
-    public siteService: SiteService,
+    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
   ) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.parentIds = ['' + this.siteService.currentSiteId];
+    this.parentIds = ['' + this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId];
   }
 }

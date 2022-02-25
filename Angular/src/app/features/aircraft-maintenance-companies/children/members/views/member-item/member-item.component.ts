@@ -10,7 +10,7 @@ import { MemberItemComponent } from 'src/app/shared/bia-shared/features/members/
   templateUrl: '../../../../../../shared/bia-shared/features/members/views/member-item/member-item.component.html',
   styleUrls: ['../../../../../../shared/bia-shared/features/members/views/member-item/member-item.component.scss']
 })
-export class SiteMemberItemComponent extends MemberItemComponent {
+export class AircraftMaintenanceCompanyMemberItemComponent extends MemberItemComponent {
   constructor(protected store: Store<AppState>,
     protected route: ActivatedRoute,
     public memberService: MemberService,

@@ -51,6 +51,16 @@ const ROUTES: Routes = [
         canActivate: [PermissionGuard],
         children: [
           {
+            path: 'members',
+            data: {
+              breadcrumb: 'app.members',
+              canNavigate: true,
+              permission: Permission.Member_List_Access
+            },
+            loadChildren: () =>
+              import('./children/members/member.module').then((m) => m.AircraftMaintenanceCompanyMemberModule)
+          },
+          {
             path: 'edit',
             data: {
               breadcrumb: 'bia.edit',

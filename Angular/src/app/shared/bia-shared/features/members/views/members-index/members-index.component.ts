@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllMembers, getMembersTotalCount, getMemberLoadingGetAll } from '../../store/member.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/members-actions';
@@ -62,17 +62,26 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   parentIds: string[];
 
 
-  constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    public activatedRoute: ActivatedRoute,
-    protected authService: AuthService,
-    protected memberDas: MemberDas,
-    protected translateService: TranslateService,
-    protected biaTranslationService: BiaTranslationService,
-    protected membersSignalRService: MembersSignalRService,
-    public memberOptionsService: MemberOptionsService,
-  ) {
+  protected store: Store<AppState>;
+  protected router: Router;
+  public activatedRoute: ActivatedRoute;
+  protected authService: AuthService;
+  protected memberDas: MemberDas;
+  protected translateService: TranslateService;
+  protected biaTranslationService: BiaTranslationService;
+  protected membersSignalRService: MembersSignalRService;
+  public memberOptionsService: MemberOptionsService;
+
+  constructor( injector: Injector ) {
+    this.store = injector.get<Store<AppState>>(Store);
+    this.router = injector.get<Router>(Router);
+    this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
+    this.authService = injector.get<AuthService>(AuthService);
+    this.memberDas = injector.get<MemberDas>(MemberDas);
+    this.translateService = injector.get<TranslateService>(TranslateService);
+    this.biaTranslationService = injector.get<BiaTranslationService>(BiaTranslationService);
+    this.membersSignalRService = injector.get<MembersSignalRService>(MembersSignalRService);
+    this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
   }
 
   ngOnInit() {

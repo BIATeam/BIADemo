@@ -9,7 +9,17 @@
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedAircraftMaintenanceCompanies"
-    ></bia-table-header>
+    >
+    <ng-template pTemplate="actionButtons">
+      <button
+      pButton
+      [disabled]="selectedAircraftMaintenanceCompanies.length !== 1"
+      *ngIf="canEdit"
+      class="p-button-outlined"
+      label="{{ 'bia.edit' | translate }}"
+      (click)="onEdit($event)"></button>
+    </ng-template>
+  </bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
@@ -33,7 +43,7 @@
       [canEdit]="canEdit"
       [canSelectElement]="canDelete"
       [loading]="loading$ | async"
-      (edit)="onEdit($event)"
+      (edit)="onManageMember($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
