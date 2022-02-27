@@ -15,11 +15,6 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     public class AircraftMaintenanceCompany : Team
     {
         /// <summary>
-        /// Gets or sets the Manufacturer's Serial Number.
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Add row version timestamp in table Site.
         /// </summary>
         [Timestamp]

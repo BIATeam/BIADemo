@@ -17,7 +17,7 @@ import {
 } from '../../store/views-actions';
 import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
 import { map, tap } from 'rxjs/operators';
-import { ViewType } from 'src/app/shared/constants';
+import { TeamTypeId, ViewType } from 'src/app/shared/constants';
 import { SiteView } from '../../model/site-view';
 import { DefaultView } from '../../model/default-view';
 import { SiteDefaultView } from '../../model/site-default-view';
@@ -108,7 +108,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.sites$ = this.store.select(getAllSites).pipe(
       map((sites) =>
         sites.filter(
-          (site) => this.authService.getCurrentSiteId() < 1 || site.id === this.authService.getCurrentSiteId()
+          (site) => this.authService.getCurrentTeamId(TeamTypeId.Site) < 1 || site.id === this.authService.getCurrentTeamId(TeamTypeId.Site)
         )
       ),
       tap((sites) => {

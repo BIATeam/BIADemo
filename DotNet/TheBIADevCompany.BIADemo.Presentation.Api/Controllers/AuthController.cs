@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -17,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
@@ -38,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// The site application service.
         /// </summary>
-        private readonly ISiteAppService siteAppService;
+        private readonly ITeamAppService teamAppService;
 
         /// <summary>
         /// The role application service.
@@ -65,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
         /// <param name="userAppService">The user application service.</param>
-        /// <param name="siteAppService">The site application service.</param>
+        /// <param name="teamAppService">The team application service.</param>
         /// <param name="roleAppService">The role application service.</param>
         /// <param name="userPermissionDomainService">The User Right domain service.</param>
         /// <param name="permissionAppService">The Permission service.</param>
@@ -73,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         public AuthController(
             IJwtFactory jwtFactory,
             IUserAppService userAppService,
-            ISiteAppService siteAppService,
+            ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IUserPermissionDomainService userPermissionDomainService,
             IPermissionAppService permissionAppService,
@@ -81,7 +83,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             this.jwtFactory = jwtFactory;
             this.userAppService = userAppService;
-            this.siteAppService = siteAppService;
+            this.teamAppService = teamAppService;
             this.roleAppService = roleAppService;
             this.logger = logger;
             this.userPermissionDomainService = userPermissionDomainService;
@@ -91,31 +93,66 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// The login action.
         /// </summary>
-        /// <param name="singleRoleMode">Whether the front is configured to use a single role at a time.</param>
         /// <returns>The JWT if authenticated.</returns>
-        [HttpGet("login/{singleRoleMode?}")]
+        [HttpGet("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login(bool singleRoleMode = false)
+        public async Task<IActionResult> Login()
         {
-            return await this.LoginOnSite(0, singleRoleMode);
+            return await this.LoginOnTeamsDefault();
         }
 
         /// <summary>
         /// The login action.
         /// </summary>
-        /// <param name="siteId">The site identifier.</param>
-        /// <param name="singleRoleMode">Whether the front is configured to use a single role at a time.</param>
-        /// <param name="roleId">The role id.</param>
-        /// <returns>
-        /// The JWT if authenticated.
-        /// </returns>
-        [HttpGet("login/site/{siteId}/{singleRoleMode?}/{roleId?}")]
+        /// <param name="roleModes">role mode for the different teams.</param>
+        /// <returns>The JWT if authenticated.</returns>
+        [HttpPost("loginOnTeamsDefault")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LoginOnSite(int siteId, bool singleRoleMode = false, int roleId = 0)
+        public async Task<IActionResult> LoginOnTeamsDefault(RoleModeDto[] roleModes = null)
+        {
+            TeamLoginDto[] teamsLogin =
+            {
+                new TeamLoginDto
+                {
+                    TeamTypeId = (int)TeamTypeId.Site,
+                    TeamId = 0,
+                    RoleMode = roleModes?.FirstOrDefault(r => r.TeamTypeId == (int)TeamTypeId.Site)?.roleMode ?? RoleMode.AllRoles,
+                    UseDefaultRoles = true,
+                    RoleIds = { },
+                },
+
+                // Begin BIADemo
+                new TeamLoginDto
+                {
+                    TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
+                    TeamId = 0,
+                    RoleMode = roleModes?.FirstOrDefault(r => r.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany)?.roleMode ?? RoleMode.AllRoles,
+                    UseDefaultRoles = true,
+                    RoleIds = { },
+                },
+
+                // End BIADemo
+            };
+
+            return await this.LoginOnTeams(teamsLogin);
+        }
+
+        /// <summary>
+        /// The login action.
+        /// </summary>
+        /// <param name="teamLogins">The teams info for login.</param>
+        /// <returns>
+        /// The JWT if authenticated.
+        /// </returns>
+        [HttpPost("loginOnTeams")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> LoginOnTeams(TeamLoginDto[] teamLogins)
         {
             // user data
             var userData = new UserDataDto();
@@ -136,7 +173,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             var login = identity.Name.Split('\\').LastOrDefault();
+#pragma warning disable CA1416 // Validate platform compatibility
             var sid = ((System.Security.Principal.WindowsIdentity)identity).User.Value;
+#pragma warning restore CA1416 // Validate platform compatibility
 
             if (string.IsNullOrEmpty(login))
             {
@@ -201,69 +240,109 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
 
-                var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
-                var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-
-                userData.Sites = sites.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
-
-                if (site != null)
+                foreach (var teamLogin in teamLogins)
                 {
-                    if (site.IsDefault)
-                    {
-                        userData.DefaultSiteId = site.Id;
-                    }
+                    var teams = await this.teamAppService.GetAllAsync(teamLogin.TeamTypeId, userInfo.Id, userMainRights);
+                    var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                    if (siteId > 0 && sites.Any(s => s.Id == siteId))
-                    {
-                        userData.CurrentSiteId = siteId;
-                        userData.CurrentSiteTitle = sites.First(s => s.Id == siteId).Title;
-                    }
-                    else
-                    {
-                        userData.CurrentSiteId = site.Id;
-                        userData.CurrentSiteTitle = site.Title;
-                    }
-                }
+                    CurrentTeamDto currentTeam = new CurrentTeamDto();
+                    currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
-                if (userData.CurrentSiteId > 0)
-                {
-                    var roles = await this.roleAppService.GetMemberRolesAsync(userData.CurrentSiteId, userInfo.Id);
-                    userData.Roles = roles.ToList();
+                    currentTeam.Teams = teams.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
 
-                    if (singleRoleMode)
+                    if (team != null)
                     {
-                        var role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-                        if (role != null)
+                        if (team.IsDefault)
                         {
-                            if (role.IsDefault)
-                            {
-                                userData.DefaultRoleId = role.Id;
-                            }
+                            currentTeam.DefaultTeamId = team.Id;
+                        }
 
-                            if (roleId > 0 && roles.Any(s => s.Id == roleId))
+                        if (teamLogin.TeamId > 0 && teams.Any(s => s.Id == teamLogin.TeamId))
+                        {
+                            currentTeam.CurrentTeamId = teamLogin.TeamId;
+                            currentTeam.CurrentTeamTitle = teams.First(s => s.Id == teamLogin.TeamId).Title;
+                        }
+                        else
+                        {
+                            currentTeam.CurrentTeamId = team.Id;
+                            currentTeam.CurrentTeamTitle = team.Title;
+                        }
+                    }
+
+                    if (currentTeam.CurrentTeamId > 0)
+                    {
+                        var roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.CurrentTeamId, userInfo.Id);
+                        currentTeam.Roles = roles.ToList();
+
+                        if (teamLogin.RoleMode == RoleMode.AllRoles)
+                        {
+                            currentTeam.CurrentRoleIds = roles.Select(r => r.Id).ToList();
+                        }
+                        else if (teamLogin.RoleMode == RoleMode.SingleRole)
+                        {
+                            RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                            if (role != null)
                             {
-                                userData.CurrentRoleIds = new List<int> { roleId };
+                                if (role.IsDefault)
+                                {
+                                    currentTeam.DefaultRoleIds = new List<int> { role.Id };
+                                }
+
+                                if (teamLogin.RoleIds.Length == 1 && roles.Any(s => s.Id == teamLogin.RoleIds.First()))
+                                {
+                                    currentTeam.CurrentRoleIds = new List<int> { teamLogin.RoleIds.First() };
+                                }
+                                else
+                                {
+                                    currentTeam.CurrentRoleIds = new List<int> { role.Id };
+                                }
                             }
                             else
                             {
-                                userData.CurrentRoleIds = new List<int> { role.Id };
+                                currentTeam.CurrentRoleIds = new List<int>();
                             }
                         }
                         else
                         {
-                            userData.CurrentRoleIds = new List<int>();
+                            if (roles.Any())
+                            {
+                                currentTeam.DefaultRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
+
+                                if (!teamLogin.UseDefaultRoles)
+                                {
+                                    List<int> roleIdsToSet = roles.Where(r => teamLogin.RoleIds != null && teamLogin.RoleIds.Any(tr => tr == r.Id)).Select(r => r.Id).ToList();
+                                    currentTeam.CurrentRoleIds = roleIdsToSet;
+                                }
+                                else
+                                {
+                                    if (currentTeam.DefaultRoleIds.Any())
+                                    {
+                                        currentTeam.CurrentRoleIds = currentTeam.DefaultRoleIds;
+                                    }
+                                    else
+                                    {
+                                        RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                                        currentTeam.CurrentRoleIds = new List<int> { role.Id };
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                currentTeam.CurrentRoleIds = new List<int>();
+                            }
+                        }
+
+                        userData.CurrentTeams.Add(currentTeam);
+
+                        // add the sites roles (filter if singleRole mode is used)
+                        allRoles.AddRange(currentTeam.Roles.Where(r => currentTeam.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
+
+                        // add computed roles (can be customized)
+                        if (currentTeam.TeamTypeId == (int)TeamTypeId.Site)
+                        {
+                            allRoles.Add(Constants.Role.SiteMember);
                         }
                     }
-                    else
-                    {
-                        userData.CurrentRoleIds = roles.Select(r => r.Id).ToList();
-                    }
-
-                    // add the sites roles (filter if singleRole mode is used)
-                    allRoles.AddRange(userData.Roles.Where(r => userData.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
-
-                    // add computed roles (can be customized)
-                    allRoles.Add(Constants.Role.SiteMember);
                 }
             }
 

@@ -8,6 +8,7 @@ import { NotificationSignalRService } from 'src/app/domains/notification/service
 import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +40,7 @@ export class BiaAppInitService implements OnDestroy {
           // Load app settings:
           this.store.dispatch(loadDomainAppSettings());
 
-          if (environment.enableNotifications === true) {
+          if (allEnvironments.enableNotifications === true) {
             this.notificationSignalRService.initialize();
           }
 
@@ -53,7 +54,7 @@ export class BiaAppInitService implements OnDestroy {
       this.sub.unsubscribe();
     }
 
-    if (environment.enableNotifications === true) {
+    if (allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
   }

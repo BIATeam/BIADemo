@@ -61,6 +61,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
             // Application Layer
+            collection.AddTransient<ITeamAppService, TeamAppService>();
             collection.AddTransient<ISiteAppService, SiteAppService>();
             collection.AddTransient<IMemberAppService, MemberAppService>();
             collection.AddTransient<IRoleAppService, RoleAppService>();

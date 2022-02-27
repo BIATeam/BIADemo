@@ -227,7 +227,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('name', 'aircraftMaintenanceCompany.name'),
+          new PrimeTableColumn('title', 'aircraftMaintenanceCompany.title'),
         ]
       };
 

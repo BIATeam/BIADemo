@@ -5,8 +5,7 @@ import { MenuItem, Message } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
+import { THEME_LIGHT, THEME_DARK, TeamTypeId, RoleMode } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
@@ -18,6 +17,7 @@ import { Router } from '@angular/router';
 import { UserData } from '../../../model/auth-info';
 import { RoleDto } from '../../../model/role';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
 @Component({
   selector: 'bia-classic-header',
@@ -75,13 +75,14 @@ export class ClassicHeaderComponent implements OnDestroy {
   navigations: BiaNavigation[];
   fullscreenMode = false;
   isIE = this.platform.TRIDENT;
-  urlAppIcon = environment.urlAppIcon;
-  urlDMIndex = environment.urlDMIndex;
+  urlAppIcon = allEnvironments.urlAppIcon;
   displaySiteList = false;
+  defaultSiteId = 0;
   displayRoleList = false;
+  defaultRoleId = 0;
   cssClassEnv: string;
   languageId: number;
-  singleRoleMode = environment.singleRoleMode;
+  singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == TeamTypeId.Site && t.roleMode == RoleMode.SingleRole) != undefined;
 
   private sub = new Subscription();
 
@@ -175,9 +176,17 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownSite() {
     this.displaySiteList = false;
-    if (this.userData.currentSiteId > 0 && this.userData.sites && this.userData.sites.length > 1) {
-      this.currentSite = this.userData.sites.filter((x) => x.id === this.userData.currentSiteId)[0];
+    let currentSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
+    let sites = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.sites;
+    let defaultSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.defaultTeamId;
+    if (currentSiteId && currentSiteId != undefined && currentSiteId > 0 && 
+      sites && sites != undefined && sites.length > 1) {
+      this.currentSite = sites.filter((x) => x.id === currentSiteId)[0];
       this.displaySiteList = true;
+      if (defaultSiteId)
+      {
+        this.defaultRoleId = defaultSiteId;
+      }
     }
   }
 
@@ -191,12 +200,18 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private initDropdownRole() {
     this.displayRoleList = false;
-    if (environment.singleRoleMode) {
-      if (this.userData.currentRoleIds &&
-        this.userData.currentRoleIds.length === 1 &&
-        this.userData.roles && this.userData.roles.length > 1) {
-        this.currentRole = this.userData.roles.filter((x) => x.id === this.userData.currentRoleIds[0])[0];
+    if (this.singleRoleMode) {
+      let currentRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentRoleIds;
+      let defaultRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.defaultRoleIds;
+      let roles = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.roles;
+      if (currentRoleIds && currentRoleIds != undefined && currentRoleIds.length === 1 &&
+        roles  && roles != undefined && roles.length > 1) {
+        this.currentRole = roles.filter((x) => x.id === currentRoleIds![0])[0];
         this.displayRoleList = true;
+        if (defaultRoleIds && defaultRoleIds.length === 1)
+        {
+          this.defaultRoleId = defaultRoleIds[0]
+        }
       }
     }
   }

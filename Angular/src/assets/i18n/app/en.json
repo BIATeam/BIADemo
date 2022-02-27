@@ -23,7 +23,7 @@
   "Begin BIADemo" : "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "listOf": "List of aircraft maintenance companies",
-    "name": "Name"
+    "title": "Name"
   },
   "airport": {
     "add": "Add airport",

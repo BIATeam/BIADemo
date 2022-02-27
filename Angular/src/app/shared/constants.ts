@@ -20,6 +20,23 @@ export enum ViewType {
   User = 2
 }
 
+export enum RoleMode {
+  /// <summary>
+  ///  All possible roles are selected
+  /// </summary>
+  AllRoles = 1,
+
+  /// <summary>
+  /// Only one role is selectable
+  /// </summary>
+  SingleRole = 2,
+
+  /// <summary>
+  /// Multi select Role
+  /// </summary>
+  MultiRoles = 3,
+}
+
 export enum TeamTypeId {
   Site = 1,
   // Begin BIADemo  

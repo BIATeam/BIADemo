@@ -23,11 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
     {
         /// <summary>
-        /// The current SiteId.
-        /// </summary>
-        private readonly int currentSiteId;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompanyAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -35,12 +30,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         public AircraftMaintenanceCompanyAppService(ITGenericRepository<AircraftMaintenanceCompany, int> repository)
             : base(repository)
         {
-        }
-
-        /// <inheritdoc/>
-        public override Task<AircraftMaintenanceCompanyDto> AddAsync(AircraftMaintenanceCompanyDto dto, string mapperMode = null)
-        {
-            return base.AddAsync(dto, mapperMode);
         }
     }
 }

@@ -41,7 +41,7 @@ export class AircraftMaintenanceCompanyFormComponent implements OnChanges {
   private initForm() {
     this.form = this.formBuilder.group({
       id: [this.aircraftMaintenanceCompany.id],
-      name: [this.aircraftMaintenanceCompany.name, Validators.required],
+      title: [this.aircraftMaintenanceCompany.title, Validators.required],
     });
 
   }

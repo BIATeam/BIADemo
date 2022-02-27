@@ -19,6 +19,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
         /// Gets or sets the team type.
         /// </summary>
         public virtual TeamType TeamType { get; set; }

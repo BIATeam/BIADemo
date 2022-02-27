@@ -1,6 +1,6 @@
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
+import { APP_SUPPORTED_TRANSLATIONS, TeamTypeId } from '../../../constants';
 import { AuthInfo, UserData } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -13,6 +13,7 @@ import { AppState } from '../../../../store/state';
 import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
 @Component({
   selector: 'bia-layout',
@@ -46,12 +47,12 @@ export class LayoutComponent implements OnInit {
   isLoadingUserInfo = false;
 
   menus = new Array<BiaNavigation>();
-  version = environment.version;
-  appTitle = environment.appTitle;
-  companyName = environment.companyName;
+  version = allEnvironments.version;
+  appTitle = allEnvironments.appTitle;
+  companyName = allEnvironments.companyName;
   helpUrl = environment.helpUrl;
   reportUrl = environment.reportUrl;
-  enableNotifications = environment.enableNotifications;
+  enableNotifications = allEnvironments.enableNotifications;
   username = '';
   headerLogos: string[];
   footerLogo = 'assets/bia/Footer.png';
@@ -78,12 +79,12 @@ export class LayoutComponent implements OnInit {
   }
 
   onSiteChange(siteId: number) {
-    this.authService.setCurrentSiteId(siteId);
+    this.authService.setCurrentTeamId(TeamTypeId.Site, siteId);
     location.assign(this.baseHref);
   }
 
   onRoleChange(roleId: number) {
-    this.authService.setCurrentRoleId(roleId);
+    this.authService.setCurrentRoleIds(TeamTypeId.Site, [roleId]);
     location.assign(this.baseHref);
   }
 
@@ -92,7 +93,7 @@ export class LayoutComponent implements OnInit {
   }
 
   onSetDefaultRole(roleId: number) {
-    this.store.dispatch(setDefaultRole({ id: roleId, siteId: this.authService.getCurrentSiteId() }));
+    this.store.dispatch(setDefaultRole({ id: roleId, siteId: this.authService.getCurrentTeamId(TeamTypeId.Site) }));
   }
 
   private initHeaderLogos() {

@@ -17,11 +17,6 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     public class Site : Team
     {
         /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
         /// Gets or sets the collection of view site.
         /// </summary>
         public ICollection<ViewSite> ViewSites { get; set; }

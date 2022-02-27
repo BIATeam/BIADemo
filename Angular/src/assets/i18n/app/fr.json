@@ -23,7 +23,7 @@
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "listOf": "Liste des entreprises de maintenance aéronautique",
-    "name": "Nom"
+    "title": "Nom"
   },
   "airport": {
     "add": "Ajouter aéroport",

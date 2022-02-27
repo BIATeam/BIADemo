@@ -63,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
             int currentUserId = this.principal.GetUserId();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),

@@ -220,6 +220,11 @@
         "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
         "Roles": [ "Admin" ]
       },
+      // Team
+      {
+        "Names": [ "Team_Access_All" ],
+        "Roles": [ "Admin" ]
+      },
       // User
       {
         "Names": [ "User_Options" ],

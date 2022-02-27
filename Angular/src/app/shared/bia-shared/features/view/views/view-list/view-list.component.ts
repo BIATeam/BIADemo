@@ -3,7 +3,7 @@ import { SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
-import { ViewType, DEFAULT_VIEW } from 'src/app/shared/constants';
+import { ViewType, DEFAULT_VIEW, TeamTypeId } from 'src/app/shared/constants';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getAllViews, getLastViewChanged, getDataLoaded } from '../../store/view.state';
@@ -90,7 +90,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
     ];
 
     let defaultView = 0;
-    const currentSiteId = this.authService.getCurrentSiteId();
+    const currentSiteId = this.authService.getCurrentTeamId(TeamTypeId.Site);
     const systemViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.System

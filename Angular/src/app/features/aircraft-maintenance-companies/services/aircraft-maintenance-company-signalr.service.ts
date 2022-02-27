@@ -6,7 +6,6 @@ import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.se
 import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-maintenance-companies-actions';
 import { getLastLazyLoadEvent } from '../store/aircraft-maintenance-company.state';
 import { LazyLoadEvent } from 'primeng/api';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 
 /**
@@ -26,7 +25,7 @@ export class AircraftMaintenanceCompaniesSignalRService {
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService: AuthService) {
+  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService) {
   }
 
   /**
@@ -43,7 +42,7 @@ export class AircraftMaintenanceCompaniesSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'aircraft-maintenance-companies'};
+    this.targetedFeature = {parentKey: "" , featureName : 'aircraft-maintenance-companies'};
     this.signalRService.joinGroup(this.targetedFeature);
   }
 

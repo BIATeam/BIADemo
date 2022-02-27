@@ -290,11 +290,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Sites
         {
             /// <summary>
-            /// The right to access to all sites.
-            /// </summary>
-            public const string AccessAll = "Site_Access_All";
-
-            /// <summary>
             /// The right to access to the list of sites.
             /// </summary>
             public const string ListAccess = "Site_List_Access";
@@ -323,6 +318,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save sites.
             /// </summary>
             public const string Save = "Site_Save";
+        }
+
+        /// <summary>
+        /// The sites rights.
+        /// </summary>
+        public static class Teams
+        {
+            /// <summary>
+            /// The right to access to all sites.
+            /// </summary>
+            public const string AccessAll = "Team_Access_All";
         }
 
         /// <summary>

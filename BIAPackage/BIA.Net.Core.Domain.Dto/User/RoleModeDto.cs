@@ -1,4 +1,4 @@
-// <copyright file="RoleDto.cs" company="BIA">
+// <copyright file="RoleModeDto.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -6,32 +6,23 @@ namespace BIA.Net.Core.Domain.Dto.User
 {
     using System;
     using System.Collections.Generic;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class RoleDto : BaseDto<int>
+    public class RoleModeDto
     {
         /// <summary>
         /// Gets or sets is the defaul value.
         /// </summary>
-        public bool IsDefault { get; set; }
+        public int TeamTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the code.
         /// </summary>
-        public string Code { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label in english.
-        /// </summary>
-        public string Label { get; set; }
-
-        /// <summary>
-        /// Gets or sets the role translations.
-        /// </summary>
-        public virtual ICollection<RoleTranslationDto> RoleTranslations { get; set; }
+        public RoleMode roleMode { get; set; }
     }
 }

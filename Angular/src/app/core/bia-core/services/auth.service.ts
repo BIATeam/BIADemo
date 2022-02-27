@@ -6,10 +6,13 @@ import { AuthInfo, AdditionalInfos } from 'src/app/shared/bia-shared/model/auth-
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
+import { TeamLoginDto } from 'src/app/shared/bia-shared/model/team-login-dto';
+import { RoleMode } from 'src/app/shared/constants';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
-const STORAGE_SITEID_KEY = 'currentSiteId';
+
+const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
 const STORAGE_RELOADED_KEY = 'isReloaded';
-const STORAGE_ROLEID_KEY = 'currentRoleId';
 
 @Injectable({
   providedIn: 'root'
@@ -33,10 +36,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected init() {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-        this.setCurrentSiteId(authInfo.additionalInfos.userData.currentSiteId);
-        if (environment.singleRoleMode && authInfo.additionalInfos.userData.currentRoleIds.length === 1) {
-          this.setCurrentRoleId(authInfo.additionalInfos.userData.currentRoleIds[0]);
-        }
+        authInfo.additionalInfos.userData.currentTeams.forEach(team => {
+          this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);   
+          const roleMode = allEnvironments.teams.find(r => r.teamTypeId == team.teamTypeId)?.roleMode || RoleMode.AllRoles;
+          if (roleMode !== RoleMode.AllRoles) {
+            this.setCurrentRoleIds(team.teamTypeId, team.currentRoleIds);
+          }
+        });
+
       }
     });
   }
@@ -96,39 +103,74 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return <AdditionalInfos>{};
   }
 
-  public getCurrentSiteId(): number {
-    const value = sessionStorage.getItem(STORAGE_SITEID_KEY);
+
+  public getTeamsLogin(): TeamLoginDto[] {
+    const value = sessionStorage.getItem(STORAGE_TEAMSLOGIN_KEY);
     if (value) {
-      const siteId: number = <number>JSON.parse(value);
-      return siteId;
+      const teamsLogin: TeamLoginDto[] = <TeamLoginDto[]>JSON.parse(value);
+      return teamsLogin;
     }
 
+    return [];
+  }  
+
+  public setTeamLogin(teamsLogin: TeamLoginDto[]){
+    sessionStorage.setItem(STORAGE_TEAMSLOGIN_KEY, JSON.stringify(teamsLogin));
+  }
+
+  public getTeamLogin(teamTypeId: number): TeamLoginDto | undefined{
+    const teamsLogin = this.getTeamsLogin();
+    return teamsLogin.find((i => i.teamTypeId === teamTypeId))
+    
+  }
+
+  
+
+
+  public getCurrentTeamId(teamTypeId: number): number {
+    const team = this.getTeamLogin(teamTypeId);
+    if (team) {
+      return team.teamId;
+    }
     return 0;
   }
 
-  public getCurrentRoleId(): number {
-    const value = sessionStorage.getItem(STORAGE_ROLEID_KEY);
-    if (value) {
-      return +value;
+  public getCurrentRoleIds(teamTypeId: number): number[] {
+    const team = this.getTeamLogin(teamTypeId);
+    if (team) {
+      return team.roleIds;
     }
-
-    return 0;
+    return [];
   }
 
-  public setCurrentSiteId(siteId: number) {
-    if (siteId > 0) {
-      sessionStorage.setItem(STORAGE_SITEID_KEY, siteId.toString());
-    } else {
-      sessionStorage.removeItem(STORAGE_SITEID_KEY);
+  public setCurrentTeamId(teamTypeId: number, teamId: number) {
+    const teamsLogin = this.getTeamsLogin();
+    let team = teamsLogin.find((i => i.teamTypeId === teamTypeId))
+    if (team) {
+      team.teamId = teamId
     }
+    else {
+      let newTeam = new TeamLoginDto();
+      newTeam.teamTypeId = teamTypeId;
+      newTeam.useDefaultRoles = true;
+      newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
+      newTeam.teamId = teamId;
+      teamsLogin.push(newTeam)
+    }
+    this.setTeamLogin(teamsLogin);
   }
 
-  public setCurrentRoleId(roleId: number) {
-    if (roleId > 0) {
-      sessionStorage.setItem(STORAGE_ROLEID_KEY, roleId.toString());
-    } else {
-      sessionStorage.removeItem(STORAGE_ROLEID_KEY);
+  public setCurrentRoleIds(teamTypeId: number, roleIds: number[]) {
+    const teamsLogin = this.getTeamsLogin();
+    let team = teamsLogin.find((i => i.teamTypeId === teamTypeId))
+    if (team) {
+      team.roleIds = roleIds
+      team.useDefaultRoles = false;
     }
+    else {
+      throw new Error('Error the teamid should be set before roles');
+    }
+    this.setTeamLogin(teamsLogin);
   }
 
   public getFrontEndVersion(): Observable<string> {
@@ -146,8 +188,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected getAuthInfo() {
-    const url: string = this.buildUrlLogin();
-    return this.http.get<AuthInfo>(url).pipe(
+    return this.http.post<AuthInfo>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
       map((authInfo: AuthInfo) => {
         this.authInfoSubject.next(authInfo);
         return authInfo;
@@ -157,22 +198,26 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   protected buildUrlLogin() {
     let url: string;
-    const siteId = this.getCurrentSiteId();
-    if (siteId > 0) {
-      if (environment.singleRoleMode) {
-        const roleId = this.getCurrentRoleId();
-        if (roleId > 0) {
-          url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}/${roleId}`;
-        } else {
-          url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
-        }
-      } else {
-        url = `${this.route}login/site/${siteId}/${environment.singleRoleMode}`;
-      }
-    } else {
-      url = `${this.route}login/${environment.singleRoleMode}`;
+    const teamsLogin = this.getTeamsLogin();
+    if (teamsLogin.length > 0) {
+      url = `${this.route}loginOnTeams`;
+    }
+    else {
+      url = `${this.route}loginOnTeamsDefault`;
     }
     return url;
+  }
+
+  protected buildBodyLogin() {
+    let body;
+    const teamsLogin = this.getTeamsLogin();
+    if (teamsLogin.length > 0) {
+      body = teamsLogin;
+    }
+    else {
+      body = allEnvironments.teams;
+    }
+    return body;
   }
 
   protected getLatestVersion() {
@@ -201,7 +246,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected checkFrontEndVersion(): Observable<boolean> {
     return this.getFrontEndVersion().pipe(
       map((version: string) => {
-        return version === environment.version;
+        return version === allEnvironments.version;
       })
     );
   }

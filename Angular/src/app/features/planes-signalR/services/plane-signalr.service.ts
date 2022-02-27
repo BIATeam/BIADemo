@@ -8,6 +8,7 @@ import { getLastLazyLoadEvent } from '../store/plane.state';
 import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -43,7 +44,7 @@ export class PlanesSignalRService {
         }
       );
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'planes'};
+    this.targetedFeature = {parentKey: this.authService.getCurrentTeamId(TeamTypeId.Site).toString() , featureName : 'planes'};
     this.signalRService.joinGroup(this.targetedFeature);
   }
 

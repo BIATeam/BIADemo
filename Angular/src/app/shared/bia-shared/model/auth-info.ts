@@ -15,12 +15,17 @@ export interface UserProfile {
 }
 
 export interface UserData {
-  currentSiteId: number;
-  currentSiteTitle: string;
-  defaultSiteId: number;
+  currentTeams: CurrentTeamDto[];
+}
+
+export interface CurrentTeamDto {
+  teamTypeId: number;
+  currentTeamId: number;
+  currentTeamTitle: string;
+  defaultTeamId: number;
   sites: OptionDto[];
   currentRoleIds: number[];
-  defaultRoleId: number;
+  defaultRoleIds: number[];
   roles: RoleDto[];
 }
 

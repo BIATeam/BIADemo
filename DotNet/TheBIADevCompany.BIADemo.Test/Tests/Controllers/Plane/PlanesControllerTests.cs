@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers;
 
@@ -43,7 +44,14 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
             this.principalBuilder
                 .MockPrincipalUserData(new UserDataDto()
                 {
-                    CurrentSiteId = 1,
+                    CurrentTeams =
+                    {
+                        new CurrentTeamDto()
+                        {
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            CurrentTeamId = 1,
+                        },
+                    },
                 });
 
             // Create a new instance of the controller to test and set its HttpContext.

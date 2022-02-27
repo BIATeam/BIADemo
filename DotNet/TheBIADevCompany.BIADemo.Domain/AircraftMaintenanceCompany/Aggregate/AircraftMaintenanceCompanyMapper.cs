@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 return new ExpressionCollection<AircraftMaintenanceCompany>
                 {
                     { "Id", aircraftMaintenanceCompany => aircraftMaintenanceCompany.Id },
-                    { "Name", aircraftMaintenanceCompany1 => aircraftMaintenanceCompany1.Name },
+                    { "Title", aircraftMaintenanceCompany => aircraftMaintenanceCompany.Title },
                 };
             }
         }
@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             }
 
             entity.Id = dto.Id;
-            entity.Name = dto.Name;
+            entity.Title = dto.Title;
             entity.TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany;
         }
 
@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             return entity => new AircraftMaintenanceCompanyDto
             {
                 Id = entity.Id,
-                Name = entity.Name,
+                Title = entity.Title,
             };
         }
 
@@ -63,14 +63,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         {
             return x => (new object[]
             {
-                CSVString(x.Name),
+                CSVString(x.Title),
             });
         }
-
-        ///// <inheritdoc/>
-        //public override void MapEntityKeysInDto(AircraftMaintenanceCompany entity, AircraftMaintenanceCompanyDto dto)
-        //{
-        //    dto.Id = entity.Id;
-        //}
     }
 }

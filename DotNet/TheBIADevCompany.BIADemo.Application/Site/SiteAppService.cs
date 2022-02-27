@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             UserDataDto userData = this.principal.GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
-            int siteId = currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true ? default : userData.CurrentSiteId;
+            int siteId = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true ? default : userData.CurrentSiteId;
 
             return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters, siteId));
         }
@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
             SiteMapper mapper = this.InitMapper<SiteDto, SiteMapper>();
-            if (userPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
             }

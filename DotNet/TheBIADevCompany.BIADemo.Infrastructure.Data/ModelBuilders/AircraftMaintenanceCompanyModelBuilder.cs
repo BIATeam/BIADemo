@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<AircraftMaintenanceCompany>().ToTable("AircraftMaintenanceCompanies");
             modelBuilder.Entity<AircraftMaintenanceCompany>().Property(s => s.TeamTypeId).HasDefaultValue(TeamTypeId.AircraftMaintenanceCompany);
-            modelBuilder.Entity<AircraftMaintenanceCompany>().Property(p => p.Name).IsRequired().HasMaxLength(64);
+            modelBuilder.Entity<AircraftMaintenanceCompany>().Property(p => p.Title).IsRequired().HasMaxLength(64);
         }
     }
 }

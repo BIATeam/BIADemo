@@ -31,7 +31,7 @@
       </p-dropdown>
 
       <i
-        *ngIf="displayRoleList === true && currentRole?.id !== userData.defaultRoleId"
+        *ngIf="displayRoleList === true && currentRole?.id !== defaultRoleId"
         class="pi pi-star-o  app-icon-header bia-pointer"
         (click)="onSetDefaultRole()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
@@ -39,7 +39,7 @@
         placeholder="Top"
       ></i>
       <i
-        *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId"
+        *ngIf="displayRoleList === true && currentRole?.id === defaultRoleId"
         class="pi pi-star app-icon-header"
       ></i>
       <p-dropdown
@@ -51,7 +51,7 @@
         (onChange)="onSiteChange()"
       ></p-dropdown>
       <i
-        *ngIf="displaySiteList === true && currentSite?.id !== userData.defaultSiteId"
+        *ngIf="displaySiteList === true && currentSite?.id !== defaultSiteId"
         class="pi pi-star-o  app-icon-header bia-pointer"
         (click)="onSetDefaultSite()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
@@ -59,7 +59,7 @@
         placeholder="Top"
       ></i>
       <i
-        *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId"
+        *ngIf="displaySiteList === true && currentSite?.id === defaultSiteId"
         class="pi pi-star app-icon-header"
       ></i>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
