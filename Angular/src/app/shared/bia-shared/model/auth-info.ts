@@ -23,7 +23,7 @@ export interface CurrentTeamDto {
   currentTeamId: number;
   currentTeamTitle: string;
   defaultTeamId: number;
-  sites: OptionDto[];
+  teams: OptionDto[];
   currentRoleIds: number[];
   defaultRoleIds: number[];
   roles: RoleDto[];

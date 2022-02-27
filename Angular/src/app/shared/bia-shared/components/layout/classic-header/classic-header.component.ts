@@ -78,8 +78,11 @@ export class ClassicHeaderComponent implements OnDestroy {
   urlAppIcon = allEnvironments.urlAppIcon;
   displaySiteList = false;
   defaultSiteId = 0;
+  sites:  OptionDto[];
   displayRoleList = false;
   defaultRoleId = 0;
+  roles:  RoleDto[];
+
   cssClassEnv: string;
   languageId: number;
   singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == TeamTypeId.Site && t.roleMode == RoleMode.SingleRole) != undefined;
@@ -177,12 +180,13 @@ export class ClassicHeaderComponent implements OnDestroy {
   private initDropdownSite() {
     this.displaySiteList = false;
     let currentSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
-    let sites = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.sites;
+    let sites = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.teams;
     let defaultSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.defaultTeamId;
     if (currentSiteId && currentSiteId != undefined && currentSiteId > 0 && 
       sites && sites != undefined && sites.length > 1) {
       this.currentSite = sites.filter((x) => x.id === currentSiteId)[0];
       this.displaySiteList = true;
+      this.sites = sites;
       if (defaultSiteId)
       {
         this.defaultRoleId = defaultSiteId;
@@ -208,6 +212,7 @@ export class ClassicHeaderComponent implements OnDestroy {
         roles  && roles != undefined && roles.length > 1) {
         this.currentRole = roles.filter((x) => x.id === currentRoleIds![0])[0];
         this.displayRoleList = true;
+        this.roles = roles;
         if (defaultRoleIds && defaultRoleIds.length === 1)
         {
           this.defaultRoleId = defaultRoleIds[0]

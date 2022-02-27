@@ -14,7 +14,7 @@
     <div class="controls" fxLayout="row">
       <p-dropdown
         *ngIf="displayRoleList"
-        [options]="userData.roles"
+        [options]="roles"
         [(ngModel)]="currentRole"
         optionLabel="label"
         dataKey="id"
@@ -44,7 +44,7 @@
       ></i>
       <p-dropdown
         *ngIf="displaySiteList === true"
-        [options]="userData.sites"
+        [options]="sites"
         [(ngModel)]="currentSite"
         optionLabel="display"
         dataKey="id"
