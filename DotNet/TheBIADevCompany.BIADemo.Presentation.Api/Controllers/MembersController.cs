@@ -317,24 +317,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Sets the default site.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="teamTypeId">The team type.</param>
+        /// <param name="teamId">The team identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("Sites/{id}/setDefault")]
+        [HttpPut("TeamType/{teamTypeId}/setDefault/{teamId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.SetDefaultSite)]
-        public async Task<IActionResult> SetDefaultSite(int id)
+        public async Task<IActionResult> SetDefaultTeam(int teamTypeId, int teamId)
         {
-            if (id == 0)
+            if (teamId == 0 || teamTypeId == 0)
             {
                 return this.BadRequest();
             }
 
             try
             {
-                await this.memberService.SetDefaultTeamAsync(id, TeamTypeId.Site);
+                await this.memberService.SetDefaultTeamAsync(teamId, teamTypeId);
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -354,24 +355,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Sets the default role.
         /// </summary>
-        /// <param name="id">The role identifier.</param>
+        /// <param name="teamId">The team identifier.</param>
+        /// <param name="roleIds">The roles identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("Roles/{id}/setDefault")]
+        [HttpPut("Team/{teamId}/setDefaultRoles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Members.SetDefaultRole)]
-        public async Task<IActionResult> SetDefaultRole(int id)
+        public async Task<IActionResult> SetDefaultRoles(int teamId, List<int> roleIds)
         {
-            if (id == 0)
+            if (teamId == 0)
             {
                 return this.BadRequest();
             }
 
             try
             {
-                await this.memberService.SetDefaultRoleAsync(id, TeamTypeId.Site);
+                await this.memberService.SetDefaultRoleAsync(teamId, roleIds);
                 return this.Ok();
             }
             catch (ArgumentNullException)

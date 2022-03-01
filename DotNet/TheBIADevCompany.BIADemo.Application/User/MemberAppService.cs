@@ -54,12 +54,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.SetDefaultSite"/>
-        public async Task SetDefaultTeamAsync(int teamId, TeamTypeId teamTypeId)
+        public async Task SetDefaultTeamAsync(int teamId, int teamTypeId)
         {
             int userId = this.principal.GetUserId();
             if (userId > 0 && teamId > 0)
             {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == (int)teamTypeId)).ToList();
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
 
                 if (members?.Any() == true)
                 {
@@ -75,12 +75,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IMemberAppService.SetDefaultRoleAsync(int)"/>
-        public async Task SetDefaultRoleAsync(int roleId, TeamTypeId teamTypeId)
+        public async Task SetDefaultRoleAsync(int teamId, List<int> roleIds)
         {
             int userId = this.principal.GetUserId();
-            if (userId > 0 && roleId > 0)
+            if (userId > 0)
             {
-                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == (int)teamTypeId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
+                IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.Id == teamId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
 
                 if (members?.Any() == true)
                 {
@@ -88,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         foreach (MemberRole memberRole in member.MemberRoles)
                         {
-                            memberRole.IsDefault = memberRole.RoleId == roleId;
+                            memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
                         }
 
                         this.Repository.Update(member);

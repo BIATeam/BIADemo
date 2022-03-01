@@ -67,9 +67,9 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Output() language = new EventEmitter<string>();
   @Output() theme = new EventEmitter<string>();
   @Output() siteChange = new EventEmitter<number>();
-  @Output() setDefaultSite = new EventEmitter<number>();
+  @Output() setDefaultTeam = new EventEmitter<any>();
   @Output() roleChange = new EventEmitter<number>();
-  @Output() setDefaultRole = new EventEmitter<number>();
+  @Output() setDefaultRoles = new EventEmitter<any>();
 
   usernameParam: { name: string };
   navigations: BiaNavigation[];
@@ -173,8 +173,8 @@ export class ClassicHeaderComponent implements OnDestroy {
     this.siteChange.emit(this.currentSite.id);
   }
 
-  onSetDefaultSite() {
-    this.setDefaultSite.emit(this.currentSite.id);
+  onSetDefaultTeam() {
+    this.setDefaultTeam.emit({teamTypeId: TeamTypeId.Site, teamId:this.currentSite.id});
   }
 
   private initDropdownSite() {
@@ -189,7 +189,7 @@ export class ClassicHeaderComponent implements OnDestroy {
       this.sites = sites;
       if (defaultSiteId)
       {
-        this.defaultRoleId = defaultSiteId;
+        this.defaultSiteId = defaultSiteId;
       }
     }
   }
@@ -198,8 +198,8 @@ export class ClassicHeaderComponent implements OnDestroy {
     this.roleChange.emit(this.currentRole.id);
   }
 
-  onSetDefaultRole() {
-    this.setDefaultRole.emit(this.currentRole.id);
+  onSetDefaultRoles() {
+    this.setDefaultRoles.emit({teamId: this.currentSite.id, roleIds: [this.currentRole.id]});
   }
 
   private initDropdownRole() {

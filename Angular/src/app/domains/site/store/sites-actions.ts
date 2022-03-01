@@ -17,12 +17,12 @@ export const loadAllSitesByUserSuccess = createAction(
 
 export const loadSuccess = createAction('[Domain Sites] Load success', props<{ site: Site }>());
 
-export const setDefaultSite = createAction('[Domain Sites] Set default site', props<{ id: number }>());
+export const setDefaultTeam = createAction('[Domain Sites] Set default site', props<{ teamTypeId: number, teamId: number }>());
 
-export const setDefaultSiteSuccess = createAction('[Domain Sites] Set default site success');
+export const setDefaultTeamSuccess = createAction('[Domain Sites] Set default site success');
 
 export const failure = createAction('[Domain Sites] Failure', props<{ error: any }>());
 
-export const setDefaultRole = createAction('[Domain Role Options] Set default role', props<{ id: number, siteId: number }>());
+export const setDefaultRoles = createAction('[Domain Role Options] Set default role', props<{ teamId: number, roleIds: number[]  }>());
 
-export const setDefaultRoleSuccess = createAction('[Domain Role Options] Set default role success');
+export const setDefaultRolesSuccess = createAction('[Domain Role Options] Set default role success');

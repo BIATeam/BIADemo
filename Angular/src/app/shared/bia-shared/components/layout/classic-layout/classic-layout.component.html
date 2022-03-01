@@ -14,8 +14,8 @@
   (theme)="onThemeChange($event)"
   (siteChange)="onSiteChange($event)"
   (roleChange)="onRoleChange($event)"
-  (setDefaultSite)="onSetDefaultSite($event)"
-  (setDefaultRole)="onSetDefaultRole($event)"
+  (setDefaultTeam)="onSetDefaultTeam($event)"
+  (setDefaultRoles)="onSetDefaultRoles($event)"
 ></bia-classic-header>
 <section class="content">
   <p-breadcrumb *ngIf="(layoutService.breadcrumbHidden$ | async) === false" [model]="menuItems"></p-breadcrumb>

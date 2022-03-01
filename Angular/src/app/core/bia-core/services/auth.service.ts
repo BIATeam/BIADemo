@@ -148,11 +148,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     let team = teamsLogin.find((i => i.teamTypeId === teamTypeId))
     if (team) {
       team.teamId = teamId
+      team.useDefaultRoles = true;
+      team.roleIds = [];
     }
     else {
       let newTeam = new TeamLoginDto();
       newTeam.teamTypeId = teamTypeId;
       newTeam.useDefaultRoles = true;
+      newTeam.roleIds = [];
       newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
       newTeam.teamId = teamId;
       teamsLogin.push(newTeam)

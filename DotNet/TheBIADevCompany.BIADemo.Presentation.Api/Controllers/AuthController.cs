@@ -288,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                                     currentTeam.DefaultRoleIds = new List<int> { role.Id };
                                 }
 
-                                if (teamLogin.RoleIds.Length == 1 && roles.Any(s => s.Id == teamLogin.RoleIds.First()))
+                                if (teamLogin.RoleIds != null && teamLogin.RoleIds.Length == 1 && roles.Any(s => s.Id == teamLogin.RoleIds.First()))
                                 {
                                     currentTeam.CurrentRoleIds = new List<int> { teamLogin.RoleIds.First() };
                                 }

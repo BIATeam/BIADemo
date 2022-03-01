@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     Id = entity.Id,
                     Label = entity.Label,
                     Code = entity.Code,
-                    IsDefault = entity.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.IsDefault),
+                    IsDefault = entity.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.Member.TeamId == teamId && mr.IsDefault),
 
                     // Mapping relationship *-1 : ICollection<Airports>
                     RoleTranslations = entity.RoleTranslations.Select(rt => new RoleTranslationDto

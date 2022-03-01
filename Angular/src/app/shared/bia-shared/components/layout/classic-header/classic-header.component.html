@@ -22,10 +22,10 @@
         placeholder="Select a role"
       >
         <ng-template let-item pTemplate="item">
-          {{ item?.value | translateField: 'label':'roleTranslations':languageId }}
+          {{ item | translateField: 'label':'roleTranslations':languageId }}
         </ng-template>
         <ng-template let-selectedItem pTemplate="selectedItem">
-          {{ selectedItem?.value | translateField: 'label':'roleTranslations':languageId }}
+          {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}
           <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
         </ng-template>
       </p-dropdown>
@@ -33,7 +33,7 @@
       <i
         *ngIf="displayRoleList === true && currentRole?.id !== defaultRoleId"
         class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultRole()"
+        (click)="onSetDefaultRoles()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
         tooltipPosition="bottom"
         placeholder="Top"
@@ -53,7 +53,7 @@
       <i
         *ngIf="displaySiteList === true && currentSite?.id !== defaultSiteId"
         class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultSite()"
+        (click)="onSetDefaultTeam()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
         tooltipPosition="bottom"
         placeholder="Top"

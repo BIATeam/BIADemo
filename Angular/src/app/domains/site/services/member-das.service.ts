@@ -8,13 +8,13 @@ import { HttpClient } from '@angular/common/http';
 export class MemberDas {
   constructor(private http: HttpClient) {}
 
-  public setDefaultSite(id: number) {
-    const route = AbstractDas.buildRoute(`Members/Sites/${id}/setDefault`);
+  public setDefaultTeam(teamTypeId: number, teamId: number) {
+    const route = AbstractDas.buildRoute(`Members/TeamType/${teamTypeId}/setDefault/${teamId}`);
     return this.http.put(route, null);
   }
 
-  public setDefaultRole(id: number) {
-    const route = AbstractDas.buildRoute(`Members/Roles/${id}/setDefault`);
-    return this.http.put(route, null);
+  public setDefaultRoles(teamId: number, roleIds: number[]) {
+    const route = AbstractDas.buildRoute(`Members/Team/${teamId}/setDefaultRoles`);
+    return this.http.put(route, roleIds);
   }
 }

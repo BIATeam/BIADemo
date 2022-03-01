@@ -37,8 +37,8 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
 
   @Output() siteChange = new EventEmitter<number>();
   @Output() roleChange = new EventEmitter<number>();
-  @Output() setDefaultSite = new EventEmitter<number>();
-  @Output() setDefaultRole = new EventEmitter<number>();
+  @Output() setDefaultTeam = new EventEmitter<any>();
+  @Output() setDefaultRoles = new EventEmitter<any>();
 
   menuItems: MenuItem[];
   private sub = new Subscription();
@@ -88,12 +88,12 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     this.roleChange.emit(roleId);
   }
 
-  onSetDefaultSite(siteId: number) {
-    this.setDefaultSite.emit(siteId);
+  onSetDefaultTeam(event : any) {
+    this.setDefaultTeam.emit(event);
   }
 
-  onSetDefaultRole(roleId: number) {
-    this.setDefaultRole.emit(roleId);
+  onSetDefaultRoles(event : any) {
+    this.setDefaultRoles.emit(event);
   }
 
   private updateMenuItems() {

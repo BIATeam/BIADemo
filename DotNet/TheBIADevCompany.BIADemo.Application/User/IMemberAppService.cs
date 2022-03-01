@@ -30,15 +30,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="teamId">The team identifier.</param>
         /// <param name="teamTypeId">The team type identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultTeamAsync(int teamId, TeamTypeId teamTypeId);
+        Task SetDefaultTeamAsync(int teamId, int teamTypeId);
 
         /// <summary>
         /// Sets the default role.
         /// </summary>
-        /// <param name="roleId">The role identifier.</param>
-        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <param name="teamId">The team identifier.</param>
+        /// <param name="roleIds">The roles identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultRoleAsync(int roleId, TeamTypeId teamTypeId);
+        Task SetDefaultRoleAsync(int teamId, List<int> roleIds);
 
         /// <summary>
         /// Generates CSV content.

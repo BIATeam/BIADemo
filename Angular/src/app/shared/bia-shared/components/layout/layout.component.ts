@@ -10,7 +10,7 @@ import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../../store/state';
-import { setDefaultRole, setDefaultSite } from 'src/app/domains/site/store/sites-actions';
+import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { allEnvironments } from 'src/environments/allEnvironments';
@@ -34,8 +34,8 @@ import { allEnvironments } from 'src/environments/allEnvironments';
       [companyName]="companyName"
       (siteChange)="onSiteChange($event)"
       (roleChange)="onRoleChange($event)"
-      (setDefaultSite)="onSetDefaultSite($event)"
-      (setDefaultRole)="onSetDefaultRole($event)"
+      (setDefaultTeam)="onSetDefaultTeam($event)"
+      (setDefaultRoles)="onSetDefaultRoles($event)"
       class="p-input-filled"
     >
       <router-outlet></router-outlet>
@@ -88,12 +88,12 @@ export class LayoutComponent implements OnInit {
     location.assign(this.baseHref);
   }
 
-  onSetDefaultSite(siteId: number) {
-    this.store.dispatch(setDefaultSite({ id: siteId }));
+  onSetDefaultTeam(event: { teamTypeId: number, teamId: number }) {
+    this.store.dispatch(setDefaultTeam(event));
   }
 
-  onSetDefaultRole(roleId: number) {
-    this.store.dispatch(setDefaultRole({ id: roleId, siteId: this.authService.getCurrentTeamId(TeamTypeId.Site) }));
+  onSetDefaultRoles(event : { teamId: number, roleIds: number[]  }) {
+    this.store.dispatch(setDefaultRoles(event));
   }
 
   private initHeaderLogos() {

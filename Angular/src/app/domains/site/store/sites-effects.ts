@@ -10,9 +10,10 @@ import {
   loadAllSitesByUserSuccess,
   loadAllSuccess,
   loadSuccess,
-  setDefaultRole,
-  setDefaultRoleSuccess,
-  setDefaultSite
+  setDefaultRoles,
+  setDefaultRolesSuccess,
+  setDefaultTeam,
+  setDefaultTeamSuccess
 } from './sites-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { SiteDas } from '../services/site-das.service';
@@ -73,28 +74,27 @@ export class SitesEffects {
     )
   );
 
-  setDefaultSite$ = createEffect(() =>
+  setDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultSite),
-      pluck('id'),
-      switchMap((id) =>
-        this.memberDas.setDefaultSite(id).pipe(
-          map((x) => {
+      ofType(setDefaultTeam),
+      switchMap(data =>
+        this.memberDas.setDefaultTeam(data.teamTypeId, data.teamId).pipe(
+          map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllSites();
+            return setDefaultTeamSuccess();
           })
         )
       )
     )
   );
-  setDefaultRole$ = createEffect(() =>
+  setDefaultRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultRole),
+      ofType(setDefaultRoles),
       switchMap(data =>
-        this.memberDas.setDefaultRole(data.id).pipe(
+        this.memberDas.setDefaultRoles(data.teamId, data.roleIds).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return setDefaultRoleSuccess();
+            return setDefaultRolesSuccess();
           })
         )
       )
