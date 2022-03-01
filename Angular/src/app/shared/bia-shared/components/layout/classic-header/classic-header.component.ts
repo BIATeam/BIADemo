@@ -80,7 +80,7 @@ export class ClassicHeaderComponent implements OnDestroy {
   defaultSiteId = 0;
   sites:  OptionDto[];
   displayRoleList = false;
-  defaultRoleId = 0;
+  defaultRoleIds = [0];
   roles:  RoleDto[];
 
   cssClassEnv: string;
@@ -175,6 +175,7 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   onSetDefaultTeam() {
     this.setDefaultTeam.emit({teamTypeId: TeamTypeId.Site, teamId:this.currentSite.id});
+    this.defaultSiteId = this.currentSite.id;
   }
 
   private initDropdownSite() {
@@ -200,6 +201,7 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   onSetDefaultRoles() {
     this.setDefaultRoles.emit({teamId: this.currentSite.id, roleIds: [this.currentRole.id]});
+    this.defaultRoleIds = [this.currentRole.id];
   }
 
   private initDropdownRole() {
@@ -215,7 +217,7 @@ export class ClassicHeaderComponent implements OnDestroy {
         this.roles = roles;
         if (defaultRoleIds && defaultRoleIds.length === 1)
         {
-          this.defaultRoleId = defaultRoleIds[0]
+          this.defaultRoleIds = defaultRoleIds
         }
       }
     }

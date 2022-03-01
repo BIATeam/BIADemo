@@ -31,7 +31,7 @@
       </p-dropdown>
 
       <i
-        *ngIf="displayRoleList === true && currentRole?.id !== defaultRoleId"
+        *ngIf="displayRoleList === true && (defaultRoleIds.length !== 1 || currentRole?.id !== defaultRoleIds[0])"
         class="pi pi-star-o  app-icon-header bia-pointer"
         (click)="onSetDefaultRoles()"
         pTooltip="{{ 'bia.defineDefault' | translate }}"
@@ -39,7 +39,7 @@
         placeholder="Top"
       ></i>
       <i
-        *ngIf="displayRoleList === true && currentRole?.id === defaultRoleId"
+        *ngIf="displayRoleList === true && (defaultRoleIds.length === 1 && currentRole?.id === defaultRoleIds[0])"
         class="pi pi-star app-icon-header"
       ></i>
       <p-dropdown
