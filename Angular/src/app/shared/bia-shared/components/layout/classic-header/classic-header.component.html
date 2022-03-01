@@ -12,56 +12,11 @@
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls" fxLayout="row">
-      <p-dropdown
-        *ngIf="displayRoleList"
-        [options]="roles"
-        [(ngModel)]="currentRole"
-        optionLabel="label"
-        dataKey="id"
-        (onChange)="onRoleChange()"
-        placeholder="Select a role"
-      >
-        <ng-template let-item pTemplate="item">
-          {{ item | translateField: 'label':'roleTranslations':languageId }}
-        </ng-template>
-        <ng-template let-selectedItem pTemplate="selectedItem">
-          {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}
-          <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
-        </ng-template>
-      </p-dropdown>
+      <bia-classic-team-selector
+        [teamTypeId]="1"
+        [userData]="userData"
+      ></bia-classic-team-selector>
 
-      <i
-        *ngIf="displayRoleList === true && (defaultRoleIds.length !== 1 || currentRole?.id !== defaultRoleIds[0])"
-        class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultRoles()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i
-        *ngIf="displayRoleList === true && (defaultRoleIds.length === 1 && currentRole?.id === defaultRoleIds[0])"
-        class="pi pi-star app-icon-header"
-      ></i>
-      <p-dropdown
-        *ngIf="displaySiteList === true"
-        [options]="sites"
-        [(ngModel)]="currentSite"
-        optionLabel="display"
-        dataKey="id"
-        (onChange)="onSiteChange()"
-      ></p-dropdown>
-      <i
-        *ngIf="displaySiteList === true && currentSite?.id !== defaultSiteId"
-        class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultTeam()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i
-        *ngIf="displaySiteList === true && currentSite?.id === defaultSiteId"
-        class="pi pi-star app-icon-header"
-      ></i>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i
         class="pi pi-refresh app-icon-header bia-pointer"

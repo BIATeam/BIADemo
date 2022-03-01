@@ -90,6 +90,7 @@ import { JoinPipe } from './pipes/join.pipe';
 import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 import { FormatValuePipe } from './pipes/format-value.pipe';
+import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -155,6 +156,7 @@ const MODULES = [
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
+  ClassicTeamSelectorComponent,
   ClassicLayoutComponent,
   ClassicPageLayoutComponent,
   SpinnerComponent,

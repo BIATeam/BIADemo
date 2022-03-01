@@ -1,0 +1,52 @@
+<div class="controls" fxLayout="row">
+  <p-dropdown
+    *ngIf="displayRoleList"
+    [options]="roles"
+    [(ngModel)]="currentRole"
+    optionLabel="label"
+    dataKey="id"
+    (onChange)="onRolesChange()"
+    placeholder="Select a role"
+  >
+    <ng-template let-item pTemplate="item">
+      {{ item | translateField: 'label':'roleTranslations':languageId }}
+    </ng-template>
+    <ng-template let-selectedItem pTemplate="selectedItem">
+      {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}
+      <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
+    </ng-template>
+  </p-dropdown>
+
+  <i
+    *ngIf="displayRoleList === true && (defaultRoleIds.length !== 1 || currentRoles.length !==1 || currentRoles[0].id !== defaultRoleIds[0])"
+    class="pi pi-star-o  app-icon-header bia-pointer"
+    (click)="onSetDefaultRoles()"
+    pTooltip="{{ 'bia.defineDefault' | translate }}"
+    tooltipPosition="bottom"
+    placeholder="Top"
+  ></i>
+  <i
+    *ngIf="displayRoleList === true && (defaultRoleIds.length === 1 && currentRoles.length ===1 && currentRoles[0].id === defaultRoleIds[0])"
+    class="pi pi-star app-icon-header"
+  ></i>
+  <p-dropdown
+    *ngIf="displayTeamList === true"
+    [options]="teams"
+    [(ngModel)]="currentTeam"
+    optionLabel="display"
+    dataKey="id"
+    (onChange)="onTeamChange()"
+  ></p-dropdown>
+  <i
+    *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
+    class="pi pi-star-o  app-icon-header bia-pointer"
+    (click)="onSetDefaultTeam()"
+    pTooltip="{{ 'bia.defineDefault' | translate }}"
+    tooltipPosition="bottom"
+    placeholder="Top"
+  ></i>
+  <i
+    *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
+    class="pi pi-star app-icon-header"
+  ></i>
+</div>

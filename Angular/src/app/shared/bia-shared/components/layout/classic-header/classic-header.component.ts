@@ -53,23 +53,11 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   currentSite: OptionDto;
   currentRole: RoleDto;
-  _userData: UserData;
-  get userData(): UserData {
-    return this._userData;
-  }
-  @Input()
-  set userData(value: UserData) {
-    this._userData = value;
-    this.initDropdownSite();
-    this.initDropdownRole();
-  }
+
+  @Input() userData: UserData
 
   @Output() language = new EventEmitter<string>();
   @Output() theme = new EventEmitter<string>();
-  @Output() siteChange = new EventEmitter<number>();
-  @Output() setDefaultTeam = new EventEmitter<any>();
-  @Output() roleChange = new EventEmitter<number>();
-  @Output() setDefaultRoles = new EventEmitter<any>();
 
   usernameParam: { name: string };
   navigations: BiaNavigation[];
@@ -84,7 +72,6 @@ export class ClassicHeaderComponent implements OnDestroy {
   roles:  RoleDto[];
 
   cssClassEnv: string;
-  languageId: number;
   singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == TeamTypeId.Site && t.roleMode == RoleMode.SingleRole) != undefined;
 
   private sub = new Subscription();
@@ -110,11 +97,6 @@ export class ClassicHeaderComponent implements OnDestroy {
     biaTranslationService.appSettings$.subscribe(appSettings => {
       if (appSettings) {
         this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
-      }
-    });
-    biaTranslationService.languageId$.subscribe(languageId => {
-      if (languageId) {
-        this.languageId = languageId;
       }
     });
   }
@@ -167,60 +149,6 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private onChangeLanguage(lang: string) {
     this.language.emit(lang);
-  }
-
-  onSiteChange() {
-    this.siteChange.emit(this.currentSite.id);
-  }
-
-  onSetDefaultTeam() {
-    this.setDefaultTeam.emit({teamTypeId: TeamTypeId.Site, teamId:this.currentSite.id});
-    this.defaultSiteId = this.currentSite.id;
-  }
-
-  private initDropdownSite() {
-    this.displaySiteList = false;
-    let currentSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
-    let sites = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.teams;
-    let defaultSiteId = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.defaultTeamId;
-    if (currentSiteId && currentSiteId != undefined && currentSiteId > 0 && 
-      sites && sites != undefined && sites.length > 1) {
-      this.currentSite = sites.filter((x) => x.id === currentSiteId)[0];
-      this.displaySiteList = true;
-      this.sites = sites;
-      if (defaultSiteId)
-      {
-        this.defaultSiteId = defaultSiteId;
-      }
-    }
-  }
-
-  onRoleChange() {
-    this.roleChange.emit(this.currentRole.id);
-  }
-
-  onSetDefaultRoles() {
-    this.setDefaultRoles.emit({teamId: this.currentSite.id, roleIds: [this.currentRole.id]});
-    this.defaultRoleIds = [this.currentRole.id];
-  }
-
-  private initDropdownRole() {
-    this.displayRoleList = false;
-    if (this.singleRoleMode) {
-      let currentRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentRoleIds;
-      let defaultRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.defaultRoleIds;
-      let roles = this.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.roles;
-      if (currentRoleIds && currentRoleIds != undefined && currentRoleIds.length === 1 &&
-        roles  && roles != undefined && roles.length > 1) {
-        this.currentRole = roles.filter((x) => x.id === currentRoleIds![0])[0];
-        this.displayRoleList = true;
-        this.roles = roles;
-        if (defaultRoleIds && defaultRoleIds.length === 1)
-        {
-          this.defaultRoleIds = defaultRoleIds
-        }
-      }
-    }
   }
 
   buildNavigation() {

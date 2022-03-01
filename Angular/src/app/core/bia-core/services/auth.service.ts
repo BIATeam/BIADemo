@@ -40,7 +40,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);   
           const roleMode = allEnvironments.teams.find(r => r.teamTypeId == team.teamTypeId)?.roleMode || RoleMode.AllRoles;
           if (roleMode !== RoleMode.AllRoles) {
-            this.setCurrentRoleIds(team.teamTypeId, team.currentRoleIds);
+            this.setCurrentRoleIds(team.currentTeamId, team.currentRoleIds);
           }
         });
 
@@ -163,9 +163,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.setTeamLogin(teamsLogin);
   }
 
-  public setCurrentRoleIds(teamTypeId: number, roleIds: number[]) {
+  public setCurrentRoleIds(teamId: number, roleIds: number[]) {
     const teamsLogin = this.getTeamsLogin();
-    let team = teamsLogin.find((i => i.teamTypeId === teamTypeId))
+    let team = teamsLogin.find((i => i.teamId === teamId))
     if (team) {
       team.roleIds = roleIds
       team.useDefaultRoles = false;

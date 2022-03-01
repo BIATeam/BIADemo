@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy, EventEmitter, Output, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { BiaClassicLayoutService } from './bia-classic-layout.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -34,11 +34,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
   @Input() userData: UserData |null;
-
-  @Output() siteChange = new EventEmitter<number>();
-  @Output() roleChange = new EventEmitter<number>();
-  @Output() setDefaultTeam = new EventEmitter<any>();
-  @Output() setDefaultRoles = new EventEmitter<any>();
 
   menuItems: MenuItem[];
   private sub = new Subscription();
@@ -78,22 +73,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
 
   onThemeChange(theme: string) {
     this.biaTheme.changeTheme(theme);
-  }
-
-  onSiteChange(siteId: number) {
-    this.siteChange.emit(siteId);
-  }
-
-  onRoleChange(roleId: number) {
-    this.roleChange.emit(roleId);
-  }
-
-  onSetDefaultTeam(event : any) {
-    this.setDefaultTeam.emit(event);
-  }
-
-  onSetDefaultRoles(event : any) {
-    this.setDefaultRoles.emit(event);
   }
 
   private updateMenuItems() {

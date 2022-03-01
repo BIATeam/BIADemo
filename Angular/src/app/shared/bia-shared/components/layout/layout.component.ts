@@ -1,6 +1,6 @@
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { APP_SUPPORTED_TRANSLATIONS, TeamTypeId } from '../../../constants';
+import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo, UserData } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
@@ -8,9 +8,6 @@ import { NavigationService } from 'src/app/core/bia-core/services/navigation.ser
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../../store/state';
-import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/site/store/sites-actions';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { allEnvironments } from 'src/environments/allEnvironments';
@@ -32,10 +29,6 @@ import { allEnvironments } from 'src/environments/allEnvironments';
       [enableNotifications]="enableNotifications"
       [userData]="userData"
       [companyName]="companyName"
-      (siteChange)="onSiteChange($event)"
-      (roleChange)="onRoleChange($event)"
-      (setDefaultTeam)="onSetDefaultTeam($event)"
-      (setDefaultRoles)="onSetDefaultRoles($event)"
       class="p-input-filled"
     >
       <router-outlet></router-outlet>
@@ -64,7 +57,6 @@ export class LayoutComponent implements OnInit {
     private navigationService: NavigationService,
     private authService: AuthService,
     private biaThemeService: BiaThemeService,
-    private store: Store<AppState>,
     // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) { }
@@ -76,24 +68,6 @@ export class LayoutComponent implements OnInit {
     }
     this.setAllParamByUserInfo();
     this.initHeaderLogos();
-  }
-
-  onSiteChange(siteId: number) {
-    this.authService.setCurrentTeamId(TeamTypeId.Site, siteId);
-    location.assign(this.baseHref);
-  }
-
-  onRoleChange(roleId: number) {
-    this.authService.setCurrentRoleIds(TeamTypeId.Site, [roleId]);
-    location.assign(this.baseHref);
-  }
-
-  onSetDefaultTeam(event: { teamTypeId: number, teamId: number }) {
-    this.store.dispatch(setDefaultTeam(event));
-  }
-
-  onSetDefaultRoles(event : { teamId: number, roleIds: number[]  }) {
-    this.store.dispatch(setDefaultRoles(event));
   }
 
   private initHeaderLogos() {

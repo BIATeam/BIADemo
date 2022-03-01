@@ -1,0 +1,43 @@
+@import '../../../../../../scss/bia/bia-variables';
+
+:host {
+  display: flex;
+}
+
+.pi-star, .pi-star-o {
+  padding-right: 0.5rem;
+}
+
+.app-icon-header {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+:host ::ng-deep {
+
+  p-dropdown  {
+    .p-dropdown {
+      min-width: 12.5em;
+      background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
+      padding-bottom: 2px;
+      .p-dropdown-label {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+      }
+      background-color: transparent;
+      .p-inputtext {
+        color: white !important;
+      }
+    }
+    .p-dropdown:not(.p-disabled) {
+      &:hover   {
+        background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white)!important;
+      }
+    }
+    .p-dropdown-trigger-icon {
+      color: white !important;
+    }
+    
+  }
+}
