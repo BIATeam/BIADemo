@@ -6,6 +6,13 @@
 
 .offline {
   color: $biaRed;
+  position: relative;
+
+  .pi-times {
+    position: absolute;
+    top: -2px;
+    left: -8px;
+  }
 }
 
 .online {
