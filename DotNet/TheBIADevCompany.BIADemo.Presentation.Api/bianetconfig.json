@@ -16,6 +16,10 @@
         "IsActive": true
       }
     },
+    "AuditConfiguration": {
+      "IsActive": true,
+      "ConnectionStringName": "BIADemoDatabase"      
+    },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
       "SmtpHost": "smtp",

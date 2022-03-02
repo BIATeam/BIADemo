@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Common.Configuration
 {
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
 
@@ -27,6 +28,11 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the authentication configuration.
         /// </summary>
         public EnvironmentConfiguration Environment { get; set; }
+
+        /// <summary>
+        /// Gets or sets the audit configuration.
+        /// </summary>
+        public AuditConfiguration AuditConfiguration { get; set; }
 
         /// <summary>
         /// Gets or sets the email configuration.
