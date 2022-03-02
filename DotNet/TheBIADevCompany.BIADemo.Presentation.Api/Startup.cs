@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
 
     /// <summary>
     /// The startup class.
@@ -132,6 +133,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures);
 
+            app.ApplicationServices.GetRequiredService<AuditFeature>().
+                UseAuditFeatures(app.ApplicationServices);
         }
     }
 }
