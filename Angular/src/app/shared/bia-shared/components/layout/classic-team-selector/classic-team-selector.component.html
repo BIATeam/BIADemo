@@ -16,9 +16,31 @@
       <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
     </ng-template>
   </p-dropdown>
-
+  <p-multiSelect
+    *ngIf="displayRoleMultiSelect"
+    defaultLabel="&nbsp;"
+    [options]="roles"
+    [(ngModel)]="currentRoles"
+    optionLabel="label"
+    datakey="id"
+    [virtualScroll]="true"
+    (onChange)="onRolesChange()"
+    placeholder="Select a role"
+  >
+    <ng-template let-item pTemplate="item">
+      {{ item | translateField: 'label':'roleTranslations':languageId }}
+    </ng-template>
+    <ng-template let-value pTemplate="selectedItems">
+      <ng-container *ngFor="let selectedItem of currentRoles;let last = last">
+        {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}<ng-container *ngIf="last == false">,</ng-container>
+      </ng-container>
+      <div *ngIf="!currentRoles || currentRoles.length === 0" class="country-placeholder">
+        Select roles
+      </div>
+    </ng-template>
+  </p-multiSelect>
   <i
-    *ngIf="displayRoleList === true && (defaultRoleIds.length !== 1 || currentRoles.length !==1 || currentRoles[0].id !== defaultRoleIds[0])"
+    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
     class="pi pi-star-o  app-icon-header bia-pointer"
     (click)="onSetDefaultRoles()"
     pTooltip="{{ 'bia.defineDefault' | translate }}"
@@ -26,7 +48,7 @@
     placeholder="Top"
   ></i>
   <i
-    *ngIf="displayRoleList === true && (defaultRoleIds.length === 1 && currentRoles.length ===1 && currentRoles[0].id === defaultRoleIds[0])"
+    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && isDefaultRoles()"
     class="pi pi-star app-icon-header"
   ></i>
   <p-dropdown

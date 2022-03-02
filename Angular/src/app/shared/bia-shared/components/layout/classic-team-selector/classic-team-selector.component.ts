@@ -40,12 +40,14 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   defaultTeamId = 0;
   teams:  OptionDto[];
   displayRoleList = false;
+  displayRoleMultiSelect = false;
   defaultRoleIds: number[] = [];
   roles:  RoleDto[];
 
   cssClassEnv: string;
   languageId: number;
   singleRoleMode: boolean;
+  multiRoleMode: boolean;
 
   private sub = new Subscription();
 
@@ -74,7 +76,8 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.SingleRole) != undefined
+    this.singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.SingleRole) != undefined;
+    this.multiRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.MultiRoles) != undefined;
     this.initDropdownTeam();
     this.initDropdownRole();
   }
@@ -113,47 +116,51 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onRolesChange() {
-    let roleIds: number[] = []
     if (this.singleRoleMode){
-      roleIds = [this.currentRole!.id]
+      if (this.currentRole) this.currentRoles = [this.currentRole];
     }
-    else
-    {
-      roleIds = this.currentRoles.map(r => r.id)
-    }
-    this.authService.setCurrentRoleIds(this.currentTeam.id, roleIds);
+
+    this.authService.setCurrentRoleIds(this.currentTeam.id, this.currentRoles.map(r => r.id));
     location.assign(this.baseHref);
   }
 
   onSetDefaultRoles() {
-    let roleIds: number[] = []
-    if (this.singleRoleMode){
-      roleIds = [this.currentRole!.id]
-    }
-    else
-    {
-      roleIds = this.currentRoles.map(r => r.id)
-    }
-    this.store.dispatch(setDefaultRoles({teamId: this.currentTeam.id, roleIds: roleIds}));
+    this.store.dispatch(setDefaultRoles({teamId: this.currentTeam.id, roleIds:  this.currentRoles.map(r => r.id)}));
     this.defaultRoleIds = this.currentRoles.map(r => r.id);
   }
 
+  isDefaultRoles() : boolean {
+    return (this.defaultRoleIds?.sort().toString() === this.currentRoles?.map(r => r.id).sort().toString());
+  }
 
   private initDropdownRole() {
     this.displayRoleList = false;
-    if (this.singleRoleMode) {
+    this.displayRoleMultiSelect = false;
+    if (this.singleRoleMode || this.multiRoleMode) {
       let currentRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
       let defaultRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.defaultRoleIds;
       let roles = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.roles;
-      if (roles  && roles != undefined && roles.length > 1) {
-        this.displayRoleList = true;
-        this.currentRoles = roles.filter((x) => currentRoleIds?.includes(x.id));
-        if (this.currentRoles.length ===1 ) this.currentRole = this.currentRoles[0];
-        else this.currentRole = null;
-        this.roles = roles;
-        if (defaultRoleIds && defaultRoleIds.length === 1)
+      if ((roles  && roles != undefined && (this.multiRoleMode || roles.length > 1)))
+      {
+        this.currentRoles = roles?.filter((x) => currentRoleIds?.includes(x.id));
+        if (this.singleRoleMode) {
+          this.displayRoleList = true;
+          if (this.currentRoles.length ===1 ) this.currentRole = this.currentRoles[0];
+          else this.currentRole = null;
+          this.roles = roles;
+          if (defaultRoleIds && defaultRoleIds.length === 1)
+          {
+            this.defaultRoleIds = defaultRoleIds
+          }
+        }
+        if (this.multiRoleMode)
         {
-          this.defaultRoleIds = defaultRoleIds
+          this.displayRoleMultiSelect = true;
+          this.roles = roles;
+          if (defaultRoleIds)
+          {
+            this.defaultRoleIds = defaultRoleIds
+          }
         }
       }
     }

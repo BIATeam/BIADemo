@@ -22,6 +22,7 @@
   },
   "Begin BIADemo" : "To remove in project from here",
   "aircraftMaintenanceCompany": {
+    "add": "Añadir empresa de mantenimiento de aeronaves",
     "listOf": "Lista de empresas de mantenimiento de aeronaves",
     "title": "Name"
   },

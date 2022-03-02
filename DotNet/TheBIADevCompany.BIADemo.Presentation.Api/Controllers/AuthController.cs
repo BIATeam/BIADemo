@@ -315,15 +315,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                                 }
                                 else
                                 {
-                                    if (currentTeam.DefaultRoleIds.Any())
-                                    {
-                                        currentTeam.CurrentRoleIds = currentTeam.DefaultRoleIds;
-                                    }
-                                    else
-                                    {
-                                        RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
-                                        currentTeam.CurrentRoleIds = new List<int> { role.Id };
-                                    }
+                                    currentTeam.CurrentRoleIds = currentTeam.DefaultRoleIds;
                                 }
                             }
                             else
