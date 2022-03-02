@@ -31,9 +31,9 @@
       {{ item | translateField: 'label':'roleTranslations':languageId }}
     </ng-template>
     <ng-template let-value pTemplate="selectedItems">
-      <ng-container *ngFor="let selectedItem of currentRoles;let last = last">
-        {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}<ng-container *ngIf="last == false">,</ng-container>
-      </ng-container>
+      <ng-template ngFor let-selectedItem let-last="last" [ngForOf]="currentRoles" >
+        {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}<ng-container *ngIf="!last">, </ng-container>
+      </ng-template>
       <div *ngIf="!currentRoles || currentRoles.length === 0" class="country-placeholder">
         Select roles
       </div>

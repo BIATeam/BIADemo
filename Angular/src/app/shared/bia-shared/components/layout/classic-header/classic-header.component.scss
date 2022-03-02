@@ -9,7 +9,7 @@
   color: white!important;
 }
 
-.logos {
+.logos, .controls {
   .separator {
     height: 24px;
     border-left: 1px solid;
@@ -125,6 +125,10 @@
 }
 
 :host ::ng-deep {
+  .separator {
+    font-size: xxx-large;
+    margin-right: 12px;
+  }
   .p-component {
     border-width: 0px !important;
   }
@@ -139,6 +143,7 @@
     }
   }
   p-megamenu {
+    margin-left: -12px;
     .p-megamenu {
       padding: 0;
     }

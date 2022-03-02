@@ -5,20 +5,18 @@
     <div class="logos" fxLayoutAlign="center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" fxFlexAlign="center" class="separator"></span>
-        <a href="{{ urlDMIndex }}">
-          <img fxFlexAlign="center" src="{{ logo }}" />
-        </a>
+        <img fxFlexAlign="center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls" fxLayout="row">
-      <bia-classic-team-selector *ngFor="let teamTypeSelector of teamTypeSelectors"
-        [teamTypeId]="teamTypeSelector"
-        [userData]="userData"
-      ></bia-classic-team-selector>
-
-
-
+      <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors" >
+        <bia-classic-team-selector 
+          [teamTypeId]="teamTypeSelector"
+          [userData]="userData"
+        ></bia-classic-team-selector>
+        <span fxFlexAlign="center" class="separator"></span>
+      </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i
         class="pi pi-refresh app-icon-header bia-pointer"
