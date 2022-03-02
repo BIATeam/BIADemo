@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
     using System.Security.Principal;
+    using Audit.Core;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
@@ -128,6 +129,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthorization();
 
             app.UseBiaApiFeatures(x => x.BiaNetSection = this.biaNetSection);
+
+            Audit.Core.Configuration.AddOnSavingAction(scope =>
+            {
+                BIAClaimsPrincipal principal = app.ApplicationServices.GetService<IPrincipal>() as BIAClaimsPrincipal;
+                scope.Event.Environment.CustomFields["UserId"] = principal.GetUserId();
+            });
         }
     }
 }

@@ -4,9 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using Audit.Core;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
-    using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.IocContainer;
     using Hangfire;
@@ -24,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
@@ -101,6 +103,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
                 options.EnableSensitiveDataLogging();
+                options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
             collection.AddDbContext<IQueryableUnitOfWork, DataContextReadOnly>(
                 options =>
@@ -109,6 +112,36 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     options.EnableSensitiveDataLogging();
                 },
                 contextLifetime: ServiceLifetime.Transient);
+
+            // Set this property to true to disable audit
+            Audit.Core.Configuration.AuditDisabled = false;
+
+            Audit.EntityFramework.Configuration.Setup()
+                .ForContext<DataContext>(config => config
+                    .IncludeEntityObjects(false)
+                    .AuditEventType("{context}:{database}"))
+                    .UseOptOut();
+
+            // Remove previous line and uncomment following line
+            // to audit only some specific entities
+            /*Audit.EntityFramework.Configuration.Setup()
+              .ForContext<DataContext>(config => config
+                  .IncludeEntityObjects(false)
+                  .AuditEventType("{context}:{database}"))
+                  .UseOptIn()
+                  .Include(typeof(Airport));*/
+
+            // Can be modified to use an other data provider
+            Audit.Core.Configuration.Setup()
+                .UseSqlServer(config => config
+                    .ConnectionString(configuration.GetConnectionString("BIADemoDatabase"))
+                    .Schema("dbo")
+                    .TableName("Events")
+                    .IdColumnName("Id")
+                    .JsonColumnName("JsonData")
+                    .LastUpdatedColumnName("LastUpdatedDate")
+                    .CustomColumn("EventType", ev => ev.EventType)
+                    .CustomColumn("UserId", ev => ev.Environment.CustomFields["UserId"]));
 
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
