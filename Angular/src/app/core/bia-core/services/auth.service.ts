@@ -2,13 +2,13 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
 import { map, filter, take, switchMap } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
-import { AuthInfo, AdditionalInfos } from 'src/app/shared/bia-shared/model/auth-info';
+import { AuthInfo, AdditionalInfos, TokenAndTeamsDto, TeamLoginDto } from 'src/app/shared/bia-shared/model/auth-info';
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { TeamLoginDto } from 'src/app/shared/bia-shared/model/team-login-dto';
 import { RoleMode } from 'src/app/shared/constants';
 import { allEnvironments } from 'src/environments/allEnvironments';
+import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
 
 
 const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
@@ -191,10 +191,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected getAuthInfo() {
-    return this.http.post<AuthInfo>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
-      map((authInfo: AuthInfo) => {
-        this.authInfoSubject.next(authInfo);
-        return authInfo;
+    return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
+      map((tokenAndTeam: TokenAndTeamsDto) => {
+        this.authInfoSubject.next(tokenAndTeam.token);
+        loadAllTeamsSuccess({ teams: tokenAndTeam.allTeams });
+        return tokenAndTeam.token;
       })
     );
   }
@@ -203,10 +204,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     let url: string;
     const teamsLogin = this.getTeamsLogin();
     if (teamsLogin.length > 0) {
-      url = `${this.route}loginOnTeams`;
+      url = `${this.route}LoginAndTeams`;
     }
     else {
-      url = `${this.route}loginOnTeamsDefault`;
+      url = `${this.route}LoginAndTeamsDefault`;
     }
     return url;
   }

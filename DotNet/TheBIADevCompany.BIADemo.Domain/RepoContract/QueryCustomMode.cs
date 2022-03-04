@@ -17,11 +17,11 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
         /// <summary>
         /// Mode Update the view of type site.
         /// </summary>
-        public const string ModeUpdateViewSites = "UpdateViewSites";
+        public const string ModeUpdateViewTeams = "UpdateViewTeams";
 
         /// <summary>
         /// Mode Update the view of type site.
         /// </summary>
-        public const string ModeUpdateViewSitesAndUsers = "UpdateViewSitesAndUsers";
+        public const string ModeUpdateViewTeamsAndUsers = "UpdateViewTeamsAndUsers";
     }
 }

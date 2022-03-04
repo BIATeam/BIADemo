@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain.Dto.User
 {
     using BIA.Net.Core.Domain.Dto.Option;
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -22,11 +23,17 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// </summary>
         public ICollection<CurrentTeamDto> CurrentTeams { get; set; }
 
+        [JsonIgnore]
         public int CurrentSiteId
         {
             get
             {
-                return CurrentTeams.Where(t => t.TeamTypeId == 1).FirstOrDefault().CurrentTeamId;
+                var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == 1).FirstOrDefault();
+                if (CurrentSite != null)
+                {
+                    return CurrentSite.CurrentTeamId;
+                }
+                return 0;
             }
         }
     }

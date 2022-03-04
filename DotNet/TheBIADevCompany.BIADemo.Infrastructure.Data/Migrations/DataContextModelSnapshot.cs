@@ -1249,9 +1249,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewSite", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
                 {
-                    b.Property<int>("SiteId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("ViewId")
@@ -1265,11 +1265,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("SiteId", "ViewId");
+                    b.HasKey("TeamId", "ViewId");
 
                     b.HasIndex("ViewId");
 
-                    b.ToTable("ViewSite");
+                    b.ToTable("ViewTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewUser", b =>
@@ -1583,21 +1583,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("TeamType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewSite", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
-                        .WithMany("ViewSites")
-                        .HasForeignKey("SiteId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                        .WithMany("ViewTeams")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", "View")
-                        .WithMany("ViewSites")
+                        .WithMany("ViewTeams")
                         .HasForeignKey("ViewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Site");
+                    b.Navigation("Team");
 
                     b.Navigation("View");
                 });
@@ -1691,6 +1691,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
                 {
                     b.Navigation("Members");
+
+                    b.Navigation("ViewTeams");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", b =>
@@ -1709,14 +1711,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
                 {
-                    b.Navigation("ViewSites");
+                    b.Navigation("ViewTeams");
 
                     b.Navigation("ViewUsers");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
-                {
-                    b.Navigation("ViewSites");
                 });
 #pragma warning restore 612, 618
         }

@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to set default site.
             /// </summary>
-            public const string SetDefaultSite = "Member_Set_Default_Site";
+            public const string SetDefaultTeam = "Member_Set_Default_Team";
 
             /// <summary>
             /// The right to set default role.
@@ -329,6 +329,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to access to all sites.
             /// </summary>
             public const string AccessAll = "Team_Access_All";
+
+            /// <summary>
+            /// The right to access to the list of sites.
+            /// </summary>
+            public const string ListAccess = "Team_List_Access";
         }
 
         /// <summary>
@@ -390,7 +395,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to add an site view.
             /// </summary>
-            public const string AddSiteView = "View_Add_SiteView";
+            public const string AddTeamView = "View_Add_TeamView";
 
             /// <summary>
             /// The right to update an user view.
@@ -400,7 +405,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to update an site view.
             /// </summary>
-            public const string UpdateSiteView = "View_Update_SiteView";
+            public const string UpdateTeamView = "View_Update_TeamView";
 
             /// <summary>
             /// The right to delete an user view.
@@ -410,7 +415,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to delete an site view.
             /// </summary>
-            public const string DeleteSiteView = "View_Delete_SiteView";
+            public const string DeleteTeamView = "View_Delete_TeamView";
 
             /// <summary>
             /// The right to set default user view.
@@ -420,12 +425,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to set default site view.
             /// </summary>
-            public const string SetDefaultSiteView = "View_Set_Default_SiteView";
+            public const string SetDefaultTeamView = "View_Set_Default_TeamView";
 
             /// <summary>
             /// The right to assign view to a site.
             /// </summary>
-            public const string AssignToSite = "View_Assign_To_Site";
+            public const string AssignToTeam = "View_Assign_To_Team";
         }
 
         /// <summary>

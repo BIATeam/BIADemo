@@ -6,7 +6,6 @@ namespace TheBIADevCompany.BIADemo.Application.View
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.Dto.SiteView;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
 
     /// <summary>
@@ -15,11 +14,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
     public interface IViewAppService
     {
         /// <summary>
-        /// Adds the site view asynchronous.
+        /// Adds the team view asynchronous.
         /// </summary>
         /// <param name="dto">The dto.</param>
-        /// <returns>SiteViewDto.</returns>
-        Task<SiteViewDto> AddSiteViewAsync(SiteViewDto dto);
+        /// <returns>TeamViewDto.</returns>
+        Task<TeamViewDto> AddTeamViewAsync(TeamViewDto dto);
 
         /// <summary>
         /// Adds the user view asynchronous.
@@ -35,11 +34,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
         Task<IEnumerable<ViewDto>> GetAllAsync();
 
         /// <summary>
-        /// Removes the site view asynchronous.
+        /// Removes the team view asynchronous.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveSiteViewAsync(int id);
+        Task RemoveTeamViewAsync(int id);
 
         /// <summary>
         /// Removes the user view asynchronous.
@@ -49,11 +48,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
         Task RemoveUserViewAsync(int id);
 
         /// <summary>
-        /// Sets the default site view asynchronous.
+        /// Sets the default team view asynchronous.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SetDefaultSiteViewAsync(DefaultSiteViewDto dto);
+        Task SetDefaultTeamViewAsync(DefaultTeamViewDto dto);
 
         /// <summary>
         /// Sets the default user view asynchronous.
@@ -70,10 +69,10 @@ namespace TheBIADevCompany.BIADemo.Application.View
         Task<ViewDto> UpdateViewAsync(ViewDto dto);
 
         /// <summary>
-        /// Assigns the view to site asynchronous.
+        /// Assigns the view to team asynchronous.
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AssignViewToSiteAsync(AssignViewToSiteDto dto);
+        Task AssignViewToTeamAsync(AssignViewToTeamDto dto);
     }
 }

@@ -5,7 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
 {
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to represent a AircraftMaintenanceCompany.

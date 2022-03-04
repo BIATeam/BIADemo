@@ -47,8 +47,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // this.Repository.QueryCustomizer = queryCustomizer
         }
 
-        /// <inheritdoc cref="IMemberAppService.GetRangeBySiteAsync"/>
-        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(PagingFilterFormatDto filters)
+        /// <inheritdoc cref="IMemberAppService.GetRangeByTeamAsync"/>
+        public async Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters)
         {
             return await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
         }

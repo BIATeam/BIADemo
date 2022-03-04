@@ -44,7 +44,7 @@
       </td>
       <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="pi pi-star-border"></i></td>
       <td>{{ view.description }}</td>
-      <td>{{ (view.viewType === 1 ? 'bia.views.typeSite' : 'bia.views.typeUser') | translate }}</td>
+      <td>{{ (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser') | translate }}</td>
     </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage" let-view>

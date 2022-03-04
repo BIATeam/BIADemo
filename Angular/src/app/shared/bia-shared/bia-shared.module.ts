@@ -74,7 +74,7 @@ import { PageLayoutComponent } from './components/layout/page-layout.component';
 import { PrimengCalendarLocaleDirective } from './directives/primeng-calendar-locale.directive';
 import { ViewListComponent } from './features/view/views/view-list/view-list.component';
 import { ViewDialogComponent } from './features/view/views/view-dialog/view-dialog.component';
-import { ViewSiteTableComponent } from './features/view/components/view-site-table/view-site-table.component';
+import { ViewTeamTableComponent } from './features/view/components/view-team-table/view-team-table.component';
 import { ViewUserTableComponent } from './features/view/components/view-user-table/view-user-table.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './features/view/store/view.state';
@@ -175,7 +175,7 @@ const COMPONENTS = [
 const VIEW_COMPONENTS = [
   ViewListComponent,
   ViewDialogComponent,
-  ViewSiteTableComponent,
+  ViewTeamTableComponent,
   ViewUserTableComponent,
   ViewFormComponent
 ];

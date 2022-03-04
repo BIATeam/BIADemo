@@ -13,7 +13,7 @@ import { allEnvironments } from 'src/environments/allEnvironments';
 import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
-import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/site/store/sites-actions';
+import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/team/store/teams-actions';
 
 @Component({
   selector: 'bia-classic-team-selector',

@@ -8,8 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The mapper used for site.
@@ -22,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <returns>The site DTO.</returns>
         public override Expression<Func<Team, TeamDto>> EntityToDto()
         {
-            return entity => new TeamDto { Id = entity.Id, Title = entity.Title };
+            return entity => new TeamDto { Id = entity.Id, Title = entity.Title, TeamTypeId = entity.TeamTypeId };
         }
 
         /// <summary>
@@ -34,7 +33,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// </returns>
         public Expression<Func<Team, TeamDto>> EntityToDto(int userId)
         {
-            return entity => new TeamDto { Id = entity.Id, Title = entity.Title, IsDefault = entity.Members.Any(member => member.UserId == userId && member.IsDefault) };
+            return entity => new TeamDto
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                TeamTypeId = entity.TeamTypeId,
+                IsDefault = entity.Members.Any(member => member.UserId == userId && member.IsDefault),
+            };
         }
     }
 }

@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.View;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.SiteView;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
 
     /// <summary>
@@ -174,13 +173,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>
         /// The result of the update.
         /// </returns>
-        [HttpPut("SiteViews/{id}")]
+        [HttpPut("TeamViews/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.UpdateSiteView)]
-        public async Task<IActionResult> UpdateSiteView(int id, [FromBody]ViewDto dto)
+        [Authorize(Roles = Rights.Views.UpdateTeamView)]
+        public async Task<IActionResult> UpdateTeamView(int id, [FromBody]ViewDto dto)
         {
             return await this.UpdateView(id, dto);
         }
@@ -190,16 +189,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="dto">The view DTO.</param>
         /// <returns>The result of the creation.</returns>
-        [HttpPost("SiteViews")]
+        [HttpPost("TeamViews")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.AddSiteView)]
-        public async Task<IActionResult> AddSiteView([FromBody]SiteViewDto dto)
+        [Authorize(Roles = Rights.Views.AddTeamView)]
+        public async Task<IActionResult> AddTeamView([FromBody]TeamViewDto dto)
         {
             try
             {
-                var createdDto = await this.viewService.AddSiteViewAsync(dto);
+                var createdDto = await this.viewService.AddTeamViewAsync(dto);
                 return this.Ok(createdDto);
             }
             catch (ArgumentNullException)
@@ -217,13 +216,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="id">The view identifier.</param>
         /// <returns>The result of the remove.</returns>
-        [HttpDelete("SiteViews/{id}")]
+        [HttpDelete("TeamViews/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.DeleteSiteView)]
-        public async Task<IActionResult> RemoveSiteView(int id)
+        [Authorize(Roles = Rights.Views.DeleteTeamView)]
+        public async Task<IActionResult> RemoveTeamView(int id)
         {
             if (id == 0)
             {
@@ -232,7 +231,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.viewService.RemoveSiteViewAsync(id);
+                await this.viewService.RemoveTeamViewAsync(id);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -253,17 +252,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Set a view as the default one for the current site.
         /// </summary>
         /// <param name="id">The view identifier.</param>
-        /// <param name="dto">The defaultSiteView dto.</param>
+        /// <param name="dto">The defaultTeamView dto.</param>
         /// <returns>
         /// The result of the action.
         /// </returns>
-        [HttpPut("SiteViews/{id}/setDefault")]
+        [HttpPut("TeamViews/{id}/setDefault")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.SetDefaultSiteView)]
-        public async Task<IActionResult> SetDefaultSiteView(int id, [FromBody]DefaultSiteViewDto dto)
+        [Authorize(Roles = Rights.Views.SetDefaultTeamView)]
+        public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody]DefaultTeamViewDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -272,7 +271,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             try
             {
-                await this.viewService.SetDefaultSiteViewAsync(dto);
+                await this.viewService.SetDefaultTeamViewAsync(dto);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -289,26 +288,26 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Set a view as the default one for the current site.
         /// </summary>
         /// <param name="id">The view identifier.</param>
-        /// <param name="dto">The assignViewToSite dto.</param>
+        /// <param name="dto">The assignViewToTeam dto.</param>
         /// <returns>
         /// The result of the action.
         /// </returns>
-        [HttpPut("{id}/AssignViewToSite")]
+        [HttpPut("{id}/AssignViewToTeam")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.AssignToSite)]
-        public async Task<IActionResult> AssignViewToSite(int id, [FromBody]AssignViewToSiteDto dto)
+        [Authorize(Roles = Rights.Views.AssignToTeam)]
+        public async Task<IActionResult> AssignViewToTeam(int id, [FromBody]AssignViewToTeamDto dto)
         {
-            if (id < 1 || dto == null || dto.ViewId != id || dto.SiteId < 1)
+            if (id < 1 || dto == null || dto.ViewId != id || dto.TeamId < 1)
             {
                 return this.BadRequest();
             }
 
             try
             {
-                await this.viewService.AssignViewToSiteAsync(dto);
+                await this.viewService.AssignViewToTeamAsync(dto);
                 return this.Ok();
             }
             catch (ElementNotFoundException)

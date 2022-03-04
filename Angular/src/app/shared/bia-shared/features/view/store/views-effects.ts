@@ -9,23 +9,23 @@ import {
   removeUserView,
   setDefaultUserView,
   addUserView,
-  addSiteView,
-  setDefaultSiteView,
-  removeSiteView,
+  addTeamView,
+  setDefaultTeamView,
+  removeTeamView,
   updateUserView,
-  assignViewToSite,
-  updateSiteView,
+  assignViewToTeam,
+  updateTeamView,
   setViewSuccess
 } from './views-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { ViewDas } from '../services/view-das.service';
 import { View } from '../model/view';
-import { SiteViewDas } from '../services/site-view-das.service';
-import { SiteDefaultView } from '../model/site-default-view';
-import { SiteView } from '../model/site-view';
+import { TeamViewDas } from '../services/team-view-das.service';
+import { TeamDefaultView } from '../model/team-default-view';
+import { TeamView } from '../model/team-view';
 import { UserViewDas } from '../services/user-view-das.service';
 import { DefaultView } from '../model/default-view';
-import { AssignViewToSite } from '../model/assign-view-to-site';
+import { AssignViewToTeam } from '../model/assign-view-to-team';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -104,11 +104,11 @@ export class ViewsEffects {
     )
   );
 
-  updateSiteView$ = createEffect(() =>
+  updateTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(updateSiteView),
-      switchMap((view: SiteView) =>
-        this.siteViewDas.put(view, view.id).pipe(
+      ofType(updateTeamView),
+      switchMap((view: TeamView) =>
+        this.teamViewDas.put(view, view.id).pipe(
           switchMap((viewUpdated) => {
             this.biaMessageService.showUpdateSuccess();
             return [setViewSuccess(viewUpdated), loadAllView()];
@@ -140,12 +140,12 @@ export class ViewsEffects {
     )
   );
 
-  deleteSiteView$ = createEffect(() =>
+  deleteTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(removeSiteView) /* When action is dispatched */,
+      ofType(removeTeamView) /* When action is dispatched */,
       pluck('id'),
       switchMap((id) => {
-        return this.siteViewDas.delete(id).pipe(
+        return this.teamViewDas.delete(id).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllView();
@@ -159,11 +159,11 @@ export class ViewsEffects {
     )
   );
 
-  addSiteView$ = createEffect(() =>
+  addTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(addSiteView),
-      switchMap((view: SiteView) =>
-        this.siteViewDas.post(view).pipe(
+      ofType(addTeamView),
+      switchMap((view: TeamView) =>
+        this.teamViewDas.post(view).pipe(
           switchMap((viewAdded) => {
             this.biaMessageService.showAddSuccess();
             return [setViewSuccess(viewAdded), loadAllView()];
@@ -177,11 +177,11 @@ export class ViewsEffects {
     )
   );
 
-  setDefaultSiteView$ = createEffect(() =>
+  setDefaultTeamView$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultSiteView),
-      switchMap((action: SiteDefaultView) => {
-        return this.siteViewDas.setDefaultView(action).pipe(
+      ofType(setDefaultTeamView),
+      switchMap((action: TeamDefaultView) => {
+        return this.teamViewDas.setDefaultView(action).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllView();
@@ -195,11 +195,11 @@ export class ViewsEffects {
     )
   );
 
-  assignViewToSite$ = createEffect(() =>
+  assignViewToTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(assignViewToSite),
-      switchMap((action: AssignViewToSite) => {
-        return this.viewDas.assignViewToSite(action).pipe(
+      ofType(assignViewToTeam),
+      switchMap((action: AssignViewToTeam) => {
+        return this.viewDas.assignViewToTeam(action).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllView();
@@ -216,7 +216,7 @@ export class ViewsEffects {
   constructor(
     private actions$: Actions,
     private viewDas: ViewDas,
-    private siteViewDas: SiteViewDas,
+    private teamViewDas: TeamViewDas,
     private userViewDas: UserViewDas,
     private biaMessageService: BiaMessageService
   ) {}

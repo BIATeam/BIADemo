@@ -1,5 +1,21 @@
+import { Team } from 'src/app/domains/team/model/team';
+import { RoleMode } from '../../constants';
 import { OptionDto } from './option-dto';
 import { RoleDto } from './role';
+
+
+export interface TokenAndTeamsDto {
+  token: AuthInfo;
+  allTeams: Team[];
+}
+
+export class  TeamLoginDto {
+  teamTypeId: number;
+  teamId: number;
+  roleMode: RoleMode;
+  roleIds: number[];
+  useDefaultRoles: boolean;
+}
 
 export interface UserInfo {
   id: number;

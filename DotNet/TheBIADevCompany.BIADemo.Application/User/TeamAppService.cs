@@ -9,12 +9,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -39,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
-        public async Task<IEnumerable<TeamDto>> GetAllAsync(int teamTypeId, int userId = 0, IEnumerable<string> userPermissions = null)
+        public async Task<IEnumerable<TeamDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
         {
             userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
@@ -47,11 +46,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             TeamMapper mapper = this.InitMapper<TeamDto, TeamMapper>();
             if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
-                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Team>(team => team.TeamTypeId == teamTypeId));
+                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
             }
             else
             {
-                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Team>(team => team.TeamTypeId == teamTypeId && team.Members.Any(member => member.UserId == userId)));
+                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Team>(team => team.Members.Any(member => member.UserId == userId)));
             }
         }
     }

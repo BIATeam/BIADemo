@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using TheBIADevCompany.BIADemo.Domain.Dto.SiteView;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
 
     /// <summary>
@@ -34,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
                 Description = entity.Description,
                 IsUserDefault = entity.ViewUsers.Any(a => a.UserId == userId && a.IsDefault),
                 Preference = entity.Preference,
-                ViewSites = entity.ViewSites.Select(x => new ViewSiteDto() { SiteId = x.Site.Id, SiteTitle = x.Site.Title, IsDefault = x.IsDefault }).ToList(),
+                ViewTeams = entity.ViewTeams.Select(x => new ViewTeamDto() { TeamId = x.Team.Id, TeamTitle = x.Team.Title, IsDefault = x.IsDefault }).ToList(),
             };
         }
 
@@ -69,9 +68,9 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         /// </summary>
         /// <param name="dto">The dto.</param>
         /// <param name="entity">The entity.</param>
-        public static void MapperAddSiteView(SiteViewDto dto, View entity)
+        public static void MapperAddTeamView(TeamViewDto dto, View entity)
         {
-            if (dto != null && dto.SiteId > 0)
+            if (dto != null && dto.TeamId > 0)
             {
                 if (entity == null)
                 {
@@ -83,9 +82,9 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
                 entity.Name = dto.Name;
                 entity.Description = dto.Description;
                 entity.Preference = dto.Preference;
-                entity.ViewType = ViewType.Site;
-                entity.ViewSites = new List<ViewSite>();
-                entity.ViewSites.Add(new ViewSite { IsDefault = false, ViewId = entity.Id, SiteId = dto.SiteId });
+                entity.ViewType = ViewType.Team;
+                entity.ViewTeams = new List<ViewTeam>();
+                entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = dto.TeamId });
             }
         }
 

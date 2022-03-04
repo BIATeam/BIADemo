@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Collections.Generic;
 
     using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 
     /// <summary>
     /// The team.
@@ -37,5 +38,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the members.
         /// </summary>
         public virtual ICollection<Member> Members { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of view site.
+        /// </summary>
+        public ICollection<ViewTeam> ViewTeams { get; set; }
     }
 }

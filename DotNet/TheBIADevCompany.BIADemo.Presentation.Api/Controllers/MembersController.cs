@@ -75,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var (results, total) = await this.memberService.GetRangeBySiteAsync(filters);
+                var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
@@ -134,7 +134,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.memberService.AddAsync(dto);
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -171,7 +171,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.memberService.UpdateAsync(dto);
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(updatedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -213,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var deletedDto = await this.memberService.RemoveAsync(id);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(deletedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.Ok();
             }
@@ -251,7 +251,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var deletedDtos = await this.memberService.RemoveAsync(ids);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
@@ -293,7 +293,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
@@ -325,7 +325,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.SetDefaultSite)]
+        [Authorize(Roles = Rights.Members.SetDefaultTeam)]
         public async Task<IActionResult> SetDefaultTeam(int teamTypeId, int teamId)
         {
             if (teamId == 0 || teamTypeId == 0)

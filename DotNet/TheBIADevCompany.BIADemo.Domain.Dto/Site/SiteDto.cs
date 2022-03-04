@@ -4,7 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
 {
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to manage site.

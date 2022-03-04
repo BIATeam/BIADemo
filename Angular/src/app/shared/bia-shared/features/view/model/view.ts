@@ -1,4 +1,4 @@
-import { ViewSite } from './view-site';
+import { ViewTeam } from './view-team';
 
 export interface View {
   id: number;
@@ -8,5 +8,5 @@ export interface View {
   viewType: number;
   isUserDefault: boolean;
   preference: string;
-  viewSites: ViewSite[];
+  viewTeams: ViewTeam[];
 }

@@ -22,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filters">The filters.</param>
         /// <returns>The list of MemberDto.</returns>
-        Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeBySiteAsync(PagingFilterFormatDto filters);
+        Task<(IEnumerable<MemberDto> Members, int Total)> GetRangeByTeamAsync(PagingFilterFormatDto filters);
 
         /// <summary>
         /// Sets the default site.

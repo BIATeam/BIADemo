@@ -100,7 +100,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login()
         {
-            return await this.LoginOnTeamsDefault();
+            var actionResult = await this.LoginAndTeamsDefault();
+            if (actionResult is not OkObjectResult)
+            {
+                return actionResult;
+            }
+
+            var okResult = actionResult as OkObjectResult;
+            var actualConfiguration = okResult.Value as TokenAndTeamsDto;
+            return this.Ok(actualConfiguration.Token);
         }
 
         /// <summary>
@@ -108,11 +116,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="roleModes">role mode for the different teams.</param>
         /// <returns>The JWT if authenticated.</returns>
-        [HttpPost("loginOnTeamsDefault")]
+        [HttpPost("loginAndTeamsDefault")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LoginOnTeamsDefault(RoleModeDto[] roleModes = null)
+        public async Task<IActionResult> LoginAndTeamsDefault(RoleModeDto[] roleModes = null)
         {
             TeamLoginDto[] teamsLogin =
             {
@@ -138,7 +146,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 // End BIADemo
             };
 
-            return await this.LoginOnTeams(teamsLogin);
+            return await this.LoginAndTeams(teamsLogin);
         }
 
         /// <summary>
@@ -148,11 +156,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>
         /// The JWT if authenticated.
         /// </returns>
-        [HttpPost("loginOnTeams")]
+        [HttpPost("loginAndTeams")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LoginOnTeams(TeamLoginDto[] teamLogins)
+        public async Task<IActionResult> LoginAndTeams(TeamLoginDto[] teamLogins)
         {
             // user data
             var userData = new UserDataDto();
@@ -235,14 +243,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
             }
 
+            var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
+            var allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
+
             // get user rights
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
-
                 foreach (var teamLogin in teamLogins)
                 {
-                    var teams = await this.teamAppService.GetAllAsync(teamLogin.TeamTypeId, userInfo.Id, userMainRights);
+                    var teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                     var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
                     CurrentTeamDto currentTeam = new CurrentTeamDto();
@@ -369,7 +378,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             var token = await this.jwtFactory.GenerateJwtAsync(claimsIdentity, new { UserInfo = userInfo, UserProfile = userProfile, UserData = userData });
 
-            return this.Ok(token);
+            return this.Ok(new TokenAndTeamsDto { Token = token, AllTeams = allTeams.ToList() });
         }
 
         /// <summary>

@@ -244,11 +244,11 @@
         "Roles": [ "User" ]
       },
       {
-        "Names": [ "View_Add_SiteView", "View_Update_SiteView", "View_Set_Default_SiteView", "View_Assign_To_Site" ],
+        "Names": [ "View_Add_TeamView", "View_Update_TeamView", "View_Set_Default_TeamView", "View_Assign_To_Team" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Name": "View_Delete_SiteView",
+        "Name": "View_Delete_TeamView",
         "Roles": [ "Admin" ]
       },
       // Notifications

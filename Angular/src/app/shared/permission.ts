@@ -57,12 +57,12 @@ export enum Permission {
   LdapDomains_List = 'LdapDomains_List',
   View_List = 'View_List',
   View_AddUserView = 'View_Add_UserView',
-  View_AddSiteView = 'View_Add_SiteView',
+  View_AddTeamView = 'View_Add_TeamView',
   View_UpdateUserView = 'View_Update_UserView',
-  View_UpdateSiteView = 'View_Update_SiteView',
+  View_UpdateTeamView = 'View_Update_TeamView',
   View_DeleteUserView = 'View_Delete_UserView',
-  View_DeleteSiteView = 'View_Delete_SiteView',
+  View_DeleteTeamView = 'View_Delete_TeamView',
   View_SetDefaultUserView = 'View_Set_Default_UserView',
-  View_SetDefaultSiteView = 'View_Set_Default_SiteView',
-  View_AssignToSite = 'View_Assign_To_Site'
+  View_SetDefaultTeamView = 'View_Set_Default_TeamView',
+  View_AssignToTeam = 'View_Assign_To_Team'
 }

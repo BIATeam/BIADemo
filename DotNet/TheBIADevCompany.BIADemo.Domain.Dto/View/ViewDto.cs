@@ -49,6 +49,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.View
         /// <summary>
         /// Gets or sets the sites.
         /// </summary>
-        public IList<ViewSiteDto> ViewSites { get; set; }
+        public IList<ViewTeamDto> ViewTeams { get; set; }
     }
 }
