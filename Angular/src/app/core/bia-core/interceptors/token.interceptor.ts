@@ -22,7 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
-      return next.handle(request);
+      return next.handle(this.addLanguageOnly(request));
     }
     if (this.isRefreshing === false) {
       return this.launchRequest(request, next);
@@ -61,6 +61,15 @@ export class TokenInterceptor implements HttpInterceptor {
       withCredentials: false,
       setHeaders: {
         Authorization: `Bearer ${token}`,
+        'Accept-Language' : ( langSelected !== null) ? langSelected : ''
+      }
+    });
+  }
+
+  private addLanguageOnly(request: HttpRequest<any>) {
+    const langSelected = this.biaTranslationService.getLangSelected();
+    return request.clone({
+      setHeaders: {
         'Accept-Language' : ( langSelected !== null) ? langSelected : ''
       }
     });

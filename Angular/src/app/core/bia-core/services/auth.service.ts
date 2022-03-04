@@ -47,7 +47,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             this.setCurrentRoleIds(team.currentTeamId, team.currentRoleIds);
           }
         });
-
       }
     });
   }
@@ -126,9 +125,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const teamsLogin = this.getTeamsLogin();
     return teamsLogin.find((i => i.teamTypeId === teamTypeId))
   }
-
-  
-
 
   public getCurrentTeamId(teamTypeId: number): number {
     const team = this.getTeamLogin(teamTypeId);
