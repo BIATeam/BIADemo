@@ -31,10 +31,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
+        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
+            this.userContext = userContext;
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>

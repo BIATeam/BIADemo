@@ -257,15 +257,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     CurrentTeamDto currentTeam = new CurrentTeamDto();
                     currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
-                    currentTeam.Teams = teams.Select(s => new BIA.Net.Core.Domain.Dto.Option.OptionDto { Id = s.Id, Display = s.Title }).ToList();
-
                     if (team != null)
                     {
-                        if (team.IsDefault)
-                        {
-                            currentTeam.DefaultTeamId = team.Id;
-                        }
-
                         if (teamLogin.TeamId > 0 && teams.Any(s => s.Id == teamLogin.TeamId))
                         {
                             currentTeam.CurrentTeamId = teamLogin.TeamId;
@@ -281,7 +274,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     if (currentTeam.CurrentTeamId > 0)
                     {
                         var roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.CurrentTeamId, userInfo.Id);
-                        currentTeam.Roles = roles.ToList();
 
                         if (teamLogin.RoleMode == RoleMode.AllRoles)
                         {
@@ -292,11 +284,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                             RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
                             if (role != null)
                             {
-                                if (role.IsDefault)
-                                {
-                                    currentTeam.DefaultRoleIds = new List<int> { role.Id };
-                                }
-
                                 if (teamLogin.RoleIds != null && teamLogin.RoleIds.Length == 1 && roles.Any(s => s.Id == teamLogin.RoleIds.First()))
                                 {
                                     currentTeam.CurrentRoleIds = new List<int> { teamLogin.RoleIds.First() };
@@ -315,8 +302,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                         {
                             if (roles.Any())
                             {
-                                currentTeam.DefaultRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
-
                                 if (!teamLogin.UseDefaultRoles)
                                 {
                                     List<int> roleIdsToSet = roles.Where(r => teamLogin.RoleIds != null && teamLogin.RoleIds.Any(tr => tr == r.Id)).Select(r => r.Id).ToList();
@@ -324,7 +309,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                                 }
                                 else
                                 {
-                                    currentTeam.CurrentRoleIds = currentTeam.DefaultRoleIds;
+                                    currentTeam.CurrentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
                                 }
                             }
                             else
@@ -336,7 +321,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                         userData.CurrentTeams.Add(currentTeam);
 
                         // add the sites roles (filter if singleRole mode is used)
-                        allRoles.AddRange(currentTeam.Roles.Where(r => currentTeam.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
+                        allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
 
                         // add computed roles (can be customized)
                         if (currentTeam.TeamTypeId == (int)TeamTypeId.Site)

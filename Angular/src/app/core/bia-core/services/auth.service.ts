@@ -9,6 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { RoleMode } from 'src/app/shared/constants';
 import { allEnvironments } from 'src/environments/allEnvironments';
 import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
+import { Team } from 'src/app/domains/team/model/team';
+import { AppState } from 'src/app/store/state';
+import { Store } from '@ngrx/store';
 
 
 const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
@@ -27,7 +30,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   constructor(
     injector: Injector,
     protected biaMessageService: BiaMessageService,
-    protected translateService: TranslateService
+    protected translateService: TranslateService,
+    private store: Store<AppState>,
   ) {
     super(injector, 'Auth');
     this.init();
@@ -121,7 +125,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public getTeamLogin(teamTypeId: number): TeamLoginDto | undefined{
     const teamsLogin = this.getTeamsLogin();
     return teamsLogin.find((i => i.teamTypeId === teamTypeId))
-    
   }
 
   
@@ -194,7 +197,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
       map((tokenAndTeam: TokenAndTeamsDto) => {
         this.authInfoSubject.next(tokenAndTeam.token);
-        loadAllTeamsSuccess({ teams: tokenAndTeam.allTeams });
+        let teams:Team[] = tokenAndTeam.allTeams;
+        this.store.dispatch(loadAllTeamsSuccess({ teams }));
         return tokenAndTeam.token;
       })
     );

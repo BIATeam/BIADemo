@@ -1,11 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input, OnDestroy, Inject, OnInit } from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
-import { MenuItem } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, Observable } from 'rxjs';
 import { RoleMode } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { OptionDto } from '../../../model/option-dto';
 import { UserData } from '../../../model/auth-info';
 import { RoleDto } from '../../../model/role';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -14,6 +12,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/team/store/teams-actions';
+import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
+import { Team } from 'src/app/domains/team/model/team';
 
 @Component({
   selector: 'bia-classic-team-selector',
@@ -23,37 +23,27 @@ import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/team/store/team
 })
 export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamTypeId: number;
-  currentTeam: OptionDto;
-  currentRole: RoleDto | null;
-  currentRoles: RoleDto[];
-  _userData: UserData;
-  get userData(): UserData {
-    return this._userData;
-  }
-  @Input()
-  set userData(value: UserData) {
-    this._userData = value;
-
-  }
+  @Input() userData: UserData;
 
   displayTeamList = false;
   defaultTeamId = 0;
-  teams:  OptionDto[];
+  currentTeam: Team;
+  teams:  Team[];
+  teams$: Observable<Team[]>;
+
   displayRoleList = false;
   displayRoleMultiSelect = false;
   defaultRoleIds: number[] = [];
+  currentRole: RoleDto | null;
+  currentRoles: RoleDto[];
   roles:  RoleDto[];
 
-  cssClassEnv: string;
   languageId: number;
   singleRoleMode: boolean;
   multiRoleMode: boolean;
 
   private sub = new Subscription();
 
-  topBarMenuItems: any; // MenuItem[]; // bug v9 primeNG
-  navMenuItems: MenuItem[];
-  appIcon$: Observable<string>;
 
   unreadNotificationCount$: Observable<number>;
 
@@ -69,6 +59,9 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.SingleRole) != undefined;
+    this.multiRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.MultiRoles) != undefined;
+    this.teams$ = this.store.select(getAllTeamsOfType(this.teamTypeId));
     this.sub.add(
       this.biaTranslationService.languageId$.subscribe(languageId => {
         if (languageId) {
@@ -76,10 +69,13 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
         }
       })
     );
-    this.singleRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.SingleRole) != undefined;
-    this.multiRoleMode = allEnvironments.teams.find(t => t.teamTypeId == this.teamTypeId && t.roleMode == RoleMode.MultiRoles) != undefined;
-    this.initDropdownTeam();
-    this.initDropdownRole();
+    this.sub.add(
+      this.teams$.subscribe(teams => {
+        this.teams = teams
+        this.initDropdownTeam();
+        this.initDropdownRole();
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -95,19 +91,16 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   onSetDefaultTeam() {
     this.store.dispatch(setDefaultTeam({teamTypeId: this.teamTypeId, teamId:this.currentTeam.id}));
-    this.defaultTeamId = this.currentTeam.id;
   }
 
   private initDropdownTeam() {
     this.displayTeamList = false;
     let currentTeamId = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
-    let teams = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.teams;
-    let defaultTeamId = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.defaultTeamId;
+    let defaultTeamId = this.teams.find(t => t.isDefault)?.id;
     if (currentTeamId && currentTeamId != undefined && currentTeamId > 0 && 
-      teams && teams != undefined && teams.length > 1) {
-      this.currentTeam = teams.filter((x) => x.id === currentTeamId)[0];
+      this.teams && this.teams != undefined && this.teams.length > 1) {
+      this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];
       this.displayTeamList = true;
-      this.teams = teams;
       if (defaultTeamId)
       {
         this.defaultTeamId = defaultTeamId;
@@ -126,7 +119,6 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   onSetDefaultRoles() {
     this.store.dispatch(setDefaultRoles({teamId: this.currentTeam.id, roleIds:  this.currentRoles.map(r => r.id)}));
-    this.defaultRoleIds = this.currentRoles.map(r => r.id);
   }
 
   isDefaultRoles() : boolean {
@@ -138,8 +130,8 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     this.displayRoleMultiSelect = false;
     if (this.singleRoleMode || this.multiRoleMode) {
       let currentRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
-      let defaultRoleIds = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.defaultRoleIds;
-      let roles = this.userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.roles;
+      let roles = this.teams.find(t => t.id == this.currentTeam.id)?.roles;
+      let defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if ((roles  && roles != undefined && (this.multiRoleMode || roles.length > 1)))
       {
         this.currentRoles = roles?.filter((x) => currentRoleIds?.includes(x.id));

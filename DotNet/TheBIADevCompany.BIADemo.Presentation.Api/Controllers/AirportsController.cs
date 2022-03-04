@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="AirportsController"/> class.
         /// </summary>
-        /// <param name="airportService">The plane application service.</param>
+        /// <param name="airportService">The airport application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInAirport
         public AirportsController(IAirportAppService airportService, IClientForHubRepository clientForHubService)

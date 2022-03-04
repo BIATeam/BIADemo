@@ -10,6 +10,9 @@ import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
 import { UserData } from '../../../model/auth-info';
+import { loadAllTeams } from 'src/app/domains/team/store/teams-actions';
+import { AppState } from 'src/app/store/state';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'bia-classic-layout',
@@ -44,7 +47,8 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     public layoutService: BiaClassicLayoutService,
     private translateService: TranslateService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -55,10 +59,17 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
       this.updateMenuItems();
     });
 
-    this.layoutService.breadcrumbRefresh$.subscribe((val) => {
-      this.setNoMargin(this.activatedRoute);
-      this.updateMenuItems();
-    });
+    this.sub.add(
+      this.layoutService.breadcrumbRefresh$.subscribe((val) => {
+        this.setNoMargin(this.activatedRoute);
+        this.updateMenuItems();
+      })
+    );
+    this.sub.add(
+      this.biaTranslation.languageId$.subscribe(() => {
+        this.store.dispatch(loadAllTeams());
+      })
+    );
   }
 
   ngOnDestroy(): void {

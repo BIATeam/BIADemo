@@ -17,11 +17,7 @@ namespace BIA.Net.Core.Domain.Dto.User
             TeamTypeId = 0;
             CurrentTeamId = 0;
             CurrentTeamTitle = "";
-            DefaultTeamId = 0;
-            Teams = new List<OptionDto>();
             CurrentRoleIds = new List<int>();
-            DefaultRoleIds = new List<int>();
-            Roles = new List<RoleDto>();
         }
         /// <summary>
         /// Gets or sets the current site identifier.
@@ -41,27 +37,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the current site identifier.
         /// </summary>
-        public int DefaultTeamId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the List of sites 
-        /// </summary>
-        public List<OptionDto> Teams { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current site identifier.
-        /// </summary>
         public List<int> CurrentRoleIds { get; set; }
-
-        /// <summary>
-        /// Gets or sets the current site identifier.
-        /// </summary>
-        public List<int> DefaultRoleIds { get; set; }
-
-        /// <summary>
-        /// Gets or sets the List of sites 
-        /// </summary>
-        public List<RoleDto> Roles { get; set; }
-
     }
 }

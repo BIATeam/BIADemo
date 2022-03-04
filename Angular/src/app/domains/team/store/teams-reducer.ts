@@ -35,21 +35,3 @@ export const teamReducers = createReducer<State>(
 );
 
 export const getTeamById = (id: number) => (state: State) => state.entities[id];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

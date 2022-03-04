@@ -6,7 +6,4 @@ export interface Team extends BaseDto {
   title: string;
   isDefault: boolean;
   roles: RoleDto[];
-  isUserTeamAdmin: boolean;
-  isUserNotificationAdmin: boolean;
-  isUserViewAdmin: boolean;
 }

@@ -175,14 +175,6 @@
         "Names": [ "Member_List_Access", "Member_Create", "Member_Read", "Member_Update", "Member_Delete", "Member_Save" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
-      {
-        "Name": "Member_Set_Default_Site",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      {
-        "Name": "Member_Set_Default_Role",
-        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
-      },
       // Permission
       {
         "Names": [ "Permissions_Options" ],
@@ -224,6 +216,18 @@
       {
         "Names": [ "Team_Access_All" ],
         "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "Team_List_Access" ],
+        "Roles": [ "User" ]
+      },
+      {
+        "Name": "Team_Set_Default_Team",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Name": "Team_Set_Default_Roles",
+        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
       },
       // User
       {

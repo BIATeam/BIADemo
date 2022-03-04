@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Team } from '../model/team';
 import { storeKey } from '../team.contants';
 
-// export const loadAllTeams = createAction('[' + storeKey + '] Load all');
+export const loadAllTeams = createAction('[' + storeKey + '] Load all');
 
 export const loadAllTeamsSuccess = createAction('[' + storeKey + '] Load all success', props<{ teams: Team[] }>());
 

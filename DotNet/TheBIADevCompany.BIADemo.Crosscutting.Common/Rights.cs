@@ -65,16 +65,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save members.
             /// </summary>
             public const string Save = "Member_Save";
-
-            /// <summary>
-            /// The right to set default site.
-            /// </summary>
-            public const string SetDefaultTeam = "Member_Set_Default_Team";
-
-            /// <summary>
-            /// The right to set default role.
-            /// </summary>
-            public const string SetDefaultRole = "Member_Set_Default_Role";
         }
 
         // Begin BIADemo
@@ -334,6 +324,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to access to the list of sites.
             /// </summary>
             public const string ListAccess = "Team_List_Access";
+
+            /// <summary>
+            /// The right to set default site.
+            /// </summary>
+            public const string SetDefaultTeam = "Team_Set_Default_Team";
+
+            /// <summary>
+            /// The right to set default role.
+            /// </summary>
+            public const string SetDefaultRoles = "Team_Set_Default_Roles";
         }
 
         /// <summary>

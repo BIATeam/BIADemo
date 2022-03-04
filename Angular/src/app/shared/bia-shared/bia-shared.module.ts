@@ -91,6 +91,7 @@ import { NotificationsEffects } from 'src/app/domains/notification/store/notific
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 import { FormatValuePipe } from './pipes/format-value.pipe';
 import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
+import { TeamModule } from 'src/app/domains/team/team.module';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -149,7 +150,8 @@ const MODULES = [
   FormsModule,
   ReactiveFormsModule,
   FlexLayoutModule,
-  HttpClientModule
+  HttpClientModule,
+  TeamModule,
 ];
 
 

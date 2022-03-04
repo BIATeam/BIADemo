@@ -3,41 +3,23 @@
     *ngIf="displayRoleList"
     [options]="roles"
     [(ngModel)]="currentRole"
-    optionLabel="label"
+    optionLabel="display"
     dataKey="id"
     (onChange)="onRolesChange()"
     placeholder="Select a role"
   >
-    <ng-template let-item pTemplate="item">
-      {{ item | translateField: 'label':'roleTranslations':languageId }}
-    </ng-template>
-    <ng-template let-selectedItem pTemplate="selectedItem">
-      {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}
-      <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
-    </ng-template>
   </p-dropdown>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"
     defaultLabel="&nbsp;"
     [options]="roles"
     [(ngModel)]="currentRoles"
-    optionLabel="label"
+    optionLabel="display"
     datakey="id"
     [virtualScroll]="true"
     (onChange)="onRolesChange()"
     placeholder="Select a role"
   >
-    <ng-template let-item pTemplate="item">
-      {{ item | translateField: 'label':'roleTranslations':languageId }}
-    </ng-template>
-    <ng-template let-value pTemplate="selectedItems">
-      <ng-template ngFor let-selectedItem let-last="last" [ngForOf]="currentRoles" >
-        {{ selectedItem | translateField: 'label':'roleTranslations':languageId }}<ng-container *ngIf="!last">, </ng-container>
-      </ng-template>
-      <div *ngIf="!currentRoles || currentRoles.length === 0" class="country-placeholder">
-        Select roles
-      </div>
-    </ng-template>
   </p-multiSelect>
   <i
     *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
@@ -55,7 +37,7 @@
     *ngIf="displayTeamList === true"
     [options]="teams"
     [(ngModel)]="currentTeam"
-    optionLabel="display"
+    optionLabel="title"
     dataKey="id"
     (onChange)="onTeamChange()"
   ></p-dropdown>

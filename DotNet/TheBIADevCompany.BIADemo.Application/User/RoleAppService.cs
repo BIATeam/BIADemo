@@ -54,18 +54,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 entity => new RoleDto
                 {
                     Id = entity.Id,
-                    Label = entity.Label,
+                    Display = "TODO: Remove this function",
                     Code = entity.Code,
                     IsDefault = entity.MemberRoles.Any(mr => mr.Member.UserId == userId && mr.Member.TeamId == teamId && mr.IsDefault),
-
-                    // Mapping relationship *-1 : ICollection<Airports>
-                    RoleTranslations = entity.RoleTranslations.Select(rt => new RoleTranslationDto
-                    {
-                        Id = rt.Id,
-                        LanguageId = rt.LanguageId,
-                        Label = rt.Label,
-                        DtoState = DtoState.Unchanged,
-                    }).ToList(),
                 },
                 filter: x => x.MemberRoles.Select(mr => mr.Member).Any(m => m.TeamId == teamId && m.UserId == userId));
         }

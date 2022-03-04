@@ -39,6 +39,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 Title = entity.Title,
                 TeamTypeId = entity.TeamTypeId,
                 IsDefault = entity.Members.Any(member => member.UserId == userId && member.IsDefault),
+                Roles = entity.Members.FirstOrDefault(member => member.UserId == userId).MemberRoles.Select(mem => new RoleDto
+                {
+                    Id = mem.RoleId,
+                    IsDefault = mem.IsDefault,
+                    Code = mem.Role.Code,
+                    Display = mem.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? mem.Role.Label,
+                }).ToList(),
             };
         }
     }

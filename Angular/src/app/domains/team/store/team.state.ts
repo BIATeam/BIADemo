@@ -35,7 +35,11 @@ export const getTeamById = (id: number) =>
     fromTeams.getTeamById(id)
   );
 
-
+export const getAllTeamsOfType = (teamTypeId: number) =>
+  createSelector(
+    getAllTeams,
+    (teams) => teams.filter(team => team.teamTypeId === teamTypeId)
+  );
 
 
 
