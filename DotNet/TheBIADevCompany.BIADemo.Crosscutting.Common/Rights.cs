@@ -472,7 +472,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to access to the list of notifications types (options only).
             /// </summary>
-            public const string Options = "NotifiactionType_Options";
+            public const string Options = "NotificationType_Options";
         }
     }
 }
