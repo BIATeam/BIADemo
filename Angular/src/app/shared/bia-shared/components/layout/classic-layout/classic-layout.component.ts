@@ -4,7 +4,7 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { distinctUntilChanged, filter, skip } from 'rxjs/operators';
+import { filter, skip } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
@@ -67,7 +67,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     );
     this.sub.add(
       // skip the 0 and first set of language (because team arrive with authservice at begining)
-      this.biaTranslation.languageId$.pipe(distinctUntilChanged()).pipe(skip(2)).subscribe(() => {
+      this.biaTranslation.languageId$.pipe(skip(1)).subscribe(() => {
         this.store.dispatch(loadAllTeams());
       })
     );
