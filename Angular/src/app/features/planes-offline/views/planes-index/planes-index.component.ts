@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllPlanes, getPlanesTotalCount, getPlaneLoadingGetAll } from '../../store/plane.state';
 import { FeaturePlanesActions } from '../../store/planes-actions';
@@ -83,7 +83,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     private biaTranslationService: BiaTranslationService,
     private planesSignalRService: PlanesSignalRService,
     public planeOptionsService: PlaneOptionsService,
-    public onlineOfflineService: OnlineOfflineService
+    private injector: Injector
   ) {
   }
 
@@ -100,7 +100,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.planeOptionsService.loadAllOptions();
+          this.planeOptionsService.loadAllOptions();
         })
       );
     }
@@ -109,18 +109,20 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
 
-    this.sub.add(
-      this.onlineOfflineService.serverAvailable$.pipe(skip(1)).subscribe(serverAvailable => {
+    if (OnlineOfflineService.isModeEnabled) {
+      this.sub.add(
+        this.injector.get<OnlineOfflineService>(OnlineOfflineService).serverAvailable$.pipe(skip(1)).subscribe(serverAvailable => {
           if (serverAvailable === true) {
             this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
           }
         })
-    );
-    
+      );
+    }
+
   }
 
   ngOnDestroy() {
