@@ -87,11 +87,7 @@ export abstract class GenericDas {
   }
 
   getItem<TOut>(param?: GetParam): Observable<TOut> {
-    if (param) {
-      param.endpoint = param.endpoint ?? '';
-    }
-
-    const url = `${this.route}${param?.endpoint}${param?.id}`;
+    const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map((data) => {
@@ -113,10 +109,7 @@ export abstract class GenericDas {
   }
 
   getListItems<TOut>(param?: GetListParam): Observable<TOut[]> {
-    if (param) {
-      param.endpoint = param.endpoint ?? '';
-    }
-    const url = `${this.route}${param?.endpoint}`;
+    const url = `${this.route}${param?.endpoint ?? ''}`;
 
     let obs$ = this.http.get<TOut[]>(url, param?.options).pipe(
       map((items) => {

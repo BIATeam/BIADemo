@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, interval, Observable, throwError } from 'rxjs';
-import { catchError, first } from 'rxjs/operators';
+import { BehaviorSubject, Observable, timer } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
 import { BiaMessageService } from './bia-message.service';
@@ -83,7 +83,7 @@ export class OnlineOfflineService {
    * Checks at regular intervals if the backend is available.
    */
   protected checkServerAvailable() {
-    interval(2000).subscribe(() => {
+    timer(0, 10000).subscribe(() => {
       if (this.serverAvailableSubject.value === false) {
         this.ping().pipe(
           first()
@@ -124,13 +124,7 @@ export class OnlineOfflineService {
 
   protected httpRequestPost(httpRequestItem: HttpRequestItem) {
     this.http.post(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body).pipe(
-      first(),
-      catchError((error) => {
-        if (OnlineOfflineService.isServerAvailable(error) === true) {
-          this.deleteHttpRequestItem(httpRequestItem);
-        }
-        return throwError(error);
-      })
+      first()
     ).subscribe(
       () => {
         this.deleteHttpRequestItem(httpRequestItem);
@@ -140,13 +134,7 @@ export class OnlineOfflineService {
 
   protected httpRequestPut(httpRequestItem: HttpRequestItem) {
     this.http.put(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body).pipe(
-      first(),
-      catchError((error) => {
-        if (OnlineOfflineService.isServerAvailable(error) === true) {
-          this.deleteHttpRequestItem(httpRequestItem);
-        }
-        return throwError(error);
-      })
+      first()
     ).subscribe(
       () => {
         this.deleteHttpRequestItem(httpRequestItem);
@@ -156,13 +144,7 @@ export class OnlineOfflineService {
 
   protected httpRequestDelete(httpRequestItem: HttpRequestItem) {
     this.http.delete(httpRequestItem.httpRequest.urlWithParams).pipe(
-      first(),
-      catchError((error) => {
-        if (OnlineOfflineService.isServerAvailable(error) === true) {
-          this.deleteHttpRequestItem(httpRequestItem);
-        }
-        return throwError(error);
-      })
+      first()
     ).subscribe(
       () => {
         this.deleteHttpRequestItem(httpRequestItem);
