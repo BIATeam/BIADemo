@@ -7,7 +7,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { DateHelperService } from './date-helper.service';
 import { MatomoTracker } from './matomo/matomo-tracker.service';
-import { OnlineOfflineService } from './online-offline.service';
+import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { AppDB, DataItem } from '../db';
 
 export interface HttpOptions {
@@ -75,7 +75,7 @@ export abstract class GenericDas {
     this.http = injector.get<HttpClient>(HttpClient);
     this.route = GenericDas.buildRoute(endpoint);
     this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
-    if (OnlineOfflineService.isModeEnabled === true) {
+    if (BiaOnlineOfflineService.isModeEnabled === true) {
       this.db = injector.get<AppDB>(AppDB);
     }
   }
@@ -97,7 +97,7 @@ export abstract class GenericDas {
       })
     );
 
-    if (param?.offlineMode === true && OnlineOfflineService.isModeEnabled === true) {
+    if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
       obs$ = this.getWithCatchErrorOffline(obs$, url);
       obs$.pipe(first()).subscribe((result: TOut) => {
         this.clearDataByUrl(url);
@@ -120,7 +120,7 @@ export abstract class GenericDas {
         return items;
       }));
 
-    if (param?.offlineMode === true && OnlineOfflineService.isModeEnabled === true) {
+    if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
       obs$ = this.getListWithCatchErrorOffline(obs$, url);
       obs$.pipe(first()).subscribe((results: TOut[]) => {
         this.clearDataByUrl(url);
@@ -167,7 +167,7 @@ export abstract class GenericDas {
     }
 
     if (param.offlineMode === true) {
-      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options));
     } else {
       return this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options);
@@ -179,7 +179,7 @@ export abstract class GenericDas {
     DateHelperService.fillDate(param.item);
 
     if (param.offlineMode === true) {
-      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options));
     } else {
       return this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options);
@@ -191,7 +191,7 @@ export abstract class GenericDas {
     DateHelperService.fillDate(param.item);
 
     if (param.offlineMode === true) {
-      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.post<TOut>(this.route, param.item, param.options));
     } else {
       return this.http.post<TOut>(this.route, param.item, param.options);
@@ -202,7 +202,7 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? '';
 
     if (param.offlineMode === true) {
-      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options));
     } else {
       return this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options);
@@ -213,7 +213,7 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? '';
 
     if (param.offlineMode === true) {
-      param.options = OnlineOfflineService.addHttpHeaderRetry(param.options);
+      param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options));
     } else {
       return this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options);
@@ -235,7 +235,7 @@ export abstract class GenericDas {
   protected setWithCatchErrorOffline(obs$: Observable<any>) {
     return obs$.pipe(
       catchError((error) => {
-        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
+        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
           return NEVER;
         }
         return throwError(error);
@@ -246,7 +246,7 @@ export abstract class GenericDas {
   protected getListWithCatchErrorOffline(obs$: Observable<any>, url: string) {
     return obs$.pipe(
       catchError((error) => {
-        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
+        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
           return from(this.db.datas.filter(function (x) {
             return x.url === url;
           }).toArray()).pipe(
@@ -261,7 +261,7 @@ export abstract class GenericDas {
   protected getWithCatchErrorOffline(obs$: Observable<any>, url: string) {
     return obs$.pipe(
       catchError((error) => {
-        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(error) !== true) {
+        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
           return from(this.db.datas.filter(function (x) {
             return x.url === url;
           }).first()).pipe(

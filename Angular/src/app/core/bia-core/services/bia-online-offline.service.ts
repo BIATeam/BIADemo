@@ -24,7 +24,7 @@ enum HTTPMethod {
 @Injectable({
   providedIn: 'root'
 })
-export class OnlineOfflineService {
+export class BiaOnlineOfflineService {
 
   protected serverAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public serverAvailable$: Observable<boolean> = this.serverAvailableSubject.asObservable();
@@ -32,7 +32,7 @@ export class OnlineOfflineService {
 
   protected static _IsModeEnabled = false;
   public static get isModeEnabled() {
-    return OnlineOfflineService._IsModeEnabled;
+    return BiaOnlineOfflineService._IsModeEnabled;
   }
 
   constructor(
@@ -40,7 +40,7 @@ export class OnlineOfflineService {
     protected db: AppDB,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService) {
-    OnlineOfflineService._IsModeEnabled = true;
+    BiaOnlineOfflineService._IsModeEnabled = true;
     this.init();
   }
 
@@ -51,14 +51,14 @@ export class OnlineOfflineService {
   public static addHttpHeaderRetry(options?: HttpOptions) {
     if (options) {
       if (options.headers) {
-        options.headers = (<HttpHeaders>options.headers).append(OnlineOfflineService.httpHeaderRetry, 'true');
+        options.headers = (<HttpHeaders>options.headers).append(BiaOnlineOfflineService.httpHeaderRetry, 'true');
       } else {
-        options.headers = new HttpHeaders().append(OnlineOfflineService.httpHeaderRetry, 'true');
+        options.headers = new HttpHeaders().append(BiaOnlineOfflineService.httpHeaderRetry, 'true');
       }
     }
     else {
       options = {
-        headers: new HttpHeaders().append(OnlineOfflineService.httpHeaderRetry, 'true')
+        headers: new HttpHeaders().append(BiaOnlineOfflineService.httpHeaderRetry, 'true')
       };
     }
 
@@ -66,8 +66,8 @@ export class OnlineOfflineService {
   }
 
   public manageHttpErrorResponse(httpRequest: HttpRequest<any>, httpErrorResponse: HttpErrorResponse) {
-    if (OnlineOfflineService.isServerAvailable(httpErrorResponse) !== true) {
-      if (httpRequest.headers?.has(OnlineOfflineService.httpHeaderRetry) === true) {
+    if (BiaOnlineOfflineService.isServerAvailable(httpErrorResponse) !== true) {
+      if (httpRequest.headers?.has(BiaOnlineOfflineService.httpHeaderRetry) === true) {
         this.addHttpRequestItem(httpRequest);
         this.biaMessageService.showWarning(this.translateService.instant('biaMsg.serverUnavailableDataSaveLocally'));
       }

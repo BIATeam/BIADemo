@@ -90,7 +90,7 @@ import { JoinPipe } from './pipes/join.pipe';
 import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 import { FormatValuePipe } from './pipes/format-value.pipe';
-import { OnlineOfflineIconComponent } from './components/online-offline-icon/online-offline-icon.component';
+import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-icon/bia-online-offline-icon.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -168,7 +168,7 @@ const COMPONENTS = [
   PopupLayoutComponent,
   FullPageLayoutComponent,
   PrimengCalendarLocaleDirective,
-  OnlineOfflineIconComponent
+  BiaOnlineOfflineIconComponent
 ];
 
 const VIEW_COMPONENTS = [

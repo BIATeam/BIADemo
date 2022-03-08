@@ -6,7 +6,7 @@ import { AuthInfo, AdditionalInfos } from 'src/app/shared/bia-shared/model/auth-
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { OnlineOfflineService } from './online-offline.service';
+import { BiaOnlineOfflineService } from './bia-online-offline.service';
 
 const STORAGE_SITEID_KEY = 'currentSiteId';
 const STORAGE_RELOADED_KEY = 'isReloaded';
@@ -151,7 +151,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const url: string = this.buildUrlLogin();
     return this.http.get<AuthInfo>(url).pipe(
       map((authInfo: AuthInfo) => {
-        if (OnlineOfflineService.isModeEnabled === true) {
+        if (BiaOnlineOfflineService.isModeEnabled === true) {
           localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(authInfo));
         }
         this.authInfoSubject.next(authInfo);
@@ -159,7 +159,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       }),
       catchError((err) => {
         let authInfo: AuthInfo = <AuthInfo>{};
-        if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(err) !== true) {
+        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
           const jsonAuthInfo: string | null = localStorage.getItem(STORAGE_AUTHINFO_KEY);
           if (jsonAuthInfo) {
             authInfo = JSON.parse(jsonAuthInfo);
@@ -220,7 +220,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         return version === environment.version;
       }),
       catchError((err) => {
-        if (OnlineOfflineService.isServerAvailable(err) !== true) {
+        if (BiaOnlineOfflineService.isServerAvailable(err) !== true) {
           return of(true);
         }
         return of(false);

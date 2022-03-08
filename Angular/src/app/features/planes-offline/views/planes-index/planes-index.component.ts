@@ -28,7 +28,7 @@ import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
 import { useCalcMode, useSignalR, useView } from '../../plane.constants';
-import { OnlineOfflineService } from 'src/app/core/bia-core/services/online-offline.service';
+import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { skip } from 'rxjs/operators';
 
 @Component({
@@ -113,9 +113,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       );
     }
 
-    if (OnlineOfflineService.isModeEnabled) {
+    if (BiaOnlineOfflineService.isModeEnabled) {
       this.sub.add(
-        this.injector.get<OnlineOfflineService>(OnlineOfflineService).serverAvailable$.pipe(skip(1)).subscribe(serverAvailable => {
+        this.injector.get<BiaOnlineOfflineService>(BiaOnlineOfflineService).serverAvailable$.pipe(skip(1)).subscribe(serverAvailable => {
           if (serverAvailable === true) {
             this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
           }

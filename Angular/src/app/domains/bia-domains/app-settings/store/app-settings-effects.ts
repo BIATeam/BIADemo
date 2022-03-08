@@ -10,7 +10,7 @@ import { AppSettingsDas } from '../services/app-settings-das.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { of } from 'rxjs';
 import { AppSettings } from '../model/app-settings';
-import { OnlineOfflineService } from 'src/app/core/bia-core/services/online-offline.service';
+import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 
 const STORAGE_APPSETTINGS_KEY = 'AppSettings';
 
@@ -24,13 +24,13 @@ export class AppSettingsEffects {
           .get()
           .pipe(
             map((appSettings) => {
-              if (OnlineOfflineService.isModeEnabled === true) {
+              if (BiaOnlineOfflineService.isModeEnabled === true) {
                 localStorage.setItem(STORAGE_APPSETTINGS_KEY, JSON.stringify(appSettings));
               }
               return loadDomainAppSettingsSuccess({ appSettings });
             }),
             catchError((err) => {
-              if (OnlineOfflineService.isModeEnabled === true && OnlineOfflineService.isServerAvailable(err) !== true) {
+              if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
                 const json: string | null = localStorage.getItem(STORAGE_APPSETTINGS_KEY);
                 if (json) {
                   const appSettings = <AppSettings>JSON.parse(json);
