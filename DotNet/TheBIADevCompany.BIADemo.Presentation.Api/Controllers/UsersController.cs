@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null)
         {
-            if (!filter.Contains('\n') || ldapName.Contains('\n'))
+            if (filter.Contains('\n') || ldapName.Contains('\n'))
             {
                 return this.BadRequest();
             }
