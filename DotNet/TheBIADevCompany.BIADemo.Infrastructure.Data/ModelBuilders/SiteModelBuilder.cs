@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>
@@ -18,7 +19,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         public static void CreateSiteModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Site>().HasKey(s => s.Id);
+            modelBuilder.Entity<Site>().ToTable("Sites");
+            modelBuilder.Entity<Site>().Property(s => s.TeamTypeId).HasDefaultValue(TeamTypeId.Site);
             modelBuilder.Entity<Site>().Property(s => s.Title).IsRequired().HasMaxLength(256);
         }
     }

@@ -1,5 +1,5 @@
-// <copyright file="INotificationQueryCustomizer.cs" company="Safran">
-//     Copyright (c) Safran. All rights reserved.
+// <copyright file="INotificationQueryCustomizer.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.RepoContract

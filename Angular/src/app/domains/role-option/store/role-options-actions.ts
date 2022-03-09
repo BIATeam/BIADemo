@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
-export const loadAllRoleOptions = createAction('[Domain Role Options] Load all');
+export const loadAllRoleOptions = createAction('[Domain Role Options] Load all', props<{ teamTypeId: number }>());
 
 export const loadAllRoleOptionsSuccess = createAction('[Domain Role Options] Load all success', props<{ roles: OptionDto[] }>());
 /*

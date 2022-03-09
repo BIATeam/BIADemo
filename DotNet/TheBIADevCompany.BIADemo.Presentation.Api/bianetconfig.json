@@ -136,6 +136,11 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin", "Pilot" ]
       },
+      // Aircraft Maintenance Company
+      {
+        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
+        "Roles": [ "Admin", "AircraftMaintenanceCompany_Admin" ]
+      },
       // Airport
       {
         "Name": "Airport_Options",
@@ -169,14 +174,6 @@
       {
         "Names": [ "Member_List_Access", "Member_Create", "Member_Read", "Member_Update", "Member_Delete", "Member_Save" ],
         "Roles": [ "Admin", "Site_Admin" ]
-      },
-      {
-        "Name": "Member_Set_Default_Site",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      {
-        "Name": "Member_Set_Default_Role",
-        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
       },
       // Permission
       {
@@ -215,6 +212,23 @@
         "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
         "Roles": [ "Admin" ]
       },
+      // Team
+      {
+        "Names": [ "Team_Access_All" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "Team_List_Access" ],
+        "Roles": [ "User" ]
+      },
+      {
+        "Name": "Team_Set_Default_Team",
+        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+      },
+      {
+        "Name": "Team_Set_Default_Roles",
+        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
+      },
       // User
       {
         "Names": [ "User_Options" ],
@@ -234,11 +248,11 @@
         "Roles": [ "User" ]
       },
       {
-        "Names": [ "View_Add_SiteView", "View_Update_SiteView", "View_Set_Default_SiteView", "View_Assign_To_Site" ],
+        "Names": [ "View_Add_TeamView", "View_Update_TeamView", "View_Set_Default_TeamView", "View_Assign_To_Team" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Name": "View_Delete_SiteView",
+        "Name": "View_Delete_TeamView",
         "Roles": [ "Admin" ]
       },
       // Notifications

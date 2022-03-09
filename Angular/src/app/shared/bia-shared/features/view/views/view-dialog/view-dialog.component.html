@@ -30,37 +30,37 @@
       ></bia-view-user-table>
     </p-tabPanel>
     <p-tabPanel
-      header="{{ 'bia.views.site' | translate | uppercase }} {{
-        (sites$ | async)?.length === 1 ? siteSelected?.title : ''
+      header="{{ 'bia.views.team' | translate | uppercase }} {{
+        (teams$ | async)?.length === 1 ? teamSelected?.title : ''
       }}"
-      *ngIf="canSetSiteView()"
+      *ngIf="canSetTeamView()"
     >
-      <div class="app-div-select-site">
+      <div class="app-div-select-team">
         <p-dropdown
-          *ngIf="(sites$ | async)?.length > 1"
+          *ngIf="(teams$ | async)?.length > 1"
           optionLabel="title"
-          placeholder="{{ 'bia.views.selectSite' | translate }}"
-          [options]="sites$ | async"
-          [(ngModel)]="siteSelected"
+          placeholder="{{ 'bia.views.selectTeam' | translate }}"
+          [options]="teams$ | async"
+          [(ngModel)]="teamSelected"
         ></p-dropdown>
       </div>
-      <ng-container *ngIf="siteSelected">
-        <div class="app-div-view-form" *ngIf="canAddSiteView === true || canUpdateSiteView === true">
+      <ng-container *ngIf="teamSelected">
+        <div class="app-div-view-form" *ngIf="canAddTeamView === true || canUpdateTeamView === true">
           <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
-          <bia-view-form [view]="siteViewSelected" (save)="onSaveSiteView($event)"></bia-view-form>
+          <bia-view-form [view]="teamViewSelected" (save)="onSaveTeamView($event)"></bia-view-form>
         </div>
-        <bia-view-site-table
-          [views]="viewSites$ | async"
-          [siteSelected]="siteSelected"
-          [canDelete]="canDeleteSiteView"
-          [canSetDefault]="canSetDefaultSiteView"
-          [canUpdate]="canUpdateSiteView"
-          [canAssign]="canAssignSiteView"
-          (assignViewToSite)="onAssignViewToSite($event)"
-          (delete)="onDeleteSiteView($event)"
-          (setDefault)="onSetDefaultSiteView($event)"
-          (viewSelect)="onSiteViewSelected($event)"
-        ></bia-view-site-table>
+        <bia-view-team-table
+          [views]="viewTeams$ | async"
+          [teamSelected]="teamSelected"
+          [canDelete]="canDeleteTeamView"
+          [canSetDefault]="canSetDefaultTeamView"
+          [canUpdate]="canUpdateTeamView"
+          [canAssign]="canAssignTeamView"
+          (assignViewToTeam)="onAssignViewToTeam($event)"
+          (delete)="onDeleteTeamView($event)"
+          (setDefault)="onSetDefaultTeamView($event)"
+          (viewSelect)="onTeamViewSelected($event)"
+        ></bia-view-team-table>
       </ng-container>
     </p-tabPanel>
   </p-tabView>

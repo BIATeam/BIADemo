@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             CreateViewModel(modelBuilder);
             CreateViewUserModel(modelBuilder);
-            CreateViewSiteModel(modelBuilder);
+            CreateViewTeamModel(modelBuilder);
         }
 
         /// <summary>
@@ -60,16 +60,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for view sites.
+        /// Create the model for view teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateViewSiteModel(ModelBuilder modelBuilder)
+        private static void CreateViewTeamModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ViewSite>().HasKey(mr => new { SiteId = mr.SiteId, ViewId = mr.ViewId });
-            modelBuilder.Entity<ViewSite>().Property(m => m.IsDefault).IsRequired();
-            modelBuilder.Entity<ViewSite>().HasOne(mr => mr.Site).WithMany(m => m.ViewSites)
-                .HasForeignKey(mr => mr.SiteId);
-            modelBuilder.Entity<ViewSite>().HasOne(mr => mr.View).WithMany(m => m.ViewSites)
+            modelBuilder.Entity<ViewTeam>().HasKey(mr => new { TeamId = mr.TeamId, ViewId = mr.ViewId });
+            modelBuilder.Entity<ViewTeam>().Property(m => m.IsDefault).IsRequired();
+            modelBuilder.Entity<ViewTeam>().HasOne(mr => mr.Team).WithMany(m => m.ViewTeams)
+                .HasForeignKey(mr => mr.TeamId);
+            modelBuilder.Entity<ViewTeam>().HasOne(mr => mr.View).WithMany(m => m.ViewTeams)
                 .HasForeignKey(mr => mr.ViewId);
         }
     }

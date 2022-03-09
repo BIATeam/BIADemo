@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly int currentSiteId;
+        private readonly List<int> currentTeamIds;
 
         /// <summary>
         /// The claims principal.
@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.Repository.QueryCustomizer = queryCustomizer;
             var userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.clientForHubService = clientForHubService;
-            this.currentSiteId = userDataDto == null ? 0 : userDataDto.CurrentSiteId;
+            this.currentTeamIds = userDataDto == null ? new List<int>() : userDataDto.CurrentTeams.Select(t => t.CurrentTeamId).ToList();
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
 
             // Test if not service
@@ -90,7 +90,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.filtersContext.Add(
                     AccessMode.Read,
                     new DirectSpecification<Notification>(n =>
-                        n.SiteId == this.currentSiteId
+                        this.currentTeamIds.Any(t => t == n.SiteId)
                         && (n.NotifiedPermissions.Count == 0 || n.NotifiedPermissions.Any(r => this.permissions.Contains(r.Permission.Code)))
                         && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
         }

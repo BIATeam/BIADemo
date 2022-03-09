@@ -1,0 +1,56 @@
+<div class="controls" fxLayout="row">
+  <p-dropdown
+    *ngIf="displayRoleList"
+    [options]="roles"
+    [(ngModel)]="currentRole"
+    optionLabel="display"
+    dataKey="id"
+    (onChange)="onRolesChange()"
+    placeholder="Select a role"
+  >
+  </p-dropdown>
+  <p-multiSelect
+    *ngIf="displayRoleMultiSelect"
+    defaultLabel="&nbsp;"
+    [options]="roles"
+    [(ngModel)]="currentRoles"
+    optionLabel="display"
+    datakey="id"
+    [virtualScroll]="true"
+    (onChange)="onRolesChange()"
+    placeholder="Select a role"
+  >
+  </p-multiSelect>
+  <i
+    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
+    class="pi pi-star-o  app-icon-header bia-pointer"
+    (click)="onSetDefaultRoles()"
+    pTooltip="{{ 'bia.defineDefault' | translate }}"
+    tooltipPosition="bottom"
+    placeholder="Top"
+  ></i>
+  <i
+    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && isDefaultRoles()"
+    class="pi pi-star app-icon-header"
+  ></i>
+  <p-dropdown
+    *ngIf="displayTeamList === true"
+    [options]="teams"
+    [(ngModel)]="currentTeam"
+    optionLabel="title"
+    dataKey="id"
+    (onChange)="onTeamChange()"
+  ></p-dropdown>
+  <i
+    *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
+    class="pi pi-star-o  app-icon-header bia-pointer"
+    (click)="onSetDefaultTeam()"
+    pTooltip="{{ 'bia.defineDefault' | translate }}"
+    tooltipPosition="bottom"
+    placeholder="Top"
+  ></i>
+  <i
+    *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
+    class="pi pi-star app-icon-header"
+  ></i>
+</div>

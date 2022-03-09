@@ -93,10 +93,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             {
                 foreach (var roleDto in dto.NotifiedPermissions.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.NotifiedPermissions.FirstOrDefault(x => x.PermissionId == roleDto.Id && x.NotificationId == dto.Id);
-                    if (connectingAirport != null)
+                    var notifiedPermissions = entity.NotifiedPermissions.FirstOrDefault(x => x.PermissionId == roleDto.Id && x.NotificationId == dto.Id);
+                    if (notifiedPermissions != null)
                     {
-                        entity.NotifiedPermissions.Remove(connectingAirport);
+                        entity.NotifiedPermissions.Remove(notifiedPermissions);
                     }
                 }
 

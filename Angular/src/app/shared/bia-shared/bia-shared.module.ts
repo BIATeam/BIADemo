@@ -74,7 +74,7 @@ import { PageLayoutComponent } from './components/layout/page-layout.component';
 import { PrimengCalendarLocaleDirective } from './directives/primeng-calendar-locale.directive';
 import { ViewListComponent } from './features/view/views/view-list/view-list.component';
 import { ViewDialogComponent } from './features/view/views/view-dialog/view-dialog.component';
-import { ViewSiteTableComponent } from './features/view/components/view-site-table/view-site-table.component';
+import { ViewTeamTableComponent } from './features/view/components/view-team-table/view-team-table.component';
 import { ViewUserTableComponent } from './features/view/components/view-user-table/view-user-table.component';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './features/view/store/view.state';
@@ -90,6 +90,8 @@ import { JoinPipe } from './pipes/join.pipe';
 import { NotificationsEffects } from 'src/app/domains/notification/store/notifications-effects';
 import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 import { FormatValuePipe } from './pipes/format-value.pipe';
+import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
+import { TeamModule } from 'src/app/domains/team/team.module';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -148,12 +150,15 @@ const MODULES = [
   FormsModule,
   ReactiveFormsModule,
   FlexLayoutModule,
-  HttpClientModule
+  HttpClientModule,
+  TeamModule,
 ];
+
 
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
+  ClassicTeamSelectorComponent,
   ClassicLayoutComponent,
   ClassicPageLayoutComponent,
   SpinnerComponent,
@@ -172,7 +177,7 @@ const COMPONENTS = [
 const VIEW_COMPONENTS = [
   ViewListComponent,
   ViewDialogComponent,
-  ViewSiteTableComponent,
+  ViewTeamTableComponent,
   ViewUserTableComponent,
   ViewFormComponent
 ];
@@ -185,6 +190,7 @@ const PIPES = [
 ];
 
 const VIEW_IMPORTS = [StoreModule.forFeature('views', reducers), EffectsModule.forFeature([ViewsEffects])];
+
 const NOTIFICATION_IMPORTS = [
   StoreModule.forFeature('domain-notifications', notificationReducers),
   EffectsModule.forFeature([NotificationsEffects])

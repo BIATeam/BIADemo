@@ -17,15 +17,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+        /// <param name="teamTypeId">The team type id.</param>
+        /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId);
 
         /// <summary>
         /// Get all member roles.
         /// </summary>
-        /// <param name="siteId">The site identifier.</param>
+        /// <param name="teamId">The team identifier.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>The list of roles for this member.</returns>
-        Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int siteId, int userId);
+        Task<IEnumerable<RoleDto>> GetMemberRolesAsync(int teamId, int userId);
     }
 }

@@ -27,7 +27,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 Login = user.Login,
                 LastName = user.LastName,
                 Guid = user.Guid,
-                SiteIds = user.Members.Select(s => s.SiteId),
             };
         }
 

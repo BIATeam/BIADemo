@@ -8,7 +8,6 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
 
@@ -22,15 +21,12 @@ export class BiaClassicLayoutService {
   private breadcrumbRefresh = new BehaviorSubject<boolean>(false);
 
   // Whether user should choose a single role
-  private singleRoleMode = new BehaviorSubject<boolean>(environment.singleRoleMode ?? true);
-
   footerPortal$ = this.footerPortal.asObservable();
   mainBarPortal$ = this.mainBarPortal.asObservable();
   mainBarHidden$ = this.mainBarHidden.asObservable();
   footerHidden$ = this.footerHidden.asObservable();
   breadcrumbHidden$ = this.breadcrumbHidden.asObservable();
   breadcrumbRefresh$ = this.breadcrumbRefresh.asObservable();
-  singleRoleMode$ = this.singleRoleMode.asObservable();
 
   changeFooter<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,

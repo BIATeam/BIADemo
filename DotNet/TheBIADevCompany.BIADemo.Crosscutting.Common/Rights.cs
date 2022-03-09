@@ -65,19 +65,45 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save members.
             /// </summary>
             public const string Save = "Member_Save";
-
-            /// <summary>
-            /// The right to set default site.
-            /// </summary>
-            public const string SetDefaultSite = "Member_Set_Default_Site";
-
-            /// <summary>
-            /// The right to set default role.
-            /// </summary>
-            public const string SetDefaultRole = "Member_Set_Default_Role";
         }
 
         // Begin BIADemo
+
+        /// <summary>
+        /// The aircraft maintenance companies rights.
+        /// </summary>
+        public static class AircraftMaintenanceCompanies
+        {
+            /// <summary>
+            /// The right to access to the list of aircraft maintenance companies.
+            /// </summary>
+            public const string ListAccess = "AircraftMaintenanceCompany_List_Access";
+
+            /// <summary>
+            /// The right to create aircraft maintenance companies.
+            /// </summary>
+            public const string Create = "AircraftMaintenanceCompany_Create";
+
+            /// <summary>
+            /// The right to read aircraft maintenance companies.
+            /// </summary>
+            public const string Read = "AircraftMaintenanceCompany_Read";
+
+            /// <summary>
+            /// The right to update aircraft maintenance companies.
+            /// </summary>
+            public const string Update = "AircraftMaintenanceCompany_Update";
+
+            /// <summary>
+            /// The right to delete aircraft maintenance companies.
+            /// </summary>
+            public const string Delete = "AircraftMaintenanceCompany_Delete";
+
+            /// <summary>
+            /// The right to save aircraft maintenance companies.
+            /// </summary>
+            public const string Save = "AircraftMaintenanceCompany_Save";
+        }
 
         /// <summary>
         /// The planes rights.
@@ -254,11 +280,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Sites
         {
             /// <summary>
-            /// The right to access to all sites.
-            /// </summary>
-            public const string AccessAll = "Site_Access_All";
-
-            /// <summary>
             /// The right to access to the list of sites.
             /// </summary>
             public const string ListAccess = "Site_List_Access";
@@ -287,6 +308,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to save sites.
             /// </summary>
             public const string Save = "Site_Save";
+        }
+
+        /// <summary>
+        /// The sites rights.
+        /// </summary>
+        public static class Teams
+        {
+            /// <summary>
+            /// The right to access to all sites.
+            /// </summary>
+            public const string AccessAll = "Team_Access_All";
+
+            /// <summary>
+            /// The right to access to the list of sites.
+            /// </summary>
+            public const string ListAccess = "Team_List_Access";
+
+            /// <summary>
+            /// The right to set default site.
+            /// </summary>
+            public const string SetDefaultTeam = "Team_Set_Default_Team";
+
+            /// <summary>
+            /// The right to set default role.
+            /// </summary>
+            public const string SetDefaultRoles = "Team_Set_Default_Roles";
         }
 
         /// <summary>
@@ -348,7 +395,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to add an site view.
             /// </summary>
-            public const string AddSiteView = "View_Add_SiteView";
+            public const string AddTeamView = "View_Add_TeamView";
 
             /// <summary>
             /// The right to update an user view.
@@ -358,7 +405,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to update an site view.
             /// </summary>
-            public const string UpdateSiteView = "View_Update_SiteView";
+            public const string UpdateTeamView = "View_Update_TeamView";
 
             /// <summary>
             /// The right to delete an user view.
@@ -368,7 +415,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to delete an site view.
             /// </summary>
-            public const string DeleteSiteView = "View_Delete_SiteView";
+            public const string DeleteTeamView = "View_Delete_TeamView";
 
             /// <summary>
             /// The right to set default user view.
@@ -378,12 +425,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to set default site view.
             /// </summary>
-            public const string SetDefaultSiteView = "View_Set_Default_SiteView";
+            public const string SetDefaultTeamView = "View_Set_Default_TeamView";
 
             /// <summary>
             /// The right to assign view to a site.
             /// </summary>
-            public const string AssignToSite = "View_Assign_To_Site";
+            public const string AssignToTeam = "View_Assign_To_Team";
         }
 
         /// <summary>

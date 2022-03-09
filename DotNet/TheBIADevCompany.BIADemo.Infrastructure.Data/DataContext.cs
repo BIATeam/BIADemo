@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     // Begin BIADemo
@@ -45,6 +46,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<User> Users { get; set; }
 
         /// <summary>
+        /// Gets or sets the type of team DBSet.
+        /// </summary>
+        public DbSet<Team> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of team DBSet.
+        /// </summary>
+        public DbSet<TeamType> TeamTypes { get; set; }
+
+        /// <summary>
         /// Gets or sets the Role DBSet.
         /// </summary>
         public DbSet<Role> Roles { get; set; }
@@ -70,6 +81,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Notification> Notifications { get; set; }
 
         /// <summary>
+        /// Gets or sets the notification translation DBSet.
+        /// </summary>
+        public DbSet<NotificationTranslation> NotificationTranslations { get; set; }
+
+        /// <summary>
         /// Gets or sets the notification type DBSet.
         /// </summary>
         public DbSet<NotificationType> NotificationTypes { get; set; }
@@ -79,7 +95,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
+        /// <summary>
+        /// Gets or sets the permissions DBSet.
+        /// </summary>
+        public DbSet<Permission> Permissions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permission translation DBSet.
+        /// </summary>
+        public DbSet<PermissionTranslation> PermissionTranslations { get; set; }
+
         // Begin BIADemo
+
+        /// <summary>
+        /// Gets or sets the Aircraft Maintenance Company DBSet.
+        /// </summary>
+        public DbSet<AircraftMaintenanceCompany> AircraftMaintenanceCompanies { get; set; }
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
@@ -111,6 +142,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
+            AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
             this.OnEndModelCreating(modelBuilder);

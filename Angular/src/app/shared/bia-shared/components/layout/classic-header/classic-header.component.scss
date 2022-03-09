@@ -9,7 +9,7 @@
   color: white!important;
 }
 
-.logos {
+.logos, .controls {
   .separator {
     height: 24px;
     border-left: 1px solid;
@@ -119,16 +119,16 @@
   margin-left: 8px;
 }
 
-.pi-star-o {
-  padding-left: 0.5rem;
-}
-
 .app-icon-header {
   margin-top: auto;
   margin-bottom: auto;
 }
 
 :host ::ng-deep {
+  .separator {
+    font-size: xxx-large;
+    margin-right: 12px;
+  }
   .p-component {
     border-width: 0px !important;
   }
@@ -143,11 +143,9 @@
     }
   }
   p-megamenu {
+    margin-left: -12px;
     .p-megamenu {
       padding: 0;
-    }
-    .p-megamenu-root-list {
-      // margin-top: 17px;
     }
 
     .p-state-active {
@@ -183,31 +181,5 @@
     .p-menuitem-text {
       font-family: 'oswald-light';
     }
-  }
-
-  p-dropdown  {
-    .p-dropdown {
-      min-width: 12.5em;
-      background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white);
-      padding-bottom: 2px;
-      .p-dropdown-label {
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-left: 2px;
-      }
-      background-color: transparent;
-      .p-inputtext {
-        color: white !important;
-      }
-    }
-    .p-dropdown:not(.p-disabled) {
-      &:hover   {
-        background-image: linear-gradient(to bottom, white, white), linear-gradient(to bottom, white, white)!important;
-      }
-    }
-    .p-dropdown-trigger-icon {
-      color: white !important;
-    }
-    
   }
 }

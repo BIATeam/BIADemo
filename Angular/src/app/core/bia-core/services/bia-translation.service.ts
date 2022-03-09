@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
 // import * as deepmerge from 'deepmerge';
 import { forkJoin, Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, distinctUntilChanged, skip } from 'rxjs/operators';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
 import { AppState } from 'src/app/store/state';
@@ -51,7 +51,7 @@ export class BiaTranslationService {
   public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([this.currentCulture$, this.appSettings$])
     .pipe(map(([currentCulture, appSettings]) => this.getDateFormatByCulture(currentCulture, appSettings)));
   public languageId$: Observable<number> = combineLatest([this.currentCulture$, this.appSettings$])
-    .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings)));
+    .pipe(map(([currentCulture, appSettings]) => this.getLanguageId(currentCulture, appSettings))).pipe(distinctUntilChanged()).pipe(skip(1));
 
   constructor(
     private translate: TranslateService,

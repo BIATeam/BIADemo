@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                     { "Title", site => site.Title },
                     {
                         "SiteAdmin", site =>
-                        site.Members.Where(w => w.MemberRoles.Any(a => a.RoleId == (int)Role.SiteAdmin)).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
+                        site.Members.Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin)).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
                     },
                 };
             }
@@ -70,6 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;
+            entity.TeamTypeId = (int)TeamTypeId.Site;
         }
 
         /// <summary>
@@ -83,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                 Id = entity.Id,
                 Title = entity.Title,
                 SiteAdmins = entity.Members
-                    .Where(w => w.MemberRoles.Any(a => a.RoleId == (int)Role.SiteAdmin))
+                    .Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin))
                     .Select(s => new SiteMemberDto { UserFirstName = s.User.FirstName, UserLastName = s.User.LastName, UserLogin = s.User.Login }),
             };
         }

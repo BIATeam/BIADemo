@@ -9,6 +9,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Notification } from '../model/notification';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -66,12 +67,12 @@ export class NotificationsSignalRService {
         );
       }
     });
-    this.targetedFeature = {parentKey: this.authService.getAdditionalInfos().userData.currentSiteId.toString() , featureName : 'notifications'};
+    this.targetedFeature = {parentKey: this.authService.getCurrentTeamId(TeamTypeId.Site).toString() , featureName : 'notifications'};
     this.signalRService.joinGroup(this.targetedFeature);
   }
   private IsInMyDisplay(notification: Notification) {
     const userInfo = this.authService.getAdditionalInfos();
-    const okSite: Boolean = notification.siteId === userInfo.userData.currentSiteId;
+    const okSite: Boolean = notification.siteId === userInfo.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
     const okUser: Boolean = (notification.notifiedUsers === undefined) ||
     (notification.notifiedUsers === null) ||
     (notification.notifiedUsers.length === 0) ||

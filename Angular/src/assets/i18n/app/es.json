@@ -3,6 +3,7 @@
     "members": "Miembros",
     "sites": "Sitios",
     "Begin BIADemo" : "To remove in project from here",
+    "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
     "administration" : "Administración",
     "airports": "Aeropuertos",
     "examples": "Ejemplos",
@@ -16,10 +17,16 @@
     "planesTypes": "Tipos de planos",
     "sites": "Aerolíneas",
     "End BIADemo" : "To remove in project up to here",
+    "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones"
   },
   "Begin BIADemo" : "To remove in project from here",
+  "aircraftMaintenanceCompany": {
+    "add": "Añadir empresa de mantenimiento de aeronaves",
+    "listOf": "Lista de empresas de mantenimiento de aeronaves",
+    "title": "Name"
+  },
   "airport": {
     "add": "Añadir aeropuerto",
     "city" : "Ciudad",
@@ -51,10 +58,10 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
-    "listOfSiteMembers": "Lista de miembros del sitio ",
+    "listOfSiteMembers": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "rolesForSite": "Roles para el sitio",
+    "rolesForSite": "Roles",
     "user": "Usuario"
   },
   "msg": {

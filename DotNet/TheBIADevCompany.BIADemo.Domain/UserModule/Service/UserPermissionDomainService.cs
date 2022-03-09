@@ -28,21 +28,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         private readonly BiaNetSection configuration;
 
         /// <summary>
-        /// The AD helper.
-        /// </summary>
-        private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="UserPermissionDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
-        /// <param name="adHelper">The AD helper.</param>
-        public UserPermissionDomainService(ITGenericRepository<Member, int> repository, IOptions<BiaNetSection> configuration, IUserDirectoryRepository<UserFromDirectory> adHelper)
+        public UserPermissionDomainService(ITGenericRepository<Member, int> repository, IOptions<BiaNetSection> configuration)
         {
             this.repository = repository;
             this.configuration = configuration.Value;
-            this.userDirectoryHelper = adHelper;
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>

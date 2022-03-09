@@ -187,7 +187,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
 
             this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
-                    Rights.Sites.AccessAll,
+                    Rights.Teams.AccessAll,
                 });
 
             #endregion Setup additional context

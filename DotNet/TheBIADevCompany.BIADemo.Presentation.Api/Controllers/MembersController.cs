@@ -24,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -74,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         {
             try
             {
-                var (results, total) = await this.memberService.GetRangeBySiteAsync(filters);
+                var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
@@ -133,7 +134,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var createdDto = await this.memberService.AddAsync(dto);
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -170,7 +171,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             {
                 var updatedDto = await this.memberService.UpdateAsync(dto);
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(updatedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -212,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var deletedDto = await this.memberService.RemoveAsync(id);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "members", "refresh-members");
+                await this.clientForHubService.SendTargetedMessage(deletedDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.Ok();
             }
@@ -250,7 +251,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var deletedDtos = await this.memberService.RemoveAsync(ids);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
@@ -292,85 +293,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.TeamId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "members", "refresh-members");
                 });
 #endif
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Sets the default site.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("Sites/{id}/setDefault")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.SetDefaultSite)]
-        public async Task<IActionResult> SetDefaultSite(int id)
-        {
-            if (id == 0)
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.memberService.SetDefaultSiteAsync(id);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Sets the default role.
-        /// </summary>
-        /// <param name="id">The role identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("Roles/{id}/setDefault")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.SetDefaultRole)]
-        public async Task<IActionResult> SetDefaultRole(int id)
-        {
-            if (id == 0)
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.memberService.SetDefaultRoleAsync(id);
                 return this.Ok();
             }
             catch (ArgumentNullException)

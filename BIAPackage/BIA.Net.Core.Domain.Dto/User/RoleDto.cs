@@ -1,5 +1,5 @@
-// <copyright file="NotificationDto.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="RoleDto.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Dto.User
@@ -25,13 +25,8 @@ namespace BIA.Net.Core.Domain.Dto.User
         public string Code { get; set; }
 
         /// <summary>
-        /// Gets or sets the label in english.
+        /// Gets or sets the label translated.
         /// </summary>
-        public string Label { get; set; }
-
-        /// <summary>
-        /// Gets or sets the role translations.
-        /// </summary>
-        public virtual ICollection<RoleTranslationDto> RoleTranslations { get; set; }
+        public string Display { get; set; }
     }
 }

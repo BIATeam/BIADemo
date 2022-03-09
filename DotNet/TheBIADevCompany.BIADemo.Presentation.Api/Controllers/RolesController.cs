@@ -45,16 +45,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
+        /// <param name="teamTypeId">The team type id.</param>
+        /// <returns>The list of production sites.</returns>
         [HttpGet("allOptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Roles.Options)]
-        public async Task<IActionResult> GetAllOptions()
+        public async Task<IActionResult> GetAllOptions(int teamTypeId)
         {
-            var results = await this.roleService.GetAllOptionsAsync();
+            var results = await this.roleService.GetAllOptionsAsync(teamTypeId);
             return this.Ok(results);
         }
     }

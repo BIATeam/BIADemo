@@ -1,23 +1,21 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 import { Platform } from '@angular/cdk/platform';
 import { MenuItem, Message } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { Subscription, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
 import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
-import { OptionDto } from '../../../model/option-dto';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../model/auth-info';
-import { RoleDto } from '../../../model/role';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
 @Component({
   selector: 'bia-classic-header',
@@ -25,7 +23,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
   styleUrls: ['./classic-header.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class ClassicHeaderComponent implements OnDestroy {
+export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input()
   set username(name: string | undefined) {
     if (name) {
@@ -49,40 +47,17 @@ export class ClassicHeaderComponent implements OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-
-
-  currentSite: OptionDto;
-  currentRole: RoleDto;
-  _userData: UserData;
-  get userData(): UserData {
-    return this._userData;
-  }
-  @Input()
-  set userData(value: UserData) {
-    this._userData = value;
-    this.initDropdownSite();
-    this.initDropdownRole();
-  }
+  @Input() userData: UserData
 
   @Output() language = new EventEmitter<string>();
   @Output() theme = new EventEmitter<string>();
-  @Output() siteChange = new EventEmitter<number>();
-  @Output() setDefaultSite = new EventEmitter<number>();
-  @Output() roleChange = new EventEmitter<number>();
-  @Output() setDefaultRole = new EventEmitter<number>();
 
   usernameParam: { name: string };
   navigations: BiaNavigation[];
   fullscreenMode = false;
   isIE = this.platform.TRIDENT;
-  urlAppIcon = environment.urlAppIcon;
-  urlDMIndex = environment.urlDMIndex;
-  displaySiteList = false;
-  displayRoleList = false;
+  urlAppIcon = allEnvironments.urlAppIcon;
   cssClassEnv: string;
-  languageId: number;
-  singleRoleMode = environment.singleRoleMode;
-
   private sub = new Subscription();
 
   topBarMenuItems: any; // MenuItem[]; // bug v9 primeNG
@@ -90,6 +65,8 @@ export class ClassicHeaderComponent implements OnDestroy {
   appIcon$: Observable<string>;
 
   unreadNotificationCount$: Observable<number>;
+
+  teamTypeSelectors: number[];
 
   constructor(
     public layoutService: BiaClassicLayoutService,
@@ -101,18 +78,20 @@ export class ClassicHeaderComponent implements OnDestroy {
     public biaTranslationService: BiaTranslationService,
     private router: Router
   ) {
+  }
+
+  ngOnInit() {
+    this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true).map(t => t.teamTypeId);
+
     this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
     this.store.dispatch(loadUnreadNotificationIds());
-    biaTranslationService.appSettings$.subscribe(appSettings => {
-      if (appSettings) {
-        this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
-      }
-    });
-    biaTranslationService.languageId$.subscribe(languageId => {
-      if (languageId) {
-        this.languageId = languageId;
-      }
-    });
+    this.sub.add(
+      this.biaTranslationService.appSettings$.subscribe(appSettings => {
+        if (appSettings) {
+          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
+        }
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -163,42 +142,6 @@ export class ClassicHeaderComponent implements OnDestroy {
 
   private onChangeLanguage(lang: string) {
     this.language.emit(lang);
-  }
-
-  onSiteChange() {
-    this.siteChange.emit(this.currentSite.id);
-  }
-
-  onSetDefaultSite() {
-    this.setDefaultSite.emit(this.currentSite.id);
-  }
-
-  private initDropdownSite() {
-    this.displaySiteList = false;
-    if (this.userData.currentSiteId > 0 && this.userData.sites && this.userData.sites.length > 1) {
-      this.currentSite = this.userData.sites.filter((x) => x.id === this.userData.currentSiteId)[0];
-      this.displaySiteList = true;
-    }
-  }
-
-  onRoleChange() {
-    this.roleChange.emit(this.currentRole.id);
-  }
-
-  onSetDefaultRole() {
-    this.setDefaultRole.emit(this.currentRole.id);
-  }
-
-  private initDropdownRole() {
-    this.displayRoleList = false;
-    if (environment.singleRoleMode) {
-      if (this.userData.currentRoleIds &&
-        this.userData.currentRoleIds.length === 1 &&
-        this.userData.roles && this.userData.roles.length > 1) {
-        this.currentRole = this.userData.roles.filter((x) => x.id === this.userData.currentRoleIds[0])[0];
-        this.displayRoleList = true;
-      }
-    }
   }
 
   buildNavigation() {

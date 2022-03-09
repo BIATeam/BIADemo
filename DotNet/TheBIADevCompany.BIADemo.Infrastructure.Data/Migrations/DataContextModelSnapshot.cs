@@ -372,28 +372,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlanesTypes");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Sites");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTranslation", b =>
                 {
                     b.Property<int>("Id")
@@ -429,7 +407,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("NotificationId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("NotificationTranslation");
+                    b.ToTable("NotificationTranslations");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTypeTranslation", b =>
@@ -602,7 +580,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("PermissionId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("PermissionTranslation");
+                    b.ToTable("PermissionTranslations");
 
                     b.HasData(
                         new
@@ -646,6 +624,48 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Label = "Pilot",
                             LanguageId = 4,
                             PermissionId = 2
+                        },
+                        new
+                        {
+                            Id = 10101,
+                            Label = "Chef d'equipe",
+                            LanguageId = 2,
+                            PermissionId = 101
+                        },
+                        new
+                        {
+                            Id = 10102,
+                            Label = "Jefe de equipo",
+                            LanguageId = 3,
+                            PermissionId = 101
+                        },
+                        new
+                        {
+                            Id = 10103,
+                            Label = "Teamleiter",
+                            LanguageId = 4,
+                            PermissionId = 101
+                        },
+                        new
+                        {
+                            Id = 10201,
+                            Label = "Operateur",
+                            LanguageId = 2,
+                            PermissionId = 102
+                        },
+                        new
+                        {
+                            Id = 10202,
+                            Label = "Operador",
+                            LanguageId = 3,
+                            PermissionId = 102
+                        },
+                        new
+                        {
+                            Id = 10203,
+                            Label = "Operator",
+                            LanguageId = 4,
+                            PermissionId = 102
                         });
                 });
 
@@ -723,6 +743,48 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Label = "Pilot",
                             LanguageId = 4,
                             RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 10101,
+                            Label = "Chef d'equipe",
+                            LanguageId = 2,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10102,
+                            Label = "Jefe de equipo",
+                            LanguageId = 3,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10103,
+                            Label = "Teamleiter",
+                            LanguageId = 4,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            Id = 10201,
+                            Label = "Operateur",
+                            LanguageId = 2,
+                            RoleId = 102
+                        },
+                        new
+                        {
+                            Id = 10202,
+                            Label = "Operador",
+                            LanguageId = 3,
+                            RoleId = 102
+                        },
+                        new
+                        {
+                            Id = 10203,
+                            Label = "Operator",
+                            LanguageId = 4,
+                            RoleId = 102
                         });
                 });
 
@@ -741,7 +803,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("SiteId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -751,7 +813,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("SiteId", "UserId")
+                    b.HasIndex("TeamId", "UserId")
                         .IsUnique();
 
                     b.ToTable("Members");
@@ -804,7 +866,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Permission");
+                    b.ToTable("Permissions");
 
                     b.HasData(
                         new
@@ -818,6 +880,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Id = 2,
                             Code = "Pilot",
                             Label = "Pilot"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Code = "Team_Leader",
+                            Label = "Team leader"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Code = "Operator",
+                            Label = "Operator"
                         });
                 });
 
@@ -850,6 +924,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         {
                             PermissionId = 2,
                             RoleId = 2
+                        },
+                        new
+                        {
+                            PermissionId = 101,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            PermissionId = 102,
+                            RoleId = 102
                         });
                 });
 
@@ -891,6 +975,123 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                             Id = 2,
                             Code = "Pilot",
                             Label = "Pilot"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Code = "Team_Leader",
+                            Label = "Team leader"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Code = "Operator",
+                            Label = "Operator"
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamTypeId");
+
+                    b.ToTable("Teams");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeamTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Site"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "AircraftMaintenanceCompany"
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamTypeRole", b =>
+                {
+                    b.Property<int>("TeamTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("TeamTypeId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("TeamTypeRole");
+
+                    b.HasData(
+                        new
+                        {
+                            TeamTypeId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            TeamTypeId = 1,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            TeamTypeId = 2,
+                            RoleId = 101
+                        },
+                        new
+                        {
+                            TeamTypeId = 2,
+                            RoleId = 102
                         });
                 });
 
@@ -1048,9 +1249,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewSite", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
                 {
-                    b.Property<int>("SiteId")
+                    b.Property<int>("TeamId")
                         .HasColumnType("int");
 
                     b.Property<int>("ViewId")
@@ -1064,11 +1265,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("SiteId", "ViewId");
+                    b.HasKey("TeamId", "ViewId");
 
                     b.HasIndex("ViewId");
 
-                    b.ToTable("ViewSite");
+                    b.ToTable("ViewTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewUser", b =>
@@ -1092,6 +1293,32 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("ViewId");
 
                     b.ToTable("ViewUser");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
+                {
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
+
+                    b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion")
+                        .HasColumnName("RowVersion");
+
+                    b.ToTable("AircraftMaintenanceCompanies");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
+                {
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
+
+                    b.Property<byte[]>("RowVersionSite")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion")
+                        .HasColumnName("RowVersion");
+
+                    b.ToTable("Sites");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
@@ -1271,9 +1498,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
                         .WithMany("Members")
-                        .HasForeignKey("SiteId")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1283,7 +1510,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Site");
+                    b.Navigation("Team");
 
                     b.Navigation("User");
                 });
@@ -1326,21 +1553,51 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewSite", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
-                        .WithMany("ViewSites")
-                        .HasForeignKey("SiteId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", "TeamType")
+                        .WithMany()
+                        .HasForeignKey("TeamTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TeamType");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamTypeRole", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                        .WithMany("TeamTypeRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", "TeamType")
+                        .WithMany("TeamTypeRoles")
+                        .HasForeignKey("TeamTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("TeamType");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                        .WithMany("ViewTeams")
+                        .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", "View")
-                        .WithMany("ViewSites")
+                        .WithMany("ViewTeams")
                         .HasForeignKey("ViewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Site");
+                    b.Navigation("Team");
 
                     b.Navigation("View");
                 });
@@ -1362,6 +1619,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("User");
 
                     b.Navigation("View");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
+                        .WithOne()
+                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
+                        .WithOne()
+                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
@@ -1388,13 +1663,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("ConnectingAirports");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
-                {
-                    b.Navigation("Members");
-
-                    b.Navigation("ViewSites");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
                 {
                     b.Navigation("MemberRoles");
@@ -1416,6 +1684,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("PermissionRoles");
 
                     b.Navigation("RoleTranslations");
+
+                    b.Navigation("TeamTypeRoles");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
+                {
+                    b.Navigation("Members");
+
+                    b.Navigation("ViewTeams");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", b =>
+                {
+                    b.Navigation("TeamTypeRoles");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", b =>
@@ -1429,7 +1711,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
                 {
-                    b.Navigation("ViewSites");
+                    b.Navigation("ViewTeams");
 
                     b.Navigation("ViewUsers");
                 });

@@ -9,10 +9,10 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaTranslationService } from '../services/bia-translation.service';
+import { allEnvironments } from 'src/environments/allEnvironments';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -22,7 +22,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
-      return next.handle(request);
+      return next.handle(this.addLanguageOnly(request));
     }
     if (this.isRefreshing === false) {
       return this.launchRequest(request, next);
@@ -33,9 +33,9 @@ export class TokenInterceptor implements HttpInterceptor {
 
   private checkUrlNoToken(url: string) {
     return (
-      url.toLowerCase().indexOf(environment.urlAuth.toLowerCase()) > -1 ||
-      url.toLowerCase().indexOf(environment.urlLog.toLowerCase()) > -1 ||
-      url.toLowerCase().indexOf(environment.urlEnv.toLowerCase()) > -1 ||
+      url.toLowerCase().indexOf(allEnvironments.urlAuth.toLowerCase()) > -1 ||
+      url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
+      url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1
     );
   }
@@ -61,6 +61,15 @@ export class TokenInterceptor implements HttpInterceptor {
       withCredentials: false,
       setHeaders: {
         Authorization: `Bearer ${token}`,
+        'Accept-Language' : ( langSelected !== null) ? langSelected : ''
+      }
+    });
+  }
+
+  private addLanguageOnly(request: HttpRequest<any>) {
+    const langSelected = this.biaTranslationService.getLangSelected();
+    return request.clone({
+      setHeaders: {
         'Accept-Language' : ( langSelected !== null) ? langSelected : ''
       }
     });

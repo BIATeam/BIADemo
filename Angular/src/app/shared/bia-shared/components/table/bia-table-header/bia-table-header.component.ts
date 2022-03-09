@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy, TemplateRef, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { ConfirmationService, Confirmation } from 'primeng/api';
+import { ConfirmationService, Confirmation, PrimeTemplate } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   providers: [ConfirmationService],
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class BiaTableHeaderComponent implements OnChanges {
+export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() haveFilter = false;
   @Input() showFilter = false;
   @Input() showBtnFilter = false;
@@ -26,6 +26,11 @@ export class BiaTableHeaderComponent implements OnChanges {
   @Output() openFilter = new EventEmitter();
   @Output() exportCSV = new EventEmitter();
 
+
+  @ContentChildren(PrimeTemplate) templates: QueryList<any>;
+  actionOnSelectedTemplate: TemplateRef<any>;
+  actionOnListTemplate: TemplateRef<any>;
+  
   nbSelectedElements = 0;
 
   constructor(
@@ -34,6 +39,20 @@ export class BiaTableHeaderComponent implements OnChanges {
     private confirmationService: ConfirmationService,
     private biaDialogService: BiaDialogService
   ) {}
+
+
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+        switch(item.getType()) {
+          case 'actionOnSelected':
+            this.actionOnSelectedTemplate = item.template;
+          break;
+          case 'actionOnList':
+            this.actionOnListTemplate = item.template;
+          break;
+        }
+    });
+}
 
   ngOnChanges() {
     if (this.selectedElements) {

@@ -259,7 +259,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
 
-                await this.SynchronizeWithADAsync();
                 try
                 {
                     await this.SynchronizeWithADAsync();

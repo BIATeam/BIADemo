@@ -1,8 +1,8 @@
 export interface RoleDto {
   id: number;
   code: string;
-  label: string;
-  roleTranslations: RoleTranslationDto;
+  display: string;
+  isDefault: boolean;
 }
 
 export interface RoleTranslationDto {

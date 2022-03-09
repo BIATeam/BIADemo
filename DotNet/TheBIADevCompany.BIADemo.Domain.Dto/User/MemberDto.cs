@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
         /// <summary>
         /// Gets or sets the site id.
         /// </summary>
-        public int SiteId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the role.

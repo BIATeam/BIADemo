@@ -6,30 +6,29 @@ import { AppState } from 'src/app/store/state';
 import {
   removeUserView,
   addUserView,
-  addSiteView,
-  removeSiteView,
+  addTeamView,
+  removeTeamView,
   setDefaultUserView,
-  setDefaultSiteView,
+  setDefaultTeamView,
   closeViewDialog,
   updateUserView,
-  assignViewToSite,
-  updateSiteView
+  assignViewToTeam,
+  updateTeamView
 } from '../../store/views-actions';
 import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
 import { map, tap } from 'rxjs/operators';
-import { ViewType } from 'src/app/shared/constants';
-import { SiteView } from '../../model/site-view';
+import { TeamTypeId, ViewType } from 'src/app/shared/constants';
+import { TeamView } from '../../model/team-view';
 import { DefaultView } from '../../model/default-view';
-import { SiteDefaultView } from '../../model/site-default-view';
+import { TeamDefaultView } from '../../model/team-default-view';
 import { Dialog } from 'primeng/dialog';
-import { Site } from 'src/app/domains/site/model/site';
-import { getAllSites } from 'src/app/domains/site/store/site.state';
-import { AssignViewToSite } from '../../model/assign-view-to-site';
+import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { Confirmation, ConfirmationService } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
-import { loadAllSites } from 'src/app/domains/site/store/sites-actions';
+import { getAllTeams } from 'src/app/domains/team/store/team.state';
+import { Team } from 'src/app/domains/team/model/team';
 
 @Component({
   selector: 'bia-view-dialog',
@@ -42,23 +41,23 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   @Input() tableStateKey: string;
   private sub = new Subscription();
 
-  sites$: Observable<Site[]>;
+  teams$: Observable<Team[]>;
   views$: Observable<View[]>;
-  viewSites$: Observable<View[]>;
+  viewTeams$: Observable<View[]>;
   viewUsers$: Observable<View[]>;
   userViewSelected: View;
-  siteViewSelected: View;
-  siteSelected: Site;
+  teamViewSelected: View;
+  teamSelected: Team;
 
-  canAddSiteView = false;
+  canAddTeamView = false;
   canAddUserView = false;
   canUpdateUserView = false;
-  canUpdateSiteView = false;
+  canUpdateTeamView = false;
   canDeleteUserView = false;
-  canDeleteSiteView = false;
+  canDeleteTeamView = false;
   canSetDefaultUserView = false;
-  canSetDefaultSiteView = false;
-  canAssignSiteView = false;
+  canSetDefaultTeamView = false;
+  canAssignTeamView = false;
 
   constructor(
     private store: Store<AppState>,
@@ -70,9 +69,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setPermissions();
     this.initDisplay();
-    this.initSites();
+    this.initTeams();
     this.initViews();
-    this.initViewSites();
+    this.initViewTeams();
     this.initViewUsers();
   }
 
@@ -90,8 +89,8 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       .pipe(map((views) => views.filter((view) => view.tableId === this.tableStateKey)));
   }
 
-  private initViewSites() {
-    this.viewSites$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.Site)));
+  private initViewTeams() {
+    this.viewTeams$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.Site)));
   }
 
   private initViewUsers() {
@@ -104,25 +103,24 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  initSites() {
-    this.sites$ = this.store.select(getAllSites).pipe(
-      map((sites) =>
-        sites.filter(
-          (site) => this.authService.getCurrentSiteId() < 1 || site.id === this.authService.getCurrentSiteId()
+  initTeams() {
+    this.teams$ = this.store.select(getAllTeams).pipe(
+      map((teams) =>
+        teams.filter(
+          (team) => this.authService.getCurrentTeamId(TeamTypeId.Site) < 1 || team.id === this.authService.getCurrentTeamId(TeamTypeId.Site)
         )
       ),
-      tap((sites) => {
-        if (sites.length === 1) {
-          this.siteSelected = sites[0];
+      tap((teams) => {
+        if (teams.length === 1) {
+          this.teamSelected = teams[0];
         }
       })
     );
-    this.store.dispatch(loadAllSites());
   }
 
   onClose() {
     this.userViewSelected = <View>{};
-    this.siteViewSelected = <View>{};
+    this.teamViewSelected = <View>{};
     this.store.dispatch(closeViewDialog());
   }
 
@@ -130,8 +128,8 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     dialog.maximize();
   }
 
-  onAssignViewToSite(dto: AssignViewToSite) {
-    this.store.dispatch(assignViewToSite(dto));
+  onAssignViewToTeam(dto: AssignViewToTeam) {
+    this.store.dispatch(assignViewToTeam(dto));
   }
 
   onDeleteUserView(viewId: number) {
@@ -145,12 +143,12 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.confirmationService.confirm(confirmation);
   }
 
-  onDeleteSiteView(viewId: number) {
+  onDeleteTeamView(viewId: number) {
     const confirmation: Confirmation = {
       ...this.biaDialogService.getDeleteConfirmation(),
       accept: () => {
-        this.siteViewSelected = <View>{};
-        this.store.dispatch(removeSiteView({ id: viewId }));
+        this.teamViewSelected = <View>{};
+        this.store.dispatch(removeTeamView({ id: viewId }));
       }
     };
     this.confirmationService.confirm(confirmation);
@@ -161,15 +159,15 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.store.dispatch(setDefaultUserView(defaultView));
   }
 
-  onSetDefaultSiteView(event: { viewId: number; isDefault: boolean }) {
-    if (this.siteSelected) {
-      const defaultView: SiteDefaultView = {
+  onSetDefaultTeamView(event: { viewId: number; isDefault: boolean }) {
+    if (this.teamSelected) {
+      const defaultView: TeamDefaultView = {
         id: event.viewId,
         isDefault: event.isDefault,
         tableId: this.tableStateKey,
-        siteId: this.siteSelected.id
+        teamId: this.teamSelected.id
       };
-      this.store.dispatch(setDefaultSiteView(defaultView));
+      this.store.dispatch(setDefaultTeamView(defaultView));
     }
   }
 
@@ -188,17 +186,17 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSaveSiteView(view: SiteView) {
-    if (view && this.siteSelected) {
+  onSaveTeamView(view: TeamView) {
+    if (view && this.teamSelected) {
       const json = this.GetViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
-        view.siteId = this.siteSelected.id;
+        view.teamId = this.teamSelected.id;
         if (view.id > 0) {
-          this.store.dispatch(updateSiteView(view));
+          this.store.dispatch(updateTeamView(view));
         } else {
-          this.store.dispatch(addSiteView(view));
+          this.store.dispatch(addTeamView(view));
         }
       }
     }
@@ -208,8 +206,8 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.userViewSelected = view;
   }
 
-  onSiteViewSelected(view: View) {
-    this.siteViewSelected = view;
+  onTeamViewSelected(view: View) {
+    this.teamViewSelected = view;
   }
 
   private GetViewPreference(): string | null {
@@ -229,25 +227,25 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     return this.canAddUserView || this.canDeleteUserView || this.canSetDefaultUserView || this.canUpdateUserView;
   }
 
-  canSetSiteView() {
+  canSetTeamView() {
     return (
-      this.canAddSiteView ||
-      this.canDeleteSiteView ||
-      this.canSetDefaultSiteView ||
-      this.canUpdateSiteView ||
-      this.canAssignSiteView
+      this.canAddTeamView ||
+      this.canDeleteTeamView ||
+      this.canSetDefaultTeamView ||
+      this.canUpdateTeamView ||
+      this.canAssignTeamView
     );
   }
 
   private setPermissions() {
-    this.canAddSiteView = this.authService.hasPermission(Permission.View_AddSiteView);
+    this.canAddTeamView = this.authService.hasPermission(Permission.View_AddTeamView);
     this.canAddUserView = this.authService.hasPermission(Permission.View_AddUserView);
     this.canUpdateUserView = this.authService.hasPermission(Permission.View_UpdateUserView);
-    this.canUpdateSiteView = this.authService.hasPermission(Permission.View_UpdateSiteView);
+    this.canUpdateTeamView = this.authService.hasPermission(Permission.View_UpdateTeamView);
     this.canDeleteUserView = this.authService.hasPermission(Permission.View_DeleteUserView);
-    this.canDeleteSiteView = this.authService.hasPermission(Permission.View_DeleteSiteView);
+    this.canDeleteTeamView = this.authService.hasPermission(Permission.View_DeleteTeamView);
     this.canSetDefaultUserView = this.authService.hasPermission(Permission.View_SetDefaultUserView);
-    this.canSetDefaultSiteView = this.authService.hasPermission(Permission.View_SetDefaultSiteView);
-    this.canAssignSiteView = this.authService.hasPermission(Permission.View_AssignToSite);
+    this.canSetDefaultTeamView = this.authService.hasPermission(Permission.View_SetDefaultTeamView);
+    this.canAssignTeamView = this.authService.hasPermission(Permission.View_AssignToTeam);
   }
 }

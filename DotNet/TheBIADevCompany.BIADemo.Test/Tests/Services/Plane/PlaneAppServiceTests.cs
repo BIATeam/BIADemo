@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Test.Data;
@@ -45,7 +46,14 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             this.principalBuilder
                 .MockPrincipalUserData(new UserDataDto()
                 {
-                    CurrentSiteId = 1,
+                    CurrentTeams =
+                    {
+                        new CurrentTeamDto()
+                        {
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            CurrentTeamId = 1,
+                        },
+                    },
                 });
 
             this.service = this.GetService<IPlaneAppService>();

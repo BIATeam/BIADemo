@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
+import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
 
 @Component({
@@ -46,7 +47,7 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
       plane.planeType = BiaOptionService.Clone(plane.planeType);
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      plane.siteId = this.authService.getCurrentSiteId(),
+      plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site),
       this.save.emit(plane);
       this.form.reset();
     }

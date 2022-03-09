@@ -5,63 +5,18 @@
     <div class="logos" fxLayoutAlign="center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" fxFlexAlign="center" class="separator"></span>
-        <a href="{{ urlDMIndex }}">
-          <img fxFlexAlign="center" src="{{ logo }}" />
-        </a>
+        <img fxFlexAlign="center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls" fxLayout="row">
-      <p-dropdown
-        *ngIf="displayRoleList"
-        [options]="userData.roles"
-        [(ngModel)]="currentRole"
-        optionLabel="label"
-        dataKey="id"
-        (onChange)="onRoleChange()"
-        placeholder="Select a role"
-      >
-        <ng-template let-item pTemplate="item">
-          {{ item?.value | translateField: 'label':'roleTranslations':languageId }}
-        </ng-template>
-        <ng-template let-selectedItem pTemplate="selectedItem">
-          {{ selectedItem?.value | translateField: 'label':'roleTranslations':languageId }}
-          <!-- {{ 'role.'+ selectedItem?.value['display'] | translate}} -->
-        </ng-template>
-      </p-dropdown>
-
-      <i
-        *ngIf="displayRoleList === true && currentRole?.id !== userData.defaultRoleId"
-        class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultRole()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i
-        *ngIf="displayRoleList === true && currentRole?.id === userData.defaultRoleId"
-        class="pi pi-star app-icon-header"
-      ></i>
-      <p-dropdown
-        *ngIf="displaySiteList === true"
-        [options]="userData.sites"
-        [(ngModel)]="currentSite"
-        optionLabel="display"
-        dataKey="id"
-        (onChange)="onSiteChange()"
-      ></p-dropdown>
-      <i
-        *ngIf="displaySiteList === true && currentSite?.id !== userData.defaultSiteId"
-        class="pi pi-star-o  app-icon-header bia-pointer"
-        (click)="onSetDefaultSite()"
-        pTooltip="{{ 'bia.defineDefault' | translate }}"
-        tooltipPosition="bottom"
-        placeholder="Top"
-      ></i>
-      <i
-        *ngIf="displaySiteList === true && currentSite?.id === userData.defaultSiteId"
-        class="pi pi-star app-icon-header"
-      ></i>
+      <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors" >
+        <bia-classic-team-selector 
+          [teamTypeId]="teamTypeSelector"
+          [userData]="userData"
+        ></bia-classic-team-selector>
+        <span fxFlexAlign="center" class="separator"></span>
+      </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i
         class="pi pi-refresh app-icon-header bia-pointer"
@@ -147,16 +102,16 @@
   <ng-template let-message pTemplate="message">
     <ng-container [ngSwitch]="message.severity">
       <ng-container *ngSwitchCase="'success'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
       </ng-container>
       <ng-container *ngSwitchCase="'warn'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
       </ng-container>
       <ng-container *ngSwitchCase="'error'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
       </ng-container>
       <ng-container *ngSwitchDefault>
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted" ng-reflect-ng-class="[object Object]" style=""></span>
+        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
       </ng-container>
     </ng-container>
     <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted" (click)="onNotificationClick(message)">

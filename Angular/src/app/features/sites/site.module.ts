@@ -13,7 +13,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 import { UserFromADModule } from 'src/app/domains/user-from-AD/user-from-AD.module';
-import { SiteTableHeaderComponent } from './components/site-table-header/site-table-header.component';
 import { SiteItemComponent } from './views/site-item/site-item.component';
 import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
 
@@ -44,7 +43,7 @@ const ROUTES: Routes = [
           permission: Permission.Member_List_Access
         },
         loadChildren: () =>
-          import('./children/members/member.module').then((m) => m.MemberModule)
+          import('./children/members/site-member.module').then((m) => m.SiteMemberModule)
       },
     ]
   },
@@ -59,7 +58,6 @@ const ROUTES: Routes = [
     SiteNewDialogComponent,
     SitesIndexComponent,
     SiteItemComponent,
-    SiteTableHeaderComponent
   ],
   entryComponents: [SiteEditDialogComponent, SiteNewDialogComponent],
   imports: [

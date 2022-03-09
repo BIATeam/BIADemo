@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             if (filter.ParentIds != null && filter.ParentIds.Length > 0)
             {
                 specification &= new DirectSpecification<Member>(s =>
-                    s.SiteId == int.Parse(filter.ParentIds[0]));
+                    s.TeamId == int.Parse(filter.ParentIds[0]));
             }
 
             return specification;
@@ -53,16 +53,16 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Searches for login and site.
         /// </summary>
         /// <param name="sid">The sid.</param>
-        /// <param name="siteId">The site identifier.</param>
+        /// <param name="teamId">The site identifier.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchForSidAndSite(string sid, int siteId)
+        public static Specification<Member> SearchForSidAndTeam(string sid, int teamId)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 
             if (!string.IsNullOrWhiteSpace(sid))
             {
                 specification &= new DirectSpecification<Member>(s =>
-                    s.User.Sid == sid && s.Site.Id == siteId);
+                    s.User.Sid == sid && s.Team.Id == teamId);
             }
 
             return specification;

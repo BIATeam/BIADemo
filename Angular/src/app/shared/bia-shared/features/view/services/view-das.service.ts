@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { View } from '../model/view';
-import { AssignViewToSite } from '../model/assign-view-to-site';
+import { AssignViewToTeam } from '../model/assign-view-to-team';
 // import { DefaultView } from '../model/defaultView';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class ViewDas extends AbstractDas<View> {
     return this.http.get<Array<View>>(`${this.route}`);
   }
 
-  public assignViewToSite(assignViewToSite: AssignViewToSite) {
-    return this.http.put(`${this.route}${assignViewToSite.viewId}/AssignViewToSite`, assignViewToSite);
+  public assignViewToTeam(assignViewToTeam: AssignViewToTeam) {
+    return this.http.put(`${this.route}${assignViewToTeam.viewId}/AssignViewToTeam`, assignViewToTeam);
   }
 }

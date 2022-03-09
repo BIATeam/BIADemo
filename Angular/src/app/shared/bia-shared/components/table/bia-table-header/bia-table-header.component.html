@@ -26,6 +26,7 @@
       label="{{ 'bia.delete' | translate }}"
       (click)="onDelete()"
     ></button>
+    <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
     <h1>{{ headerTitle }}</h1>
@@ -38,6 +39,7 @@
       (click)="onBack()"
       *ngIf="canBack"
     ></button>
+    <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
     <button pButton *ngIf="canExportCSV" class="p-button-outlined" label="CSV" (click)="exportCSV.emit()"></button>
     <button pButton *ngIf="canAdd" label="{{ 'bia.add' | translate }}" (click)="onCreate()"></button>
   </div>

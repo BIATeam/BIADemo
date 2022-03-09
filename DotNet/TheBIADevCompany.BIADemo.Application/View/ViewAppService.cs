@@ -16,7 +16,6 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.Dto.SiteView;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
@@ -63,11 +62,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
             int currentUserId = this.principal.GetUserId();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserPermissions?.Any(x => x == Rights.Sites.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
-                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Site || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Team || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
             else
             {
@@ -75,21 +74,21 @@ namespace TheBIADevCompany.BIADemo.Application.View
                     ViewMapper.EntityToDto(currentUserId),
                     filter: view =>
                     (view.ViewType == ViewType.System) ||
-                    (view.ViewType == ViewType.Site && view.ViewSites.Any(viewSite => viewSite.Site.Members.Any(member => member.UserId == currentUserId))) ||
+                    (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
                     (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
         }
 
-        /// <inheritdoc cref="IViewAppService.RemoveSiteViewAsync"/>
-        public async Task RemoveSiteViewAsync(int id)
+        /// <inheritdoc cref="IViewAppService.RemoveTeamViewAsync"/>
+        public async Task RemoveTeamViewAsync(int id)
         {
-            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewSites);
+            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
             if (entity == null)
             {
                 throw new ElementNotFoundException();
             }
 
-            if (entity.ViewType != ViewType.Site)
+            if (entity.ViewType != ViewType.Team)
             {
                 this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
                 throw new BusinessException("Wrong view type: " + entity.ViewType);
@@ -203,19 +202,19 @@ namespace TheBIADevCompany.BIADemo.Application.View
             await this.Repository.UnitOfWork.CommitAsync();
         }
 
-        /// <inheritdoc cref="IViewAppService.SetDefaultSiteViewAsync"/>
-        public async Task SetDefaultSiteViewAsync(DefaultSiteViewDto dto)
+        /// <inheritdoc cref="IViewAppService.SetDefaultTeamViewAsync"/>
+        public async Task SetDefaultTeamViewAsync(DefaultTeamViewDto dto)
         {
-            if (dto != null && dto.Id > 0 && dto.SiteId > 0 && !string.IsNullOrWhiteSpace(dto.TableId))
+            if (dto != null && dto.Id > 0 && dto.TeamId > 0 && !string.IsNullOrWhiteSpace(dto.TableId))
             {
-                View entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewSites);
+                View entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
                 if (entity == null)
                 {
                     this.logger.LogWarning($"View with id {dto.Id} not found.");
                     throw new ElementNotFoundException();
                 }
 
-                if (entity.ViewType != ViewType.Site)
+                if (entity.ViewType != ViewType.Team)
                 {
                     throw new BusinessException("Wrong view type: " + entity.ViewType);
                 }
@@ -226,40 +225,40 @@ namespace TheBIADevCompany.BIADemo.Application.View
                     throw new BusinessException("You don't have access rights.");
                 }
 
-                int currentSiteId = dto.SiteId;
+                int currentTeamId = dto.TeamId;
 
                 if (dto.IsDefault)
                 {
                     View formerDefault = (await this.Repository.GetAllEntityAsync(
-                            filter: w => w.TableId == dto.TableId && w.ViewSites.Any(a => a.IsDefault && a.SiteId == currentSiteId), queryMode: QueryCustomMode.ModeUpdateViewSites))
+                            filter: w => w.TableId == dto.TableId && w.ViewTeams.Any(a => a.IsDefault && a.TeamId == currentTeamId), queryMode: QueryCustomMode.ModeUpdateViewTeams))
                         .FirstOrDefault();
 
-                    ViewSite formerViewSite =
-                        formerDefault?.ViewSites.FirstOrDefault(a => a.IsDefault && a.SiteId == currentSiteId);
-                    if (formerViewSite != null)
+                    ViewTeam formerViewTeam =
+                        formerDefault?.ViewTeams.FirstOrDefault(a => a.IsDefault && a.TeamId == currentTeamId);
+                    if (formerViewTeam != null)
                     {
-                        if (formerDefault.ViewType == ViewType.Site)
+                        if (formerDefault.ViewType == ViewType.Team)
                         {
-                            formerViewSite.IsDefault = false;
+                            formerViewTeam.IsDefault = false;
                         }
                         else
                         {
-                            formerDefault.ViewSites.Remove(formerViewSite);
+                            formerDefault.ViewTeams.Remove(formerViewTeam);
                         }
 
                         this.Repository.Update(formerDefault);
                     }
                 }
 
-                ViewSite viewSite = entity.ViewSites?.FirstOrDefault(f => f.SiteId == currentSiteId);
-                if (viewSite != null)
+                ViewTeam viewTeam = entity.ViewTeams?.FirstOrDefault(f => f.TeamId == currentTeamId);
+                if (viewTeam != null)
                 {
-                    viewSite.IsDefault = dto.IsDefault;
+                    viewTeam.IsDefault = dto.IsDefault;
                 }
                 else
                 {
-                    entity.ViewSites = entity.ViewSites ?? new List<ViewSite>();
-                    entity.ViewSites.Add(new ViewSite { IsDefault = true, ViewId = entity.Id, SiteId = currentSiteId });
+                    entity.ViewTeams = entity.ViewTeams ?? new List<ViewTeam>();
+                    entity.ViewTeams.Add(new ViewTeam { IsDefault = true, ViewId = entity.Id, TeamId = currentTeamId });
                 }
 
                 this.Repository.Update(entity);
@@ -286,13 +285,13 @@ namespace TheBIADevCompany.BIADemo.Application.View
             return dto;
         }
 
-        /// <inheritdoc cref="IViewAppService.AddSiteViewAsync"/>
-        public async Task<SiteViewDto> AddSiteViewAsync(SiteViewDto dto)
+        /// <inheritdoc cref="IViewAppService.AddTeamViewAsync"/>
+        public async Task<TeamViewDto> AddTeamViewAsync(TeamViewDto dto)
         {
             if (dto != null)
             {
                 var entity = new View();
-                ViewMapper.MapperAddSiteView(dto, entity);
+                ViewMapper.MapperAddTeamView(dto, entity);
 
                 this.Repository.Add(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
@@ -307,7 +306,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         {
             if (dto != null)
             {
-                var entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewSitesAndUsers);
+                var entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeamsAndUsers);
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
@@ -329,34 +328,34 @@ namespace TheBIADevCompany.BIADemo.Application.View
             return dto;
         }
 
-        /// <inheritdoc cref="IViewAppService.AssignViewToSiteAsync"/>
-        public async Task AssignViewToSiteAsync(AssignViewToSiteDto dto)
+        /// <inheritdoc cref="IViewAppService.AssignViewToTeamAsync"/>
+        public async Task AssignViewToTeamAsync(AssignViewToTeamDto dto)
         {
             if (dto != null)
             {
-                View entity = await this.Repository.GetEntityAsync(dto.ViewId, queryMode: QueryCustomMode.ModeUpdateViewSites);
+                View entity = await this.Repository.GetEntityAsync(dto.ViewId, queryMode: QueryCustomMode.ModeUpdateViewTeams);
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
                 }
 
-                if (entity.ViewType != ViewType.Site)
+                if (entity.ViewType != ViewType.Team)
                 {
                     this.logger.LogWarning("Wrong view type: " + entity.ViewType);
                     throw new BusinessException("Wrong view type: " + entity.ViewType);
                 }
 
-                Func<ViewSite, bool> keysPredicate = x => x.ViewId == dto.ViewId && x.SiteId == dto.SiteId;
+                Func<ViewTeam, bool> keysPredicate = x => x.ViewId == dto.ViewId && x.TeamId == dto.TeamId;
                 bool hasChange = false;
-                if (dto.IsAssign && entity.ViewSites?.Any(keysPredicate) != true)
+                if (dto.IsAssign && entity.ViewTeams?.Any(keysPredicate) != true)
                 {
-                    entity.ViewSites = entity.ViewSites ?? new List<ViewSite>();
-                    entity.ViewSites.Add(new ViewSite() { ViewId = dto.ViewId, SiteId = dto.SiteId });
+                    entity.ViewTeams = entity.ViewTeams ?? new List<ViewTeam>();
+                    entity.ViewTeams.Add(new ViewTeam() { ViewId = dto.ViewId, TeamId = dto.TeamId });
                     hasChange = true;
                 }
-                else if (!dto.IsAssign && entity.ViewSites?.Any(keysPredicate) == true)
+                else if (!dto.IsAssign && entity.ViewTeams?.Any(keysPredicate) == true)
                 {
-                    entity.ViewSites.Remove(entity.ViewSites?.First(keysPredicate));
+                    entity.ViewTeams.Remove(entity.ViewTeams?.First(keysPredicate));
                     hasChange = true;
                 }
 

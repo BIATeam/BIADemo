@@ -23,6 +23,14 @@ const routes: Routes = [
             },
             children: [
               {
+                path: 'aircraft-maintenance-companies',
+                data: {
+                  breadcrumb: 'app.aircraft-maintenance-companies',
+                  canNavigate: true
+                },
+                loadChildren: () => import('./features/aircraft-maintenance-companies/aircraft-maintenance-company.module').then((m) => m.AircraftMaintenanceCompanyModule)
+              },
+              {
                 path: 'planes',
                 data: {
                   breadcrumb: 'app.planes',

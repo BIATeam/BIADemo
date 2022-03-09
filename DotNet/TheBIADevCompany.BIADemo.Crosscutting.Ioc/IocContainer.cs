@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Job;
@@ -60,6 +61,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
             // Application Layer
+            collection.AddTransient<ITeamAppService, TeamAppService>();
             collection.AddTransient<ISiteAppService, SiteAppService>();
             collection.AddTransient<IMemberAppService, MemberAppService>();
             collection.AddTransient<IRoleAppService, RoleAppService>();
@@ -69,6 +71,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
             // Begin BIADemo
+            collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();

@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         /// <summary>
         /// The site view.
         /// </summary>
-        Site,
+        Team,
 
         /// <summary>
         /// The user view.

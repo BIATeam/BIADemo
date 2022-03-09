@@ -16,17 +16,17 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         /// <summary>
         /// Search view using the filter.
         /// </summary>
-        /// <param name="siteIds">The list of site id.</param>
+        /// <param name="teamIds">The list of team id.</param>
         /// <param name="userId">The user identifier.</param>
         /// <returns>The specification.</returns>
-        public static Specification<View> SearchGetAll(IEnumerable<int> siteIds, int userId)
+        public static Specification<View> SearchGetAll(IEnumerable<int> teamIds, int userId)
         {
             Specification<View> specification = new DirectSpecification<View>(s => s.ViewUsers.Any(a => a.UserId == userId));
 
-            var sites = siteIds.ToList();
-            if (sites.Any())
+            var teams = teamIds.ToList();
+            if (teams.Any())
             {
-                specification |= new DirectSpecification<View>(s => s.ViewSites.Any(a => sites.Contains(a.SiteId)));
+                specification |= new DirectSpecification<View>(s => s.ViewTeams.Any(a => teams.Contains(a.TeamId)));
             }
 
             return specification;

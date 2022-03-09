@@ -18,6 +18,11 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [Permission.Plane_List_Access],
     children: [
       {
+        labelKey: 'app.aircraft-maintenance-companies',
+        permissions: [Permission.AircraftMaintenanceCompany_List_Access],
+        path: ['/examples/aircraft-maintenance-companies']
+      },
+      {
         labelKey: 'app.planes',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes']
