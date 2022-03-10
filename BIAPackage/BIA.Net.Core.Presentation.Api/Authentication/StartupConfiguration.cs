@@ -24,27 +24,27 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         /// Configure the authentication.
         /// </summary>
         /// <param name="services">The service collection.</param>
-        /// <param name="configuration">The application configuration.</param>
-        public static void ConfigureAuthentication(this IServiceCollection services, BiaNetSection configuration)
+        /// <param name="jwt">The jwt authent configuration.</param>
+        public static void ConfigureAuthentication(this IServiceCollection services, Jwt jwt)
         {
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwt.SecretKey));
             // Configure JwtIssuerOptions
             services.Configure<JwtOptions>(options =>
             {
-                options.Issuer = configuration.Jwt.Issuer;
-                options.Audience = configuration.Jwt.Audience;
+                options.Issuer = jwt.Issuer;
+                options.Audience = jwt.Audience;
                 options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
-                ValidIssuer = configuration.Jwt.Issuer,
+                ValidIssuer = jwt.Issuer,
 
                 ValidateAudience = true,
-                ValidAudience = configuration.Jwt.Audience,
+                ValidAudience = jwt.Audience,
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,
@@ -62,7 +62,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
             .AddNegotiate() // force user to be authenticated if no jwt 
             .AddJwtBearer(configureOptions =>
             {
-                configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
+                configureOptions.ClaimsIssuer = jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
                 configureOptions.Events = new JwtBearerEvents()
                 {

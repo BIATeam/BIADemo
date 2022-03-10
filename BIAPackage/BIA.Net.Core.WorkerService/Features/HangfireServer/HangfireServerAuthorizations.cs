@@ -6,7 +6,7 @@ using System.Text;
 
 namespace BIA.Net.Core.WorkerService.Features.HangfireServer
 {
-    public class HangfireServerOptions : HangfireServerConfiguration
+    public class HangfireServerAuthorizations
     {
         public IEnumerable<IDashboardAuthorizationFilter> Authorization { get; set; }
         public IEnumerable<IDashboardAuthorizationFilter> AuthorizationReadOnly { get; set; }

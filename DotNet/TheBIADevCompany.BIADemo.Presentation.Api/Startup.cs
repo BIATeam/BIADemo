@@ -9,9 +9,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Audit.Core;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.WorkerService.Features;
+    using BIA.Net.Core.Presentation.Api.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -82,12 +83,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
             services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString()));
 
+            services.Configure<ClientForHubConfiguration>(
+                this.configuration.GetSection("BiaNet:WorkerFeatures:ClientForHub"));
+
             // Begin BIA Standard service
-            services.AddBiaApiFeatures(config =>
-            {
-                config.Configuration = this.configuration;
-                config.DistributedCache.Activate("BIADemoDatabase");
-            });
+            services.AddBiaApiFeatures(this.biaNetSection.ApiFeatures, this.biaNetSection.Jwt, this.configuration);
 
             // End BIA Standard service
 
@@ -128,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseBiaApiFeatures(x => x.BiaNetSection = this.biaNetSection);
+            app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures);
 
             Audit.Core.Configuration.AddOnSavingAction(scope =>
             {
