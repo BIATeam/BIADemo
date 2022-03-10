@@ -8,15 +8,15 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
     public class DataBaseHandlerService : IHostedService, IDisposable
     {
-        private readonly DatabaseHandlerOptions _options;
-        public DataBaseHandlerService(DatabaseHandlerOptions options)
+        private readonly List<DatabaseHandlerRepository> DatabaseHandlerRepositories;
+
+        public DataBaseHandlerService(List<DatabaseHandlerRepository> DatabaseHandlerRepositories)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
+            this.DatabaseHandlerRepositories = DatabaseHandlerRepositories;
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
-
-            foreach (var handlerRepositorie in _options.DatabaseHandlerRepositories)
+            foreach (var handlerRepositorie in DatabaseHandlerRepositories)
             {
                 handlerRepositorie.Start();
             }
@@ -27,7 +27,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public async Task StopAsync(CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            foreach (var handlerRepositorie in _options.DatabaseHandlerRepositories)
+            foreach (var handlerRepositorie in DatabaseHandlerRepositories)
             {
                 handlerRepositorie.Stop();
             }
