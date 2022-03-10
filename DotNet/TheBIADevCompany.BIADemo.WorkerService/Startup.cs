@@ -140,6 +140,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
 
             app.UseBiaWorkerFeatures(this.workerFeatures, hangfireServerAuthorizations);
+
+            Audit.Core.Configuration.AddOnSavingAction(scope =>
+            {
+                BIAClaimsPrincipal principal = app.ApplicationServices.GetService<IPrincipal>() as BIAClaimsPrincipal;
+                scope.Event.Environment.CustomFields["UserId"] = principal.GetUserId();
+            });
         }
     }
 }
