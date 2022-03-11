@@ -26,6 +26,8 @@ import { MembersEffects } from '../../store/members-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
+import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
+import { Team } from 'src/app/domains/team/model/team';
 
 @Component({
   selector: 'app-members-index',
@@ -62,7 +64,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   popupTitle: string;
   tableStateKey = this.useView ? 'membersGrid' : undefined;
   parentIds: string[];
-
+  teams$: Observable<Team[]>;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -90,7 +92,14 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.sub = new Subscription();
 
     this.initTableConfiguration();
-    this.setPermissions();
+
+    this.teams$ = this.store.select(getAllTeamsOfType(this.teamTypeId));
+    this.sub.add(
+      this.teams$.subscribe(() => {
+        this.setPermissions();
+      })
+    );
+    
     this.members$ = this.store.select(getAllMembers);
     this.totalCount$ = this.store.select(getMembersTotalCount);
     this.loading$ = this.store.select(getMemberLoadingGetAll);

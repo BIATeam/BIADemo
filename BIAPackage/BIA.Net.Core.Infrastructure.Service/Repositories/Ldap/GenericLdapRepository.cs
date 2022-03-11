@@ -746,11 +746,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             return itemResolve;
                         }
                     }
-
                 }
                 catch(Exception ex)
                 {
                     logger.LogError(ex, "Error when resolve on domain:" + groupDomain);
+                    throw ex;
                 }
             }
             // TODO ad cache unresolve item to reduce try

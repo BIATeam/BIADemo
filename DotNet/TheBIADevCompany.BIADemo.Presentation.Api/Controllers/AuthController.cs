@@ -328,6 +328,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                         {
                             allRoles.Add(Constants.Role.SiteMember);
                         }
+
+                        // Begin BIADemo
+                        if (currentTeam.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany)
+                        {
+                            allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMember);
+                        }
+
+                        // End BIADemo
                     }
                 }
             }

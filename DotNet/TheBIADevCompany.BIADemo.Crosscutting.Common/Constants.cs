@@ -60,6 +60,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The site member role code.
             /// </summary>
             public const string SiteMember = "Site_Member";
+
+            // Begin BIADemo
+
+            /// <summary>
+            /// The Aircraft Maintenance Company member role code.
+            /// </summary>
+            public const string AircraftMaintenanceCompanyMember = "AircraftMaintenanceCompany_Member";
+
+            // End BIADemo
         }
 
         /// <summary>

@@ -24,7 +24,8 @@ export class BiaTableComponent implements OnChanges {
   @Input() configuration: BiaListConfig;
   @Input() showColSearch = false;
   @Input() globalSearchValue = '';
-  @Input() canEdit = true;
+  @Input() canEdit = false;
+  @Input() canDetail = false;
 
   @Input() canSelectElement = true;
   @Input() loading = false;
@@ -35,6 +36,7 @@ export class BiaTableComponent implements OnChanges {
   @Input() showLoadingAfter = 100;
 
   @Output() edit = new EventEmitter<number>();
+  @Output() detail = new EventEmitter<number>();
   @Output() filter = new EventEmitter<number>();
   @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
@@ -175,6 +177,10 @@ export class BiaTableComponent implements OnChanges {
   editElement(itemId: number) {
     if (this.canEdit) {
       this.edit.emit(itemId);
+    }
+    else if (this.canDetail)
+    {
+      this.detail.emit(itemId);
     }
   }
 

@@ -59,6 +59,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
   canEdit = false;
+  canDetail = false;
   canDelete = false;
   canAdd = false;
   tableConfiguration: BiaListConfig;
@@ -218,6 +219,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   }
 
   private setPermissions() {
+    this.canDetail = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Read);
     this.canEdit = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Update);
     this.canDelete = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Delete);
     this.canAdd = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Create);
