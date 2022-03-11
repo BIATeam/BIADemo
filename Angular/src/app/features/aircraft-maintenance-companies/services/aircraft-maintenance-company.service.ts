@@ -5,6 +5,8 @@ import { AppState } from 'src/app/store/state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { getCurrentAircraftMaintenanceCompany, getAircraftMaintenanceCompanyLoadingGet } from '../store/aircraft-maintenance-company.state';
 import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-maintenance-companies-actions';
+import { TeamTypeId } from 'src/app/shared/constants';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +14,7 @@ import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-ma
 export class AircraftMaintenanceCompanyService {
     constructor(
         private store: Store<AppState>,
+        private authService: AuthService,
     ) {
         this.InitSub();
         this.loading$ = this.store.select(getAircraftMaintenanceCompanyLoadingGet);
@@ -35,8 +38,12 @@ export class AircraftMaintenanceCompanyService {
         return this._currentAircraftMaintenanceCompanyId;
     }
     public set currentAircraftMaintenanceCompanyId(id: number) {
-        this._currentAircraftMaintenanceCompanyId = Number(id);
-        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.load({ id: id }));
+        if (this._currentAircraftMaintenanceCompanyId !== id)
+        {
+            this._currentAircraftMaintenanceCompanyId = Number(id);
+            this.authService.changeCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany, id);
+            this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.load({ id: id }));
+        }
     }
 
     InitSub() {

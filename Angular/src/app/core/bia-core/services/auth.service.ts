@@ -21,6 +21,7 @@ const STORAGE_RELOADED_KEY = 'isReloaded';
   providedIn: 'root'
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
+  public shouldRefreshToken = false;
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo | null> = new BehaviorSubject<AuthInfo | null>(null);
   public authInfo$: Observable<AuthInfo | null> = this.authInfoSubject
@@ -141,38 +142,74 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
     return [];
   }
-
-  public setCurrentTeamId(teamTypeId: number, teamId: number) {
-    const teamsLogin = this.getTeamsLogin();
-    let team = teamsLogin.find((i => i.teamTypeId === teamTypeId))
-    if (team) {
-      team.teamId = teamId
-      team.useDefaultRoles = true;
-      team.roleIds = [];
+  public changeCurrentTeamId(teamTypeId: number, teamId: number) {
+    if (this.setCurrentTeamId(teamTypeId,teamId))
+    {
+      this.shouldRefreshToken = true;
     }
-    else {
-      let newTeam = new TeamLoginDto();
-      newTeam.teamTypeId = teamTypeId;
-      newTeam.useDefaultRoles = true;
-      newTeam.roleIds = [];
-      newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
-      newTeam.teamId = teamId;
-      teamsLogin.push(newTeam)
-    }
-    this.setTeamLogin(teamsLogin);
   }
 
-  public setCurrentRoleIds(teamId: number, roleIds: number[]) {
+  private setCurrentTeamId(teamTypeId: number, teamId: number) : boolean{
+    let teamsLogin = this.getTeamsLogin();
+    let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
+    if (team) {
+      if ("" + team.teamId !== "" +teamId)
+      {
+        if (teamId == 0)
+        {
+          // TODO check if there is a remove in array;
+          teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
+        }
+        else
+        {
+          team.teamId = teamId
+          team.useDefaultRoles = true;
+          team.roleIds = [];
+        }
+        this.setTeamLogin(teamsLogin);
+        return true;
+      }
+    }
+    else {
+      if (teamId != 0)
+      {
+        let newTeam = new TeamLoginDto();
+        newTeam.teamTypeId = teamTypeId;
+        newTeam.useDefaultRoles = true;
+        newTeam.roleIds = [];
+        newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
+        newTeam.teamId = teamId;
+        teamsLogin.push(newTeam)
+        this.setTeamLogin(teamsLogin);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public changeCurrentRoleIds(teamId: number, roleIds: number[]) {
+    if (this.setCurrentRoleIds(teamId, roleIds))
+    {
+      this.shouldRefreshToken = true;
+    }
+  }
+
+  private setCurrentRoleIds(teamId: number, roleIds: number[]) : boolean {
     const teamsLogin = this.getTeamsLogin();
     let team = teamsLogin.find((i => i.teamId === teamId))
     if (team) {
-      team.roleIds = roleIds
-      team.useDefaultRoles = false;
+      if ("" + team.roleIds !== "" + roleIds)
+      {
+        team.roleIds = roleIds
+        team.useDefaultRoles = false;
+        this.setTeamLogin(teamsLogin);
+        return true;
+      }
     }
     else {
       throw new Error('Error the teamid should be set before roles');
     }
-    this.setTeamLogin(teamsLogin);
+    return false;
   }
 
   public getFrontEndVersion(): Observable<string> {
@@ -192,6 +229,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected getAuthInfo() {
     return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
       map((tokenAndTeam: TokenAndTeamsDto) => {
+        this.shouldRefreshToken = false;
         this.authInfoSubject.next(tokenAndTeam.token);
         let teams:Team[] = tokenAndTeam.allTeams;
         this.store.dispatch(loadAllTeamsSuccess({ teams }));

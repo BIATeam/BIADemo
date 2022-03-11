@@ -1,7 +1,7 @@
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
-import { AuthInfo, UserData } from '../../model/auth-info';
+import { AuthInfo } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
@@ -27,7 +27,6 @@ import { allEnvironments } from 'src/environments/allEnvironments';
       [helpUrl]="helpUrl"
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
-      [userData]="userData"
       [companyName]="companyName"
       class="p-input-filled"
     >
@@ -50,7 +49,6 @@ export class LayoutComponent implements OnInit {
   headerLogos: string[];
   footerLogo = 'assets/bia/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
-  userData: UserData | null;
 
   constructor(
     public biaTranslationService: BiaTranslationService,
@@ -89,21 +87,12 @@ export class LayoutComponent implements OnInit {
     this.authService.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo) {
         this.setLanguage(authInfo);
-        this.setUserData(authInfo);
         this.setUserName(authInfo);
         this.filterNavByRole(authInfo);
         this.setTheme(authInfo);
       }
       this.isLoadingUserInfo = false;
     });
-  }
-
-  private setUserData(authInfo: AuthInfo) {
-    if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-      this.userData = authInfo.additionalInfos.userData;
-    } else {
-      this.userData = null;
-    }
   }
 
   private setUserName(authInfo: AuthInfo) {

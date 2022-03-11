@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+//import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   templateUrl: './aircraft-maintenance-company-item.component.html',
@@ -22,15 +22,11 @@ export class AircraftMaintenanceCompanyItemComponent implements OnInit, OnDestro
     private route: ActivatedRoute,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
     private layoutService: BiaClassicLayoutService,
-    private biaTranslationService: BiaTranslationService,
+    //private biaTranslationService: BiaTranslationService,
   ) { }
 
   ngOnInit() {
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-        this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId = this.route.snapshot.params.aircraftMaintenanceCompanyId;
-      })
-    );
+    this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId = this.route.snapshot.params.aircraftMaintenanceCompanyId;
     this.sub.add
       (
         this.store.select(getCurrentAircraftMaintenanceCompany).subscribe((aircraftMaintenanceCompany) => {

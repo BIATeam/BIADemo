@@ -41,6 +41,10 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private launchRequest(request: HttpRequest<any>, next: HttpHandler) {
+    if (this.authService.shouldRefreshToken)
+    {
+      return this.handle401Error(request, next);
+    }
     const jwtToken = this.authService.getToken();
     request = this.addToken(request, jwtToken);
 

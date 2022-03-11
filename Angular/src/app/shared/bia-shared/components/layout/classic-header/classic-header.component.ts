@@ -13,7 +13,6 @@ import { getUnreadNotificationCount } from 'src/app/domains/notification/store/n
 import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
-import { UserData } from '../../../model/auth-info';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/allEnvironments';
 
@@ -47,7 +46,6 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  @Input() userData: UserData
 
   @Output() language = new EventEmitter<string>();
   @Output() theme = new EventEmitter<string>();

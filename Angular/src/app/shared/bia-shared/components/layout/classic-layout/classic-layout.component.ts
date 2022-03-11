@@ -9,7 +9,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
-import { UserData } from '../../../model/auth-info';
 import { loadAllTeams } from 'src/app/domains/team/store/teams-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
@@ -36,7 +35,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
-  @Input() userData: UserData |null;
 
   menuItems: MenuItem[];
   private sub = new Subscription();
