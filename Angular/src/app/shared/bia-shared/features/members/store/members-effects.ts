@@ -36,7 +36,7 @@ export class MembersEffects {
       ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.memberDas.getListByPost(event).pipe(
+        this.memberDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Member[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -52,7 +52,7 @@ export class MembersEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) => {
-        return this.memberDas.get(id).pipe(
+        return this.memberDas.get({ id: id }).pipe(
           map((member) => loadSuccess({ member })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -69,7 +69,7 @@ export class MembersEffects {
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.post(member).pipe(
+        return this.memberDas.post({ item: member }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (MembersEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class MembersEffects {
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.put(member, member.id).pipe(
+        return this.memberDas.put({ item: member, id: member.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (MembersEffects.useSignalR) {
@@ -117,7 +117,7 @@ export class MembersEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.memberDas.delete(id).pipe(
+        return this.memberDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (MembersEffects.useSignalR) {
@@ -141,7 +141,7 @@ export class MembersEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.memberDas.deletes(ids).pipe(
+        return this.memberDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (MembersEffects.useSignalR) {

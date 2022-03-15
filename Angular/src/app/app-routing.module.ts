@@ -72,6 +72,14 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes-calc/plane.module').then((m) => m.PlaneModule)
               },
               {
+                path: 'planes-offline',
+                data: {
+                  breadcrumb: 'app.planes',
+                  canNavigate: true
+                },
+                loadChildren: () => import('./features/planes-offline/plane.module').then((m) => m.PlaneModule)
+              },
+              {
                 path: 'airports',
                 data: {
                   breadcrumb: 'app.airports',

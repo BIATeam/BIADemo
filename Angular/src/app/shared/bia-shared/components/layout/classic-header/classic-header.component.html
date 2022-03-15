@@ -17,6 +17,7 @@
         <span fxFlexAlign="center" class="separator"></span>
       </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
+      <bia-online-offline-icon></bia-online-offline-icon>
       <i
         class="pi pi-refresh app-icon-header bia-pointer"
         (click)="refresh()"
@@ -50,50 +51,50 @@
 ></i>
 
 <ng-template #classicMainBar>
-      <p-menubar [model]="navMenuItems">
-        <ng-template pTemplate="start">
-          <a class="mainbar project-title" routerLink="/">
-            <div fxLayout="row" fxLayoutAlign="stretch center">
-              <img class="app-logo" src="{{ urlAppIcon }}" />
-              <span
-                >{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span
-              >
-            </div>
-          </a>
-        </ng-template>
-        <ng-template pTemplate="end">
-          <div class="action" fxLayout="row inline" fxLayoutGap="20px" >
-            <ng-container *ngIf="enableNotifications">
-              <span class="notifications">
-                <i
-                  class="pi pi-bell bia-mat-tiny-fab bia-pointer"
-                  pTooltip="{{ 'bia.notifications' | translate }}"
-                  tooltipPosition="left"
-                  [routerLink]="['/notifications']"
-                ></i>
-                <ng-container *ngIf="unreadNotificationCount$ | async as unreadNotificationCount">
-                  <div *ngIf="unreadNotificationCount > 0" class="notification-count">
-                    {{ unreadNotificationCount$ | async }}
-                  </div>
-                </ng-container>
-              </span>
-            </ng-container>
+  <p-menubar [model]="navMenuItems">
+    <ng-template pTemplate="start">
+      <a class="mainbar project-title" routerLink="/">
+        <div fxLayout="row" fxLayoutAlign="stretch center">
+          <img class="app-logo" src="{{ urlAppIcon }}" />
+          <span
+            >{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span
+          >
+        </div>
+      </a>
+    </ng-template>
+    <ng-template pTemplate="end">
+      <div class="action" fxLayout="row inline" fxLayoutGap="20px">
+        <ng-container *ngIf="enableNotifications">
+          <span class="notifications">
             <i
-              *ngIf="reportUrl"
-              class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
-              pTooltip="{{ 'bia.report' | translate }}"
+              class="pi pi-bell bia-mat-tiny-fab bia-pointer"
+              pTooltip="{{ 'bia.notifications' | translate }}"
               tooltipPosition="left"
-              (click)="openReport()"
+              [routerLink]="['/notifications']"
             ></i>
-            <i
-              *ngIf="helpUrl"
-              class="pi pi-help bia-mat-tiny-fab bia-pointer"
-              pTooltip="{{ 'bia.help' | translate }}"
-              (click)="openHelp()"
-            ></i>
-          </div>
-        </ng-template>
-      </p-menubar>
+            <ng-container *ngIf="unreadNotificationCount$ | async as unreadNotificationCount">
+              <div *ngIf="unreadNotificationCount > 0" class="notification-count">
+                {{ unreadNotificationCount$ | async }}
+              </div>
+            </ng-container>
+          </span>
+        </ng-container>
+        <i
+          *ngIf="reportUrl"
+          class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
+          pTooltip="{{ 'bia.report' | translate }}"
+          tooltipPosition="left"
+          (click)="openReport()"
+        ></i>
+        <i
+          *ngIf="helpUrl"
+          class="pi pi-help bia-mat-tiny-fab bia-pointer"
+          pTooltip="{{ 'bia.help' | translate }}"
+          (click)="openHelp()"
+        ></i>
+      </div>
+    </ng-template>
+  </p-menubar>
 </ng-template>
 
 <p-toast key="bia"></p-toast>

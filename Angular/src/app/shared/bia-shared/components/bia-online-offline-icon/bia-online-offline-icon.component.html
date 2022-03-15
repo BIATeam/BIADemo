@@ -1,0 +1,15 @@
+<ng-container *ngIf="biaOnlineOfflineService">
+  <i
+    *ngIf="(serverAvailable$ | async) !== true"
+    class="pi pi-desktop offline"
+    pTooltip="{{ 'biaMsg.ServerUnavailable' | translate }}"
+  >
+    <i class="pi pi-times"></i>
+  </i>
+  <i
+    *ngIf="(serverAvailable$ | async) === true"
+    class="pi pi-desktop online"
+    pTooltip="{{ 'biaMsg.serverAvailable' | translate }}"
+  >
+  </i>
+</ng-container>

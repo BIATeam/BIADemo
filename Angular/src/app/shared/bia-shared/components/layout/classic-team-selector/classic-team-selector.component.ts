@@ -26,7 +26,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   displayTeamList = false;
   defaultTeamId = 0;
   currentTeam: Team;
-  teams:  Team[];
+  teams: Team[];
   teams$: Observable<Team[]>;
 
   displayRoleList = false;
@@ -34,7 +34,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   defaultRoleIds: number[] = [];
   currentRole: RoleDto | null;
   currentRoles: RoleDto[];
-  roles:  RoleDto[];
+  roles: RoleDto[];
 
   languageId: number;
   singleRoleMode: boolean;
@@ -88,26 +88,24 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultTeam() {
-    this.store.dispatch(setDefaultTeam({teamTypeId: this.teamTypeId, teamId:this.currentTeam.id}));
+    this.store.dispatch(setDefaultTeam({ teamTypeId: this.teamTypeId, teamId: this.currentTeam.id }));
   }
 
   private initDropdownTeam() {
     this.displayTeamList = false;
-    let currentTeamId = this.authService.getAdditionalInfos().userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
+    let currentTeamId = this.authService.getAdditionalInfos()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
     let defaultTeamId = this.teams.find(t => t.isDefault)?.id;
-    if (currentTeamId && currentTeamId != undefined && currentTeamId > 0 && 
-      this.teams && this.teams != undefined && this.teams.length > 1) {
+    if (currentTeamId && currentTeamId > 0 && this.teams?.length > 1) {
       this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];
       this.displayTeamList = true;
-      if (defaultTeamId)
-      {
+      if (defaultTeamId) {
         this.defaultTeamId = defaultTeamId;
       }
     }
   }
 
   onRolesChange() {
-    if (this.singleRoleMode){
+    if (this.singleRoleMode) {
       if (this.currentRole) this.currentRoles = [this.currentRole];
     }
 
@@ -116,10 +114,10 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultRoles() {
-    this.store.dispatch(setDefaultRoles({teamId: this.currentTeam.id, roleIds:  this.currentRoles.map(r => r.id)}));
+    this.store.dispatch(setDefaultRoles({ teamId: this.currentTeam.id, roleIds: this.currentRoles.map(r => r.id) }));
   }
 
-  isDefaultRoles() : boolean {
+  isDefaultRoles(): boolean {
     return (this.defaultRoleIds?.sort().toString() === this.currentRoles?.map(r => r.id).sort().toString());
   }
 
@@ -127,28 +125,24 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
     if (this.singleRoleMode || this.multiRoleMode) {
-      let currentRoleIds = this.authService.getAdditionalInfos().userData.currentTeams.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
+      let currentRoleIds = this.authService.getAdditionalInfos()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
       let roles = this.teams.find(t => t.id == this.currentTeam.id)?.roles;
       let defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
-      if ((roles  && roles != undefined && (this.multiRoleMode || roles.length > 1)))
-      {
+      if ((roles && (this.multiRoleMode || roles.length > 1))) {
         this.currentRoles = roles?.filter((x) => currentRoleIds?.includes(x.id));
         if (this.singleRoleMode) {
           this.displayRoleList = true;
-          if (this.currentRoles.length ===1 ) this.currentRole = this.currentRoles[0];
+          if (this.currentRoles.length === 1) this.currentRole = this.currentRoles[0];
           else this.currentRole = null;
           this.roles = roles;
-          if (defaultRoleIds && defaultRoleIds.length === 1)
-          {
+          if (defaultRoleIds && defaultRoleIds.length === 1) {
             this.defaultRoleIds = defaultRoleIds
           }
         }
-        if (this.multiRoleMode)
-        {
+        if (this.multiRoleMode) {
           this.displayRoleMultiSelect = true;
           this.roles = roles;
-          if (defaultRoleIds)
-          {
+          if (defaultRoleIds) {
             this.defaultRoleIds = defaultRoleIds
           }
         }

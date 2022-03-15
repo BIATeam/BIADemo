@@ -36,7 +36,7 @@ export class AirportsEffects {
       ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.airportDas.getListByPost(event).pipe(
+        this.airportDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Airport[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -52,7 +52,7 @@ export class AirportsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) => {
-        return this.airportDas.get(id).pipe(
+        return this.airportDas.get({ id: id }).pipe(
           map((airport) => loadSuccess({ airport })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -69,7 +69,7 @@ export class AirportsEffects {
       pluck('airport'),
       concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([airport, event]) => {
-        return this.airportDas.post(airport).pipe(
+        return this.airportDas.post({ item: airport }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (AirportsEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class AirportsEffects {
       pluck('airport'),
       concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([airport, event]) => {
-        return this.airportDas.put(airport, airport.id).pipe(
+        return this.airportDas.put({ item: airport, id: airport.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (AirportsEffects.useSignalR) {
@@ -117,7 +117,7 @@ export class AirportsEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.airportDas.delete(id).pipe(
+        return this.airportDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (AirportsEffects.useSignalR) {
@@ -141,7 +141,7 @@ export class AirportsEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.airportDas.deletes(ids).pipe(
+        return this.airportDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (AirportsEffects.useSignalR) {

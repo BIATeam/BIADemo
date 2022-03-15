@@ -17,6 +17,7 @@ import { getInitialLang } from './core/bia-core/services/bia-translation.service
 import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-http-loader';
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 export const getLocaleId = () => getInitialLang(APP_SUPPORTED_TRANSLATIONS);
 
@@ -47,7 +48,13 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       }
     }),
     CoreModule,
-    HomeModule
+    HomeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     { provide: LOCALE_ID, useFactory: getLocaleId },

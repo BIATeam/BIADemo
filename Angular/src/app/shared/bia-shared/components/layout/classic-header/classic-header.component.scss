@@ -6,7 +6,7 @@
 
 .topbar {
   height: 35px;
-  color: white!important;
+  color: white !important;
 }
 
 .logos, .controls {
@@ -125,6 +125,14 @@
 }
 
 :host ::ng-deep {
+  bia-online-offline-icon {
+    i {
+      margin-left: 8px;
+      margin-right: 8px;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
   .separator {
     font-size: xxx-large;
     margin-right: 12px;
@@ -137,7 +145,7 @@
     background-color: transparent !important;
   }
 
-  p-menubar .p-menubar{
+  p-menubar .p-menubar {
     .p-menubar-start {
       margin-right: auto;
     }
@@ -156,7 +164,7 @@
   p-megamenu {
     .p-menuitem-link {
       // padding-top: 0.45rem!important;
-      padding-top: 0.3em!important;
+      padding-top: 0.3em !important;
     }
     .p-megamenu-panel {
       width: 10em;

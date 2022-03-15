@@ -26,7 +26,7 @@ export class AircraftMaintenanceCompaniesEffects {
       ofType(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.aircraftMaintenanceCompanyDas.getListByPost(event).pipe(
+        this.aircraftMaintenanceCompanyDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<AircraftMaintenanceCompany[]>) => FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -42,7 +42,7 @@ export class AircraftMaintenanceCompaniesEffects {
       ofType(FeatureAircraftMaintenanceCompaniesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.aircraftMaintenanceCompanyDas.get(id).pipe(
+        return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
           map((aircraftMaintenanceCompany) => FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -59,7 +59,7 @@ export class AircraftMaintenanceCompaniesEffects {
       pluck('aircraftMaintenanceCompany'),
       concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.post(aircraftMaintenanceCompany).pipe(
+        return this.aircraftMaintenanceCompanyDas.post({ item: aircraftMaintenanceCompany }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (useSignalR) {
@@ -83,7 +83,7 @@ export class AircraftMaintenanceCompaniesEffects {
       pluck('aircraftMaintenanceCompany'),
       concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.put(aircraftMaintenanceCompany, aircraftMaintenanceCompany.id).pipe(
+        return this.aircraftMaintenanceCompanyDas.put({ item: aircraftMaintenanceCompany, id: aircraftMaintenanceCompany.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (useSignalR) {
@@ -107,7 +107,7 @@ export class AircraftMaintenanceCompaniesEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.aircraftMaintenanceCompanyDas.delete(id).pipe(
+        return this.aircraftMaintenanceCompanyDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (useSignalR) {
@@ -131,7 +131,7 @@ export class AircraftMaintenanceCompaniesEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.aircraftMaintenanceCompanyDas.deletes(ids).pipe(
+        return this.aircraftMaintenanceCompanyDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (useSignalR) {
@@ -154,5 +154,5 @@ export class AircraftMaintenanceCompaniesEffects {
     private aircraftMaintenanceCompanyDas: AircraftMaintenanceCompanyDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

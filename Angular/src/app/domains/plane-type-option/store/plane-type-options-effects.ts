@@ -9,6 +9,7 @@ import {
 } from './plane-type-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { PlaneTypeOptionDas } from '../services/plane-type-option-das.service';
+import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 /**
  * Effects file is for isolating and managing side effects of the application in one place
  * Http requests, Sockets, Routing, LocalStorage, etc
@@ -24,10 +25,12 @@ export class PlaneTypeOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'PlanesTypes Reducers' will take care of the rest */
       switchMap(() =>
-        this.planeTypeDas.getList('allOptions').pipe(
+        this.planeTypeDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
           map((planesTypes) => loadAllSuccess({ planesTypes })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
+              this.biaMessageService.showError();
+            }
             return of(failure({ error: err }));
           })
         )
@@ -41,7 +44,7 @@ export class PlaneTypeOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.planeTypeDas.get(id).pipe(
+        this.planeTypeDas.get({ id: id }).pipe(
           map((planeType) => loadSuccess({ planeType })),
           catchError((err) => {
             this.biaMessageService.showError();

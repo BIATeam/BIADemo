@@ -18,7 +18,7 @@ export class TeamsEffects {
     this.actions$.pipe(
       ofType(loadAllTeams),
       switchMap(() =>
-        this.teamDas.getList('all').pipe(
+        this.teamDas.getList({ endpoint: 'all' }).pipe(
           map((teams) => loadAllTeamsSuccess({ teams })),
           catchError((err) => {
             this.biaMessageService.showError();

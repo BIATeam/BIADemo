@@ -54,7 +54,7 @@ export class ViewsEffects {
       ofType(removeUserView) /* When action is dispatched */,
       pluck('id'),
       switchMap((id) => {
-        return this.userViewDas.delete(id).pipe(
+        return this.userViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllView();
@@ -72,7 +72,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(addUserView),
       switchMap((view: View) =>
-        this.userViewDas.post(view).pipe(
+        this.userViewDas.post({ item: view }).pipe(
           switchMap((viewAdded) => {
             this.biaMessageService.showAddSuccess();
             return [setViewSuccess(viewAdded), loadAllView()];
@@ -90,7 +90,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(updateUserView),
       switchMap((view: View) =>
-        this.userViewDas.put(view, view.id).pipe(
+        this.userViewDas.put({ item: view, id: view.id }).pipe(
           switchMap((viewUpdated) => {
             this.biaMessageService.showUpdateSuccess();
             return [setViewSuccess(viewUpdated), loadAllView()];
@@ -108,7 +108,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(updateTeamView),
       switchMap((view: TeamView) =>
-        this.teamViewDas.put(view, view.id).pipe(
+          this.teamViewDas.put({ item: view, id: view.id }).pipe(
           switchMap((viewUpdated) => {
             this.biaMessageService.showUpdateSuccess();
             return [setViewSuccess(viewUpdated), loadAllView()];
@@ -145,7 +145,7 @@ export class ViewsEffects {
       ofType(removeTeamView) /* When action is dispatched */,
       pluck('id'),
       switchMap((id) => {
-        return this.teamViewDas.delete(id).pipe(
+          return this.teamViewDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllView();
@@ -163,7 +163,7 @@ export class ViewsEffects {
     this.actions$.pipe(
       ofType(addTeamView),
       switchMap((view: TeamView) =>
-        this.teamViewDas.post(view).pipe(
+          this.teamViewDas.post({ item: view }).pipe(
           switchMap((viewAdded) => {
             this.biaMessageService.showAddSuccess();
             return [setViewSuccess(viewAdded), loadAllView()];

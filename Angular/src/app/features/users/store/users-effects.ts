@@ -37,7 +37,7 @@ export class UsersEffects {
       ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.userDas.getListByPost(event).pipe(
+        this.userDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<User[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -52,7 +52,7 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(load),
       pluck('id'),
-      switchMap((id) => this.userDas.get(id).pipe(map((user) => loadSuccess({ user }))))
+      switchMap((id) => this.userDas.get({ id: id }).pipe(map((user) => loadSuccess({ user }))))
     )
   );
 
@@ -81,7 +81,7 @@ export class UsersEffects {
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.post(user).pipe(
+        return this.userDas.post({ item: user }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             return loadAllByPost({ event: event });
@@ -101,7 +101,7 @@ export class UsersEffects {
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.put(user, user.id).pipe(
+        return this.userDas.put({ item: user, id: user.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllByPost({ event: event });
@@ -121,7 +121,7 @@ export class UsersEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.userDas.delete(id).pipe(
+        return this.userDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllByPost({ event: event });
@@ -141,7 +141,7 @@ export class UsersEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.userDas.deletes(ids).pipe(
+        return this.userDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllByPost({ event: event });
@@ -161,7 +161,7 @@ export class UsersEffects {
       pluck('usersFromAD'),
       concatMap((usersFromAD) => of(usersFromAD).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([usersFromAD, event]) => {
-        return this.userFromADDas.save(usersFromAD, '').pipe(
+        return this.userFromADDas.save({ items: usersFromAD, endpoint:  '' }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             return loadAllByPost({ event: event });
