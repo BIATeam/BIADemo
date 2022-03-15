@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the token.
         /// </summary>
-        public object Token { get; set; }
+        public object AuthInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the teams.

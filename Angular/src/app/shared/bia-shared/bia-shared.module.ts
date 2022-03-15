@@ -92,6 +92,7 @@ import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 import { FormatValuePipe } from './pipes/format-value.pipe';
 import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
 import { TeamModule } from 'src/app/domains/team/team.module';
+import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-icon/bia-online-offline-icon.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -171,7 +172,8 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
-  PrimengCalendarLocaleDirective
+  PrimengCalendarLocaleDirective,
+  BiaOnlineOfflineIconComponent
 ];
 
 const VIEW_COMPONENTS = [

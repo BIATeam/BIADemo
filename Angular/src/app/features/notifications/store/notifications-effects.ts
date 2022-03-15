@@ -36,7 +36,7 @@ export class NotificationsEffects {
       ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.notificationDas.getListByPost(event).pipe(
+        this.notificationDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Notification[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -52,7 +52,7 @@ export class NotificationsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) => {
-        return this.notificationDas.get(id).pipe(
+        return this.notificationDas.get({ id: id }).pipe(
           map((notification) => loadSuccess({ notification })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -69,7 +69,7 @@ export class NotificationsEffects {
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
-        return this.notificationDas.post(notification).pipe(
+        return this.notificationDas.post({ item: notification }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (NotificationsEffects.useSignalR) {
@@ -93,7 +93,7 @@ export class NotificationsEffects {
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
-        return this.notificationDas.put(notification, notification.id).pipe(
+        return this.notificationDas.put({ item: notification, id: notification.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             if (NotificationsEffects.useSignalR) {
@@ -117,7 +117,7 @@ export class NotificationsEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.notificationDas.delete(id).pipe(
+        return this.notificationDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (NotificationsEffects.useSignalR) {
@@ -141,7 +141,7 @@ export class NotificationsEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.notificationDas.deletes(ids).pipe(
+        return this.notificationDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             if (NotificationsEffects.useSignalR) {

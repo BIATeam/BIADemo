@@ -1,6 +1,6 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
-import { map, filter, take, switchMap } from 'rxjs/operators';
+import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
 import { AuthInfo, AdditionalInfos, TokenAndTeamsDto, TeamLoginDto } from 'src/app/shared/bia-shared/model/auth-info';
 import { environment } from 'src/environments/environment';
@@ -12,10 +12,13 @@ import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
 import { Team } from 'src/app/domains/team/model/team';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
+import { BiaOnlineOfflineService } from './bia-online-offline.service';
 
 
 const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
 const STORAGE_RELOADED_KEY = 'isReloaded';
+const STORAGE_TEAMS_KEY = 'Teams';
+const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +45,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
         authInfo.additionalInfos.userData.currentTeams.forEach(team => {
-          this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);   
+          this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);
           const roleMode = allEnvironments.teams.find(r => r.teamTypeId == team.teamTypeId)?.roleMode || RoleMode.AllRoles;
           if (roleMode !== RoleMode.AllRoles) {
             this.setCurrentRoleIds(team.currentTeamId, team.currentRoleIds);
@@ -116,13 +119,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
 
     return [];
-  }  
+  }
 
-  public setTeamLogin(teamsLogin: TeamLoginDto[]){
+  public setTeamLogin(teamsLogin: TeamLoginDto[]) {
     sessionStorage.setItem(STORAGE_TEAMSLOGIN_KEY, JSON.stringify(teamsLogin));
   }
 
-  public getTeamLogin(teamTypeId: number): TeamLoginDto | undefined{
+  public getTeamLogin(teamTypeId: number): TeamLoginDto | undefined {
     const teamsLogin = this.getTeamsLogin();
     return teamsLogin.find((i => i.teamTypeId === teamTypeId))
   }
@@ -143,25 +146,21 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return [];
   }
   public changeCurrentTeamId(teamTypeId: number, teamId: number) {
-    if (this.setCurrentTeamId(teamTypeId,teamId))
-    {
+    if (this.setCurrentTeamId(teamTypeId, teamId)) {
       this.shouldRefreshToken = true;
     }
   }
 
-  private setCurrentTeamId(teamTypeId: number, teamId: number) : boolean{
+  private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     let teamsLogin = this.getTeamsLogin();
     let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
-      if ("" + team.teamId !== "" +teamId)
-      {
-        if (teamId == 0)
-        {
+      if ("" + team.teamId !== "" + teamId) {
+        if (teamId == 0) {
           // TODO check if there is a remove in array;
           teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
         }
-        else
-        {
+        else {
           team.teamId = teamId
           team.useDefaultRoles = true;
           team.roleIds = [];
@@ -171,8 +170,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       }
     }
     else {
-      if (teamId != 0)
-      {
+      if (teamId != 0) {
         let newTeam = new TeamLoginDto();
         newTeam.teamTypeId = teamTypeId;
         newTeam.useDefaultRoles = true;
@@ -188,18 +186,16 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   public changeCurrentRoleIds(teamId: number, roleIds: number[]) {
-    if (this.setCurrentRoleIds(teamId, roleIds))
-    {
+    if (this.setCurrentRoleIds(teamId, roleIds)) {
       this.shouldRefreshToken = true;
     }
   }
 
-  private setCurrentRoleIds(teamId: number, roleIds: number[]) : boolean {
+  private setCurrentRoleIds(teamId: number, roleIds: number[]): boolean {
     const teamsLogin = this.getTeamsLogin();
     let team = teamsLogin.find((i => i.teamId === teamId))
     if (team) {
-      if ("" + team.roleIds !== "" + roleIds)
-      {
+      if ("" + team.roleIds !== "" + roleIds) {
         team.roleIds = roleIds
         team.useDefaultRoles = false;
         this.setTeamLogin(teamsLogin);
@@ -227,13 +223,39 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected getAuthInfo() {
-    return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(),this.buildBodyLogin()).pipe(
+    return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(), this.buildBodyLogin()).pipe(
       map((tokenAndTeam: TokenAndTeamsDto) => {
         this.shouldRefreshToken = false;
-        this.authInfoSubject.next(tokenAndTeam.token);
-        let teams:Team[] = tokenAndTeam.allTeams;
+        this.authInfoSubject.next(tokenAndTeam.authInfo);
+        const teams: Team[] = tokenAndTeam.allTeams;
+        if (BiaOnlineOfflineService.isModeEnabled === true) {
+          localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(tokenAndTeam.authInfo));
+          localStorage.setItem(STORAGE_TEAMS_KEY, JSON.stringify(teams));
+        }
+
         this.store.dispatch(loadAllTeamsSuccess({ teams }));
-        return tokenAndTeam.token;
+        return tokenAndTeam.authInfo;
+      }),
+      catchError((err) => {
+        this.shouldRefreshToken = false;
+        let authInfo: AuthInfo = <AuthInfo>{};
+        let teams: Team[] = <Team[]>{};
+
+        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
+          const jsonAuthInfo: string | null = localStorage.getItem(STORAGE_AUTHINFO_KEY);
+          if (jsonAuthInfo) {
+            authInfo = JSON.parse(jsonAuthInfo);
+          }
+          const jsonTeams: string | null = localStorage.getItem(STORAGE_TEAMS_KEY);
+          if (jsonTeams) {
+            teams = JSON.parse(jsonTeams);
+          }
+        }
+
+        this.authInfoSubject.next(authInfo);
+        this.store.dispatch(loadAllTeamsSuccess({ teams }));
+
+        return of(authInfo);
       })
     );
   }
@@ -289,6 +311,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.getFrontEndVersion().pipe(
       map((version: string) => {
         return version === allEnvironments.version;
+      }),
+      catchError((err) => {
+        if (BiaOnlineOfflineService.isServerAvailable(err) !== true) {
+          return of(true);
+        }
+        return of(false);
       })
     );
   }

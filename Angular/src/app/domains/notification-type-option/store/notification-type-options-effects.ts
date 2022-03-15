@@ -24,7 +24,7 @@ export class NotificationTypeOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'NotificationTypes Reducers' will take care of the rest */
       switchMap(() =>
-        this.notificationTypeDas.getList('allOptions').pipe(
+        this.notificationTypeDas.getList({ endpoint: 'allOptions' }).pipe(
           map((notificationTypes) => loadAllSuccess({ notificationTypes })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -41,7 +41,7 @@ export class NotificationTypeOptionsEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) =>
-        this.notificationTypeDas.get(id).pipe(
+        this.notificationTypeDas.get({ id: id }).pipe(
           map((notificationType) => loadSuccess({ notificationType })),
           catchError((err) => {
             this.biaMessageService.showError();

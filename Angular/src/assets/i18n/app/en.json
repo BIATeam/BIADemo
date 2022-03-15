@@ -14,6 +14,7 @@
     "planesViewMode": "Planes (View)",
     "planesSignalRMode": "Planes (SignalR)",
     "planesCalcMode": "Planes (Spreadsheet)",
+    "planesOfflineMode": "Planes (Offline)",
     "planesTypes": "Planes types",
     "sites": "Airlines",
     "End BIADemo": "To remove in project up to here",

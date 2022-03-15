@@ -34,7 +34,7 @@ export class SitesEffects {
       ofType(loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.siteInfoDas.getListByPost(event).pipe(
+        this.siteInfoDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<SiteInfo[]>) => loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -50,7 +50,7 @@ export class SitesEffects {
       ofType(load),
       pluck('id'),
       switchMap((id) => {
-        return this.siteDas.get(id).pipe(
+        return this.siteDas.get({ id: id }).pipe(
           map((site) => loadSuccess({ site })),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -67,7 +67,7 @@ export class SitesEffects {
       pluck('site'),
       concatMap((site) => of(site).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([site, event]) => {
-        return this.siteDas.post(site).pipe(
+        return this.siteDas.post({ item: site }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -87,7 +87,7 @@ export class SitesEffects {
       pluck('site'),
       concatMap((site) => of(site).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([site, event]) => {
-        return this.siteDas.put(site, site.id).pipe(
+        return this.siteDas.put({ item: site, id: site.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -107,7 +107,7 @@ export class SitesEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.siteDas.delete(id).pipe(
+        return this.siteDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             return loadAllByPost({ event: <LazyLoadEvent>event });
@@ -127,7 +127,7 @@ export class SitesEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.siteDas.deletes(ids).pipe(
+        return this.siteDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
             // Uncomment this if you do not use SignalR to refresh

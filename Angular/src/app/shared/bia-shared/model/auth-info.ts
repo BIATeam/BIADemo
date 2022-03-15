@@ -2,7 +2,7 @@ import { Team } from 'src/app/domains/team/model/team';
 import { RoleMode } from '../../constants';
 
 export interface TokenAndTeamsDto {
-  token: AuthInfo;
+  authInfo: AuthInfo;
   allTeams: Team[];
 }
 

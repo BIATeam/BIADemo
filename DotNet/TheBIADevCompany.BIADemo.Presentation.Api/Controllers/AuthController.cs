@@ -108,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             var okResult = actionResult as OkObjectResult;
             var actualConfiguration = okResult.Value as TokenAndTeamsDto;
-            return this.Ok(actualConfiguration.Token);
+            return this.Ok(actualConfiguration.AuthInfo);
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
             var token = await this.jwtFactory.GenerateJwtAsync(claimsIdentity, new { UserInfo = userInfo, UserProfile = userProfile, UserData = userData });
 
-            return this.Ok(new TokenAndTeamsDto { Token = token, AllTeams = allTeams.ToList() });
+            return this.Ok(new TokenAndTeamsDto { AuthInfo = token, AllTeams = allTeams.ToList() });
         }
 
         /// <summary>

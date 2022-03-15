@@ -11,8 +11,16 @@ import { BiaCoreModule } from './bia-core/bia-core.module';
 // import { BiaTranslationService } from './bia-core/services/bia-translation.service.js';
 import { BiaTranslationService } from './bia-core/services/bia-translation.service';
 
+import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
+import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
+import { AppDB } from './bia-core/db';
+const ONLINEOFFLINE = [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB];
+
 @NgModule({
-  imports: [RouterModule, BiaCoreModule]
+  imports: [RouterModule, BiaCoreModule],
+  providers: [
+    ...ONLINEOFFLINE,
+  ]
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
