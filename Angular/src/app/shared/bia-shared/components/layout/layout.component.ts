@@ -10,7 +10,7 @@ import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Component({
   selector: 'bia-layout',

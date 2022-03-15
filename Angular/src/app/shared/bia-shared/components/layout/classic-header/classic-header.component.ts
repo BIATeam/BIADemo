@@ -14,7 +14,7 @@ import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/no
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Component({
   selector: 'bia-classic-header',

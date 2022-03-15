@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleMode } from 'src/app/shared/constants';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
 import { Team } from 'src/app/domains/team/model/team';
 import { AppState } from 'src/app/store/state';

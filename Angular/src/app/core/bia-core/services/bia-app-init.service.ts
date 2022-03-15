@@ -8,7 +8,7 @@ import { NotificationSignalRService } from 'src/app/domains/notification/service
 import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Injectable({
   providedIn: 'root'

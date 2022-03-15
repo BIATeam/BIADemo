@@ -6,7 +6,7 @@ import { RoleMode } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { RoleDto } from '../../../model/role';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';

@@ -219,7 +219,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   }
 
   private setPermissions() {
-    this.canDetail = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Read);
+    this.canDetail = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Member_List_Access);
     this.canEdit = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Update);
     this.canDelete = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Delete);
     this.canAdd = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Create);

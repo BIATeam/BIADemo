@@ -12,7 +12,7 @@ import { catchError, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaTranslationService } from '../services/bia-translation.service';
-import { allEnvironments } from 'src/environments/allEnvironments';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

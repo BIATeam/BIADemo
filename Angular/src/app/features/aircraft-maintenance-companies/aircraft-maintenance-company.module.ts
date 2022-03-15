@@ -45,7 +45,7 @@ const ROUTES: Routes = [
         path: ':aircraftMaintenanceCompanyId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: AircraftMaintenanceCompanyItemComponent,
         canActivate: [PermissionGuard],
@@ -71,10 +71,6 @@ const ROUTES: Routes = [
             },
             component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
-          },
-          {
-            path: '',
-            redirectTo: 'edit'
           },
         ]
       },
