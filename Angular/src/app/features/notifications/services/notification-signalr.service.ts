@@ -71,12 +71,13 @@ export class NotificationsSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
   private IsInMyDisplay(notification: Notification) {
-    const userInfo = this.authService.getAdditionalInfos();
-    const okSite: Boolean = notification.siteId === userInfo.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
+    const additionalInfo = this.authService.getAdditionalInfos();
+    const token = this.authService.getUncryptedToken();
+    const okSite: Boolean = notification.siteId === token.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
     const okUser: Boolean = (notification.notifiedUsers === undefined) ||
     (notification.notifiedUsers === null) ||
     (notification.notifiedUsers.length === 0) ||
-    (notification.notifiedUsers.some(u => u.id === userInfo.userInfo.id));
+    (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
     const okRole: Boolean = (notification.notifiedPermissions === undefined) ||
     (notification.notifiedPermissions === null) ||
     (notification.notifiedPermissions.length === 0) ||

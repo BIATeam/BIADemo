@@ -11,6 +11,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
 
@@ -35,15 +36,15 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
-        public ClaimsIdentity GenerateClaimsIdentity(string userName, int id, IEnumerable<string> roles, object userData = null)
+        public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto
         {
-            var claims = roles.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
-            claims.Add(new Claim(ClaimTypes.Sid, id.ToString()));
-            if (userData != null)
+            var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
+            claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
+            if (tokenDto.UserData != null)
             {
-                claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(userData)));
+                claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));
             }
-            return new ClaimsIdentity(new GenericIdentity(userName, "Token"), claims);
+            return new ClaimsIdentity(new GenericIdentity(tokenDto.Login, "Token"), claims);
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
@@ -71,14 +72,22 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
             return encodedJwt;
         }
 
-        /// <inheritdoc cref="IJwtFactory.GenerateJwtAsync"/>
-        public async Task<object> GenerateJwtAsync(ClaimsIdentity identity, object additionalInfos)
+        /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
+        public async Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos) 
+            where TUserDataDto : UserDataDto
+            where TAdditionalInfoDto : AdditionalInfoDto
         {
-            var response = new
+            var claimsIdentity = await Task.FromResult(this.GenerateClaimsIdentity(tokenDto));
+            if (claimsIdentity == null)
             {
-                token = await this.GenerateEncodedTokenAsync(identity),
-                permissions = identity.Claims.Where(w => w.Type == ClaimTypes.Role).Select(s => s.Value).ToList(),
-                additionalInfos,
+                throw new Exception("Unauthorized because claimsIdentity is null");
+            }
+
+            var response = new AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>
+            {
+                Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
+                UncryptedToken = tokenDto,
+                AdditionalInfos = additionalInfos,
             };
 
             return response;

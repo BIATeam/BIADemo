@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Presentation.Api.Authentication
 {
+    using BIA.Net.Core.Domain.Dto.User;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
@@ -16,11 +17,8 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         /// <summary>
         /// Generate the identity for a user.
         /// </summary>
-        /// <param name="userName">The user name (login).</param>
-        /// <param name="id">The user identifier.</param>
-        /// <param name="roles">The role list of the user.</param>
-        /// <returns>The claims identity.</returns>
-        ClaimsIdentity GenerateClaimsIdentity(string userName, int id, IEnumerable<string> roles, object userData = null);
+        /// <param name="tokenDto">The token data.</param>
+        ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto;
 
         /// <summary>
         /// Generate an encoded JWT.
@@ -32,11 +30,13 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         /// <summary>
         /// Generate a JWT.
         /// </summary>
-        /// <param name="identity">The identity of the current user.</param>
-        /// <param name="additionalInfos">
+        /// <param name="tokenDto">The token not uncrypted.</param>
+        /// <param name="additionalInfos">Additionnal Info for front</param>
         /// The additional information we want to let visible in the token.
         /// </param>
         /// <returns>The JWT as string.</returns>
-        Task<object> GenerateJwtAsync(ClaimsIdentity identity, object additionalInfos);
+        Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos)
+            where TUserDataDto : UserDataDto
+            where TAdditionalInfoDto : AdditionalInfoDto;
     }
 }

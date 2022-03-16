@@ -5,8 +5,8 @@
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>

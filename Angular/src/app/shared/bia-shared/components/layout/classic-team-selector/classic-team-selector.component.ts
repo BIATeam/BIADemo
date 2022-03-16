@@ -93,7 +93,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   private initDropdownTeam() {
     this.displayTeamList = false;
-    let currentTeamId = this.authService.getAdditionalInfos()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
+    let currentTeamId = this.authService.getUncryptedToken()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
     let defaultTeamId = this.teams.find(t => t.isDefault)?.id;
     if (currentTeamId && currentTeamId > 0 && this.teams?.length > 1) {
       this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];
@@ -125,7 +125,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
     if (this.singleRoleMode || this.multiRoleMode) {
-      let currentRoleIds = this.authService.getAdditionalInfos()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
+      let currentRoleIds = this.authService.getUncryptedToken()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentRoleIds;
       let roles = this.teams.find(t => t.id == this.currentTeam.id)?.roles;
       let defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if ((roles && (this.multiRoleMode || roles.length > 1))) {

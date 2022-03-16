@@ -1,10 +1,6 @@
 import { Team } from 'src/app/domains/team/model/team';
 import { RoleMode } from '../../constants';
 
-export interface TokenAndTeamsDto {
-  authInfo: AuthInfo;
-  allTeams: Team[];
-}
 
 export class  TeamLoginDto {
   teamTypeId: number;
@@ -41,11 +37,18 @@ export interface CurrentTeamDto {
 export interface AdditionalInfos {
   userInfo: UserInfo;
   userProfile: UserProfile;
+  teams: Team[];
+}
+
+export interface Token {
+  login: string;
+  id: number;
+  permissions: string[];
   userData: UserData;
 }
 
 export interface AuthInfo {
   token: string;
-  permissions: string[];
+  uncryptedToken: Token;
   additionalInfos: AdditionalInfos;
 }

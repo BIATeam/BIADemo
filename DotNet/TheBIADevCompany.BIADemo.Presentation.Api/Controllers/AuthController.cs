@@ -100,15 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login()
         {
-            var actionResult = await this.LoginAndTeamsDefault();
-            if (actionResult is not OkObjectResult)
-            {
-                return actionResult;
-            }
-
-            var okResult = actionResult as OkObjectResult;
-            var actualConfiguration = okResult.Value as TokenAndTeamsDto;
-            return this.Ok(actualConfiguration.AuthInfo);
+            return await this.LoginDefault();
         }
 
         /// <summary>
@@ -120,7 +112,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LoginAndTeamsDefault(RoleModeDto[] roleModes = null)
+        public async Task<IActionResult> LoginDefault(RoleModeDto[] roleModes = null)
         {
             TeamLoginDto[] teamsLogin =
             {
@@ -146,7 +138,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 // End BIADemo
             };
 
-            return await this.LoginAndTeams(teamsLogin);
+            return await this.LoginOnTeams(teamsLogin);
         }
 
         /// <summary>
@@ -160,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> LoginAndTeams(TeamLoginDto[] teamLogins)
+        public async Task<IActionResult> LoginOnTeams(TeamLoginDto[] teamLogins)
         {
             // user data
             var userData = new UserDataDto();
@@ -203,9 +195,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             // get roles
             var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
 
-            // the main roles
-            var allRoles = userRolesFromUserDirectory;
-
             if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
@@ -246,6 +235,53 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
             var allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
 
+            List<string> allRoles = await this.GetRoles(teamLogins, userData, userRolesFromUserDirectory, userInfo, allTeams);
+
+            if (allRoles == null || !allRoles.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no role found");
+                return this.Unauthorized("No role found");
+            }
+
+            List<string> userPermissions = null;
+
+            // translate roles in permission
+            userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
+
+            // add the same permission in the id form.
+            userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
+
+            if (!userPermissions.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no permission found");
+                return this.Unauthorized("No permission found");
+            }
+
+            var tokenDto = new TokenDto<UserDataDto> { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+            var userProfile = userProfileTask.Result ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
+            var additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
+
+            var authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo);
+
+            return this.Ok(authInfo);
+        }
+
+        /// <summary>
+        /// Gets the front end version.
+        /// </summary>
+        /// <returns>The front end version.</returns>
+        [HttpGet("frontEndVersion")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetFrontEndVersion()
+        {
+            return this.Ok(Constants.Application.FrontEndVersion);
+        }
+
+        private async Task<List<string>> GetRoles(TeamLoginDto[] teamLogins, UserDataDto userData, List<string> userRolesFromUserDirectory, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
+        {
+            // the main roles
+            var allRoles = userRolesFromUserDirectory;
+
             // get user rights
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
@@ -254,7 +290,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                     var teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                     var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                    CurrentTeamDto currentTeam = new CurrentTeamDto();
+                    CurrentTeamDto currentTeam = new ();
                     currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
                     if (team != null)
@@ -340,49 +376,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 }
             }
 
-            if (allRoles == null || !allRoles.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no role found");
-                return this.Unauthorized("No role found");
-            }
-
-            List<string> userPermissions = null;
-
-            // translate roles in permission
-            userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
-
-            // add the same permission in the id form.
-            userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
-
-            if (userPermissions == null || !userPermissions.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no permission found");
-                return this.Unauthorized("No permission found");
-            }
-
-            var claimsIdentity = await Task.FromResult(this.jwtFactory.GenerateClaimsIdentity(login, userInfo.Id, userPermissions, userData));
-            if (claimsIdentity == null)
-            {
-                this.logger.LogInformation("Unauthorized because claimsIdentity is null");
-                return this.Unauthorized("No rights found");
-            }
-
-            var userProfile = userProfileTask.Result ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
-
-            var token = await this.jwtFactory.GenerateJwtAsync(claimsIdentity, new { UserInfo = userInfo, UserProfile = userProfile, UserData = userData });
-
-            return this.Ok(new TokenAndTeamsDto { AuthInfo = token, AllTeams = allTeams.ToList() });
-        }
-
-        /// <summary>
-        /// Gets the front end version.
-        /// </summary>
-        /// <returns>The front end version.</returns>
-        [HttpGet("frontEndVersion")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetFrontEndVersion()
-        {
-            return this.Ok(Constants.Application.FrontEndVersion);
+            return allRoles;
         }
     }
 }

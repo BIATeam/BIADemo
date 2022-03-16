@@ -2,14 +2,13 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
 import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
-import { AuthInfo, AdditionalInfos, TokenAndTeamsDto, TeamLoginDto } from 'src/app/shared/bia-shared/model/auth-info';
+import { AuthInfo, AdditionalInfos, TeamLoginDto, Token } from 'src/app/shared/bia-shared/model/auth-info';
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleMode } from 'src/app/shared/constants';
 import { allEnvironments } from 'src/environments/all-environments';
 import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
-import { Team } from 'src/app/domains/team/model/team';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
@@ -17,7 +16,6 @@ import { BiaOnlineOfflineService } from './bia-online-offline.service';
 
 const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
 const STORAGE_RELOADED_KEY = 'isReloaded';
-const STORAGE_TEAMS_KEY = 'Teams';
 const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
 @Injectable({
@@ -43,8 +41,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   protected init() {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
-      if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userData) {
-        authInfo.additionalInfos.userData.currentTeams.forEach(team => {
+      if (authInfo && authInfo.additionalInfos && authInfo.uncryptedToken.userData) {
+        authInfo.uncryptedToken.userData.currentTeams.forEach(team => {
           this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);
           const roleMode = allEnvironments.teams.find(r => r.teamTypeId == team.teamTypeId)?.roleMode || RoleMode.AllRoles;
           if (roleMode !== RoleMode.AllRoles) {
@@ -100,6 +98,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       return authInfo.token;
     }
     return '';
+  }
+
+  public getUncryptedToken(): Token {
+    const authInfo = this.authInfoSubject.value;
+    if (authInfo) {
+      return authInfo.uncryptedToken;
+    }
+    return <Token>{};
   }
 
   public getAdditionalInfos(): AdditionalInfos {
@@ -217,43 +223,36 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       return true;
     }
     if (authInfo) {
-      return authInfo.permissions.some((p) => p === permission) === true;
+      return authInfo.uncryptedToken.permissions.some((p) => p === permission) === true;
     }
     return false;
   }
 
   protected getAuthInfo() {
-    return this.http.post<TokenAndTeamsDto>(this.buildUrlLogin(), this.buildBodyLogin()).pipe(
-      map((tokenAndTeam: TokenAndTeamsDto) => {
+    return this.http.post<AuthInfo>(this.buildUrlLogin(), this.buildBodyLogin()).pipe(
+      map((authInfo: AuthInfo) => {
         this.shouldRefreshToken = false;
-        this.authInfoSubject.next(tokenAndTeam.authInfo);
-        const teams: Team[] = tokenAndTeam.allTeams;
+        this.authInfoSubject.next(authInfo);
         if (BiaOnlineOfflineService.isModeEnabled === true) {
-          localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(tokenAndTeam.authInfo));
-          localStorage.setItem(STORAGE_TEAMS_KEY, JSON.stringify(teams));
+          localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(authInfo));
         }
 
-        this.store.dispatch(loadAllTeamsSuccess({ teams }));
-        return tokenAndTeam.authInfo;
+        this.store.dispatch(loadAllTeamsSuccess({ teams:authInfo.additionalInfos.teams }));
+        return authInfo;
       }),
       catchError((err) => {
         this.shouldRefreshToken = false;
         let authInfo: AuthInfo = <AuthInfo>{};
-        let teams: Team[] = <Team[]>{};
 
         if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
           const jsonAuthInfo: string | null = localStorage.getItem(STORAGE_AUTHINFO_KEY);
           if (jsonAuthInfo) {
             authInfo = JSON.parse(jsonAuthInfo);
           }
-          const jsonTeams: string | null = localStorage.getItem(STORAGE_TEAMS_KEY);
-          if (jsonTeams) {
-            teams = JSON.parse(jsonTeams);
-          }
         }
 
         this.authInfoSubject.next(authInfo);
-        this.store.dispatch(loadAllTeamsSuccess({ teams }));
+        this.store.dispatch(loadAllTeamsSuccess({ teams:authInfo.additionalInfos.teams }));
 
         return of(authInfo);
       })

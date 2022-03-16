@@ -13,7 +13,7 @@ export class NavigationService {
     biaNavigation.forEach((element: BiaNavigation, index: number) => {
       const found =
         !element.permissions ||
-        element.permissions.some((r) => authInfo && authInfo.permissions && authInfo.permissions.indexOf(r) >= 0);
+        element.permissions.some((r) => authInfo && authInfo.uncryptedToken.permissions && authInfo.uncryptedToken.permissions.indexOf(r) >= 0);
       if (found) {
         biaNavigationFiltered.push(element);
         if (element.children) {
