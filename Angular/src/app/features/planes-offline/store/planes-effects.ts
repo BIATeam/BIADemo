@@ -44,7 +44,7 @@ export class PlanesEffects {
       ofType(FeaturePlanesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.planeDas.get({ id: id, offlineMode: useOfflineMode }).pipe(
+        return this.planeDas.get({ id: id }).pipe(
           map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
           catchError((err) => {
             this.biaMessageService.showError();
