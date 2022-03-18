@@ -110,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 app.UseHsts();
             }
 
-            if (!String.IsNullOrEmpty(this.biaNetSection.Security.Audience))
+            if (!string.IsNullOrEmpty(this.biaNetSection.Security.Audience))
             {
                 // for Front Angular Dev Do not forget to modify the file launchSettings.json to
                 // enable windows authentication on IISExpress ("windowsAuthentication": true,
