@@ -14,6 +14,10 @@ export class NotificationDas extends AbstractDas<Notification> {
   getUnreadNotificationIds(): Observable<number[]> {
     return this.http.get<number[]>(this.route + 'unreadIds');
   }
+
+  setAsRead(id: number): Observable<any> {
+    return this.http.put(`${this.route}setAsRead/${id}`, {});
+  }
 }
 
 

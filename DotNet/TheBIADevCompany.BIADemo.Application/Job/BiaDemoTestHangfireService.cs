@@ -74,6 +74,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             var target = new NotificationDataDto
             {
                 Route = new string[] { "examples", "planes", "30", "edit" },
+                // Display = "Can be cutomized with i18n translation key"
             };
 
             var notification = new NotificationDto
@@ -90,8 +91,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 NotificationTranslations = new List<NotificationTranslationDto>
                 {
                     new NotificationTranslationDto() { LanguageId = LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "Avión de revisión", Description = "Revise el avión con id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "Aviï¿½n de revisiï¿½n", Description = "Revise el aviï¿½n con id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug ï¿½berprï¿½fen", Description = "ï¿½berprï¿½fen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
                 },
             };
 

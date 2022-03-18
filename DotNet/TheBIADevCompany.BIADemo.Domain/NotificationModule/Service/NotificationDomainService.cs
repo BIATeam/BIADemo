@@ -103,6 +103,19 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         }
 
         /// <inheritdoc/>
+        public async Task SetAsRead(int id)
+        {
+            var notification = await this.Repository.GetEntityAsync(id);
+
+            notification.Read = true;
+
+            this.Repository.Update(notification);
+            await this.Repository.UnitOfWork.CommitAsync();
+
+            _ = this.clientForHubService.SendTargetedMessage(notification.SiteId.ToString(), "notification-domain", "notification-removeUnread", notification.Id);
+        }
+
+        /// <inheritdoc/>
         public override async Task<NotificationDto> UpdateAsync(
             NotificationDto dto,
             string accessMode = AccessMode.Update,

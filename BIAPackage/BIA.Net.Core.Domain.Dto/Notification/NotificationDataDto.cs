@@ -13,5 +13,12 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// Gets or sets the Angular route parameters.
         /// </summary>
         public string[] Route { get; set; }
+
+        public string Display { get; set; }
+
+        public NotificationDataDto()
+        {
+            this.Display = "bia.action";
+        }
     }
 }

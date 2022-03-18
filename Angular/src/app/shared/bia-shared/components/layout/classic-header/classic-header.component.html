@@ -97,26 +97,40 @@
   </p-menubar>
 </ng-template>
 
-<p-toast key="bia"></p-toast>
-<p-toast key="bia-signalR">
+<p-toast key="bia" #toast>
   <ng-template let-message pTemplate="message">
-    <ng-container [ngSwitch]="message.severity">
-      <ng-container *ngSwitchCase="'success'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
-      </ng-container>
-      <ng-container *ngSwitchCase="'warn'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
-      </ng-container>
-      <ng-container *ngSwitchCase="'error'">
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
-      </ng-container>
-      <ng-container *ngSwitchDefault>
-        <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted" ng-reflect-ng-class="[object Object]"></span>
-      </ng-container>
-    </ng-container>
-    <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted" (click)="onNotificationClick(message)">
-      <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
-      <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
+    <div fxLayout="column" fxFlex="100">
+      <div fxLayout="row">
+        <ng-container [ngSwitch]="message.severity">
+          <ng-container *ngSwitchCase="'success'">
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted"
+              ng-reflect-ng-class="[object Object]"></span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'warn'">
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted"
+              ng-reflect-ng-class="[object Object]"></span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'error'">
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted"
+              ng-reflect-ng-class="[object Object]"></span>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted"
+              ng-reflect-ng-class="[object Object]"></span>
+          </ng-container>
+        </ng-container>
+        <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
+          (click)="message.data?.notification?.type?.display === 'task' || onNotificationClick(message)">
+          <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
+          <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
+        </div>
+      </div>
+      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions"
+        fxLayout="row" fxLayoutAlign="space-around">
+        <button pButton [label]="message.data?.display | translate" (click)="onNotificationClick(message)"
+          class="p-button-primary"></button>
+        <button pButton label="Ignore" (click)="onIgnoreClick(message)" class="p-button-secondary"></button>
+      </div>
     </div>
   </ng-template>
 </p-toast>

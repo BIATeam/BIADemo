@@ -12,8 +12,13 @@ export interface Notification {
   notifiedPermissions: OptionDto[];
   notifiedUsers: OptionDto[];
   jData: string;
+  // teamIds
 }
 
-export interface NotificationTarget {
-  route: any[];
+export enum NotificationType {
+  Task = 1,
+  Info = 2,
+  Success = 3,
+  Warning = 4,
+  Error = 5
 }
