@@ -41,6 +41,11 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// Gets or sets the authentication configuration.
         /// </summary>
+        public Security Security { get; set; }
+
+        /// <summary>
+        /// Gets or sets the authentication configuration.
+        /// </summary>
         public Jwt Jwt { get; set; }
 
         /// <summary>

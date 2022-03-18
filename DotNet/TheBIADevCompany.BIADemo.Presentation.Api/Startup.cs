@@ -104,20 +104,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
-                // for Front Angular Dev Do not forget to modify the file launchSettings.json to
-                // enable windows authentication on IISExpress ("windowsAuthentication": true,
-                // "anonymousAuthentication": true,)
-                app.UseCors(x => x
-                    .WithOrigins(this.biaNetSection.Jwt.Audience.Split(","))
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials()
-                    .WithExposedHeaders(BIAConstants.HttpHeaders.TotalCount));
             }
             else
             {
                 app.UseHsts();
+            }
+
+            if (!String.IsNullOrEmpty(this.biaNetSection.Security.Audience))
+            {
+                // for Front Angular Dev Do not forget to modify the file launchSettings.json to
+                // enable windows authentication on IISExpress ("windowsAuthentication": true,
+                // "anonymousAuthentication": true,)
+                app.UseCors(x => x
+                    .WithOrigins(this.biaNetSection.Security.Audience.Split(","))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+                    .WithExposedHeaders(BIAConstants.HttpHeaders.TotalCount));
             }
 
             app.UseResponseCompression();
