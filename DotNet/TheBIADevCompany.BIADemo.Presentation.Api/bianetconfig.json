@@ -26,7 +26,7 @@
       "LdapCacheUserDuration": 1800 //in minutes
     },
     "Security": {
-      "Audience": "https://studio-jetlab.analytics.safran/,https://app-jetlab.analytics.safran/"
+      "Audience": "https://studio-jetlab.analytics.safran,https://app-jetlab.analytics.safran"
     },
     "Jwt": {
       "Issuer": "BIADemoApi",
