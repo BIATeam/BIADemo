@@ -46,6 +46,7 @@
     "NoRecordsFound": "No records found",
     "noResult": "No results",
     "refresh": "Refresh",
+    "relatedTo": "Related to",
     "report": "Report",
     "notifications": "Notifications",
     "reset": "Reset",
@@ -59,13 +60,12 @@
     "theme": "Theme",
     "themeDark": "Dark",
     "themeLight": "Light",
-    "translation": 
-    {  
-      "add" : "Add translation",
-      "addAll" : "Add all translations",
-      "delete" : "Delete translation",
+    "translation": {
+      "add": "Add translation",
+      "addAll": "Add all translations",
+      "delete": "Delete translation",
       "language": "Language",
-      "translatedFields" : "Translated fields"
+      "translatedFields": "Translated fields"
     },
     "views": {
       "default": "Default view",

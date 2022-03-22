@@ -83,10 +83,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true).map(t => t.teamTypeId);
-      if (allEnvironments.enableNotifications === true) {
-          this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-          this.store.dispatch(loadUnreadNotificationIds());
-      }
+
+    if (allEnvironments.enableNotifications === true) {
+      this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
+      this.store.dispatch(loadUnreadNotificationIds());
+    }
     this.sub.add(
       this.biaTranslationService.appSettings$.subscribe(appSettings => {
         if (appSettings) {

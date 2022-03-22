@@ -269,7 +269,7 @@
         "Roles": [ "User" ]
       },
       {
-        "Names": [ "Notification_Update", "Notification_Create", "NotifiactionType_Options" ],
+        "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
         "Roles": [ "Admin" ]
       }
     ]

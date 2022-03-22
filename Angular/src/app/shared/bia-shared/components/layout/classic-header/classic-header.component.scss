@@ -9,7 +9,8 @@
   color: white !important;
 }
 
-.logos, .controls {
+.logos,
+.controls {
   .separator {
     height: 24px;
     border-left: 1px solid;
@@ -126,6 +127,12 @@
 
 .notification-actions {
   margin-top: 16px;
+}
+
+.notification-teams {
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 8px 12px 8px;
 }
 
 :host ::ng-deep {

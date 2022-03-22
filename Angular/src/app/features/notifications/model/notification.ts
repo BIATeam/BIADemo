@@ -14,6 +14,7 @@ export interface Notification {
   siteId: number;
   notifiedPermissions: OptionDto[];
   notifiedUsers: OptionDto[];
+  notifiedTeams: OptionDto[];
   jData: string;
   notificationTranslations: NotificationTranslation[];
 }

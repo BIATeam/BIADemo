@@ -11,8 +11,14 @@ export interface Notification {
   siteId: number;
   notifiedPermissions: OptionDto[];
   notifiedUsers: OptionDto[];
+  notifiedTeams: NotifiedTeam[];
   jData: string;
-  // teamIds
+}
+
+export class NotifiedTeam {
+  id: number;
+  typeId: number;
+  display: string;
 }
 
 export enum NotificationType {

@@ -1,4 +1,4 @@
-// <copyright file="NotificationPermission.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTeam.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -9,9 +9,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The NotificationUser entity.
+    /// The NotificationTeam entity.
     /// </summary>
-    public class NotificationPermission : VersionedTable
+    public class NotificationTeam : VersionedTable
     {
         /// <summary>
         /// Gets or sets the notification identifier.
@@ -24,13 +24,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public virtual Notification Notification { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the user.
+        /// Gets or sets the identifier of the team.
         /// </summary>
-        public int PermissionId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets the user.
+        /// Gets or sets the team.
         /// </summary>
-        public virtual Permission Permission { get; set; }
+        public virtual Team Team { get; set; }
     }
 }

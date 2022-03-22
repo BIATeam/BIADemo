@@ -9,7 +9,7 @@ export class HangfireDas extends GenericDas {
     super(injector, 'hangfires');
   }
 
-  callWorkerWithNotification() {
-    return this.http.put(this.route + 'callworkerwithnotification', null);
+  callWorkerWithNotification(teamId: number) {
+    return this.http.put(this.route + 'callworkerwithnotification/' + teamId, null);
   }
 }

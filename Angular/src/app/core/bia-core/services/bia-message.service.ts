@@ -85,7 +85,7 @@ export class BiaMessageService {
         break;
     }
 
-    const data = { notification: notification, ...JSON.parse(notification.jData) }; // = JSON.parse(notification.jData); Should passe by the detail view and click action.
+    const data = { notification: notification, ...JSON.parse(notification.jData) };
 
     this.messageService.add({
       key: 'bia',

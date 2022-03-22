@@ -71,7 +71,7 @@
         /// <returns>Send message on an action</returns>
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null)
         {
-            if (!starting && ! started)
+            if (!starting && !started)
             {
                 _ = StartAsync();
             }
@@ -84,14 +84,12 @@
 
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, object objectToSerialize)
         {
-            await SendMessage(targetedFeature, action, objectToSerialize== null? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(targetedFeature, action, objectToSerialize == null ? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
         public async Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null)
         {
-            await SendMessage(new TargetedFeatureDto { ParentKey= parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
-
+            await SendMessage(new TargetedFeatureDto { ParentKey = parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
-
     }
 }
