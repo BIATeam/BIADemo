@@ -89,7 +89,7 @@
           </ng-container>
         </ng-container>
         <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
-          (click)="message.data?.notification?.type?.display === 'task' || onNotificationClick(message)">
+          (click)="message.data?.notification?.type?.id === NotificationType.Task || onNotificationClick(message)">
           <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
           <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
         </div>

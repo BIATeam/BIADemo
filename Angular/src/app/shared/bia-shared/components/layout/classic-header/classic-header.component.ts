@@ -104,14 +104,17 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   onNotificationClick(message: Message) {
-    if (message.data?.route) {
-      this.router.navigate(message.data.route);
-    } else if (message.data?.notification?.id) {
-      this.router.navigate(['/notifications/', message.data?.notification?.id, 'detail']);
-    } else {
-      this.router.navigate(['/notifications/']);
+    // Buttons will be used for actions on notifications of 'task' type
+    if (message.data?.notification) {
+      if (message.data?.route) {
+        this.router.navigate(message.data.route);
+      } else if (message.data?.notification?.id) {
+        this.router.navigate(['/notifications/', message.data?.notification?.id, 'detail']);
+      } else {
+        this.router.navigate(['/notifications/']);
+      }
+      this.removeMessage(message, true);
     }
-    this.removeMessage(message, true);
   }
 
   onIgnoreClick(message: Message) {

@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Notifications.Update)]
+        [Authorize(Roles = Rights.Notifications.Read)]
         public async Task<IActionResult> SetAsRead(int id)
         {
             if (id == 0)
