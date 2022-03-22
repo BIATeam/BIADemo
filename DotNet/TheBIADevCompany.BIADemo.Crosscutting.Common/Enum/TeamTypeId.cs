@@ -21,6 +21,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         AircraftMaintenanceCompany = 2,
 
+        /// <summary>
+        /// Value for Maintenance Team.
+        /// </summary>
+        MaintenanceTeam = 3,
         // End BIADemo
     }
 }

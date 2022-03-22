@@ -149,6 +149,19 @@
       },
       {
         "Names": [ "AircraftMaintenanceCompany_Member_List_Access", "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "Member_Save" ],
+        "Roles": [ "Admin", "Supervisor" ]
+      },
+      // Maintenance Team
+      {
+        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Create", "MaintenanceTeam_Read", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+        "Roles": [ "MaintenanceTeam_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_Member_List_Access", "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "Member_Save" ],
         "Roles": [ "Admin", "Team_Leader" ]
       },
       // Airport

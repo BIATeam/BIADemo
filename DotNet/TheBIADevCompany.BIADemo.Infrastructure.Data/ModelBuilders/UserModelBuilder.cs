@@ -98,6 +98,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Begin BIADemo
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 2, Name = "AircraftMaintenanceCompany" });
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 3, Name = "MaintenanceTeam" });
 
             // End BIADemo
         }
@@ -126,8 +127,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot", Label = "Pilot" });
 
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 101, Code = "Team_Leader", Label = "Team leader" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 102, Code = "Operator", Label = "Operator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 101, Code = "Supervisor", Label = "Supervisor" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 102, Code = "Expert", Label = "Expert" });
+
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 201, Code = "Team_Leader", Label = "Team leader" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 202, Code = "Operator", Label = "Operator" });
 
             // End BIADemo
         }
@@ -141,12 +145,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<TeamTypeRole>().HasKey(mr => new { mr.TeamTypeId, mr.RoleId });
             modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.TeamType).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.TeamTypeId);
             modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.Role).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.RoleId);
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 1 });
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 1 }); // Site_Admin
 
             // Begin BIADemo
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 2 });
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 101 });
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 102 });
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 2 }); // Pilot
+
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 101 }); // Supervisor
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 102 }); // Expert
+
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 201 }); // Team_Leader
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 202 }); // Operator
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 102 }); // Expert
 
             // End BIADemo
         }
@@ -167,6 +176,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 2, RoleId = 2 });
             modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 101, RoleId = 101 });
             modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 102, RoleId = 102 });
+            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 201, RoleId = 201 });
+            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 202, RoleId = 202 });
 
             // End BIADemo
         }
@@ -195,9 +206,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot", Label = "Pilot" });
 
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 101, Code = "Team_Leader", Label = "Team leader" });
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 102, Code = "Operator", Label = "Operator" });
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 101, Code = "Supervisor", Label = "Supervisor" });
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 102, Code = "Expert", Label = "Expert" });
 
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 201, Code = "Team_Leader", Label = "Team leader" });
+            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 202, Code = "Operator", Label = "Operator" });
             // End BIADemo
         }
 
