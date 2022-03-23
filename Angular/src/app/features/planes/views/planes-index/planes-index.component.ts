@@ -98,7 +98,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.planeOptionsService.loadAllOptions();
+          this.planeOptionsService.loadAllOptions();
         })
       );
     }
@@ -107,7 +107,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }
@@ -218,7 +218,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('msn', 'plane.msn'),
+          Object.assign(new PrimeTableColumn('msn', 'plane.msn'), {
+            isCopyable: true
+          }),
           Object.assign(new PrimeTableColumn('isActive', 'plane.isActive'), {
             isSearchable: false,
             isSortable: false,
@@ -241,10 +243,12 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
             filterMode: PrimeNGFiltering.Equals
           }),
           Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
-            type: PropType.OneToMany
+            type: PropType.OneToMany,
+            isCopyable: true
           }),
           Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
-            type: PropType.ManyToMany
+            type: PropType.ManyToMany,
+            isCopyable: true
           })
         ]
       };

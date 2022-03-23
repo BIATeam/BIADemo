@@ -58,7 +58,8 @@
       <td *ngIf="canSelectElement">
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
-      <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
+      <td (click)="editElement(rowData.id)" *ngFor="let col of columns"
+      (mouseenter)="!col.isCopyable || onMouseEnter(col, rowData)" (mouseleave)="!col.isCopyable || onMouseLeave()">
         <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined">
           <ng-container *ngSwitchCase="'OneToMany'">
             {{ rowData[col.field]?.display }}
@@ -71,6 +72,11 @@
           </ng-container>
           <ng-container *ngSwitchDefault>
             {{ rowData[col.field] | formatValue: col }}
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="col !== undefined && col.isCopyable">
+          <ng-container *ngIf="hoveredElement?.field === col.field && hoveredElement?.id === rowData.id">
+            <i class="pi pi-copy copy" (click)="onCopy($event, col, rowData)"></i>
           </ng-container>
         </ng-container>
       </td>

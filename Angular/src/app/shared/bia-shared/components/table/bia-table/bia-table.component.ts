@@ -63,7 +63,7 @@ export class BiaTableComponent implements OnChanges {
   private defaultPageSize: number;
   private defaultColumns: string[];
 
-  constructor(public authService: AuthService, public translateService: TranslateService) {}
+  constructor(public authService: AuthService, public translateService: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);
@@ -178,8 +178,7 @@ export class BiaTableComponent implements OnChanges {
     if (this.canEdit) {
       this.edit.emit(itemId);
     }
-    else if (this.canDetail)
-    {
+    else if (this.canDetail) {
       this.detail.emit(itemId);
     }
   }
@@ -271,5 +270,35 @@ export class BiaTableComponent implements OnChanges {
 
   getLazyLoadOnInit(): boolean {
     return !this.tableStateKey;
+  }
+
+  hoveredElement: any;
+
+  onMouseEnter(column: PrimeTableColumn, rowData: any) {
+    if (column && rowData) {
+      this.hoveredElement = {
+        field: column.field,
+        id: rowData.id
+      };
+    }
+  }
+
+  onMouseLeave() {
+    this.hoveredElement = undefined;
+  }
+
+  onCopy(event: Event, col: PrimeTableColumn, rowData: any) {
+    switch (col.type) {
+      case PropType.OneToMany:
+        navigator.clipboard.writeText(rowData[col.field]?.display);
+        break;
+      case PropType.ManyToMany:
+        navigator.clipboard.writeText(rowData[col.field]?.map((el: any) => el.display).join(', '))
+        break;
+      default:
+        navigator.clipboard.writeText(rowData[col.field]);
+        break;
+    }
+    event.stopImmediatePropagation();
   }
 }
