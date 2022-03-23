@@ -8,6 +8,9 @@
     "ApiFeatures": {
       "Swagger": {
         "IsActive": true
+      },
+      "ClientForHub": {
+        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
       }
     },
     "EmailConfiguration": {
