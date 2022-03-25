@@ -4,10 +4,11 @@
     using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Features.ClientForHub;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.AspNetCore.SignalR.Client;
+    using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -16,15 +17,16 @@
         private static HubConnection connection = null;
         private static bool starting = false;
         private static bool started = false;
+        private readonly ClientForHubConfiguration _ClientForHubConfiguration;
 
-        public SignalRClientForHubRepository()
+        public SignalRClientForHubRepository(IOptions<ClientForHubConfiguration> options)
         {
-
+            _ClientForHubConfiguration = options.Value;
         }
 
         public Task StartAsync()
         {
-            if (!ClientForHubOptions.IsActive)
+            if (!_ClientForHubConfiguration.IsActive)
             {
                 throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
             }
@@ -33,7 +35,7 @@
             {
                 starting = true;
                 connection = new HubConnectionBuilder()
-                    .WithUrl(ClientForHubOptions.SignalRUrl)
+                    .WithUrl(_ClientForHubConfiguration.SignalRUrl)
                     .WithAutomaticReconnect()
                     .Build();
                 connection.Closed += async (error) =>
@@ -71,7 +73,7 @@
         /// <returns>Send message on an action</returns>
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null)
         {
-            if (!starting && ! started)
+            if (!starting && !started)
             {
                 _ = StartAsync();
             }
@@ -84,12 +86,12 @@
 
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, object objectToSerialize)
         {
-            await SendMessage(targetedFeature, action, objectToSerialize== null? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(targetedFeature, action, objectToSerialize == null ? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
         public async Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null)
         {
-            await SendMessage(new TargetedFeatureDto { ParentKey= parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await SendMessage(new TargetedFeatureDto { ParentKey = parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
 
         }
 

@@ -4,9 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using Audit.Core;
+    using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
-    using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.IocContainer;
     using Hangfire;
@@ -24,10 +26,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
@@ -101,6 +105,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
                 options.EnableSensitiveDataLogging();
+                options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
             collection.AddDbContext<IQueryableUnitOfWork, DataContextReadOnly>(
                 options =>
@@ -113,6 +118,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
+            collection.Configure<AuditConfiguration>(
+               configuration.GetSection("BiaNet:AuditConfiguration"));
+            collection.AddSingleton<AuditFeature>();
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection)
