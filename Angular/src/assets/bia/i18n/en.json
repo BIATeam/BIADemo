@@ -21,6 +21,7 @@
     "greetings": "Hello",
     "help": "Help",
     "id": "id",
+    "ignore": "Ignore",
     "info": "Info",
     "itemsPerPage": "Items per page",
     "lang": {
