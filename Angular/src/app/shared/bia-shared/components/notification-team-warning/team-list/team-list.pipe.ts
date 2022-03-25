@@ -6,10 +6,10 @@ import { Notification } from 'src/app/domains/notification/model/notification';
 })
 export class TeamListPipe implements PipeTransform {
   transform(notification: Notification): any {
-    if (!notification?.notifiedTeams) {
+    if (!notification?.data.teams) {
       return '';
     }
 
-    return notification.notifiedTeams.reduce((s, team) => s ? (s + ', ' + team.display) : team.display, '');
+    return notification.data.teams.reduce((s, team) => s ? (s + ', ' + team.display) : team.display, '');
   }
 }

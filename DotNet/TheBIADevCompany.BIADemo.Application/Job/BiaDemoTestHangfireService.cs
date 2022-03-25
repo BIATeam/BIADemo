@@ -78,17 +78,37 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         {
             await Task.Delay(2000);
 
-            var target = new NotificationDataDto
-            {
-                Route = new string[] { "examples", "planes", "30", "edit" },
-                // Display = "Can be cutomized with i18n translation key"
-            };
-
             Team targetedTeam = null;
 
             if (teamId > 0)
             {
                 targetedTeam = await this.teamRepository.GetEntityAsync(teamId);
+            }
+
+            var data = new NotificationDataDto();
+
+            if (targetedTeam != null)
+            {
+                data.Teams = new List<NotificationTeamDto>
+                {
+                    new NotificationTeamDto
+                    {
+                        TypeId = targetedTeam.TeamTypeId,
+                        Id = targetedTeam.Id,
+                        Display = targetedTeam.Title,
+                    },
+                };
+
+                switch (targetedTeam.TeamTypeId)
+                {
+                    case (int)TeamTypeId.Site:
+                        data.Route = new string[] { "sites", teamId.ToString(), "members" };
+                        break;
+                    case (int)TeamTypeId.AircraftMaintenanceCompany:
+                        data.Route = new string[] { "examples", "aircraft-maintenance-companies", teamId.ToString(), "members" };
+                        data.Display = "aircraftMaintenanceCompany.goto";
+                        break;
+                }
             }
 
             var notification = new NotificationDto
@@ -110,7 +130,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                         },
                     } : null,
                 Read = false,
-                JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotificationTranslations = new List<NotificationTranslationDto>
                 {
                     new NotificationTranslationDto() { LanguageId = LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },

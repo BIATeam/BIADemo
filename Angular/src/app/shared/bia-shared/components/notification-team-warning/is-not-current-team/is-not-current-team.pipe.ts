@@ -9,10 +9,9 @@ export class IsNotCurrentTeamPipe implements PipeTransform {
   constructor(public auth: AuthService) { }
 
   transform(notification: Notification): any {
-    if (!notification?.notifiedTeams) {
+    if (!notification?.data.teams) {
       return false;
     }
-
-    return !notification.notifiedTeams?.some(team => this.auth.getCurrentTeamId(team.typeId) === team.id);
+    return !notification.data.teams?.some(team => this.auth.getCurrentTeamId(team.typeId) === team.id);
   }
 }

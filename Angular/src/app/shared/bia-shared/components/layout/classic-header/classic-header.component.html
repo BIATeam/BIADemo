@@ -96,13 +96,11 @@
       </div>
       <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions"
         fxLayout="row" fxLayoutAlign="space-between">
-        <button pButton [label]="message.data?.display | translate" (click)="onNotificationClick(message)"
-          class="p-button-primary"></button>
+        <button pButton [label]="message.data?.notification?.data.display | translate"
+          (click)="onNotificationClick(message)" class="p-button-primary"></button>
         <button pButton label="Ignore" (click)="onIgnoreClick(message)" class="p-button-secondary"></button>
       </div>
-      <div class="notification-teams" *ngIf="message.data?.notification | isNotCurrentTeam">
-        {{'bia.relatedTo' | translate}}&nbsp;{{message.data?.notification | teamList}}
-      </div>
+      <bia-notification-team-warning [notification]="message.data?.notification"></bia-notification-team-warning>
     </div>
   </ng-template>
 </p-toast>

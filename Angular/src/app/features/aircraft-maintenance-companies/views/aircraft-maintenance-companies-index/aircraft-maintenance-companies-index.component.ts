@@ -68,7 +68,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'aircraft-maintenance-companiesGrid' : undefined;
-  parentIds: string[];
+  parentIds: number[];
 
   constructor(
     private store: Store<AppState>,

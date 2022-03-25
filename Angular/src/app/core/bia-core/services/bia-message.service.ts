@@ -85,7 +85,7 @@ export class BiaMessageService {
         break;
     }
 
-    const data = { notification: notification, ...JSON.parse(notification.jData) };
+    const data = { notification: notification };
 
     this.messageService.add({
       key: 'bia',

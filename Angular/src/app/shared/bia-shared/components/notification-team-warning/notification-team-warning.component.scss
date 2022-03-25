@@ -1,0 +1,16 @@
+@import '../../../../../scss/bia/bia-variables';
+
+.notification-teams {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0px;
+  background: $biaOrange;
+  padding: 0px 12px;
+  line-height: 2.143em;
+
+  i {
+    margin-right: 8px;
+  }
+}

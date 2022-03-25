@@ -61,6 +61,7 @@ export const notificationReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(loadSuccess, (state, { notification }) => {
+    notification.data = JSON.parse(notification.jData);
     return { ...state, currentNotification: notification, loadingGet: false };
   }),
   on(failure, (state, { error }) => {

@@ -161,7 +161,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     let teamsLogin = this.getTeamsLogin();
     let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
-      if ("" + team.teamId !== "" + teamId) {
+      if (+team.teamId !== +teamId) {
         if (teamId == 0) {
           // TODO check if there is a remove in array;
           teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
@@ -178,11 +178,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     else {
       if (teamId != 0) {
         let newTeam = new TeamLoginDto();
-        newTeam.teamTypeId = teamTypeId;
+        newTeam.teamTypeId = +teamTypeId;
         newTeam.useDefaultRoles = true;
         newTeam.roleIds = [];
         newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
-        newTeam.teamId = teamId;
+        newTeam.teamId = +teamId;
         teamsLogin.push(newTeam)
         this.setTeamLogin(teamsLogin);
         return true;
@@ -201,7 +201,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const teamsLogin = this.getTeamsLogin();
     let team = teamsLogin.find((i => i.teamId === teamId))
     if (team) {
-      if ("" + team.roleIds !== "" + roleIds) {
+      if (+team.roleIds !== +roleIds) {
         team.roleIds = roleIds
         team.useDefaultRoles = false;
         this.setTeamLogin(teamsLogin);

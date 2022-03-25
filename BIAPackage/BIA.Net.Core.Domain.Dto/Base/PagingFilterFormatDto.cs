@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// <summary>
         /// Gets or sets the parent ids.
         /// </summary>
-        public string[] ParentIds { get; set; }
+        public int[] ParentIds { get; set; }
 
         /// <summary>
         /// Name of the property and her translation for file export.

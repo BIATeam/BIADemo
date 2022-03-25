@@ -26,7 +26,7 @@ export class AircraftMaintenanceCompanyItemComponent implements OnInit, OnDestro
   ) { }
 
   ngOnInit() {
-    this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId = this.route.snapshot.params.aircraftMaintenanceCompanyId;
+    this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId = +this.route.snapshot.params.aircraftMaintenanceCompanyId;
     this.sub.add
       (
         this.store.select(getCurrentAircraftMaintenanceCompany).subscribe((aircraftMaintenanceCompany) => {

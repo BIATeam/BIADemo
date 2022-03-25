@@ -104,12 +104,18 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   onNotificationClick(message: Message) {
-    // Buttons will be used for actions on notifications of 'task' type
     if (message.data?.notification) {
-      if (message.data?.route) {
-        this.router.navigate(message.data.route);
-      } else if (message.data?.notification?.id) {
-        this.router.navigate(['/notifications/', message.data?.notification?.id, 'detail']);
+      if (message.data.teams) {
+        // Auto-switch to teams related to this notification
+        Object.keys(message.data.teams).forEach((key) => {
+          this.auth.changeCurrentTeamId(+key, message.data.teams[key]);
+        })
+      }
+
+      if (message.data.notification.data?.route) {
+        this.router.navigate(message.data.notification.data.route);
+      } else if (message.data.notification.id) {
+        this.router.navigate(['/notifications/', message.data.notification.id, 'detail']);
       } else {
         this.router.navigate(['/notifications/']);
       }

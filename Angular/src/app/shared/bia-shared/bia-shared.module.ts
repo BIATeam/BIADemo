@@ -93,8 +93,9 @@ import { FormatValuePipe } from './pipes/format-value.pipe';
 import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
 import { TeamModule } from 'src/app/domains/team/team.module';
 import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-icon/bia-online-offline-icon.component';
-import { IsNotCurrentTeamPipe } from './components/layout/classic-header/is-not-current-team/is-not-current-team.pipe';
-import { TeamListPipe } from './components/layout/classic-header/team-list/team-list.pipe';
+import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-not-current-team/is-not-current-team.pipe';
+import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
+import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -175,7 +176,8 @@ const COMPONENTS = [
   PopupLayoutComponent,
   FullPageLayoutComponent,
   PrimengCalendarLocaleDirective,
-  BiaOnlineOfflineIconComponent
+  BiaOnlineOfflineIconComponent,
+  NotificationTeamWarningComponent
 ];
 
 const VIEW_COMPONENTS = [

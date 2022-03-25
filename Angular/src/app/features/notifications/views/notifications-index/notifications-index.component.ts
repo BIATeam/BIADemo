@@ -60,7 +60,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'notificationsGrid' : undefined;
-  parentIds: string[];
+  parentIds: number[];
 
 
   constructor(
@@ -236,9 +236,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new PrimeTableColumn('createdBy', 'notification.createdBy'), {
             type: PropType.OneToMany
-          }),
-          Object.assign(new PrimeTableColumn('notifiedPermissions', 'notification.notifiedPermissions'), {
-            type: PropType.ManyToMany,
           }),
           Object.assign(new PrimeTableColumn('notifiedUsers', 'notification.notifiedUsers'), {
             type: PropType.ManyToMany

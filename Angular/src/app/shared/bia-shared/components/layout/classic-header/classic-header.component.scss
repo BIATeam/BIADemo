@@ -129,12 +129,9 @@
   margin-top: 16px;
 }
 
-.notification-teams {
-  margin-top: 8px;
-  background: rgba(255, 255, 255, 0.4);
-  padding: 8px 12px 8px;
+bia-notification-team-warning {
+  padding-top: 16px;
 }
-
 :host ::ng-deep {
   bia-online-offline-icon {
     i {

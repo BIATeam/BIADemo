@@ -9,13 +9,13 @@ export interface Notification {
   createdDate: string;
   createdBy: OptionDto | null;
   siteId: number;
-  notifiedPermissions: OptionDto[];
   notifiedUsers: OptionDto[];
-  notifiedTeams: NotifiedTeam[];
+  notifiedTeams: NotificationTeam[];
   jData: string;
+  data: NotificationData;
 }
 
-export class NotifiedTeam {
+export class NotificationTeam {
   id: number;
   typeId: number;
   display: string;
@@ -27,4 +27,10 @@ export enum NotificationType {
   Success = 3,
   Warning = 4,
   Error = 5
+}
+
+export interface NotificationData {
+  route: string[];
+  display: string;
+  teams: NotificationTeam[]
 }

@@ -246,8 +246,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             dto.NotifiedTeams = entity.NotifiedTeams?.Select(nt => new NotificationTeamDto
             {
                 Id = nt.TeamId,
-                TypeId = nt.Team.TeamTypeId,
-                Display = nt.Team.Title,
             }).ToList();
 
             dto.NotifiedUsers = entity.NotifiedUsers?.Select(nu => new OptionDto

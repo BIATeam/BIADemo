@@ -16,5 +16,18 @@ export interface Notification {
   notifiedUsers: OptionDto[];
   notifiedTeams: OptionDto[];
   jData: string;
+  data: NotificationData;
   notificationTranslations: NotificationTranslation[];
+}
+
+export class NotificationTeam {
+  id: number;
+  typeId: number;
+  display: string;
+}
+
+export interface NotificationData {
+  route: string[];
+  display: string;
+  teams: NotificationTeam[]
 }

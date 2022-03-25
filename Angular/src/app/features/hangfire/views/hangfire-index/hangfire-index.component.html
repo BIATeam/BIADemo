@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-between">
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
   <button pButton type="button" (click)="callWorkerWithNotification(0)" label="Call worker with notification"></button>
   <ng-container *ngFor="let team of (allTeams$ | async)">
     <button pButton type="button" (click)="callWorkerWithNotification(team.id)"

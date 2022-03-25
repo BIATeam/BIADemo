@@ -26,7 +26,8 @@
   "aircraftMaintenanceCompany": {
     "add": "Add aircraft maintenance company",
     "listOf": "List of aircraft maintenance companies",
-    "title": "Name"
+    "title": "Name",
+    "goto": "View Company"
   },
   "airport": {
     "add": "Add airport",
