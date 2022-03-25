@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Feature
     using Audit.EntityFramework.ConfigurationApi;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -20,17 +21,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Feature
     /// <summary>
     /// The Audit Feature.
     /// </summary>
-    public class AuditFeature
+    public class AuditFeature : IAuditFeature
     {
         private readonly bool isActive;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuditFeature"/> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="auditConfigurationOptions">the audit configuration.</param>
-        public AuditFeature(ILogger<AuditFeature> logger, IConfiguration configuration, IOptions<AuditConfiguration> auditConfigurationOptions)
+        public AuditFeature(IConfiguration configuration, IOptions<AuditConfiguration> auditConfigurationOptions)
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = auditConfigurationOptions.Value;
@@ -46,7 +46,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Feature
                         .AuditEventType("{context}:{database}"))
                         .UseOptIn();
 
-                // configurator.Include<Plane>().Include<Airport>();
+                // Replace by the table you want to Audit :
+                // configurator.Include<Plane>().Include<Airport>()
 
                 // Begin BIADemo
                 configurator.Include<Plane>().Include<Airport>();
@@ -70,7 +71,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Feature
         /// the current (associated to the request) user.
         /// </summary>
         /// <param name="serviceProvider">The serviceProvider.</param>
-        public void UseAuditFeatures(IServiceProvider serviceProvider) {
+        public void UseAuditFeatures(IServiceProvider serviceProvider)
+        {
             if (this.isActive)
             {
                 Audit.Core.Configuration.AddOnSavingAction(scope =>

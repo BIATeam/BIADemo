@@ -296,7 +296,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 User entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
                 entity.LastLoginDate = DateTime.Now;
                 entity.IsActive = true;
-                this.Repository.Update(entity);
+
+                // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
             }
         }

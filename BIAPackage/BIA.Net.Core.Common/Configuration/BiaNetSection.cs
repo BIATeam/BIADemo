@@ -30,11 +30,6 @@ namespace BIA.Net.Core.Common.Configuration
         public EnvironmentConfiguration Environment { get; set; }
 
         /// <summary>
-        /// Gets or sets the audit configuration.
-        /// </summary>
-        public AuditConfiguration AuditConfiguration { get; set; }
-
-        /// <summary>
         /// Gets or sets the email configuration.
         /// </summary>
         public EmailConfiguration EmailConfiguration { get; set; }

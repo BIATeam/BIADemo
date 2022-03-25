@@ -164,7 +164,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
                         formerDefault.ViewUsers.Remove(formerViewUser);
                     }
 
-                    this.Repository.Update(formerDefault);
+                    // this.Repository.Update(formerDefault)
                 }
 
                 if (entity.ViewType == ViewType.User)
@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 }
             }
 
-            this.Repository.Update(entity);
+            // this.Repository.Update(entity)
             await this.Repository.UnitOfWork.CommitAsync();
         }
 
@@ -246,7 +246,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
                             formerDefault.ViewTeams.Remove(formerViewTeam);
                         }
 
-                        this.Repository.Update(formerDefault);
+                        // this.Repository.Update(formerDefault)
                     }
                 }
 
@@ -261,7 +261,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
                     entity.ViewTeams.Add(new ViewTeam { IsDefault = true, ViewId = entity.Id, TeamId = currentTeamId });
                 }
 
-                this.Repository.Update(entity);
+                // this.Repository.Update(entity)
 
                 await this.Repository.UnitOfWork.CommitAsync();
             }
@@ -321,7 +321,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
                 ViewMapper.MapperUpdateView(dto, entity);
 
-                this.Repository.Update(entity);
+                // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
             }
 
@@ -361,7 +361,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
                 if (hasChange)
                 {
-                    this.Repository.Update(entity);
+                    // this.Repository.Update(entity)
                     await this.Repository.UnitOfWork.CommitAsync();
                 }
             }

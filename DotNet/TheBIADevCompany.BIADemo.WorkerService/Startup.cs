@@ -25,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
     /// <summary>
@@ -56,7 +57,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         {
             this.currentEnvironment = env;
             this.configuration = configuration;
-            BiaNetSection biaNetSection = new();
+            BiaNetSection biaNetSection = new ();
             this.configuration.GetSection("BiaNet").Bind(biaNetSection);
             this.workerFeatures = biaNetSection.WorkerFeatures;
         }
@@ -134,12 +135,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             PlaneHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
 
             // End BIADemo
-
-            HangfireServerAuthorizations hangfireServerAuthorizations = new();
+            HangfireServerAuthorizations hangfireServerAuthorizations = new ();
             hangfireServerAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, false, "Hangfire_Dashboard_Admin") };
             hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
 
-            app.UseBiaWorkerFeatures(this.workerFeatures, hangfireServerAuthorizations);
+            app.UseBiaWorkerFeatures<AuditFeature>(this.workerFeatures, hangfireServerAuthorizations);
         }
     }
 }

@@ -15,6 +15,7 @@
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
     using BIA.Net.Core.WorkerService.Features.HangfireServer;
+    using BIA.Net.Core.Domain.RepoContract;
 
     /// <summary>
     /// Add the standard service.
@@ -114,8 +115,8 @@
             return services;
         }
 
-        public static IApplicationBuilder UseBiaWorkerFeatures([NotNull] this IApplicationBuilder app,
-            WorkerFeatures workerFeatures, HangfireServerAuthorizations hangfireServerAuthorizations)
+        public static IApplicationBuilder UseBiaWorkerFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
+            WorkerFeatures workerFeatures, HangfireServerAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
         {
             // Hangfire Server
             if (workerFeatures?.HangfireServer?.IsActive == true)
@@ -145,6 +146,10 @@
                     Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
                 });
             }
+
+            app.ApplicationServices.GetRequiredService<AuditFeature>().
+                UseAuditFeatures(app.ApplicationServices);
+
             return app;
         }
     }

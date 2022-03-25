@@ -14,11 +14,14 @@
       },
       "ClientForHub": {
         "IsActive": true
+      },
+      "AuditConfiguration": {
+        // Except BIADemo "IsActive": false,
+        // Begin BIADemo
+        "IsActive": true,
+        // End BIADemo
+        "ConnectionStringName": "BIADemoDatabase"
       }
-    },
-    "AuditConfiguration": {
-      "IsActive": true,
-      "ConnectionStringName": "BIADemoDatabase"      
     },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
@@ -30,7 +33,7 @@
       "LdapCacheUserDuration": 1800 //in minutes
     },
     "Security": {
-      "Audience": "http://localhost:4200,http://localhost:4201,https://studio-jetlab.analytics.safran,https://app-jetlab.analytics.safran"
+      "Audience": "https://studio-jetlab.analytics.safran,https://app-jetlab.analytics.safran"
     },
     "Jwt": {
       "Issuer": "BIADemoApi",

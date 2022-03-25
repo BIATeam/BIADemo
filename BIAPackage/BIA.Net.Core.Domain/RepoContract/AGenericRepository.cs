@@ -91,9 +91,9 @@ namespace BIA.Net.Core.Domain.RepoContract
             this.Repository.Remove(item);
         }
 
-        public virtual void Update(TEntity item)
+        public virtual void SetModified(TEntity item)
         {
-            this.Repository.Update(item);
+            this.Repository.SetModified(item);
         }
     }
 }

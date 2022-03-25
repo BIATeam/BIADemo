@@ -131,10 +131,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures);
-
-            app.ApplicationServices.GetRequiredService<AuditFeature>().
-                UseAuditFeatures(app.ApplicationServices);
+            app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures);
         }
     }
 }

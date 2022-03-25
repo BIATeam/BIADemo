@@ -314,7 +314,7 @@ namespace BIA.Net.Core.Domain.Service
                 }
 
                 mapper.DtoToEntity(dto, entity, mapperMode);
-                this.Repository.Update(entity);
+                // this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
                 mapper.MapEntityKeysInDto(entity, dto);

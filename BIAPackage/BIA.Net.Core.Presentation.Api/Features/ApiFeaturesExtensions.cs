@@ -4,6 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
@@ -144,8 +145,8 @@
         }
 
 
-        public static IApplicationBuilder UseBiaApiFeatures([NotNull] this IApplicationBuilder app,
-            ApiFeatures apiFeatures)
+        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
+            ApiFeatures apiFeatures) where AuditFeature : IAuditFeature
         {
             app.UseEndpoints(endpoints =>
             {
@@ -169,6 +170,9 @@
                     c.InjectStylesheet("./AutoLogin.css");
                 });
             }
+
+            app.ApplicationServices.GetRequiredService<AuditFeature>().
+                UseAuditFeatures(app.ApplicationServices);
 
             return app;
         }

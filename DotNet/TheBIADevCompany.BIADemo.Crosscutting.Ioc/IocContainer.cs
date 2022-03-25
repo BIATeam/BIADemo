@@ -119,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
             collection.Configure<AuditConfiguration>(
-               configuration.GetSection("BiaNet:AuditConfiguration"));
+               configuration.GetSection("BiaNet:ApiFeatures:AuditConfiguration"));
             collection.AddSingleton<AuditFeature>();
         }
 
