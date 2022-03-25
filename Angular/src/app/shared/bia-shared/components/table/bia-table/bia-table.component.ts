@@ -271,34 +271,4 @@ export class BiaTableComponent implements OnChanges {
   getLazyLoadOnInit(): boolean {
     return !this.tableStateKey;
   }
-
-  hoveredElement: any;
-
-  onMouseEnter(column: PrimeTableColumn, rowData: any) {
-    if (column && rowData) {
-      this.hoveredElement = {
-        field: column.field,
-        id: rowData.id
-      };
-    }
-  }
-
-  onMouseLeave() {
-    this.hoveredElement = undefined;
-  }
-
-  onCopy(event: Event, col: PrimeTableColumn, rowData: any) {
-    switch (col.type) {
-      case PropType.OneToMany:
-        navigator.clipboard.writeText(rowData[col.field]?.display);
-        break;
-      case PropType.ManyToMany:
-        navigator.clipboard.writeText(rowData[col.field]?.map((el: any) => el.display).join(', '))
-        break;
-      default:
-        navigator.clipboard.writeText(rowData[col.field]);
-        break;
-    }
-    event.stopImmediatePropagation();
-  }
 }

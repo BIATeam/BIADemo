@@ -40,7 +40,6 @@ export class PrimeTableColumn {
   isSearchable: boolean;
   isSortable: boolean;
   isEditable: boolean;
-  isCopyable: boolean;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
@@ -63,7 +62,6 @@ export class PrimeTableColumn {
     this.isSearchable = true;
     this.isSortable = true;
     this.isEditable = true;
-    this.isCopyable = false;
     this.maxlength = maxlength;
   }
 }

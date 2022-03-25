@@ -218,9 +218,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          Object.assign(new PrimeTableColumn('msn', 'plane.msn'), {
-            isCopyable: true
-          }),
+          new PrimeTableColumn('msn', 'plane.msn'),
           Object.assign(new PrimeTableColumn('isActive', 'plane.isActive'), {
             isSearchable: false,
             isSortable: false,
@@ -243,12 +241,10 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
             filterMode: PrimeNGFiltering.Equals
           }),
           Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
-            type: PropType.OneToMany,
-            isCopyable: true
+            type: PropType.OneToMany
           }),
           Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
-            type: PropType.ManyToMany,
-            isCopyable: true
+            type: PropType.ManyToMany
           })
         ]
       };
