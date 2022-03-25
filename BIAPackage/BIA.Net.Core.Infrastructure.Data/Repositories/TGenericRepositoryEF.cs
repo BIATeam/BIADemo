@@ -81,7 +81,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
-        public void Update(TEntity item)
+        public void SetModified(TEntity item)
         {
             if (item == null)
             {

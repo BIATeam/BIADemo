@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     foreach (Member member in members)
                     {
                         member.IsDefault = member.TeamId == teamId;
-                        this.Repository.Update(member);
+                        // this.Repository.Update(member)
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();
@@ -91,7 +91,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             memberRole.IsDefault = roleIds.Contains(memberRole.RoleId);
                         }
 
-                        this.Repository.Update(member);
+                        // this.Repository.Update(member)
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();

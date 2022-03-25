@@ -121,12 +121,10 @@ export abstract class GenericDas {
       }));
 
     if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
-      obs$ = this.getListWithCatchErrorOffline(obs$, url);
+      obs$ = this.getWithCatchErrorOffline(obs$, url);
       obs$.pipe(first()).subscribe((results: TOut[]) => {
         this.clearDataByUrl(url);
-        results.forEach((result) => {
-          this.addDataTtem(url, result);
-        });
+        this.addDataTtem(url, results);
       });
     }
 
@@ -243,28 +241,12 @@ export abstract class GenericDas {
     );
   }
 
-  protected getListWithCatchErrorOffline(obs$: Observable<any>, url: string) {
-    return obs$.pipe(
-      catchError((error) => {
-        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
-          return from(this.db.datas.filter(function (x) {
-            return x.url === url;
-          }).toArray()).pipe(
-            map((dataItems: DataItem[]) => dataItems.map((dataItem) => dataItem.data))
-          );
-        }
-        return throwError(error);
-      })
-    );
-  }
-
   protected getWithCatchErrorOffline(obs$: Observable<any>, url: string) {
     return obs$.pipe(
       catchError((error) => {
         if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
-          return from(this.db.datas.filter(function (x) {
-            return x.url === url;
-          }).first()).pipe(
+          return from(this.db.datas.get(url)).pipe(
+            first(),
             map((dataItem: DataItem | undefined) => dataItem ? dataItem.data : undefined)
           );
         }
@@ -274,9 +256,7 @@ export abstract class GenericDas {
   }
 
   protected clearDataByUrl(url: string) {
-    this.db.datas.filter(function (x) {
-      return x.url === url;
-    }).delete();
+    this.db.datas.delete(url);
   }
 
   protected addDataTtem(url: string, result: any) {

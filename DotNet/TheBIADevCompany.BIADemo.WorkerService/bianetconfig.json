@@ -12,12 +12,23 @@
         "ConnectionStringName": "BIADemoDatabase"
       },
       "DatabaseHandler": {
+        // Except BIADemo "IsActive": false,
+        // Begin BIADemo
         "IsActive": true
+        // End BIADemo
       },
       "ClientForHub": {
         "IsActive": true
+      },
+      "AuditConfiguration": {
+        // Except BIADemo "IsActive": false,
+        // Begin BIADemo
+        "IsActive": true,
+        // End BIADemo
+        "ConnectionStringName": "BIADemoDatabase"
       }
     },
+
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
       "SmtpHost": "smtp",

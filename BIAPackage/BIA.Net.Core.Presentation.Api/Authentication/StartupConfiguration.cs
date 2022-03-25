@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
             services.Configure<JwtOptions>(options =>
             {
                 options.Issuer = configuration.Jwt.Issuer;
-                options.Audience = configuration.Jwt.Audience;
+                options.Audience = configuration.Security.Audience;
                 options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
                 ValidIssuer = configuration.Jwt.Issuer,
 
                 ValidateAudience = true,
-                ValidAudience = configuration.Jwt.Audience,
+                ValidAudience = configuration.Security.Audience,
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,

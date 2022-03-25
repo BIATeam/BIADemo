@@ -15,11 +15,6 @@ namespace BIA.Net.Core.Common.Configuration
         public string Issuer { get; set; }
 
         /// <summary>
-        /// The Audience of the token (url of the Angular application).
-        /// </summary>
-        public string Audience { get; set; }
-
-        /// <summary>
         /// The Secret Key to crypte the token.
         /// </summary>
         public string SecretKey { get; set; }        

@@ -120,7 +120,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                 _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", dto);
 
                 mapper.DtoToEntity(dto, entity, mapperMode);
-                this.Repository.Update(entity);
+
+                // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
                 mapper.MapEntityKeysInDto(entity, dto);

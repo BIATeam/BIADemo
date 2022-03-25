@@ -75,31 +75,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
                 })
                 .UseNLog()
-                .UseStartup<Startup>()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddBiaWorkerFeatures(config =>
-                    {
-                        config.Configuration = hostContext.Configuration;
-
-                        var biaNetSection = new BiaNetSection();
-                        config.Configuration.GetSection("BiaNet").Bind(biaNetSection);
-
-                        if (biaNetSection.WorkerFeatures.DatabaseHandler.IsActive)
-                        {
-                            config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
-                            {
-                                // Add here all the Handler repository.
-                        // Begin BIADemo
-                                new PlaneHandlerRepository(hostContext.Configuration),
-
-                        // End BIADemo
-                            });
-                        }
-                    });
-
-                    services.AddHostedService<Worker>();
-                });
+                .UseStartup<Startup>();
 
         /// <summary>
         /// Create the host builder.
@@ -125,29 +101,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 {
                     webBuilder.UseUrls("https://*:8081", "http://*:8080");
                     webBuilder.UseStartup<Startup>();
-                })
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddBiaWorkerFeatures(config =>
-                    {
-                        config.Configuration = hostContext.Configuration;
-
-                        // Begin BIADemo
-                        var biaNetSection = new BiaNetSection();
-                        config.Configuration.GetSection("BiaNet").Bind(biaNetSection);
-
-                        if (biaNetSection.WorkerFeatures.DatabaseHandler.IsActive)
-                        {
-                            config.DatabaseHandler.Activate(new List<DatabaseHandlerRepository>()
-                            {
-                                new PlaneHandlerRepository(hostContext.Configuration),
-                            });
-                        }
-
-                        // End BIADemo
-                    });
-
-                    services.AddHostedService<Worker>();
                 })
                 .UseWindowsService();
     }

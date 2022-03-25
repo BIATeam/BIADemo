@@ -31,5 +31,10 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Gets or sets the DelegateJobToWorker feature configuration.
         /// </summary>
         public DelegateJobToWorker DelegateJobToWorker { get; set; }
+
+        /// <summary>
+        /// Gets or sets the audit configuration.
+        /// </summary>
+        public AuditConfiguration AuditConfiguration { get; set; }
     }
 }

@@ -5,11 +5,17 @@
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
+    using System.Collections.Generic;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.WorkerService.Features;
+    using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
+    using BIA.Net.Core.WorkerService.Features.HangfireServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -19,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
     /// <summary>
@@ -30,6 +37,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// The configuration.
         /// </summary>
         private readonly IConfiguration configuration;
+
+        /// <summary>
+        /// The configuration.
+        /// </summary>
+        private readonly WorkerFeatures workerFeatures;
 
         /// <summary>
         /// The current environment.
@@ -45,6 +57,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         {
             this.currentEnvironment = env;
             this.configuration = configuration;
+            BiaNetSection biaNetSection = new ();
+            this.configuration.GetSection("BiaNet").Bind(biaNetSection);
+            this.workerFeatures = biaNetSection.WorkerFeatures;
         }
 
         /// <summary>
@@ -75,6 +90,23 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal() { });
             services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 
+            services.Configure<ClientForHubConfiguration>(
+                this.configuration.GetSection("BiaNet:WorkerFeatures:ClientForHub"));
+
+            services.AddBiaWorkerFeatures(
+                this.workerFeatures,
+                this.configuration,
+                new List<DatabaseHandlerRepository>()
+                    {
+                        // Add here all the Handler repository.
+                        // Begin BIADemo
+                        new PlaneHandlerRepository(this.configuration),
+
+                        // End BIADemo
+                    });
+
+            services.AddHostedService<Worker>();
+
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);
         }
@@ -103,12 +135,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             PlaneHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
 
             // End BIADemo
-            app.UseBiaWorkerFeatures(config =>
-            {
-                config.Configuration = this.configuration;
-                config.HangfireServer.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, false, "Hangfire_Dashboard_Admin") };
-                config.HangfireServer.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
-            });
+            HangfireServerAuthorizations hangfireServerAuthorizations = new ();
+            hangfireServerAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, false, "Hangfire_Dashboard_Admin") };
+            hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
+
+            app.UseBiaWorkerFeatures<AuditFeature>(this.workerFeatures, hangfireServerAuthorizations);
         }
     }
 }

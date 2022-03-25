@@ -1,13 +1,14 @@
-﻿namespace BIA.Net.Core.Infrastructure.Service.Repositories
+namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
     using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Features.ClientForHub;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.AspNetCore.SignalR.Client;
+    using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -16,15 +17,16 @@
         private static HubConnection connection = null;
         private static bool starting = false;
         private static bool started = false;
+        private readonly ClientForHubConfiguration _ClientForHubConfiguration;
 
-        public SignalRClientForHubRepository()
+        public SignalRClientForHubRepository(IOptions<ClientForHubConfiguration> options)
         {
-
+            _ClientForHubConfiguration = options.Value;
         }
 
         public Task StartAsync()
         {
-            if (!ClientForHubOptions.IsActive)
+            if (!_ClientForHubConfiguration.IsActive)
             {
                 throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
             }
@@ -33,7 +35,7 @@
             {
                 starting = true;
                 connection = new HubConnectionBuilder()
-                    .WithUrl(ClientForHubOptions.SignalRUrl)
+                    .WithUrl(_ClientForHubConfiguration.SignalRUrl)
                     .WithAutomaticReconnect()
                     .Build();
                 connection.Closed += async (error) =>

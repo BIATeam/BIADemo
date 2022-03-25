@@ -1,10 +1,10 @@
-﻿namespace BIA.Net.Core.WorkerService.Features
+﻿namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Features.ClientForHub;
+    using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
@@ -25,18 +25,16 @@
         /// Start the api service feaures.
         /// </summary>
         /// <param name="services">the service collection.</param>
-        /// <param name="optionsAction">the options.</param>
+        /// <param name="apiFeatures">the API features configuration.</param>
+        /// <param name="configuration">the application configuration.</param>
         /// <returns>the services collection.</returns>
         public static IServiceCollection AddBiaApiFeatures(
             [NotNull] this IServiceCollection services,
-            Action<ApiFeaturesServiceOptions> optionsAction)
+            ApiFeatures apiFeatures,
+            IConfiguration configuration)
         {
-            var options = new ApiFeaturesServiceOptions();
-            optionsAction(options);
-
             var biaNetSection = new BiaNetSection();
-            options.Configuration.GetSection("BiaNet").Bind(biaNetSection);
-
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
 
             // Authentication
             services.ConfigureAuthentication(biaNetSection);
@@ -45,14 +43,14 @@
             services.AddMemoryCache();
 
             // Distributed Cache
-            if (options.DistributedCache.IsActive)
+            if (apiFeatures.DistributedCache.IsActive)
             {
-                string dbEngine = options.Configuration.GetDBEngine(options.DistributedCache.ConnectionStringName);
+                string dbEngine = configuration.GetDBEngine(apiFeatures.DistributedCache.ConnectionStringName);
                 if (dbEngine.ToLower().Equals("sqlserver"))
                 {
                     services.AddDistributedSqlServerCache(config =>
                     {
-                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.ConnectionString = configuration.GetConnectionString(apiFeatures.DistributedCache.ConnectionStringName);
                         config.TableName = "DistCache";
                         config.SchemaName = "dbo";
                     });
@@ -61,7 +59,7 @@
                 {
                     services.AddDistributedPostgreSqlCache(config =>
                     {
-                        config.ConnectionString = options.Configuration.GetConnectionString(options.DistributedCache.ConnectionStringName);
+                        config.ConnectionString = configuration.GetConnectionString(apiFeatures.DistributedCache.ConnectionStringName);
                         config.SchemaName = "dbo";
                         config.TableName = "DistCache";
                     });
@@ -69,11 +67,7 @@
             }
 
             // Swagger
-            if (biaNetSection?.ApiFeatures?.Swagger?.IsActive == true)
-            {
-                options.Swagger.Activate();
-            }
-            if (options.Swagger.IsActive)
+            if (apiFeatures.Swagger?.IsActive == true)
             {
                 services.AddSwaggerGen(a =>
                 {
@@ -104,51 +98,37 @@
             }
 
             // Hub For Clients
-            if (biaNetSection?.ApiFeatures?.HubForClients?.IsActive == true)
+            if (apiFeatures.HubForClients?.IsActive == true)
             {
-                options.HubForClients.Activate(biaNetSection.ApiFeatures.HubForClients.RedisConnectionString, biaNetSection.ApiFeatures.HubForClients.RedisChannelPrefix);
-            }
-            if (options.HubForClients.IsActive)
-            {
-                if (string.IsNullOrEmpty(options.HubForClients.RedisConnectionString))
+                if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisConnectionString))
                 {
                     services.AddSignalR();
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(options.HubForClients.RedisChannelPrefix))
+                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddRedis(options.HubForClients.RedisConnectionString);
+                        services.AddSignalR().AddRedis(apiFeatures.HubForClients.RedisConnectionString);
                     }
                     else
                     {
-                        services.AddSignalR().AddRedis(options.HubForClients.RedisConnectionString,
+                        services.AddSignalR().AddRedis(apiFeatures.HubForClients.RedisConnectionString,
                         redisOptions =>
                         {
-                            redisOptions.Configuration.ChannelPrefix = options.HubForClients.RedisChannelPrefix;
+                            redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
                         });
                     }
                 }
             }
 
-            // Client for hub
-            if (biaNetSection?.ApiFeatures?.ClientForHub?.IsActive == true)
-            {
-                ClientForHubOptions.Activate(biaNetSection.ApiFeatures.ClientForHub.SignalRUrl);
-            }
-
             // Delegate Job Worker
-            if (biaNetSection?.ApiFeatures?.DelegateJobToWorker?.IsActive == true)
+            if (apiFeatures.DelegateJobToWorker?.IsActive == true)
             {
-                options.DelegateJobToWorker.Activate(biaNetSection.ApiFeatures.DelegateJobToWorker.ConnectionStringName);
-            }
-            if (options.DelegateJobToWorker.IsActive)
-            {
-                string dbEngine = options.Configuration.GetDBEngine(options.DistributedCache.ConnectionStringName);
+                string dbEngine = configuration.GetDBEngine(apiFeatures.DistributedCache.ConnectionStringName);
 
                 if (dbEngine.ToLower().Equals("sqlserver"))
                 {
-                    JobStorage.Current = new SqlServerStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName));
+                    JobStorage.Current = new SqlServerStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName));
                 }
                 else if (dbEngine.ToLower().Equals("postgresql"))
                 {
@@ -157,7 +137,7 @@
                         InvisibilityTimeout = TimeSpan.FromDays(5),
                     };
 
-                    JobStorage.Current = new PostgreSqlStorage(options.Configuration.GetConnectionString(options.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                    JobStorage.Current = new PostgreSqlStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime);
                 }
             }
 
@@ -165,24 +145,20 @@
         }
 
 
-        public static IApplicationBuilder UseBiaApiFeatures([NotNull] this IApplicationBuilder app,
-            Action<ApiFeaturesApplicationBuilderOptions> optionsAction)
+        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
+            ApiFeatures apiFeatures) where AuditFeature : IAuditFeature
         {
-            var options = new ApiFeaturesApplicationBuilderOptions();
-            optionsAction(options);
-
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                if (options.BiaNetSection?.ApiFeatures?.HubForClients?.IsActive == true)
+                if (apiFeatures?.HubForClients?.IsActive == true)
                 {
                     endpoints.MapHub<HubForClients>("/HubForClients");
                 }
             });
 
 
-            if (options.BiaNetSection?.ApiFeatures?.Swagger?.IsActive == true)
+            if (apiFeatures?.Swagger?.IsActive == true)
             {
                 app.UseStaticFiles();
                 app.UseSwagger();
@@ -194,6 +170,9 @@
                     c.InjectStylesheet("./AutoLogin.css");
                 });
             }
+
+            app.ApplicationServices.GetRequiredService<AuditFeature>().
+                UseAuditFeatures(app.ApplicationServices);
 
             return app;
         }

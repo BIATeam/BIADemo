@@ -3,20 +3,22 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220321170649_MaintenanceTeam")]
+    partial class MaintenanceTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.15")
+                .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BIA.Net.Core.Domain.DistCacheModule.Aggregate.DistCache", b =>
@@ -152,9 +154,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationPermission", b =>
                 {
-                    b.Property<int>("TeamId")
+                    b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
                     b.Property<int>("NotificationId")
@@ -165,11 +167,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("TeamId", "NotificationId");
+                    b.HasKey("PermissionId", "NotificationId");
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("NotificationTeam");
+                    b.ToTable("NotificationPermission");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
@@ -1504,23 +1506,23 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationPermission", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
-                        .WithMany("NotifiedTeams")
+                        .WithMany("NotifiedPermissions")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
-                        .WithMany("NotificationTeams")
-                        .HasForeignKey("TeamId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", "Permission")
+                        .WithMany("NotificationPermissions")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Notification");
 
-                    b.Navigation("Team");
+                    b.Navigation("Permission");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
@@ -1818,7 +1820,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.Navigation("NotificationTranslations");
 
-                    b.Navigation("NotifiedTeams");
+                    b.Navigation("NotifiedPermissions");
 
                     b.Navigation("NotifiedUsers");
                 });
@@ -1845,6 +1847,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", b =>
                 {
+                    b.Navigation("NotificationPermissions");
+
                     b.Navigation("PermissionRoles");
 
                     b.Navigation("PermissionTranslations");
@@ -1864,8 +1868,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
                 {
                     b.Navigation("Members");
-
-                    b.Navigation("NotificationTeams");
 
                     b.Navigation("ViewTeams");
                 });

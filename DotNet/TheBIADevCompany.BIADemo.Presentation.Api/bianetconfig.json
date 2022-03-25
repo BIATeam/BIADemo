@@ -14,6 +14,13 @@
       },
       "ClientForHub": {
         "IsActive": true
+      },
+      "AuditConfiguration": {
+        // Except BIADemo "IsActive": false,
+        // Begin BIADemo
+        "IsActive": true,
+        // End BIADemo
+        "ConnectionStringName": "BIADemoDatabase"
       }
     },
     "EmailConfiguration": {
@@ -25,9 +32,11 @@
       "LdapCacheGroupDuration": 200, //in minutes
       "LdapCacheUserDuration": 1800 //in minutes
     },
+    "Security": {
+      "Audience": "https://studio-jetlab.analytics.safran,https://app-jetlab.analytics.safran"
+    },
     "Jwt": {
       "Issuer": "BIADemoApi",
-      "Audience": "http://localhost:4200,http://localhost:4201",
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
     },
@@ -147,6 +156,19 @@
       },
       {
         "Names": [ "AircraftMaintenanceCompany_Member_List_Access", "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "Member_Save" ],
+        "Roles": [ "Admin", "Supervisor" ]
+      },
+      // Maintenance Team
+      {
+        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Create", "MaintenanceTeam_Read", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+        "Roles": [ "MaintenanceTeam_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_Member_List_Access", "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "Member_Save" ],
         "Roles": [ "Admin", "Team_Leader" ]
       },
       // Airport

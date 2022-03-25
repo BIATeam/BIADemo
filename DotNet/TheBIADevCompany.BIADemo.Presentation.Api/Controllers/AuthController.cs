@@ -371,6 +371,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                             allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMember);
                         }
 
+                        if (currentTeam.TeamTypeId == (int)TeamTypeId.MaintenanceTeam)
+                        {
+                            allRoles.Add(Constants.Role.MaintenanceTeamMember);
+                        }
+
                         // End BIADemo
                     }
                 }

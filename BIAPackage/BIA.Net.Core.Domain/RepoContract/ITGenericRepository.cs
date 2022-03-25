@@ -160,10 +160,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         void Remove(TEntity item);
 
         /// <summary>
-        /// Update an item in the current context.
+        /// Set an item as modified in the current context to force update of all fields 
+        /// > it is not recommanded to use it because it do additionnal job in database and Audit will track too much change.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="item">The item.</param>
-        void Update(TEntity item);
+        void SetModified(TEntity item);
     }
 }
