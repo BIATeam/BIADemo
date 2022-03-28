@@ -76,6 +76,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
+            collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();

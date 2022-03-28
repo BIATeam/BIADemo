@@ -1,29 +1,23 @@
 <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
   <div fxFlex="100">
     <bia-table-header
-      [headerTitle]="'aircraftMaintenanceCompany.listOf' | translate"
+      [headerTitle]="'maintenanceTeam.listOf' | translate"
       [canAdd]="canAdd&&!useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
-      [selectedElements]="selectedAircraftMaintenanceCompanies"
+      [selectedElements]="selectedMaintenanceTeams"
     >
     <ng-template pTemplate="actionOnSelected">
       <button
       pButton
-      [disabled]="selectedAircraftMaintenanceCompanies?.length !== 1"
+      [disabled]="selectedMaintenanceTeams?.length !== 1"
       *ngIf="canEdit"
       class="p-button-outlined"
       label="{{ 'bia.edit' | translate }}"
       (click)="onEdit()"></button>
-      <button
-      pButton
-      [disabled]="selectedAircraftMaintenanceCompanies?.length !== 1"
-      class="p-button-outlined"
-      label="{{ 'aircraftMaintenanceCompany.maintenanceTeams' | translate }}"
-      (click)="onMaintenanceTeams()"></button>
     </ng-template>
   </bia-table-header>
     <bia-table-controller
@@ -39,7 +33,7 @@
       [tableStateKey]="tableStateKey"
     ></bia-table-controller>
     <bia-table *ngIf="!useCalcMode"
-      [elements]="aircraftMaintenanceCompanies$ | async"
+      [elements]="maintenanceTeams$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -55,9 +49,9 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
-    <app-aircraft-maintenance-company-table *ngIf="useCalcMode"
-      [elements]="aircraftMaintenanceCompanies$ | async"
-      [dictOptionDtos]="aircraftMaintenanceCompanyOptionsService.dictOptionDtos$ | async"
+    <app-maintenance-team-table *ngIf="useCalcMode"
+      [elements]="maintenanceTeams$ | async"
+      [dictOptionDtos]="maintenanceTeamOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -73,6 +67,6 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       (save)="onSave($event)"
-    ></app-aircraft-maintenance-company-table>
+    ></app-maintenance-team-table>
   </div>
 </div>

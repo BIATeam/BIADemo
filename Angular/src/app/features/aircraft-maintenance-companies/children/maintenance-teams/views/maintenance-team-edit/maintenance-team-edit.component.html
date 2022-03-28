@@ -1,0 +1,6 @@
+<app-maintenance-team-form 
+    [maintenanceTeam]="maintenanceTeamService.maintenanceTeam$ | async" 
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-maintenance-team-form>
+<bia-spinner *ngIf="maintenanceTeamService.loading$ | async" [overlay]="true"></bia-spinner>
