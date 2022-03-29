@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>

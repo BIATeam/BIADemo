@@ -9,6 +9,10 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>
