@@ -137,15 +137,15 @@
           <span class="md-inputfield">
             <p-multiSelect
               defaultLabel="&nbsp;"
-              [options]="permissionOptions"
-              formControlName="notifiedPermissions"
+              [options]="roleOptions"
+              formControlName="notifiedRoles"
               optionLabel="display"
               datakey="id"
               [virtualScroll]="true"
               [style]="{ width: '100%' }"
             >
             </p-multiSelect>
-            <label>{{ 'notification.notifiedPermissions' | translate }}</label>
+            <label>{{ 'notification.notifiedRoles' | translate }}</label>
           </span>
         </div>
       </div>

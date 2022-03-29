@@ -60,6 +60,11 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         public int SiteId { get; set; }
 
         /// <summary>
+        /// Gets or sets the roles to be notified, if any.
+        /// </summary>
+        public ICollection<OptionDto> NotifiedRoles { get; set; }
+
+        /// <summary>
         /// Gets or sets the teams to be notified, if any.
         /// </summary>
         public ICollection<NotificationTeamDto> NotifiedTeams { get; set; }

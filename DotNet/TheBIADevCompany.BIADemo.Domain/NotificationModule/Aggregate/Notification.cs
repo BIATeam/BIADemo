@@ -62,14 +62,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public virtual User CreatedBy { get; set; }
 
         /// <summary>
-        /// Gets or sets the site identifier.
+        /// Gets or sets the roles to be notified, if any.
         /// </summary>
-        public int SiteId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the site.
-        /// </summary>
-        public virtual Site Site { get; set; }
+        public ICollection<NotificationRole> NotifiedRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the teams to be notified, if any.

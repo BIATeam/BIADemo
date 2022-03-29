@@ -75,16 +75,22 @@ export class NotificationsSignalRService {
   }
   private IsInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
+
     const okUser: Boolean = (notification.notifiedUsers === undefined) ||
       (notification.notifiedUsers === null) ||
       (notification.notifiedUsers.length === 0) ||
       (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
 
+    const okRole: Boolean = (notification.notifiedRoles === undefined) ||
+      (notification.notifiedRoles === null) ||
+      (notification.notifiedRoles.length === 0) ||
+      (notification.notifiedRoles.some(e => this.authService.hasPermission(e.id.toString())));
+
     const okTeam: Boolean = !notification.notifiedTeams ||
       (notification.notifiedTeams.length === 0) ||
       (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => myTeam.id === notifiedTeam.id)));
 
-    return okUser && okTeam;
+    return okUser && okRole && okTeam;
   }
   destroy() {
     console.log('%c [Notifications] Unregister SignalR : refresh-notifications', 'color: purple; font-weight: bold');

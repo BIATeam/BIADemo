@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateNotificationTypeModel(modelBuilder);
             CreateNotificationUserModel(modelBuilder);
             CreateNotificationTeamModel(modelBuilder);
+            CreateNotificationRoleModel(modelBuilder);
         }
 
         /// <summary>
@@ -52,6 +53,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success", Label = "Success" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn", Label = "Warn" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "error", Label = "Error" });
+        }
+
+        /// <summary>
+        /// Create the model for notification roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateNotificationRoleModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationRole>().HasKey(nr => new { RoleId = nr.RoleId, NotificationId = nr.NotificationId });
+            modelBuilder.Entity<NotificationRole>().HasOne(nr => nr.Role).WithMany(u => u.NotificationRoles).HasForeignKey(nr => nr.RoleId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NotificationRole>().HasOne(nr => nr.Notification).WithMany(n => n.NotifiedRoles).HasForeignKey(nr => nr.NotificationId);
         }
 
         /// <summary>

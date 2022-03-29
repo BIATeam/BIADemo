@@ -83,7 +83,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 
             notification.Read = true;
 
-            this.Repository.Update(notification);
+            //this.Repository.Update(notification);
             await this.Repository.UnitOfWork.CommitAsync();
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
@@ -106,8 +106,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                     throw new ElementNotFoundException();
                 }
 
-                dto.SiteId = entity.SiteId;
-
                 if (entity.Read && !dto.Read)
                 {
                     _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
@@ -120,8 +118,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                 _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", dto);
 
                 mapper.DtoToEntity(dto, entity, mapperMode);
-
-                // this.Repository.Update(entity)
+                
+                // this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
                 mapper.MapEntityKeysInDto(entity, dto);
@@ -147,12 +145,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         public override async Task<List<NotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
         {
             var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode);
-            deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
-            {
-                var siteDeletedDtos = deletedDtos.Where(s => s.SiteId == parentId);
-                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", siteDeletedDtos.Select(s => s.Id).ToList());
-                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", siteDeletedDtos);
-            });
+
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);
 
             return deletedDtos;
         }

@@ -33,7 +33,7 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
       read: [this.element.read],
       createdDate: [this.element.createdDate, Validators.required],
       createdBy: [this.element.createdBy?.id],
-      notifiedPermissions: [this.element.notifiedPermissions],
+      notifiedRoles: [this.element.notifiedRoles],
       notifiedUsers: [this.element.notifiedUsers],
       jData: [this.element.jData],
     });
@@ -45,7 +45,7 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedPermissions = BiaOptionService.Differential(notification.notifiedPermissions, this.element?.notifiedPermissions);
+      notification.notifiedRoles = BiaOptionService.Differential(notification.notifiedRoles, this.element?.notifiedRoles);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.element?.notifiedUsers);
       notification.type = { ...notification.type };
       this.save.emit(notification);

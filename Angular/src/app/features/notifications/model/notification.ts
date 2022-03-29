@@ -12,7 +12,7 @@ export interface Notification {
   createdDate: string;
   createdBy: OptionDto | null;
   siteId: number;
-  notifiedPermissions: OptionDto[];
+  notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
   notifiedTeams: OptionDto[];
   jData: string;

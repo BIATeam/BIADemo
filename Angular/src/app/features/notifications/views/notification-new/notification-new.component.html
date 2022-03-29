@@ -1,6 +1,6 @@
 <app-notification-form 
     [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
-    [permissionOptions]="notificationOptionsService.permissionOptions$ | async"
+    [roleOptions]="notificationOptionsService.roleOptions$ | async"
     [userOptions]="notificationOptionsService.userOptions$ | async"
     [languageOptions]="notificationOptionsService.languageOptions$ | async"
     (cancel)="onCancelled()" 

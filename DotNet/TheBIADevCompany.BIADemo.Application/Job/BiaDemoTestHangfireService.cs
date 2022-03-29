@@ -69,12 +69,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <summary>
         /// Test function for run task on hangfire with notification.
         /// </summary>
-        /// <param name="siteId">The current Site Id.</param>
         /// <param name="teamId">The current Team Id.</param>
         /// <param name="createdById">The created By.</param>
         /// <param name="context">The context hangfire.</param>
         /// <returns>The task.</returns>
-        public async Task RunLongTaskWithNotification(int siteId, int teamId, int createdById, PerformContext context)
+        public async Task RunLongTaskWithNotification(int teamId, int createdById, PerformContext context)
         {
             await Task.Delay(2000);
 
@@ -116,9 +115,9 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
                 Description = "Review the plane with id 30.",
-                SiteId = siteId,
                 Title = "Review plane",
                 Type = new OptionDto { Id = (int)NotificationTypeId.Task },
+                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
                 NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
                     {
                         new NotificationTeamDto

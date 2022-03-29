@@ -49,5 +49,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the team types for this role.
         /// </summary>
         public virtual ICollection<TeamTypeRole> TeamTypeRoles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of notification roles.
+        /// </summary>
+        public ICollection<NotificationRole> NotificationRoles { get; set; }
     }
 }

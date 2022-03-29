@@ -26,7 +26,7 @@ import { NotificationTranslation } from '../../model/notification-translation';
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
   @Input() userOptions: OptionDto[];
-  @Input() permissionOptions: OptionDto[];
+  @Input() roleOptions: OptionDto[];
   @Input() notificationTypeOptions: OptionDto[];
   @Input() languageOptions: OptionDto[];
 
@@ -91,7 +91,7 @@ export class NotificationFormComponent implements OnChanges {
       read: [this.notification.read],
       createdDate: [this.notification.createdDate, Validators.required],
       createdBy: [this.notification.createdBy],
-      notifiedPermissions: [this.notification.notifiedPermissions],
+      notifiedRoles: [this.notification.notifiedRoles],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
       notificationTranslations: this.formBuilder.array([  ]),
@@ -175,8 +175,8 @@ export class NotificationFormComponent implements OnChanges {
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedPermissions =
-      BiaOptionService.Differential(notification.notifiedPermissions, this.notification?.notifiedPermissions);
+      notification.notifiedRoles =
+      BiaOptionService.Differential(notification.notifiedRoles, this.notification?.notifiedRoles);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
       notification.notificationTranslations =
