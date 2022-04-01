@@ -31,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 

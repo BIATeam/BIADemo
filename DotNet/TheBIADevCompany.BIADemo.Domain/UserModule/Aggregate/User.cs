@@ -6,15 +6,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
     using BIA.Net.Core.Domain;
+    using global::Audit.EntityFramework;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 
     /// <summary>
     /// The user entity.
     /// </summary>
+    [AuditInclude]
     public class User : VersionedTable, IEntity<int>
     {
         /// <summary>
@@ -130,6 +130,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the last login date.
         /// </summary>
+        [AuditIgnore]
         public DateTime? LastLoginDate { get; set; }
 
         /// <summary>

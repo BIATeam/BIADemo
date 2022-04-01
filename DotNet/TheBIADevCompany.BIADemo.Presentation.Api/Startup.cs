@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
     /// <summary>
     /// The startup class.

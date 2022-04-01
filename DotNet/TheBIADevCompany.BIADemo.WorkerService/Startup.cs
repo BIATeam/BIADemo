@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Feature;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
     /// <summary>
