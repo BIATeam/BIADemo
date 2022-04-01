@@ -169,8 +169,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
                 {
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("NotificationId")
                         .HasColumnType("int");
@@ -180,11 +182,36 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("TeamId", "NotificationId");
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("NotificationId");
 
+                    b.HasIndex("TeamId");
+
                     b.ToTable("NotificationTeam");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+                {
+                    b.Property<int>("NotificationTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("NotificationTeamId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("NotificationTeamRole");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
@@ -1549,6 +1576,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Team");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", "NotificationTeam")
+                        .WithMany("Roles")
+                        .HasForeignKey("NotificationTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                        .WithMany("NotificationTeamRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotificationTeam");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
@@ -1851,6 +1897,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotifiedUsers");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+                {
+                    b.Navigation("Roles");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
                 {
                     b.Navigation("NotificationTypeTranslations");
@@ -1883,6 +1934,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("MemberRoles");
 
                     b.Navigation("NotificationRoles");
+
+                    b.Navigation("NotificationTeamRoles");
 
                     b.Navigation("PermissionRoles");
 

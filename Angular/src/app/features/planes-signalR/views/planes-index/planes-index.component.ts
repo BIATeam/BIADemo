@@ -70,7 +70,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
-  parentIds: number[];
+  parentIds: string[];
 
   constructor(
     private store: Store<AppState>,

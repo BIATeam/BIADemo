@@ -60,7 +60,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'notificationsGrid' : undefined;
-  parentIds: number[];
+  parentIds: string[];
 
 
   constructor(
@@ -94,7 +94,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.notificationOptionsService.loadAllOptions();
+          this.notificationOptionsService.loadAllOptions();
         })
       );
     }
@@ -103,7 +103,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }

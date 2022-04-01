@@ -117,17 +117,18 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 Description = "Review the plane with id 30.",
                 Title = "Review plane",
                 Type = new OptionDto { Id = (int)NotificationTypeId.Task },
-                NotifiedRoles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
+                // NotifiedRoles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
                 NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
-                    {
-                        new NotificationTeamDto
-                        {
-                            Id = targetedTeam.Id,
-                            DtoState = DtoState.Added,
-                            TypeId = targetedTeam.TeamTypeId,
-                            Display = targetedTeam.Title,
-                        },
-                    } : null,
+                   {
+                       new NotificationTeamDto
+                       {
+                           Id = targetedTeam.Id,
+                           DtoState = DtoState.Added,
+                           TypeId = targetedTeam.TeamTypeId,
+                           Display = targetedTeam.Title,
+                           Roles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
+                       },
+                   } : null,
                 Read = false,
                 JData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotificationTranslations = new List<NotificationTranslationDto>

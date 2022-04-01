@@ -19,6 +19,7 @@ export class NotificationTeam {
   id: number;
   typeId: number;
   display: string;
+  roles: OptionDto[];
 }
 
 export enum NotificationType {

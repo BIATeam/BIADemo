@@ -119,7 +119,16 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 entity.NotifiedTeams = entity.NotifiedTeams ?? new List<NotificationTeam>();
                 foreach (var teamDto in dto.NotifiedTeams.Where(w => w.DtoState == DtoState.Added))
                 {
-                    entity.NotifiedTeams.Add(new NotificationTeam { TeamId = teamDto.Id, NotificationId = dto.Id });
+                    entity.NotifiedTeams.Add(new NotificationTeam
+                    {
+                        TeamId = teamDto.Id,
+                        NotificationId = dto.Id,
+                        Roles = teamDto.Roles != null ? teamDto.Roles.Select(role => new NotificationTeamRole
+                        {
+                            NotificationTeamId = teamDto.Id,
+                            RoleId = role.Id,
+                        }).ToList() : null,
+                    });
                 }
             }
 
@@ -196,6 +205,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                         Id = nt.TeamId,
                         TypeId = nt.Team.TeamTypeId,
                         Display = nt.Team.Title,
+                        Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
+                        {
+                            Id = ntr.RoleId,
+                            Display = ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                        }).ToList() : null,
                     }).ToList(),
 
                     NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
@@ -253,6 +267,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                         Id = nt.TeamId,
                         TypeId = nt.Team.TeamTypeId,
                         Display = nt.Team.Title,
+                        Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
+                        {
+                            Id = ntr.RoleId,
+                            Display = ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                        }).ToList() : null,
                     }).ToList(),
 
                     NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
@@ -277,6 +296,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             dto.NotifiedTeams = entity.NotifiedTeams?.Select(nt => new NotificationTeamDto
             {
                 Id = nt.TeamId,
+                Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
+                {
+                    Id = ntr.RoleId,
+                }).ToList() : null,
             }).ToList();
 
             dto.NotifiedUsers = entity.NotifiedUsers?.Select(nu => new OptionDto

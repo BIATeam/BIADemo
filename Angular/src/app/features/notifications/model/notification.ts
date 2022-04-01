@@ -14,7 +14,7 @@ export interface Notification {
   siteId: number;
   notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
-  notifiedTeams: OptionDto[];
+  notifiedTeams: NotificationTeam[];
   jData: string;
   data: NotificationData;
   notificationTranslations: NotificationTranslation[];
@@ -24,6 +24,7 @@ export class NotificationTeam {
   id: number;
   typeId: number;
   display: string;
+  roles: OptionDto[];
 }
 
 export interface NotificationData {

@@ -71,19 +71,28 @@ export class NotificationSignalRService {
   private IsInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
-    const okUser: Boolean = (notification.notifiedUsers === undefined) ||
-      (notification.notifiedUsers === null) ||
-      (notification.notifiedUsers.length === 0) ||
+    // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
+    const okUser: Boolean = !notification.notifiedUsers || notification.notifiedUsers.length === 0 ||
       (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
 
-    const okRole: Boolean = (notification.notifiedRoles === undefined) ||
-      (notification.notifiedRoles === null) ||
-      (notification.notifiedRoles.length === 0) ||
-      (notification.notifiedRoles.some(e => this.authService.hasPermission('' + e.id)));
+    // OK if no notifiedRoles are specified or if the current user has one of the notifiedRoles
+    // amongst his different teams roles
+    const okRole: Boolean = !notification.notifiedRoles || notification.notifiedRoles.length === 0 ||
+      notification.notifiedRoles.some(role => this.myTeams.some(team => team.roles.some(myTeamRole => myTeamRole.id === role.id)));
 
-    const okTeam: Boolean = !notification.notifiedTeams ||
-      (notification.notifiedTeams.length === 0) ||
-      (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => myTeam.id === notifiedTeam.id)));
+    // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
+    // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
+    const okTeam: Boolean = !notification.notifiedTeams || notification.notifiedTeams.length === 0 ||
+      (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => {
+        if (myTeam.id === notifiedTeam.id) {
+          if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
+            return notifiedTeam.roles.some(notifiedRole => myTeam.roles.some(myRole => myRole.id === notifiedRole.id))
+          }
+          return true;
+        } else {
+          return false;
+        }
+      })));
 
     return okUser && okRole && okTeam;
   }

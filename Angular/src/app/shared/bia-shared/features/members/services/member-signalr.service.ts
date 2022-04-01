@@ -34,7 +34,7 @@ export class MembersSignalRService {
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize(parentKey: number) {
+  initialize(parentKey: string) {
     console.log('%c [Members] Register SignalR : refresh-members', 'color: purple; font-weight: bold');
     this.signalRService.addMethod('refresh-members', () => {
       this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
@@ -44,7 +44,7 @@ export class MembersSignalRService {
         }
       );
     });
-    this.targetedFeature = { parentKey: parentKey.toString(), featureName: 'members' };
+    this.targetedFeature = { parentKey: parentKey, featureName: 'members' };
     this.signalRService.joinGroup(this.targetedFeature);
 
   }

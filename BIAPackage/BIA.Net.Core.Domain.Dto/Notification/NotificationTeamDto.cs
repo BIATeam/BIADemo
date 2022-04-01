@@ -5,6 +5,8 @@
 namespace BIA.Net.Core.Domain.Dto.Notification
 {
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The DTO used for notification team.
@@ -20,6 +22,13 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// Gets or sets the title.
         /// </summary>
         public string Display { get; set; }
+
+        /// <summary>
+        /// Gets or sets the roles, if any, to filter.
+        /// Users will be notified only if they have one of these roles
+        /// on the current team.
+        /// </summary>
+        public List<OptionDto> Roles { get; set; }
 
     }
 }

@@ -24,7 +24,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
             if (filter.ParentIds != null && filter.ParentIds.Length > 0)
             {
-                specification &= new DirectSpecification<Member>(s => s.TeamId == filter.ParentIds[0]);
+                specification &= new DirectSpecification<Member>(s =>
+                    s.TeamId == int.Parse(filter.ParentIds[0]));
             }
 
             return specification;

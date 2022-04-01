@@ -5,14 +5,20 @@
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The NotificationTeam entity.
     /// </summary>
-    public class NotificationTeam : VersionedTable
+    public class NotificationTeam : VersionedTable, IEntity<int>
     {
+        /// <summary>
+        /// Gets or sets the notification team identifier.
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets the notification identifier.
         /// </summary>
@@ -32,5 +38,10 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// Gets or sets the team.
         /// </summary>
         public virtual Team Team { get; set; }
+
+        /// <summary>
+        /// Gets or sets the specific roles to target.
+        /// </summary>
+        public ICollection<NotificationTeamRole> Roles { get; set; }
     }
 }

@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateNotificationTypeModel(modelBuilder);
             CreateNotificationUserModel(modelBuilder);
             CreateNotificationTeamModel(modelBuilder);
+            CreateNotificationTeamRoleModel(modelBuilder);
             CreateNotificationRoleModel(modelBuilder);
         }
 
@@ -83,9 +84,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateNotificationTeamModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NotificationTeam>().HasKey(nu => new { TeamId = nu.TeamId, NotificationId = nu.NotificationId });
-            modelBuilder.Entity<NotificationTeam>().HasOne(nu => nu.Team).WithMany(u => u.NotificationTeams).HasForeignKey(nu => nu.TeamId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<NotificationTeam>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedTeams).HasForeignKey(nu => nu.NotificationId);
+            modelBuilder.Entity<NotificationTeam>().HasKey(nt => nt.Id);
+            modelBuilder.Entity<NotificationTeam>().HasOne(nt => nt.Team).WithMany(u => u.NotificationTeams).HasForeignKey(nt => nt.TeamId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NotificationTeam>().HasOne(nt => nt.Notification).WithMany(n => n.NotifiedTeams).HasForeignKey(nt => nt.NotificationId);
+            modelBuilder.Entity<NotificationTeam>().HasMany(nt => nt.Roles).WithOne(ntr => ntr.NotificationTeam).HasForeignKey(nt => nt.NotificationTeamId);
+        }
+
+        /// <summary>
+        /// Create the model for notification team roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateNotificationTeamRoleModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationTeamRole>().HasKey(ntr => new { ntr.NotificationTeamId, ntr.RoleId });
         }
     }
 }
