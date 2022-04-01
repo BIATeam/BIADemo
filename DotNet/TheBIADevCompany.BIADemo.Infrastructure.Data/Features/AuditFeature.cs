@@ -46,70 +46,106 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
             if (this.isActive)
             {
                 Audit.Core.Configuration.AuditDisabled = false;
-                /*IIncludeConfigurator<DataContext> configurator = Audit.EntityFramework.Configuration.Setup()
-                    .ForContext<DataContext>(config => config
-                        .IncludeEntityObjects(false)
-                        .AuditEventType("{context}:{database}"))
-                        .UseOptIn();*/
 
-                // Replace by the table you want to Audit :
-                // configurator.Include<Plane>().Include<Airport>()
-
-                // Begin BIADemo
-                //configurator.Include<Plane>().Include<Airport>();
-                //configurator.Include<User>();
-
-                // End BIADemo
-
-                //Audit.Core.Configuration.Setup().UseSqlServer(config => config
-                //    .ConnectionString(configuration.GetConnectionString("BIADemoDatabase"))
-                //    .Schema("dbo")
-                //    .TableName("Events")
-                //    .IdColumnName("Id")
-                //    .JsonColumnName("JsonData")
-                //    .LastUpdatedColumnName("LastUpdatedDate")
-                //    .CustomColumn("EventType", ev => ev.EventType)
-                //    .CustomColumn("UserId", ev => ev.Environment.CustomFields["UserId"]));
-
-                //Audit.EntityFramework.Configuration.Setup()
-                //    .ForContext<DataContext>(config => config
-                //        .ForEntity<User>(_ => _
-                //            .Ignore(user => user.LastLoginDate)));
-
-                //Audit.Core.Configuration.Setup()
-                //    .UseEntityFramework(ef => ef
-                //        .AuditTypeExplicitMapper(m => m
-                //            .Map<User, AuditUser>()
-                //            .Map<Airport, AirportAudit>()
-                //            .AuditEntityAction<IAudit>((evt, entry, auditEntity) =>
-                //            {
-                //                auditEntity.AuditDate = DateTime.UtcNow;
-                //                auditEntity.UserId = (int) evt.Environment.CustomFields["UserId"];
-                //                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
-                //                return Task.FromResult(true);
-                //            })
-                //        )
-                //    );
-
+                // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
-                    .UseEntityFramework(x => x
-                        .AuditTypeNameMapper(typeName => typeName + "Audit")
+                    .UseEntityFramework(_ => _
+                        .AuditTypeMapper(typeName => typeName.Name == "User" ? typeof(UserAudit) : typeof(AuditLog))
                         .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
                         {
-                            if (entry.Changes?.Count > 0)
+                            if (auditEntity.GetType() == typeof(AuditLog))
                             {
-                                // auditEntity is of IAudit type
-                                auditEntity.AuditDate = DateTime.UtcNow;
-                                auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
-                                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
-                                auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
-                                return Task.FromResult(true);
+                                return GeneralAudit(evt, entry, (AuditLog)auditEntity);
                             }
                             else
                             {
-                                return Task.FromResult(false);
+                                return DedicatedAudit(evt, entry, auditEntity);
                             }
-                        }));
+                        })
+                        .IgnoreMatchedProperties(t => t.Name == "AuditLog") // do not copy properties for generic audit
+                    );
+
+                // Log Audit in dedicated table
+                //Audit.Core.Configuration.Setup()
+                //    .UseEntityFramework(_ => _
+                //        .AuditTypeNameMapper(typeName => typeName + "Audit")
+                //        .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
+                //        {
+                //            return DedicatedAudit(evt, entry, auditEntity);
+                //        })
+                //    );
+
+                // Log all Audit in AuditLog table
+                //Audit.Core.Configuration.Setup()
+                //    .UseEntityFramework(_ => _
+                //        .AuditTypeMapper(t => typeof(AuditLog))
+                //        .AuditEntityAction<AuditLog>((evt, entry, auditEntity) =>
+                //        {
+                //            return GeneralAudit(evt, entry, auditEntity);
+                //        })
+                //        .IgnoreMatchedProperties(true)
+                //    );
+
+            }
+        }
+
+        private static Task<bool> GeneralAudit(AuditEvent evt, EventEntry entry, AuditLog auditEntity)
+        {
+            if (entry.Changes?.Count > 0 || entry.Action != "Update")
+            {
+                // auditEntity is of IAudit type
+                auditEntity.Table = entry.Table;
+                auditEntity.PrimaryKey = JsonSerializer.Serialize(entry.PrimaryKey);
+                auditEntity.AuditDate = DateTime.UtcNow;
+                auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
+                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
+                switch (entry.Action)
+                {
+                    case "Update":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
+                        break;
+                    case "Insert":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        break;
+                    case "Delete":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        break;
+                }
+
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
+            }
+        }
+
+        private static Task<bool> DedicatedAudit(AuditEvent evt, EventEntry entry, IAuditEntity auditEntity)
+        {
+            if (entry.Changes?.Count > 0 || entry.Action != "Update")
+            {
+                // auditEntity is of IAudit type
+                auditEntity.AuditDate = DateTime.UtcNow;
+                auditEntity.AuditUserLogin = evt.Environment.CustomFields["UserLogin"].ToString();
+                auditEntity.AuditAction = entry.Action; // Insert, Update, Delete
+                switch (entry.Action)
+                {
+                    case "Update":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.Changes);
+                        break;
+                    case "Insert":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        break;
+                    case "Delete":
+                        auditEntity.AuditChanges = JsonSerializer.Serialize(entry.ColumnValues);
+                        break;
+                }
+
+                return Task.FromResult(true);
+            }
+            else
+            {
+                return Task.FromResult(false);
             }
         }
 
