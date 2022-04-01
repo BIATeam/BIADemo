@@ -11,6 +11,9 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using NLog;
+    using NLog.Extensions.Hosting;
+    using NLog.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -52,6 +55,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                                configuration.GetConnectionString("BIADemoDatabase"));
                     });
                 })
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    IConfiguration configuration = hostingContext.Configuration;
+                    LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+                })
+                .UseNLog()
                 .RunConsoleAsync();
         }
     }
