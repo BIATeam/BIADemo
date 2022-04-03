@@ -181,7 +181,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// Sets a notification as read.
         /// </summary>
         /// <param name="id">The notification identifier.</param>
-        /// <param name="dto">The notification DTO.</param>
         /// <returns>Ok() if success, error if failed.</returns>
         [HttpPut("setAsRead/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -214,6 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 return this.StatusCode(500, "Internal server error");
             }
         }
+
         /// <summary>
         /// Remove a notification.
         /// </summary>
@@ -306,7 +306,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 // If it's the first time this notification is read
                 if (!dto.Read)
                 {
-                    await this.notificationService.SetAsRead(dto);
+                    await this.notificationService.SetAsRead(id);
                 }
 
                 return this.Ok(dto);

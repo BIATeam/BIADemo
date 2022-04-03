@@ -57,23 +57,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
 
             this.filtersContext.Add(
-                AccessMode.All,
-                new DirectSpecification<Notification>(n =>
-                    n.NotifiedTeams.Any(nt => nt.Team.Members.Any(member => member.UserId == this.userId))
-                    && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
-
-            this.filtersContext.Add(
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
-                    n.NotifiedTeams.Any(nt => nt.Team.Members.Any(member => member.UserId == this.userId))
+                    (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
+                        (nt.Team.Members.Any(member => member.UserId == this.userId) && nt.Roles.Count == 0)
+                        &&
+                        nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId)))))
                     && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
-        }
-
-        /// <inheritdoc/>
-        public async Task<NotificationDto> SetAsRead(NotificationDto notification)
-        {
-            notification.Read = true;
-            return await this.UpdateAsync(notification);
         }
 
         /// <inheritdoc/>
@@ -82,8 +72,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             var notification = await this.Repository.GetEntityAsync(id);
 
             notification.Read = true;
-
-            //this.Repository.Update(notification);
             await this.Repository.UnitOfWork.CommitAsync();
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
@@ -118,8 +106,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                 _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", dto);
 
                 mapper.DtoToEntity(dto, entity, mapperMode);
-                
-                // this.Repository.Update(entity);
+
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
                 mapper.MapEntityKeysInDto(entity, dto);

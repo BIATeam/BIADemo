@@ -261,8 +261,6 @@ namespace TheBIADevCompany.BIADemo.Application.View
                     entity.ViewTeams.Add(new ViewTeam { IsDefault = true, ViewId = entity.Id, TeamId = currentTeamId });
                 }
 
-                // this.Repository.Update(entity)
-
                 await this.Repository.UnitOfWork.CommitAsync();
             }
         }

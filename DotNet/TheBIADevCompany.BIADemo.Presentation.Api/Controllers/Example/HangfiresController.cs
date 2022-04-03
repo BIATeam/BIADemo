@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
@@ -94,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             try
             {
                 var client = new BackgroundJobClient();
-                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(teamId, this.principal.GetUserId(), null), new EnqueuedState());
+                client.Create<BiaDemoTestHangfireService>(x => x.RandomReviewPlane(teamId, this.principal.GetUserData<UserDataDto>().GetCurrentTeam((int)TeamTypeId.Site), this.principal.GetUserId(), null), new EnqueuedState());
 
                 return this.Ok("Operation being processed in background...");
             }

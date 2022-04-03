@@ -47,6 +47,15 @@ namespace BIA.Net.Core.Domain.Dto.User
             return 0;
         }
 
+        public CurrentTeamDto GetCurrentTeam(int teamTypeId)
+        {
+            var CurrentTeam = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
+            if (CurrentTeam != null)
+            {
+                return CurrentTeam;
+            }
+            return null;
+        }
 
     }
 }

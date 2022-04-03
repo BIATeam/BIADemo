@@ -66,7 +66,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     foreach (Member member in members)
                     {
                         member.IsDefault = member.TeamId == teamId;
-                        // this.Repository.Update(member)
                     }
 
                     await this.Repository.UnitOfWork.CommitAsync();
