@@ -24,6 +24,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         Task<NotificationDto> SetAsRead(NotificationDto notification);
 
         /// <summary>
+        /// Set the notification as read.
+        /// </summary>
+        /// <param name="id">The notification identifier.</param>
+        /// <returns>A task.</returns>
+        Task SetAsRead(int id);
+
+        /// <summary>
         /// Return the list of unreadIds.
         /// </summary>
         /// <param name="userId">the user Id.</param>

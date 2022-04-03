@@ -7,7 +7,8 @@ import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
-import { TeamTypeId } from 'src/app/shared/constants';
+import { getAllTeams } from '../../team/store/team.state';
+import { Team } from '../../team/model/team';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -19,6 +20,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 export class NotificationSignalRService {
 
   private targetedFeature: TargetedFeature;
+  private myTeams: Team[];
 
   /**
    * Constructor.
@@ -37,8 +39,13 @@ export class NotificationSignalRService {
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
+    this.store.select(getAllTeams).subscribe(teams => {
+      this.myTeams = teams;
+    });
+
     this.signalRService.addMethod('notification-addUnread', (args) => {
       const notification: Notification = JSON.parse(args);
+      notification.data = JSON.parse(notification.jData);
       if (this.IsInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
         this.store.dispatch(addUnreadNotification({ id: notification.id }));
@@ -54,27 +61,40 @@ export class NotificationSignalRService {
     this.signalRService.addMethod('notification-removeSeveralUnread', (args) => {
       const ids: number[] = JSON.parse(args);
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
-      ids.forEach( idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
+      ids.forEach(idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
     });
 
-    this.targetedFeature = {parentKey: this.authService.getCurrentTeamId(TeamTypeId.Site).toString() , featureName : 'notification-domain'};
+    this.targetedFeature = { featureName: 'notification-domain' };
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
   private IsInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
-    const token = this.authService.getUncryptedToken();
-    const okSite: Boolean = notification.siteId === token.userData.currentTeams.find(t => t.teamTypeId == TeamTypeId.Site)?.currentTeamId;
-    const okUser: Boolean = (notification.notifiedUsers === undefined) ||
-    (notification.notifiedUsers === null) ||
-    (notification.notifiedUsers.length === 0) ||
-    (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
-    const okRole: Boolean = (notification.notifiedPermissions === undefined) ||
-    (notification.notifiedPermissions === null) ||
-    (notification.notifiedPermissions.length === 0) ||
-    (notification.notifiedPermissions.some(e => this.authService.hasPermission('' + e.id)));
 
-    return okSite && okUser && okRole;
+    // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
+    const okUser: Boolean = !notification.notifiedUsers || notification.notifiedUsers.length === 0 ||
+      (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
+
+    // OK if no notifiedRoles are specified or if the current user has one of the notifiedRoles
+    // amongst his different teams roles
+    const okRole: Boolean = !notification.notifiedRoles || notification.notifiedRoles.length === 0 ||
+      notification.notifiedRoles.some(role => this.myTeams.some(team => team.roles.some(myTeamRole => myTeamRole.id === role.id)));
+
+    // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
+    // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
+    const okTeam: Boolean = !notification.notifiedTeams || notification.notifiedTeams.length === 0 ||
+      (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => {
+        if (myTeam.id === notifiedTeam.id) {
+          if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
+            return notifiedTeam.roles.some(notifiedRole => myTeam.roles.some(myRole => myRole.id === notifiedRole.id))
+          }
+          return true;
+        } else {
+          return false;
+        }
+      })));
+
+    return okUser && okRole && okTeam;
   }
 
   destroy() {
@@ -82,5 +102,4 @@ export class NotificationSignalRService {
     this.signalRService.removeMethod('notification-removeUnread');
     this.signalRService.leaveGroup(this.targetedFeature);
   }
-
 }

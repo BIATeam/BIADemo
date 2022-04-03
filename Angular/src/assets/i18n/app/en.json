@@ -26,6 +26,7 @@
   "aircraftMaintenanceCompany": {
     "add": "Add aircraft maintenance company",
     "edit": "Edit aircraft maintenance company",
+    "goto": "View Company",
     "listOf": "List of aircraft maintenance companies",
     "maintenanceTeams": "Maintenance teams",
     "title": "Name"

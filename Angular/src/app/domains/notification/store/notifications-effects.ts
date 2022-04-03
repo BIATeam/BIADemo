@@ -10,6 +10,8 @@ import {
   loadSuccess,
   loadUnreadNotificationIds,
   loadUnreadNotificationIdsSuccess,
+  setAsRead,
+  setAsReadSuccess,
 } from './notifications-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { NotificationDas } from '../services/notification-das.service';
@@ -65,6 +67,22 @@ export class NotificationsEffects {
           })
         )
       )
+    )
+  );
+
+  setAsRead$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(setAsRead),
+      pluck('id'),
+      switchMap((id) => {
+        return this.notificationDas.setAsRead(id).pipe(
+          map(() => setAsReadSuccess()),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(failure({ error: err }));
+          })
+        );
+      })
     )
   );
 

@@ -47,8 +47,7 @@ export class PrimeTableColumn {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
   }
   get filterPlaceHolder() {
-    if (this.searchPlaceholder !== undefined)
-    {
+    if (this.searchPlaceholder !== undefined) {
       return this.searchPlaceholder;
     }
     return this.isDate === true ? 'bia.dateIso8601' : '';

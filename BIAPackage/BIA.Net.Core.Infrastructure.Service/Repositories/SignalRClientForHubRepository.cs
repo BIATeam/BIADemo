@@ -1,4 +1,4 @@
-﻿namespace BIA.Net.Core.Infrastructure.Service.Repositories
+namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
     using System.Security.Cryptography;
@@ -92,8 +92,6 @@
         public async Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null)
         {
             await SendMessage(new TargetedFeatureDto { ParentKey = parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
-
         }
-
     }
 }

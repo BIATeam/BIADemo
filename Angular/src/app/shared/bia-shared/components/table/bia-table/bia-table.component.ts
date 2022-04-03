@@ -63,7 +63,7 @@ export class BiaTableComponent implements OnChanges {
   private defaultPageSize: number;
   private defaultColumns: string[];
 
-  constructor(public authService: AuthService, public translateService: TranslateService) {}
+  constructor(public authService: AuthService, public translateService: TranslateService) { }
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);
@@ -178,8 +178,7 @@ export class BiaTableComponent implements OnChanges {
     if (this.canEdit) {
       this.edit.emit(itemId);
     }
-    else if (this.canDetail)
-    {
+    else if (this.canDetail) {
       this.detail.emit(itemId);
     }
   }

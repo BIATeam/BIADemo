@@ -94,7 +94,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.notificationOptionsService.loadAllOptions();
+          this.notificationOptionsService.loadAllOptions();
         })
       );
     }
@@ -103,7 +103,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }
@@ -236,9 +236,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new PrimeTableColumn('createdBy', 'notification.createdBy'), {
             type: PropType.OneToMany
-          }),
-          Object.assign(new PrimeTableColumn('notifiedPermissions', 'notification.notifiedPermissions'), {
-            type: PropType.ManyToMany,
           }),
           Object.assign(new PrimeTableColumn('notifiedUsers', 'notification.notifiedUsers'), {
             type: PropType.ManyToMany

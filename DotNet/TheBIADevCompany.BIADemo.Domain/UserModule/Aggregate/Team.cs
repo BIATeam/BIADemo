@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Collections.Generic;
 
     using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 
     /// <summary>
@@ -43,5 +44,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the collection of view site.
         /// </summary>
         public ICollection<ViewTeam> ViewTeams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of notification teams.
+        /// </summary>
+        public ICollection<NotificationTeam> NotificationTeams { get; set; }
     }
 }

@@ -81,19 +81,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         /// <summary>
         /// Call a hangfire task.
         /// </summary>
+        /// <param name="teamId">The team identifier.</param>
         /// <returns>Return the statut.</returns>
-        [HttpPut("callworkerwithnotification")]
+        [HttpPut("callworkerwithnotification/{teamId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Hangfires.RunWorker)]
-        public IActionResult CallWorkerWithNotification()
+        public IActionResult CallWorkerWithNotification(int teamId)
         {
             try
             {
                 var client = new BackgroundJobClient();
-                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(this.principal.GetUserData<UserDataDto>().CurrentSiteId, this.principal.GetUserId(), null), new EnqueuedState());
+                client.Create<BiaDemoTestHangfireService>(x => x.RunLongTaskWithNotification(teamId, this.principal.GetUserId(), null), new EnqueuedState());
 
                 return this.Ok("Operation being processed in background...");
             }

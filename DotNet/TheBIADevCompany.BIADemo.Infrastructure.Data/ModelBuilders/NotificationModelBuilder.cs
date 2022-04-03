@@ -22,6 +22,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateNotificationModel(modelBuilder);
             CreateNotificationTypeModel(modelBuilder);
             CreateNotificationUserModel(modelBuilder);
+            CreateNotificationTeamModel(modelBuilder);
+            CreateNotificationTeamRoleModel(modelBuilder);
             CreateNotificationRoleModel(modelBuilder);
         }
 
@@ -55,6 +57,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Create the model for notification roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateNotificationRoleModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationRole>().HasKey(nr => new { RoleId = nr.RoleId, NotificationId = nr.NotificationId });
+            modelBuilder.Entity<NotificationRole>().HasOne(nr => nr.Role).WithMany(u => u.NotificationRoles).HasForeignKey(nr => nr.RoleId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NotificationRole>().HasOne(nr => nr.Notification).WithMany(n => n.NotifiedRoles).HasForeignKey(nr => nr.NotificationId);
+        }
+
+        /// <summary>
         /// Create the model for notification users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -66,14 +79,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for notification users.
+        /// Create the model for notification teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        private static void CreateNotificationRoleModel(ModelBuilder modelBuilder)
+        private static void CreateNotificationTeamModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NotificationPermission>().HasKey(nu => new { PermissionId = nu.PermissionId, NotificationId = nu.NotificationId });
-            modelBuilder.Entity<NotificationPermission>().HasOne(nu => nu.Permission).WithMany(u => u.NotificationPermissions).HasForeignKey(nu => nu.PermissionId).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<NotificationPermission>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedPermissions).HasForeignKey(nu => nu.NotificationId);
+            modelBuilder.Entity<NotificationTeam>().HasKey(nt => nt.Id);
+            modelBuilder.Entity<NotificationTeam>().HasOne(nt => nt.Team).WithMany(u => u.NotificationTeams).HasForeignKey(nt => nt.TeamId).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<NotificationTeam>().HasOne(nt => nt.Notification).WithMany(n => n.NotifiedTeams).HasForeignKey(nt => nt.NotificationId);
+            modelBuilder.Entity<NotificationTeam>().HasMany(nt => nt.Roles).WithOne(ntr => ntr.NotificationTeam).HasForeignKey(nt => nt.NotificationTeamId);
+        }
+
+        /// <summary>
+        /// Create the model for notification team roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateNotificationTeamRoleModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationTeamRole>().HasKey(ntr => new { ntr.NotificationTeamId, ntr.RoleId });
         }
     }
 }

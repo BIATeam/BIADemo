@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="action">action to send</param>
         /// <param name="jsonContext">context at json format</param>
         /// <returns>Send message on an action</returns>
-        Task SendMessage(TargetedFeatureDto targetedFeature,  string action, string jsonContext=null);
+        Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null);
 
         /// <summary>
         /// Send Message.

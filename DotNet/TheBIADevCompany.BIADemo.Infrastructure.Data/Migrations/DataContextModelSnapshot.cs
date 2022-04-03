@@ -167,9 +167,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("SiteId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -182,16 +179,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.HasIndex("SiteId");
-
                     b.HasIndex("TypeId");
 
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationPermission", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationRole", b =>
                 {
-                    b.Property<int>("PermissionId")
+                    b.Property<int>("RoleId")
+
                         .HasColumnType("int");
 
                     b.Property<int>("NotificationId")
@@ -202,11 +198,58 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("PermissionId", "NotificationId");
+                    b.HasKey("RoleId", "NotificationId");
 
                     b.HasIndex("NotificationId");
 
-                    b.ToTable("NotificationPermission");
+                    b.ToTable("NotificationRole");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("NotificationId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("NotificationTeam");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+                {
+                    b.Property<int>("NotificationTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("NotificationTeamId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("NotificationTeamRole");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
@@ -314,6 +357,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.ToTable("Airports");
                 });
+
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.AirportAudit", b =>
                 {
@@ -1471,6 +1515,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("UsersAudit");
                 });
 
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
                 {
                     b.Property<int>("Id")
@@ -1617,12 +1662,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
-                        .WithMany()
-                        .HasForeignKey("SiteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
@@ -1631,28 +1670,65 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Navigation("CreatedBy");
 
-                    b.Navigation("Site");
-
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationPermission", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationRole", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
-                        .WithMany("NotifiedPermissions")
+                        .WithMany("NotifiedRoles")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", "Permission")
-                        .WithMany("NotificationPermissions")
-                        .HasForeignKey("PermissionId")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                        .WithMany("NotificationRoles")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Notification");
 
-                    b.Navigation("Permission");
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
+                        .WithMany("NotifiedTeams")
+
+                        .HasForeignKey("NotificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                        .WithMany("NotificationTeams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", "NotificationTeam")
+                        .WithMany("Roles")
+                        .HasForeignKey("NotificationTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                        .WithMany("NotificationTeamRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NotificationTeam");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
@@ -1950,9 +2026,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.Navigation("NotificationTranslations");
 
-                    b.Navigation("NotifiedPermissions");
+                    b.Navigation("NotifiedRoles");
+
+                    b.Navigation("NotifiedTeams");
 
                     b.Navigation("NotifiedUsers");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+                {
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
@@ -1977,8 +2060,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", b =>
                 {
-                    b.Navigation("NotificationPermissions");
-
                     b.Navigation("PermissionRoles");
 
                     b.Navigation("PermissionTranslations");
@@ -1987,6 +2068,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
                 {
                     b.Navigation("MemberRoles");
+
+                    b.Navigation("NotificationRoles");
+
+                    b.Navigation("NotificationTeamRoles");
 
                     b.Navigation("PermissionRoles");
 
@@ -1998,6 +2083,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
                 {
                     b.Navigation("Members");
+
+                    b.Navigation("NotificationTeams");
 
                     b.Navigation("ViewTeams");
                 });

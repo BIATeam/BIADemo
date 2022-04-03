@@ -53,10 +53,9 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['../edit'], { relativeTo: this.activatedRoute });
   }
 
-  canAction (notification: Notification) {
-    if (notification.jData) {
-      const data = JSON.parse(notification.jData);
-      if (data?.route) {
+  canAction(notification: Notification) {
+    if (notification.data) {
+      if (notification.data.route) {
         return true;
       }
     }
@@ -64,10 +63,9 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   }
 
   onAction(notification: Notification) {
-    if (notification.jData) {
-      const data = JSON.parse(notification.jData);
-      if (data?.route) {
-        this.router.navigate(data.route);
+    if (notification.data) {
+      if (notification.data.route) {
+        this.router.navigate(notification.data.route);
       }
     }
   }

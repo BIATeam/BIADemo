@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -27,6 +28,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
         private readonly INotificationDomainService notificationAppService;
+
+        private readonly ITGenericRepository<Team, int> teamRepository;
 
         /// <summary>
         /// The signalR Service.
@@ -40,15 +43,18 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <param name="logger">logger.</param>
         /// <param name="notificationAppService">The notification service.</param>
         /// <param name="clientForHubService">The client for hub (signalR) service.</param>
+        /// <param name="teamRepository">The team repository.</param>
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
             INotificationDomainService notificationAppService,
-            IClientForHubRepository clientForHubService)
+            IClientForHubRepository clientForHubService,
+            ITGenericRepository<Team, int> teamRepository)
             : base(configuration, logger)
         {
             this.notificationAppService = notificationAppService;
             this.clientForHubService = clientForHubService;
+            this.teamRepository = teamRepository;
         }
 
         /// <summary>
@@ -63,35 +69,73 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <summary>
         /// Test function for run task on hangfire with notification.
         /// </summary>
-        /// <param name="siteId">The current Site Id.</param>
+        /// <param name="teamId">The current Team Id.</param>
         /// <param name="createdById">The created By.</param>
         /// <param name="context">The context hangfire.</param>
         /// <returns>The task.</returns>
-        public async Task RunLongTaskWithNotification(int siteId, int createdById, PerformContext context)
+        public async Task RunLongTaskWithNotification(int teamId, int createdById, PerformContext context)
         {
             await Task.Delay(2000);
 
-            var target = new NotificationDataDto
+            Team targetedTeam = null;
+
+            if (teamId > 0)
             {
-                Route = new string[] { "examples", "planes", "30", "edit" },
-            };
+                targetedTeam = await this.teamRepository.GetEntityAsync(teamId);
+            }
+
+            var data = new NotificationDataDto();
+
+            if (targetedTeam != null)
+            {
+                data.Teams = new List<NotificationTeamDto>
+                {
+                    new NotificationTeamDto
+                    {
+                        TypeId = targetedTeam.TeamTypeId,
+                        Id = targetedTeam.Id,
+                        Display = targetedTeam.Title,
+                    },
+                };
+
+                switch (targetedTeam.TeamTypeId)
+                {
+                    case (int)TeamTypeId.Site:
+                        data.Route = new string[] { "sites", teamId.ToString(), "members" };
+                        break;
+                    case (int)TeamTypeId.AircraftMaintenanceCompany:
+                        data.Route = new string[] { "examples", "aircraft-maintenance-companies", teamId.ToString(), "members" };
+                        data.Display = "aircraftMaintenanceCompany.goto";
+                        break;
+                }
+            }
 
             var notification = new NotificationDto
             {
                 CreatedBy = new OptionDto { Id = createdById },
                 CreatedDate = DateTime.Now,
                 Description = "Review the plane with id 30.",
-                SiteId = siteId,
                 Title = "Review plane",
                 Type = new OptionDto { Id = (int)NotificationTypeId.Task },
-                NotifiedPermissions = new List<OptionDto> { new OptionDto { Id = 1, DtoState = DtoState.Added } },
+                // NotifiedRoles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
+                NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
+                   {
+                       new NotificationTeamDto
+                       {
+                           Id = targetedTeam.Id,
+                           DtoState = DtoState.Added,
+                           TypeId = targetedTeam.TeamTypeId,
+                           Display = targetedTeam.Title,
+                           Roles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
+                       },
+                   } : null,
                 Read = false,
-                JData = JsonConvert.SerializeObject(target, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotificationTranslations = new List<NotificationTranslationDto>
                 {
                     new NotificationTranslationDto() { LanguageId = LanguageId.French, Title = "Revoir l'avion", Description = "Passez en revue l'avion avec l'id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "Avión de revisión", Description = "Revise el avión con id 30.", DtoState = DtoState.Added },
-                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.Spanish, Title = "AviÃ³n de revisiÃ³n", Description = "Revise el aviÃ³n con id 30.", DtoState = DtoState.Added },
+                    new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug Ã¼berprÃ¼fen", Description = "ÃœberprÃ¼fen Sie das Flugzeug mit der ID 30.", DtoState = DtoState.Added },
                 },
             };
 

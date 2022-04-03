@@ -26,6 +26,7 @@
   "aircraftMaintenanceCompany": {
     "add": "Ajouter entreprise de maintenance aéronautique",
     "edit": "Editer entreprise de maintenance aéronautique",
+    "goto": "Voir Entreprise",
     "listOf": "Liste des entreprises de maintenance aéronautique",
     "maintenanceTeams": "Equipes de maintenance",
     "title": "Nom"

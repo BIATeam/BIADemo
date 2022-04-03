@@ -17,8 +17,8 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
   }
 
   ngOnInit() {
-    this.teamTypeId=TeamTypeId.Site;
+    this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
-    this.parentIds = ['' + this.siteService.currentSiteId];
+    this.parentIds = [this.siteService.currentSiteId?.toString()];
   }
 }

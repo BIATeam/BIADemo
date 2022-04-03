@@ -1,6 +1,7 @@
 {
   "@@lang": "fr",
   "bia": {
+    "action": "Action",
     "actions": "Actions",
     "add": "Ajouter",
     "all": "Tous",
@@ -20,6 +21,7 @@
     "greetings": "Bonjour",
     "help": "Aide",
     "id": "id",
+    "ignore": "Ignorer",
     "info": "Info",
     "itemsPerPage": "Élements par page",
     "lang": {
@@ -45,6 +47,7 @@
     "NoRecordsFound": "Aucun enregistrement trouvé",
     "noResult": "Pas de résultats",
     "refresh": "Rafraîchir",
+    "relatedTo": "Lié à",
     "report": "Rapport",
     "notifications": "Notifications",
     "reset": "Réinitialiser",
@@ -58,13 +61,12 @@
     "theme": "Thème",
     "themeDark": "Foncé",
     "themeLight": "Clair",
-    "translation": 
-    {  
-      "add" : "Ajouter traduction",
-      "addAll" :  "Ajouter toutes les traductions",
-      "delete" : "Supprimer traduction",
+    "translation": {
+      "add": "Ajouter traduction",
+      "addAll": "Ajouter toutes les traductions",
+      "delete": "Supprimer traduction",
       "language": "Langage",
-      "translatedFields" : "Champs traduits"
+      "translatedFields": "Champs traduits"
     },
     "views": {
       "default": "Vue par défaut",
@@ -136,8 +138,12 @@
     "choose": "Choisir",
     "upload": "Upload",
     "cancel": "Annuler",
-    "dayNames": ["Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"],
-    "dayNamesShort": ["Dim","Lun",
+    "dayNames": [
+      "Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"
+    ],
+    "dayNamesShort": [
+      "Dim",
+      "Lun",
       "Mar",
       "Mer",
       "Jeu",

@@ -1,4 +1,4 @@
 export interface TargetedFeature {
   featureName: string;
-  parentKey: string;
+  parentKey?: string;
 }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 import { Platform } from '@angular/cdk/platform';
 import { MenuItem, Message } from 'primeng/api';
@@ -10,11 +10,12 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
-import { loadUnreadNotificationIds } from 'src/app/domains/notification/store/notifications-actions';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { loadUnreadNotificationIds, setAsRead } from 'src/app/domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
+import { Toast } from 'primeng/toast';
+import { NotificationType } from 'src/app/domains/notification/model/notification';
 
 @Component({
   selector: 'bia-classic-header',
@@ -66,13 +67,15 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   teamTypeSelectors: number[];
 
+  @ViewChild('toast', { static: true }) toast: Toast;
+  NotificationType = NotificationType;
+
   constructor(
     public layoutService: BiaClassicLayoutService,
     public auth: AuthService,
     public translateService: TranslateService,
     private platform: Platform,
     private store: Store<AppState>,
-    private biaMessageService: BiaMessageService,
     public biaTranslationService: BiaTranslationService,
     private router: Router
   ) {
@@ -80,10 +83,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true).map(t => t.teamTypeId);
-      if (allEnvironments.enableNotifications === true) {
-          this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-          this.store.dispatch(loadUnreadNotificationIds());
-      }
+
+    if (allEnvironments.enableNotifications === true) {
+      this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
+      this.store.dispatch(loadUnreadNotificationIds());
+    }
     this.sub.add(
       this.biaTranslationService.appSettings$.subscribe(appSettings => {
         if (appSettings) {
@@ -100,14 +104,35 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   onNotificationClick(message: Message) {
-    if (message.data?.route) {
-      this.router.navigate(message.data.route);
-    } else if (message.data?.notificationId) {
-      this.router.navigate(['/notifications/', message.data?.notificationId, 'detail']);
-    } else {
-      this.router.navigate(['/notifications/']);
+    if (message.data?.notification) {
+      if (message.data.teams) {
+        // Auto-switch to teams related to this notification
+        Object.keys(message.data.teams).forEach((key) => {
+          this.auth.changeCurrentTeamId(+key, message.data.teams[key]);
+        })
+      }
+
+      if (message.data.notification.data?.route) {
+        this.router.navigate(message.data.notification.data.route);
+      } else if (message.data.notification.id) {
+        this.router.navigate(['/notifications/', message.data.notification.id, 'detail']);
+      } else {
+        this.router.navigate(['/notifications/']);
+      }
+      this.removeMessage(message, true);
     }
-    this.biaMessageService.clear('bia-signalR');
+  }
+
+  onIgnoreClick(message: Message) {
+    this.removeMessage(message, true);
+  }
+
+  private removeMessage(message: Message, setRead = false) {
+    this.toast.messages.splice(this.toast.messages.indexOf(message), 1);
+
+    if (setRead && message.data?.notification?.id > 0) {
+      this.store.dispatch(setAsRead({ id: message.data.notification.id }))
+    }
   }
 
   toggleFullscreenMode() {

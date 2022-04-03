@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { Notification } from 'src/app/domains/notification/model/notification';
+import { Notification, NotificationType } from 'src/app/domains/notification/model/notification';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
+const NOTIFICATION_LIFE_DEFAULT = 10000;
 
 @Injectable({
   providedIn: 'root'
@@ -64,31 +65,36 @@ export class BiaMessageService {
 
   showNotification(notification: Notification) {
     let severity: 'error' | 'success' | 'info' | 'warn';
-
-    switch (notification.type.display) {
-      case 'success':
+    let sticky = false;
+    switch (notification.type.id) {
+      case NotificationType.Success:
         severity = 'success';
         break;
-      case 'warning':
+      case NotificationType.Warning:
         severity = 'warn';
         break;
-      case 'error':
+      case NotificationType.Error:
         severity = 'error';
+        break;
+      case NotificationType.Task:
+        severity = 'info';
+        sticky = true;
         break;
       default:
         severity = 'info';
         break;
     }
 
-    const data = {notificationId : notification.id}; // = JSON.parse(notification.jData); Should passe by the detail view and click action.
+    const data = { notification: notification };
 
     this.messageService.add({
-      key: 'bia-signalR',
+      key: 'bia',
       severity,
       summary: this.translateService.instant(notification.title),
       detail: this.translateService.instant(notification.description),
       data: data,
-      sticky: true
+      life: sticky ? undefined : NOTIFICATION_LIFE_DEFAULT,
+      sticky
     });
   }
 

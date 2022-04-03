@@ -1,18 +1,24 @@
-// <copyright file="NotificationPermission.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTeam.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The NotificationUser entity.
+    /// The NotificationTeam entity.
     /// </summary>
-    public class NotificationPermission : VersionedTable
+    public class NotificationTeam : VersionedTable, IEntity<int>
     {
+        /// <summary>
+        /// Gets or sets the notification team identifier.
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets the notification identifier.
         /// </summary>
@@ -24,13 +30,18 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public virtual Notification Notification { get; set; }
 
         /// <summary>
-        /// Gets or sets the identifier of the user.
+        /// Gets or sets the identifier of the team.
         /// </summary>
-        public int PermissionId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets the user.
+        /// Gets or sets the team.
         /// </summary>
-        public virtual Permission Permission { get; set; }
+        public virtual Team Team { get; set; }
+
+        /// <summary>
+        /// Gets or sets the specific roles to target.
+        /// </summary>
+        public ICollection<NotificationTeamRole> Roles { get; set; }
     }
 }

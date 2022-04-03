@@ -9,7 +9,8 @@
   color: white !important;
 }
 
-.logos, .controls {
+.logos,
+.controls {
   .separator {
     height: 24px;
     border-left: 1px solid;
@@ -124,6 +125,13 @@
   margin-bottom: auto;
 }
 
+.notification-actions {
+  margin-top: 16px;
+}
+
+bia-notification-team-warning {
+  padding-top: 16px;
+}
 :host ::ng-deep {
   bia-online-offline-icon {
     i {

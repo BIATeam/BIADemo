@@ -1,8 +1,7 @@
-<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
-  <div fxFlex="100">
-   
-    <button pButton type="button" (click)="callWorkerWithNotification()"
-      label="Call worker with notification"></button>
-
-  </div>
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
+  <button pButton type="button" (click)="callWorkerWithNotification(0)" label="Call worker with notification"></button>
+  <ng-container *ngFor="let team of (allTeams$ | async)">
+    <button pButton type="button" (click)="callWorkerWithNotification(team.id)"
+      label="Call worker with notification for {{team.title}}"></button>
+  </ng-container>
 </div>

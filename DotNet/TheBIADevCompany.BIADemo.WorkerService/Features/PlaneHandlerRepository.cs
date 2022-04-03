@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System;
     using System.Configuration;
     using System.Data.SqlClient;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
@@ -30,8 +31,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             "SELECT RowVersion FROM [dbo].[Planes]",
             "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
             r => PlaneChange(r))
-            {
-            }
+        {
+        }
 
         /// <summary>
         /// Configure the services.
@@ -53,8 +54,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            int siteId = reader.GetInt32(0);
-            _ = clientForHubService.SendTargetedMessage(siteId.ToString(), "planes", "refresh-planes", string.Empty);
+            _ = clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planes" }, "refresh-planes", string.Empty);
         }
     }
 }

@@ -20,7 +20,7 @@ export class AircraftMaintenanceCompanyMembersIndexComponent extends MembersInde
   ngOnInit() {
     this.teamTypeId=TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
-    this.parentIds = ['' + this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId];
+    this.parentIds = [this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId?.toString()];
   }
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Member_Update);

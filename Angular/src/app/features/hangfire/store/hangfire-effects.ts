@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom, concatMap, pluck } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   callWorkerWithNotification, failure,
@@ -22,9 +22,10 @@ export class HangfireEffects {
   callWorkerWithNotification$ = createEffect(() =>
     this.actions$.pipe(
       ofType(callWorkerWithNotification),
-      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([x, event]) => {
-        return this.hangfireDas.callWorkerWithNotification().pipe(
+      pluck('teamId'),
+      concatMap((teamId) => of(teamId).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      switchMap(([teamId, event]) => {
+        return this.hangfireDas.callWorkerWithNotification(teamId).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             // return loadAllByPost({ event: event });

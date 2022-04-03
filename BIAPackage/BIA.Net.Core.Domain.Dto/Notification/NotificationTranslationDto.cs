@@ -4,10 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Dto.Notification
 {
-    using System;
-    using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used for notifications.
@@ -28,6 +25,5 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// Gets or sets the description.
         /// </summary>
         public string Description { get; set; }
-
     }
 }
