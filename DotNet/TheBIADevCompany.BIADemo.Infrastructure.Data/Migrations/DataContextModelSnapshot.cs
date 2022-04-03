@@ -187,7 +187,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationRole", b =>
                 {
                     b.Property<int>("RoleId")
-
                         .HasColumnType("int");
 
                     b.Property<int>("NotificationId")
@@ -357,7 +356,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.ToTable("Airports");
                 });
-
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.AirportAudit", b =>
                 {
@@ -1515,7 +1513,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("UsersAudit");
                 });
 
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
                 {
                     b.Property<int>("Id")
@@ -1696,7 +1693,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
                         .WithMany("NotifiedTeams")
-
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
