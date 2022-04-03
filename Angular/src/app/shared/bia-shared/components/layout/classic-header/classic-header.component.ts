@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { Toast } from 'primeng/toast';
-import { NotificationType } from 'src/app/domains/notification/model/notification';
+import { Notification, NotificationData, NotificationType } from 'src/app/domains/notification/model/notification';
 
 @Component({
   selector: 'bia-classic-header',
@@ -72,7 +72,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     public layoutService: BiaClassicLayoutService,
-    public auth: AuthService,
+    public authService: AuthService,
     public translateService: TranslateService,
     private platform: Platform,
     private store: Store<AppState>,
@@ -105,17 +105,18 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   onNotificationClick(message: Message) {
     if (message.data?.notification) {
-      if (message.data.teams) {
-        // Auto-switch to teams related to this notification
-        Object.keys(message.data.teams).forEach((key) => {
-          this.auth.changeCurrentTeamId(+key, message.data.teams[key]);
-        })
-      }
-
-      if (message.data.notification.data?.route) {
-        this.router.navigate(message.data.notification.data.route);
-      } else if (message.data.notification.id) {
-        this.router.navigate(['/notifications/', message.data.notification.id, 'detail']);
+      let notification : Notification = message.data.notification;
+      let data : NotificationData = notification.data;
+      if (data?.route) {
+        if (data?.teams) {
+          // Auto-switch to teams related to this notification
+          data.teams.forEach((team) => {
+            this.authService.changeCurrentTeamId(team.typeId, team.id);
+          })
+        }
+        this.router.navigate(data.route);
+      } else if (notification.id) {
+        this.router.navigate(['/notifications/', notification.id, 'detail']);
       } else {
         this.router.navigate(['/notifications/']);
       }

@@ -91,11 +91,13 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 
             int selectPlaneOnSiteId = 0;
             string selectPlaneOnSiteTitle = string.Empty;
+            int targetRoleId = -1;
             if (targetedTeam?.TeamTypeId == (int)TeamTypeId.Site)
             {
                 // if the task is launch for a team site use this site. (demonstarte the swith of site)
                 selectPlaneOnSiteId = targetedTeam.Id;
                 selectPlaneOnSiteTitle = targetedTeam.Title;
+                targetRoleId = (int)RoleId.SiteAdmin;
             }
             else if (currentSite != null)
             {
@@ -125,6 +127,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     Route = new string[] { "examples", "planes", targetPlaneId.ToString(), "edit" },
                 };
 
+                var roles = targetRoleId != -1 ? new List<OptionDto>
+                           {
+                               new OptionDto { Id = targetRoleId, DtoState = DtoState.Added },
+                           }
+                           : null;
                 var notification = new NotificationDto
                 {
                     CreatedBy = new OptionDto { Id = createdById },
@@ -140,7 +147,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                            DtoState = DtoState.Added,
                            TypeId = targetedTeam.TeamTypeId,
                            Display = targetedTeam.Title,
-                           Roles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
+                           Roles = roles,
                        },
                     }
                     : null,
@@ -168,17 +175,16 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     Type = new OptionDto { Id = (int)NotificationTypeId.Info },
 
                     NotifiedTeams = targetedTeam != null ? new List<NotificationTeamDto>
-                       {
-                           new NotificationTeamDto
-                           {
-                               Id = targetedTeam.Id,
-                               DtoState = DtoState.Added,
-                               TypeId = targetedTeam.TeamTypeId,
-                               Display = targetedTeam.Title,
-                               Roles = new List<OptionDto> { new OptionDto { Id = (int)RoleId.SiteAdmin, DtoState = DtoState.Added } },
-                           },
-                       }
-                        : null,
+                    {
+                        new NotificationTeamDto
+                        {
+                            Id = targetedTeam.Id,
+                            DtoState = DtoState.Added,
+                            TypeId = targetedTeam.TeamTypeId,
+                            Display = targetedTeam.Title,
+                        },
+                    }
+                    : null,
                     Read = false,
                     JData = JsonConvert.SerializeObject(data, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                     NotificationTranslations = new List<NotificationTranslationDto>

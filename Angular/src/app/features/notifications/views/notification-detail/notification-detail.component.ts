@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/cor
 import { Store } from '@ngrx/store';
 import { update } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
-import { Notification } from '../../model/notification';
+import { Notification, NotificationData } from '../../model/notification';
 import { AppState } from 'src/app/store/state';
 import { NotificationService } from '../../services/notification.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -64,7 +64,14 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
 
   onAction(notification: Notification) {
     if (notification.data) {
-      if (notification.data.route) {
+      let data : NotificationData = notification.data;
+      if (data.route) {
+        if (data?.teams) {
+          // Auto-switch to teams related to this notification
+          data.teams.forEach((team) => {
+            this.authService.changeCurrentTeamId(team.typeId, team.id);
+          })
+        }
         this.router.navigate(notification.data.route);
       }
     }

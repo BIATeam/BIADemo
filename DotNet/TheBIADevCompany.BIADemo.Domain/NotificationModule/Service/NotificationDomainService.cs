@@ -60,9 +60,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
                     (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
-                        (nt.Team.Members.Any(member => member.UserId == this.userId) && nt.Roles.Count == 0)
-                        &&
-                        nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId)))))
+                        (nt.Roles.Count == 0 && nt.Team.Members.Any(member => member.UserId == this.userId))
+                        ||
+                        (nt.Roles.Count > 0 && nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId))))))
                     && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
         }
 
