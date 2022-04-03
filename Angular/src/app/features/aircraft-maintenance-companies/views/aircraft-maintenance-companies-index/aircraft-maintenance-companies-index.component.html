@@ -18,6 +18,12 @@
       class="p-button-outlined"
       label="{{ 'bia.edit' | translate }}"
       (click)="onEdit()"></button>
+      <button
+      pButton
+      [disabled]="selectedAircraftMaintenanceCompanies?.length !== 1"
+      class="p-button-outlined"
+      label="{{ 'aircraftMaintenanceCompany.maintenanceTeams' | translate }}"
+      (click)="onMaintenanceTeams()"></button>
     </ng-template>
   </bia-table-header>
     <bia-table-controller

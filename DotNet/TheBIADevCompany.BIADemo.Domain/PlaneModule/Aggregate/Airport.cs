@@ -7,10 +7,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
+    using global::Audit.EntityFramework;
 
     /// <summary>
     /// The airport entity.
     /// </summary>
+    [AuditInclude]
     public class Airport : VersionedTable, IEntity<int>
     {
         /// <summary>
@@ -26,6 +28,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the City where is the airport.
         /// </summary>
+        [AuditIgnore]
+        [AuditOverride(null)]
         public string City { get; set; }
 
         /// <summary>

@@ -36,5 +36,17 @@ namespace BIA.Net.Core.Domain.Dto.User
                 return 0;
             }
         }
+
+        public int GetCurrentTeamId(int teamTypeId)
+        {
+            var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
+            if (CurrentSite != null)
+            {
+                return CurrentSite.CurrentTeamId;
+            }
+            return 0;
+        }
+
+
     }
 }

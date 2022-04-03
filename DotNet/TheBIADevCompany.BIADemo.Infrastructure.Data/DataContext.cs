@@ -4,10 +4,12 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
+    using Audit.EntityFramework;
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     // Begin BIADemo
@@ -23,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// <summary>
     /// The database context.
     /// </summary>
+    [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}" )]
     public class DataContext : BIADataContext
     {
         /// <summary>
@@ -44,6 +47,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the User DBSet.
         /// </summary>
         public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Gets or sets the User DBSet.
+        /// </summary>
+        public DbSet<UserAudit> UsersAudit { get; set; }
 
         /// <summary>
         /// Gets or sets the type of team DBSet.
@@ -108,6 +116,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         // Begin BIADemo
 
         /// <summary>
+        /// Gets or sets the Plane DBSet.
+        /// </summary>
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
+        /// <summary>
         /// Gets or sets the Aircraft Maintenance Company DBSet.
         /// </summary>
         public DbSet<AircraftMaintenanceCompany> AircraftMaintenanceCompanies { get; set; }
@@ -118,9 +131,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Plane> Planes { get; set; }
 
         /// <summary>
-        /// Gets or sets the Plane DBSet.
+        /// Gets or sets the Airport DBSet.
         /// </summary>
         public DbSet<Airport> Airports { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Airport Audit DBSet.
+        /// </summary>
+        public DbSet<AirportAudit> AirportsAudit { get; set; }
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
@@ -132,6 +150,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // modelBuilder.HasDefaultSchema("dbo");
+
             base.OnModelCreating(modelBuilder);
 
             TranslationModelBuilder.CreateModel(modelBuilder);
@@ -141,6 +161,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             NotificationModelBuilder.CreateModel(modelBuilder);
 
             // Begin BIADemo
+            AuditModelBuilder.CreateModel(modelBuilder);
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 

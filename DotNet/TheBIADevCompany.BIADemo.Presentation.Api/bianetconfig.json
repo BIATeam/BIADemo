@@ -72,11 +72,11 @@
         "Label": "Deutsh",
         "Code": "de-DE",
         "AcceptedCodes": [ "de-DE", "de" ],
-        "IsDefaultForCountryCodes": [ "US" ],
+        "IsDefaultForCountryCodes": [ "DE" ],
         "DateFormat": "dd.MM.yyyy",
         "TimeFormat": "HH:mm",
         "TimeFormatSec": "HH:mm:ss a",
-        "LanguageCode": "de",
+        "LanguageCode": "en",
         "LanguageId": "4"
       },
       {

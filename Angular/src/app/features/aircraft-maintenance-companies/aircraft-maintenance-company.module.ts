@@ -72,6 +72,16 @@ const ROUTES: Routes = [
             component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
+          {
+            path: 'maintenance-teams',
+            data: {
+              breadcrumb: 'aircraftMaintenanceCompany.maintenanceTeams',
+              canNavigate: true,
+              permission: Permission.Member_List_Access
+            },
+            loadChildren: () =>
+              import('./children/maintenance-teams/maintenance-team.module').then((m) => m.MaintenanceTeamModule)
+          },
         ]
       },
     ]

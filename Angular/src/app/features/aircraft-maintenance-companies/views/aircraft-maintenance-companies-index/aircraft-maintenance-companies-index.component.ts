@@ -11,7 +11,7 @@ import {
   PrimeTableColumn,
 } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
+import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AircraftMaintenanceCompanyDas } from '../../services/aircraft-maintenance-company-das.service';
@@ -26,6 +26,7 @@ import { AircraftMaintenanceCompanyOptionsService } from '../../services/aircraf
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { AircraftMaintenanceCompanyTableComponent } from 'src/app/features/aircraft-maintenance-companies/components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { useCalcMode, useSignalR, useView } from '../../aircraft-maintenance-company.constants';
+import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-index',
@@ -88,7 +89,11 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     this.sub = new Subscription();
 
     this.initTableConfiguration();
-    this.setPermissions();
+    this.sub.add(
+      this.store.select(getAllTeamsOfType(TeamTypeId.AircraftMaintenanceCompany)).subscribe(() => {
+        this.setPermissions();
+      })
+    );
     this.aircraftMaintenanceCompanies$ = this.store.select(getAllAircraftMaintenanceCompanies);
     this.totalCount$ = this.store.select(getAircraftMaintenanceCompaniesTotalCount);
     this.loading$ = this.store.select(getAircraftMaintenanceCompanyLoadingGetAll);
@@ -151,7 +156,12 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     }
   }
 
-  
+  onMaintenanceTeams() {
+    if (this.selectedAircraftMaintenanceCompanies.length == 1) {
+      this.router.navigate(['../' + this.selectedAircraftMaintenanceCompanies[0].id + '/maintenance-teams'], { relativeTo: this.activatedRoute });
+    }
+  }
+
   onManageMember(aircraftMaintenanceCompanyId: number) {
     if (aircraftMaintenanceCompanyId && aircraftMaintenanceCompanyId > 0) {
       this.router.navigate(['../' + aircraftMaintenanceCompanyId + '/members'], { relativeTo: this.activatedRoute });

@@ -25,9 +25,11 @@
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Ajouter entreprise de maintenance aéronautique",
+    "edit": "Editer entreprise de maintenance aéronautique",
+    "goto": "Voir Entreprise",
     "listOf": "Liste des entreprises de maintenance aéronautique",
-    "title": "Nom",
-    "goto": "Voir Entreprise"
+    "maintenanceTeams": "Equipes de maintenance",
+    "title": "Nom"
   },
   "airport": {
     "add": "Ajouter aéroport",
@@ -35,6 +37,12 @@
     "edit": "Modifier aéroport",
     "listOf": "Listes des aéroports",
     "name": "Nom"
+  },
+  "maintenanceTeam": {
+    "add": "Ajouter équipe de maintenance",
+    "edit": "Editer équipe de maintenance",
+    "listOf": "Liste des équipes de maintenance",
+    "title": "Nom"
   },
   "plane": {
     "add": "Ajouter avion",

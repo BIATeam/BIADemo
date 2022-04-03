@@ -41,5 +41,6 @@ export enum TeamTypeId {
   Site = 1,
   // Begin BIADemo  
   AircraftMaintenanceCompany = 2,
+  MaintenanceTeam =3,
   // End BIADemo
 }

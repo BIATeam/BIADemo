@@ -25,9 +25,11 @@
   "Begin BIADemo" : "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Add aircraft maintenance company",
+    "edit": "Edit aircraft maintenance company",
+    "goto": "View Company",
     "listOf": "List of aircraft maintenance companies",
-    "title": "Name",
-    "goto": "View Company"
+    "maintenanceTeams": "Maintenance teams",
+    "title": "Name"
   },
   "airport": {
     "add": "Add airport",
@@ -35,6 +37,12 @@
     "edit": "Edit airport",
     "listOf": "List of airports",
     "name" : "Name"
+  },
+  "maintenanceTeam": {
+    "add": "Add maintenance team",
+    "edit": "Edit maintenance team",
+    "listOf": "List of maintenance teams",
+    "title": "Name"
   },
   "plane": {
     "add": "Add plane",

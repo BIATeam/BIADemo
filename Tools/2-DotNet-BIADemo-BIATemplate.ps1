@@ -55,6 +55,11 @@ function RemoveCodeExample {
   }
 }
 
+# Deletes comment // Except BIADemo 
+function RemoveCommentExceptBIADemo {
+	ReplaceProjectName -oldName "// Except BIADemo " -newName ""
+}
+
 function RemoveBIADemoOnlyFiles {
 	foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
 		$file = $childFile.FullName
@@ -193,7 +198,7 @@ Set-Location -Path $newPath
 
 Write-Host "Zip plane"
 
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api\Controllers' 'PlanesController.cs'
+CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api\Controllers\Plane' 'PlanesController.cs'
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'PlaneAppService.cs'
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'IPlaneAppService.cs'
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'PlaneMapper.cs'
@@ -222,6 +227,9 @@ RemoveEmptyFolder "."
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample
+
+Write-Host "Remove comment except BIADemo"
+RemoveCommentExceptBIADemo
 
 Write-Host "Replace project name"
 ReplaceProjectName -oldName $oldName -newName $newName

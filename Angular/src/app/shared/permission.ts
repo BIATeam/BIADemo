@@ -25,6 +25,17 @@ export enum Permission {
   AircraftMaintenanceCompany_Member_Delete = 'AircraftMaintenanceCompany_Member_Delete',
   AircraftMaintenanceCompany_Member_Create = 'AircraftMaintenanceCompany_Member_Create',
   AircraftMaintenanceCompany_Member_List_Access = 'AircraftMaintenanceCompany_Member_List_Access',
+  
+  MaintenanceTeam_Create = 'MaintenanceTeam_Create',
+  MaintenanceTeam_Delete = 'MaintenanceTeam_Delete',
+  MaintenanceTeam_List_Access = 'MaintenanceTeam_List_Access',
+  MaintenanceTeam_Read = 'MaintenanceTeam_Read',
+  MaintenanceTeam_Save = 'MaintenanceTeam_Save',
+  MaintenanceTeam_Update = 'MaintenanceTeam_Update',
+  MaintenanceTeam_Member_Update = 'MaintenanceTeam_Member_Update',
+  MaintenanceTeam_Member_Delete = 'MaintenanceTeam_Member_Delete',
+  MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
+  MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
 
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
