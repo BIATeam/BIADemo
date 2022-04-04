@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Team } from 'src/app/domains/team/model/team';
 import { getAllTeams } from 'src/app/domains/team/store/team.state';
 import { AppState } from 'src/app/store/state';
-import { callWorkerWithNotification } from '../../store/hangfire-actions';
+import { randomReviewPlane } from '../../store/hangfire-actions';
 
 @Component({
   selector: 'app-hangfire-index',
@@ -19,7 +19,7 @@ export class HangfireIndexComponent {
     this.allTeams$ = this.store.select(getAllTeams);
   }
 
-  callWorkerWithNotification(teamId: number) {
-    this.store.dispatch(callWorkerWithNotification({ teamId }));
+  randomReviewPlane(teamId: number) {
+    this.store.dispatch(randomReviewPlane({ teamId }));
   }
 }

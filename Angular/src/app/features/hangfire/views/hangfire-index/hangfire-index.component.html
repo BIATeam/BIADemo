@@ -1,7 +1,39 @@
+<div class="header" fxLayout="row" fxLayoutAlign="space-between">
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+  </div>
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+    <h1>Launch random review plane</h1>
+  </div>
+  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+  </div>
+</div>
+<BR>
+<BR>
+<div fxLayout="row wrap">
+  On team of type : <b>Site</b>
+</div>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
-  <button pButton type="button" (click)="callWorkerWithNotification(0)" label="Call worker with notification"></button>
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button pButton type="button" (click)="callWorkerWithNotification(team.id)"
-      label="Call worker with notification for {{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === 1" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
+  </ng-container>
+</div>
+<BR>
+<BR>
+<div fxLayout="row wrap">
+  On team of type : <b>AircraftMaintenanceCompany</b>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
+  <ng-container *ngFor="let team of (allTeams$ | async)">
+    <button *ngIf="team.teamTypeId === 2" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
+  </ng-container>
+</div>
+<BR>
+<BR>
+<div fxLayout="row wrap" >
+  On team of type : <b>MaintenanceTeam</b>
+</div>
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
+  <ng-container *ngFor="let team of (allTeams$ | async)">
+    <button *ngIf="team.teamTypeId === 3" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
   </ng-container>
 </div>

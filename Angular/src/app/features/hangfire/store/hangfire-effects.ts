@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom, concatMap, pluck } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  callWorkerWithNotification, failure,
+  randomReviewPlane, failure,
 } from './hangfire-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Store } from '@ngrx/store';
@@ -21,11 +21,11 @@ import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-a
 export class HangfireEffects {
   callWorkerWithNotification$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(callWorkerWithNotification),
+      ofType(randomReviewPlane),
       pluck('teamId'),
       concatMap((teamId) => of(teamId).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([teamId, event]) => {
-        return this.hangfireDas.callWorkerWithNotification(teamId).pipe(
+        return this.hangfireDas.randomReviewPlane(teamId).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
             // return loadAllByPost({ event: event });
