@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  failure, loadAllTeams, loadAllTeamsSuccess, setDefaultRoles, setDefaultRolesSuccess, setDefaultTeam, setDefaultTeamSuccess,
+  failure, setDefaultRoles, setDefaultRolesSuccess, setDefaultTeam, setDefaultTeamSuccess,
 } from './teams-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { TeamDas } from '../services/team-das.service';
@@ -14,21 +14,6 @@ import { TeamDas } from '../services/team-das.service';
 
 @Injectable()
 export class TeamsEffects {
-  loadAllTeams$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loadAllTeams),
-      switchMap(() =>
-        this.teamDas.getList({ endpoint: 'all' }).pipe(
-          map((teams) => loadAllTeamsSuccess({ teams })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-
   setDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
       ofType(setDefaultTeam),
@@ -36,7 +21,7 @@ export class TeamsEffects {
         this.teamDas.setDefaultTeam(data.teamTypeId, data.teamId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ setDefaultTeamSuccess(), loadAllTeams()];
+            return [ setDefaultTeamSuccess()];
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -53,7 +38,7 @@ export class TeamsEffects {
         this.teamDas.setDefaultRoles(data.teamId, data.roleIds).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ setDefaultRolesSuccess(), loadAllTeams()];
+            return [ setDefaultRolesSuccess()];
           }),
           catchError((err) => {
             this.biaMessageService.showError();

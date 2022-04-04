@@ -4,14 +4,12 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { MenuItem } from 'primeng/api';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { filter, skip } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
 import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
-import { loadAllTeams } from 'src/app/domains/team/store/teams-actions';
-import { AppState } from 'src/app/store/state';
-import { Store } from '@ngrx/store';
+
 
 @Component({
   selector: 'bia-classic-layout',
@@ -46,7 +44,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>,
   ) { }
 
   ngOnInit(): void {
@@ -61,12 +58,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
       this.layoutService.breadcrumbRefresh$.subscribe((val) => {
         this.setNoMargin(this.activatedRoute);
         this.updateMenuItems();
-      })
-    );
-    this.sub.add(
-      // skip the 0 and first set of language (because team arrive with authservice at begining)
-      this.biaTranslation.languageId$.pipe(skip(1)).subscribe(() => {
-        this.store.dispatch(loadAllTeams());
       })
     );
   }
