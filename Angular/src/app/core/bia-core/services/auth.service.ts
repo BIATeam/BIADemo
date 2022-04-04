@@ -82,6 +82,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     if (!permission) {
       return of(true);
     }
+    if (this.shouldRefreshToken)
+    {
+      return this.login().pipe(
+        map((authInfo: AuthInfo | null) => {
+          return this.checkPermission(authInfo, permission);
+        })
+      );     
+    }
     return this.authInfo$.pipe(
       map((authInfo: AuthInfo | null) => {
         return this.checkPermission(authInfo, permission);
