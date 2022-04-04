@@ -2,38 +2,41 @@
   <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
   </div>
   <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
-    <h1>Launch random review plane</h1>
+    <h1>Launch random review plane in hanfire job.</h1>
   </div>
   <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
   </div>
 </div>
-<BR>
-<BR>
+<BR/>
+<BR/>
 <div fxLayout="row wrap">
-  On team of type : <b>Site</b>
+  On a plane of one the following&nbsp;<b>Sites</b>
 </div>
+<BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 1" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === 1" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
   </ng-container>
 </div>
-<BR>
-<BR>
+<BR/>
+<BR/>
 <div fxLayout="row wrap">
-  On team of type : <b>AircraftMaintenanceCompany</b>
+  On a plane of the current site and notify team of type&nbsp;<b>Aircraft Maintenance Company</b>
 </div>
+<BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 2" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === 2" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
   </ng-container>
 </div>
-<BR>
-<BR>
+<BR/>
+<BR/>
 <div fxLayout="row wrap" >
-  On team of type : <b>MaintenanceTeam</b>
+  On a plane of the current site and notify team of type&nbsp;<b>Maintenance Team</b>
 </div>
+<BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 3" pButton type="button" (click)="callWorkerWithNotification(team.id)" label="{{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === 3" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.parentTeamTitle}} > {{team.title}}"></button>
   </ng-container>
 </div>

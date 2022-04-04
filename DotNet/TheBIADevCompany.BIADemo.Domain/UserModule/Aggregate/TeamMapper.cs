@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     /// <summary>
     /// The mapper used for site.
@@ -46,6 +48,26 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     Code = mem.Role.Code,
                     Display = mem.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? mem.Role.Label,
                 }).ToList(),
+
+                // Map the parent properties if usefull in project:
+                /*
+                 ParentTeamId =
+                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompanyId :
+                    0,
+                 ParentTeamTitle =
+                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompany.Title :
+                    string.Empty,
+                */
+
+                // Begin BIADemo
+                ParentTeamId =
+                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompanyId :
+                    0,
+                ParentTeamTitle =
+                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompany.Title :
+                    string.Empty,
+
+                // End BIADemo
             };
         }
     }

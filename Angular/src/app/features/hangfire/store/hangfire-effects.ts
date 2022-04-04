@@ -19,7 +19,7 @@ import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-a
 
 @Injectable()
 export class HangfireEffects {
-  callWorkerWithNotification$ = createEffect(() =>
+  randomReviewPlane$ = createEffect(() =>
     this.actions$.pipe(
       ofType(randomReviewPlane),
       pluck('teamId'),

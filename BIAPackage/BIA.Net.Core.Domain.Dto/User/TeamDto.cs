@@ -31,5 +31,15 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the title.
         /// </summary>
         public ICollection<RoleDto> Roles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the parent.
+        /// </summary>
+        public int ParentTeamId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public string ParentTeamTitle { get; set; }
     }
 }
