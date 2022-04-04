@@ -139,11 +139,11 @@
       },
       {
         "Names": [ "Plane_Update", "Plane_Save" ],
-        "Roles": [ "Site_Admin", "Pilot" ]
+        "Roles": [ "Site_Admin" ]
       },
       {
         "Names": [ "Plane_Create", "Plane_Delete" ],
-        "Roles": [ "Site_Admin", "Pilot" ]
+        "Roles": [ "Site_Admin" ]
       },
       // Aircraft Maintenance Company
       {

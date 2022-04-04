@@ -113,6 +113,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 var rand = new Random();
                 int targetPlaneId = targetPlanes[rand.Next(targetPlanes.Count)].Id;
 
+                var role = new List<OptionDto>
+                    {
+                        new OptionDto { Id =  (int)RoleId.SiteAdmin, Display = "SiteAdmin", DtoState = DtoState.Added },
+                    };
+
                 var data = new NotificationDataDto
                 {
                     Teams = new List<NotificationTeamDto>
@@ -122,16 +127,20 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                             TypeId = (int)TeamTypeId.Site,
                             Id = selectPlaneOnSiteId,
                             Display = selectPlaneOnSiteTitle,
+                            Roles = new List<OptionDto>
+                            {
+                                new OptionDto { Id = (int)RoleId.SiteAdmin, Display = "SiteAdmin" },
+                            },
                         },
                     },
                     Route = new string[] { "examples", "planes", targetPlaneId.ToString(), "edit" },
                 };
 
                 var roles = targetRoleId != -1 ? new List<OptionDto>
-                           {
-                               new OptionDto { Id = targetRoleId, DtoState = DtoState.Added },
-                           }
-                           : null;
+                    {
+                        new OptionDto { Id = targetRoleId, DtoState = DtoState.Added },
+                    }
+                    : null;
                 var notification = new NotificationDto
                 {
                     CreatedBy = new OptionDto { Id = createdById },

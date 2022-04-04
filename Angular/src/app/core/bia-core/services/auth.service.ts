@@ -44,10 +44,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       if (authInfo && authInfo.additionalInfos && authInfo.uncryptedToken.userData) {
         authInfo.uncryptedToken.userData.currentTeams.forEach(team => {
           this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);
-          const roleMode = allEnvironments.teams.find(r => r.teamTypeId == team.teamTypeId)?.roleMode || RoleMode.AllRoles;
-          if (roleMode !== RoleMode.AllRoles) {
-            this.setCurrentRoleIds(team.currentTeamId, team.currentRoleIds);
-          }
+          this.setCurrentRoleIds(team.teamTypeId, team.currentTeamId, team.currentRoleIds);
         });
       }
     });
@@ -191,25 +188,28 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return false;
   }
 
-  public changeCurrentRoleIds(teamId: number, roleIds: number[]) {
-    if (this.setCurrentRoleIds(teamId, roleIds)) {
+  public changeCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]) {
+    if (this.setCurrentRoleIds(teamTypeId, teamId, roleIds)) {
       this.shouldRefreshToken = true;
     }
   }
 
-  private setCurrentRoleIds(teamId: number, roleIds: number[]): boolean {
-    const teamsLogin = this.getTeamsLogin();
-    let team = teamsLogin.find((i => i.teamId === teamId))
-    if (team) {
-      if (+team.roleIds !== +roleIds) {
-        team.roleIds = roleIds
-        team.useDefaultRoles = false;
-        this.setTeamLogin(teamsLogin);
-        return true;
+  private setCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]): boolean {
+    const roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode || RoleMode.AllRoles;
+    if (roleMode !== RoleMode.AllRoles) {
+      const teamsLogin = this.getTeamsLogin();
+      let team = teamsLogin.find((i => i.teamId === teamId))
+      if (team) {
+        if (+team.roleIds !== +roleIds) {
+          team.roleIds = roleIds
+          team.useDefaultRoles = false;
+          this.setTeamLogin(teamsLogin);
+          return true;
+        }
       }
-    }
-    else {
-      throw new Error('Error the teamid should be set before roles');
+      else {
+        throw new Error('Error the teamid should be set before roles');
+      }
     }
     return false;
   }

@@ -70,6 +70,10 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
           // Auto-switch to teams related to this notification
           data.teams.forEach((team) => {
             this.authService.changeCurrentTeamId(team.typeId, team.id);
+            if (team.roles)
+            {
+              this.authService.changeCurrentRoleIds(team.typeId, team.id, team.roles.map(r => r.id));
+            }
           })
         }
         this.router.navigate(notification.data.route);

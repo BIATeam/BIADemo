@@ -109,7 +109,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
       if (this.currentRole) this.currentRoles = [this.currentRole];
     }
 
-    this.authService.changeCurrentRoleIds(this.currentTeam.id, this.currentRoles.map(r => r.id));
+    this.authService.changeCurrentRoleIds(this.teamTypeId, this.currentTeam.id, this.currentRoles.map(r => r.id));
     location.assign(this.baseHref);
   }
 
