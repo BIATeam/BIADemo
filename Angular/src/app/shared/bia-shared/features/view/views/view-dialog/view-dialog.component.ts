@@ -39,7 +39,7 @@ import { Team } from 'src/app/domains/team/model/team';
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
-  @Input() useViewTeam: TeamTypeId;
+  @Input() useViewTeams: TeamTypeId[];
   private sub = new Subscription();
 
   teams$: Observable<Team[]>;
@@ -105,11 +105,11 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   initTeams() {
-    let currentTeamId = this.authService.getCurrentTeamId(this.useViewTeam);
+    let currentTeamIds = this.authService.getCurrentTeamIds(this.useViewTeams);
     this.teams$ = this.store.select(getAllTeams).pipe(
       map((teams) =>
         teams.filter(
-          (team) => /*this.authService.getCurrentTeamId(this.useViewTeam) < 1 || */ team.id == currentTeamId
+          (team) => currentTeamIds.some(id => team.id == id) 
         )
       ),
       tap((teams) => {

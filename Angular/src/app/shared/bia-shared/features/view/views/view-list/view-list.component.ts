@@ -26,7 +26,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
   defaultView: number;
   private sub = new Subscription();
   @Input() tableStateKey: string;
-  @Input() useViewTeam: TeamTypeId;
+  @Input() useViewTeams: TeamTypeId[];
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -92,14 +92,14 @@ export class ViewListComponent implements OnInit, OnDestroy {
     ];
 
     let defaultView = 0;
-    const currentTeamId = this.authService.getCurrentTeamId(this.useViewTeam);
+    const currentTeamIds = this.authService.getCurrentTeamIds(this.useViewTeams);
     const systemViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.System
     );
     const teamViews = this.views.filter(
       (v) =>
-        v.viewType === ViewType.Team && (/*currentTeamId < 1 ||*/ v.viewTeams.some((vs) => vs.teamId == currentTeamId))
+        v.viewType === ViewType.Team && (v.viewTeams.some((vs) => currentTeamIds.some(id => id == vs.teamId) ))
     );
     const userViews = this.views.filter((v) => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -131,7 +131,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
       });
 
       const teamDefault = teamViews.filter((v) =>
-        v.viewTeams.some((y) => y.teamId === currentTeamId && y.isDefault === true)
+        v.viewTeams.some((y) => currentTeamIds.some(id => id == y.teamId)  && y.isDefault === true)
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;

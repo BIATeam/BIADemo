@@ -6,5 +6,5 @@ export const storeKey: string = 'feature-maintenance-teams';
 export const useCalcMode = false;
 export const useSignalR = false;
 export const useView = true;
-export const useViewTeam = TeamTypeId.AircraftMaintenanceCompany;
+export const useViewTeams = [TeamTypeId.AircraftMaintenanceCompany];
 export const usePopup = true;
