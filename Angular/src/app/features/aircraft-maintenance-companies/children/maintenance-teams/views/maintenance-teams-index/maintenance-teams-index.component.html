@@ -31,6 +31,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [useViewTeam]="useViewTeam"
     ></bia-table-controller>
     <bia-table *ngIf="!useCalcMode"
       [elements]="maintenanceTeams$ | async"
@@ -47,6 +48,7 @@
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
+      [useViewTeam]="useViewTeam"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
     <app-maintenance-team-table *ngIf="useCalcMode"

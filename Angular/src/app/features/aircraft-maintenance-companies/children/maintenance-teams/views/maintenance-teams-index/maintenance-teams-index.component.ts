@@ -24,7 +24,7 @@ import { MaintenanceTeamsSignalRService } from '../../services/maintenance-team-
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { useCalcMode, useSignalR, useView } from '../../maintenance-team.constants';
+import { useCalcMode, useSignalR, useView, useViewTeam } from '../../maintenance-team.constants';
 import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
 import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
@@ -39,6 +39,8 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
   useSignalR = useSignalR;
   useView = useView;
   useRefreshAtLanguageChange = false;
+  tableStateKey = this.useView ? 'maintenance-teamsGrid' : undefined;
+  useViewTeam = this.useView ? useViewTeam : -1;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
@@ -69,7 +71,6 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'maintenance-teamsGrid' : undefined;
   parentIds: string[];
 
   constructor(

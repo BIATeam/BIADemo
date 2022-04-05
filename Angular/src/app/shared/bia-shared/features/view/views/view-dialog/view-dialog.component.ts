@@ -39,6 +39,7 @@ import { Team } from 'src/app/domains/team/model/team';
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
+  @Input() useViewTeam: TeamTypeId;
   private sub = new Subscription();
 
   teams$: Observable<Team[]>;
@@ -90,7 +91,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   private initViewTeams() {
-    this.viewTeams$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.Site)));
+    this.viewTeams$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.Team)));
   }
 
   private initViewUsers() {
@@ -104,10 +105,11 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   initTeams() {
+    let currentTeamId = this.authService.getCurrentTeamId(this.useViewTeam);
     this.teams$ = this.store.select(getAllTeams).pipe(
       map((teams) =>
         teams.filter(
-          (team) => this.authService.getCurrentTeamId(TeamTypeId.Site) < 1 || team.id === this.authService.getCurrentTeamId(TeamTypeId.Site)
+          (team) => /*this.authService.getCurrentTeamId(this.useViewTeam) < 1 || */ team.id == currentTeamId
         )
       ),
       tap((teams) => {

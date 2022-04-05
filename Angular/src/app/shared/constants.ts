@@ -16,7 +16,7 @@ export const TABLE_FILTER_GLOBAL = 'global|';
 
 export enum ViewType {
   System = 0,
-  Site = 1,
+  Team = 1,
   User = 2
 }
 

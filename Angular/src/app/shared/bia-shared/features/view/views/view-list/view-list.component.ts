@@ -26,6 +26,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
   defaultView: number;
   private sub = new Subscription();
   @Input() tableStateKey: string;
+  @Input() useViewTeam: TeamTypeId;
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -91,14 +92,14 @@ export class ViewListComponent implements OnInit, OnDestroy {
     ];
 
     let defaultView = 0;
-    const currentTeamId = this.authService.getCurrentTeamId(TeamTypeId.Site);
+    const currentTeamId = this.authService.getCurrentTeamId(this.useViewTeam);
     const systemViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.System
     );
     const teamViews = this.views.filter(
       (v) =>
-        v.viewType === ViewType.Site && (currentTeamId < 1 || v.viewTeams.some((vs) => vs.teamId === currentTeamId))
+        v.viewType === ViewType.Team && (/*currentTeamId < 1 ||*/ v.viewTeams.some((vs) => vs.teamId == currentTeamId))
     );
     const userViews = this.views.filter((v) => v.viewType === ViewType.User);
     if (systemViews.length > 0) {

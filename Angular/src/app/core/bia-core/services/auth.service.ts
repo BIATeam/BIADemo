@@ -6,7 +6,7 @@ import { AuthInfo, AdditionalInfos, TeamLoginDto, Token } from 'src/app/shared/b
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { RoleMode } from 'src/app/shared/constants';
+import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
 import { allEnvironments } from 'src/environments/all-environments';
 import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
 import { AppState } from 'src/app/store/state';
@@ -122,7 +122,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
 
-  public getTeamsLogin(): TeamLoginDto[] {
+  public getAllCurrentTeams(): TeamLoginDto[] {
     const value = sessionStorage.getItem(STORAGE_TEAMSLOGIN_KEY);
     if (value) {
       const teamsLogin: TeamLoginDto[] = <TeamLoginDto[]>JSON.parse(value);
@@ -132,25 +132,37 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return [];
   }
 
-  public setTeamLogin(teamsLogin: TeamLoginDto[]) {
+  public setAllCurrentTeams(teamsLogin: TeamLoginDto[]) {
     sessionStorage.setItem(STORAGE_TEAMSLOGIN_KEY, JSON.stringify(teamsLogin));
   }
+  public getCurrentTeams(teamTypeIds: TeamTypeId[]): TeamLoginDto[] | undefined {
+    const teamsLogin = this.getAllCurrentTeams();
+    return teamsLogin.filter(i => teamTypeIds.indexOf(i.teamTypeId)>-1);
+  }
 
-  public getTeamLogin(teamTypeId: number): TeamLoginDto | undefined {
-    const teamsLogin = this.getTeamsLogin();
+  public getCurrentTeamIds(teamTypeId: TeamTypeId[]): number[] {
+    const team = this.getCurrentTeams(teamTypeId);
+    if (team) {
+      return team.map(t => t.teamId);
+    }
+    return [];
+  }
+
+  public getCurrentTeam(teamTypeId: TeamTypeId): TeamLoginDto | undefined {
+    const teamsLogin = this.getAllCurrentTeams();
     return teamsLogin.find((i => i.teamTypeId === teamTypeId))
   }
 
-  public getCurrentTeamId(teamTypeId: number): number {
-    const team = this.getTeamLogin(teamTypeId);
+  public getCurrentTeamId(teamTypeId: TeamTypeId): number {
+    const team = this.getCurrentTeam(teamTypeId);
     if (team) {
       return team.teamId;
     }
-    return 0;
+    return -1;
   }
 
   public getCurrentRoleIds(teamTypeId: number): number[] {
-    const team = this.getTeamLogin(teamTypeId);
+    const team = this.getCurrentTeam(teamTypeId);
     if (team) {
       return team.roleIds;
     }
@@ -163,7 +175,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
-    let teamsLogin = this.getTeamsLogin();
+    let teamsLogin = this.getAllCurrentTeams();
     let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
       if (team.teamId?.toString() !== teamId?.toString()) {
@@ -176,7 +188,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           team.useDefaultRoles = true;
           team.roleIds = [];
         }
-        this.setTeamLogin(teamsLogin);
+        this.setAllCurrentTeams(teamsLogin);
         return true;
       }
     }
@@ -189,7 +201,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
         newTeam.teamId = teamId;
         teamsLogin.push(newTeam)
-        this.setTeamLogin(teamsLogin);
+        this.setAllCurrentTeams(teamsLogin);
         return true;
       }
     }
@@ -205,13 +217,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   private setCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]): boolean {
     const roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
-      const teamsLogin = this.getTeamsLogin();
+      const teamsLogin = this.getAllCurrentTeams();
       let team = teamsLogin.find((i => i.teamId === teamId))
       if (team) {
         if (+team.roleIds !== +roleIds) {
           team.roleIds = roleIds
           team.useDefaultRoles = false;
-          this.setTeamLogin(teamsLogin);
+          this.setAllCurrentTeams(teamsLogin);
           return true;
         }
       }
@@ -269,7 +281,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   protected buildUrlLogin() {
     let url: string;
-    const teamsLogin = this.getTeamsLogin();
+    const teamsLogin = this.getAllCurrentTeams();
     if (teamsLogin.length > 0) {
       url = `${this.route}LoginAndTeams`;
     }
@@ -281,7 +293,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   protected buildBodyLogin() {
     let body;
-    const teamsLogin = this.getTeamsLogin();
+    const teamsLogin = this.getAllCurrentTeams();
     if (teamsLogin.length > 0) {
       body = teamsLogin;
     }

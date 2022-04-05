@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { FilterMetadata, SelectItem, TableState } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
-import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
+import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'bia-table-controller',
@@ -25,6 +25,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Input() columns: KeyValuePair[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() tableStateKey: string;
+  @Input() useViewTeam: TeamTypeId;
 
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();

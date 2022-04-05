@@ -33,7 +33,7 @@
       header="{{ 'bia.views.team' | translate | uppercase }} {{
         (teams$ | async)?.length === 1 ? teamSelected?.title : ''
       }}"
-      *ngIf="canSetTeamView()"
+      *ngIf="canSetTeamView() && (teams$ | async)?.length > 0"
     >
       <div class="app-div-select-team">
         <p-dropdown
