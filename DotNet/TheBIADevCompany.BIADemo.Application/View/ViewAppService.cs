@@ -354,6 +354,11 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 else if (!dto.IsAssign && entity.ViewTeams?.Any(keysPredicate) == true)
                 {
                     entity.ViewTeams.Remove(entity.ViewTeams?.First(keysPredicate));
+                    if (entity.ViewTeams.Count == 0)
+                    {
+                        this.Repository.Remove(entity);
+                    }
+
                     hasChange = true;
                 }
 

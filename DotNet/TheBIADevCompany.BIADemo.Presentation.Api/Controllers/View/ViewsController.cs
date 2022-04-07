@@ -5,33 +5,42 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 {
     using System;
+    using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>
     /// The API controller used to manage views.
     /// </summary>
-    public class ViewsController : BiaControllerBase
+    public class ViewsController : TeamLinkedControllerBase
     {
         /// <summary>
         /// The service role.
         /// </summary>
-        private readonly IViewAppService viewService;
+        private readonly IViewAppService viewAppService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewsController"/> class.
         /// </summary>
-        /// <param name="viewService">The view service.</param>
-        public ViewsController(IViewAppService viewService)
+        /// <param name="viewAppService">The view service.</param>
+        /// <param name="teamAppService">The team service.</param>
+        public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService)
+            : base (teamAppService)
         {
-            this.viewService = viewService;
+            this.viewAppService = viewAppService;
         }
 
         /// <summary>
@@ -43,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [Authorize(Roles = Rights.Views.List)]
         public async Task<IActionResult> GetAll()
         {
-            var results = await this.viewService.GetAllAsync();
+            var results = await this.viewAppService.GetAllAsync();
 
             return this.Ok(results);
         }
@@ -79,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         {
             try
             {
-                var createdDto = await this.viewService.AddUserViewAsync(dto);
+                var createdDto = await this.viewAppService.AddUserViewAsync(dto);
                 return this.Ok(createdDto);
             }
             catch (ArgumentNullException)
@@ -112,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                await this.viewService.RemoveUserViewAsync(id);
+                await this.viewAppService.RemoveUserViewAsync(id);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -152,7 +161,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                await this.viewService.SetDefaultUserViewAsync(dto);
+                await this.viewAppService.SetDefaultUserViewAsync(dto);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -175,12 +184,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         /// </returns>
         [HttpPut("TeamViews/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.UpdateTeamView)]
-        public async Task<IActionResult> UpdateTeamView(int id, [FromBody]ViewDto dto)
+        public async Task<IActionResult> UpdateTeamView(int id, [FromBody]TeamViewDto dto)
         {
+            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.UpdateTeamViewSuffix).Result)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
             return await this.UpdateView(id, dto);
         }
 
@@ -191,14 +204,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         /// <returns>The result of the creation.</returns>
         [HttpPost("TeamViews")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.AddTeamView)]
         public async Task<IActionResult> AddTeamView([FromBody]TeamViewDto dto)
         {
+            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AddTeamViewSuffix).Result)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             try
             {
-                var createdDto = await this.viewService.AddTeamViewAsync(dto);
+                var createdDto = await this.viewAppService.AddTeamViewAsync(dto);
                 return this.Ok(createdDto);
             }
             catch (ArgumentNullException)
@@ -231,7 +249,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                await this.viewService.RemoveTeamViewAsync(id);
+                await this.viewAppService.RemoveTeamViewAsync(id);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -258,12 +276,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         /// </returns>
         [HttpPut("TeamViews/{id}/setDefault")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.SetDefaultTeamView)]
         public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody]DefaultTeamViewDto dto)
         {
+            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.SetDefaultTeamViewSuffix).Result)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             if (id == 0 || dto == null || dto.Id != id)
             {
                 return this.BadRequest();
@@ -271,7 +294,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                await this.viewService.SetDefaultTeamViewAsync(dto);
+                await this.viewAppService.SetDefaultTeamViewAsync(dto);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -294,12 +317,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         /// </returns>
         [HttpPut("{id}/AssignViewToTeam")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Views.AssignToTeam)]
         public async Task<IActionResult> AssignViewToTeam(int id, [FromBody]AssignViewToTeamDto dto)
         {
+            if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AssignToTeamSuffix).Result)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             if (id < 1 || dto == null || dto.ViewId != id || dto.TeamId < 1)
             {
                 return this.BadRequest();
@@ -307,7 +335,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                await this.viewService.AssignViewToTeamAsync(dto);
+                await this.viewAppService.AssignViewToTeamAsync(dto);
                 return this.Ok();
             }
             catch (ElementNotFoundException)
@@ -335,7 +363,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
 
             try
             {
-                var updatedDto = await this.viewService.UpdateViewAsync(dto);
+                var updatedDto = await this.viewAppService.UpdateViewAsync(dto);
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)

@@ -31,7 +31,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
-      [useViewTeams]="useViewTeams"
+      [useViewTeamId]="useViewTeamId"
     ></bia-table-controller>
     <bia-table *ngIf="!useCalcMode"
       [elements]="maintenanceTeams$ | async"

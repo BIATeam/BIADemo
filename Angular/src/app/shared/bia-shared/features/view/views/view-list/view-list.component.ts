@@ -3,7 +3,7 @@ import { SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
-import { ViewType, DEFAULT_VIEW, TeamTypeId } from 'src/app/shared/constants';
+import { ViewType, DEFAULT_VIEW, TeamTypeId, TeamTypeRightPrefixe } from 'src/app/shared/constants';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getAllViews, getLastViewChanged, getDataLoaded } from '../../store/view.state';
@@ -26,7 +26,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
   defaultView: number;
   private sub = new Subscription();
   @Input() tableStateKey: string;
-  @Input() useViewTeams: TeamTypeId[];
+  @Input() useViewTeamId: TeamTypeId | null;
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -92,14 +92,14 @@ export class ViewListComponent implements OnInit, OnDestroy {
     ];
 
     let defaultView = 0;
-    const currentTeamIds = this.authService.getCurrentTeamIds(this.useViewTeams);
+    const currentTeamId = (this.useViewTeamId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamId);
     const systemViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.System
     );
     const teamViews = this.views.filter(
       (v) =>
-        v.viewType === ViewType.Team && (v.viewTeams.some((vs) => currentTeamIds.some(id => id == vs.teamId) ))
+        v.viewType === ViewType.Team && (v.viewTeams.some((vs) => currentTeamId == vs.teamId ))
     );
     const userViews = this.views.filter((v) => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
@@ -131,7 +131,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
       });
 
       const teamDefault = teamViews.filter((v) =>
-        v.viewTeams.some((y) => currentTeamIds.some(id => id == y.teamId)  && y.isDefault === true)
+        v.viewTeams.some((y) => currentTeamId == y.teamId  && y.isDefault === true)
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -196,16 +196,22 @@ export class ViewListComponent implements OnInit, OnDestroy {
   }
 
   showEditButton() {
+    let canSetTeamView = false;
+    if (this.useViewTeamId != null)
+    {
+      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamId)?.value;
+      canSetTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix) ||
+        this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix) ||
+        this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix) ||
+        this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix) ||
+        this.authService.hasPermission(Permission.View_DeleteTeamView);
+    }
     return (
-      this.authService.hasPermission(Permission.View_AddTeamView) ||
+      canSetTeamView ||
       this.authService.hasPermission(Permission.View_AddUserView) ||
       this.authService.hasPermission(Permission.View_UpdateUserView) ||
-      this.authService.hasPermission(Permission.View_UpdateTeamView) ||
       this.authService.hasPermission(Permission.View_DeleteUserView) ||
-      this.authService.hasPermission(Permission.View_DeleteTeamView) ||
-      this.authService.hasPermission(Permission.View_SetDefaultUserView) ||
-      this.authService.hasPermission(Permission.View_SetDefaultTeamView) ||
-      this.authService.hasPermission(Permission.View_AssignToTeam)
+      this.authService.hasPermission(Permission.View_SetDefaultUserView)
     );
   }
 }

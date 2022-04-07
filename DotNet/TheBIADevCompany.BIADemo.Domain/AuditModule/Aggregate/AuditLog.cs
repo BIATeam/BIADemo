@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Audit.Aggregate
         /// <summary>
         /// Gets or sets the table name.
         /// </summary>
-        public string Table{ get; set; }
+        public string Table { get; set; }
 
         /// <summary>
         /// Gets or sets the PrimaryKey.

@@ -4,6 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 {
+    using System.Collections.Generic;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+
     /// <summary>
     /// The list of all rights.
     /// </summary>
@@ -431,7 +434,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to add an site view.
             /// </summary>
-            public const string AddTeamView = "View_Add_TeamView";
+            public const string AddTeamViewSuffix = "_View_Add_TeamView";
 
             /// <summary>
             /// The right to update an user view.
@@ -441,7 +444,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to update an site view.
             /// </summary>
-            public const string UpdateTeamView = "View_Update_TeamView";
+            public const string UpdateTeamViewSuffix = "_View_Update_TeamView";
 
             /// <summary>
             /// The right to delete an user view.
@@ -461,12 +464,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to set default site view.
             /// </summary>
-            public const string SetDefaultTeamView = "View_Set_Default_TeamView";
+            public const string SetDefaultTeamViewSuffix = "_View_Set_Default_TeamView";
 
             /// <summary>
             /// The right to assign view to a site.
             /// </summary>
-            public const string AssignToTeam = "View_Assign_To_Team";
+            public const string AssignToTeamSuffix = "_View_Assign_To_Team";
         }
 
         /// <summary>

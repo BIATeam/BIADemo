@@ -25,7 +25,11 @@ export enum Permission {
   AircraftMaintenanceCompany_Member_Delete = 'AircraftMaintenanceCompany_Member_Delete',
   AircraftMaintenanceCompany_Member_Create = 'AircraftMaintenanceCompany_Member_Create',
   AircraftMaintenanceCompany_Member_List_Access = 'AircraftMaintenanceCompany_Member_List_Access',
-  
+  AircraftMaintenanceCompany_View_AddTeamView = 'AircraftMaintenanceCompany_View_Add_TeamView',
+  AircraftMaintenanceCompany_View_UpdateTeamView = 'AircraftMaintenanceCompany_View_Update_TeamView',
+  AircraftMaintenanceCompany_View_SetDefaultTeamView = 'AircraftMaintenanceCompany_View_Set_Default_TeamView',
+  AircraftMaintenanceCompany_View_AssignToTeam = 'AircraftMaintenanceCompany_View_Assign_To_Team',
+
   MaintenanceTeam_Create = 'MaintenanceTeam_Create',
   MaintenanceTeam_Delete = 'MaintenanceTeam_Delete',
   MaintenanceTeam_List_Access = 'MaintenanceTeam_List_Access',
@@ -72,12 +76,12 @@ export enum Permission {
   LdapDomains_List = 'LdapDomains_List',
   View_List = 'View_List',
   View_AddUserView = 'View_Add_UserView',
-  View_AddTeamView = 'View_Add_TeamView',
+  View_AddTeamViewSuffix = '_View_Add_TeamView',
   View_UpdateUserView = 'View_Update_UserView',
-  View_UpdateTeamView = 'View_Update_TeamView',
+  View_UpdateTeamViewSuffix = '_View_Update_TeamView',
   View_DeleteUserView = 'View_Delete_UserView',
   View_DeleteTeamView = 'View_Delete_TeamView',
   View_SetDefaultUserView = 'View_Set_Default_UserView',
-  View_SetDefaultTeamView = 'View_Set_Default_TeamView',
-  View_AssignToTeam = 'View_Assign_To_Team'
+  View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
+  View_AssignToTeamSuffix = '_View_Assign_To_Team'
 }

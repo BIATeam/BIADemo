@@ -55,7 +55,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                         if (domain != null)
                         {
                             user.Domain = domain;
-                            // this.repository.Update(user)
                         }
                     }
 
@@ -66,7 +65,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                         if (sid != null)
                         {
                             user.Sid = sid;
-                            // this.repository.Update(user)
                         }
                     }
 
@@ -101,7 +99,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         public void DeactivateUser(User user)
         {
             user.IsActive = false;
-            // this.repository.Update(user)
         }
 
         /// <summary>
@@ -126,7 +123,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             else if (!foundUser.IsActive)
             {
                 foundUser.IsActive = true;
-                // this.repository.Update(foundUser)
             }
         }
 
@@ -138,7 +134,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 if (userFormDirectory != null)
                 {
                     UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                    // this.repository.Update(user)
                 }
             }
         }

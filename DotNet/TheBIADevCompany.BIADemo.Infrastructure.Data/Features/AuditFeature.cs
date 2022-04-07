@@ -62,11 +62,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                                 return DedicatedAudit(evt, entry, auditEntity);
                             }
                         })
-                        .IgnoreMatchedProperties(t => t.Name == "AuditLog") // do not copy properties for generic audit
-                    );
+                        .IgnoreMatchedProperties(t => t.Name == "AuditLog")); // do not copy properties for generic audit
+
+#pragma warning disable S125 // Sections of code should not be commented out
 
                 // Log Audit in dedicated table
-                //Audit.Core.Configuration.Setup()
+                // Audit.Core.Configuration.Setup()
                 //    .UseEntityFramework(_ => _
                 //        .AuditTypeNameMapper(typeName => typeName + "Audit")
                 //        .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
@@ -76,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 //    );
 
                 // Log all Audit in AuditLog table
-                //Audit.Core.Configuration.Setup()
+                // Audit.Core.Configuration.Setup()
                 //    .UseEntityFramework(_ => _
                 //        .AuditTypeMapper(t => typeof(AuditLog))
                 //        .AuditEntityAction<AuditLog>((evt, entry, auditEntity) =>
@@ -85,7 +86,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 //        })
                 //        .IgnoreMatchedProperties(true)
                 //    );
+#pragma warning restore S125 // Sections of code should not be commented out
+            }
+        }
 
+        /// <summary>
+        /// Configure the Audit feature in order to retrieve
+        /// the current (associated to the request) user.
+        /// </summary>
+        /// <param name="serviceProvider">The serviceProvider.</param>
+        public void UseAuditFeatures(IServiceProvider serviceProvider)
+        {
+            if (this.isActive)
+            {
+                Audit.Core.Configuration.AddOnSavingAction(scope =>
+                {
+                    BIAClaimsPrincipal principal = serviceProvider.GetRequiredService<IPrincipal>() as BIAClaimsPrincipal;
+                    scope.Event.Environment.CustomFields["UserLogin"] = principal.Identity.Name;
+                });
             }
         }
 
@@ -146,23 +164,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
             else
             {
                 return Task.FromResult(false);
-            }
-        }
-
-        /// <summary>
-        /// Configure the Audit feature in order to retrieve
-        /// the current (associated to the request) user.
-        /// </summary>
-        /// <param name="serviceProvider">The serviceProvider.</param>
-        public void UseAuditFeatures(IServiceProvider serviceProvider)
-        {
-            if (this.isActive)
-            {
-                Audit.Core.Configuration.AddOnSavingAction(scope =>
-                {
-                    BIAClaimsPrincipal principal = serviceProvider.GetRequiredService<IPrincipal>() as BIAClaimsPrincipal;
-                    scope.Event.Environment.CustomFields["UserLogin"] = principal.Identity.Name;
-                });
             }
         }
     }

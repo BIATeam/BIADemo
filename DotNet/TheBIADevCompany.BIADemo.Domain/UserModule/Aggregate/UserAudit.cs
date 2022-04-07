@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="AuditUser.cs" company="TheBIADevCompany">
+// <copyright file="UserAudit.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

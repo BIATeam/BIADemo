@@ -7,11 +7,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The interface defining the application service for team.
     /// </summary>
-    public interface ITeamAppService
+    public interface ITeamAppService : IFilteredServiceBase<Team, int>
     {
         /// <summary>
         /// Gets all asynchronous.

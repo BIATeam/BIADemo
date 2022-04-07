@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Domain.Service
     /// The base class for all CRUD application service.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>
+    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>, IFilteredServiceBase<TEntity, TKey> 
         where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
@@ -63,7 +63,7 @@ namespace BIA.Net.Core.Domain.Service
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read, 
+            string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
@@ -86,7 +86,7 @@ namespace BIA.Net.Core.Domain.Service
                 filter: filter,
                 queryOrder: queryOrder,
                 firstElement: filters?.First ?? 0,
-                pageCount: filters?.Rows ?? 0, 
+                pageCount: filters?.Rows ?? 0,
                 queryMode: queryMode);
 
             return (results.Item1.ToList(), results.Item2);
@@ -125,8 +125,8 @@ namespace BIA.Net.Core.Domain.Service
             return await this.Repository.GetAllResultAsync(
                 selectResult: mapper.EntityToDto(mapperMode),
                 id: id,
-                specification: GetFilterSpecification(accessMode, filtersContext) & specification, 
-                filter: filter, 
+                specification: GetFilterSpecification(accessMode, filtersContext) & specification,
+                filter: filter,
                 queryOrder: queryOrder,
                 firstElement: firstElement,
                 pageCount: pageCount,
@@ -204,12 +204,12 @@ namespace BIA.Net.Core.Domain.Service
             filters.First = 0;
             filters.Rows = 0;
 
-            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id:id, specification: specification, filter:filter, accessMode: accessMode, queryMode: queryMode)).results;
+            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode)).results;
 
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode)).ToList();
 
-            StringBuilder csv = new ();
+            StringBuilder csv = new();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
@@ -237,7 +237,7 @@ namespace BIA.Net.Core.Domain.Service
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
-            string accessMode = AccessMode.Read, 
+            string accessMode = AccessMode.Read,
             string queryMode = QueryMode.Read,
             string mapperMode = MapperMode.Item)
 
@@ -296,8 +296,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
         public virtual async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
-            TOtherDto dto, 
-            string accessMode = AccessMode.Update, 
+            TOtherDto dto,
+            string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
             string mapperMode = null)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()

@@ -158,6 +158,10 @@
         "Names": [ "AircraftMaintenanceCompany_Member_List_Access", "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "Member_Save" ],
         "Roles": [ "Admin", "Supervisor" ]
       },
+      {
+        "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
+        "Roles": [ "Supervisor" ]
+      },
       // Maintenance Team
       {
         "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Create", "MaintenanceTeam_Read", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
@@ -242,6 +246,10 @@
         "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
         "Roles": [ "Admin" ]
       },
+      {
+        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
+        "Roles": [ "Site_Admin" ]
+      },
       // Team
       {
         "Names": [ "Team_Access_All" ],
@@ -277,14 +285,10 @@
         "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
         "Roles": [ "User" ]
       },
-      {
-        "Names": [ "View_Add_TeamView", "View_Update_TeamView", "View_Set_Default_TeamView", "View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      {
-        "Name": "View_Delete_TeamView",
-        "Roles": [ "Admin" ]
-      },
+      //{
+      //  "Name": "View_Delete_TeamView",
+      //  "Roles": [ "Admin" ]
+      //},
       // Notifications
       {
         "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],

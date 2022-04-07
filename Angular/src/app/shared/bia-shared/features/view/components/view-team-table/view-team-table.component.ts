@@ -74,6 +74,13 @@ export class ViewTeamTableComponent implements OnChanges {
     return false;
   }
 
+  containsOnlyCurrentTeam(view: View) {
+    if (view.viewTeams?.length > 1) return false;
+    if (view && view.viewTeams && this.teamSelected) {
+      return view.viewTeams.some((x: ViewTeam) => x.teamId === this.teamSelected.id);
+    }
+    return false;
+  }
   isTeamDefault(view: View): boolean {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some((x: ViewTeam) => x.teamId === this.teamSelected.id && x.isDefault === true);
@@ -86,7 +93,18 @@ export class ViewTeamTableComponent implements OnChanges {
   }
 
   showLinkWithTeam() {
-    return !(this.containsCurrentTeam(this.viewSelected) === true && this.canAssign === true);
+    return (this.containsCurrentTeam(this.viewSelected) === false && this.canAssign === true);
+  }
+
+  showUnLinkWithTeamAsDelete() {
+    return (this.containsOnlyCurrentTeam(this.viewSelected) === true && this.canAssign === true);
+  }
+
+  showUnlinkWithTeam() {
+    return (
+      this.containsOnlyCurrentTeam(this.viewSelected) === false && 
+      this.containsCurrentTeam(this.viewSelected) === true && 
+      this.canAssign === true);
   }
 
   private onViewsChange(changes: SimpleChanges) {

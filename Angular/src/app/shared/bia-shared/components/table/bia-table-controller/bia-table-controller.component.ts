@@ -25,7 +25,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Input() columns: KeyValuePair[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() tableStateKey: string;
-  @Input() useViewTeams: TeamTypeId[];
+  @Input() useViewTeamId: TeamTypeId | null;
 
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();

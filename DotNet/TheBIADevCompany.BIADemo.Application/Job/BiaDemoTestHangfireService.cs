@@ -113,11 +113,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 var rand = new Random();
                 int targetPlaneId = targetPlanes[rand.Next(targetPlanes.Count)].Id;
 
-                var role = new List<OptionDto>
-                    {
-                        new OptionDto { Id =  (int)RoleId.SiteAdmin, Display = "SiteAdmin", DtoState = DtoState.Added },
-                    };
-
                 var data = new NotificationDataDto
                 {
                     Teams = new List<NotificationTeamDto>

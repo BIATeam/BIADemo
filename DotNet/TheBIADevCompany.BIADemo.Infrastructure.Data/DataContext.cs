@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// <summary>
     /// The database context.
     /// </summary>
-    [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}" )]
+    [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
     public class DataContext : BIADataContext
     {
         /// <summary>
@@ -150,8 +150,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.HasDefaultSchema("dbo");
-
+            // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
 
             TranslationModelBuilder.CreateModel(modelBuilder);

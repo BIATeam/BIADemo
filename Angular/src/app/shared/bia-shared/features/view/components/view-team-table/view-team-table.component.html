@@ -15,7 +15,15 @@
   ></button>
   <button
     pButton
-    *ngIf="!showLinkWithTeam()"
+    *ngIf="showUnLinkWithTeamAsDelete()"
+    [disabled]="!viewSelected"
+    label="{{ 'bia.delete' | translate }}"
+    (click)="onAssignViewToTeam(viewSelected?.id, false)"
+  ></button>
+  <button
+    pButton
+    *ngIf="showUnlinkWithTeam()"
+    [disabled]="!viewSelected"
     label="{{ 'bia.views.unlinkWithTeam' | translate }}"
     (click)="onAssignViewToTeam(viewSelected?.id, false)"
   ></button>

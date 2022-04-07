@@ -211,6 +211,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 201, Code = "Team_Leader", Label = "Team leader" });
             modelBuilder.Entity<Permission>().HasData(new Permission { Id = 202, Code = "Operator", Label = "Operator" });
+
             // End BIADemo
         }
 

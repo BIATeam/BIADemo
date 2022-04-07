@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="AircraftMaintenanceCompany.cs" company="TheBIADevCompany">
+// <copyright file="MaintenanceTeam.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     /// </summary>
     public class MaintenanceTeam : Team
     {
-
         /// <summary>
         /// Gets or sets the aircraft maintenance company.
         /// </summary>

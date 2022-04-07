@@ -44,3 +44,12 @@ export enum TeamTypeId {
   MaintenanceTeam =3,
   // End BIADemo
 }
+
+let TeamTypeRightPrefixe :{ key: TeamTypeId; value: string; }[] = [ 
+  {key: TeamTypeId.Site, value: "Site"},
+// Begin BIADemo
+  {key: TeamTypeId.AircraftMaintenanceCompany, value: "AircraftMaintenanceCompany"},
+  {key: TeamTypeId.MaintenanceTeam, value: "MaintenanceTeam"},
+// End BIADemo
+];
+export {TeamTypeRightPrefixe};
