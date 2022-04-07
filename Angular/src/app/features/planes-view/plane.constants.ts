@@ -6,5 +6,5 @@ export const storeKey: string = 'features-planes-view';
 export const useCalcMode = false;
 export const useSignalR = false;
 export const useView = true;
-export const useViewTeamId = TeamTypeId.Site;
+export const useViewTeamWithTypeId = TeamTypeId.Site;
 export const usePopup = true;

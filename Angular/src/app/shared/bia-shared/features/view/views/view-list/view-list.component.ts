@@ -26,7 +26,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
   defaultView: number;
   private sub = new Subscription();
   @Input() tableStateKey: string;
-  @Input() useViewTeamId: TeamTypeId | null;
+  @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -92,7 +92,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
     ];
 
     let defaultView = 0;
-    const currentTeamId = (this.useViewTeamId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamId);
+    const currentTeamId = (this.useViewTeamWithTypeId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     const systemViews = this.views.filter(
       (v) =>
         v.viewType === ViewType.System
@@ -197,9 +197,9 @@ export class ViewListComponent implements OnInit, OnDestroy {
 
   showEditButton() {
     let canSetTeamView = false;
-    if (this.useViewTeamId != null)
+    if (this.useViewTeamWithTypeId != null)
     {
-      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamId)?.value;
+      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamWithTypeId)?.value;
       canSetTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix) ||
         this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix) ||
         this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix) ||

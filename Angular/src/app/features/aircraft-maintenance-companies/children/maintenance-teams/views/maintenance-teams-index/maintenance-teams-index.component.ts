@@ -24,7 +24,7 @@ import { MaintenanceTeamsSignalRService } from '../../services/maintenance-team-
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { useCalcMode, useSignalR, useView, useViewTeamId } from '../../maintenance-team.constants';
+import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../maintenance-team.constants';
 import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
 import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
@@ -40,7 +40,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
   useView = useView;
   useRefreshAtLanguageChange = false;
   tableStateKey = this.useView ? 'maintenance-teamsGrid' : undefined;
-  useViewTeamId = this.useView ? useViewTeamId : null;
+  useViewTeamWithTypeId = this.useView ? useViewTeamWithTypeId : null;
 
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;

@@ -39,7 +39,7 @@ import { Team } from 'src/app/domains/team/model/team';
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
-  @Input() useViewTeamId: TeamTypeId | null;
+  @Input() useViewTeamWithTypeId: TeamTypeId | null;
   private sub = new Subscription();
 
   teams$: Observable<Team[]>;
@@ -105,7 +105,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   initTeams() {
-    let currentTeamId = (this.useViewTeamId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamId);
+    let currentTeamId = (this.useViewTeamWithTypeId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.teams$ = this.store.select(getAllTeams).pipe(
       map((teams) =>
         teams.filter(
@@ -239,9 +239,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   private setPermissions() {
-    if (this.useViewTeamId != null)
+    if (this.useViewTeamWithTypeId != null)
     {
-      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamId)?.value;
+      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamWithTypeId)?.value;
       this.canAddTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix);
       this.canUpdateTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix);
       this.canSetDefaultTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix);

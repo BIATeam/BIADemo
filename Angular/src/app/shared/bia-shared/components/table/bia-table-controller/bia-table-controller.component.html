@@ -18,7 +18,7 @@
   <div fxLayout="row" fxLayoutGap="20px" fxFlex="75" fxLayoutAlign="flex-end end">
     <div *ngIf="tableStateKey">
       <span>{{ 'bia.views.view' | translate }} : </span>
-      <bia-view-list [tableStateKey]="tableStateKey" [useViewTeamId]="useViewTeamId" (viewChange)="onViewChange($event)"></bia-view-list>
+      <bia-view-list [tableStateKey]="tableStateKey" [useViewTeamWithTypeId]="useViewTeamWithTypeId" (viewChange)="onViewChange($event)"></bia-view-list>
     </div>
     <div>
       <span>{{ 'bia.display' | translate }} </span>
