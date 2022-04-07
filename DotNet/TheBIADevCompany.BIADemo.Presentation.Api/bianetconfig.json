@@ -285,6 +285,7 @@
         "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
         "Roles": [ "User" ]
       },
+      // this functionnality is deprecated (the unassign do the job)
       //{
       //  "Name": "View_Delete_TeamView",
       //  "Roles": [ "Admin" ]

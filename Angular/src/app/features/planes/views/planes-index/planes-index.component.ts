@@ -27,7 +27,7 @@ import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
-import { useCalcMode, useSignalR, useView } from '../../plane.constants';
+import { useCalcMode, useSignalR, useView, useViewTeamId } from '../../plane.constants';
 import { skip } from 'rxjs/operators';
 
 @Component({
@@ -70,6 +70,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
+  useViewTeamId = this.useView ? useViewTeamId : null;
   parentIds: string[];
 
   constructor(

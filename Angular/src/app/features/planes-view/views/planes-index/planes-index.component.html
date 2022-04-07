@@ -21,6 +21,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [useViewTeamId]="useViewTeamId"
     ></bia-table-controller>
     <bia-table *ngIf="!useCalcMode"
       [elements]="planes$ | async"
