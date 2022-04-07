@@ -23,7 +23,7 @@ export class SiteItemComponent implements OnInit, OnDestroy {
     private layoutService: BiaClassicLayoutService) { }
 
   ngOnInit() {
-    this.siteService.currentSiteId = this.route.snapshot.params.siteId;
+    this.siteService.currentSiteId = +this.route.snapshot.params.siteId;
     this.sub.add
       (
         this.store.select(getCurrentSite).subscribe((site) => {

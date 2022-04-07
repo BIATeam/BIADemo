@@ -26,7 +26,7 @@ export class MaintenanceTeamItemComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.maintenanceTeamService.currentMaintenanceTeamId = this.route.snapshot.params.maintenanceTeamId;
+    this.maintenanceTeamService.currentMaintenanceTeamId = +this.route.snapshot.params.maintenanceTeamId;
     this.sub.add
       (
         this.store.select(getCurrentMaintenanceTeam).subscribe((maintenanceTeam) => {

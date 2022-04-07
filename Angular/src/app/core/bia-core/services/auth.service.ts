@@ -126,6 +126,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     const value = sessionStorage.getItem(STORAGE_TEAMSLOGIN_KEY);
     if (value) {
       const teamsLogin: TeamLoginDto[] = <TeamLoginDto[]>JSON.parse(value);
+      teamsLogin.forEach(tl => {tl.teamId = +tl.teamId; tl.roleIds = tl.roleIds.map(roleId => +roleId)})
       return teamsLogin;
     }
 
@@ -175,10 +176,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
+    teamId = +teamId;
     let teamsLogin = this.getAllCurrentTeams();
     let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
-      if (team.teamId?.toString() !== teamId?.toString()) {
+      if (+team.teamId !== +teamId) {
         if (teamId == 0) {
           // TODO check if there is a remove in array;
           teamsLogin = teamsLogin.filter(i => i.teamTypeId !== teamTypeId);
@@ -215,6 +217,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   private setCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]): boolean {
+    roleIds = roleIds.map(roleId => +roleId);
     const roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
       const teamsLogin = this.getAllCurrentTeams();
