@@ -25,8 +25,7 @@ import { Dialog } from 'primeng/dialog';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
-import { Confirmation, ConfirmationService } from 'primeng/api';
-import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
+import { ConfirmationService } from 'primeng/api';
 import { getAllTeams } from 'src/app/domains/team/store/team.state';
 import { Team } from 'src/app/domains/team/model/team';
 
@@ -63,8 +62,6 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
-    private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -135,25 +132,13 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   onDeleteUserView(viewId: number) {
-    const confirmation: Confirmation = {
-      ...this.biaDialogService.getDeleteConfirmation(),
-      accept: () => {
-        this.userViewSelected = <View>{};
-        this.store.dispatch(removeUserView({ id: viewId }));
-      }
-    };
-    this.confirmationService.confirm(confirmation);
+      this.userViewSelected = <View>{};
+      this.store.dispatch(removeUserView({ id: viewId }));
   }
 
   onDeleteTeamView(viewId: number) {
-    const confirmation: Confirmation = {
-      ...this.biaDialogService.getDeleteConfirmation(),
-      accept: () => {
-        this.teamViewSelected = <View>{};
-        this.store.dispatch(removeTeamView({ id: viewId }));
-      }
-    };
-    this.confirmationService.confirm(confirmation);
+      this.teamViewSelected = <View>{};
+      this.store.dispatch(removeTeamView({ id: viewId }));
   }
 
   onSetDefaultUserView(event: { viewId: number; isDefault: boolean }) {

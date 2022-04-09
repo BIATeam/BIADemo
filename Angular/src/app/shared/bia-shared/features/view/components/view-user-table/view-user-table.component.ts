@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { View } from '../../model/view';
 import { Table } from 'primeng/table';
+import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
+import { Confirmation, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'bia-view-user-table',
   templateUrl: './view-user-table.component.html',
-  styleUrls: ['./view-user-table.component.scss']
+  styleUrls: ['./view-user-table.component.scss'],
 })
 export class ViewUserTableComponent implements OnChanges {
   @Input() views: View[];
@@ -31,14 +33,23 @@ export class ViewUserTableComponent implements OnChanges {
   @Output() setDefault = new EventEmitter<{ viewId: number; isDefault: boolean }>();
   @Output() viewSelect = new EventEmitter<View>();
 
-  constructor() {}
+  constructor( 
+    private biaDialogService: BiaDialogService,
+    private confirmationService: ConfirmationService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
   }
 
   onDeleteView(viewId: number) {
-    this.delete.emit(viewId);
+    const confirmation: Confirmation = {
+      ...this.biaDialogService.getDeleteConfirmation("view-user-confirm"),
+      accept: () => {
+        this.delete.emit(viewId);
+      }
+    };
+    this.confirmationService.confirm(confirmation);
+    
   }
 
   onSetDefaultView(viewId: number, isDefault: boolean) {

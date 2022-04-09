@@ -18,7 +18,7 @@
     *ngIf="showUnLinkWithTeamAsDelete()"
     [disabled]="!viewSelected"
     label="{{ 'bia.delete' | translate }}"
-    (click)="onAssignViewToTeam(viewSelected?.id, false)"
+    (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"
   ></button>
   <button
     pButton
@@ -76,3 +76,4 @@
     </tr>
   </ng-template>
 </p-table>
+<p-confirmDialog key="view-team-confirm"></p-confirmDialog>

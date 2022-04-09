@@ -4,11 +4,13 @@ import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { ViewTeam } from '../../model/view-team';
 import { Team } from 'src/app/domains/team/model/team';
 import { Table } from 'primeng/table';
+import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
+import { Confirmation, ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'bia-view-team-table',
   templateUrl: './view-team-table.component.html',
-  styleUrls: ['./view-team-table.component.scss']
+  styleUrls: ['./view-team-table.component.scss'],
 })
 export class ViewTeamTableComponent implements OnChanges {
   @Input() views: View[];
@@ -37,18 +39,37 @@ export class ViewTeamTableComponent implements OnChanges {
   @Output() setDefault = new EventEmitter<{ viewId: number; isDefault: boolean }>();
   @Output() viewSelect = new EventEmitter<View>();
 
-  constructor() {}
+  constructor(    
+    private biaDialogService: BiaDialogService,
+    private confirmationService: ConfirmationService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
   }
 
   onDeleteView(viewId: number) {
-    this.delete.emit(viewId);
+    const confirmation: Confirmation = {
+      ...this.biaDialogService.getDeleteConfirmation(),
+      accept: () => {
+        this.delete.emit(viewId);
+      }
+    };
+    this.confirmationService.confirm(confirmation);
   }
 
   onAssignViewToTeam(viewId: number, isAssign: boolean) {
     this.assignViewToTeam.emit(<AssignViewToTeam>{ viewId: viewId, teamId: this.teamSelected.id, isAssign: isAssign });
+  }
+
+  onAssignViewToTeamWithDelete(viewId: number, isAssign: boolean) {
+    const confirmation: Confirmation = {
+      
+      ...this.biaDialogService.getDeleteConfirmation("view-team-confirm"),
+      accept: () => {
+        this.assignViewToTeam.emit(<AssignViewToTeam>{ viewId: viewId, teamId: this.teamSelected.id, isAssign: isAssign });
+      },
+    };
+    this.confirmationService.confirm(confirmation);
   }
 
   onSetDefaultView(viewId: number, isDefault: boolean) {
