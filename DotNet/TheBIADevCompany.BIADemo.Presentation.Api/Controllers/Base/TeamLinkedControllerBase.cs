@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -49,10 +50,27 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
                 return false;
             }
 
+            return this.IsAuthorizeForTeamType((TeamTypeId)teamDto.TeamTypeId, teamId, roleSuffix);
+        }
+
+        /// <summary>
+        /// Check autorize based on teamTypeId.
+        /// </summary>
+        /// <param name="teamTypeId">the type team Id.</param>
+        /// <param name="roleSuffix">the last part of the permission.</param>
+        /// <returns>true if authorized.</returns>
+        private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
+        {
             string prefixedRight = string.Empty;
-            if (TeamTypeRightPrefixe.Mapping.TryGetValue((TeamTypeId)teamDto.TeamTypeId, out prefixedRight))
+            if (TeamTypeRightPrefixe.Mapping.TryGetValue(teamTypeId, out prefixedRight))
             {
                 if (!this.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == prefixedRight + roleSuffix))
+                {
+                    return false;
+                }
+
+                var userData = new BIAClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
+                if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
                 {
                     return false;
                 }

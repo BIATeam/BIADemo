@@ -42,32 +42,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The right to access to the list of members.
             /// </summary>
-            public const string ListAccess = "Member_List_Access";
+            public const string ListAccessSuffix = "_Member_List_Access";
 
             /// <summary>
             /// The right to create members.
             /// </summary>
-            public const string Create = "Member_Create";
+            public const string CreateSuffix = "_Member_Create";
 
             /// <summary>
             /// The right to read members.
             /// </summary>
-            public const string Read = "Member_Read";
+            public const string ReadSuffix = "_Member_Read";
 
             /// <summary>
             /// The right to update members.
             /// </summary>
-            public const string Update = "Member_Update";
+            public const string UpdateSuffix = "_Member_Update";
 
             /// <summary>
             /// The right to delete members.
             /// </summary>
-            public const string Delete = "Member_Delete";
+            public const string DeleteSuffix = "_Member_Delete";
 
             /// <summary>
             /// The right to save members.
             /// </summary>
-            public const string Save = "Member_Save";
+            public const string SaveSuffix = "_Member_Save";
         }
 
         // Begin BIADemo

@@ -173,7 +173,7 @@ export class SitesIndexComponent implements OnInit {
     this.canEdit = this.authService.hasPermission(Permission.Site_Update);
     this.canDelete = this.authService.hasPermission(Permission.Site_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Site_Create);
-    this.canManageMembers = this.authService.hasPermission(Permission.Member_List_Access);
+    this.canManageMembers = this.authService.hasPermission(Permission.Site_Member_List_Access);
   }
 
   private initTableConfiguration() {

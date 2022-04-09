@@ -19,7 +19,6 @@ import { MemberDas } from '../../services/member-das.service';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { MembersSignalRService } from '../../services/member-signalr.service';
 import { MembersEffects } from '../../store/members-effects';
@@ -220,9 +219,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Member_Update);
-    this.canDelete = this.authService.hasPermission(Permission.Member_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.Member_Create);
   }
 
   protected initTableConfiguration() {

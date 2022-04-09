@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 // <copyright file="MembersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -26,11 +27,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>
     /// The API controller used to manage members.
     /// </summary>
-    public class MembersController : BiaControllerBase
+    public class MembersController : TeamLinkedControllerBase
     {
         /// <summary>
         /// The member application service.
@@ -48,13 +50,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// Initializes a new instance of the <see cref="MembersController"/> class.
         /// </summary>
         /// <param name="memberService">The member application service.</param>
-        /// <param name="clientForHubService">The hub for client.</param>
+        /// <param name="teamAppService">The team service.</param>
 #if UseHubForClientInMember
+        /// <param name="clientForHubService">The hub for client.</param>
         public MembersController(
-            IMemberAppService memberService, IClientForHubRepository clientForHubService)
+            IMemberAppService memberService, ITeamAppService teamAppService, IClientForHubRepository clientForHubService)
 #else
-        public MembersController(IMemberAppService memberService)
+        public MembersController(IMemberAppService memberService, ITeamAppService teamAppService)
 #endif
+            : base(teamAppService)
         {
 #if UseHubForClientInMember
             this.clientForHubService = clientForHubService;
@@ -70,9 +74,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.ListAccess)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
+            if (filters.ParentIds != null && filters.ParentIds.Length > 0)
+            {
+                if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+            }
+            else
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             try
             {
                 var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
@@ -95,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Read)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -106,6 +122,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             try
             {
                 var dto = await this.memberService.GetAsync(id);
+                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.ReadSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -127,11 +148,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Create)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Add([FromBody] MemberDto dto)
         {
             try
             {
+                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.CreateSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
                 var createdDto = await this.memberService.AddAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
@@ -159,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Update)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Update(int id, [FromBody] MemberDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -169,6 +195,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
+                if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
                 var updatedDto = await this.memberService.UpdateAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(updatedDto.TeamId.ToString(), "members", "refresh-members");
@@ -199,7 +230,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Delete)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -209,6 +240,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
+                var toDeleteDto = await this.memberService.GetAsync(id);
+                if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
 #pragma warning disable S1481 // Unused local variables should be removed
                 var deletedDto = await this.memberService.RemoveAsync(id);
 #pragma warning restore S1481 // Unused local variables should be removed
@@ -237,7 +274,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Delete)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -248,6 +285,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             try
             {
 #pragma warning disable S1481 // Unused local variables should be removed
+                foreach (var id in ids)
+                {
+                    var toDeleteDto = await this.memberService.GetAsync(id);
+                    if (!this.IsAuthorizeForTeam(toDeleteDto.TeamId, Rights.Members.DeleteSuffix).Result)
+                    {
+                        return this.StatusCode(StatusCodes.Status403Forbidden);
+                    }
+                }
+
                 var deletedDtos = await this.memberService.RemoveAsync(ids);
 #pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
@@ -278,7 +324,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Members.Save)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Save(IEnumerable<MemberDto> dtos)
         {
             var dtoList = dtos.ToList();
@@ -289,6 +335,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
+                foreach (var dto in dtos)
+                {
+                    if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.SaveSuffix).Result)
+                    {
+                        return this.StatusCode(StatusCodes.Status403Forbidden);
+                    }
+                }
+
 #pragma warning disable S1481 // Unused local variables should be removed
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
 #pragma warning restore S1481 // Unused local variables should be removed
@@ -320,9 +374,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        [Authorize(Roles = Rights.Members.ListAccess)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public virtual async Task<IActionResult> GetFileCSV([FromBody] PagingFilterFormatDto filters)
         {
+            if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
+            {
+                return this.StatusCode(StatusCodes.Status403Forbidden);
+            }
+
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
             return this.File(buffer, "text/csv;charset=utf-8", fileName);

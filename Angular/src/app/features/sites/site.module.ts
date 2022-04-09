@@ -40,7 +40,7 @@ const ROUTES: Routes = [
         data: {
           breadcrumb: 'app.members',
           canNavigate: true,
-          permission: Permission.Member_List_Access
+          permission: Permission.Site_Member_List_Access
         },
         loadChildren: () =>
           import('./children/members/site-member.module').then((m) => m.SiteMemberModule)

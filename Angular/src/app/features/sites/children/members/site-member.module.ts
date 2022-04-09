@@ -16,7 +16,7 @@ const ROUTES: Routes = [
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Member_List_Access,
+      permission: Permission.Site_Member_List_Access,
       InjectComponent: SiteMembersIndexComponent
     },
     component: FullPageLayoutComponent,
@@ -28,7 +28,7 @@ const ROUTES: Routes = [
         data: {
           breadcrumb: 'bia.add',
           canNavigate: false,
-          permission: Permission.Member_Create,
+          permission: Permission.Site_Member_Create,
           title: 'member.add',
           InjectComponent: SiteMemberNewComponent,
         },
@@ -50,7 +50,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'member.manage',
               canNavigate: true,
-              permission: Permission.Member_Update,
+              permission: Permission.Site_Member_Update,
               title: 'member.manage',
               InjectComponent: SiteMemberEditComponent,
             },

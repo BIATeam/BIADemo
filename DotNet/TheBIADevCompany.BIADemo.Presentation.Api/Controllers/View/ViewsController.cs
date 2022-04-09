@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         /// <param name="viewAppService">The view service.</param>
         /// <param name="teamAppService">The team service.</param>
         public ViewsController(IViewAppService viewAppService, ITeamAppService teamAppService)
-            : base (teamAppService)
+            : base(teamAppService)
         {
             this.viewAppService = viewAppService;
         }
@@ -194,6 +194,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
+
             return await this.UpdateView(id, dto);
         }
 

@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/features/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
+import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'app-site-members-index',
@@ -20,5 +21,10 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
     this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
     this.parentIds = [this.siteService.currentSiteId?.toString()];
+  }
+  protected setPermissions() {
+    this.canEdit = this.authService.hasPermission(Permission.Site_Member_Update);
+    this.canDelete = this.authService.hasPermission(Permission.Site_Member_Delete);
+    this.canAdd = this.authService.hasPermission(Permission.Site_Member_Create);
   }
 }

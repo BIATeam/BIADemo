@@ -55,7 +55,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'app.members',
               canNavigate: true,
-              permission: Permission.Member_List_Access
+              permission: Permission.AircraftMaintenanceCompany_Member_List_Access
             },
             loadChildren: () =>
               import('./children/members/aircraft-maintenance-company-member.module').then((m) => m.AircraftMaintenanceCompanyMemberModule)
@@ -77,7 +77,7 @@ const ROUTES: Routes = [
             data: {
               breadcrumb: 'aircraftMaintenanceCompany.maintenanceTeams',
               canNavigate: true,
-              permission: Permission.Member_List_Access
+              permission: Permission.MaintenanceTeam_List_Access
             },
             loadChildren: () =>
               import('./children/maintenance-teams/maintenance-team.module').then((m) => m.MaintenanceTeamModule)
