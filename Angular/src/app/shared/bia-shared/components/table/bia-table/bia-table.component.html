@@ -58,7 +58,7 @@
       <td *ngIf="canSelectElement">
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
-      <td (click)="editElement(rowData.id)" *ngFor="let col of columns">
+      <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
         <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined">
           <ng-container *ngSwitchCase="'OneToMany'">
             {{ rowData[col.field]?.display }}

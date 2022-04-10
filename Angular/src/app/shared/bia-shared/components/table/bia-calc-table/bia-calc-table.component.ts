@@ -14,6 +14,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
 })
 export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   @Input() canAdd = true;
+  @Input() canEdit = true;
   @Output() save = new EventEmitter<any>();
   @Input() dictOptionDtos: DictOptionDto[];
 
