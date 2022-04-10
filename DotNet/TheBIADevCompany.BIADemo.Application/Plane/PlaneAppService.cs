@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
@@ -37,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             : base(repository)
         {
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentSiteId = userData != null ? userData.CurrentSiteId : 0;
+            this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
         }
 

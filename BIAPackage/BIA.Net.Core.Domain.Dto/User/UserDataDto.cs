@@ -23,20 +23,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// </summary>
         public ICollection<CurrentTeamDto> CurrentTeams { get; set; }
 
-        [JsonIgnore]
-        public int CurrentSiteId
-        {
-            get
-            {
-                var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == 1).FirstOrDefault();
-                if (CurrentSite != null)
-                {
-                    return CurrentSite.CurrentTeamId;
-                }
-                return 0;
-            }
-        }
-
         public int GetCurrentTeamId(int teamTypeId)
         {
             var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();

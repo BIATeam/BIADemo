@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
@@ -43,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         {
             UserDataDto userData = this.principal.GetUserData<UserDataDto>();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
-            int siteId = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true ? default : userData.CurrentSiteId;
+            int siteId = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true ? default : userData.GetCurrentTeamId((int)TeamTypeId.Site);
 
             return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters, siteId));
         }
