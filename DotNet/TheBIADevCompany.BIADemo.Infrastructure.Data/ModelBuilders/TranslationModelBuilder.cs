@@ -22,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             CreateLanguageModel(modelBuilder);
             CreateRoleTranslationModel(modelBuilder);
-            CreatePermissionTranslationModel(modelBuilder);
             CreateNotificationTypeTranslationModel(modelBuilder);
             CreateNotificationTranslationModel(modelBuilder);
         }
@@ -95,60 +94,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.French, Id = 20201, Label = "Operateur" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.Spanish, Id = 20202, Label = "Operador" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.German, Id = 20203, Label = "Operator" });
-
-            // End BIADemo
-        }
-
-        /// <summary>
-        /// Create the model for notification.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        private static void CreatePermissionTranslationModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<PermissionTranslation>().HasKey(r => r.Id);
-            modelBuilder.Entity<PermissionTranslation>().Property(r => r.PermissionId).IsRequired();
-            modelBuilder.Entity<PermissionTranslation>().Property(r => r.LanguageId).IsRequired();
-
-            modelBuilder.Entity<PermissionTranslation>().HasIndex(u => new { u.PermissionId, u.LanguageId }).IsUnique();
-
-            modelBuilder.Entity<PermissionTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-
-            // Begin BIADemo
-            if (false)
-            {
-#pragma warning disable CS0162 // Unreachable code detected
-            // End BIADemo
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur du site" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador del sitio" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Seitenadministrator" });
-
-            // Begin BIADemo
-#pragma warning restore CS0162 // Unreachable code detected
-            }
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur de la compagnie" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador de la aerolínea" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Fluglinienadministrator" });
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 2, LanguageId = LanguageId.French, Id = 201, Label = "Pilote" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 2, LanguageId = LanguageId.Spanish, Id = 202, Label = "Piloto" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 2, LanguageId = LanguageId.German, Id = 203, Label = "Pilot" });
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 101, LanguageId = LanguageId.French, Id = 10101, Label = "Superviseur" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 101, LanguageId = LanguageId.Spanish, Id = 10102, Label = "Supervisor" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 101, LanguageId = LanguageId.German, Id = 10103, Label = "Supervisor" });
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 102, LanguageId = LanguageId.French, Id = 10201, Label = "Expert" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 102, LanguageId = LanguageId.Spanish, Id = 10202, Label = "Experto" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 102, LanguageId = LanguageId.German, Id = 10203, Label = "Experte" });
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 201, LanguageId = LanguageId.French, Id = 20101, Label = "Chef d'equipe" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 201, LanguageId = LanguageId.Spanish, Id = 20102, Label = "Jefe de equipo" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 201, LanguageId = LanguageId.German, Id = 20103, Label = "Teamleiter" });
-
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 202, LanguageId = LanguageId.French, Id = 20201, Label = "Operateur" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 202, LanguageId = LanguageId.Spanish, Id = 20202, Label = "Operador" });
-            modelBuilder.Entity<PermissionTranslation>().HasData(new PermissionTranslation { PermissionId = 202, LanguageId = LanguageId.German, Id = 20203, Label = "Operator" });
 
             // End BIADemo
         }

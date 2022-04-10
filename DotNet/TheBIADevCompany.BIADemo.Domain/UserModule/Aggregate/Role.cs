@@ -41,11 +41,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public virtual ICollection<RoleTranslation> RoleTranslations { get; set; }
 
         /// <summary>
-        /// Gets or sets the permissions associed to the role.
-        /// </summary>
-        public virtual ICollection<PermissionRole> PermissionRoles { get; set; }
-
-        /// <summary>
         /// Gets or sets the team types for this role.
         /// </summary>
         public virtual ICollection<TeamTypeRole> TeamTypeRoles { get; set; }

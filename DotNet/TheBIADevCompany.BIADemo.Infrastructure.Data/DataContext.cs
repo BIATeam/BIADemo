@@ -103,16 +103,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
-        /// <summary>
-        /// Gets or sets the permissions DBSet.
-        /// </summary>
-        public DbSet<Permission> Permissions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the permission translation DBSet.
-        /// </summary>
-        public DbSet<PermissionTranslation> PermissionTranslations { get; set; }
-
         // Begin BIADemo
 
         /// <summary>

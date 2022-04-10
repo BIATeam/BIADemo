@@ -69,7 +69,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<ISiteAppService, SiteAppService>();
             collection.AddTransient<IMemberAppService, MemberAppService>();
             collection.AddTransient<IRoleAppService, RoleAppService>();
-            collection.AddTransient<IPermissionAppService, PermissionAppService>();
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();

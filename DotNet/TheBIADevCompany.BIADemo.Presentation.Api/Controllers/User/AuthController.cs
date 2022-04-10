@@ -53,11 +53,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IUserPermissionDomainService userPermissionDomainService;
 
         /// <summary>
-        /// The Permission service.
-        /// </summary>
-        private readonly IPermissionAppService permissionAppService;
-
-        /// <summary>
         /// The logger.
         /// </summary>
         private readonly ILogger<AuthController> logger;
@@ -78,7 +73,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IUserPermissionDomainService userPermissionDomainService,
-            IPermissionAppService permissionAppService,
             ILogger<AuthController> logger)
         {
             this.jwtFactory = jwtFactory;
@@ -87,7 +81,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             this.roleAppService = roleAppService;
             this.logger = logger;
             this.userPermissionDomainService = userPermissionDomainService;
-            this.permissionAppService = permissionAppService;
         }
 
         /// <summary>
@@ -247,9 +240,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             // translate roles in permission
             userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
-
-            // add the same permission in the id form.
-            userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));
 
             if (!userPermissions.Any())
             {

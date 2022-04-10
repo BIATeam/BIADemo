@@ -41,11 +41,5 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
         }
-
-        /// <inheritdoc/>
-        public override Task<PlaneDto> AddAsync(PlaneDto dto, string mapperMode = null)
-        {
-            return base.AddAsync(dto, mapperMode);
-        }
     }
 }

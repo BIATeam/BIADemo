@@ -671,167 +671,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.PermissionTranslation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("LanguageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("PermissionId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("PermissionTranslations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 101,
-                            Label = "Administrateur de la compagnie",
-                            LanguageId = 2,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Label = "Administrador de la aerolínea",
-                            LanguageId = 3,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Label = "Fluglinienadministrator",
-                            LanguageId = 4,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Label = "Pilote",
-                            LanguageId = 2,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Label = "Piloto",
-                            LanguageId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            Id = 203,
-                            Label = "Pilot",
-                            LanguageId = 4,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            Id = 10101,
-                            Label = "Superviseur",
-                            LanguageId = 2,
-                            PermissionId = 101
-                        },
-                        new
-                        {
-                            Id = 10102,
-                            Label = "Supervisor",
-                            LanguageId = 3,
-                            PermissionId = 101
-                        },
-                        new
-                        {
-                            Id = 10103,
-                            Label = "Supervisor",
-                            LanguageId = 4,
-                            PermissionId = 101
-                        },
-                        new
-                        {
-                            Id = 10201,
-                            Label = "Expert",
-                            LanguageId = 2,
-                            PermissionId = 102
-                        },
-                        new
-                        {
-                            Id = 10202,
-                            Label = "Experto",
-                            LanguageId = 3,
-                            PermissionId = 102
-                        },
-                        new
-                        {
-                            Id = 10203,
-                            Label = "Experte",
-                            LanguageId = 4,
-                            PermissionId = 102
-                        },
-                        new
-                        {
-                            Id = 20101,
-                            Label = "Chef d'equipe",
-                            LanguageId = 2,
-                            PermissionId = 201
-                        },
-                        new
-                        {
-                            Id = 20102,
-                            Label = "Jefe de equipo",
-                            LanguageId = 3,
-                            PermissionId = 201
-                        },
-                        new
-                        {
-                            Id = 20103,
-                            Label = "Teamleiter",
-                            LanguageId = 4,
-                            PermissionId = 201
-                        },
-                        new
-                        {
-                            Id = 20201,
-                            Label = "Operateur",
-                            LanguageId = 2,
-                            PermissionId = 202
-                        },
-                        new
-                        {
-                            Id = 20202,
-                            Label = "Operador",
-                            LanguageId = 3,
-                            PermissionId = 202
-                        },
-                        new
-                        {
-                            Id = 20203,
-                            Label = "Operator",
-                            LanguageId = 4,
-                            PermissionId = 202
-                        });
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
                 {
                     b.Property<int>("Id")
@@ -1045,123 +884,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("MemberRole");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Label")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Code = "Site_Admin",
-                            Label = "Airline administrator"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Code = "Pilot",
-                            Label = "Pilot"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Code = "Supervisor",
-                            Label = "Supervisor"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Code = "Expert",
-                            Label = "Expert"
-                        },
-                        new
-                        {
-                            Id = 201,
-                            Code = "Team_Leader",
-                            Label = "Team leader"
-                        },
-                        new
-                        {
-                            Id = 202,
-                            Code = "Operator",
-                            Label = "Operator"
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.PermissionRole", b =>
-                {
-                    b.Property<int>("PermissionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("PermissionId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("PermissionRole");
-
-                    b.HasData(
-                        new
-                        {
-                            PermissionId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            PermissionId = 2,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            PermissionId = 101,
-                            RoleId = 101
-                        },
-                        new
-                        {
-                            PermissionId = 102,
-                            RoleId = 102
-                        },
-                        new
-                        {
-                            PermissionId = 201,
-                            RoleId = 201
-                        },
-                        new
-                        {
-                            PermissionId = 202,
-                            RoleId = 202
-                        });
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
@@ -1820,25 +1542,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.PermissionTranslation", b =>
-                {
-                    b.HasOne("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", "Permission")
-                        .WithMany("PermissionTranslations")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Permission");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
                 {
                     b.HasOne("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", "Language")
@@ -1892,25 +1595,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Member");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.PermissionRole", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", "Permission")
-                        .WithMany("PermissionRoles")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
-                        .WithMany("PermissionRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
 
                     b.Navigation("Role");
                 });
@@ -2054,13 +1738,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("MemberRoles");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Permission", b =>
-                {
-                    b.Navigation("PermissionRoles");
-
-                    b.Navigation("PermissionTranslations");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
                 {
                     b.Navigation("MemberRoles");
@@ -2068,8 +1745,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationRoles");
 
                     b.Navigation("NotificationTeamRoles");
-
-                    b.Navigation("PermissionRoles");
 
                     b.Navigation("RoleTranslations");
 

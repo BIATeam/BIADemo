@@ -21,8 +21,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateMemberModel(modelBuilder);
             CreateUserModel(modelBuilder);
             CreateRoleModel(modelBuilder);
-            CreatePermissionRoleModel(modelBuilder);
-            CreatePermissionModel(modelBuilder);
             CreateMemberRoleModel(modelBuilder);
             CreateTeamModel(modelBuilder);
             CreateTeamTypeModel(modelBuilder);
@@ -156,61 +154,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 201 }); // Team_Leader
             modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 202 }); // Operator
             modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 102 }); // Expert
-
-            // End BIADemo
-        }
-
-        /// <summary>
-        /// Create the model for member roles.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        private static void CreatePermissionRoleModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<PermissionRole>().HasKey(mr => new { mr.PermissionId, mr.RoleId });
-            modelBuilder.Entity<PermissionRole>().HasOne(mr => mr.Permission).WithMany(m => m.PermissionRoles).HasForeignKey(mr => mr.PermissionId);
-            modelBuilder.Entity<PermissionRole>().HasOne(mr => mr.Role).WithMany(m => m.PermissionRoles).HasForeignKey(mr => mr.RoleId);
-
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 1, RoleId = 1 });
-
-            // Begin BIADemo
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 2, RoleId = 2 });
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 101, RoleId = 101 });
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 102, RoleId = 102 });
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 201, RoleId = 201 });
-            modelBuilder.Entity<PermissionRole>().HasData(new PermissionRole { PermissionId = 202, RoleId = 202 });
-
-            // End BIADemo
-        }
-
-        /// <summary>
-        /// Create the model for roles.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        private static void CreatePermissionModel(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Permission>().HasKey(r => r.Id);
-            modelBuilder.Entity<Permission>().Property(r => r.Code).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Permission>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-
-            // Begin BIADemo
-            if (false)
-            {
-#pragma warning disable CS0162 // Unreachable code detected
-            // End BIADemo
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
-
-            // Begin BIADemo
-#pragma warning restore CS0162 // Unreachable code detected
-            }
-
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 2, Code = "Pilot", Label = "Pilot" });
-
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 101, Code = "Supervisor", Label = "Supervisor" });
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 102, Code = "Expert", Label = "Expert" });
-
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 201, Code = "Team_Leader", Label = "Team leader" });
-            modelBuilder.Entity<Permission>().HasData(new Permission { Id = 202, Code = "Operator", Label = "Operator" });
 
             // End BIADemo
         }
