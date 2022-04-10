@@ -20,7 +20,7 @@
         <bia-view-form [view]="userViewSelected" (save)="onSaveUserView($event)"></bia-view-form>
       </div>
       <bia-view-user-table
-        [views]="views$ | async"
+        [views]="viewUsers$ | async"
         [canDelete]="canDeleteUserView"
         [canSetDefault]="canSetDefaultUserView"
         [canUpdate]="canUpdateUserView"

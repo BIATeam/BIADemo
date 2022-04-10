@@ -9,7 +9,7 @@
   <button
     pButton
     *ngIf="showDefineDefault()"
-    [disabled]="viewSelected?.viewType !== 2"
+    [disabled]="viewSelected?.viewType !== 2 && viewSelected?.viewType !== 1"
     label="{{ 'bia.views.defineDefault' | translate }}"
     (click)="onSetDefaultView(viewSelected?.id, true)"
   ></button>
@@ -40,7 +40,7 @@
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
       <td *ngIf="canUpdate" class="app-action-col">
-        <p-tableRadioButton *ngIf="view.viewType === 2" [value]="view"></p-tableRadioButton>
+        <p-tableRadioButton *ngIf="view.viewType === 2 || view.viewType === 1" [value]="view"></p-tableRadioButton>
       </td>
       <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="pi pi-star-border"></i></td>
       <td>{{ view.description }}</td>

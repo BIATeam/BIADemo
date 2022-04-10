@@ -92,7 +92,9 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   private initViewUsers() {
-    this.viewUsers$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.User)));
+    let currentTeamId = (this.useViewTeamWithTypeId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
+    this.viewUsers$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.User 
+    || (view.viewType === ViewType.Team && view.viewTeams.some(t => t.teamId == currentTeamId)))));
   }
 
   ngOnDestroy() {
