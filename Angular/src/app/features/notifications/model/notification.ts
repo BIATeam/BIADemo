@@ -1,5 +1,5 @@
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { NotificationTranslation } from './notification-translation';
 
 export interface Notification {
   id: number;
@@ -12,12 +12,17 @@ export interface Notification {
   createdDate: string;
   createdBy: OptionDto | null;
   siteId: number;
-  notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
   jData: string;
   data: NotificationData;
   notificationTranslations: NotificationTranslation[];
+}
+
+export interface NotificationTranslation extends BaseDto {
+  languageId: number;
+  title: string;
+  description: string;
 }
 
 export class NotificationTeam {

@@ -37,10 +37,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { "Read", notification => notification.Read },
                     { "CreatedBy", notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
-                    {
-                        "NotifiedRoles", notification => notification.NotifiedRoles.Select(x =>
-                        x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label).OrderBy(x => x)
-                    },
                     { "NotifiedTeams", notification => notification.NotifiedTeams.Select(x => x.Team.Title) },
                     { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
@@ -63,26 +59,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.CreatedById = dto.CreatedBy?.Id;
             entity.TypeId = dto.Type.Id;
             entity.JData = dto.JData;
-
-            // Mapping relationship *-* : ICollection<OptionDto> NotifiedRoles
-            if (dto.NotifiedRoles?.Any() == true)
-            {
-                foreach (var roleDto in dto.NotifiedRoles.Where(x => x.DtoState == DtoState.Deleted))
-                {
-                    var role = entity.NotifiedRoles.FirstOrDefault(x => x.RoleId == roleDto.Id && x.NotificationId == dto.Id);
-                    if (role != null)
-                    {
-                        entity.NotifiedRoles.Remove(role);
-                    }
-                }
-
-                entity.NotifiedRoles = entity.NotifiedRoles ?? new List<NotificationRole>();
-                foreach (var roleDto in dto.NotifiedRoles.Where(w => w.DtoState == DtoState.Added))
-                {
-                    entity.NotifiedRoles.Add(new NotificationRole
-                    { RoleId = roleDto.Id, NotificationId = dto.Id });
-                }
-            }
 
             // Mapping relationship *-* : ICollection<OptionDto> NotifiedUsers
             if (dto.NotifiedUsers?.Any() == true)
@@ -194,12 +170,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 
                     JData = entity.JData,
 
-                    NotifiedRoles = entity.NotifiedRoles.Select(nu => new OptionDto
-                    {
-                        Id = nu.Role.Id,
-                        Display = nu.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
-                    }).ToList(),
-
                     NotifiedTeams = entity.NotifiedTeams.Select(nt => new NotificationTeamDto
                     {
                         Id = nt.TeamId,
@@ -256,12 +226,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 
                     JData = entity.JData,
 
-                    NotifiedRoles = entity.NotifiedRoles.Select(nu => new OptionDto
-                    {
-                        Id = nu.Role.Id,
-                        Display = nu.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
-                    }).ToList(),
-
                     NotifiedTeams = entity.NotifiedTeams.Select(nt => new NotificationTeamDto
                     {
                         Id = nt.TeamId,
@@ -288,11 +252,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         {
             dto.Id = entity.Id;
 
-            dto.NotifiedRoles = entity.NotifiedRoles?.Select(nr => new OptionDto
-            {
-                Id = nr.RoleId,
-            }).ToList();
-
             dto.NotifiedTeams = entity.NotifiedTeams?.Select(nt => new NotificationTeamDto
             {
                 Id = nt.TeamId,
@@ -311,7 +270,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <inheritdoc/>
         public override Expression<Func<Notification, object>>[] IncludesBeforeDelete()
         {
-            return new Expression<Func<Notification, object>>[] { x => x.NotifiedTeams, x => x.NotifiedUsers, x => x.NotifiedRoles };
+            return new Expression<Func<Notification, object>>[] { x => x.NotifiedTeams, x => x.NotifiedUsers };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
@@ -325,7 +284,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 x.Read ? "X" : string.Empty,
                 x.CreatedDate.ToString("yyyy-MM-dd"),
                 CSVString(x.CreatedBy?.Display),
-                CSVString(string.Join(" - ", x.NotifiedRoles?.Select(ca => ca.Display).ToList())),
                 CSVString(string.Join(" - ", x.NotifiedTeams?.Select(ca => ca.Display).ToList())),
                 CSVString(string.Join(" - ", x.NotifiedUsers?.Select(ca => ca.Display).ToList())),
                 CSVString(x.JData),

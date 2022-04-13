@@ -48,11 +48,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the collection of notification roles.
         /// </summary>
-        public ICollection<NotificationRole> NotificationRoles { get; set; }
-
-        /// <summary>
-        /// Gets or sets the collection of notification roles.
-        /// </summary>
         public ICollection<NotificationTeamRole> NotificationTeamRoles { get; set; }
     }
 }

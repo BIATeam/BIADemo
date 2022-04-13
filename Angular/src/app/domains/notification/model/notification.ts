@@ -8,7 +8,6 @@ export interface Notification {
   read: boolean;
   createdDate: string;
   createdBy: OptionDto | null;
-  notifiedRoles: OptionDto[];
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
   jData: string;

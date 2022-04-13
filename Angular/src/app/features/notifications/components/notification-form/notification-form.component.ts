@@ -13,8 +13,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
-import { Notification } from '../../model/notification';
-import { NotificationTranslation } from '../../model/notification-translation';
+import { Notification, NotificationTranslation } from '../../model/notification';
 
 @Component({
   selector: 'app-notification-form',
@@ -91,7 +90,6 @@ export class NotificationFormComponent implements OnChanges {
       read: [this.notification.read],
       createdDate: [this.notification.createdDate, Validators.required],
       createdBy: [this.notification.createdBy],
-      notifiedRoles: [this.notification.notifiedRoles],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
       notificationTranslations: this.formBuilder.array([  ]),
@@ -175,8 +173,6 @@ export class NotificationFormComponent implements OnChanges {
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedRoles =
-      BiaOptionService.Differential(notification.notifiedRoles, this.notification?.notifiedRoles);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
       notification.notificationTranslations =

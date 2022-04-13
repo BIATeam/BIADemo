@@ -22,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomi
             {
                 return objectSet
                     .Include(n => n.NotifiedTeams).ThenInclude(nt => nt.Roles)
-                    .Include(n => n.NotifiedRoles)
                     .Include(n => n.NotifiedUsers)
                     .Include(n => n.NotificationTranslations);
             }

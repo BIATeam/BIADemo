@@ -75,11 +75,6 @@ export class NotificationSignalRService {
     const okUser: Boolean = !notification.notifiedUsers || notification.notifiedUsers.length === 0 ||
       (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
 
-    // OK if no notifiedRoles are specified or if the current user has one of the notifiedRoles
-    // amongst his different teams roles
-    const okRole: Boolean = !notification.notifiedRoles || notification.notifiedRoles.length === 0 ||
-      notification.notifiedRoles.some(role => this.myTeams.some(team => team.roles.some(myTeamRole => myTeamRole.id === role.id)));
-
     // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
     const okTeam: Boolean = !notification.notifiedTeams || notification.notifiedTeams.length === 0 ||
@@ -94,7 +89,7 @@ export class NotificationSignalRService {
         }
       })));
 
-    return okUser && okRole && okTeam;
+    return okUser && okTeam;
   }
 
   destroy() {
