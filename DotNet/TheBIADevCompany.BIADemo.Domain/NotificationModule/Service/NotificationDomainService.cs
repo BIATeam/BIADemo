@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
@@ -55,12 +56,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
+            bool isTeamAccesAll = (principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
 
             this.filtersContext.Add(
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
                     (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
-                        (nt.Roles.Count == 0 && nt.Team.Members.Any(member => member.UserId == this.userId))
+                        (nt.Roles.Count == 0 && (isTeamAccesAll ||  nt.Team.Members.Any(member => member.UserId == this.userId)))
                         ||
                         (nt.Roles.Count > 0 && nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId))))))
                     && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
