@@ -31,7 +31,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateAircraftMaintenanceCompanyModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AircraftMaintenanceCompany>().ToTable("AircraftMaintenanceCompanies");
-            modelBuilder.Entity<AircraftMaintenanceCompany>().Property(s => s.TeamTypeId).HasDefaultValue(TeamTypeId.AircraftMaintenanceCompany);
             modelBuilder.Entity<AircraftMaintenanceCompany>().Property(p => p.Title).IsRequired().HasMaxLength(64);
         }
 
@@ -42,9 +41,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateMaintenanceTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MaintenanceTeam>().ToTable("MaintenanceTeams");
-            modelBuilder.Entity<MaintenanceTeam>().Property(s => s.TeamTypeId).HasDefaultValue(TeamTypeId.AircraftMaintenanceCompany);
             modelBuilder.Entity<MaintenanceTeam>().Property(p => p.Title).IsRequired().HasMaxLength(64);
-            modelBuilder.Entity<MaintenanceTeam>().Property(p => p.AircraftMaintenanceCompanyId).IsRequired().HasDefaultValue(1); // relationship 1-*
+            modelBuilder.Entity<MaintenanceTeam>().Property(p => p.AircraftMaintenanceCompanyId).IsRequired(); // relationship 1-*
         }
     }
 }

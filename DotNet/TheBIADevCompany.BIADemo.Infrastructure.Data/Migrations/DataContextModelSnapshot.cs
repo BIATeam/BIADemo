@@ -412,9 +412,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasColumnType("rowversion");
 
                     b.Property<int>("SiteId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan?>("SyncTime")
                         .HasColumnType("time");
@@ -686,6 +684,69 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 1000101,
+                            Label = "Administrateur",
+                            LanguageId = 2,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000102,
+                            Label = "Administrador",
+                            LanguageId = 3,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000103,
+                            Label = "Administrator",
+                            LanguageId = 4,
+                            RoleId = 10001
+                        },
+                        new
+                        {
+                            Id = 1000201,
+                            Label = "Administrateur des tâches en arrière-plan",
+                            LanguageId = 2,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000202,
+                            Label = "Administrador de tareas en segundo plano",
+                            LanguageId = 3,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000203,
+                            Label = "Administrator für Hintergrundaufgaben",
+                            LanguageId = 4,
+                            RoleId = 10002
+                        },
+                        new
+                        {
+                            Id = 1000301,
+                            Label = "Visualisation des tâches en arrière-plan",
+                            LanguageId = 2,
+                            RoleId = 10003
+                        },
+                        new
+                        {
+                            Id = 1000302,
+                            Label = "Visualización de tareas en segundo plano",
+                            LanguageId = 3,
+                            RoleId = 10003
+                        },
+                        new
+                        {
+                            Id = 1000303,
+                            Label = "Visualisierung von Hintergrundaufgaben",
+                            LanguageId = 4,
+                            RoleId = 10003
+                        },
+                        new
+                        {
                             Id = 101,
                             Label = "Administrateur de la compagnie",
                             LanguageId = 2,
@@ -895,6 +956,24 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 10001,
+                            Code = "Admin",
+                            Label = "Administrator"
+                        },
+                        new
+                        {
+                            Id = 10002,
+                            Code = "BackAdmin",
+                            Label = "Background task administrator"
+                        },
+                        new
+                        {
+                            Id = 10003,
+                            Code = "BackReadOnly",
+                            Label = "Visualization of background tasks"
+                        },
+                        new
+                        {
                             Id = 1,
                             Code = "Site_Admin",
                             Label = "Airline administrator"
@@ -946,7 +1025,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("TeamTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(2);
+                        .HasDefaultValue(1);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1327,9 +1406,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
                         .IsConcurrencyToken()

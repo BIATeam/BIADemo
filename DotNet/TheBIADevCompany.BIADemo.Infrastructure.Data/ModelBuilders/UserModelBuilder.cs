@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -22,9 +23,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateUserModel(modelBuilder);
             CreateRoleModel(modelBuilder);
             CreateMemberRoleModel(modelBuilder);
-            CreateTeamModel(modelBuilder);
             CreateTeamTypeModel(modelBuilder);
             CreateTeamTypeRoleModel(modelBuilder);
+            CreateTeamModel(modelBuilder);
         }
 
         /// <summary>
@@ -82,6 +83,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Team>().ToTable("Teams");
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
+            modelBuilder.Entity<Team>().Property(u => u.TeamTypeId).IsRequired().HasDefaultValue(TeamTypeId.Site);
         }
 
         /// <summary>
@@ -92,11 +94,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 1, Name = "Site" });
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
 
             // Begin BIADemo
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 2, Name = "AircraftMaintenanceCompany" });
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = 3, Name = "MaintenanceTeam" });
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
 
             // End BIADemo
         }
@@ -110,6 +112,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 10001, Code = "Admin", Label = "Administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 10002, Code = "BackAdmin", Label = "Background task administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = 10003, Code = "BackReadOnly", Label = "Visualization of background tasks" });
 
             // Begin BIADemo
             if (false)
@@ -143,17 +148,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<TeamTypeRole>().HasKey(mr => new { mr.TeamTypeId, mr.RoleId });
             modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.TeamType).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.TeamTypeId);
             modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.Role).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.RoleId);
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 1 }); // Site_Admin
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.Site, RoleId = 1 }); // Site_Admin
 
             // Begin BIADemo
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 1, RoleId = 2 }); // Pilot
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.Site, RoleId = 2 }); // Pilot
 
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 101 }); // Supervisor
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 2, RoleId = 102 }); // Expert
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleId = 101 }); // Supervisor
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleId = 102 }); // Expert
 
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 201 }); // Team_Leader
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 202 }); // Operator
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = 3, RoleId = 102 }); // Expert
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 201 }); // Team_Leader
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 202 }); // Operator
+            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 102 }); // Expert
 
             // End BIADemo
         }

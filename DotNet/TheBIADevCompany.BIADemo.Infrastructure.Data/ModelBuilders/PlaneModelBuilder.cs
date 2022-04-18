@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreatePlaneModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Plane>().HasKey(p => p.Id);
-            modelBuilder.Entity<Plane>().Property(p => p.SiteId).IsRequired().HasDefaultValue(1); // relationship 1-*
+            modelBuilder.Entity<Plane>().Property(p => p.SiteId).IsRequired(); // relationship 1-*
             modelBuilder.Entity<Plane>().Property(p => p.PlaneTypeId).IsRequired(false); // relationship 0..1-*
             modelBuilder.Entity<Plane>().Property(p => p.Msn).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<Plane>().Property(p => p.IsActive).IsRequired();
