@@ -96,8 +96,8 @@ import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-i
 import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-not-current-team/is-not-current-team.pipe';
 import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
 import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
-import { UserAddFormLdapComponent } from './features/users-from-ldap/views/user-add-from-ldap-dialog/user-add-from-ldap-dialog.component';
-import { UserFromLdapFormComponent } from './features/users-from-ldap/components/user-from-ldap-form/user-from-ldap-form.component';
+import { UserAddFormLdapComponent } from './features/users-from-directory/views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
+import { UserFromLdapFormComponent } from './features/users-from-directory/components/user-from-directory-form/user-from-directory-form.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
