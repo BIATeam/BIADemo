@@ -17,8 +17,8 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
 import { UserTableComponent } from './components/user-table/user-table.component';
 import { storeKey, usePopup } from './user.constants';
-import { UserFromDirectoryModule } from 'src/app/domains/user-from-Directory/user-from-Directory.module';
 import { LdapDomainModule } from 'src/app/domains/ldap-domain/ldap-domain.module';
+import { UserFromDirectoryModule } from 'src/app/shared/bia-shared/features/users-from-ldap/user-from-directory.module';
 
 const ROUTES: Routes = [
   {

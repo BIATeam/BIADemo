@@ -17,7 +17,7 @@ export function reducers(state: UsersFromDirectoryState | undefined, action: Act
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getUsersState = createFeatureSelector<UsersFromDirectoryState>('domain-users-from-Directory');
+export const getUsersState = createFeatureSelector<UsersFromDirectoryState>('users-from-directory');
 
 export const getUsersEntitiesState = createSelector(
   getUsersState,

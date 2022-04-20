@@ -2,13 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { Observable } from 'rxjs';
-import { DomaineUsersFromDirectoryActions } from 'src/app/domains/user-from-Directory/store/users-from-Directory-actions';
-import { getAllUsersFromDirectory } from 'src/app/domains/user-from-Directory/store/user-from-Directory.state';
+import { DomaineUsersFromDirectoryActions } from '../../store/users-from-Directory-actions';
+import { getAllUsersFromDirectory } from '../../store/user-from-Directory.state';
 import { getAllLdapDomain } from 'src/app/domains/ldap-domain/store/ldap-domain.state';
-import { UserFromDirectory } from 'src/app/domains/user-from-Directory/model/user-from-Directory';
+import { UserFromDirectory } from 'src/app/shared/bia-shared/features/users-from-ldap/model/user-from-Directory';
 import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
 import { DomaineLdapActions } from 'src/app/domains/ldap-domain/store/ldap-domain-actions';
-import { UserFilter } from 'src/app/domains/user-from-Directory/model/user-filter';
+import { UserFilter } from 'src/app/shared/bia-shared/features/users-from-ldap/model/user-filter';
 
 @Component({
   selector: 'bia-user-add-from-ldap-dialog',

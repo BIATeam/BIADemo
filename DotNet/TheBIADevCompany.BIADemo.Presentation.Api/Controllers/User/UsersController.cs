@@ -153,7 +153,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Add some users in a group.
         /// </summary>
-        /// <param name="user">The user with roles added or deleted.</param>
+        /// <param name="id">The user id.</param>
+        /// <param name="dto">The user with roles added or deleted.</param>
         /// <returns>The result code.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

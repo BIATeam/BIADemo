@@ -183,8 +183,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                     rt.HasData(new { RolesId = (int)RoleId.TeamLeader, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
                     rt.HasData(new { RolesId = (int)RoleId.Operator, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
                     rt.HasData(new { RolesId = (int)RoleId.Expert, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
-                    // End BIADemo
 
+                    // End BIADemo
                 });
         }
 
