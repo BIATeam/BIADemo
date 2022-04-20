@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserFromDirectory } from '../model/user-from-AD';
+import { UserFromDirectory } from '../model/user-from-Directory';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserFromADService {
+export class UserFromDirectoryService {
   constructor() {}
 
   public formatDisplayNameFromADObs(user$: Observable<Array<UserFromDirectory>>): Observable<Array<UserFromDirectory>> {

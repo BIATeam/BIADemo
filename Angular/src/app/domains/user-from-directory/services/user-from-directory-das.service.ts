@@ -1,14 +1,14 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { UserFromADService } from './user-from-AD.service';
-import { UserFromDirectory } from '../model/user-from-AD';
+import { UserFromDirectoryService } from './user-from-Directory.service';
+import { UserFromDirectory } from '../model/user-from-Directory';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserFromADDas extends AbstractDas<UserFromDirectory> {
-  constructor(injector: Injector, private userService: UserFromADService) {
+export class UserFromDirectoryDas extends AbstractDas<UserFromDirectory> {
+  constructor(injector: Injector, private userService: UserFromDirectoryService) {
     super(injector, 'users');
   }
 

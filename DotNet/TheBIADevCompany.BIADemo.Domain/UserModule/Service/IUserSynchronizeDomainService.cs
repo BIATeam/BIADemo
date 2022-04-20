@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="sid">the sid in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        Task AddOrActiveUserFromAD(string sid, User foundUser);
+        Task AddOrActiveUserFromDirectory(string sid, User foundUser);
 
         /// <summary>
         /// Deactivaye a user.

@@ -17,7 +17,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
 import { UserTableComponent } from './components/user-table/user-table.component';
 import { storeKey, usePopup } from './user.constants';
-import { UserFromADModule } from 'src/app/domains/user-from-AD/user-from-AD.module';
+import { UserFromDirectoryModule } from 'src/app/domains/user-from-Directory/user-from-Directory.module';
 import { LdapDomainModule } from 'src/app/domains/ldap-domain/ldap-domain.module';
 
 const ROUTES: Routes = [
@@ -95,7 +95,7 @@ const ROUTES: Routes = [
     EffectsModule.forFeature([UsersEffects]),
     // Domain Modules:
     RoleOptionModule,
-    UserFromADModule,
+    UserFromDirectoryModule,
     LdapDomainModule,
   ]
 })

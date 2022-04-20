@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 {
                     var foundUser = users.FirstOrDefault(a => a.Sid == sid);
 
-                    await this.AddOrActiveUserFromAD(sid, foundUser);
+                    await this.AddOrActiveUserFromDirectory(sid, foundUser);
                 }
 
                 await this.repository.UnitOfWork.CommitAsync();
@@ -107,7 +107,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="sid">the sid in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        public async Task AddOrActiveUserFromAD(string sid, User foundUser)
+        public async Task AddOrActiveUserFromDirectory(string sid, User foundUser)
         {
             if (foundUser == null)
             {

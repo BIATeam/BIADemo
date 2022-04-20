@@ -12,7 +12,7 @@ import { SiteFilterComponent } from './components/site-filter/site-filter.compon
 import { SharedModule } from 'src/app/shared/shared.module';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
-import { UserFromADModule } from 'src/app/domains/user-from-AD/user-from-AD.module';
+import { UserFromDirectoryModule } from 'src/app/domains/user-from-Directory/user-from-Directory.module';
 import { SiteItemComponent } from './views/site-item/site-item.component';
 import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
 
@@ -63,7 +63,7 @@ const ROUTES: Routes = [
   imports: [
     SharedModule,
     UserOptionModule,
-    UserFromADModule,
+    UserFromDirectoryModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature('sites', reducers),
     EffectsModule.forFeature([SitesEffects]),

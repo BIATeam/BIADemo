@@ -2,13 +2,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { Observable } from 'rxjs';
-import { DomaineUsersFromADActions } from 'src/app/domains/user-from-AD/store/users-from-AD-actions';
-import { getAllUsersFromAD } from 'src/app/domains/user-from-AD/store/user-from-AD.state';
+import { DomaineUsersFromDirectoryActions } from 'src/app/domains/user-from-Directory/store/users-from-Directory-actions';
+import { getAllUsersFromDirectory } from 'src/app/domains/user-from-Directory/store/user-from-Directory.state';
 import { getAllLdapDomain } from 'src/app/domains/ldap-domain/store/ldap-domain.state';
-import { UserFromDirectory } from 'src/app/domains/user-from-AD/model/user-from-AD';
+import { UserFromDirectory } from 'src/app/domains/user-from-Directory/model/user-from-Directory';
 import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
 import { DomaineLdapActions } from 'src/app/domains/ldap-domain/store/ldap-domain-actions';
-import { UserFilter } from 'src/app/domains/user-from-AD/model/user-filter';
+import { UserFilter } from 'src/app/domains/user-from-Directory/model/user-filter';
 
 @Component({
   selector: 'bia-user-add-from-ldap-dialog',
@@ -31,7 +31,7 @@ export class UserAddFormLdapComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   async ngOnInit() {
-    this.usersFromDirectory$ = this.store.select(getAllUsersFromAD);
+    this.usersFromDirectory$ = this.store.select(getAllUsersFromDirectory);
 
     this.ldapDomains$ = this.store.select(getAllLdapDomain);
 
@@ -39,7 +39,7 @@ export class UserAddFormLdapComponent implements OnInit {
   }
 
   onSubmitted(userToCreates: UserFromDirectory[]) {
-    this.store.dispatch(DomaineUsersFromADActions.addFromDirectory({ usersFromDirectory: userToCreates }));
+    this.store.dispatch(DomaineUsersFromDirectoryActions.addFromDirectory({ usersFromDirectory: userToCreates }));
     this.close();
   }
 
@@ -52,6 +52,6 @@ export class UserAddFormLdapComponent implements OnInit {
   }
 
   onSearchUsers(userFilter: UserFilter) {
-    this.store.dispatch(DomaineUsersFromADActions.loadAllByFilter({ userFilter }));
+    this.store.dispatch(DomaineUsersFromDirectoryActions.loadAllByFilter({ userFilter }));
   }
 }

@@ -221,7 +221,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
 
-                        await this.userSynchronizeDomainService.AddOrActiveUserFromAD(userFormDirectoryDto.Sid, foundUser);
+                        await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
 
                         await this.Repository.UnitOfWork.CommitAsync();
                     }

@@ -200,7 +200,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
         //[ProducesResponseType(StatusCodes.Status200OK)]
         //[Authorize(Roles = Rights.Users.Add)]
-        //public async Task<IActionResult> AddInDB([FromBody]IEnumerable<UserFromADDto> users)
+        //public async Task<IActionResult> AddInDB([FromBody]IEnumerable<UserFromDirectoryDto> users)
         //{
         //    await this.userService.AddInDBAsync(users);
         //    return this.Ok();

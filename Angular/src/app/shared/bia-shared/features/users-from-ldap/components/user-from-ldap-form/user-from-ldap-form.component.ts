@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
-import { UserFromDirectory } from 'src/app/domains/user-from-AD/model/user-from-AD';
-import { UserFilter } from 'src/app/domains/user-from-AD/model/user-filter';
+import { UserFromDirectory } from 'src/app/domains/user-from-Directory/model/user-from-Directory';
+import { UserFilter } from 'src/app/domains/user-from-Directory/model/user-filter';
 
 @Component({
   selector: 'user-from-ldap-form',
