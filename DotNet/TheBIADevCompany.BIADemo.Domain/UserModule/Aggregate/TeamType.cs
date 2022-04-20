@@ -26,6 +26,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the roles with this type of team.
         /// </summary>
-        public virtual ICollection<TeamTypeRole> TeamTypeRoles { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
     }
 }

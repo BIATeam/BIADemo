@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -48,11 +49,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
             modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
             modelBuilder.Entity<NotificationType>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 1, Code = "task", Label = "Task" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 2, Code = "info", Label = "Info" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 3, Code = "success", Label = "Success" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 4, Code = "warn", Label = "Warn" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = 5, Code = "error", Label = "Error" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)NotificationTypeId.Task, Code = "task", Label = "Task" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)NotificationTypeId.Info, Code = "info", Label = "Info" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)NotificationTypeId.Success, Code = "success", Label = "Success" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)NotificationTypeId.Warning, Code = "warn", Label = "Warn" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)NotificationTypeId.Error, Code = "error", Label = "Error" });
         }
 
         /// <summary>

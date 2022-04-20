@@ -146,25 +146,25 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
   onCreate() {
     if (!this.useCalcMode) {
-      this.router.navigate(['../create'], { relativeTo: this.activatedRoute });
+      this.router.navigate(['create'], { relativeTo: this.activatedRoute });
     }
   }
 
   onEdit() {
     if (this.selectedAircraftMaintenanceCompanies.length == 1) {
-      this.router.navigate(['../' + this.selectedAircraftMaintenanceCompanies[0].id + '/edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([ this.selectedAircraftMaintenanceCompanies[0].id , 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
   onMaintenanceTeams() {
     if (this.selectedAircraftMaintenanceCompanies.length == 1) {
-      this.router.navigate(['../' + this.selectedAircraftMaintenanceCompanies[0].id + '/maintenance-teams'], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.selectedAircraftMaintenanceCompanies[0].id , 'maintenance-teams'], { relativeTo: this.activatedRoute });
     }
   }
 
   onManageMember(aircraftMaintenanceCompanyId: number) {
     if (aircraftMaintenanceCompanyId && aircraftMaintenanceCompanyId > 0) {
-      this.router.navigate(['../' + aircraftMaintenanceCompanyId + '/members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([ aircraftMaintenanceCompanyId , 'members'], { relativeTo: this.activatedRoute });
     }
   }
 

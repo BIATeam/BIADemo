@@ -1,32 +1,44 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
-  <div class="p-fluid app-field-container" fxLayout="column" fxLayoutAlign="flex-start">
-    <p-dropdown
-      [options]="domains"
-      placeholder="LDAP Domain"
-      formControlName="domains"
-      optionLabel="displayName"
-      showClear="true"
-      (onChange)="onDomainChange($event)"
-      [style]="{ width: '50%' }"
-      appendTo="body"
-    ></p-dropdown>
-    <br />
-    <span class="p-float-label">
-      <p-autoComplete
-        [multiple]="true"
-        formControlName="selectedUsers"
-        [suggestions]="users"
-        [delay]="700"
-        (completeMethod)="onSearchUsers($event)"
-        [size]="30"
-        [minLength]="3"
-        field="displayName"
-        [style]="{ width: '50%' }"
-        [inputStyle]="{ width: '100%' }"
-        appendTo="body"
-      ></p-autoComplete>
-      <label>{{ 'bia.select' | translate }}</label>
-    </span>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <input formControlName="firstName" type="text" pInputText maxlength="64" style ="width:100%" disabled ="true"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'user.firstName' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <input formControlName="lastName" type="text" pInputText maxlength="64" style ="width:100%" disabled ="true"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'user.lastName' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <input formControlName="login" type="text" pInputText maxlength="64" style ="width:100%" disabled ="true"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'user.login' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="roleOptions"
+          formControlName="roles"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+          appendTo="body"
+        ></p-multiSelect>
+        <label>{{ 'member.roles' | translate }}</label>
+      </span>
+    </div>
   </div>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>

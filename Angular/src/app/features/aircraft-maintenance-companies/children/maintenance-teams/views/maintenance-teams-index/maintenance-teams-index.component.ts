@@ -150,20 +150,20 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
 
   onCreate() {
     if (!this.useCalcMode) {
-      this.router.navigate(['../create'], { relativeTo: this.activatedRoute });
+      this.router.navigate(['create'], { relativeTo: this.activatedRoute });
     }
   }
 
   onEdit() {
     if (this.selectedMaintenanceTeams.length == 1) {
-      this.router.navigate(['../' + this.selectedMaintenanceTeams[0].id + '/edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.selectedMaintenanceTeams[0].id , 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
   
   onManageMember(maintenanceTeamId: number) {
     if (maintenanceTeamId && maintenanceTeamId > 0) {
-      this.router.navigate(['../' + maintenanceTeamId + '/members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([ maintenanceTeamId , 'members'], { relativeTo: this.activatedRoute });
     }
   }
 

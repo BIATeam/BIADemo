@@ -401,6 +401,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string ListAD = "User_ListAD";
 
             /// <summary>
+            /// The right to get the list of AD users.
+            /// </summary>
+            public const string Read = "User_Read";
+
+            /// <summary>
             /// The right to add users.
             /// </summary>
             public const string Add = "User_Add";
@@ -414,6 +419,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to synchronize users.
             /// </summary>
             public const string Sync = "User_Sync";
+
+            /// <summary>
+            /// The right to add users.
+            /// </summary>
+            public const string UpdateRoles = "User_UpdateRoles";
+            
         }
 
         /// <summary>

@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using Microsoft.EntityFrameworkCore;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
@@ -58,54 +59,54 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<RoleTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10001, LanguageId = LanguageId.French, Id = 1000101, Label = "Administrateur" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10001, LanguageId = LanguageId.Spanish, Id = 1000102, Label = "Administrador" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10001, LanguageId = LanguageId.German, Id = 1000103, Label = "Administrator" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Admin, LanguageId = LanguageId.French, Id = 1000101, Label = "Administrateur" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Admin, LanguageId = LanguageId.Spanish, Id = 1000102, Label = "Administrador" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Admin, LanguageId = LanguageId.German, Id = 1000103, Label = "Administrator" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10002, LanguageId = LanguageId.French, Id = 1000201, Label = "Administrateur des tâches en arrière-plan" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10002, LanguageId = LanguageId.Spanish, Id = 1000202, Label = "Administrador de tareas en segundo plano" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10002, LanguageId = LanguageId.German, Id = 1000203, Label = "Administrator für Hintergrundaufgaben" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackAdmin, LanguageId = LanguageId.French, Id = 1000201, Label = "Administrateur des tâches en arrière-plan" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackAdmin, LanguageId = LanguageId.Spanish, Id = 1000202, Label = "Administrador de tareas en segundo plano" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackAdmin, LanguageId = LanguageId.German, Id = 1000203, Label = "Administrator für Hintergrundaufgaben" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10003, LanguageId = LanguageId.French, Id = 1000301, Label = "Visualisation des tâches en arrière-plan" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10003, LanguageId = LanguageId.Spanish, Id = 1000302, Label = "Visualización de tareas en segundo plano" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 10003, LanguageId = LanguageId.German, Id = 1000303, Label = "Visualisierung von Hintergrundaufgaben" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.French, Id = 1000301, Label = "Visualisation des tâches en arrière-plan" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.Spanish, Id = 1000302, Label = "Visualización de tareas en segundo plano" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.German, Id = 1000303, Label = "Visualisierung von Hintergrundaufgaben" });
 
             // Begin BIADemo
             if (false)
             {
 #pragma warning disable CS0162 // Unreachable code detected
             // End BIADemo
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur du site" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador del sitio" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Seitenadministrator" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur du site" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador del sitio" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.German, Id = 103, Label = "Seitenadministrator" });
 
             // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
             }
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur de la compagnie" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador de la aerolínea" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Fluglinienadministrator" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur de la compagnie" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador de la aerolínea" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.German, Id = 103, Label = "Fluglinienadministrator" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 2, LanguageId = LanguageId.French, Id = 201, Label = "Pilote" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 2, LanguageId = LanguageId.Spanish, Id = 202, Label = "Piloto" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 2, LanguageId = LanguageId.German, Id = 203, Label = "Pilot" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Pilot, LanguageId = LanguageId.French, Id = 201, Label = "Pilote" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Pilot, LanguageId = LanguageId.Spanish, Id = 202, Label = "Piloto" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Pilot, LanguageId = LanguageId.German, Id = 203, Label = "Pilot" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 101, LanguageId = LanguageId.French, Id = 10101, Label = "Superviseur" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 101, LanguageId = LanguageId.Spanish, Id = 10102, Label = "Supervisor" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 101, LanguageId = LanguageId.German, Id = 10103, Label = "Supervisor" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Supervisor, LanguageId = LanguageId.French, Id = 10101, Label = "Superviseur" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Supervisor, LanguageId = LanguageId.Spanish, Id = 10102, Label = "Supervisor" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Supervisor, LanguageId = LanguageId.German, Id = 10103, Label = "Supervisor" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 102, LanguageId = LanguageId.French, Id = 10201, Label = "Expert" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 102, LanguageId = LanguageId.Spanish, Id = 10202, Label = "Experto" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 102, LanguageId = LanguageId.German, Id = 10203, Label = "Experte" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Expert, LanguageId = LanguageId.French, Id = 10201, Label = "Expert" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Expert, LanguageId = LanguageId.Spanish, Id = 10202, Label = "Experto" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Expert, LanguageId = LanguageId.German, Id = 10203, Label = "Experte" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 201, LanguageId = LanguageId.French, Id = 20101, Label = "Chef d'equipe" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 201, LanguageId = LanguageId.Spanish, Id = 20102, Label = "Jefe de equipo" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 201, LanguageId = LanguageId.German, Id = 20103, Label = "Teamleiter" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.TeamLeader, LanguageId = LanguageId.French, Id = 20101, Label = "Chef d'equipe" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.TeamLeader, LanguageId = LanguageId.Spanish, Id = 20102, Label = "Jefe de equipo" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.TeamLeader, LanguageId = LanguageId.German, Id = 20103, Label = "Teamleiter" });
 
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.French, Id = 20201, Label = "Operateur" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.Spanish, Id = 20202, Label = "Operador" });
-            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = 202, LanguageId = LanguageId.German, Id = 20203, Label = "Operator" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Operator, LanguageId = LanguageId.French, Id = 20201, Label = "Operateur" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Operator, LanguageId = LanguageId.Spanish, Id = 20202, Label = "Operador" });
+            modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Operator, LanguageId = LanguageId.German, Id = 20203, Label = "Operator" });
 
             // End BIADemo
         }
@@ -123,25 +124,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<NotificationTypeTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
 
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.French, Id = 101, Label = "Tâche" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.Spanish, Id = 102, Label = "Tarea" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 1, LanguageId = LanguageId.German, Id = 103, Label = "Aufgabe" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Task, LanguageId = LanguageId.French, Id = 101, Label = "Tâche" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Task, LanguageId = LanguageId.Spanish, Id = 102, Label = "Tarea" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Task, LanguageId = LanguageId.German, Id = 103, Label = "Aufgabe" });
 
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 2, LanguageId = LanguageId.French, Id = 201, Label = "Information" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 2, LanguageId = LanguageId.Spanish, Id = 202, Label = "Información" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 2, LanguageId = LanguageId.German, Id = 203, Label = "Information" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Info, LanguageId = LanguageId.French, Id = 201, Label = "Information" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Info, LanguageId = LanguageId.Spanish, Id = 202, Label = "Información" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Info, LanguageId = LanguageId.German, Id = 203, Label = "Information" });
 
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 3, LanguageId = LanguageId.French, Id = 301, Label = "Succès" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 3, LanguageId = LanguageId.Spanish, Id = 302, Label = "Éxito" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 3, LanguageId = LanguageId.German, Id = 303, Label = "Erfolg" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Success, LanguageId = LanguageId.French, Id = 301, Label = "Succès" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Success, LanguageId = LanguageId.Spanish, Id = 302, Label = "Éxito" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Success, LanguageId = LanguageId.German, Id = 303, Label = "Erfolg" });
 
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 4, LanguageId = LanguageId.French, Id = 401, Label = "Avertissement" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 4, LanguageId = LanguageId.Spanish, Id = 402, Label = "Advertencia" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 4, LanguageId = LanguageId.German, Id = 403, Label = "Erwärmen" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Warning, LanguageId = LanguageId.French, Id = 401, Label = "Avertissement" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Warning, LanguageId = LanguageId.Spanish, Id = 402, Label = "Advertencia" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Warning, LanguageId = LanguageId.German, Id = 403, Label = "Erwärmen" });
 
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 5, LanguageId = LanguageId.French, Id = 501, Label = "Erreur" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 5, LanguageId = LanguageId.Spanish, Id = 502, Label = "Culpa" });
-            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = 5, LanguageId = LanguageId.German, Id = 503, Label = "Fehler" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Error, LanguageId = LanguageId.French, Id = 501, Label = "Erreur" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Error, LanguageId = LanguageId.Spanish, Id = 502, Label = "Culpa" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)NotificationTypeId.Error, LanguageId = LanguageId.German, Id = 503, Label = "Fehler" });
         }
 
         /// <summary>

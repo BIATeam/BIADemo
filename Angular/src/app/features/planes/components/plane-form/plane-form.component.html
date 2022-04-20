@@ -56,6 +56,7 @@
           placeholder="&nbsp;"
           dataType="string"
           [inputStyle]="{'width':'100%'}"
+          appendTo="body"
         ></p-calendar>
         <label>{{ 'plane.syncTime' | translate }}</label>
       </span>
@@ -80,6 +81,7 @@
           datakey="id"
           [style]="{ width: '100%' }"
           [showClear]="true"
+          appendTo="body"
         ></p-dropdown>
         <label>{{ 'plane.planeType' | translate }}</label>
       </span>
@@ -96,6 +98,7 @@
           datakey="id"
           [virtualScroll]="true"
           [style]="{ width: '100%' }"
+          appendTo="body"
         ></p-multiSelect>
         <label>{{ 'plane.connectingAirports' | translate }}</label>
       </span>

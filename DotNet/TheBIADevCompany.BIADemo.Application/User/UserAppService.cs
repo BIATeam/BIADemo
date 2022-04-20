@@ -68,13 +68,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="userContext">The user context.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
             IUserPermissionDomainService userPermissionDomainService,
             IUserSynchronizeDomainService userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
-            ILogger<UserAppService> logger)
+            ILogger<UserAppService> logger,
+            UserContext userContext)
             : base(repository)
         {
             this.userPermissionDomainService = userPermissionDomainService;
@@ -82,6 +84,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
+            this.userContext = userContext;
 
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
@@ -96,19 +99,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
-        }
-
-        /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetRangeAsync"/>
-        public async Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
-            PagingFilterFormatDto filters = null,
-            int id = 0,
-            Specification<User> specification = null,
-            Expression<Func<User, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null)
-        {
-            return await this.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
@@ -206,8 +196,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 .ToList());
         }
 
-        /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
-        public async Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
+        /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
+        public async Task<List<string>> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
             List<string> errors = new List<string>();
@@ -326,9 +316,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 SortOrder = filters.SortOrder,
             };
 
-            var query = await this.GetRangeAsync(filters: queryFilter);
+            var query = await this.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: queryFilter);
 
-            List<object[]> records = query.Results.Select(user => new object[]
+            List<object[]> records = query.results.Select(user => new object[]
             {
                 user.LastName,
                 user.FirstName,

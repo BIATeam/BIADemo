@@ -21,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService
+    public interface IUserAppService : IFilteredServiceBase<User, int>
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -29,26 +29,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="filter">Used to filter the users.</param>
         /// /// <returns>The list of production sites.</returns>
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null);
-
-        /// <summary>
-        /// Get the DTO list with paging and sorting.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <param name="id">The id.</param>
-        /// <param name="specification">Specification Used to filter query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
-        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <returns>The list of DTO.</returns>
-        Task<(IEnumerable<UserDto> Results, int Total)> GetRangeAsync(
-            PagingFilterFormatDto filters = null,
-            int id = 0,
-            Specification<User> specification = null,
-            Expression<Func<User, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null);
 
         /// <summary>
         /// Translate the roles in rights.
@@ -91,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users);
+        Task<List<string>> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
         /// Remove a user in a group in AD.

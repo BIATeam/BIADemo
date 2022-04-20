@@ -1,0 +1,7 @@
+<app-user-form 
+    [user]="userService.user$ | async" 
+    [roleOptions]="userOptionsService.roleOptions$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-user-form>
+<bia-spinner *ngIf="userService.loading$ | async" [overlay]="true"></bia-spinner>

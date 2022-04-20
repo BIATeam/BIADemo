@@ -1,11 +1,11 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { UserFromAD } from '../model/user-from-AD';
-import { loadAllSuccess } from './users-from-AD-actions';
+import { UserFromDirectory } from '../model/user-from-AD';
+import { DomaineUsersFromADActions } from './users-from-AD-actions';
 
 // This adapter will allow is to manipulate users (mostly CRUD operations)
-export const usersFromADAdapter = createEntityAdapter<UserFromAD>({
-  selectId: (user: UserFromAD) => user.domain + '\\' + user.login,
+export const usersFromADAdapter = createEntityAdapter<UserFromDirectory>({
+  selectId: (user: UserFromDirectory) => user.domain + '\\' + user.login,
   sortComparer: false
 });
 
@@ -20,7 +20,7 @@ export const usersFromADAdapter = createEntityAdapter<UserFromAD>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<UserFromAD> {
+export interface State extends EntityState<UserFromDirectory> {
   // additional props here
 }
 
@@ -30,5 +30,5 @@ export const INIT_STATE: State = usersFromADAdapter.getInitialState({
 
 export const userFromADReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, { users }) => usersFromADAdapter.setAll(users, state)),
+  on(DomaineUsersFromADActions.loadAllSuccess, (state, { users }) => usersFromADAdapter.setAll(users, state)),
 );

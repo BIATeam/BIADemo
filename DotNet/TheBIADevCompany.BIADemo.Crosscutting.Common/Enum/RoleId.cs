@@ -10,8 +10,36 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     public enum RoleId
     {
         /// <summary>
+        /// The admin role identifier.
+        /// </summary>
+        Admin = 10001,
+
+        /// <summary>
+        /// The admin of the worker service role identifier.
+        /// </summary>
+        BackAdmin = 10002,
+
+        /// <summary>
+        /// The read only on worker service role identifier.
+        /// </summary>
+        BackReadOnly = 10003,
+
+        /// <summary>
         /// The site admin role identifier.
         /// </summary>
         SiteAdmin = 1,
+
+        // Begin BIADemo
+#pragma warning disable SA1602 // Enumeration items should be documented
+        Pilot = 2,
+
+        Supervisor = 101,
+        Expert = 102,
+
+        TeamLeader = 201,
+        Operator = 202,
+#pragma warning restore SA1602 // Enumeration items should be documented
+
+        // End BIADemo
     }
 }

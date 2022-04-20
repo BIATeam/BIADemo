@@ -1,4 +1,4 @@
-export interface UserFromAD {
+export interface UserFromDirectory {
   lastName: string;
   firstName: string;
   login: string;

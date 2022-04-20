@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
@@ -23,6 +24,18 @@ namespace BIA.Net.Core.Domain
     {
 
         public UserContext UserContext { get; set; }
+
+        /// <summary>
+        /// Create an entity from a DTO.
+        /// </summary>
+        /// <param name="dto">The DTO to use.</param>
+        /// <param name="entity">The entity to update with the DTO values.</param>
+        /// <param name="mapperMode">The mode of mapping.</param>
+        /// <param name="context">The context.</param>
+        public virtual void DtoToEntity(TDto dto, TEntity entity, string mapperMode, IUnitOfWork context)
+        {
+            DtoToEntity(dto, entity, mapperMode);
+        }
 
         /// <summary>
         /// Create an entity from a DTO.

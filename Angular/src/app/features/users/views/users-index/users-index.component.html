@@ -1,18 +1,26 @@
 <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
   <div fxFlex="100">
-    <app-user-table-header
+    <bia-table-header
       [headerTitle]="'user.listOf' | translate"
-      [canSync]="canSync"
-      [canAdd]="canAdd"
-      [canExportCSV]="canExport"
+      [canAdd]="canAdd&&!useCalcMode"
+      [canDelete]="canDelete"
+      [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
-      (synchronize)="onSynchronize()"
       (delete)="onDelete()"
       [selectedElements]="selectedUsers"
-    ></app-user-table-header>
+    >
+    <ng-template pTemplate="actionOnList">
+      <button
+      pButton
+      *ngIf="canSync"
+      class="p-button-outlined"
+      label="{{ 'bia.synchronize' | translate }}"
+      (click)="onSynchronize()"></button>
+    </ng-template>
+    </bia-table-header>
     <bia-table-controller
-      [defaultPageSize]="pageSize"
+      [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
@@ -21,8 +29,10 @@
       (pageSizeChange)="onPageSizeChange($event)"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
+      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
     ></bia-table-controller>
-    <bia-table
+    <bia-table *ngIf="!useCalcMode"
       [elements]="users$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -30,12 +40,34 @@
       [configuration]="tableConfiguration"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="false"
+      [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (clickRow)="onEdit($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
+    <app-user-table *ngIf="useCalcMode"
+      [elements]="users$ | async"
+      [dictOptionDtos]="userOptionsService.dictOptionDtos$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [pageSize]="pageSize"
+      [configuration]="tableConfiguration"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canAdd]="canAdd"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      (save)="onSave($event)"
+    ></app-user-table>
   </div>
 </div>
-<app-user-new-dialog [(display)]="displayNewUserDialog"></app-user-new-dialog>
+<bia-user-add-from-ldap-dialog [(display)]="displayUserAddFromLdapDialog"></bia-user-add-from-ldap-dialog>

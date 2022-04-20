@@ -482,6 +482,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
         {
             List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
+            if (userLdapGroups.Count == 0)
+            {
+                // no ldap group defined
+                return null;
+            }
             List<string> listUsersSid = new List<string>();
             if (userLdapGroups == null || userLdapGroups.Count() == 0)
             {

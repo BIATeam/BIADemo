@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
         {
-            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: r => r.TeamTypeRoles.Any(t => t.TeamTypeId == teamTypeId));
+            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: r => r.TeamTypes.Any(t => t.Id == teamTypeId));
         }
 
         /// <summary>

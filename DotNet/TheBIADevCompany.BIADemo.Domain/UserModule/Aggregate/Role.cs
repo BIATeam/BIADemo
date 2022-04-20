@@ -31,6 +31,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public string Label { get; set; }
 
         /// <summary>
+        /// Gets or sets the collection of users.
+        /// </summary>
+        public ICollection<User> Users { get; set; }
+
+        /// <summary>
         /// Gets or sets the members with this role.
         /// </summary>
         public virtual ICollection<MemberRole> MemberRoles { get; set; }
@@ -43,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the team types for this role.
         /// </summary>
-        public virtual ICollection<TeamTypeRole> TeamTypeRoles { get; set; }
+        public virtual ICollection<TeamType> TeamTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the collection of notification roles.

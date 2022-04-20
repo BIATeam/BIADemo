@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
             List<User> users = (await this.repository.GetAllEntityAsync()).ToList();
-            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User")).ToList();
+            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User"))?.ToList();
 
             if (usersSidInDirectory != null)
             {

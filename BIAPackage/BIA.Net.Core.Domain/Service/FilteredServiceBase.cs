@@ -276,7 +276,7 @@ namespace BIA.Net.Core.Domain.Service
             {
                 TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
                 var entity = new TEntity();
-                mapper.DtoToEntity(dto, entity, mapperMode);
+                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
                 this.Repository.Add(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
                 mapper.MapEntityKeysInDto(entity, dto);
@@ -313,7 +313,7 @@ namespace BIA.Net.Core.Domain.Service
                     throw new ElementNotFoundException();
                 }
 
-                mapper.DtoToEntity(dto, entity, mapperMode);
+                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
                 // this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;

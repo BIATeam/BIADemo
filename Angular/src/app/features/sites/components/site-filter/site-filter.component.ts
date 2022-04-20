@@ -8,7 +8,7 @@ import {
   TemplateRef,
   Input
 } from '@angular/core';
-import { User } from 'src/app/domains/user/model/user';
+import { User } from 'src/app/features/users/model/user';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { SiteAdvancedFilter } from '../../model/site/site-advanced-filter';
 

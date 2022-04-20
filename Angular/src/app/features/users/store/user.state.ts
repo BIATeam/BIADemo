@@ -1,5 +1,6 @@
 import * as fromUsers from './users-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import { storeKey } from '../user.constants';
 
 export interface UsersState {
   users: fromUsers.State;
@@ -17,7 +18,7 @@ export function reducers(state: UsersState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getUsersState = createFeatureSelector<UsersState>('users');
+export const getUsersState = createFeatureSelector<UsersState>(storeKey);
 
 export const getUsersEntitiesState = createSelector(
   getUsersState,
@@ -39,9 +40,17 @@ export const getLastLazyLoadEvent = createSelector(
   (state) => state.lastLazyLoadEvent
 );
 
-export const { selectAll: getAllUsers } = fromUsers.usersAdapter.getSelectors(
-  getUsersEntitiesState
+export const getUserLoadingGet = createSelector(
+  getUsersEntitiesState,
+  (state) => state.loadingGet
 );
+
+export const getUserLoadingGetAll = createSelector(
+  getUsersEntitiesState,
+  (state) => state.loadingGetAll
+);
+
+export const { selectAll: getAllUsers } = fromUsers.usersAdapter.getSelectors(getUsersEntitiesState);
 
 export const getUserById = (id: number) =>
   createSelector(

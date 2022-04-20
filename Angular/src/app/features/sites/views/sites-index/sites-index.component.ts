@@ -89,7 +89,7 @@ export class SitesIndexComponent implements OnInit {
 
   onManageMember(siteId: number) {
     if (siteId && siteId > 0) {
-      this.router.navigate(['/sites', siteId, 'members']);
+      this.router.navigate(['sites', siteId, 'members']);
     }
   }
 

@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreateMemberModel(modelBuilder);
             CreateUserModel(modelBuilder);
             CreateRoleModel(modelBuilder);
+            CreateUserRoleModel(modelBuilder);
             CreateMemberRoleModel(modelBuilder);
             CreateTeamTypeModel(modelBuilder);
             CreateTeamTypeRoleModel(modelBuilder);
@@ -76,6 +77,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        ///  Create the model for user role.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateUserRoleModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                    .HasMany(p => p.Roles)
+                    .WithMany(r => r.Users)
+                    .UsingEntity(mc =>
+                    {
+                        mc.ToTable("UserRoles");
+                    });
+        }
+
+        /// <summary>
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -94,6 +110,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Root, Name = "Root" });
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
 
             // Begin BIADemo
@@ -112,29 +129,29 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
             modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 10001, Code = "Admin", Label = "Administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 10002, Code = "BackAdmin", Label = "Background task administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 10003, Code = "BackReadOnly", Label = "Visualization of background tasks" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Admin, Code = "Admin", Label = "Administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackReadOnly, Code = "Back_Read_Only", Label = "Visualization of background tasks" });
 
             // Begin BIADemo
             if (false)
             {
 #pragma warning disable CS0162 // Unreachable code detected
             // End BIADemo
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Site administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
 
             // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
             }
 
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 1, Code = "Site_Admin", Label = "Airline administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 2, Code = "Pilot", Label = "Pilot" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Airline administrator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Pilot, Code = "Pilot", Label = "Pilot" });
 
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 101, Code = "Supervisor", Label = "Supervisor" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 102, Code = "Expert", Label = "Expert" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Supervisor, Code = "Supervisor", Label = "Supervisor" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Expert, Code = "Expert", Label = "Expert" });
 
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 201, Code = "Team_Leader", Label = "Team leader" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = 202, Code = "Operator", Label = "Operator" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.TeamLeader, Code = "Team_Leader", Label = "Team leader" });
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Operator, Code = "Operator", Label = "Operator" });
 
             // End BIADemo
         }
@@ -145,22 +162,30 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TeamTypeRole>().HasKey(mr => new { mr.TeamTypeId, mr.RoleId });
-            modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.TeamType).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.TeamTypeId);
-            modelBuilder.Entity<TeamTypeRole>().HasOne(mr => mr.Role).WithMany(m => m.TeamTypeRoles).HasForeignKey(mr => mr.RoleId);
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.Site, RoleId = 1 }); // Site_Admin
+            modelBuilder.Entity<Role>()
+                .HasMany(p => p.TeamTypes)
+                .WithMany(r => r.Roles)
+                .UsingEntity(rt =>
+                {
+                    rt.ToTable("RoleTeamTypes");
+                    rt.HasData(new { RolesId = (int)RoleId.Admin, TeamTypesId = (int)TeamTypeId.Root });
+                    rt.HasData(new { RolesId = (int)RoleId.BackAdmin, TeamTypesId = (int)TeamTypeId.Root });
+                    rt.HasData(new { RolesId = (int)RoleId.BackReadOnly, TeamTypesId = (int)TeamTypeId.Root });
 
-            // Begin BIADemo
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.Site, RoleId = 2 }); // Pilot
+                    rt.HasData(new { RolesId = (int)RoleId.SiteAdmin, TeamTypesId = (int)TeamTypeId.Site });
 
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleId = 101 }); // Supervisor
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleId = 102 }); // Expert
+                    // Begin BIADemo
+                    rt.HasData(new { RolesId = (int)RoleId.Pilot, TeamTypesId = (int)TeamTypeId.Site });
 
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 201 }); // Team_Leader
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 202 }); // Operator
-            modelBuilder.Entity<TeamTypeRole>().HasData(new TeamTypeRole { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleId = 102 }); // Expert
+                    rt.HasData(new { RolesId = (int)RoleId.Supervisor, TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany });
+                    rt.HasData(new { RolesId = (int)RoleId.Expert, TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany });
 
-            // End BIADemo
+                    rt.HasData(new { RolesId = (int)RoleId.TeamLeader, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
+                    rt.HasData(new { RolesId = (int)RoleId.Operator, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
+                    rt.HasData(new { RolesId = (int)RoleId.Expert, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
+                    // End BIADemo
+
+                });
         }
 
         /// <summary>

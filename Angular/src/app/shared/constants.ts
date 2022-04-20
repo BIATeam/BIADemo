@@ -38,10 +38,11 @@ export enum RoleMode {
 }
 
 export enum TeamTypeId {
-  Site = 1,
+  Root = 1,
+  Site = 2,
   // Begin BIADemo  
-  AircraftMaintenanceCompany = 2,
-  MaintenanceTeam =3,
+  AircraftMaintenanceCompany = 3,
+  MaintenanceTeam = 4,
   // End BIADemo
 }
 

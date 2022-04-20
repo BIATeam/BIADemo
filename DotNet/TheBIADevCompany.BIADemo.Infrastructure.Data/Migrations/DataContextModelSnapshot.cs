@@ -101,6 +101,88 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("RoleTeamType", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeamTypesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "TeamTypesId");
+
+                    b.HasIndex("TeamTypesId");
+
+                    b.ToTable("RoleTeamTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            RolesId = 10001,
+                            TeamTypesId = 1
+                        },
+                        new
+                        {
+                            RolesId = 10002,
+                            TeamTypesId = 1
+                        },
+                        new
+                        {
+                            RolesId = 10003,
+                            TeamTypesId = 1
+                        },
+                        new
+                        {
+                            RolesId = 1,
+                            TeamTypesId = 2
+                        },
+                        new
+                        {
+                            RolesId = 2,
+                            TeamTypesId = 2
+                        },
+                        new
+                        {
+                            RolesId = 101,
+                            TeamTypesId = 3
+                        },
+                        new
+                        {
+                            RolesId = 102,
+                            TeamTypesId = 3
+                        },
+                        new
+                        {
+                            RolesId = 201,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 202,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 102,
+                            TeamTypesId = 4
+                        });
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserRoles");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Aggregate.AuditLog", b =>
                 {
                     b.Property<int>("Id")
@@ -963,13 +1045,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 10002,
-                            Code = "BackAdmin",
+                            Code = "Back_Admin",
                             Label = "Background task administrator"
                         },
                         new
                         {
                             Id = 10003,
-                            Code = "BackReadOnly",
+                            Code = "Back_Read_Only",
                             Label = "Visualization of background tasks"
                         },
                         new
@@ -1025,7 +1107,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("TeamTypeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1);
+                        .HasDefaultValue(2);
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1064,74 +1146,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Site"
+                            Name = "Root"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "AircraftMaintenanceCompany"
+                            Name = "Site"
                         },
                         new
                         {
                             Id = 3,
+                            Name = "AircraftMaintenanceCompany"
+                        },
+                        new
+                        {
+                            Id = 4,
                             Name = "MaintenanceTeam"
-                        });
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamTypeRole", b =>
-                {
-                    b.Property<int>("TeamTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("TeamTypeId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("TeamTypeRole");
-
-                    b.HasData(
-                        new
-                        {
-                            TeamTypeId = 1,
-                            RoleId = 1
-                        },
-                        new
-                        {
-                            TeamTypeId = 1,
-                            RoleId = 2
-                        },
-                        new
-                        {
-                            TeamTypeId = 2,
-                            RoleId = 101
-                        },
-                        new
-                        {
-                            TeamTypeId = 2,
-                            RoleId = 102
-                        },
-                        new
-                        {
-                            TeamTypeId = 3,
-                            RoleId = 201
-                        },
-                        new
-                        {
-                            TeamTypeId = 3,
-                            RoleId = 202
-                        },
-                        new
-                        {
-                            TeamTypeId = 3,
-                            RoleId = 102
                         });
                 });
 
@@ -1432,6 +1462,36 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Sites");
                 });
 
+            modelBuilder.Entity("RoleTeamType", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", null)
+                        .WithMany()
+                        .HasForeignKey("TeamTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", "CreatedBy")
@@ -1648,25 +1708,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("TeamType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamTypeRole", b =>
-                {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
-                        .WithMany("TeamTypeRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", "TeamType")
-                        .WithMany("TeamTypeRoles")
-                        .HasForeignKey("TeamTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("TeamType");
-                });
-
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
@@ -1781,8 +1822,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTeamRoles");
 
                     b.Navigation("RoleTranslations");
-
-                    b.Navigation("TeamTypeRoles");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
@@ -1792,11 +1831,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTeams");
 
                     b.Navigation("ViewTeams");
-                });
-
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", b =>
-                {
-                    b.Navigation("TeamTypeRoles");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", b =>

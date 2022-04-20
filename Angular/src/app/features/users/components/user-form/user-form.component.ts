@@ -8,25 +8,24 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
-import { User } from 'src/app/domains/user/model/user';
-import { UserFilter } from '../../model/UserFilter';
+import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { User } from '../../model/user';
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
-export class UserFormComponent implements OnChanges {
-  @Output() searchUsers = new EventEmitter<UserFilter>();
-  @Output() save = new EventEmitter<User[]>();
-  @Output() cancel = new EventEmitter();
-  @Input() users: User[];
-  @Input() domains: LdapDomain[];
 
-  selectedUsers: User[];
-  selectedDomain: string;
+export class UserFormComponent implements OnChanges {
+  @Input() user: User = <User>{};
+  @Input() roleOptions: OptionDto[];
+
+  @Output() save = new EventEmitter<User>();
+  @Output() cancel = new EventEmitter();
+
   form: FormGroup;
 
   constructor(public formBuilder: FormBuilder) {
@@ -34,51 +33,39 @@ export class UserFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.users && changes.users) {
-      this.users = this.users.sort((a, b) => {
-        return a.firstName.localeCompare(b.firstName);
-      });
+    if (this.user) {
+      this.form.reset();
+      if (this.user) {
+        this.form.patchValue({ ...this.user });
+      }
     }
   }
 
   private initForm() {
     this.form = this.formBuilder.group({
-      selectedUsers: [this.selectedUsers, Validators.required],
-      domains: [this.domains]
+      id: [this.user.id],
+      firstName: [this.user.firstName, Validators.required],
+      lastName: [this.user.lastName, Validators.required],
+      login: [this.user.login, Validators.required],
+      roles: [this.user.roles],
     });
+
   }
 
   onCancel() {
-    this.reset();
+    this.form.reset();
     this.cancel.next();
   }
 
   onSubmit() {
     if (this.form.valid) {
-      this.save.emit(this.form.value.selectedUsers);
-      this.reset();
-    }
-  }
+      const user: User = <User>this.form.value;
+      user.id = user.id > 0 ? user.id : 0;
+      user.roles = BiaOptionService.Differential(user.roles, this.user?.roles);
 
-  reset() {
-    this.selectedDomain = '';
-    this.form.reset();
-  }
-
-  onSearchUsers(event: any) {
-    const userFiter: UserFilter = {
-      filter: event.query,
-      ldapName: this.selectedDomain
-    };
-    this.searchUsers.emit(userFiter);
-  }
-
-  onDomainChange(event: any) {
-    const domain = event.value as LdapDomain;
-    if (domain) {
-      this.selectedDomain = (event.value as LdapDomain).ldapName;
-    } else {
-      this.selectedDomain = '';
+      this.save.emit(user);
+      this.form.reset();
     }
   }
 }
+

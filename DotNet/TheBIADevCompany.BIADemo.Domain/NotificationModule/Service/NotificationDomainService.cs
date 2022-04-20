@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
                     (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
-                        (nt.Roles.Count == 0 && (isTeamAccesAll ||  nt.Team.Members.Any(member => member.UserId == this.userId)))
+                        (nt.Roles.Count == 0 && (isTeamAccesAll || nt.Team.Members.Any(member => member.UserId == this.userId)))
                         ||
                         (nt.Roles.Count > 0 && nt.Team.Members.Any(member => member.UserId == this.userId && member.MemberRoles.Any(mr => nt.Roles.Any(ntr => mr.RoleId == ntr.RoleId))))))
                     && (n.NotifiedUsers.Count == 0 || n.NotifiedUsers.Any(u => u.UserId == this.userId))));
@@ -107,7 +107,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 
                 _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", dto);
 
-                mapper.DtoToEntity(dto, entity, mapperMode);
+                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
 
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;

@@ -33,7 +33,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        /// <param name="planeQueryCustomizer">The plane query customizer for include.</param>
         public PlaneAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {

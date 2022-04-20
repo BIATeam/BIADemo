@@ -14,6 +14,14 @@ namespace BIA.Net.Core.Common
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
+        /// Attach the item to the current context.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        /// <typeparam name="TEntity">The entity type of the item.</typeparam>
+        void Attach<TEntity>(TEntity item)
+            where TEntity : class;
+
+        /// <summary>
         /// Commit changes on the current data context.
         /// </summary>
         /// <returns>The number of element affected.</returns>

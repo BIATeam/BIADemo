@@ -2,28 +2,17 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  create,
-  failure,
-  load,
-  loadAllByPost,
-  loadAllByPostSuccess,
-  loadSuccess,
-  remove,
-  multiRemove,
-  update,
-  save,
-  synchronize
-} from './users-actions';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { UserDas } from 'src/app/domains/user/services/user-das.service';
-import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { User } from 'src/app/domains/user/model/user';
+import { FeatureUsersActions } from './users-actions';
+import { UserDas } from '../services/user-das.service';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { getLastLazyLoadEvent } from './user.state';
-import { UserFromADDas } from 'src/app/domains/user-from-AD/services/user-from-AD-das.service';
-import { TranslateService } from '@ngx-translate/core';
+import { User } from '../model/user';
+import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { AppState } from 'src/app/store/state';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { LazyLoadEvent } from 'primeng/api';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { useSignalR } from '../user.constants';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -34,14 +23,14 @@ import { TranslateService } from '@ngx-translate/core';
 export class UsersEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByPost),
+      ofType(FeatureUsersActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
         this.userDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<User[]>) => loadAllByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<User[]>) => FeatureUsersActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         )
       )
@@ -50,25 +39,14 @@ export class UsersEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(FeatureUsersActions.load),
       pluck('id'),
-      switchMap((id) => this.userDas.get({ id: id }).pipe(map((user) => loadSuccess({ user }))))
-    )
-  );
-
-  synchronize$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(synchronize),
-      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([x, event]) => {
-        return this.userDas.synchronize().pipe(
-          map(() => {
-            this.biaMessageService.showSyncSuccess();
-            return loadAllByPost({ event: event });
-          }),
+      switchMap((id) => {
+        return this.userDas.get({ id: id }).pipe(
+          map((user) => FeatureUsersActions.loadSuccess({ user })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         );
       })
@@ -77,18 +55,22 @@ export class UsersEffects {
 
   create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(create),
+      ofType(FeatureUsersActions.create),
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
         return this.userDas.post({ item: user }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            return loadAllByPost({ event: event });
+            if (useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         );
       })
@@ -97,38 +79,64 @@ export class UsersEffects {
 
   update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(update),
+      ofType(FeatureUsersActions.update),
       pluck('user'),
       concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
         return this.userDas.put({ item: user, id: user.id }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            return loadAllByPost({ event: event });
+            if (useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         );
       })
     )
   );
 
+  synchronize$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureUsersActions.synchronize),
+      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      switchMap(([x, event]) => {
+        return this.userDas.synchronize().pipe(
+          map(() => {
+            this.biaMessageService.showSyncSuccess();
+            return FeatureUsersActions.loadAllByPost({ event: event });
+          }),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
+          })
+        );
+      })
+    )
+  );
   destroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(remove),
+      ofType(FeatureUsersActions.remove),
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
         return this.userDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllByPost({ event: event });
+            if (useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         );
       })
@@ -137,55 +145,22 @@ export class UsersEffects {
 
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(multiRemove),
+      ofType(FeatureUsersActions.multiRemove),
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
         return this.userDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            return loadAllByPost({ event: event });
+            if (useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
+            }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
-          })
-        );
-      })
-    )
-  );
-
-  save$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(save),
-      pluck('usersFromAD'),
-      concatMap((usersFromAD) => of(usersFromAD).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([usersFromAD, event]) => {
-        return this.userFromADDas.save({ items: usersFromAD, endpoint:  '' }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            return loadAllByPost({ event: event });
-          }),
-          catchError((err) => {
-            if (err.status === 303) {
-              let errorMessage = '';
-              if (err.error) {
-                err.error.forEach((element: string) => {
-                  const currentError = `${this.translateService.instant('user.cannotAddMember')}`.replace(
-                    '${login}',
-                    element
-                  );
-                  if (errorMessage !== '') {
-                    errorMessage += '\n';
-                  }
-                  errorMessage += currentError;
-                });
-              }
-              this.biaMessageService.showErrorDetail(errorMessage);
-            } else {
-              this.biaMessageService.showError();
-            }
-            return of(failure({ err: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersActions.failure({ error: err }));
           })
         );
       })
@@ -195,9 +170,7 @@ export class UsersEffects {
   constructor(
     private actions$: Actions,
     private userDas: UserDas,
-    private userFromADDas: UserFromADDas,
     private biaMessageService: BiaMessageService,
-    private translateService: TranslateService,
     private store: Store<AppState>
   ) {}
 }

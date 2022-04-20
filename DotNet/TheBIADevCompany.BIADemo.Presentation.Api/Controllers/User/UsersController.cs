@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -18,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -65,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.userService.GetRangeAsync(filters);
+            var (results, total) = await this.userService.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters);
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -96,23 +98,96 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
+        /// Get a user by its identifier.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The user.</returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Users.Read)]
+        public async Task<IActionResult> Get(int id)
+        {
+            if (id == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var dto = await this.userService.GetAsync<UserDto, UserMapper>(id);
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
         /// Add some users in a group.
         /// </summary>
         /// <param name="users">The list of user.</param>
         /// <returns>The result code.</returns>
-        [HttpPost]
+        [HttpPost("addFromDirectory")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [Authorize(Roles = Rights.Users.Add)]
-        public async Task<IActionResult> AddInGroup([FromBody] IEnumerable<UserFromDirectoryDto> users)
+        public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
-            List<string> errors = await this.userService.AddInGroupAsync(users);
+            List<string> errors = await this.userService.AddFromDirectory(users);
             if (errors.Any())
             {
                 return this.StatusCode(303, errors);
             }
 
             return this.Ok();
+        }
+
+        /// <summary>
+        /// Add some users in a group.
+        /// </summary>
+        /// <param name="user">The user with roles added or deleted.</param>
+        /// <returns>The result code.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Users.UpdateRoles)]
+        public async Task<IActionResult> Update(int id, [FromBody] UserDto dto)
+        {
+            if (id == 0 || dto == null || dto.Id != id)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var updatedDto = await this.userService.UpdateAsync<UserDto, UserMapper>(dto, mapperMode: "Roles");
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "users", "refresh-users");
+#endif
+                return this.Ok(updatedDto);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
         }
 
 #pragma warning disable SA1005, S125

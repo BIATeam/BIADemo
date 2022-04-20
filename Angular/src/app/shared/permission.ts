@@ -72,6 +72,8 @@ export enum Permission {
   User_ListAD = 'User_ListAD',
   User_List_Access = 'User_List_Access',
   User_Sync = 'User_Sync',
+  User_UpdateRoles = 'User_UpdateRoles',
+  
   LdapDomains_List = 'LdapDomains_List',
   View_List = 'View_List',
   View_AddUserView = 'View_Add_UserView',

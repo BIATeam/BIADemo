@@ -281,7 +281,7 @@
         "Roles": [ "User" ]
       },
       {
-        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Read", "User_Add", "User_Delete", "User_Sync", "User_UpdateRoles" ],
         "Roles": [ "Admin" ]
       },
       // View

@@ -96,6 +96,8 @@ import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-i
 import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-not-current-team/is-not-current-team.pipe';
 import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
 import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
+import { UserAddFormLdapComponent } from './features/users-from-ldap/views/user-add-from-ldap-dialog/user-add-from-ldap-dialog.component';
+import { UserFromLdapFormComponent } from './features/users-from-ldap/components/user-from-ldap-form/user-from-ldap-form.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -177,8 +179,12 @@ const COMPONENTS = [
   FullPageLayoutComponent,
   PrimengCalendarLocaleDirective,
   BiaOnlineOfflineIconComponent,
-  NotificationTeamWarningComponent
+  NotificationTeamWarningComponent,
 ];
+
+const FEATURES = [
+  UserAddFormLdapComponent
+]
 
 const VIEW_COMPONENTS = [
   ViewListComponent,
@@ -188,6 +194,10 @@ const VIEW_COMPONENTS = [
   ViewFormComponent
 ];
 
+const USER_FROM_LDAPCOMPONENTS = [
+  UserAddFormLdapComponent,
+  UserFromLdapFormComponent
+];
 const PIPES = [
   PluckPipe,
   JoinPipe,
@@ -208,8 +218,8 @@ const SERVICES = [MessageService];
 
 @NgModule({
   imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS],
-  declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
-  exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...USER_FROM_LDAPCOMPONENTS, ...PIPES],
+  exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...FEATURES, ...PIPES],
   providers: [...SERVICES]
 })
 

@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { loadSuccess, loadAllByPostSuccess } from './users-actions';
+import { FeatureUsersActions } from './users-actions';
 import { LazyLoadEvent } from 'primeng/api';
-import { User } from 'src/app/domains/user/model/user';
+import { User } from '../model/user';
 
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const usersAdapter = createEntityAdapter<User>({
@@ -26,27 +26,40 @@ export interface State extends EntityState<User> {
   totalCount: number;
   currentUser: User;
   lastLazyLoadEvent: LazyLoadEvent;
+  loadingGet: boolean;
+  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State = usersAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentUser: <User>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{}
+  lastLazyLoadEvent: <LazyLoadEvent>{},
+  loadingGet: false,
+  loadingGetAll: false,
 });
 
 export const userReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(FeatureUsersActions.loadAllByPost, (state, { event }) => {
+    return { ...state, loadingGetAll: true };
+  }),
+  on(FeatureUsersActions.load, (state) => {
+    return { ...state, loadingGet: true };
+  }),
+  on(FeatureUsersActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = usersAdapter.setAll(result.data, state);
-    stateUpdated.currentUser = <User>{};
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
+    stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { user }) => {
-    return { ...state, currentUser: user };
-  })
+  on(FeatureUsersActions.loadSuccess, (state, { user }) => {
+    return { ...state, currentUser: user, loadingGet: false };
+  }),
+  on(FeatureUsersActions.failure, (state, { error }) => {
+    return { ...state, loadingGetAll: false, loadingGet: false };
+  }),
 );
 
 export const getUserById = (id: number) => (state: State) => state.entities[id];

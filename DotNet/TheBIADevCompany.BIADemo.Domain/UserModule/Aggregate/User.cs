@@ -142,5 +142,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the collection of notifications.
         /// </summary>
         public ICollection<NotificationUser> NotificationUsers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of roles.
+        /// </summary>
+        public ICollection<Role> Roles { get; set; }
     }
 }

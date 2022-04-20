@@ -139,13 +139,13 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onCreate() {
     if (!this.useCalcMode) {
-      this.router.navigate(['../create'], { relativeTo: this.activatedRoute });
+      this.router.navigate(['create'], { relativeTo: this.activatedRoute });
     }
   }
 
   onEdit(planeId: number) {
     if (!this.useCalcMode) {
-      this.router.navigate(['../' + planeId + '/edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([ planeId , 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
