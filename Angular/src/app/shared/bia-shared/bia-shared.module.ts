@@ -194,7 +194,7 @@ const VIEW_COMPONENTS = [
   ViewFormComponent
 ];
 
-const USER_FROM_LDAPCOMPONENTS = [
+const USER_FROM_DIRECTORY_COMPONENTS = [
   UserAddFromLdapComponent,
   UserFromLdapFormComponent
 ];
@@ -218,7 +218,7 @@ const SERVICES = [MessageService];
 
 @NgModule({
   imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS],
-  declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...USER_FROM_LDAPCOMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...USER_FROM_DIRECTORY_COMPONENTS, ...PIPES],
   exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...FEATURES, ...PIPES],
   providers: [...SERVICES]
 })
