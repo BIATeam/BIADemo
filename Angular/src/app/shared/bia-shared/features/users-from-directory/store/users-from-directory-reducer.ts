@@ -21,14 +21,19 @@ export const usersFromDirectoryAdapter = createEntityAdapter<UserFromDirectory>(
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
 export interface State extends EntityState<UserFromDirectory> {
+  changeCount : number;
   // additional props here
 }
 
 export const INIT_STATE: State = usersFromDirectoryAdapter.getInitialState({
   // additional props default values here
+  changeCount:0
 });
 
 export const userFromDirectoryReducers = createReducer<State>(
   INIT_STATE,
   on(DomaineUsersFromDirectoryActions.loadAllSuccess, (state, { users }) => usersFromDirectoryAdapter.setAll(users, state)),
+  on(DomaineUsersFromDirectoryActions.addFromDirectory, (state, { }) => {
+    return { ...state, changeCount: state.changeCount + 1 };
+  }),
 );
