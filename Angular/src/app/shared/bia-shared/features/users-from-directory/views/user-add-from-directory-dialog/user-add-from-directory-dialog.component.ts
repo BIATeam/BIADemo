@@ -15,7 +15,7 @@ import { UserFilter } from 'src/app/shared/bia-shared/features/users-from-direct
   templateUrl: './user-add-from-directory-dialog.component.html',
   styleUrls: ['./user-add-from-directory-dialog.component.scss']
 })
-export class UserAddFormLdapComponent implements OnInit {
+export class UserAddFromLdapComponent implements OnInit {
   _display = false;
 
   @Input()
