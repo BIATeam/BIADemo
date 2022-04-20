@@ -14,6 +14,10 @@
       [canAdd]="canAdd"
       [canDelete]="canDelete"
       [canExportCSV]="false"
+      [showBtnFilter]="true"
+      [showFilter]="showFilter"
+      [haveFilter]="haveFilter"
+      (openFilter)="onOpenFilter()"
       (create)="onCreate()"
       (delete)="onDelete()"
       [selectedElements]="selectedSites">
