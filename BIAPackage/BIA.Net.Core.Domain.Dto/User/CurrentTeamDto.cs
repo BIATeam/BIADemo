@@ -15,8 +15,8 @@ namespace BIA.Net.Core.Domain.Dto.User
         public CurrentTeamDto()
         {
             TeamTypeId = 0;
-            CurrentTeamId = 0;
-            CurrentTeamTitle = "";
+            TeamId = 0;
+            TeamTitle = "";
             CurrentRoleIds = new List<int>();
         }
         /// <summary>
@@ -27,12 +27,12 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Gets or sets the current site identifier.
         /// </summary>
-        public int CurrentTeamId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
         /// Gets or sets the current site identifier.
         /// </summary>
-        public string CurrentTeamTitle { get; set; }
+        public string TeamTitle { get; set; }
 
         /// <summary>
         /// Gets or sets the current site identifier.

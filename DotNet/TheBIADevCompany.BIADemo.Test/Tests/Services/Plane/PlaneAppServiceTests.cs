@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
                         new CurrentTeamDto()
                         {
                             TeamTypeId = (int)TeamTypeId.Site,
-                            CurrentTeamId = 1,
+                            TeamId = 1,
                         },
                     },
                 });

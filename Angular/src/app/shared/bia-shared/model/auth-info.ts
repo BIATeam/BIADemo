@@ -29,8 +29,8 @@ export interface UserData {
 
 export interface CurrentTeamDto {
   teamTypeId: number;
-  currentTeamId: number;
-  currentTeamTitle: string;
+  teamId: number;
+  teamTitle: string;
   currentRoleIds: number[];
 }
 

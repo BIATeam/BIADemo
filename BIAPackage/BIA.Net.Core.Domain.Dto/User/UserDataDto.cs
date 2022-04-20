@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Domain.Dto.User
             var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
             if (CurrentSite != null)
             {
-                return CurrentSite.CurrentTeamId;
+                return CurrentSite.TeamId;
             }
             return 0;
         }

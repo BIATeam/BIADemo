@@ -93,7 +93,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   private initDropdownTeam() {
     this.displayTeamList = false;
-    let currentTeamId = this.authService.getUncryptedToken()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.currentTeamId;
+    let currentTeamId = this.authService.getUncryptedToken()?.userData?.currentTeams?.find(t => t.teamTypeId == this.teamTypeId)?.teamId;
     let defaultTeamId = this.teams.find(t => t.isDefault)?.id;
     if (currentTeamId && currentTeamId > 0 && this.teams?.length > 1) {
       this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];

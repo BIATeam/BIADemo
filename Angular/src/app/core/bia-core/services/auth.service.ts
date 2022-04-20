@@ -43,8 +43,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.authInfo$.subscribe((authInfo: AuthInfo | null) => {
       if (authInfo && authInfo.additionalInfos && authInfo.uncryptedToken.userData) {
         authInfo.uncryptedToken.userData.currentTeams.forEach(team => {
-          this.setCurrentTeamId(team.teamTypeId, team.currentTeamId);
-          this.setCurrentRoleIds(team.teamTypeId, team.currentTeamId, team.currentRoleIds);
+          this.setCurrentTeamId(team.teamTypeId, team.teamId);
+          this.setCurrentRoleIds(team.teamTypeId, team.teamId, team.currentRoleIds);
         });
       }
     });

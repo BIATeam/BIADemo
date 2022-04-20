@@ -287,19 +287,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     {
                         if (teamLogin.TeamId > 0 && teams.Any(s => s.Id == teamLogin.TeamId))
                         {
-                            currentTeam.CurrentTeamId = teamLogin.TeamId;
-                            currentTeam.CurrentTeamTitle = teams.First(s => s.Id == teamLogin.TeamId).Title;
+                            currentTeam.TeamId = teamLogin.TeamId;
+                            currentTeam.TeamTitle = teams.First(s => s.Id == teamLogin.TeamId).Title;
                         }
                         else
                         {
-                            currentTeam.CurrentTeamId = team.Id;
-                            currentTeam.CurrentTeamTitle = team.Title;
+                            currentTeam.TeamId = team.Id;
+                            currentTeam.TeamTitle = team.Title;
                         }
                     }
 
-                    if (currentTeam.CurrentTeamId > 0)
+                    if (currentTeam.TeamId > 0)
                     {
-                        var roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.CurrentTeamId, userInfo.Id);
+                        var roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
 
                         if (teamLogin.RoleMode == RoleMode.AllRoles)
                         {

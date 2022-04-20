@@ -102,8 +102,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             else if (currentSite != null)
             {
                 // else use the current site.
-                selectPlaneOnSiteId = currentSite.CurrentTeamId;
-                selectPlaneOnSiteTitle = currentSite.CurrentTeamTitle;
+                selectPlaneOnSiteId = currentSite.TeamId;
+                selectPlaneOnSiteTitle = currentSite.TeamTitle;
             }
 
             List<PlaneDto> targetPlanes = this.planeAppService.GetAllAsync(accessMode: AccessMode.All, filter: p => p.SiteId == selectPlaneOnSiteId).Result.ToList();

@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
                         new CurrentTeamDto()
                         {
                             TeamTypeId = (int)TeamTypeId.Site,
-                            CurrentTeamId = 1,
+                            TeamId = 1,
                         },
                     },
                 });
