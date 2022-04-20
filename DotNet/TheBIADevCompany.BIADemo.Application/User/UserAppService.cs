@@ -323,6 +323,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 user.LastName,
                 user.FirstName,
                 user.Login,
+                string.Join("|", user.Roles.Select(r => r.Display)),
             }).ToList();
 
             List<string> columnHeaders = null;
