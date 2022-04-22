@@ -1,4 +1,4 @@
-// <copyright file="RoleModeDto.cs" company="BIA">
+// <copyright file="TeamConfigDto.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -13,16 +13,21 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class RoleModeDto
+    public class TeamConfigDto
     {
         /// <summary>
-        /// Gets or sets is the defaul value.
+        /// Gets or sets is the default value.
         /// </summary>
         public int TeamTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the code.
         /// </summary>
-        public RoleMode roleMode { get; set; }
+        public RoleMode RoleMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets if appear in UI header (normaly should not be use in back).
+        /// </summary>
+        public bool InHeader { get; set; }
     }
 }

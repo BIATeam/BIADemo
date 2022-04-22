@@ -50,7 +50,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 FirstName = entity.FirstName,
                 Login = entity.Login,
                 Guid = entity.Guid,
-                // Mapping relationship *-* : ICollection<Airports>
                 Roles = entity.Roles.Select(ca => new OptionDto
                 {
                     Id = ca.Id,

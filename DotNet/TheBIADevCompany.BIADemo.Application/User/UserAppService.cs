@@ -107,17 +107,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.userDirectoryHelper.GetUserRolesBySid(sid);
         }
 
-        /// <inheritdoc cref="IUserAppService.TranslateRolesInPermissions"/>
-        public List<string> TranslateRolesInPermissions(List<string> roles)
-        {
-            return this.userPermissionDomainService.TranslateRolesInPermissions(roles);
-        }
-
         /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
         public async Task<UserInfoDto> GetCreateUserInfoAsync(string sid)
         {
-            var userInfo =
-                await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
+            UserInfoDto userInfo = await GetUserInfoAsync(sid);
 
             if (userInfo != null)
             {
@@ -148,6 +141,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             return userInfo;
+        }
+
+        public async Task<UserInfoDto> GetUserInfoAsync(string sid)
+        {
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>

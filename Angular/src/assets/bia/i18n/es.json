@@ -3,8 +3,13 @@
   "bia": {
     "actions": "Valores",
     "add": "Añadir",
+    "administer": "Administrar",
+    "administration" : "Administración",
     "all": "Todas",
     "back": "Espalda",
+    "backgroundtasks": "Tarea en segundo plano",
+    "backgroundTaskAdmin": "Administrar tareas",
+    "backgroundTaskReadOnly": "Ver tareas",
     "cancel": "Cancelar",
     "close": "Cerrar",
     "confirm": "Confirmar",
@@ -66,6 +71,7 @@
       "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },
+    "view": "Ver",
     "views": {
       "default": "Vista predeterminada",
       "defineDefault": "Establecer por defecto",

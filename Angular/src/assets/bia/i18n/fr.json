@@ -4,8 +4,13 @@
     "action": "Action",
     "actions": "Actions",
     "add": "Ajouter",
+    "administer": "Administrer",
+    "administration": "Administration",
     "all": "Tous",
     "back": "Retour",
+    "backgroundtasks": "Tâches d'arrière-plan",
+    "backgroundTaskAdmin": "Administrer les taches",
+    "backgroundTaskReadOnly": "Voir les taches",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
@@ -68,6 +73,7 @@
       "language": "Langage",
       "translatedFields": "Champs traduits"
     },
+    "view": "Voir",
     "views": {
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",

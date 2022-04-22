@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Authentication
+namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using BIA.Net.Core.Domain.Dto.User;
     using System.Collections.Generic;
@@ -14,6 +14,14 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
     /// </summary>
     public interface IJwtFactory
     {
+        /// <summary>
+        /// Decrypt the token
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <param name="SecretKey"></param>
+        /// <returns></returns>
+        ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey);
+
         /// <summary>
         /// Generate the identity for a user.
         /// </summary>
@@ -32,10 +40,11 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         /// </summary>
         /// <param name="tokenDto">The token not uncrypted.</param>
         /// <param name="additionalInfos">Additionnal Info for front</param>
+        /// <param name="fullToken">Additionnal Info for front</param>
         /// The additional information we want to let visible in the token.
         /// </param>
         /// <returns>The JWT as string.</returns>
-        Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos)
+        Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool fullToken)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto;
     }

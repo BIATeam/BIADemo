@@ -424,7 +424,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to add users.
             /// </summary>
             public const string UpdateRoles = "User_UpdateRoles";
-            
         }
 
         /// <summary>

@@ -2,7 +2,7 @@ import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
 import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
-import { AuthInfo, AdditionalInfos, TeamLoginDto, Token } from 'src/app/shared/bia-shared/model/auth-info';
+import { AuthInfo, AdditionalInfos, Token, LoginParamDto, CurrentTeamDto } from 'src/app/shared/bia-shared/model/auth-info';
 import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 
 
-const STORAGE_TEAMSLOGIN_KEY = 'teamsLogin';
+const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
 const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
@@ -122,22 +122,23 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
 
-  public getAllCurrentTeams(): TeamLoginDto[] {
-    const value = sessionStorage.getItem(STORAGE_TEAMSLOGIN_KEY);
+  public getLoginParameters(): LoginParamDto {
+    const value = sessionStorage.getItem(STORAGE_LOGINPARAM_KEY);
     if (value) {
-      const teamsLogin: TeamLoginDto[] = <TeamLoginDto[]>JSON.parse(value);
-      teamsLogin.forEach(tl => {tl.teamId = +tl.teamId; tl.roleIds = tl.roleIds.map(roleId => +roleId)})
-      return teamsLogin;
+      const loginParam: LoginParamDto = <LoginParamDto>JSON.parse(value);
+      loginParam.currentTeamLogins.forEach(tl => {tl.teamId = +tl.teamId; tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId)})
+      loginParam.teamsConfig = allEnvironments.teams;
+      return loginParam;
     }
 
-    return [];
+    return {currentTeamLogins:[], lightToken:false, teamsConfig:allEnvironments.teams };
   }
 
-  public setAllCurrentTeams(teamsLogin: TeamLoginDto[]) {
-    sessionStorage.setItem(STORAGE_TEAMSLOGIN_KEY, JSON.stringify(teamsLogin));
+  public setLoginParameters(loginParam: LoginParamDto) {
+    sessionStorage.setItem(STORAGE_LOGINPARAM_KEY, JSON.stringify(loginParam));
   }
-  public getCurrentTeams(teamTypeIds: TeamTypeId[]): TeamLoginDto[] | undefined {
-    const teamsLogin = this.getAllCurrentTeams();
+  public getCurrentTeams(teamTypeIds: TeamTypeId[]): CurrentTeamDto[] | undefined {
+    const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.filter(i => teamTypeIds.indexOf(i.teamTypeId)>-1);
   }
 
@@ -149,8 +150,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return [];
   }
 
-  public getCurrentTeam(teamTypeId: TeamTypeId): TeamLoginDto | undefined {
-    const teamsLogin = this.getAllCurrentTeams();
+  public getCurrentTeam(teamTypeId: TeamTypeId): CurrentTeamDto | undefined {
+    const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.find((i => i.teamTypeId === teamTypeId))
   }
 
@@ -165,7 +166,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public getCurrentRoleIds(teamTypeId: number): number[] {
     const team = this.getCurrentTeam(teamTypeId);
     if (team) {
-      return team.roleIds;
+      return team.currentRoleIds;
     }
     return [];
   }
@@ -177,7 +178,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     teamId = +teamId;
-    let teamsLogin = this.getAllCurrentTeams();
+    let loginParam = this.getLoginParameters();
+    let teamsLogin = loginParam.currentTeamLogins;
     let team = teamsLogin.find(i => i.teamTypeId === teamTypeId);
     if (team) {
       if (+team.teamId !== +teamId) {
@@ -188,22 +190,21 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         else {
           team.teamId = teamId
           team.useDefaultRoles = true;
-          team.roleIds = [];
+          team.currentRoleIds = [];
         }
-        this.setAllCurrentTeams(teamsLogin);
+        this.setLoginParameters(loginParam);
         return true;
       }
     }
     else {
       if (teamId != 0) {
-        let newTeam = new TeamLoginDto();
+        let newTeam = new CurrentTeamDto();
         newTeam.teamTypeId = teamTypeId;
         newTeam.useDefaultRoles = true;
-        newTeam.roleIds = [];
-        newTeam.roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode!;
+        newTeam.currentRoleIds = [];
         newTeam.teamId = teamId;
         teamsLogin.push(newTeam)
-        this.setAllCurrentTeams(teamsLogin);
+        this.setLoginParameters(loginParam);
         return true;
       }
     }
@@ -220,13 +221,14 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds = roleIds.map(roleId => +roleId);
     const roleMode = allEnvironments.teams.find(r => r.teamTypeId == teamTypeId)?.roleMode || RoleMode.AllRoles;
     if (roleMode !== RoleMode.AllRoles) {
-      const teamsLogin = this.getAllCurrentTeams();
+      let loginParam = this.getLoginParameters();
+      let teamsLogin = loginParam.currentTeamLogins;
       let team = teamsLogin.find((i => i.teamId === teamId))
       if (team) {
-        if (+team.roleIds !== +roleIds) {
-          team.roleIds = roleIds
+        if (+team.currentRoleIds !== +roleIds) {
+          team.currentRoleIds = roleIds
           team.useDefaultRoles = false;
-          this.setAllCurrentTeams(teamsLogin);
+          this.setLoginParameters(loginParam);
           return true;
         }
       }
@@ -252,7 +254,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected getAuthInfo() {
-    return this.http.post<AuthInfo>(this.buildUrlLogin(), this.buildBodyLogin()).pipe(
+    return this.http.post<AuthInfo>(`${this.route}LoginAndTeams`, this.getLoginParameters()).pipe(
       map((authInfo: AuthInfo) => {
         this.shouldRefreshToken = false;
         this.authInfoSubject.next(authInfo);
@@ -282,28 +284,19 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  protected buildUrlLogin() {
-    let url: string;
-    const teamsLogin = this.getAllCurrentTeams();
-    if (teamsLogin.length > 0) {
-      url = `${this.route}LoginAndTeams`;
-    }
-    else {
-      url = `${this.route}LoginAndTeamsDefault`;
-    }
-    return url;
-  }
-
-  protected buildBodyLogin() {
-    let body;
-    const teamsLogin = this.getAllCurrentTeams();
-    if (teamsLogin.length > 0) {
-      body = teamsLogin;
-    }
-    else {
-      body = allEnvironments.teams;
-    }
-    return body;
+  
+  public getLightToken() {
+    let loginParam = this.getLoginParameters();
+    loginParam.lightToken = true;
+    return this.http.post<AuthInfo>(`${this.route}LoginAndTeams`, loginParam).pipe(
+      map((authInfo: AuthInfo) => {
+        return authInfo;
+      }),
+      catchError((err) => {
+        let authInfo: AuthInfo = <AuthInfo>{};
+        return of(authInfo);
+      })
+    );
   }
 
   protected getLatestVersion() {

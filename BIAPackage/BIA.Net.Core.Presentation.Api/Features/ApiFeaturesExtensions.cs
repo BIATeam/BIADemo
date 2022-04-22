@@ -5,7 +5,7 @@
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Presentation.Api.Authentication;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire;

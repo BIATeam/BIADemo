@@ -129,6 +129,14 @@ const routes: Routes = [
               canNavigate: true
             },
             loadChildren: () => import('./features/notifications/notification.module').then((m) => m.NotificationModule)
+          },
+          {
+            path: 'backgroundtask',
+            data: {
+              breadcrumb: 'bia.backgroundtasks',
+              canNavigate: true
+            },
+            loadChildren: () => import('./features/background-task/background-task.module').then((m) => m.BackgroundTaskModule)
           }
         ]
       }

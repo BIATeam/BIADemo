@@ -59,10 +59,29 @@ export const NAVIGATION: BiaNavigation[] = [
       },
     ]
   },
+  // End BIADemo
   {
-    labelKey: 'app.administration',
-    permissions: [Permission.Airport_List_Access],
+    labelKey: 'bia.administration',
+    permissions: [
+      Permission.Background_Task_Admin,
+      Permission.Background_Task_Read_Only,
+      // Begin BIADemo
+      Permission.Airport_List_Access,
+      Permission.PlaneType_List_Access,
+      // End BIADemo
+    ],
     children: [
+      {
+        labelKey: 'bia.backgroundTaskAdmin',
+        permissions: [Permission.Background_Task_Admin],
+        path: ['/backgroundtask/admin']
+      },
+      {
+        labelKey: 'bia.backgroundTaskReadOnly',
+        permissions: [Permission.Background_Task_Read_Only],
+        path: ['/backgroundtask/readonly']
+      },
+      // Begin BIADemo
       {
         labelKey: 'app.airports',
         permissions: [Permission.Airport_List_Access],
@@ -73,7 +92,8 @@ export const NAVIGATION: BiaNavigation[] = [
         permissions: [Permission.PlaneType_List_Access],
         path: ['/examples/planes-types']
       }
+      // End BIADemo
     ]
-  }
-  // End BIADemo
+  },
+
 ];

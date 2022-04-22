@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Authentication
+namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using System;
     using System.Threading.Tasks;

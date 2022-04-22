@@ -38,5 +38,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the current site identifier.
         /// </summary>
         public List<int> CurrentRoleIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets if the default role should be use else use the current.
+        /// </summary>
+        public bool UseDefaultRoles { get; set; }
     }
 }

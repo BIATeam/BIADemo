@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Authentication
+namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using System;
     using System.Collections.Generic;
@@ -10,9 +10,11 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Principal;
+    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.Extensions.Options;
+    using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -33,6 +35,38 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         {
             this.jwtOptions = jwtOptions.Value;
             ThrowIfInvalidOptions(this.jwtOptions);
+        }
+
+        public ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey)),
+                ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
+            };
+            try
+            {
+                var principal = tokenHandler.ValidateToken(Token, tokenValidationParameters, out var validatedToken);
+                if (!ValidateSecurityAlgorithm(validatedToken))
+                {
+                    return null;
+                };
+                return principal;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        private bool ValidateSecurityAlgorithm(SecurityToken SecurityToken)
+        {
+            var res = (SecurityToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+            return res;
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
@@ -73,7 +107,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
-        public async Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos) 
+        public async Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool lightToken) 
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto
         {
@@ -86,8 +120,8 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
             var response = new AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
-                UncryptedToken = tokenDto,
-                AdditionalInfos = additionalInfos,
+                UncryptedToken = lightToken ? null : tokenDto,
+                AdditionalInfos = lightToken? null : additionalInfos,
             };
 
             return response;

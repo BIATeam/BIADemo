@@ -1,13 +1,16 @@
 import { Team } from 'src/app/domains/team/model/team';
 import { RoleMode } from '../../constants';
 
+export class LoginParamDto {
+  currentTeamLogins: CurrentTeamDto[];
+  teamsConfig: TeamConfigDto[];
+  lightToken: boolean;
+}
 
-export class  TeamLoginDto {
+export class TeamConfigDto {
   teamTypeId: number;
-  teamId: number;
   roleMode: RoleMode;
-  roleIds: number[];
-  useDefaultRoles: boolean;
+  inHeader: boolean;
 }
 
 export interface UserInfo {
@@ -27,11 +30,12 @@ export interface UserData {
   currentTeams: CurrentTeamDto[];
 }
 
-export interface CurrentTeamDto {
+export class CurrentTeamDto {
   teamTypeId: number;
   teamId: number;
   teamTitle: string;
   currentRoleIds: number[];
+  useDefaultRoles: boolean;
 }
 
 export interface AdditionalInfos {

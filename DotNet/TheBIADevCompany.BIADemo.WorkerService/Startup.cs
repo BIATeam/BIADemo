@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using BIA.Net.Core.WorkerService.Features.HangfireServer;
@@ -23,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
@@ -41,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <summary>
         /// The configuration.
         /// </summary>
-        private readonly WorkerFeatures workerFeatures;
+        private readonly BiaNetSection biaNetSection;
 
         /// <summary>
         /// The current environment.
@@ -57,9 +59,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         {
             this.currentEnvironment = env;
             this.configuration = configuration;
-            BiaNetSection biaNetSection = new ();
-            this.configuration.GetSection("BiaNet").Bind(biaNetSection);
-            this.workerFeatures = biaNetSection.WorkerFeatures;
+            this.biaNetSection = new BiaNetSection();
+            this.configuration.GetSection("BiaNet").Bind(this.biaNetSection);
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 this.configuration.GetSection("BiaNet:WorkerFeatures:ClientForHub"));
 
             services.AddBiaWorkerFeatures(
-                this.workerFeatures,
+                this.biaNetSection.WorkerFeatures,
                 this.configuration,
                 new List<DatabaseHandlerRepository>()
                     {
@@ -116,8 +117,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
-        /// <param name="userAppService">The user app service.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserAppService userAppService)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IJwtFactory jwtFactory)
         {
             if (!env.IsDevelopment())
             {
@@ -136,10 +136,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // End BIADemo
             HangfireServerAuthorizations hangfireServerAuthorizations = new ();
-            hangfireServerAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(userAppService, false, "Hangfire_Dashboard_Admin") };
-            hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(userAppService, true, "Hangfire_Dashboard_ReadOnly") };
+            hangfireServerAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
+            hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
-            app.UseBiaWorkerFeatures<AuditFeature>(this.workerFeatures, hangfireServerAuthorizations);
+            app.UseBiaWorkerFeatures<AuditFeature>(this.biaNetSection.WorkerFeatures, hangfireServerAuthorizations);
         }
     }
 }

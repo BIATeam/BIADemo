@@ -96,6 +96,7 @@ import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-i
 import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-not-current-team/is-not-current-team.pipe';
 import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
 import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
+import { HangfireContainerComponent } from './components/hangfire-container/hangfire-container.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -178,6 +179,7 @@ const COMPONENTS = [
   PrimengCalendarLocaleDirective,
   BiaOnlineOfflineIconComponent,
   NotificationTeamWarningComponent,
+  HangfireContainerComponent,
 ];
 
 

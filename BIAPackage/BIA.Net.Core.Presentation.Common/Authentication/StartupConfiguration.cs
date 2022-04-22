@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Authentication
+namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using System;
     using System.Net;
@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Authentication.Negotiate;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
@@ -34,7 +35,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
             services.Configure<JwtOptions>(options =>
             {
                 options.Issuer = configuration.Jwt.Issuer;
-                options.Audience = configuration.Security.Audience;
+                options.Audience = configuration.Security?.Audience;
                 options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
@@ -44,7 +45,7 @@ namespace BIA.Net.Core.Presentation.Api.Authentication
                 ValidIssuer = configuration.Jwt.Issuer,
 
                 ValidateAudience = true,
-                ValidAudience = configuration.Security.Audience,
+                ValidAudience = configuration.Security?.Audience,
 
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = signingKey,

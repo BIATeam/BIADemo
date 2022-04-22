@@ -43,6 +43,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <summary>
+        /// Return the list of role of a user.
+        /// </summary>
+        /// <param name="userId">The user Id.</param>
+        /// <returns>List of role code.</returns>
+        public async Task<IEnumerable<string>> GetUserRolesAsync(int userId)
+        {
+            return await this.Repository.GetAllResultAsync<string>(
+                entity => entity.Code,
+                filter: x => x.Users.Any(m => m.Id == userId));
+        }
+
+        /// <summary>
         /// Return options.
         /// </summary>
         /// <param name="teamId">The team Id.</param>

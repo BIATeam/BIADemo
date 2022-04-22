@@ -16,6 +16,7 @@
     using System.Collections.Generic;
     using BIA.Net.Core.WorkerService.Features.HangfireServer;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Presentation.Common.Authentication;
 
     /// <summary>
     /// Add the standard service.
@@ -35,6 +36,12 @@
             IConfiguration configuration,
             List<DatabaseHandlerRepository> databaseHandlerRepositories)
         {
+            var biaNetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
+
+            // Authentication
+            services.ConfigureAuthentication(biaNetSection);
+
             // Local memory cache
             services.AddMemoryCache();
 

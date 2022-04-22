@@ -306,6 +306,16 @@
       {
         "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
         "Roles": [ "Admin" ]
+      },
+      {
+        "Name": "Background_Task_Admin",
+        "LightToken": true,
+        "Roles": [ "Back_Admin" ]
+      },
+      {
+        "Name": "Background_Task_Read_Only",
+        "LightToken": true,
+        "Roles": [ "Back_Read_Only" ]
       }
     ]
   }

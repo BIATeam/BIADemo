@@ -1,7 +1,11 @@
 export enum Permission {
+  Background_Task_Admin = 'Background_Task_Admin',
+  Background_Task_Read_Only = 'Background_Task_Read_Only',
+  
   // Begin BIADemo
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
+
   Home_Access = 'Home_Access',
   Notification_Create = 'Notification_Create',
   Notification_List_Access = 'Notification_List_Access',

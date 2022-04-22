@@ -10,9 +10,10 @@ export const allEnvironments = {
     urlAppIcon: 'assets/bia/AppIcon.svg',
     version: '0.0.0',
     teams: [
-        {teamTypeId: TeamTypeId.Site, roleMode: RoleMode.SingleRole, inHeader: true},
+        {teamTypeId: TeamTypeId.Site, roleMode: RoleMode.AllRoles, inHeader: true},
         // Begin BIADemo
         {teamTypeId: TeamTypeId.AircraftMaintenanceCompany, roleMode: RoleMode.MultiRoles, inHeader: true},
+        {teamTypeId: TeamTypeId.MaintenanceTeam, roleMode: RoleMode.AllRoles, inHeader: false},
         // End BIADemo
     ],
 };

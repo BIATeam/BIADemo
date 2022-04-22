@@ -4,7 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
+    using System;
     using System.Net;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using Hangfire.Dashboard;
     using TheBIADevCompany.BIADemo.Application.User;
 
@@ -13,26 +17,24 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     /// </summary>
     public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
     {
-        /// <summary>
-        /// The helper used for AD.
-        /// </summary>
-        private readonly IUserAppService userAppService;
-
-        private readonly string userPermission;
-
+        private static readonly string HangFireCookieName = "HangFireCookie";
         private readonly bool authorizeAllLocal;
+        private readonly string userPermission;
+        private readonly string secretKey;
+        private readonly IJwtFactory jwtFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfireAuthorizationFilter"/> class.
         /// </summary>
-        /// <param name="userAppService">Service to get user right.</param>
         /// <param name="authorizeAllLocal">True if local connection authorize all user.</param>
         /// <param name="userPermission">right to use.</param>
-        public HangfireAuthorizationFilter(IUserAppService userAppService, bool authorizeAllLocal, string userPermission)
+        /// <param name="secretKey">the secret Key.</param>
+        public HangfireAuthorizationFilter(bool authorizeAllLocal, string userPermission, string secretKey, IJwtFactory jwtFactory)
         {
-            this.userAppService = userAppService;
             this.userPermission = userPermission;
             this.authorizeAllLocal = authorizeAllLocal;
+            this.secretKey = secretKey;
+            this.jwtFactory = jwtFactory;
         }
 
         /// <summary>
@@ -50,19 +52,27 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 return true;
             }
 
-            if (httpContext.User.Identity.IsAuthenticated)
-            {
-#pragma warning disable CA1416 // Validate platform compatibility
-                var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
-#pragma warning restore CA1416 // Validate platform compatibility
-                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(sid).Result;
-                var userMainPermissions = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
-                return userMainPermissions.Contains(this.userPermission);
-            }
-            else
+            var access_token = httpContext.Request.Cookies[HangFireCookieName];
+
+            if (string.IsNullOrEmpty(access_token))
             {
                 return false;
             }
+
+            try
+            {
+                var principal = this.jwtFactory.GetPrincipalFromToken(access_token, secretKey);
+                if (!string.IsNullOrEmpty(this.userPermission) && !principal.IsInRole(this.userPermission))
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return true;
         }
     }
 }

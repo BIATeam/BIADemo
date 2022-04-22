@@ -4,8 +4,13 @@
     "action": "Action",
     "actions": "Actions",
     "add": "Add",
+    "administer": "Administer",
+    "administration" : "Administration",
     "all": "All",
     "back": "Back",
+    "backgroundtasks": "Background Tasks",
+    "backgroundTaskAdmin": "Administer tasks",
+    "backgroundTaskReadOnly": "View the tasks",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
@@ -68,6 +73,7 @@
       "language": "Language",
       "translatedFields": "Translated fields"
     },
+    "view": "View",
     "views": {
       "default": "Default view",
       "defineDefault": "Set default",

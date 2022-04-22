@@ -17,10 +17,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public class UserPermissionDomainService : IUserPermissionDomainService
     {
-        /// <summary>
-        /// The repository.
-        /// </summary>
-        private readonly ITGenericRepository<Member, int> repository;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -32,18 +28,17 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
-        public UserPermissionDomainService(ITGenericRepository<Member, int> repository, IOptions<BiaNetSection> configuration)
+        public UserPermissionDomainService(IOptions<BiaNetSection> configuration)
         {
-            this.repository = repository;
             this.configuration = configuration.Value;
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
-        public List<string> TranslateRolesInPermissions(List<string> roles)
+        public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken)
         {
             var rights = this.configuration.Permissions.ToList();
-            var userPermissions1 = rights.Where(w => w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);
-            var userPermissions2 = rights.Where(w => w.Names != null && w.Roles.Any(a => roles.Contains(a))).SelectMany(s => s.Names);
+            var userPermissions1 = rights.Where(w => (!lightToken || w.LightToken) && w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);
+            var userPermissions2 = rights.Where(w => (!lightToken || w.LightToken) && w.Names != null && w.Roles.Any(a => roles.Contains(a))).SelectMany(s => s.Names);
             return userPermissions1.Concat(userPermissions2).Distinct().ToList();
         }
     }

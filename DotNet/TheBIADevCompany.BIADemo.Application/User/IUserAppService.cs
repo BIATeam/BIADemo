@@ -31,13 +31,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null);
 
         /// <summary>
-        /// Translate the roles in rights.
-        /// </summary>
-        /// <param name="roles">List of roles.</param>
-        /// <returns>Liste of rights.</returns>
-        List<string> TranslateRolesInPermissions(List<string> roles);
-
-        /// <summary>
         /// Get all roles for a user with its sid.
         /// </summary>
         /// <param name="sid">The user sid.</param>
@@ -45,11 +38,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<List<string>> GetUserDirectoryRolesAsync(string sid);
 
         /// <summary>
-        /// Gets user info with its login.
+        /// Gets user info with its sid and create if not exist.
         /// </summary>
         /// <param name="sid">The sid to search with.</param>
         /// <returns>The user.</returns>
         Task<UserInfoDto> GetCreateUserInfoAsync(string sid);
+
+        /// <summary>
+        /// Gets user info with its sid.
+        /// </summary>
+        /// <param name="sid">The sid to search with.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> GetUserInfoAsync(string sid);
 
         /// <summary>
         /// Gets the profile of the given user.

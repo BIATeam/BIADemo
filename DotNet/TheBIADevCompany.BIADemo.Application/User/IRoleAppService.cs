@@ -22,6 +22,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId);
 
         /// <summary>
+        /// Return the list of role of a user.
+        /// </summary>
+        /// <param name="userId">The user Id.</param>
+        /// <returns>List of role code.</returns>
+        Task<IEnumerable<string>> GetUserRolesAsync(int userId);
+
+        /// <summary>
         /// Get all member roles.
         /// </summary>
         /// <param name="teamId">The team identifier.</param>
