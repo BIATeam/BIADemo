@@ -9,7 +9,7 @@ import { loadAllNotificationTypeOptions } from 'src/app/domains/bia-domains/noti
 import { getAllRoleOptions } from 'src/app/domains/bia-domains/role-option/store/role-option.state';
 import { loadAllRoleOptions } from 'src/app/domains/bia-domains/role-option/store/role-options-actions';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
-import { loadAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
+import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -51,7 +51,7 @@ export class NotificationOptionsService {
     loadAllOptions() {
         this.store.dispatch(loadAllNotificationTypeOptions());
         this.store.dispatch(loadAllRoleOptions({ teamTypeId: TeamTypeId.Site }));
-        this.store.dispatch(loadAllUserOptions());
+        this.store.dispatch(DomainUserOptionsActions.loadAll());
         this.store.dispatch(loadAllLanguageOptions());
     }
 }

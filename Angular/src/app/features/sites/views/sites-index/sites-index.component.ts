@@ -15,9 +15,9 @@ import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { SiteAdvancedFilter } from '../../model/site/site-advanced-filter';
 import { ActivatedRoute, Router } from '@angular/router';
-import { loadAllByFilter } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 
 interface SiteListVM {
   id: number;
@@ -107,7 +107,7 @@ export class SitesIndexComponent implements OnInit {
   }
 
   onSearchUsers(value: string) {
-    this.store.dispatch(loadAllByFilter({ filter: value }));
+    this.store.dispatch(DomainUserOptionsActions.loadAllByFilter({ filter: value }));
   }
 
   onFilter(advancedFilter: SiteAdvancedFilter) {

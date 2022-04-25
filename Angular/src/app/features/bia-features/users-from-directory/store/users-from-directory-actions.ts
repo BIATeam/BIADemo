@@ -4,7 +4,7 @@ import { UserFromDirectory } from '../model/user-from-Directory';
 
 
 
-export namespace DomaineUsersFromDirectoryActions
+export namespace FeatureUsersFromDirectoryActions
 { 
   export const loadAllByFilter = createAction(
     '[Domain Users From AD] Load all in AD by filter',
@@ -16,6 +16,4 @@ export namespace DomaineUsersFromDirectoryActions
   export const failure = createAction('[Domain Users From AD] Failure', props<{ error: any }>());
 
   export const addFromDirectory = createAction('[Domain Users From AD] CreateUserFromDirectory', props<{ usersFromDirectory: UserFromDirectory[] }>());
-
-  export const addFromDirectorySuccess = createAction('[Domain Users From AD] Create User From AD success', props<{ users: UserFromDirectory[] }>());
 }

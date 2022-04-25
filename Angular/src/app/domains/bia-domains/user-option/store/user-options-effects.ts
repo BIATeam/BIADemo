@@ -3,10 +3,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  failure,
-  loadAllUserOptions,
-  loadAllSuccess,
-  loadAllByFilter
+  DomainUserOptionsActions
 } from './user-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { UserOptionDas } from '../services/user-option-das.service';
@@ -19,17 +16,17 @@ import { UserOptionDas } from '../services/user-option-das.service';
 export class UserOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllUserOptions) /* When action is dispatched */,
+      ofType(DomainUserOptionsActions.loadAll) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Users Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Users Reducers' will take care of the rest */
       switchMap(() =>
         this.userDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((users) => loadAllSuccess({ users })),
+          map((users) => DomainUserOptionsActions.loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(DomainUserOptionsActions.failure({ error: err }));
           })
         )
       )
@@ -38,17 +35,17 @@ export class UserOptionsEffects {
 
   loadAllByFilter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByFilter) /* When action is dispatched */,
+      ofType(DomainUserOptionsActions.loadAllByFilter) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Users Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Users Reducers' will take care of the rest */
       switchMap((action) =>
         this.userDas.getList({ endpoint: 'allOptions', options:  { params: { filter: action.filter } } }).pipe(
-          map((users) => loadAllSuccess({ users })),
+          map((users) => DomainUserOptionsActions.loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(DomainUserOptionsActions.failure({ error: err }));
           })
         )
       )

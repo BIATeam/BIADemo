@@ -34,8 +34,10 @@ export const getUserOptionById = (id: number) =>
     fromUserOptions.getUserOptionById(id)
   );
 
-
-
+export const getChangeCount = createSelector(
+  getUserOptionsEntitiesState,
+  (state) => state.changeCount
+);
 
 
 

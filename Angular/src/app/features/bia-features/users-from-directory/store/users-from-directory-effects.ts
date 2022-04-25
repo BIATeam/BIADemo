@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DomaineUsersFromDirectoryActions } from './users-from-Directory-actions';
+import { FeatureUsersFromDirectoryActions } from './users-from-Directory-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { UserFromDirectoryDas } from '../services/user-from-Directory-das.service';
 import { TranslateService } from '@ngx-translate/core';
+import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -16,13 +17,13 @@ import { TranslateService } from '@ngx-translate/core';
 export class UsersFromDirectoryEffects {
   loadAllByFilter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomaineUsersFromDirectoryActions.loadAllByFilter) /* When action is dispatched */,
+      ofType(FeatureUsersFromDirectoryActions.loadAllByFilter) /* When action is dispatched */,
       switchMap((action) => {
         return this.userFromDirectoryDas.getAllByFilter(action.userFilter.filter, action.userFilter.ldapName).pipe(
-          map((users) => DomaineUsersFromDirectoryActions.loadAllSuccess({ users })),
+          map((users) => FeatureUsersFromDirectoryActions.loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(DomaineUsersFromDirectoryActions.failure({ error: err }));
+            return of(FeatureUsersFromDirectoryActions.failure({ error: err }));
           })
         );
       })
@@ -32,13 +33,13 @@ export class UsersFromDirectoryEffects {
   
   addFromDirectory$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomaineUsersFromDirectoryActions.addFromDirectory),
+      ofType(FeatureUsersFromDirectoryActions.addFromDirectory),
       pluck('usersFromDirectory'),
        switchMap((usersFromDirectory) => {
         return this.userFromDirectoryDas.save({ items: usersFromDirectory, endpoint: "addFromDirectory"}).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            return DomaineUsersFromDirectoryActions.addFromDirectorySuccess({ users : usersFromDirectory });
+            return DomainUserOptionsActions.changeUserListSuccess();
           }),
           catchError((err) => {
             if (err.status === 303) {
@@ -59,7 +60,7 @@ export class UsersFromDirectoryEffects {
             } else {
               this.biaMessageService.showError();
             }
-            return of(DomaineUsersFromDirectoryActions.failure({ error: { concern: 'CREATE', error: err } }));
+            return of(FeatureUsersFromDirectoryActions.failure({ error: { concern: 'CREATE', error: err } }));
           })
         );
       })

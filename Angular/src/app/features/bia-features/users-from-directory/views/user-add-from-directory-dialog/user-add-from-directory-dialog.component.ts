@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { Observable } from 'rxjs';
-import { DomaineUsersFromDirectoryActions } from '../../store/users-from-Directory-actions';
+import { FeatureUsersFromDirectoryActions } from '../../store/users-from-Directory-actions';
 import { getAllUsersFromDirectory } from '../../store/user-from-Directory.state';
 import { getAllLdapDomain } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain.state';
 import { UserFromDirectory } from '../../model/user-from-Directory';
@@ -39,7 +39,7 @@ export class UserAddFromLdapComponent implements OnInit {
   }
 
   onSubmitted(userToCreates: UserFromDirectory[]) {
-    this.store.dispatch(DomaineUsersFromDirectoryActions.addFromDirectory({ usersFromDirectory: userToCreates }));
+    this.store.dispatch(FeatureUsersFromDirectoryActions.addFromDirectory({ usersFromDirectory: userToCreates }));
     this.close();
   }
 
@@ -52,6 +52,6 @@ export class UserAddFromLdapComponent implements OnInit {
   }
 
   onSearchUsers(userFilter: UserFilter) {
-    this.store.dispatch(DomaineUsersFromDirectoryActions.loadAllByFilter({ userFilter }));
+    this.store.dispatch(FeatureUsersFromDirectoryActions.loadAllByFilter({ userFilter }));
   }
 }

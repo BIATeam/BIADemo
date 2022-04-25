@@ -24,11 +24,6 @@ export const getUsersEntitiesState = createSelector(
   (state) => state.usersFromDirectory
 );
 
-export const getChangeCount = createSelector(
-  getUsersEntitiesState,
-  (state) => state.changeCount
-);
-
 export const { selectAll: getAllUsersFromDirectory } = fromUsers.usersFromDirectoryAdapter.getSelectors(
   getUsersEntitiesState
 );
