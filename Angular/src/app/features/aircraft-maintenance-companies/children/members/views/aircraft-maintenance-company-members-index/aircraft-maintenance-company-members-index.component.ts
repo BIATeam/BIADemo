@@ -1,13 +1,13 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
-import { MembersIndexComponent } from 'src/app/shared/bia-shared/features/members/views/members-index/members-index.component';
+import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-members-index',
-  templateUrl: '../../../../../../shared/bia-shared/features/members/views/members-index/members-index.component.html',
-  styleUrls: ['../../../../../../shared/bia-shared/features/members/views/members-index/members-index.component.scss']
+  templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+  styleUrls: ['../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.scss']
 })
 export class AircraftMaintenanceCompanyMembersIndexComponent extends MembersIndexComponent implements OnInit {
   constructor(
