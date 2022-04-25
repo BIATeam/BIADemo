@@ -7,6 +7,7 @@ import { AppState } from 'src/app/store/state';
 import { MemberService } from '../../services/member.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberOptionsService } from '../../services/member-options.service';
+import { getUserOptionsChangeCount } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
   selector: 'app-member-edit',
@@ -28,7 +29,13 @@ export class MemberEditComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.sub = new Subscription();
     this.memberOptionsService.loadAllOptions(this.teamTypeId);
+    this.sub.add(
+      this.store.select(getUserOptionsChangeCount).subscribe(event => {
+        this.memberOptionsService.refreshUsersOptions();
+      })
+    );
   }
 
   ngOnDestroy() {

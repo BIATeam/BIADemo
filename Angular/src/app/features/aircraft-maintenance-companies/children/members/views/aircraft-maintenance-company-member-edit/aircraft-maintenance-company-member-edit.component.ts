@@ -26,7 +26,7 @@ export class AircraftMaintenanceCompanyMemberEditComponent extends MemberEditCom
   }
 
   ngOnInit() {
-    if (this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompany!= null) this.teamId = this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompany.id;
+    this.teamId = this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId;
     this.teamTypeId=TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
   }

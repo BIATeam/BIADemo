@@ -41,4 +41,8 @@ export class MemberOptionsService {
         this.store.dispatch(DomainUserOptionsActions.loadAll());
         this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: teamTypeId }));
     }
+
+    refreshUsersOptions() {
+        this.store.dispatch(DomainUserOptionsActions.loadAll());
+    }
 }

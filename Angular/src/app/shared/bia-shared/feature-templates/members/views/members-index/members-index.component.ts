@@ -28,6 +28,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { skip } from 'rxjs/operators';
+import { getUserOptionsChangeCount } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
   selector: 'app-members-index',
@@ -85,7 +86,9 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.translateService = injector.get<TranslateService>(TranslateService);
     this.biaTranslationService = injector.get<BiaTranslationService>(BiaTranslationService);
     this.membersSignalRService = injector.get<MembersSignalRService>(MembersSignalRService);
-    this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
+    if (this.useCalcMode) {
+      this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
+    }
   }
 
   ngOnInit() {
@@ -106,6 +109,11 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.OnDisplay();
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions(this.teamTypeId);
+      this.sub.add(
+        this.store.select(getUserOptionsChangeCount).subscribe(event => {
+          this.memberOptionsService.refreshUsersOptions();
+        })
+      );
     }
 
     if (this.useRefreshAtLanguageChange) {

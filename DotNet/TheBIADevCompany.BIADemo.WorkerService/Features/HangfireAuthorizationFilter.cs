@@ -61,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 
             try
             {
-                var principal = this.jwtFactory.GetPrincipalFromToken(access_token, secretKey);
+                var principal = this.jwtFactory.GetPrincipalFromToken(access_token, this.secretKey);
                 if (!string.IsNullOrEmpty(this.userPermission) && !principal.IsInRole(this.userPermission))
                 {
                     return false;
