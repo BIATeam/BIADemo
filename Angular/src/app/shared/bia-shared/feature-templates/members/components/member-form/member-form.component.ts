@@ -30,6 +30,7 @@ export class MemberFormComponent implements OnChanges {
   @Output() cancel = new EventEmitter();
 
   form: FormGroup;
+  displayUserAddFromDirectoryDialog = false;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -57,6 +58,10 @@ export class MemberFormComponent implements OnChanges {
   onCancel() {
     this.form.reset();
     this.cancel.next();
+  }
+
+  addUserFromDirectory() {
+    this.displayUserAddFromDirectoryDialog = true;
   }
 
   onSubmit() {

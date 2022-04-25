@@ -74,7 +74,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
   useViewTeamWithTypeId = this.useView ? useViewTeamWithTypeId : null;
   parentIds: string[];
 
-  displayUserAddFromLdapDialog = false;
+  displayUserAddFromDirectoryDialog = false;
 
   constructor(
     private store: Store<AppState>,
@@ -147,7 +147,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
   }
 
   onCreate() {
-    this.displayUserAddFromLdapDialog = true;
+    this.displayUserAddFromDirectoryDialog = true;
     /*if (!this.useCalcMode) {
       this.router.navigate(['create'], { relativeTo: this.activatedRoute });
     }*/

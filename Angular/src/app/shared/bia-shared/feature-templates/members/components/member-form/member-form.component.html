@@ -1,19 +1,27 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-dropdown
-          [options]="userOptions"
-          placeholder="&nbsp;"
-          formControlName="user"
-          optionLabel="display"
-          datakey="id"
-          [style]="{ width: '100%' }"
-          [filter]="true"
-          [showClear]="true"
-        ></p-dropdown>
-        <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
-      </span>
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div class="app-field-container" fxFlex="90">
+          <span class="p-float-label">
+            <p-dropdown
+              [options]="userOptions"
+              placeholder="&nbsp;"
+              formControlName="user"
+              optionLabel="display"
+              datakey="id"
+              [style]="{ width: '100%' }"
+              [filter]="true"
+              [showClear]="true"
+            ></p-dropdown>
+            <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
+          </span>
+        </div>
+        <div class="app-field-container" fxFlex="10">
+          <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-sm p-button-rounded p-button-text align-right"
+            (click)="addUserFromDirectory()"></button>
+        </div>
+      </div>
     </div>
   </div>
   <div fxLayout="row" fxLayoutAlign="center">
@@ -42,3 +50,4 @@
     ></button>
   </div>
 </form>
+<bia-user-add-from-directory-dialog [(display)]="displayUserAddFromDirectoryDialog"></bia-user-add-from-directory-dialog>

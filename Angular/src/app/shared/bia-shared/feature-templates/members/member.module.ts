@@ -12,6 +12,7 @@ import { MemberItemComponent } from './views/member-item/member-item.component';
 import { MemberTableComponent } from './components/member-table/member-table.component';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-o
     // Domain Modules:
     UserOptionModule,
     RoleOptionModule,
+    UserFromDirectoryModule, // requiered for the add user from directory feature
   ],
   exports: [
     MemberItemComponent,

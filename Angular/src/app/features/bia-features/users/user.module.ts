@@ -17,9 +17,7 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserTableComponent } from './components/user-table/user-table.component';
 import { storeKey, usePopup } from './user.constants';
-import { LdapDomainModule } from 'src/app/domains/bia-domains/ldap-domain/ldap-domain.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
-import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 
 const ROUTES: Routes = [
   {
@@ -96,9 +94,7 @@ const ROUTES: Routes = [
     EffectsModule.forFeature([UsersEffects]),
     // Domain Modules:
     RoleOptionModule,
-    UserOptionModule, // requiered for synchronization when user added
-    UserFromDirectoryModule, // requiered for the add user from ldap feauture
-    LdapDomainModule,
+    UserFromDirectoryModule, // requiered for the add user from directory feature
   ]
 })
 
