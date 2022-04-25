@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { loadAllRoleOptionsSuccess } from './role-options-actions';
+import { DomainRoleOptionsActions } from './role-options-actions';
 
 // This adapter will allow is to manipulate roles (mostly CRUD operations)
 export const roleOptionsAdapter = createEntityAdapter<OptionDto>({
@@ -30,7 +30,7 @@ export const INIT_STATE: State = roleOptionsAdapter.getInitialState({
 
 export const roleOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllRoleOptionsSuccess, (state, { roles }) => roleOptionsAdapter.setAll(roles, state)),
+  on(DomainRoleOptionsActions.loadAllSuccess, (state, { roles }) => roleOptionsAdapter.setAll(roles, state)),
 );
 
 export const getRoleOptionById = (id: number) => (state: State) => state.entities[id];

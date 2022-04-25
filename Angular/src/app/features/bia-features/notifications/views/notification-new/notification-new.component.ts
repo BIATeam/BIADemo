@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { create } from '../../store/notifications-actions';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Notification } from '../../model/notification';
 import { AppState } from 'src/app/store/state';
 import { NotificationOptionsService } from '../../services/notification-options.service';
@@ -39,7 +39,7 @@ export class NotificationNewComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(notificationToCreate: Notification) {
-    this.store.dispatch(create({ notification: notificationToCreate }));
+    this.store.dispatch(FeatureNotificationsActions.create({ notification: notificationToCreate }));
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 

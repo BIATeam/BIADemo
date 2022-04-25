@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { loadAllSuccess } from './airport-options-actions';
+import { DomainAirportOptionsActions } from './airport-options-actions';
 
 // This adapter will allow is to manipulate airports (mostly CRUD operations)
 export const airportOptionsAdapter = createEntityAdapter<OptionDto>({
@@ -30,7 +30,7 @@ export const INIT_STATE: State = airportOptionsAdapter.getInitialState({
 
 export const airportOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, { airports }) => airportOptionsAdapter.setAll(airports, state)),
+  on(DomainAirportOptionsActions.loadAllSuccess, (state, { airports }) => airportOptionsAdapter.setAll(airports, state)),
   // on(loadSuccess, (state, { airport }) => airportOptionsAdapter.upsertOne(airport, state))
 );
 

@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { LdapDomain } from '../model/ldap-domain';
-import { DomaineLdapActions } from './ldap-domain-actions';
+import { DomainLdapDomainsActions } from './ldap-domain-actions';
 
 // This adapter will allow is to manipulate LDAP domains (mostly CRUD operations)
 export const ldapDomainsAdapter = createEntityAdapter<LdapDomain>({
@@ -19,5 +19,5 @@ export const INIT_STATE: State = ldapDomainsAdapter.getInitialState({
 
 export const ldapDomainReducers = createReducer<State>(
   INIT_STATE,
-  on(DomaineLdapActions.loadAllSuccess, (state, { ldapDomains }) => ldapDomainsAdapter.setAll(ldapDomains, state))
+  on(DomainLdapDomainsActions.loadAllSuccess, (state, { ldapDomains }) => ldapDomainsAdapter.setAll(ldapDomains, state))
 );

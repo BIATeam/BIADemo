@@ -1,12 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadSuccess,
-  loadAllByPostSuccess,
-  loadAllByPost,
-  load,
-  failure
-} from './notifications-actions';
+import { FeatureNotificationsActions } from './notifications-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from '../model/notification';
 
@@ -47,24 +41,24 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllByPost, (state, { event }) => {
+  on(FeatureNotificationsActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(load, (state) => {
+  on(FeatureNotificationsActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(FeatureNotificationsActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = notificationsAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
     stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { notification }) => {
+  on(FeatureNotificationsActions.loadSuccess, (state, { notification }) => {
     notification.data = JSON.parse(notification.jData);
     return { ...state, currentNotification: notification, loadingGet: false };
   }),
-  on(failure, (state, { error }) => {
+  on(FeatureNotificationsActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   }),
 );

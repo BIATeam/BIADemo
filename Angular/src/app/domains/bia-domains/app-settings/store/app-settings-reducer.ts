@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loadDomainAppSettingsSuccess } from './app-settings-actions';
+import { DomainAppSettingsActions } from './app-settings-actions';
 import { AppSettingsState } from './app-settings.state';
 
 export const initializeAppSettingsState = (): AppSettingsState => {
@@ -12,7 +12,7 @@ export const INIT_STATE: AppSettingsState = initializeAppSettingsState();
 
 export const appSettingsReducers = createReducer<AppSettingsState>(
   INIT_STATE,
-  on(loadDomainAppSettingsSuccess, (state, { appSettings }) => {
+  on(DomainAppSettingsActions.loadAllSuccess, (state, { appSettings }) => {
     return { ...state, appSettings: appSettings };
   })
 );

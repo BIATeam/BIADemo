@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { DomaineLdapActions } from './ldap-domain-actions';
+import { DomainLdapDomainsActions } from './ldap-domain-actions';
 import { LdapDomainDas } from '../services/ldap-domain-das.service';
 
 /**
@@ -15,13 +15,13 @@ import { LdapDomainDas } from '../services/ldap-domain-das.service';
 export class LdapDomainsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomaineLdapActions.loadAll) /* When action is dispatched */,
+      ofType(DomainLdapDomainsActions.loadAll) /* When action is dispatched */,
       switchMap((action) => {
         return this.ldapDomainDas.getAll().pipe(
-          map((ldapDomains) => DomaineLdapActions.loadAllSuccess({ ldapDomains })),
+          map((ldapDomains) => DomainLdapDomainsActions.loadAllSuccess({ ldapDomains })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(DomaineLdapActions.failure({ error: err }));
+            return of(DomainLdapDomainsActions.failure({ error: err }));
           })
         );
       })

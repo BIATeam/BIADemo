@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { addUnreadNotification, removeUnreadNotification } from '../store/notifications-actions';
+import { DomainNotificationsActions } from '../store/notifications-actions';
 import { Notification } from '../model/notification';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -48,20 +48,20 @@ export class NotificationSignalRService {
       notification.data = JSON.parse(notification.jData);
       if (this.IsInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
-        this.store.dispatch(addUnreadNotification({ id: notification.id }));
+        this.store.dispatch(DomainNotificationsActions.addUnreadNotification({ id: notification.id }));
       }
     });
 
     this.signalRService.addMethod('notification-removeUnread', (id) => {
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
       const idNum: number = +id;
-      this.store.dispatch(removeUnreadNotification({ id: idNum }));
+      this.store.dispatch(DomainNotificationsActions.removeUnreadNotification({ id: idNum }));
     });
 
     this.signalRService.addMethod('notification-removeSeveralUnread', (args) => {
       const ids: number[] = JSON.parse(args);
       console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
-      ids.forEach(idNum => this.store.dispatch(removeUnreadNotification({ id: idNum })));
+      ids.forEach(idNum => this.store.dispatch(DomainNotificationsActions.removeUnreadNotification({ id: idNum })));
     });
 
     this.targetedFeature = { featureName: 'notification-domain' };

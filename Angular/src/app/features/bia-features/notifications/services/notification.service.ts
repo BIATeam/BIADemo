@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { Notification } from '../model/notification';
 import { getCurrentNotification, getNotificationLoadingGet } from '../store/notification.state';
-import { load } from '../store/notifications-actions';
+import { FeatureNotificationsActions } from '../store/notifications-actions';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +36,7 @@ export class NotificationService {
     }
     public set currentNotificationId(id: number) {
         this._currentNotificationId = Number(id);
-        this.store.dispatch(load({ id: id }));
+        this.store.dispatch(FeatureNotificationsActions.load({ id: id }));
     }
 
     public get currentNotificationData(): string {

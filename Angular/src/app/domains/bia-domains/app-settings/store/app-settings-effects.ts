@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  failure,
-  loadDomainAppSettings,
-  loadDomainAppSettingsSuccess
-} from './app-settings-actions';
+import { DomainAppSettingsActions } from './app-settings-actions';
 import { AppSettingsDas } from '../services/app-settings-das.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { of } from 'rxjs';
@@ -18,7 +14,7 @@ const STORAGE_APPSETTINGS_KEY = 'AppSettings';
 export class AppSettingsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadDomainAppSettings),
+      ofType(DomainAppSettingsActions.loadAll),
       switchMap(() =>
         this.appSettingsDas
           .get()
@@ -27,18 +23,18 @@ export class AppSettingsEffects {
               if (BiaOnlineOfflineService.isModeEnabled === true) {
                 localStorage.setItem(STORAGE_APPSETTINGS_KEY, JSON.stringify(appSettings));
               }
-              return loadDomainAppSettingsSuccess({ appSettings });
+              return DomainAppSettingsActions.loadAllSuccess({ appSettings });
             }),
             catchError((err) => {
               if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
                 const json: string | null = localStorage.getItem(STORAGE_APPSETTINGS_KEY);
                 if (json) {
                   const appSettings = <AppSettings>JSON.parse(json);
-                  return of(loadDomainAppSettingsSuccess({ appSettings }));
+                  return of(DomainAppSettingsActions.loadAllSuccess({ appSettings }));
                 }
               }
               this.biaMessageService.showError();
-              return of(failure({ error: err }));
+              return of(DomainAppSettingsActions.failure({ error: err }));
             })
           )
       )

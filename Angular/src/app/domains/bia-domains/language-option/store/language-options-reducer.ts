@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { loadAllSuccess } from './language-options-actions';
+import { DomainLanguageOptionsActions } from './language-options-actions';
 
 // This adapter will allow is to manipulate languages (mostly CRUD operations)
 export const languageOptionsAdapter = createEntityAdapter<OptionDto>({
@@ -30,7 +30,7 @@ export const INIT_STATE: State = languageOptionsAdapter.getInitialState({
 
 export const languageOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, { languages }) => languageOptionsAdapter.setAll(languages, state)),
+  on(DomainLanguageOptionsActions.loadAllSuccess, (state, { languages }) => languageOptionsAdapter.setAll(languages, state)),
   // on(loadSuccess, (state, { language }) => languageOptionsAdapter.upsertOne(language, state))
 );
 

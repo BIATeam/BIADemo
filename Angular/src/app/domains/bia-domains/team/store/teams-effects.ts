@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  failure, setDefaultRoles, setDefaultRolesSuccess, setDefaultTeam, setDefaultTeamSuccess,
-} from './teams-actions';
+import { DomainTeamsActions } from './teams-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { TeamDas } from '../services/team-das.service';
 /**
@@ -16,16 +14,16 @@ import { TeamDas } from '../services/team-das.service';
 export class TeamsEffects {
   setDefaultTeam$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultTeam),
+      ofType(DomainTeamsActions.setDefaultTeam),
       switchMap(data =>
         this.teamDas.setDefaultTeam(data.teamTypeId, data.teamId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ setDefaultTeamSuccess()];
+            return [ DomainTeamsActions.setDefaultTeamSuccess()];
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(DomainTeamsActions.failure({ error: err }));
           })
         )
       )
@@ -33,16 +31,16 @@ export class TeamsEffects {
   );
   setDefaultRoles$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(setDefaultRoles),
+      ofType(DomainTeamsActions.setDefaultRoles),
       switchMap(data =>
         this.teamDas.setDefaultRoles(data.teamId, data.roleIds).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ setDefaultRolesSuccess()];
+            return [ DomainTeamsActions.setDefaultRolesSuccess()];
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(DomainTeamsActions.failure({ error: err }));
           })
         )
       )

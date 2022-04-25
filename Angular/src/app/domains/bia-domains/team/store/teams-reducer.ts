@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Team } from '../model/team';
-import { loadAllTeamsSuccess } from './teams-actions';
+import { DomainTeamsActions } from './teams-actions';
 
 // This adapter will allow is to manipulate teams (mostly CRUD operations)
 export const teamsAdapter = createEntityAdapter<Team>({
@@ -30,7 +30,7 @@ export const INIT_STATE: State = teamsAdapter.getInitialState({
 
 export const teamReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllTeamsSuccess, (state, { teams }) => teamsAdapter.setAll(teams, state)),
+  on(DomainTeamsActions.loadAllSuccess, (state, { teams }) => teamsAdapter.setAll(teams, state)),
   // on(loadSuccess, (state, { team }) => teamsAdapter.upsertOne(team, state))
 );
 

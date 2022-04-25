@@ -2,11 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  failure,
-  loadAllNotificationTypeOptions,
-  loadAllSuccess
-} from './notification-type-options-actions';
+import { DomainNotificationTypeOptionsActions } from './notification-type-options-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { NotificationTypeOptionDas } from '../services/notification-type-option-das.service';
 /**
@@ -18,17 +14,17 @@ import { NotificationTypeOptionDas } from '../services/notification-type-option-
 export class NotificationTypeOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllNotificationTypeOptions) /* When action is dispatched */,
+      ofType(DomainNotificationTypeOptionsActions.loadAll) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the NotificationTypes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'NotificationTypes Reducers' will take care of the rest */
       switchMap(() =>
         this.notificationTypeDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((notificationTypes) => loadAllSuccess({ notificationTypes })),
+          map((notificationTypes) => DomainNotificationTypeOptionsActions.loadAllSuccess({ notificationTypes })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(DomainNotificationTypeOptionsActions.failure({ error: err }));
           })
         )
       )

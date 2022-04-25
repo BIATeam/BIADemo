@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { loadAllByPost } from '../store/notifications-actions';
+import { FeatureNotificationsActions } from '../store/notifications-actions';
 import { getLastLazyLoadEvent } from '../store/notification.state';
 import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -54,7 +54,7 @@ export class NotificationsSignalRService {
         this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
           (event) => {
             console.log('%c [Notifications] RefreshSuccess', 'color: green; font-weight: bold');
-            this.store.dispatch(loadAllByPost({ event: <LazyLoadEvent>event }));
+            this.store.dispatch(FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event }));
           }
         );
       }
@@ -65,7 +65,7 @@ export class NotificationsSignalRService {
         this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
           (event) => {
             console.log('%c [Notifications] RefreshSuccess', 'color: green; font-weight: bold');
-            this.store.dispatch(loadAllByPost({ event: <LazyLoadEvent>event }));
+            this.store.dispatch(FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event }));
           }
         );
       }

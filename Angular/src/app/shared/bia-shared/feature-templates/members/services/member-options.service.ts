@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllRoleOptions } from 'src/app/domains/bia-domains/role-option/store/role-option.state';
-import { loadAllRoleOptions } from 'src/app/domains/bia-domains/role-option/store/role-options-actions';
+import { DomainRoleOptionsActions } from 'src/app/domains/bia-domains/role-option/store/role-options-actions';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
@@ -39,6 +39,6 @@ export class MemberOptionsService {
 
     loadAllOptions(teamTypeId:number) {
         this.store.dispatch(DomainUserOptionsActions.loadAll());
-        this.store.dispatch(loadAllRoleOptions({ teamTypeId: teamTypeId }));
+        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: teamTypeId }));
     }
 }

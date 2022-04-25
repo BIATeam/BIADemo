@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
-import { loadUnreadNotificationIds, setAsRead } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
+import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
@@ -86,7 +86,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
     if (allEnvironments.enableNotifications === true) {
       this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-      this.store.dispatch(loadUnreadNotificationIds());
+      this.store.dispatch(DomainNotificationsActions.loadUnreadNotificationIds());
     }
     this.sub.add(
       this.biaTranslationService.appSettings$.subscribe(appSettings => {
@@ -136,7 +136,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     this.toast.messages.splice(this.toast.messages.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
-      this.store.dispatch(setAsRead({ id: message.data.notification.id }))
+      this.store.dispatch(DomainNotificationsActions.setAsRead({ id: message.data.notification.id }))
     }
   }
 

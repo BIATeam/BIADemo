@@ -1,7 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { addUnreadNotification, loadAllSuccess, loadSuccess, loadUnreadNotificationIds,
-  loadUnreadNotificationIdsSuccess, removeUnreadNotification } from './notifications-actions';
+import { DomainNotificationsActions} from './notifications-actions';
 import { Notification } from '../model/notification';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
@@ -37,22 +36,22 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, { notifications }) => notificationsAdapter.setAll(notifications, state)),
-  on(loadSuccess, (state, { notification }) => notificationsAdapter.upsertOne(notification, state)),
-  on(loadUnreadNotificationIds, (state) => {
+  on(DomainNotificationsActions.loadAllSuccess, (state, { notifications }) => notificationsAdapter.setAll(notifications, state)),
+  on(DomainNotificationsActions.loadSuccess, (state, { notification }) => notificationsAdapter.upsertOne(notification, state)),
+  on(DomainNotificationsActions.loadUnreadNotificationIds, (state) => {
     return {
       ...state,
       loadingUnreadIds: true
     };
   }),
-  on(loadUnreadNotificationIdsSuccess, (state, { ids }) => {
+  on(DomainNotificationsActions.loadUnreadNotificationIdsSuccess, (state, { ids }) => {
     return {
       ...state,
       loadingUnreadIds: false,
       unreadIds: ids
     };
   }),
-  on(removeUnreadNotification, (state, { id }) => {
+  on(DomainNotificationsActions.removeUnreadNotification, (state, { id }) => {
     const index = state.unreadIds.indexOf(id, 0);
     const copyState = {
       ...state
@@ -62,7 +61,7 @@ export const notificationReducers = createReducer<State>(
     }
     return  copyState;
   }),
-  on(addUnreadNotification, (state, { id }) => {
+  on(DomainNotificationsActions.addUnreadNotification, (state, { id }) => {
     const copyState = {
       ...state
     };

@@ -10,7 +10,7 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
-import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/bia-domains/team/store/teams-actions';
+import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 
@@ -88,7 +88,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultTeam() {
-    this.store.dispatch(setDefaultTeam({ teamTypeId: this.teamTypeId, teamId: this.currentTeam.id }));
+    this.store.dispatch(DomainTeamsActions.setDefaultTeam({ teamTypeId: this.teamTypeId, teamId: this.currentTeam.id }));
   }
 
   private initDropdownTeam() {
@@ -114,7 +114,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultRoles() {
-    this.store.dispatch(setDefaultRoles({ teamId: this.currentTeam.id, roleIds: this.currentRoles.map(r => r.id) }));
+    this.store.dispatch(DomainTeamsActions.setDefaultRoles({ teamId: this.currentTeam.id, roleIds: this.currentRoles.map(r => r.id) }));
   }
 
   isDefaultRoles(): boolean {

@@ -5,7 +5,7 @@ import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { isDevMode } from '@angular/core';
 import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
-import { loadDomainAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
+import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { allEnvironments } from 'src/environments/all-environments';
@@ -38,7 +38,7 @@ export class BiaAppInitService implements OnDestroy {
         )
         .subscribe(() => {
           // Load app settings:
-          this.store.dispatch(loadDomainAppSettings());
+          this.store.dispatch(DomainAppSettingsActions.loadAll());
 
           if (allEnvironments.enableNotifications === true) {
             this.notificationSignalRService.initialize();

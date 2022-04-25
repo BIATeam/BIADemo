@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { loadAllSuccess } from './notification-type-options-actions';
+import { DomainNotificationTypeOptionsActions } from './notification-type-options-actions';
 
 // This adapter will allow is to manipulate notificationTypes (mostly CRUD operations)
 export const notificationTypeOptionsAdapter = createEntityAdapter<OptionDto>({
@@ -30,7 +30,7 @@ export const INIT_STATE: State = notificationTypeOptionsAdapter.getInitialState(
 
 export const notificationTypeOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllSuccess, (state, { notificationTypes }) => notificationTypeOptionsAdapter.setAll(notificationTypes, state)),
+  on(DomainNotificationTypeOptionsActions.loadAllSuccess, (state, { notificationTypes }) => notificationTypeOptionsAdapter.setAll(notificationTypes, state)),
   // on(loadSuccess, (state, { notificationType }) => notificationTypeOptionsAdapter.upsertOne(notificationType, state))
 );
 

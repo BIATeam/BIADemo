@@ -1,7 +1,7 @@
 import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllNotifications, getNotificationsTotalCount, getNotificationLoadingGetAll } from '../../store/notification.state';
-import { multiRemove, loadAllByPost, update, create } from '../../store/notifications-actions';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from '../../model/notification';
@@ -155,11 +155,11 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       if (notification?.id > 0) {
         if (this.canEdit) {
-          this.store.dispatch(update({ notification: notification }));
+          this.store.dispatch(FeatureNotificationsActions.update({ notification: notification }));
         }
       } else {
         if (this.canAdd) {
-          this.store.dispatch(create({ notification: notification }));
+          this.store.dispatch(FeatureNotificationsActions.create({ notification: notification }));
         }
       }
     }
@@ -167,7 +167,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onDelete() {
     if (this.selectedNotifications && this.canDelete) {
-      this.store.dispatch(multiRemove({ ids: this.selectedNotifications.map((x) => x.id) }));
+      this.store.dispatch(FeatureNotificationsActions.multiRemove({ ids: this.selectedNotifications.map((x) => x.id) }));
     }
   }
 
@@ -181,7 +181,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
-    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
+    this.store.dispatch(FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter }));
   }
 
   searchGlobalChanged(value: string) {

@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  create,
-  failure,
-  load,
-  loadAllByPost,
-  loadAllByPostSuccess,
-  loadSuccess,
-  remove,
-  multiRemove,
-  update
-} from './notifications-actions';
+import { FeatureNotificationsActions } from './notifications-actions';
 import { NotificationDas } from '../services/notification-das.service';
 import { Store } from '@ngrx/store';
 import { getLastLazyLoadEvent } from './notification.state';
@@ -33,14 +23,14 @@ export class NotificationsEffects {
   static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByPost),
+      ofType(FeatureNotificationsActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
         this.notificationDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Notification[]>) => loadAllByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<Notification[]>) => FeatureNotificationsActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         )
       )
@@ -49,14 +39,14 @@ export class NotificationsEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(FeatureNotificationsActions.load),
       pluck('id'),
       switchMap((id) => {
         return this.notificationDas.get({ id: id }).pipe(
-          map((notification) => loadSuccess({ notification })),
+          map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
       })
@@ -65,7 +55,7 @@ export class NotificationsEffects {
 
   create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(create),
+      ofType(FeatureNotificationsActions.create),
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
@@ -75,12 +65,12 @@ export class NotificationsEffects {
             if (NotificationsEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
       })
@@ -89,7 +79,7 @@ export class NotificationsEffects {
 
   update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(update),
+      ofType(FeatureNotificationsActions.update),
       pluck('notification'),
       concatMap((notification) => of(notification).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([notification, event]) => {
@@ -99,12 +89,12 @@ export class NotificationsEffects {
             if (NotificationsEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
       })
@@ -113,7 +103,7 @@ export class NotificationsEffects {
 
   destroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(remove),
+      ofType(FeatureNotificationsActions.remove),
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
@@ -123,12 +113,12 @@ export class NotificationsEffects {
             if (NotificationsEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
       })
@@ -137,7 +127,7 @@ export class NotificationsEffects {
 
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(multiRemove),
+      ofType(FeatureNotificationsActions.multiRemove),
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
@@ -147,12 +137,12 @@ export class NotificationsEffects {
             if (NotificationsEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureNotificationsActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
       })

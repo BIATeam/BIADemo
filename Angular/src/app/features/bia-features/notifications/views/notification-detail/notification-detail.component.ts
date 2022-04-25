@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { update } from '../../store/notifications-actions';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
 import { Notification, NotificationData } from '../../model/notification';
 import { AppState } from 'src/app/store/state';
@@ -41,7 +41,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(notificationToUpdate: Notification) {
-    this.store.dispatch(update({ notification: notificationToUpdate }));
+    this.store.dispatch(FeatureNotificationsActions.update({ notification: notificationToUpdate }));
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 

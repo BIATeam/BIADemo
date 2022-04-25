@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airport-option.state';
-import { loadAllAirportOptions } from 'src/app/domains/airport-option/store/airport-options-actions';
+import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/store/airport-options-actions';
 import { getAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/plane-type-option.state';
-import { loadAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
+import { DomainPlaneTypeOptionsActions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
@@ -38,7 +38,7 @@ export class PlaneOptionsService {
     }
 
     loadAllOptions() {
-        this.store.dispatch(loadAllPlaneTypeOptions());
-        this.store.dispatch(loadAllAirportOptions());
+        this.store.dispatch(DomainPlaneTypeOptionsActions .loadAll());
+        this.store.dispatch(DomainAirportOptionsActions.loadAll());
     }
 }

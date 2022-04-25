@@ -7,7 +7,7 @@ import { getAllUsersFromDirectory } from '../../store/user-from-Directory.state'
 import { getAllLdapDomain } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain.state';
 import { UserFromDirectory } from '../../model/user-from-Directory';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
-import { DomaineLdapActions } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain-actions';
+import { DomainLdapDomainsActions } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain-actions';
 import { UserFilter } from '../../model/user-filter';
 
 @Component({
@@ -35,7 +35,7 @@ export class UserAddFromLdapComponent implements OnInit {
 
     this.ldapDomains$ = this.store.select(getAllLdapDomain);
 
-    this.store.dispatch(DomaineLdapActions.loadAll());
+    this.store.dispatch(DomainLdapDomainsActions.loadAll());
   }
 
   onSubmitted(userToCreates: UserFromDirectory[]) {
