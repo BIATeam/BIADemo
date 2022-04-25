@@ -26,8 +26,8 @@ import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { ConfirmationService } from 'primeng/api';
-import { getAllTeams } from 'src/app/domains/team/store/team.state';
-import { Team } from 'src/app/domains/team/model/team';
+import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
 
 @Component({
   selector: 'bia-view-dialog',

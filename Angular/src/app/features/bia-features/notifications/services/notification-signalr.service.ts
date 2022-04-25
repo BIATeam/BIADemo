@@ -9,8 +9,8 @@ import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Notification } from '../model/notification';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
-import { Team } from 'src/app/domains/team/model/team';
-import { getAllTeams } from 'src/app/domains/team/store/team.state';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 
 /**
  * Service managing SignalR events for hangfire jobs.

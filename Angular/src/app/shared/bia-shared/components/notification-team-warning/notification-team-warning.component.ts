@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Notification } from 'src/app/domains/notification/model/notification';
+import { Notification } from 'src/app/domains/bia-domains/notification/model/notification';
 
 @Component({
   selector: 'bia-notification-team-warning',

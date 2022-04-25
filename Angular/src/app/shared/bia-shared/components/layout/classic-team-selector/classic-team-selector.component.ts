@@ -10,9 +10,9 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
-import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/team/store/teams-actions';
-import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
-import { Team } from 'src/app/domains/team/model/team';
+import { setDefaultRoles, setDefaultTeam } from 'src/app/domains/bia-domains/team/store/teams-actions';
+import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
 
 @Component({
   selector: 'bia-classic-team-selector',

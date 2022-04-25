@@ -15,12 +15,12 @@ import { NotificationItemComponent } from './views/notification-item/notificatio
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { NotificationTableComponent } from './components/notification-table/notification-table.component';
-import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
-import { NotificationTypeOptionModule } from 'src/app/domains/notification-type-option/notification-type-option.module';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { NotificationTypeOptionModule } from 'src/app/domains/bia-domains/notification-type-option/notification-type-option.module';
 import { NotificationDetailComponent } from './views/notification-detail/notification-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LanguageOptionModule } from 'src/app/domains/language-option/language-option.module';
-import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
+import { LanguageOptionModule } from 'src/app/domains/bia-domains/language-option/language-option.module';
+import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 
 const ROUTES: Routes = [
   {

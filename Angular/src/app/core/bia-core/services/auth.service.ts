@@ -8,7 +8,7 @@ import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
 import { allEnvironments } from 'src/environments/all-environments';
-import { loadAllTeamsSuccess } from 'src/app/domains/team/store/teams-actions';
+import { loadAllTeamsSuccess } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';

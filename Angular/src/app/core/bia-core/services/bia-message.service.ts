@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { Notification, NotificationType } from 'src/app/domains/notification/model/notification';
+import { Notification, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
 const NOTIFICATION_LIFE_DEFAULT = 10000;

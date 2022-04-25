@@ -9,13 +9,13 @@ import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
-import { getUnreadNotificationCount } from 'src/app/domains/notification/store/notification.state';
-import { loadUnreadNotificationIds, setAsRead } from 'src/app/domains/notification/store/notifications-actions';
+import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
+import { loadUnreadNotificationIds, setAsRead } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { Toast } from 'primeng/toast';
-import { Notification, NotificationData, NotificationType } from 'src/app/domains/notification/model/notification';
+import { Notification, NotificationData, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
 
 @Component({
   selector: 'bia-classic-header',

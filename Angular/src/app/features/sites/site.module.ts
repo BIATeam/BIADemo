@@ -13,7 +13,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { Permission } from 'src/app/shared/permission';
 import { SiteItemComponent } from './views/site-item/site-item.component';
-import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 
 const ROUTES: Routes = [
   {

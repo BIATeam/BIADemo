@@ -25,7 +25,7 @@ import { UsersSignalRService } from '../../services/user-signalr.service';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { UserOptionsService } from '../../services/user-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { UserTableComponent } from 'src/app/features/users/components/user-table/user-table.component';
+import { UserTableComponent } from 'src/app/features/bia-features/users/components/user-table/user-table.component';
 import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../user.constants';
 import { skip } from 'rxjs/operators';
 import { getChangeCount } from 'src/app/features/bia-features/users-from-directory/store/user-from-Directory.state';

@@ -1,4 +1,4 @@
-import { Team } from 'src/app/domains/team/model/team';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { RoleMode } from '../../constants';
 
 export class LoginParamDto {

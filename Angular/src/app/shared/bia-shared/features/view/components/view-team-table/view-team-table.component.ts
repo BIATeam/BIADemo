@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewC
 import { View } from '../../model/view';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { ViewTeam } from '../../model/view-team';
-import { Team } from 'src/app/domains/team/model/team';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { Table } from 'primeng/table';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 import { Confirmation, ConfirmationService } from 'primeng/api';

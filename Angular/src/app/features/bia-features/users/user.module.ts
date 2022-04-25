@@ -14,10 +14,10 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { UserItemComponent } from './views/user-item/user-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
-import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
+import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserTableComponent } from './components/user-table/user-table.component';
 import { storeKey, usePopup } from './user.constants';
-import { LdapDomainModule } from 'src/app/domains/ldap-domain/ldap-domain.module';
+import { LdapDomainModule } from 'src/app/domains/bia-domains/ldap-domain/ldap-domain.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
 
 const ROUTES: Routes = [

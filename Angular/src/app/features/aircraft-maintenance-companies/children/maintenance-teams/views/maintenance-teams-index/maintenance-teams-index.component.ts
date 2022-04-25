@@ -27,7 +27,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../maintenance-team.constants';
 import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
-import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
+import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 
 @Component({
   selector: 'app-maintenance-teams-index',

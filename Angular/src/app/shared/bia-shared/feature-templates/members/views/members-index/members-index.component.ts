@@ -25,8 +25,8 @@ import { MembersEffects } from '../../store/members-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
-import { Team } from 'src/app/domains/team/model/team';
+import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { skip } from 'rxjs/operators';
 
 @Component({

@@ -120,7 +120,7 @@ const routes: Routes = [
               breadcrumb: 'app.users',
               canNavigate: true
             },
-            loadChildren: () => import('./features/users/user.module').then((m) => m.UserModule)
+            loadChildren: () => import('./features/bia-features/users/user.module').then((m) => m.UserModule)
           },
           {
             path: 'notifications',
@@ -128,7 +128,7 @@ const routes: Routes = [
               breadcrumb: 'app.notifications',
               canNavigate: true
             },
-            loadChildren: () => import('./features/notifications/notification.module').then((m) => m.NotificationModule)
+            loadChildren: () => import('./features/bia-features/notifications/notification.module').then((m) => m.NotificationModule)
           },
           {
             path: 'backgroundtask',
@@ -136,7 +136,7 @@ const routes: Routes = [
               breadcrumb: 'bia.backgroundtasks',
               canNavigate: true
             },
-            loadChildren: () => import('./features/background-task/background-task.module').then((m) => m.BackgroundTaskModule)
+            loadChildren: () => import('./features/bia-features/background-task/background-task.module').then((m) => m.BackgroundTaskModule)
           }
         ]
       }

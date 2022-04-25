@@ -4,10 +4,10 @@ import { AppState } from 'src/app/store/state';
 import { Observable } from 'rxjs';
 import { DomaineUsersFromDirectoryActions } from '../../store/users-from-Directory-actions';
 import { getAllUsersFromDirectory } from '../../store/user-from-Directory.state';
-import { getAllLdapDomain } from 'src/app/domains/ldap-domain/store/ldap-domain.state';
+import { getAllLdapDomain } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain.state';
 import { UserFromDirectory } from '../../model/user-from-Directory';
-import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
-import { DomaineLdapActions } from 'src/app/domains/ldap-domain/store/ldap-domain-actions';
+import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
+import { DomaineLdapActions } from 'src/app/domains/bia-domains/ldap-domain/store/ldap-domain-actions';
 import { UserFilter } from '../../model/user-filter';
 
 @Component({

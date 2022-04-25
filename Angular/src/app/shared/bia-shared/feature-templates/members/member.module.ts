@@ -10,8 +10,8 @@ import { MemberNewComponent } from './views/member-new/member-new.component';
 import { MemberEditComponent } from './views/member-edit/member-edit.component';
 import { MemberItemComponent } from './views/member-item/member-item.component';
 import { MemberTableComponent } from './components/member-table/member-table.component';
-import { RoleOptionModule } from 'src/app/domains/role-option/role-option.module';
-import { UserOptionModule } from 'src/app/domains/user-option/user-option.module';
+import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 
 @NgModule({
   declarations: [

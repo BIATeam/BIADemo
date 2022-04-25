@@ -26,7 +26,7 @@ import { AircraftMaintenanceCompanyOptionsService } from '../../services/aircraf
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { AircraftMaintenanceCompanyTableComponent } from 'src/app/features/aircraft-maintenance-companies/components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
 import { useCalcMode, useSignalR, useView } from '../../aircraft-maintenance-company.constants';
-import { getAllTeamsOfType } from 'src/app/domains/team/store/team.state';
+import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-index',

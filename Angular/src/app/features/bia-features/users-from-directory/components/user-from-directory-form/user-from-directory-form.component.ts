@@ -8,7 +8,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LdapDomain } from 'src/app/domains/ldap-domain/model/ldap-domain';
+import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFromDirectory } from '../../model/user-from-Directory';
 import { UserFilter } from '../../model/user-filter';
 

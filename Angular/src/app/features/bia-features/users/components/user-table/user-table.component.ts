@@ -9,8 +9,8 @@ import { User } from '../../model/user';
 
 @Component({
   selector: 'app-user-table',
-  templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })
 export class UserTableComponent extends BiaCalcTableComponent implements OnChanges {
 

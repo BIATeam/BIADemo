@@ -9,8 +9,8 @@ import { Notification } from '../../model/notification';
 
 @Component({
   selector: 'app-notification-table',
-  templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })
 export class NotificationTableComponent extends BiaCalcTableComponent implements OnChanges {
 

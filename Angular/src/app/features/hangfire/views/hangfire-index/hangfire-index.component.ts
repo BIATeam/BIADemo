@@ -1,8 +1,8 @@
 import { Component, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Team } from 'src/app/domains/team/model/team';
-import { getAllTeams } from 'src/app/domains/team/store/team.state';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 import { AppState } from 'src/app/store/state';
 import { randomReviewPlane } from '../../store/hangfire-actions';
 
