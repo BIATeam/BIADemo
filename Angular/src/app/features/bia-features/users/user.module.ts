@@ -96,8 +96,8 @@ const ROUTES: Routes = [
     EffectsModule.forFeature([UsersEffects]),
     // Domain Modules:
     RoleOptionModule,
-    UserOptionModule,
-    UserFromDirectoryModule,
+    UserOptionModule, // requiered for synchronization when user added
+    UserFromDirectoryModule, // requiered for the add user from ldap feauture
     LdapDomainModule,
   ]
 })
