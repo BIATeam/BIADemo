@@ -208,7 +208,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 try
                 {
                     await this.SynchronizeWithADAsync();
-                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: x => users.Any(u => x.Sid == u.Sid))).Select(entity => new OptionDto
+                    List<string> usersSid = users.Select(u => u.Sid).ToList();
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: x => usersSid.Contains(x.Sid))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
                         Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
