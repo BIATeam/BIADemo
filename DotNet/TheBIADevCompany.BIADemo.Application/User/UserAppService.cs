@@ -143,6 +143,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return userInfo;
         }
 
+        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string sid)
         {
             return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
