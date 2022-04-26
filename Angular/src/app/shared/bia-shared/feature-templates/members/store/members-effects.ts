@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  create,
-  failure,
-  load,
-  loadAllByPost,
-  loadAllByPostSuccess,
-  loadSuccess,
-  remove,
-  multiRemove,
-  update
-} from './members-actions';
+import { FeatureMembersActions } from './members-actions';
 import { MemberDas } from '../services/member-das.service';
 import { Store } from '@ngrx/store';
 import { getLastLazyLoadEvent } from './member.state';
@@ -33,14 +23,14 @@ export class MembersEffects {
   static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loadAllByPost),
+      ofType(FeatureMembersActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
         this.memberDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Member[]>) => loadAllByPostSuccess({ result: result, event: event })),
+          map((result: DataResult<Member[]>) => FeatureMembersActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         )
       )
@@ -49,14 +39,14 @@ export class MembersEffects {
 
   load$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(load),
+      ofType(FeatureMembersActions.load),
       pluck('id'),
       switchMap((id) => {
         return this.memberDas.get({ id: id }).pipe(
-          map((member) => loadSuccess({ member })),
+          map((member) => FeatureMembersActions.loadSuccess({ member })),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         );
       })
@@ -65,7 +55,7 @@ export class MembersEffects {
 
   create$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(create),
+      ofType(FeatureMembersActions.create),
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
@@ -75,21 +65,46 @@ export class MembersEffects {
             if (MembersEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         );
       })
     )
   );
 
+  createMulti$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureMembersActions.createMulti),
+      pluck('members'),
+      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      switchMap(([members, event]) => {
+        return this.memberDas.postItem({ item: members, endpoint:"addMulti" }).pipe(
+          map(() => {
+            this.biaMessageService.showAddSuccess();
+            if (MembersEffects.useSignalR) {
+              return biaSuccessWaitRefreshSignalR();
+            } else {
+              return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
+            }
+          }),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(FeatureMembersActions.failure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
+
   update$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(update),
+      ofType(FeatureMembersActions.update),
       pluck('member'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
@@ -99,12 +114,12 @@ export class MembersEffects {
             if (MembersEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         );
       })
@@ -113,7 +128,7 @@ export class MembersEffects {
 
   destroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(remove),
+      ofType(FeatureMembersActions.remove),
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
@@ -123,12 +138,12 @@ export class MembersEffects {
             if (MembersEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         );
       })
@@ -137,7 +152,7 @@ export class MembersEffects {
 
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(multiRemove),
+      ofType(FeatureMembersActions.multiRemove),
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
@@ -147,12 +162,12 @@ export class MembersEffects {
             if (MembersEffects.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
-              return loadAllByPost({ event: <LazyLoadEvent>event });
+              return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
             }
           }),
           catchError((err) => {
             this.biaMessageService.showError();
-            return of(failure({ error: err }));
+            return of(FeatureMembersActions.failure({ error: err }));
           })
         );
       })

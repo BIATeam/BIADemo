@@ -1,7 +1,7 @@
 import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllMembers, getMembersTotalCount, getMemberLoadingGetAll } from '../../store/member.state';
-import { multiRemove, loadAllByPost, update, create } from '../../store/members-actions';
+import { FeatureMembersActions } from '../../store/members-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '../../model/member';
@@ -28,7 +28,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { skip } from 'rxjs/operators';
-import { getUserOptionsChangeCount } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
   selector: 'app-members-index',
@@ -110,7 +110,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.memberOptionsService.loadAllOptions(this.teamTypeId);
       this.sub.add(
-        this.store.select(getUserOptionsChangeCount).subscribe(event => {
+        this.store.select(getLastUsersAdded).subscribe(event => {
           this.memberOptionsService.refreshUsersOptions();
         })
       );
@@ -169,11 +169,11 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       if (member?.id > 0) {
         if (this.canEdit) {
-          this.store.dispatch(update({ member: member }));
+          this.store.dispatch(FeatureMembersActions.update({ member: member }));
         }
       } else {
         if (this.canAdd) {
-          this.store.dispatch(create({ member: member }));
+          this.store.dispatch(FeatureMembersActions.create({ member: member }));
         }
       }
     }
@@ -181,7 +181,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
   onDelete() {
     if (this.selectedMembers && this.canDelete) {
-      this.store.dispatch(multiRemove({ ids: this.selectedMembers.map((x) => x.id) }));
+      this.store.dispatch(FeatureMembersActions.multiRemove({ ids: this.selectedMembers.map((x) => x.id) }));
     }
   }
 
@@ -195,7 +195,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
-    this.store.dispatch(loadAllByPost({ event: pagingAndFilter }));
+    this.store.dispatch(FeatureMembersActions.loadAllByPost({ event: pagingAndFilter }));
   }
 
 

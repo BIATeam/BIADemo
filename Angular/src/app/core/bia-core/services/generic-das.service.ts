@@ -192,7 +192,7 @@ export abstract class GenericDas {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.post<TOut>(this.route, param.item, param.options));
     } else {
-      return this.http.post<TOut>(this.route, param.item, param.options);
+      return this.http.post<TOut>(`${this.route}${param.endpoint}`, param.item, param.options);
     }
   }
 

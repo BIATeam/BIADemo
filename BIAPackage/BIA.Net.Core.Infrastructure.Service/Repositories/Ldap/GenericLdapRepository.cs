@@ -262,8 +262,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             try
             {
                 PrincipalContext contextUser = PrepareDomainContext(user.Domain).Result;
-                    
-                    ;
+
                 if (contextUser!= null)
                 {
                     UserPrincipal userToAdd = UserPrincipal.FindByIdentity(contextUser, IdentityType.Guid, user.Guid.ToString());
@@ -606,49 +605,49 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             var adRoles = new ConcurrentBag<string>();
 
-            //var roleTasks = rolesSection.Select(async role =>
-            //{
-            //    switch (role.Type)
-            //    {
-            //        case "Fake":
-            //            return role.Label;
-
-            //        case "Ldap":
-            //            var result = await IsSidInGroups(role.LdapGroups, sid);
-            //            if (result)
-            //            {
-            //                return role.Label;
-            //            }
-            //            break;
-            //    }
-            //    return null;
-            //});
-            //var roles = await Task.WhenAll(roleTasks);
-            //foreach (var role in roles)
-            //{
-            //    if (role!= null)
-            //    {
-            //        adRoles.Add(role);
-            //    }
-            //}
-
-            Parallel.ForEach(rolesSection, async role =>
+            var roleTasks = rolesSection.Select(async role =>
             {
                 switch (role.Type)
                 {
                     case "Fake":
-                        adRoles.Add(role.Label);
-                        break;
+                        return role.Label;
 
                     case "Ldap":
                         var result = await IsSidInGroups(role.LdapGroups, sid);
                         if (result)
                         {
-                            adRoles.Add(role.Label);
+                            return role.Label;
                         }
                         break;
                 }
+                return null;
             });
+            var roles = await Task.WhenAll(roleTasks);
+            foreach (var role in roles)
+            {
+                if (role != null)
+                {
+                    adRoles.Add(role);
+                }
+            }
+
+            //Parallel.ForEach(rolesSection, async role =>
+            //{
+            //    switch (role.Type)
+            //    {
+            //        case "Fake":
+            //            adRoles.Add(role.Label);
+            //            break;
+
+            //        case "Ldap":
+            //            var result = await IsSidInGroups(role.LdapGroups, sid);
+            //            if (result)
+            //            {
+            //                adRoles.Add(role.Label);
+            //            }
+            //            break;
+            //    }
+            //});
 
             return adRoles.ToList();
         }

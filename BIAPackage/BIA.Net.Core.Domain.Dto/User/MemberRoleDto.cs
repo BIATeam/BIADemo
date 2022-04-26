@@ -1,8 +1,9 @@
-// <copyright file="MemberRoleDto.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="MemberRoleDto.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Dto.User
+
+namespace BIA.Net.Core.Domain.Dto.User
 {
     using BIA.Net.Core.Domain.Dto.Base;
 

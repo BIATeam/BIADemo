@@ -28,7 +28,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { UserTableComponent } from 'src/app/features/bia-features/users/components/user-table/user-table.component';
 import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../user.constants';
 import { skip } from 'rxjs/operators';
-import { getUserOptionsChangeCount } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
   selector: 'app-users-index',
@@ -116,7 +116,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
     }
 
     this.sub.add(
-      this.store.select(getUserOptionsChangeCount).pipe(skip(1)).subscribe(event => {
+      this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(event => {
         setTimeout(() => this.onLoadLazy(this.userListComponent.getLazyLoadMetadata()));
       })
     )

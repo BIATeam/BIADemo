@@ -1,12 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadSuccess,
-  loadAllByPostSuccess,
-  loadAllByPost,
-  load,
-  failure
-} from './members-actions';
+import { FeatureMembersActions } from './members-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '../model/member';
 
@@ -47,23 +41,23 @@ export const INIT_STATE: State = membersAdapter.getInitialState({
 
 export const memberReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllByPost, (state, { event }) => {
+  on(FeatureMembersActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(load, (state) => {
+  on(FeatureMembersActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(FeatureMembersActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = membersAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
     stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { member }) => {
+  on(FeatureMembersActions.loadSuccess, (state, { member }) => {
     return { ...state, currentMember: member, loadingGet: false };
   }),
-  on(failure, (state, { error }) => {
+  on(FeatureMembersActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   }),
 );

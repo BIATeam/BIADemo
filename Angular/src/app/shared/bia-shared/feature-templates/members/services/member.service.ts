@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
 import { Member } from '../model/member';
 import { getCurrentMember, getMemberLoadingGet } from '../store/member.state';
-import { load } from '../store/members-actions';
+import { FeatureMembersActions } from '../store/members-actions';
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +36,7 @@ export class MemberService {
     }
     public set currentMemberId(id: number) {
         this._currentMemberId = Number(id);
-        this.store.dispatch(load({ id: id }));
+        this.store.dispatch(FeatureMembersActions.load({ id: id }));
     }
 
     InitSub() {

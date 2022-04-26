@@ -1,11 +1,11 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { create } from '../../store/members-actions';
-import { Member } from '../../model/member';
+import { FeatureMembersActions } from '../../store/members-actions';
+import { Members } from '../../model/member';
 import { AppState } from 'src/app/store/state';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { getUserOptionsChangeCount } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,7 +34,7 @@ export class MemberNewComponent implements OnInit, OnDestroy {
     this.sub = new Subscription();
     this.memberOptionsService.loadAllOptions(this.teamTypeId);
     this.sub.add(
-      this.store.select(getUserOptionsChangeCount).subscribe(event => {
+      this.store.select(getLastUsersAdded).subscribe(event => {
         this.memberOptionsService.refreshUsersOptions();
       })
     );
@@ -46,8 +46,8 @@ export class MemberNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmitted(memberToCreate: Member) {
-    this.store.dispatch(create({ member: memberToCreate }));
+  onSubmitted(membersToCreate: Members) {
+    this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 

@@ -6,3 +6,9 @@ export interface Member extends BaseDto {
   roles: OptionDto[];
   teamId: number;
 }
+
+export interface Members extends BaseDto {
+  users: OptionDto[];
+  roles: OptionDto[];
+  teamId: number;
+}

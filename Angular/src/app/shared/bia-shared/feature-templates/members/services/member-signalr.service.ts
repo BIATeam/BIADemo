@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { loadAllByPost } from '../store/members-actions';
+import { FeatureMembersActions } from '../store/members-actions';
 import { getLastLazyLoadEvent } from '../store/member.state';
 import { LazyLoadEvent } from 'primeng/api';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
@@ -40,7 +40,7 @@ export class MembersSignalRService {
       this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
         (event) => {
           console.log('%c [Members] RefreshSuccess', 'color: green; font-weight: bold');
-          this.store.dispatch(loadAllByPost({ event: <LazyLoadEvent>event }));
+          this.store.dispatch(FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event }));
         }
       );
     });

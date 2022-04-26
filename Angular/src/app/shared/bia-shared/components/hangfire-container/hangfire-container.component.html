@@ -19,4 +19,4 @@
     } );
     
     </script>
-<iframe *ngIf="displayFrame" src="http://localhost/BIADemo/WorkerService/hangfireAdmin" frameborder="0" id="iFrame1" style="width:100%;height:1000px;"></iframe>
+<iframe *ngIf="displayFrame" [src]="url | safeUrl" frameborder="0" id="iFrame1" style="width:100%;height:1000px;"></iframe>

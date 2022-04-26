@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -162,6 +163,54 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Add a member.
+        /// </summary>
+        /// <param name="dto">The member DTO.</param>
+        /// <returns>The result of the creation.</returns>
+        [HttpPost("addMulti")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> AddMulti([FromBody] MembersDto dtos)
+        {
+            try
+            {
+                if (!this.IsAuthorizeForTeam(dtos.TeamId, Rights.Members.CreateSuffix).Result)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                List<MemberDto> dtoList = new List<MemberDto>();
+                foreach (var user in dtos.Users)
+                {
+                    MemberDto dto = new MemberDto
+                    {
+                        User = user,
+                        Roles = dtos.Roles,
+                        TeamId = dtos.TeamId,
+                        DtoState = DtoState.Added,
+                    };
+                    dtoList.Add(dto);
+                }
+
+                var savedDtos = await this.memberService.SaveAsync(dtoList);
+#if UseHubForClientInMember
+                await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
+#endif
+                return this.Ok();
             }
             catch (ArgumentNullException)
             {

@@ -107,7 +107,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="sid">the sid in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        public async Task AddOrActiveUserFromDirectory(string sid, User foundUser)
+        public async Task<User> AddOrActiveUserFromDirectory(string sid, User foundUser)
         {
             if (foundUser == null)
             {
@@ -118,12 +118,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     User user = new User();
                     UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
                     this.repository.Add(user);
+                    return user;
                 }
             }
             else if (!foundUser.IsActive)
             {
                 foundUser.IsActive = true;
             }
+
+            return foundUser;
         }
 
         private async Task ResynchronizeUser(User user)

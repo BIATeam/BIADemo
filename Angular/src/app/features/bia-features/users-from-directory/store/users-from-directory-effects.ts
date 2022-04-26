@@ -7,6 +7,7 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { UserFromDirectoryDas } from '../services/user-from-Directory-das.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -37,9 +38,9 @@ export class UsersFromDirectoryEffects {
       pluck('usersFromDirectory'),
        switchMap((usersFromDirectory) => {
         return this.userFromDirectoryDas.save({ items: usersFromDirectory, endpoint: "addFromDirectory"}).pipe(
-          map(() => {
+          map((usersAdded: OptionDto[]) => {
             this.biaMessageService.showAddSuccess();
-            return DomainUserOptionsActions.changeUserListSuccess();
+            return DomainUserOptionsActions.userAddedInListSuccess({usersAdded});
           }),
           catchError((err) => {
             if (err.status === 303) {

@@ -1,8 +1,8 @@
-// <copyright file="MemberDto.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
+// <copyright file="MembersDto.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Dto.User
+namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -11,12 +11,12 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.User
     /// <summary>
     /// The DTO used for members.
     /// </summary>
-    public class MemberDto : BaseDto<int>
+    public class MembersDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the user id.
         /// </summary>
-        public OptionDto User { get; set; }
+        public OptionDto[] Users { get; set; }
 
         /// <summary>
         /// Gets or sets the site id.

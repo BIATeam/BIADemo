@@ -1,7 +1,7 @@
-<app-member-form
+<app-member-form-new
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
     [teamId]="teamId"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></app-member-form>
+></app-member-form-new>

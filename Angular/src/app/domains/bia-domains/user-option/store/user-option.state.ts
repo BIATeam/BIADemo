@@ -34,9 +34,9 @@ export const getUserOptionById = (id: number) =>
     fromUserOptions.getUserOptionById(id)
   );
 
-export const getUserOptionsChangeCount = createSelector(
+export const getLastUsersAdded = createSelector(
   getUserOptionsEntitiesState,
-  (state) => state.changeCount
+  (state) => state.lastUsersAdded
 );
 
 

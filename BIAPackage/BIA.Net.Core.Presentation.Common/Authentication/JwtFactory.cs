@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 };
                 return principal;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

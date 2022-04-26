@@ -22,20 +22,20 @@ export const userOptionsAdapter = createEntityAdapter<OptionDto>({
 
 export interface State extends EntityState<OptionDto> {
   // additional props here
-  changeCount : number;
+  lastUsersAdded : OptionDto [];
 }
 
 export const INIT_STATE: State = userOptionsAdapter.getInitialState({
   // additional props default values here
-  changeCount:0
+  lastUsersAdded:[]
 });
 
 export const userOptionReducers = createReducer<State>(
   INIT_STATE,
   on(DomainUserOptionsActions.loadAllSuccess, (state, { users }) => userOptionsAdapter.setAll(users, state)),
   // on(loadSuccess, (state, { user }) => userOptionsAdapter.upsertOne(user, state))
-  on(DomainUserOptionsActions.changeUserListSuccess, (state) => {
-    return { ...state, changeCount: state.changeCount + 1 };
+  on(DomainUserOptionsActions.userAddedInListSuccess, (state, { usersAdded }) => {
+    return { ...state, lastUsersAdded: usersAdded };
   }),
 );
 

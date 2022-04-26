@@ -14,13 +14,13 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Member } from '../../model/member';
 
 @Component({
-  selector: 'app-member-form',
-  templateUrl: './member-form.component.html',
-  styleUrls: ['./member-form.component.scss'],
+  selector: 'app-member-form-new',
+  templateUrl: './member-form-new.component.html',
+  styleUrls: ['./member-form-new.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class MemberFormComponent implements OnChanges {
+export class MemberFormNewComponent implements OnChanges {
   @Input() member: Member = <Member>{};
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
@@ -50,8 +50,8 @@ export class MemberFormComponent implements OnChanges {
   private initForm() {
     this.form = this.formBuilder.group({
       id: [this.member.id],
-      user: [this.member.user, Validators.required],
-      roles: [this.member.roles],
+      users: [Validators.required],
+      roles: [],
     });
   }
 

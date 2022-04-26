@@ -11,7 +11,7 @@ export namespace DomainUserOptionsActions
 
     export const failure = createAction('[Domain User Options] Failure', props<{ error: any }>());
 
-    export const changeUserListSuccess = createAction('[Domain Users Options] Change userlist');
+    export const userAddedInListSuccess = createAction('[Domain Users Options] Change userlist', props<{ usersAdded: OptionDto[] }>());
 }
 
 

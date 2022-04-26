@@ -97,6 +97,7 @@ import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-
 import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
 import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
 import { HangfireContainerComponent } from './components/hangfire-container/hangfire-container.component';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -196,6 +197,7 @@ const PIPES = [
   JoinPipe,
   TranslateFieldPipe,
   FormatValuePipe,
+  SafeUrlPipe,
   IsNotCurrentTeamPipe,
   TeamListPipe
 ];

@@ -110,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
         public async Task<UserInfoDto> GetCreateUserInfoAsync(string sid)
         {
-            UserInfoDto userInfo = await GetUserInfoAsync(sid);
+            UserInfoDto userInfo = await this.GetUserInfoAsync(sid);
 
             if (userInfo != null)
             {
@@ -195,42 +195,62 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
-        public async Task<List<string>> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
+        public async Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
+            ResultAddUsersFromDirectoryDto result = new ResultAddUsersFromDirectoryDto();
+            result.UsersAddedDtos = new List<OptionDto>();
+            result.Errors = new List<string>();
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            List<string> errors = new List<string>();
+            result.Errors = new List<string>();
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
                 try
                 {
                     await this.SynchronizeWithADAsync();
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: x => users.Any(u => x.Sid == u.Sid))).Select(entity => new OptionDto
+                    {
+                        Id = entity.Id,
+                        Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                    }).ToList();
                 }
                 catch (Exception)
                 {
-                    errors.Add("Error during synchronize. Retry Synchronize.");
+                    result.Errors.Add("Error during synchronize. Retry Synchronize.");
                 }
             }
             else
             {
+                List<User> usersAdded = new List<User>();
                 foreach (var userFormDirectoryDto in users)
                 {
                     try
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
 
-                        await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
+                        var addedUser = await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
+
+                        if (addedUser != null)
+                        {
+                            usersAdded.Add(addedUser);
+                        }
 
                         await this.Repository.UnitOfWork.CommitAsync();
                     }
                     catch (Exception)
                     {
-                        errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
+                        result.Errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
                     }
                 }
+
+                result.UsersAddedDtos = usersAdded.Select(entity => new OptionDto
+                {
+                    Id = entity.Id,
+                    Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                }).ToList();
             }
 
-            return errors;
+            return result;
         }
 
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>

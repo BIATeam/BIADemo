@@ -3,7 +3,6 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MembersEffects } from './store/members-effects';
 import { reducers } from './store/member.state';
-import { MemberFormComponent } from './components/member-form/member-form.component';
 import { MembersIndexComponent } from './views/members-index/members-index.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MemberNewComponent } from './views/member-new/member-new.component';
@@ -13,13 +12,16 @@ import { MemberTableComponent } from './components/member-table/member-table.com
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
+import { MemberFormNewComponent } from './components/member-form-new/member-form-new.component';
+import { MemberFormEditComponent } from './components/member-form-edit/member-form-edit.component';
 
 @NgModule({
   declarations: [
     MemberItemComponent,
     // [Calc] : NOT used only for calc (4 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
-    MemberFormComponent,
+    MemberFormNewComponent,
+    MemberFormEditComponent,
     MembersIndexComponent,
     MemberNewComponent,
     MemberEditComponent,
@@ -37,7 +39,8 @@ import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-fro
   ],
   exports: [
     MemberItemComponent,
-    MemberFormComponent,
+    MemberFormNewComponent,
+    MemberFormEditComponent,
     MembersIndexComponent,
     MemberNewComponent,
     MemberEditComponent,

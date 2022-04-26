@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -141,13 +142,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Add)]
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
-            List<string> errors = await this.userService.AddFromDirectory(users);
-            if (errors.Any())
+            ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
+            if (result.Errors.Any())
             {
-                return this.StatusCode(303, errors);
+                return this.StatusCode(303, result.Errors);
             }
 
-            return this.Ok();
+            return this.Ok(result.UsersAddedDtos);
         }
 
         /// <summary>
