@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Domain.Service
     /// The base class for all CRUD application service.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>, IFilteredServiceBase<TEntity, TKey> 
+    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>, IFilteredServiceBase<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
@@ -65,7 +65,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
@@ -87,7 +88,7 @@ namespace BIA.Net.Core.Domain.Service
                 queryOrder: queryOrder,
                 firstElement: filters?.First ?? 0,
                 pageCount: filters?.Rows ?? 0,
-                queryMode: queryMode);
+                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode);
 
             return (results.Item1.ToList(), results.Item2);
         }
@@ -117,7 +118,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = null,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -131,7 +133,7 @@ namespace BIA.Net.Core.Domain.Service
                 firstElement: firstElement,
                 pageCount: pageCount,
                 includes: includes,
-                queryMode: queryMode
+                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode
                 );
         }
 
@@ -162,7 +164,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = null,
-            string mapperMode = null)
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -177,7 +180,7 @@ namespace BIA.Net.Core.Domain.Service
                 firstElement: firstElement,
                 pageCount: pageCount,
                 includes: includes,
-                queryMode: queryMode
+                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode
                 );
         }
 
@@ -188,7 +191,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = "Csv"
+            string mapperMode = "Csv",
+            bool isReadOnlyMode = false
             )
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
@@ -204,7 +208,7 @@ namespace BIA.Net.Core.Domain.Service
             filters.First = 0;
             filters.Rows = 0;
 
-            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode)).results;
+            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
 
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode)).ToList();
@@ -239,7 +243,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.Read,
-            string mapperMode = MapperMode.Item)
+            string mapperMode = MapperMode.Item,
+            bool isReadOnlyMode = false)
 
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
@@ -250,7 +255,7 @@ namespace BIA.Net.Core.Domain.Service
                 specification: GetFilterSpecification(accessMode, filtersContext) & specification,
                 filter: filter,
                 includes: includes,
-                queryMode: queryMode);
+                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode);
             if (result == null)
             {
                 throw new ElementNotFoundException();

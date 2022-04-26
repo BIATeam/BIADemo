@@ -60,8 +60,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>All TEntity.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TEntity>> GetAllEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get All Elements Ordered By.
@@ -75,8 +76,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>List of Elements.</returns>
-        Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TEntity>> GetAllEntityAsync<TOrderKey>(Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Gets the by spec and count.
@@ -91,8 +93,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering and Includes.
@@ -110,8 +113,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="includes">The list of includes.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>List of Elements with selected Columns of Entity Object.</returns>
-        Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TResult>> GetAllResultAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Gets the by spec and count.
@@ -126,8 +130,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<IEnumerable<TResult>> GetAllResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get an entity with it's identifier.
@@ -137,9 +142,10 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="filter">Filter Query.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
         /// <returns>The <see cref="TEntity"/>.</returns>
 
-        Task<TEntity> GetEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
+        Task<TEntity> GetEntityAsync(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get a dto with it's identifier.
@@ -151,8 +157,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="filter">Filter Query.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        Task<TResult> GetResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null);
-        
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, true by default)</param>
+        Task<TResult> GetResultAsync<TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string queryMode = null, bool isReadOnlyMode = false);
+
         /// <summary>
         /// Remove an item to the current context.
         /// </summary>

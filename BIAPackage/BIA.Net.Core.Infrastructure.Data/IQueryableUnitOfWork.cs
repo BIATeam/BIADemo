@@ -13,14 +13,6 @@ namespace BIA.Net.Core.Infrastructure.Data
     public interface IQueryableUnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Attach the item to the current context.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <typeparam name="TEntity">The entity type of the item.</typeparam>
-        void Attach<TEntity>(TEntity item)
-            where TEntity : class;
-
-        /// <summary>
         /// Get the ObjectSet of the of type TEntity.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>

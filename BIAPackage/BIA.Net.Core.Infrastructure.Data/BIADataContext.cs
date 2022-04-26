@@ -94,6 +94,14 @@
         }
 
         /// <summary>
+        /// Reset tracking.
+        /// </summary>
+        public void Reset()
+        {
+            this.ChangeTracker.Clear();
+        }
+
+        /// <summary>
         /// Bulk function to add entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
