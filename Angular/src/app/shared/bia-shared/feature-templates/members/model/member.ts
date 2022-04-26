@@ -7,7 +7,7 @@ export interface Member extends BaseDto {
   teamId: number;
 }
 
-export interface Members extends BaseDto {
+export class Members {
   users: OptionDto[];
   roles: OptionDto[];
   teamId: number;

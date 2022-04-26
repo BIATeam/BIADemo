@@ -7,6 +7,7 @@ import { MemberOptionsService } from '../../services/member-options.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-member-new',
@@ -22,6 +23,7 @@ export class MemberNewComponent implements OnInit, OnDestroy {
   protected activatedRoute: ActivatedRoute;
   public memberOptionsService: MemberOptionsService;
   protected sub = new Subscription();
+  public members : Members;
   
   constructor( injector: Injector ) {
     this.store = injector.get<Store<AppState>>(Store);
@@ -32,10 +34,12 @@ export class MemberNewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = new Subscription();
+    this.members = new Members();
     this.memberOptionsService.loadAllOptions(this.teamTypeId);
     this.sub.add(
-      this.store.select(getLastUsersAdded).subscribe(event => {
+      this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(lastUsersAdded => {
         this.memberOptionsService.refreshUsersOptions();
+        this.members.users = lastUsersAdded;
       })
     );
   }
@@ -48,10 +52,12 @@ export class MemberNewComponent implements OnInit, OnDestroy {
 
   onSubmitted(membersToCreate: Members) {
     this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
+    this.members = new Members();
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 
   onCancelled() {
+    this.members = new Members();
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }

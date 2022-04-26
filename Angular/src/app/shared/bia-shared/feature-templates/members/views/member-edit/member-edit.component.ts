@@ -8,6 +8,7 @@ import { MemberService } from '../../services/member.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberOptionsService } from '../../services/member-options.service';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-member-edit',
@@ -32,7 +33,7 @@ export class MemberEditComponent implements OnInit, OnDestroy {
     this.sub = new Subscription();
     this.memberOptionsService.loadAllOptions(this.teamTypeId);
     this.sub.add(
-      this.store.select(getLastUsersAdded).subscribe(event => {
+      this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(event => {
         this.memberOptionsService.refreshUsersOptions();
       })
     );

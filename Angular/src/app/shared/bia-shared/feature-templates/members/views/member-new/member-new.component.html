@@ -1,4 +1,5 @@
 <app-member-form-new
+    [members]="members"
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
     [teamId]="teamId"
