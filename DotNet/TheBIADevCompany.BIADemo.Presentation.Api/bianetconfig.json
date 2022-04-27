@@ -263,6 +263,10 @@
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
+        "Name": "User_Add",
+        "Roles": [ "Site_Admin" ]
+      },
+      {
         "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
@@ -294,7 +298,7 @@
       },
       {
         "Name": "User_Add",
-        "Roles": [ "Admin", "Site_Admin" ]
+        "Roles": [ "Admin" ]
       },
       // View
       {
