@@ -17,7 +17,7 @@
             <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
           </span>
         </div>
-        <div class="app-field-container" fxFlex="10">
+        <div class="app-field-container" fxFlex="10"  *ngIf="canAddFromDirectory">
           <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-sm p-button-rounded p-button-text align-right"
             (click)="addUserFromDirectory()"></button>
         </div>

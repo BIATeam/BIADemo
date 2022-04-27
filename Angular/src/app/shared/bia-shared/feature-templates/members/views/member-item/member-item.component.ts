@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { getCurrentMember} from '../../store/member.state';
@@ -16,19 +16,25 @@ import { first } from 'rxjs/operators';
 export class MemberItemComponent implements OnInit, OnDestroy {
   member$: Observable<Member>;
   protected sub = new Subscription();
+  protected store: Store<AppState>;
+  protected activatedRoute: ActivatedRoute;
+  public memberService: MemberService;
+  protected layoutService: BiaClassicLayoutService;
 
-  constructor(protected store: Store<AppState>,
-    protected route: ActivatedRoute,
-    public memberService: MemberService,
-    protected layoutService: BiaClassicLayoutService) { }
+  constructor(injector: Injector) { 
+    this.store = injector.get<Store<AppState>>(Store);
+    this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
+    this.memberService = injector.get<MemberService>(MemberService);
+    this.layoutService = injector.get<BiaClassicLayoutService>(BiaClassicLayoutService);
+  }
 
   ngOnInit() {
-    this.memberService.currentMemberId = this.route.snapshot.params.memberId;
+    this.memberService.currentMemberId = this.activatedRoute.snapshot.params.memberId;
     this.sub.add
       (
         this.store.select(getCurrentMember).subscribe((member) => {
           if (member?.user) {
-            this.route.data.pipe(first()).subscribe(routeData => {
+            this.activatedRoute.data.pipe(first()).subscribe(routeData => {
               routeData['breadcrumb'] = member.user.display;
             });
             this.layoutService.refreshBreadcrumb();

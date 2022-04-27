@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { SiteService } from 'src/app/features/sites/services/site.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -13,6 +14,7 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
   constructor(
     injector: Injector,
     public siteService: SiteService,
+    private authService : AuthService
   ) {
     super(injector);
   }

@@ -13,7 +13,6 @@ import {
 } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MemberDas } from '../../services/member-das.service';
 import * as FileSaver from 'file-saver';
@@ -70,7 +69,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   protected store: Store<AppState>;
   protected router: Router;
   public activatedRoute: ActivatedRoute;
-  protected authService: AuthService;
   protected memberDas: MemberDas;
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
@@ -81,7 +79,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
     this.store = injector.get<Store<AppState>>(Store);
     this.router = injector.get<Router>(Router);
     this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
-    this.authService = injector.get<AuthService>(AuthService);
     this.memberDas = injector.get<MemberDas>(MemberDas);
     this.translateService = injector.get<TranslateService>(TranslateService);
     this.biaTranslationService = injector.get<BiaTranslationService>(BiaTranslationService);

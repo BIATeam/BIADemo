@@ -3,6 +3,7 @@
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
     [teamId]="teamId"
+    [canAddFromDirectory]="canAddFromDirectory"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-member-form-edit>

@@ -8,6 +8,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'app-member-new',
@@ -24,16 +26,20 @@ export class MemberNewComponent implements OnInit, OnDestroy {
   public memberOptionsService: MemberOptionsService;
   protected sub = new Subscription();
   public members : Members;
+  protected authService: AuthService;
+  canAddFromDirectory = false;
   
   constructor( injector: Injector ) {
     this.store = injector.get<Store<AppState>>(Store);
     this.router = injector.get<Router>(Router);
     this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
     this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
+    this.authService = injector.get<AuthService>(AuthService);
   }
 
   ngOnInit() {
     this.sub = new Subscription();
+    this.canAddFromDirectory = this.authService.hasPermission(Permission.User_Add);
     this.members = new Members();
     this.memberOptionsService.loadAllOptions(this.teamTypeId);
     this.sub.add(

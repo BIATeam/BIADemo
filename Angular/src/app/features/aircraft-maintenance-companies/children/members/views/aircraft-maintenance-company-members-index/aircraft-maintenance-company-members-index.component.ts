@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
 import { MembersIndexComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/members-index/members-index.component';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -13,6 +14,7 @@ export class AircraftMaintenanceCompanyMembersIndexComponent extends MembersInde
   constructor(
     injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
+    private authService: AuthService
   ) {
     super(injector);
   }
