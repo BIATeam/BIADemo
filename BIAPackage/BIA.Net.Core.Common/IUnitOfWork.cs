@@ -41,18 +41,18 @@ namespace BIA.Net.Core.Common
         /// Bulk method to add a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        void AddBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
 
         /// <summary>
         /// Bulk method to update a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        void UpdateBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
 
         /// <summary>
         /// Bulk method to remove a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        void RemoveBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
     }
 }

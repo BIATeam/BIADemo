@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Domain.Service
         Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
-        void AddBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
 
@@ -125,7 +125,7 @@ namespace BIA.Net.Core.Domain.Service
         Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(TKey id, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
-        void RemoveBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
         Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = "Delete", string queryMode = "Delete");
@@ -155,7 +155,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
-        void UpdateBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
     }

@@ -493,7 +493,7 @@ namespace BIA.Net.Core.Domain.Service
             return null;
         }
 
-        public void AddBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        public virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -509,11 +509,11 @@ namespace BIA.Net.Core.Domain.Service
                     entity.Add(converted);
                 }
 
-                this.Repository.UnitOfWork.AddBulk(entity);
+                await this.Repository.UnitOfWork.AddBulkAsync(entity);
             }
         }
 
-        public void UpdateBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        public virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -529,11 +529,11 @@ namespace BIA.Net.Core.Domain.Service
                     entity.Add(converted);
                 }
 
-                this.Repository.UnitOfWork.UpdateBulk(entity);
+                await this.Repository.UnitOfWork.UpdateBulkAsync(entity);
             }
         }
 
-        public void RemoveBulk<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        public virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -549,11 +549,11 @@ namespace BIA.Net.Core.Domain.Service
                     entity.Add(converted);
                 }
 
-                this.Repository.UnitOfWork.RemoveBulk(entity);
+                await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
             }
         }
 
-        public async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
         {
             var entity = await this.Repository.GetAllEntityAsync(specification: GetFilterSpecification(accessMode, filtersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
             if (entity == null)
@@ -561,7 +561,7 @@ namespace BIA.Net.Core.Domain.Service
                 throw new ElementNotFoundException();
             }
 
-            this.Repository.UnitOfWork.RemoveBulk(entity);
+            await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
         }
     }
 }
