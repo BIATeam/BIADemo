@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null)
+        Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
 
@@ -66,7 +66,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null)
+        Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
 
@@ -83,10 +83,10 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO.</returns>
-        Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = "Read", string mapperMode = "Item")
+        Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = "Read", string mapperMode = "Item", bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
-        Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = "Csv")
+        Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = "Csv", bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new();
@@ -104,7 +104,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The list of DTO.</returns>
-        Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null)
+        Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new();

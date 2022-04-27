@@ -35,6 +35,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<TDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
@@ -43,7 +44,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = null);
+            string mapperMode = null,
+            bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get the csv with other filter.
@@ -55,6 +57,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         /// <returns></returns>
         Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
@@ -63,7 +66,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = null
+            string mapperMode = null,
+            bool isReadOnlyMode = false
             );
 
         /// <summary>
@@ -76,6 +80,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             TKey id = default,
@@ -83,7 +88,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, bool>> filter = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
-            string mapperMode = null
+            string mapperMode = null,
+            bool isReadOnlyMode = false
             )
              where TOtherFilter : LazyLoadDto, new();
 
@@ -100,6 +106,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         /// <returns>The list of DTO.</returns>
         Task<IEnumerable<TDto>> GetAllAsync(
             TKey id = default,
@@ -111,7 +118,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = null,
-            string mapperMode = null);
+            string mapperMode = null,
+            bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get the DTO list. (with an order By Expression and direction)
@@ -128,6 +136,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         /// <returns>Data in csv format.</returns>
         Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
             TKey id = default,
@@ -138,7 +147,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = null,
-            string mapperMode = null);
+            string mapperMode = null,
+            bool isReadOnlyMode = false);
 
         /// <summary>
         /// Return a DTO for a given identifier.
@@ -150,6 +160,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
         /// <returns>The DTO.</returns>
         Task<TDto> GetAsync(TKey id = default,
             Specification<TEntity> specification = null,
@@ -157,7 +168,8 @@ namespace BIA.Net.Core.Domain.Service
             Expression<Func<TEntity, object>>[] includes = null,
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.Read,
-            string mapperMode = MapperMode.Item);
+            string mapperMode = MapperMode.Item,
+            bool isReadOnlyMode = false);
 
         /// <summary>
         /// Transform the DTO into the corresponding entity and add it to the DB.
@@ -224,7 +236,7 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <param name="dtos">The DTO for all items.</param>
         Task AddBulkAsync(IEnumerable<TDto> dtos);
-        
+
         /// <summary>
         /// Transform the DTO into the corresponding entities and update these to the DB.
         /// </summary>

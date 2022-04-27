@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// <summary>
     /// The database context.
     /// </summary>
-    public class DataContextReadOnly : DataContext
+    public class DataContextReadOnly : DataContext, IQueryableUnitOfWorkReadOnly
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContextReadOnly"/> class.

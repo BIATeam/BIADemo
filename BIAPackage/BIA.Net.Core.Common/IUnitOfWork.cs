@@ -33,6 +33,11 @@ namespace BIA.Net.Core.Common
         void RollbackChanges();
 
         /// <summary>
+        /// Reset tracking.
+        /// </summary>
+        void Reset();
+
+        /// <summary>
         /// Bulk method to add a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
