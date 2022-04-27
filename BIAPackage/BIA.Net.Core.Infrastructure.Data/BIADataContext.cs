@@ -1,7 +1,6 @@
 ﻿namespace BIA.Net.Core.Infrastructure.Data
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using EFCore.BulkExtensions;
 
     public class BIADataContext : DbContext, IQueryableUnitOfWork
     {
@@ -106,9 +106,9 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
-        public void AddBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            this.BulkInsert(items);
+            await this.BulkInsertAsync(items?.ToList());
         }
 
         /// <summary>
@@ -116,9 +116,9 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
-        public void UpdateBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            this.BulkUpdate(items);
+           await this.BulkUpdateAsync(items?.ToList());
         }
 
         /// <summary>
@@ -126,9 +126,9 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
-        public void RemoveBulk<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            this.BulkDelete(items);
+            await this.BulkDeleteAsync(items?.ToList());
         }
 
         /// <summary>

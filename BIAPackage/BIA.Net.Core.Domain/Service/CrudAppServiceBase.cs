@@ -175,7 +175,7 @@ namespace BIA.Net.Core.Domain.Service
         public virtual async Task AddBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            this.AddBulk<TDto, TMapper>(dtos);
+            await this.AddBulkAsync<TDto, TMapper>(dtos);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.UpdateBulkAsync"/>
@@ -183,7 +183,7 @@ namespace BIA.Net.Core.Domain.Service
         public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            this.UpdateBulk<TDto, TMapper>(dtos);
+            await this.UpdateBulkAsync<TDto, TMapper>(dtos);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.RemoveBulkAsync(System.Collections.Generic.IEnumerable{TDto})"/>
@@ -191,7 +191,7 @@ namespace BIA.Net.Core.Domain.Service
         public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            this.RemoveBulk<TDto, TMapper>(dtos);
+            await this.RemoveBulkAsync<TDto, TMapper>(dtos);
         }
 
         public virtual async Task<TDto> SaveAsync(TDto dto,
