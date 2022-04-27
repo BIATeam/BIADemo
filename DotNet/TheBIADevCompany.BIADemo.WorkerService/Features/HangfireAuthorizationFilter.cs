@@ -11,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using Hangfire.Dashboard;
     using Microsoft.AspNetCore.Http;
 
-
     /// <summary>
     /// Manage the authorisation to acced to the dashboard.
     /// </summary>
@@ -89,8 +88,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 jwtToken,
                 new CookieOptions()
                 {
-                    Secure = !isLocalhost, // TODO : for not localhost
-                    SameSite = isLocalhost ? SameSiteMode.Unspecified: SameSiteMode.None, // TODO : for not localhost
+                    Secure = !isLocalhost,
+                    SameSite = isLocalhost ? SameSiteMode.Unspecified : SameSiteMode.None,
                     Path = "/",
                     IsEssential = true,
                     Expires = DateTime.Now.AddMinutes(30),

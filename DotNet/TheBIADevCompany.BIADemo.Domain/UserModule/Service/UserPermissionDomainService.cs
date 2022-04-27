@@ -17,7 +17,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public class UserPermissionDomainService : IUserPermissionDomainService
     {
-
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
