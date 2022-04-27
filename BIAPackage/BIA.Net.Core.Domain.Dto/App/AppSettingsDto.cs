@@ -22,5 +22,10 @@ namespace BIA.Net.Core.Domain.Dto.Option
         /// Gets or sets the cultures configuration.
         /// </summary>
         public IEnumerable<Culture> Cultures { get; set; }
+
+        /// <summary>
+        /// Url to Monitor.
+        /// </summary>
+        public string MonitoringUrl { get; set; }
     }
 }

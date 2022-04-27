@@ -18,5 +18,10 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Connexion string name for the database.
         /// </summary>
         public string ConnectionStringName { get; set; }
+
+        /// <summary>
+        /// Url for the dashboard Monitoring.
+        /// </summary>
+        public string MonitoringUrl { get; set; }
     }
 }

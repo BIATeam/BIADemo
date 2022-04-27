@@ -20,7 +20,11 @@
         /// <param name="configuration">The configuration.</param>
         public AppSettingsController(IOptions<BiaNetSection> configuration)
         {
-            this.appSettings = new AppSettingsDto { Environment = configuration.Value.Environment, Cultures = configuration.Value.Cultures };
+            this.appSettings = new AppSettingsDto { 
+                Environment = configuration.Value.Environment, 
+                Cultures = configuration.Value.Cultures, 
+                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl 
+            };
         }
 
         /// <summary>

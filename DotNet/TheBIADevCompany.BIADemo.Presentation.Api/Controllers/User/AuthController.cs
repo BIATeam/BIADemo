@@ -237,10 +237,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             var tokenDto = new TokenDto<UserDataDto> { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
 
+            UserProfileDto userProfile = null;
+            if (userProfileTask != null)
+            {
+                userProfile = userProfileTask.Result ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
+            }
+
             AdditionalInfoDto additionnalInfo = null;
             if (!loginParam.LightToken)
             {
-                var userProfile = userProfileTask.Result ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
             }
 
@@ -293,7 +298,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                             var teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                             var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                            CurrentTeamDto currentTeam = new();
+                            CurrentTeamDto currentTeam = new ();
                             currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
                             if (team != null)

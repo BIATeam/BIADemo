@@ -177,10 +177,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Add a member.
         /// </summary>
-        /// <param name="dto">The member DTO.</param>
+        /// <param name="dtos">The members DTO.</param>
         /// <returns>The result of the creation.</returns>
         [HttpPost("addMulti")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -206,9 +206,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     dtoList.Add(dto);
                 }
 
+#pragma warning disable S1481 // Unused local variables should be removed
                 var savedDtos = await this.memberService.SaveAsync(dtoList);
+#pragma warning restore S1481 // Unused local variables should be removed
 #if UseHubForClientInMember
-                await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
+                _ = this.clientForHubService.SendTargetedMessage(dtos.TeamId.ToString(), "members", "refresh-members");
 #endif
                 return this.Ok();
             }

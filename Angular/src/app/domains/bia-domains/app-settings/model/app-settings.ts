@@ -8,6 +8,7 @@ export enum EnvironmentType {
 export interface AppSettings {
   environment: Environment;
   cultures: Culture[];
+  monitoringUrl: string;
 }
 
 
