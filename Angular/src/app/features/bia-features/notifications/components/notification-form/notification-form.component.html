@@ -137,23 +137,6 @@
           <span class="md-inputfield">
             <p-multiSelect
               defaultLabel="&nbsp;"
-              [options]="roleOptions"
-              formControlName="notifiedRoles"
-              optionLabel="display"
-              datakey="id"
-              [virtualScroll]="true"
-              [style]="{ width: '100%' }"
-            >
-            </p-multiSelect>
-            <label>{{ 'notification.notifiedRoles' | translate }}</label>
-          </span>
-        </div>
-      </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
-          <span class="md-inputfield">
-            <p-multiSelect
-              defaultLabel="&nbsp;"
               [options]="userOptions"
               formControlName="notifiedUsers"
               optionLabel="display"

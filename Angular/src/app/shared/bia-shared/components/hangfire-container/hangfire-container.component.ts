@@ -11,6 +11,7 @@ import { AuthService } from "src/app/core/bia-core/services/auth.service";
 
     private sub = new Subscription();
     public displayFrame = false;
+    public urlToken = ""
 
     constructor(private authService: AuthService) {
       // Set cookie HangFireCookie
@@ -22,8 +23,7 @@ import { AuthService } from "src/app/core/bia-core/services/auth.service";
       this.sub.add(
         this.authService.getLightToken().subscribe(authinfo => {
           let token : string = authinfo.token;
-          //let token : string = "5566";
-          document.cookie = 'HangFireCookie='+ token + '; Path=/;';
+          this.urlToken = this.url + "?jwt_token=" + token;
           this.displayFrame = true;
         })
       );

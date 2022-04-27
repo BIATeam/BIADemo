@@ -80,6 +80,60 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
 
                         return Task.CompletedTask;
                     },
+                    //OnMessageReceived = mrCtx =>
+                    //{
+                    //    // Look for HangFire stuff
+                    //    var path = mrCtx.Request.Path.HasValue ? mrCtx.Request.Path.Value : "";
+                    //    var pathBase = mrCtx.Request.PathBase.HasValue ? mrCtx.Request.PathBase.Value : path;
+                    //    var isFromHangFire = true;// path.StartsWith(WebsiteConstants.HANG_FIRE_URL) || pathBase.StartsWith(WebsiteConstants.HANG_FIRE_URL);
+
+                    //    //If it's HangFire look for token.
+                    //    if (isFromHangFire)
+                    //    {
+                    //        mrCtx.HttpContext.Response.Cookies
+                    //            .Append("HangFireCookie666",
+                    //                "Coucou",
+                    //                new CookieOptions()
+                    //                {
+                    //                    Secure = true,
+                    //                    Path = "/",
+                    //                    SameSite = SameSiteMode.None,
+                    //                    IsEssential = true,
+                    //                    Expires = DateTime.Now.AddMinutes(10)
+                    //                });
+                    //        if (mrCtx.Request.Query.ContainsKey("jwt_token"))
+                    //        {
+                    //            //If we find token add it to the response cookies
+                    //            //mrCtx.Token = mrCtx.Request.Query["jwt_token"];
+                    //            var Token = mrCtx.Request.Query["jwt_token"];
+                    //            mrCtx.HttpContext.Response.Cookies
+                    //            .Append("HangFireCookie",
+                    //                Token,
+                    //                new CookieOptions()
+                    //                {
+                    //                    Secure = true,
+                    //                    Path = "/",
+                    //                    SameSite = SameSiteMode.None,
+                    //                    IsEssential = true,
+                    //                    Expires = DateTime.Now.AddMinutes(10)
+                    //                });
+                    //        }
+                    //        else
+                    //        {
+                    //            //Check if we have a cookie from the previous request.
+                    //            var cookies = mrCtx.Request.Cookies;
+                    //            if (cookies.ContainsKey("HangFireCookie"))
+                    //            {
+                    //                // mrCtx.Token = cookies["HangFireCookie"];
+                    //                var Token = cookies["HangFireCookie"];
+                    //                bool test = true;
+                    //            }
+                                    
+                    //        }//Else
+                    //    }//If
+
+                    //    return Task.CompletedTask;
+                    //}
                 };
             });
 

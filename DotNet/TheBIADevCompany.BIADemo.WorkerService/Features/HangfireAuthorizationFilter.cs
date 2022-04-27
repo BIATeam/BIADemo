@@ -5,19 +5,18 @@
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
+    using System.Linq;
     using System.Net;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Common.Authentication;
     using Hangfire.Dashboard;
-    using TheBIADevCompany.BIADemo.Application.User;
+    using Microsoft.AspNetCore.Http;
+
 
     /// <summary>
     /// Manage the authorisation to acced to the dashboard.
     /// </summary>
     public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
     {
-        private static readonly string HangFireCookieName = "HangFireCookie";
         private readonly bool authorizeAllLocal;
         private readonly string userPermission;
         private readonly string secretKey;
@@ -29,6 +28,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <param name="authorizeAllLocal">True if local connection authorize all user.</param>
         /// <param name="userPermission">right to use.</param>
         /// <param name="secretKey">the secret Key.</param>
+        /// <param name="jwtFactory">the jwtFactory.</param>
         public HangfireAuthorizationFilter(bool authorizeAllLocal, string userPermission, string secretKey, IJwtFactory jwtFactory)
         {
             this.userPermission = userPermission;
@@ -45,34 +45,56 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public bool Authorize(DashboardContext context)
         {
             var httpContext = context.GetHttpContext();
-
-            if (this.authorizeAllLocal &&
-                (httpContext.Connection.RemoteIpAddress.Equals(httpContext.Connection.LocalIpAddress) || IPAddress.IsLoopback(httpContext.Connection.RemoteIpAddress)))
+            bool isLocal = httpContext.Connection.RemoteIpAddress.Equals(httpContext.Connection.LocalIpAddress) || IPAddress.IsLoopback(httpContext.Connection.RemoteIpAddress);
+            if (this.authorizeAllLocal && isLocal)
             {
                 return true;
             }
 
-            var access_token = httpContext.Request.Cookies[HangFireCookieName];
-
-            if (string.IsNullOrEmpty(access_token))
+            if (string.IsNullOrEmpty(this.userPermission))
             {
                 return false;
             }
 
-            try
+            var jwtToken = string.Empty;
+
+            if (httpContext.Request.Query.ContainsKey("jwt_token"))
             {
-                var principal = this.jwtFactory.GetPrincipalFromToken(access_token, this.secretKey);
-                if (!string.IsNullOrEmpty(this.userPermission) && !principal.IsInRole(this.userPermission))
-                {
-                    return false;
-                }
+                jwtToken = httpContext.Request.Query["jwt_token"].FirstOrDefault();
+                this.SetCookie(httpContext, jwtToken, httpContext.Request.Host.Value == "localhost");
             }
-            catch (Exception e)
+            else
             {
-                throw e;
+                jwtToken = httpContext.Request.Cookies["_hangfireCookie"];
             }
 
-            return true;
+            if (string.IsNullOrEmpty(jwtToken))
+            {
+                return false;
+            }
+
+            var principal = this.jwtFactory.GetPrincipalFromToken(jwtToken, this.secretKey);
+            if (principal.IsInRole(this.userPermission))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SetCookie(HttpContext httpContext, string jwtToken, bool isLocalhost)
+        {
+            httpContext.Response.Cookies.Append(
+                "_hangfireCookie",
+                jwtToken,
+                new CookieOptions()
+                {
+                    Secure = !isLocalhost, // TODO : for not localhost
+                    SameSite = isLocalhost ? SameSiteMode.Unspecified: SameSiteMode.None, // TODO : for not localhost
+                    Path = "/",
+                    IsEssential = true,
+                    Expires = DateTime.Now.AddMinutes(30),
+                });
         }
     }
 }

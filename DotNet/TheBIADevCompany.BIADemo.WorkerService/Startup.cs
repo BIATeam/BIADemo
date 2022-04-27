@@ -117,6 +117,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
+        /// <param name="jwtFactory">The jwt Factory.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IJwtFactory jwtFactory)
         {
             if (!env.IsDevelopment())

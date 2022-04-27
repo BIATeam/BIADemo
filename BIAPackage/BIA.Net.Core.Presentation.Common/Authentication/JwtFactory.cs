@@ -45,7 +45,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey)),
+                IssuerSigningKey = this.jwtOptions.SigningCredentials.Key,
                 ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
             };
             try
