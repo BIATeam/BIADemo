@@ -18,11 +18,4 @@
     <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="8.38.0.46746">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>

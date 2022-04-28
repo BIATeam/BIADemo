@@ -37,11 +37,5 @@
       <DependentUpon>20211115180047_LanguageInDB.Designer.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="8.38.0.46746">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+  
 </Project>

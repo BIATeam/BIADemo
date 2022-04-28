@@ -77,13 +77,17 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
 
             // Begin BIADemo
+            bool continueTask = true;
 
             // for a custom scheduling
-            while (true)
+#pragma warning disable S2589 // Boolean expressions should not be gratuitous
+            while (continueTask)
+#pragma warning restore S2589 // Boolean expressions should not be gratuitous
             {
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
                 await Task.Delay(RandomNumberGenerator.GetInt32(1800000, 7200000)); // Random delay beetween 1 800 000 ms (=30 min) and 7 200 000 ms (=2 h)
+                continueTask = true;
             }
 
             // End BIADemo
