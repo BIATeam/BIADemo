@@ -26,7 +26,7 @@ export class UserFromDirectoryService {
   }
 
   public formatDisplayNameFromAD(user: UserFromDirectory): UserFromDirectory {
-    user.displayName = `${user.firstName} ${user.lastName} (${user.domain}\\${user.login})`;
+    user.displayName = `${user.lastName} ${user.firstName} (${user.domain}\\${user.login})`;
     return user;
   }
 }

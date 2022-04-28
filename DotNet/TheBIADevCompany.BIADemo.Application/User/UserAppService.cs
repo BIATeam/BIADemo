@@ -190,7 +190,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetAllADUserAsync"/>
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null)
         {
-            return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
+            return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, 100).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
                 .Select(UserFromDirectoryMapper.EntityToDto())
                 .ToList());
         }

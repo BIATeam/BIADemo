@@ -165,9 +165,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.SearchUsers"/>
-        public List<TUserFromDirectory> SearchUsers(string search, string ldapName = null)
+        public List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
         {
-            int max = 10;
             List<TUserFromDirectory> usersInfo = new List<TUserFromDirectory>();
             if (string.IsNullOrEmpty(search))
             {
@@ -179,13 +178,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 LdapDomain ldapDomain = ldapDomainsUsers.FirstOrDefault(e => e.LdapName == ldapName);
                 if (ldapDomain != null)
                 {
-                    return SearchUsersInDomain(search, ldapDomain).Take(max).ToList();
+                    return SearchUsersInDomain(search, ldapDomain, max).Take(max).ToList();
                 }
             }
 
             foreach (var ldapDomain in ldapDomainsUsers)
             {
-                var results = SearchUsersInDomain(search, ldapDomain);
+                var results = SearchUsersInDomain(search, ldapDomain, max);
                 if (results != null)
                 {
                     usersInfo.AddRange(results.Take(max - usersInfo.Count));
@@ -200,7 +199,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return usersInfo;
         }
 
-        private IEnumerable<TUserFromDirectory> SearchUsersInDomain(string search, LdapDomain domain)
+        private IEnumerable<TUserFromDirectory> SearchUsersInDomain(string search, LdapDomain domain, int max)
         {
             if (domain == null || string.IsNullOrEmpty(domain.LdapName))
             {
@@ -215,8 +214,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     using var entry = new DirectoryEntry($"LDAP://{domain.LdapName}", domain.LdapServiceAccount, domain.LdapServicePass);
                     using var searcher = new DirectorySearcher(entry)
                     {
-                        Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)))",
-                        SizeLimit = 10
+                        Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
+                        SizeLimit = max
                     };
                     usersMatches.AddRange(searcher.FindAll().Cast<SearchResult>().Select(s => s.GetDirectoryEntry()).ToList());
                 }

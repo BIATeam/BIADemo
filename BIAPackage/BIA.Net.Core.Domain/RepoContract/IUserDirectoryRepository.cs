@@ -19,8 +19,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="search">String to find in the User Directory.</param>
         /// <param name="ldapName">Name of LDAP group to search in.</param>
+        /// <param name="max">Max return item.</param>
         /// <returns>The list of users.</returns>
-        List<TUserFromDirectory> SearchUsers(string search, string ldapName = null);
+        List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10);
 
         /// <summary>
         /// Add a user in a group of the Ldap.

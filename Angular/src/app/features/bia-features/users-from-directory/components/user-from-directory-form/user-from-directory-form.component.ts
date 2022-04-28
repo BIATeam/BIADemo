@@ -36,7 +36,7 @@ export class UserFromLdapFormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.users && changes.users) {
       this.users = this.users.sort((a, b) => {
-        return a.firstName.localeCompare(b.firstName);
+        return a.displayName.localeCompare(b.displayName);
       });
     }
   }
