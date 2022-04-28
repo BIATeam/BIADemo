@@ -29,7 +29,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { skip } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-notifications-index',
+  selector: 'bia-notifications-index',
   templateUrl: './notifications-index.component.html',
   styleUrls: ['./notifications-index.component.scss']
 })

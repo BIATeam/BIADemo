@@ -1,4 +1,4 @@
-<app-member-form-edit 
+<bia-member-form-edit 
     [member]="memberService.member$ | async" 
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
@@ -6,5 +6,5 @@
     [canAddFromDirectory]="canAddFromDirectory"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></app-member-form-edit>
+></bia-member-form-edit>
 <bia-spinner *ngIf="memberService.loading$ | async" [overlay]="true"></bia-spinner>

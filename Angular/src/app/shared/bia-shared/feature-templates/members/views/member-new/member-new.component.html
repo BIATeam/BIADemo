@@ -1,4 +1,4 @@
-<app-member-form-new
+<bia-member-form-new
     [members]="members"
     [roleOptions]="memberOptionsService.roleOptions$| async"
     [userOptions]="memberOptionsService.userOptions$| async"
@@ -6,4 +6,4 @@
     [canAddFromDirectory]="canAddFromDirectory"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></app-member-form-new>
+></bia-member-form-new>

@@ -13,7 +13,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { User } from '../../model/user';
 
 @Component({
-  selector: 'app-user-form',
+  selector: 'bia-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default

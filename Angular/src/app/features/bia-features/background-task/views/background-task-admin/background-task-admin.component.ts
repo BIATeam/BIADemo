@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'app-background-task-admin',
+  selector: 'bia-background-task-admin',
   templateUrl: './background-task-admin.component.html',
   styleUrls: ['./background-task-admin.component.scss']
 })

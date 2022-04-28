@@ -39,7 +39,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
-    <app-member-table *ngIf="useCalcMode"
+    <bia-member-table *ngIf="useCalcMode"
       [elements]="members$ | async"
       [dictOptionDtos]="memberOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
@@ -57,6 +57,6 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       (save)="onSave($event)"
-    ></app-member-table>
+    ></bia-member-table>
   </div>
 </div>

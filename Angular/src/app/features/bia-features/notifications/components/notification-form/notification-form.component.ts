@@ -16,7 +16,7 @@ import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants'
 import { Notification, NotificationTranslation } from '../../model/notification';
 
 @Component({
-  selector: 'app-notification-form',
+  selector: 'bia-notification-form',
   templateUrl: './notification-form.component.html',
   styleUrls: ['./notification-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default

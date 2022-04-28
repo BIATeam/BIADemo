@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from "@angular/core";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
 import { AuthService } from "src/app/core/bia-core/services/auth.service";
 
@@ -6,7 +6,7 @@ import { AuthService } from "src/app/core/bia-core/services/auth.service";
     selector: 'bia-hangfire-container',
     templateUrl: './hangfire-container.component.html'
   })
-  export class HangfireContainerComponent implements OnDestroy {
+  export class HangfireContainerComponent implements OnInit, OnDestroy {
     @Input() url: string = "";
 
     private sub = new Subscription();

@@ -30,7 +30,7 @@ import { skip } from 'rxjs/operators';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
-  selector: 'app-members-index',
+  selector: 'bia-members-index',
   templateUrl: './members-index.component.html',
   styleUrls: ['./members-index.component.scss']
 })

@@ -49,7 +49,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
-    <app-user-table *ngIf="useCalcMode"
+    <bia-user-table *ngIf="useCalcMode"
       [elements]="users$ | async"
       [dictOptionDtos]="userOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
@@ -67,7 +67,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       (save)="onSave($event)"
-    ></app-user-table>
+    ></bia-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog [(display)]="displayUserAddFromDirectoryDialog"></bia-user-add-from-directory-dialog>

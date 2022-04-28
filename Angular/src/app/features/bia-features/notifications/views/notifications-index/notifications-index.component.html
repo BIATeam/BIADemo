@@ -39,7 +39,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
-    <app-notification-table *ngIf="useCalcMode"
+    <bia-notification-table *ngIf="useCalcMode"
       [elements]="notifications$ | async"
       [dictOptionDtos]="notificationOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
@@ -57,6 +57,6 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       (save)="onSave($event)"
-    ></app-notification-table>
+    ></bia-notification-table>
   </div>
 </div>

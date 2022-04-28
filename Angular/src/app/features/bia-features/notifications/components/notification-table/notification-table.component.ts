@@ -8,7 +8,7 @@ import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/tabl
 import { Notification } from '../../model/notification';
 
 @Component({
-  selector: 'app-notification-table',
+  selector: 'bia-notification-table',
   templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })

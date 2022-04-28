@@ -10,7 +10,7 @@ import { Permission } from 'src/app/shared/permission';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 @Component({
-  selector: 'app-notification-detail',
+  selector: 'bia-notification-detail',
   templateUrl: './notification-detail.component.html',
   styleUrls: ['./notification-detail.component.scss']
 })

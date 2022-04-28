@@ -9,7 +9,7 @@ import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/tabl
 import { Member } from '../../model/member';
 
 @Component({
-  selector: 'app-member-table',
+  selector: 'bia-member-table',
   templateUrl: '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: ['../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })

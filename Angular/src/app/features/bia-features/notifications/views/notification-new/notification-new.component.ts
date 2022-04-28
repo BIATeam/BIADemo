@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'app-notification-new',
+  selector: 'bia-notification-new',
   templateUrl: './notification-new.component.html',
   styleUrls: ['./notification-new.component.scss']
 })

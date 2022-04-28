@@ -1,8 +1,8 @@
-<app-notification-form 
+<bia-notification-form 
     [notificationTypeOptions]="notificationOptionsService.notificationTypeOptions$ | async"
     [roleOptions]="notificationOptionsService.roleOptions$ | async"
     [userOptions]="notificationOptionsService.userOptions$ | async"
     [languageOptions]="notificationOptionsService.languageOptions$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></app-notification-form>
+></bia-notification-form>

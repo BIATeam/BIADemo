@@ -14,7 +14,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Members } from '../../model/member';
 
 @Component({
-  selector: 'app-member-form-new',
+  selector: 'bia-member-form-new',
   templateUrl: './member-form-new.component.html',
   styleUrls: ['./member-form-new.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default

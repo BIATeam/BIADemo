@@ -31,7 +31,7 @@ import { skip } from 'rxjs/operators';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 
 @Component({
-  selector: 'app-users-index',
+  selector: 'bia-users-index',
   templateUrl: './users-index.component.html',
   styleUrls: ['./users-index.component.scss']
 })

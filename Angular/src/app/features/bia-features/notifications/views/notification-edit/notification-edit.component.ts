@@ -10,7 +10,7 @@ import { NotificationOptionsService } from '../../services/notification-options.
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'app-notification-edit',
+  selector: 'bia-notification-edit',
   templateUrl: './notification-edit.component.html',
   styleUrls: ['./notification-edit.component.scss']
 })

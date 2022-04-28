@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 
 @Component({
-  selector: 'app-member-edit',
+  selector: 'bia-member-edit',
   templateUrl: './member-edit.component.html',
   styleUrls: ['./member-edit.component.scss']
 })

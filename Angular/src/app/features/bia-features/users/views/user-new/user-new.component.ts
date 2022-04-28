@@ -9,7 +9,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-user-new',
+  selector: 'bia-user-new',
   templateUrl: './user-new.component.html',
   styleUrls: ['./user-new.component.scss']
 })

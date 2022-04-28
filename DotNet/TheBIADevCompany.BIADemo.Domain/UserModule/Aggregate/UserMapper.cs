@@ -40,6 +40,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Create a user DTO from an entity.
         /// </summary>
+        /// <param name="mapperMode">the mode for mapping.</param>
         /// <returns>The user DTO.</returns>
         public override Expression<Func<User, UserDto>> EntityToDto(string mapperMode)
         {

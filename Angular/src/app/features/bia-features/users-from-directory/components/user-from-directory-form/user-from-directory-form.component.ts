@@ -13,7 +13,7 @@ import { UserFromDirectory } from '../../model/user-from-Directory';
 import { UserFilter } from '../../model/user-filter';
 
 @Component({
-  selector: 'user-from-directory-form',
+  selector: 'bia-user-from-directory-form',
   templateUrl: './user-from-directory-form.component.html',
   styleUrls: ['./user-from-directory-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

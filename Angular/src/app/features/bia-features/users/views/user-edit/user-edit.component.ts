@@ -10,7 +10,7 @@ import { UserOptionsService } from '../../services/user-options.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  selector: 'app-user-edit',
+  selector: 'bia-user-edit',
   templateUrl: './user-edit.component.html',
   styleUrls: ['./user-edit.component.scss']
 })

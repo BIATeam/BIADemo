@@ -31,6 +31,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
+        /// <param name="userContext">The user context.</param>
         public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
