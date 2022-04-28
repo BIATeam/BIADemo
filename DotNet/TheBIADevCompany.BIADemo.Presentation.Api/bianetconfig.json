@@ -159,7 +159,7 @@
         "Roles": [ "Admin", "Supervisor" ]
       },
       {
-        "Name": "User_Add",
+        "Names": [ "User_ListAD", "User_Add" ],
         "Roles": [ "Supervisor" ]
       },
       {
@@ -180,7 +180,7 @@
         "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
       },
       {
-        "Name": "User_Add",
+        "Names": [ "User_ListAD", "User_Add" ],
         "Roles": [ "Team_Leader" ]
       },
       {
@@ -263,7 +263,7 @@
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Name": "User_Add",
+        "Names": [ "User_ListAD", "User_Add" ],
         "Roles": [ "Site_Admin" ]
       },
       {
@@ -293,11 +293,11 @@
         "Roles": [ "User" ]
       },
       {
-        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Read", "User_Delete", "User_Sync", "User_UpdateRoles" ],
+        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Delete", "User_Sync", "User_UpdateRoles" ],
         "Roles": [ "Admin" ]
       },
       {
-        "Name": "User_Add",
+        "Names": [ "User_ListAD", "User_Add" ],
         "Roles": [ "Admin" ]
       },
       // View
