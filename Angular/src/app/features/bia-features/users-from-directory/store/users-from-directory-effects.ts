@@ -20,7 +20,7 @@ export class UsersFromDirectoryEffects {
     this.actions$.pipe(
       ofType(FeatureUsersFromDirectoryActions.loadAllByFilter) /* When action is dispatched */,
       switchMap((action) => {
-        return this.userFromDirectoryDas.getAllByFilter(action.userFilter.filter, action.userFilter.ldapName).pipe(
+        return this.userFromDirectoryDas.getAllByFilter(action.userFilter.filter, action.userFilter.ldapName, action.userFilter.returnSize).pipe(
           map((users) => FeatureUsersFromDirectoryActions.loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();

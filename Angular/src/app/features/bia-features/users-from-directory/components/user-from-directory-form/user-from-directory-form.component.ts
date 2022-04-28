@@ -24,7 +24,8 @@ export class UserFromLdapFormComponent implements OnChanges {
   @Output() cancel = new EventEmitter();
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
-
+  @Input() returnSizeOptions: number[] = [10, 25, 50, 100];
+ 
   selectedUsers: UserFromDirectory[];
   selectedDomain: string;
   form: FormGroup;
@@ -44,7 +45,8 @@ export class UserFromLdapFormComponent implements OnChanges {
   private initForm() {
     this.form = this.formBuilder.group({
       selectedUsers: [this.selectedUsers, Validators.required],
-      domains: [this.domains]
+      domains: [this.domains],
+      returnSize: this.returnSizeOptions[0]
     });
   }
 
@@ -68,7 +70,8 @@ export class UserFromLdapFormComponent implements OnChanges {
   onSearchUsers(event: any) {
     const userFiter: UserFilter = {
       filter: event.query,
-      ldapName: this.selectedDomain
+      ldapName: this.selectedDomain,
+      returnSize: this.form.value.returnSize
     };
     this.searchUsers.emit(userFiter);
   }

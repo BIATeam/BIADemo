@@ -12,9 +12,9 @@ export class UserFromDirectoryDas extends AbstractDas<UserFromDirectory> {
     super(injector, 'users');
   }
 
-  public getAllByFilter(filter: string, ldapName: string): Observable<Array<UserFromDirectory>> {
+  public getAllByFilter(filter: string, ldapName: string, returnSize: number): Observable<Array<UserFromDirectory>> {
     return this.userService.formatDisplayNameFromADObs(
-      this.http.get<Array<UserFromDirectory>>(`${this.route}fromAD?filter=${filter}&ldapName=${ldapName}`)
+      this.http.get<Array<UserFromDirectory>>(`${this.route}fromAD?filter=${filter}&ldapName=${ldapName}&returnSize=${returnSize}`)
     );
   }
 }

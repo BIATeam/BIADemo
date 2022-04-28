@@ -63,8 +63,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="filter">The filter.</param>
         /// <param name="ldapName">The name of the LDAP domain to search in.</param>
+        /// <param name="max">The max number of items to return.</param>
         /// <returns>The top 10 users found.</returns>
-        Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null);
+        Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10);
 
         /// <summary>
         /// Add a list of users in a group in AD.

@@ -78,19 +78,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="filter">Used to filter on lastname, firstname or login.</param>
         /// <param name="ldapName">Name of the ldap to search in.</param>
+        /// <param name="returnSize">The max number of items to return.</param>
         /// <returns>The list of users.</returns>
         [HttpGet("fromAD")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Users.ListAD)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null)
+        public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null, int returnSize = 10)
         {
             if (filter.Contains('\n') || (ldapName != null && ldapName.Contains('\n')))
             {
                 return this.BadRequest();
             }
 
-            var results = await this.userService.GetAllADUserAsync(filter, ldapName);
+            var results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
             int resultCount = results.Count();
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, resultCount.ToString());
