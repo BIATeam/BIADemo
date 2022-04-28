@@ -16,10 +16,7 @@
         "IsActive": true
       },
       "AuditConfiguration": {
-        // Except BIADemo "IsActive": false,
-        // Begin BIADemo
         "IsActive": true,
-        // End BIADemo
         "ConnectionStringName": "BIADemoDatabase"
       }
     },

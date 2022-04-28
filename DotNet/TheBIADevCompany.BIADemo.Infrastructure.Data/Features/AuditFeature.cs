@@ -5,23 +5,19 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 {
     using System;
-    using System.Collections.Generic;
     using System.Security.Principal;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Audit.Core;
     using Audit.EntityFramework;
-    using Audit.EntityFramework.ConfigurationApi;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Audit;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>

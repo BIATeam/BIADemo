@@ -8,7 +8,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+
+    // End BIADemo
+
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 

@@ -10,7 +10,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+
+    // End BIADemo
 
     /// <summary>
     /// The mapper used for site.
