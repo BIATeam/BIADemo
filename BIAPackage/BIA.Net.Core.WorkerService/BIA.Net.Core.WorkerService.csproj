@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire.Core" Version="1.7.28" />
     <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
     <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="3.1.1" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.8.5.3" />
