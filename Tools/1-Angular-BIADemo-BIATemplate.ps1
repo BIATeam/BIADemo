@@ -87,23 +87,23 @@ function RemoveEmptyFolder {
 
 function RemoveFolder {
   param (
-    [string]$path,
-	$exclude
+    [string]$path
   )
   if (Test-Path $path) {
     Write-Host "delete " $path " folder"
-    Remove-Item $path -Recurse -Force -Confirm:$false -Exclude $exclude
+    Remove-Item $path -Recurse -Force -Confirm:$false
   }
 }
 
-function RemoveByExtension {
+function RemoveFolderContents {
   param (
     [string]$path,
-    [string]$extension
+    [string]$extension,
+	$exclude
   )
   if (Test-Path $path) {
     Write-Host "delete " $extension " in " $path " folder" 
-    Get-ChildItem -Path $path $extension | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
+    Get-ChildItem -Path $path $extension -Exclude $exclude | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
   }
 }
 
@@ -123,7 +123,7 @@ function ReplaceProjectName {
   
 }
 
-RemoveFolder -path "$newPath\*" -Exclude ('dist', 'node_modules')
+RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules')
 
 Write-Host "Copy from $oldPath to $newPath"
 Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination $newPath -Recurse -Force
@@ -141,10 +141,10 @@ Write-Host "Zip aircraft-maintenance-companies"
 compress-archive -path '.\src\app\features\aircraft-maintenance-companies\*' -destinationpath '.\docs\aircraft-maintenance-companies.zip' -compressionlevel optimal
 
 
-Write-Host "RemoveFolder dist"
-RemoveFolder -path 'dist'
-Write-Host "RemoveFolder node_modules"
-RemoveFolder -path 'node_modules'
+#Write-Host "RemoveFolder dist"
+#RemoveFolder -path 'dist'
+#Write-Host "RemoveFolder node_modules"
+#RemoveFolder -path 'node_modules'
 
 Write-Host "RemoveFolder src\app\features\aircraft-maintenance-companies"
 RemoveFolder -path 'src\app\features\aircraft-maintenance-companies'
@@ -177,8 +177,8 @@ RemoveFolder -path 'src\app\domains\plane-type-option'
 
 #Write-Host "RemoveFolder src\assets\bia\primeng\sass"
 #RemoveFolder -path 'src\assets\bia\primeng\sass'
-#RemoveByExtension -path 'src\assets\bia\primeng\layout\css' -extension '*.scss'
-#RemoveByExtension -path 'src\assets\bia\primeng\theme' -extension '*.scss'
+#RemoveFolderContentss -path 'src\assets\bia\primeng\layout\css' -extension '*.scss'
+#RemoveFolderContentss -path 'src\assets\bia\primeng\theme' -extension '*.scss'
 
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles
