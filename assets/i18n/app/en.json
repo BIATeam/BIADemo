@@ -3,7 +3,7 @@
     "members": "Members",
     "sites": "Sites",
     "Begin BIADemo" : "To remove in project from here",
-    "administration" : "Administration",
+    "aircraft-maintenance-companies": "Aircraft maintenance companies",
     "airports": "Airports",
     "examples": "Examples",
     "hangfire": "Hangfire",
@@ -13,19 +13,35 @@
     "planesViewMode": "Planes (View)",
     "planesSignalRMode": "Planes (SignalR)",
     "planesCalcMode": "Planes (Spreadsheet)",
+    "planesOfflineMode": "Planes (Offline)",
     "planesTypes": "Planes types",
     "sites": "Airlines",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
+    "teams": "Teams",
     "users": "Users",
     "notifications": "Notifications"
   },
   "Begin BIADemo" : "To remove in project from here",
+  "aircraftMaintenanceCompany": {
+    "add": "Add aircraft maintenance company",
+    "edit": "Edit aircraft maintenance company",
+    "goto": "View Company",
+    "listOf": "List of aircraft maintenance companies",
+    "maintenanceTeams": "Maintenance teams",
+    "title": "Name"
+  },
   "airport": {
     "add": "Add airport",
     "city" : "City",
     "edit": "Edit airport",
     "listOf": "List of airports",
     "name" : "Name"
+  },
+  "maintenanceTeam": {
+    "add": "Add maintenance team",
+    "edit": "Edit maintenance team",
+    "listOf": "List of maintenance teams",
+    "title": "Name"
   },
   "plane": {
     "add": "Add plane",
@@ -51,10 +67,10 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Add member",
-    "listOfSiteMembers": "List of members of site ",
+    "listOfSiteMembers": "List of members",
     "manage": "Manage member",
     "roles": "Roles",
-    "rolesForSite": "Roles for the site",
+    "rolesForSite": "Roles",
     "user": "User"
   },
   "msg": {

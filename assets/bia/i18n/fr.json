@@ -1,10 +1,16 @@
 {
   "@@lang": "fr",
   "bia": {
+    "action": "Action",
     "actions": "Actions",
     "add": "Ajouter",
+    "administer": "Administrer",
+    "administration": "Administration",
     "all": "Tous",
     "back": "Retour",
+    "backgroundtasks": "Tâches d'arrière-plan",
+    "backgroundTaskAdmin": "Administrer les taches",
+    "backgroundTaskReadOnly": "Voir les taches",
     "cancel": "Annuler",
     "close": "Fermer",
     "confirm": "Confirmer",
@@ -20,7 +26,9 @@
     "greetings": "Bonjour",
     "help": "Aide",
     "id": "id",
+    "ignore": "Ignorer",
     "info": "Info",
+    "itemsBySearch": "Élements par recherche",
     "itemsPerPage": "Élements par page",
     "lang": {
       "de": "DE",
@@ -45,6 +53,7 @@
     "NoRecordsFound": "Aucun enregistrement trouvé",
     "noResult": "Pas de résultats",
     "refresh": "Rafraîchir",
+    "relatedTo": "Lié à",
     "report": "Rapport",
     "notifications": "Notifications",
     "reset": "Réinitialiser",
@@ -58,31 +67,31 @@
     "theme": "Thème",
     "themeDark": "Foncé",
     "themeLight": "Clair",
-    "translation": 
-    {  
-      "add" : "Ajouter traduction",
-      "addAll" :  "Ajouter toutes les traductions",
-      "delete" : "Supprimer traduction",
+    "translation": {
+      "add": "Ajouter traduction",
+      "addAll": "Ajouter toutes les traductions",
+      "delete": "Supprimer traduction",
       "language": "Langage",
-      "translatedFields" : "Champs traduits"
+      "translatedFields": "Champs traduits"
     },
+    "view": "Voir",
     "views": {
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",
       "description": "Description",
-      "linkWithSite": "Lien avec le site",
+      "linkWithTeam": "Lier avec l'equipe",
       "manageViews": "Gérer les vues",
       "msg": {
         "explanationSaveView": "Créer une nouvelle vue ou modifier une existante en la sélectionnant dans le tableau ci-dessous"
       },
       "name": "Nom",
       "removeDefault": "Retirer par défaut",
-      "selectSite": "Sélectionner un site",
-      "site": "Vues site",
+      "selectTeam": "Sélectionner une equipe",
       "system": "Vues système",
-      "typeSite": "Vue site",
+      "team": "Vues equipe",
+      "typeTeam": "Vue equipe",
       "typeUser": "Vue utilisateur",
-      "unlinkWithSite": "Supprimer le lien avec le site",
+      "unlinkWithTeam": "Supprimer le lien avec l'equipe",
       "user": "Mes vues",
       "view": "Vue",
       "viewType": "Type de vue"
@@ -98,6 +107,9 @@
     "ieWarning": "[Mode dégradé] Votre navigateur (internet explorer) est dépassé. Pour une meilleure expérience, nous vous recommandons d'utiliser Edge ou Google Chrome.",
     "infoBeforeGetLatestVersion": "L'application va se recharger dans quelques secondes afin de récupérer la dernière version.",
     "invalidForm": "Formulaire non valide",
+    "serverAvailable": "Serveur disponible",
+    "ServerUnavailable": "Serveur indisponible",
+    "serverUnavailableDataSaveLocally": "Serveur indisponible. Données enregistrées localement",
     "syncElementSuccess": "Synchronisation terminée",
     "updateElementSuccess": "Élément mis à jour avec succès",
     "userAlreadyAssociatedSite": "Cet utilisateur est déjà associé à ce site"
@@ -133,8 +145,12 @@
     "choose": "Choisir",
     "upload": "Upload",
     "cancel": "Annuler",
-    "dayNames": ["Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"],
-    "dayNamesShort": ["Dim","Lun",
+    "dayNames": [
+      "Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"
+    ],
+    "dayNamesShort": [
+      "Dim",
+      "Lun",
       "Mar",
       "Mer",
       "Jeu",

@@ -1,10 +1,16 @@
 {
   "@@lang": "en",
   "bia": {
+    "action": "Action",
     "actions": "Actions",
     "add": "Add",
+    "administer": "Administer",
+    "administration" : "Administration",
     "all": "All",
     "back": "Back",
+    "backgroundtasks": "Background Tasks",
+    "backgroundTaskAdmin": "Administer tasks",
+    "backgroundTaskReadOnly": "View the tasks",
     "cancel": "Cancel",
     "close": "Close",
     "confirm": "Confirm",
@@ -20,7 +26,9 @@
     "greetings": "Hello",
     "help": "Help",
     "id": "id",
+    "ignore": "Ignore",
     "info": "Info",
+    "itemsBySearch": "Items by search",
     "itemsPerPage": "Items per page",
     "lang": {
       "de": "DE",
@@ -45,6 +53,7 @@
     "NoRecordsFound": "No records found",
     "noResult": "No results",
     "refresh": "Refresh",
+    "relatedTo": "Related to",
     "report": "Report",
     "notifications": "Notifications",
     "reset": "Reset",
@@ -58,31 +67,31 @@
     "theme": "Theme",
     "themeDark": "Dark",
     "themeLight": "Light",
-    "translation": 
-    {  
-      "add" : "Add translation",
-      "addAll" : "Add all translations",
-      "delete" : "Delete translation",
+    "translation": {
+      "add": "Add translation",
+      "addAll": "Add all translations",
+      "delete": "Delete translation",
       "language": "Language",
-      "translatedFields" : "Translated fields"
+      "translatedFields": "Translated fields"
     },
+    "view": "View",
     "views": {
       "default": "Default view",
       "defineDefault": "Set default",
       "description": "Description",
-      "linkWithSite": "Link with site",
+      "linkWithTeam": "Link with team",
       "manageViews": "Manage views",
       "msg": {
         "explanationSaveView": "Create a new view or modify an existing one by selecting it from the table below"
       },
       "name": "Name",
       "removeDefault": "Remove by default",
-      "selectSite": "Select a site",
-      "site": "Site views",
+      "selectTeam": "Select a team",
       "system": "System views",
-      "typeSite": "Site view",
+      "team": "Team views",
+      "typeTeam": "Team view",
       "typeUser": "User view",
-      "unlinkWithSite": "Unlink with site",
+      "unlinkWithTeam": "Unlink with team",
       "user": "My views",
       "view": "View",
       "viewType": "View type"
@@ -98,6 +107,9 @@
     "ieWarning": "[Degraded mode] Your browser (internet explorer) is outdated. For a better experience, we recommend upgrading to the latest Edge or Google Chrome.",
     "infoBeforeGetLatestVersion": "The application will reload in a few seconds in order to retrieve the latest version.",
     "invalidForm": "Invalid form",
+    "serverAvailable": "Server Available",
+    "ServerUnavailable": "ServerUnavailable",
+    "serverUnavailableDataSaveLocally": "Server unavailable. Data save locally",
     "syncElementSuccess": "Synchronization completed",
     "updateElementSuccess": "Item updated successfully",
     "userAlreadyAssociatedSite": "This user is already associated with this site"

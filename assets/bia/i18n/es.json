@@ -3,8 +3,13 @@
   "bia": {
     "actions": "Valores",
     "add": "Añadir",
+    "administer": "Administrar",
+    "administration" : "Administración",
     "all": "Todas",
     "back": "Espalda",
+    "backgroundtasks": "Tarea en segundo plano",
+    "backgroundTaskAdmin": "Administrar tareas",
+    "backgroundTaskReadOnly": "Ver tareas",
     "cancel": "Cancelar",
     "close": "Cerrar",
     "confirm": "Confirmar",
@@ -21,6 +26,7 @@
     "help": "Ayuda",
     "id": "id",
     "info": "Info",
+    "itemsBySearch": "Artículos per búsqueda",
     "itemsPerPage": "Artículos por página",
     "lang": {
       "de": "DE",
@@ -66,23 +72,24 @@
       "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },
+    "view": "Ver",
     "views": {
       "default": "Vista predeterminada",
       "defineDefault": "Establecer por defecto",
       "description": "Descripción",
-      "linkWithSite": "Enlace con el sitio",
+      "linkWithTeam": "Enlace con el equipo",
       "manageViews": "Administrar vistas",
       "msg": {
         "explanationSaveView": "Cree una nueva vista o modifique una existente seleccionándola en la siguiente tabla"
       },
       "name": "Nombre",
       "removeDefault": "eliminar por defecto",
-      "selectSite": "Seleccione un sitio",
-      "site": "Vistas del sitio",
+      "selectTeam": "Seleccione un equipo",
       "system": "Vistas del sistema",
-      "typeSite": "Vista del sitio",
+      "team": "Vistas del equipo",
+      "typeTeam": "Vista del equipo",
       "typeUser": "Vista de usuario",
-      "unlinkWithSite": "Desconectar con el sitio",
+      "unlinkWithTeam": "Desconectar con el equipo",
       "user": "Mis puntos de vista",
       "view": "Vista",
       "viewType": "Ver tipo"
@@ -98,6 +105,9 @@
     "ieWarning": "[Modo degradado] Su navegador (Internet Explorer) está desactualizado. Para una mejor experiencia, recomendamos usar Edge o Google Chrome.",
     "infoBeforeGetLatestVersion": "La aplicación se recargará en unos segundos para recuperar la última versión.",
     "invalidForm": "Forma invalida",
+    "serverAvailable": "Servidor disponible",
+    "ServerUnavailable": "Servidor no disponible",
+    "serverUnavailableDataSaveLocally": "Servidor no disponible. Datos guardados localmente",
     "syncElementSuccess": "Sincronización completada",
     "updateElementSuccess": "Elemento actualizado con éxito",
     "userAlreadyAssociatedSite": "Este usuario ya está asociado a este sitio"

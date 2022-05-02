@@ -3,7 +3,7 @@
     "members": "Miembros",
     "sites": "Sitios",
     "Begin BIADemo" : "To remove in project from here",
-    "administration" : "Administración",
+    "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "examples": "Ejemplos",
     "hangfire": "Hangfire",
@@ -13,19 +13,35 @@
     "planesViewMode": "Planos (Ver)",
     "planesSignalRMode": "Planos (SignalR)",
     "planesCalcMode": "Planos (Hoja de cálculo)",
+    "planesOfflineMode": "Planos (Desconectado)",
     "planesTypes": "Tipos de planos",
     "sites": "Aerolíneas",
     "End BIADemo" : "To remove in project up to here",
+    "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones"
   },
   "Begin BIADemo" : "To remove in project from here",
+  "aircraftMaintenanceCompany": {
+    "add": "Añadir empresa de mantenimiento de aeronaves",
+    "edit": "Editar empresa de mantenimiento de aeronaves",
+    "goto": "Ver empresa",
+    "listOf": "Lista de empresas de mantenimiento de aeronaves",
+    "maintenanceTeams": "Equipos de mantenimiento",
+    "title": "Name"
+  },
   "airport": {
     "add": "Añadir aeropuerto",
     "city" : "Ciudad",
     "edit": "Editar aeropuerto",
     "listOf": "Lista de aeropuertos",
     "name" : "Nombre"
+  },
+  "maintenanceTeam": {
+    "add": "Añadir equipo de mantenimiento",
+    "edit": "Editar equipo de mantenimiento",
+    "listOf": "Lista de equipos de mantenimiento",
+    "title": "Name"
   },
   "plane": {
     "add": "Añadir plano",
@@ -51,10 +67,10 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
-    "listOfSiteMembers": "Lista de miembros del sitio ",
+    "listOfSiteMembers": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "rolesForSite": "Roles para el sitio",
+    "rolesForSite": "Roles",
     "user": "Usuario"
   },
   "msg": {
