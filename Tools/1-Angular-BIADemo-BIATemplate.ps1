@@ -87,7 +87,7 @@ function RemoveEmptyFolder {
 
 function RemoveFolder {
   param (
-    [string]$path
+    [string]$path,
 	$exclude
   )
   if (Test-Path $path) {
