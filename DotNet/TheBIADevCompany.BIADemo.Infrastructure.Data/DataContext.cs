@@ -44,6 +44,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
+        /// Gets or sets the Plane DBSet.
+        /// </summary>
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
+        /// <summary>
         /// Gets or sets the Site DBSet.
         /// </summary>
         public DbSet<Site> Sites { get; set; }
@@ -111,11 +116,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         // Begin BIADemo
 
         /// <summary>
-        /// Gets or sets the Plane DBSet.
-        /// </summary>
-        public DbSet<AuditLog> AuditLogs { get; set; }
-
-        /// <summary>
         /// Gets or sets the Aircraft Maintenance Company DBSet.
         /// </summary>
         public DbSet<AircraftMaintenanceCompany> AircraftMaintenanceCompanies { get; set; }
@@ -153,9 +153,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             NotificationModelBuilder.CreateModel(modelBuilder);
+            AuditModelBuilder.CreateModel(modelBuilder);
 
             // Begin BIADemo
-            AuditModelBuilder.CreateModel(modelBuilder);
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 

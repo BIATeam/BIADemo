@@ -1,4 +1,3 @@
-// BIADemo only
 // <copyright file="AuditModelBuilder.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -22,7 +21,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateModel(ModelBuilder modelBuilder)
         {
             CreateUserAuditModel(modelBuilder);
+
+            // Begin BIADemo
             CreateAirportAuditModel(modelBuilder);
+
+            // End BIADemo
             CreateAuditModel(modelBuilder);
         }
 
@@ -49,6 +52,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<UserAudit>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
         }
 
+        // Begin BIADemo
+
         /// <summary>
         /// Create the model for aiports.
         /// </summary>
@@ -59,5 +64,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<AirportAudit>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<AirportAudit>().Property(p => p.City).IsRequired().HasMaxLength(64);
         }
+
+        // End BIADemo
     }
 }
