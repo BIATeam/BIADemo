@@ -32,7 +32,15 @@ function DeleteLine($start, $end, $file) {
 
 # Deletes lines between // Begin BIADemo and // End BIADemo 
 function RemoveCodeExample {
-  Get-ChildItem -File -Recurse -exclude *.ps1, *.md | Where-Object { $_.FullName -NotLike "*/node_modules/*" -and $_.FullName -NotLike "*/dist/*" -and $_.FullName -NotLike "*/scss/*" -and $_.FullName -NotLike "*/docs/*" -and $_.FullName -NotLike "*/assets/*" } | ForEach-Object { 
+    param(
+        $Path,
+		$ExcludeDir
+    )
+	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+        RemoveCodeExample -Path $childDirectory.FullName -Exclude $ExcludeDir
+    }	
+	
+  Get-ChildItem -Path $Path -File | Where-Object { $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object { 
     $lineBegin = @()
     $file = $_.FullName
   
@@ -56,7 +64,14 @@ function RemoveCodeExample {
 }
 
 function RemoveBIADemoOnlyFiles {
-	foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
+    param(
+        $Path,
+		$ExcludeDir
+    )
+	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+        RemoveBIADemoOnlyFiles -Path $childDirectory.FullName -Exclude $ExcludeDir
+    }
+	foreach ($childFile in Get-ChildItem -Path $Path -File | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
 		$file = $childFile.FullName
 		$fileRel = Resolve-Path -Path "$file" -Relative
 		$searchWord = '// BIADemo only'
@@ -71,10 +86,11 @@ function RemoveBIADemoOnlyFiles {
 
 function RemoveEmptyFolder {
     param(
-        $Path
+        $Path,
+		$ExcludeDir
     )
-    foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude PublishProfiles,RepoContract) {
-        RemoveEmptyFolder $childDirectory.FullName
+    foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+        RemoveEmptyFolder -Path $childDirectory.FullName -Exclude $ExcludeDir
     }
     $currentChildren = Get-ChildItem -Force -LiteralPath $Path
     $isEmpty = $currentChildren -eq $null
@@ -97,22 +113,26 @@ function RemoveFolder {
 
 function RemoveFolderContents {
   param (
-    [string]$path,
-    [string]$extension,
-	$exclude
+    [string]$Path,
+	$Exclude
   )
-  if (Test-Path $path) {
-    Write-Host "delete " $extension " in " $path " folder" 
-    Get-ChildItem -Path $path $extension -Exclude $exclude | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
+  if (Test-Path $Path) {
+    Write-Host "delete " $Path " folder" 
+    Get-ChildItem -Path $Path $extension -Exclude $Exclude | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
   }
 }
 
 function ReplaceProjectName {
   param (
     [string]$oldName,
-    [string]$newName
+    [string]$newName,
+	$Path,
+	$ExcludeDir
   )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | Where-Object { $_.FullName -NotLike "*\node_modules\*" -and $_.FullName -NotLike "*\dist\*" -and $_.FullName -NotLike "*\scss\*" -and $_.FullName -NotLike "*\assets\*" } | ForEach-Object { 
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+	ReplaceProjectName -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
+  }
+  Get-ChildItem -LiteralPath $Path -File -Include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | ForEach-Object { 
     $oldContent = [System.IO.File]::ReadAllText($_.FullName);
     $newContent = $oldContent.Replace($oldName, $newName);
     if ($oldContent -ne $newContent) {
@@ -181,17 +201,17 @@ RemoveFolder -path 'src\app\domains\plane-type-option'
 #RemoveFolderContentss -path 'src\assets\bia\primeng\theme' -extension '*.scss'
 
 Write-Host "Remove BIA demo only files"
-RemoveBIADemoOnlyFiles
+RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules')
 
 Write-Host "Remove Empty Folder"
-RemoveEmptyFolder "."
+RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', 'PublishProfiles','RepoContract')
 
 Write-Host "Remove code example partial files"
-RemoveCodeExample
+RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', 'docs', 'scss' )
 
 Write-Host "replace project name"
-ReplaceProjectName -oldName $oldName -newName $newName
-ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower()
+ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'scss')
+ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'scss')
 
 # Write-Host "npm install"
 # npm install
