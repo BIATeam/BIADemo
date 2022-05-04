@@ -54,7 +54,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            _ = clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planes" }, "refresh-planes", string.Empty);
+            int siteId = reader.GetInt32(0);
+            _ = clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
         }
     }
 }
