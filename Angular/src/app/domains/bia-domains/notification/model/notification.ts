@@ -15,9 +15,9 @@ export interface Notification {
 }
 
 export class NotificationTeam {
-  id: number;
-  typeId: number;
   display: string;
+  team: OptionDto;
+  teamTypeId: number;
   roles: OptionDto[];
 }
 

@@ -13,7 +13,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY } from 'src/app/shared/constants';
-import { Notification, NotificationTranslation } from '../../model/notification';
+import { Notification, NotificationTeam, NotificationTranslation } from '../../model/notification';
 
 @Component({
   selector: 'bia-notification-form',
@@ -24,6 +24,7 @@ import { Notification, NotificationTranslation } from '../../model/notification'
 
 export class NotificationFormComponent implements OnChanges {
   @Input() notification: Notification = <Notification>{};
+  @Input() teamOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
   @Input() roleOptions: OptionDto[];
   @Input() notificationTypeOptions: OptionDto[];
@@ -42,35 +43,23 @@ export class NotificationFormComponent implements OnChanges {
     this.initForm();
   }
 
-  public static Differential<T extends BaseDto>(newList: T[], oldList: T[]) {
-    let differential: T[] = [];
-    if (oldList && Array.isArray(oldList)) {
-      // Delete items
-      const toDelete = oldList
-        .filter((s) => !newList || !newList.map(x => x.id).includes(s.id))
-        .map((s) => <T>{ ...s, dtoState: DtoState.Deleted });
-
-      if (toDelete) {
-        differential = differential.concat(toDelete);
-      }
-    }
-
-    if (newList && Array.isArray(newList)) {
-      const toAddOrUpdate = newList?.filter((s) => s.dtoState === DtoState.Added || s.dtoState === DtoState.Modified);
-
-      if (toAddOrUpdate) {
-        differential = differential.concat(toAddOrUpdate);
-      }
-    }
-
-    return differential;
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (this.notification) {
       this.form.reset();
       if (this.notification) {
         this.form.patchValue({ ...this.notification });
+
+        const formArray = new FormArray([]);
+        this.notification.notifiedTeams.forEach(team => {
+          formArray.push(this.formBuilder.group({
+            team: [team.team, Validators.required],
+            roles: [team.roles],
+            teamTypeId : [team.teamTypeId],
+          }))
+        });
+        this.form.setControl('notifiedTeams', formArray);
+
+
         this.notificationTranslations.clear();
         if (this.notification.notificationTranslations) {
           this.notification.notificationTranslations.forEach(
@@ -89,17 +78,40 @@ export class NotificationFormComponent implements OnChanges {
       type: [this.notification.type, Validators.required],
       read: [this.notification.read],
       createdDate: [this.notification.createdDate, Validators.required],
-      createdBy: [this.notification.createdBy],
+      createdBy: [/*this.notification.createdBy*/],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
       notificationTranslations: this.formBuilder.array([  ]),
-      languageToAdd : []
+      languageToAdd : [],
+      notifiedTeams: this.formBuilder.array([]),
     };
 
     this.form = this.formBuilder.group(group);
     this.notificationTranslations = this.form.get('notificationTranslations') as FormArray;
   }
 
+  /** 
+   * Returns the FormGroup as a Table Row 
+   */  
+  private createNotifiedTeams(): FormGroup {  
+    return this.formBuilder.group({   
+        team: [null, Validators.required]  , 
+        roles:  [  ],
+        dtoState: [DtoState.Added]
+    });  
+  }
+
+  get notifiedTeams(): FormArray {  
+    return this.form.get('notifiedTeams') as FormArray;  
+  }
+
+  addNewRow(): void {  
+    this.notifiedTeams.push(this.createNotifiedTeams());  
+  }  
+
+  onDeleteRow(rowIndex:number): void {  
+    this.notifiedTeams.removeAt(rowIndex);  
+  } 
 
   protected onSelectionLanguage(): void {
     if (this.form.value.languageToAdd?.id > 0) {
@@ -176,7 +188,9 @@ export class NotificationFormComponent implements OnChanges {
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
       notification.type = {... notification.type};
       notification.notificationTranslations =
-      NotificationFormComponent.Differential(notification.notificationTranslations, this.notification?.notificationTranslations);
+      NotificationFormComponent.DifferentialTranslation(notification.notificationTranslations, this.notification?.notificationTranslations);
+      notification.notifiedTeams =
+      NotificationFormComponent.DifferentialNotificationTeam(notification.notifiedTeams, this.notification?.notifiedTeams);
       this.save.emit(notification);
       this.form.reset();
     }
@@ -184,6 +198,73 @@ export class NotificationFormComponent implements OnChanges {
 
   lang(item: any) {
     console.log (item);
+  }
+
+  public static DifferentialTranslation<T extends BaseDto>(newList: T[], oldList: T[]) {
+    let differential: T[] = [];
+    if (oldList && Array.isArray(oldList)) {
+      // Delete items
+      const toDelete = oldList
+        .filter((s) => !newList || !newList.map(x => x.id).includes(s.id))
+        .map((s) => <T>{ ...s, dtoState: DtoState.Deleted });
+
+      if (toDelete) {
+        differential = differential.concat(toDelete);
+      }
+    }
+
+    if (newList && Array.isArray(newList)) {
+      const toAddOrUpdate = newList?.filter((s) => s.dtoState === DtoState.Added || s.dtoState === DtoState.Modified);
+
+      if (toAddOrUpdate) {
+        differential = differential.concat(toAddOrUpdate);
+      }
+    }
+
+    return differential;
+  }
+
+  public static DifferentialNotificationTeam(newList: NotificationTeam[], oldList: NotificationTeam[]) {
+    let differential: NotificationTeam[] = [];
+    if (oldList && Array.isArray(oldList)) {
+      // Delete items
+      const toDeleted = oldList
+        .filter((s) => !newList || !newList.map(x => x.team.id).includes(s.team.id))
+        .map((s) => <NotificationTeam>{ ...s, dtoState: DtoState.Deleted });
+
+      if (toDeleted && toDeleted.length > 0) {
+        differential = differential.concat(toDeleted);
+      }
+    }
+
+    if (newList && Array.isArray(newList)) {
+      // Add items
+      const toAdded = newList
+        .filter((s) => !oldList || !oldList.map(x => x.team.id).includes(s.team.id))
+        .map((s) => <NotificationTeam>{ ...s, dtoState: DtoState.Added });
+
+      if (toAdded && toAdded.length > 0)  {
+        differential = differential.concat(toAdded);
+      }
+    }
+    if  (newList && Array.isArray(newList) && oldList && Array.isArray(oldList)) {
+      // TODO set to modified when role change 
+
+      const toCheckModified = newList.filter((newNT) =>
+       oldList.some(oldNT => oldNT.team.id == newNT.team.id))
+       .map((s) => <NotificationTeam>{ ...s, 
+        roles: BiaOptionService.Differential(s.roles, oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles)});
+
+      const toModified = toCheckModified.filter((newNT) => newNT.roles.length > 0).map((s) => <NotificationTeam>{ ...s,
+        dtoState: DtoState.Modified});
+
+      if (toModified && toModified.length > 0)  {
+        differential = differential.concat(toModified);
+      }
+
+    }
+    
+    return differential;
   }
 }
 

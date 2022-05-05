@@ -12,6 +12,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     public enum TeamTypeId
     {
         /// <summary>
+        /// Use in filter to select all team type.
+        /// </summary>
+        All = 0,
+
+        /// <summary>
         /// Value for site.
         /// </summary>
         Root = 1,

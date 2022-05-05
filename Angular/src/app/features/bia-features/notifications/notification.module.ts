@@ -21,6 +21,7 @@ import { NotificationDetailComponent } from './views/notification-detail/notific
 import { ReactiveFormsModule } from '@angular/forms';
 import { LanguageOptionModule } from 'src/app/domains/bia-domains/language-option/language-option.module';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
+import { TeamOptionModule } from 'src/app/domains/bia-domains/team-option/team-option.module';
 
 const ROUTES: Routes = [
   {
@@ -116,7 +117,8 @@ const ROUTES: Routes = [
     NotificationTypeOptionModule,
     UserOptionModule,
     LanguageOptionModule,
-    RoleOptionModule
+    RoleOptionModule,
+    TeamOptionModule,
   ]
 })
 export class NotificationModule {

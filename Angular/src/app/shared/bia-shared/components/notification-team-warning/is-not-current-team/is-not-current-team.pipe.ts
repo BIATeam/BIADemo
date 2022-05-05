@@ -12,6 +12,6 @@ export class IsNotCurrentTeamPipe implements PipeTransform {
     if (!notification?.data.teams) {
       return false;
     }
-    return !notification.data.teams?.some(team => this.auth.getCurrentTeamId(team.typeId) === team.id);
+    return !notification.data.teams?.some(team => this.auth.getCurrentTeamId(team.teamTypeId) === team.team.id);
   }
 }

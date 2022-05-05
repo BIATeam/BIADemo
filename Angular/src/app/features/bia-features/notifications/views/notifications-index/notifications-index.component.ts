@@ -35,7 +35,7 @@ import { skip } from 'rxjs/operators';
 })
 export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useCalcMode = false;
-  useSignalR = true;
+  useSignalR = false;
   useView = true;
   useRefreshAtLanguageChange = true;
 

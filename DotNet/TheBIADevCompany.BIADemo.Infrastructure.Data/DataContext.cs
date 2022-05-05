@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
-
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 

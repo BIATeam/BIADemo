@@ -355,6 +355,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Teams
         {
             /// <summary>
+            /// The right to access to the list of teams (options only).
+            /// </summary>
+            public const string Options = "Team_Options";
+
+            /// <summary>
             /// The right to access to all sites.
             /// </summary>
             public const string AccessAll = "Team_Access_All";
@@ -381,7 +386,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Users
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of user (options only).
             /// </summary>
             public const string Options = "User_Options";
 

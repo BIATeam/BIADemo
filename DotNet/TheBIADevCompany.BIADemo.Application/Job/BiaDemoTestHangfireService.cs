@@ -119,9 +119,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     {
                         new NotificationTeamDto
                         {
-                            TypeId = (int)TeamTypeId.Site,
-                            Id = selectPlaneOnSiteId,
-                            Display = selectPlaneOnSiteTitle,
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            Team = new OptionDto
+                            {
+                                Id = selectPlaneOnSiteId,
+                                Display = selectPlaneOnSiteTitle,
+                            },
                             Roles = new List<OptionDto>
                             {
                                 new OptionDto { Id = (int)RoleId.SiteAdmin, Display = "SiteAdmin" },
@@ -147,10 +150,13 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     {
                        new NotificationTeamDto
                        {
-                           Id = targetedTeam.Id,
                            DtoState = DtoState.Added,
-                           TypeId = targetedTeam.TeamTypeId,
-                           Display = targetedTeam.Title,
+                           Team = new OptionDto
+                           {
+                                Id = targetedTeam.Id,
+                                Display = targetedTeam.Title,
+                           },
+                           TeamTypeId = targetedTeam.TeamTypeId,
                            Roles = roles,
                        },
                     }
@@ -182,10 +188,13 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                     {
                         new NotificationTeamDto
                         {
-                            Id = targetedTeam.Id,
                             DtoState = DtoState.Added,
-                            TypeId = targetedTeam.TeamTypeId,
-                            Display = targetedTeam.Title,
+                            Team = new OptionDto
+                            {
+                                 Id = targetedTeam.Id,
+                                 Display = targetedTeam.Title,
+                            },
+                            TeamTypeId = targetedTeam.TeamTypeId,
                         },
                     }
                     : null,

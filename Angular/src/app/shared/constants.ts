@@ -38,6 +38,7 @@ export enum RoleMode {
 }
 
 export enum TeamTypeId {
+  All = 0,
   Root = 1,
   Site = 2,
   // Begin BIADemo  

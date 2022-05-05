@@ -111,10 +111,10 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
         if (data?.teams) {
           // Auto-switch to teams related to this notification
           data.teams.forEach((team) => {
-            this.authService.changeCurrentTeamId(team.typeId, team.id);
+            this.authService.changeCurrentTeamId(team.teamTypeId, team.team.id);
             if (team.roles)
             {
-              this.authService.changeCurrentRoleIds(team.typeId, team.id, team.roles.map(r => r.id));
+              this.authService.changeCurrentRoleIds(team.teamTypeId, team.team.id, team.roles.map(r => r.id));
             }
           })
         }

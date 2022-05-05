@@ -8,6 +8,8 @@ import { getAllNotificationTypeOptions } from 'src/app/domains/bia-domains/notif
 import { DomainNotificationTypeOptionsActions } from 'src/app/domains/bia-domains/notification-type-option/store/notification-type-options-actions';
 import { getAllRoleOptions } from 'src/app/domains/bia-domains/role-option/store/role-option.state';
 import { DomainRoleOptionsActions } from 'src/app/domains/bia-domains/role-option/store/role-options-actions';
+import { getAllTeamOptions } from 'src/app/domains/bia-domains/team-option/store/team-option.state';
+import { DomainTeamOptionsActions } from 'src/app/domains/bia-domains/team-option/store/team-options-actions';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
@@ -24,6 +26,7 @@ export class NotificationOptionsService {
     notificationTypeOptions$: Observable<OptionDto[]>;
     roleOptions$: Observable<OptionDto[]>;
     userOptions$: Observable<OptionDto[]>;
+    teamOptions$: Observable<OptionDto[]>;
     languageOptions$: Observable<OptionDto[]>;
 
     constructor(
@@ -33,6 +36,7 @@ export class NotificationOptionsService {
         this.roleOptions$ = this.store.select(getAllRoleOptions);
         this.userOptions$ = this.store.select(getAllUserOptions);
         this.languageOptions$ = this.store.select(getAllLanguageOptions);
+        this.teamOptions$ = this.store.select(getAllTeamOptions);
 
         // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.notificationTypeOptions$, this.roleOptions$, this.userOptions$]).pipe(
@@ -50,8 +54,9 @@ export class NotificationOptionsService {
 
     loadAllOptions() {
         this.store.dispatch(DomainNotificationTypeOptionsActions.loadAll());
-        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.Site }));
+        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.All }));
         this.store.dispatch(DomainUserOptionsActions.loadAll());
         this.store.dispatch(DomainLanguageOptionsActions.loadAll());
+        this.store.dispatch(DomainTeamOptionsActions.loadAll());
     }
 }

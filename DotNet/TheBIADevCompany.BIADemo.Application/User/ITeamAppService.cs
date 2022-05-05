@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -15,6 +16,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public interface ITeamAppService : IFilteredServiceBase<Team, int>
     {
+        /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// <returns>The list of production sites.</returns>
+        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
+
         /// <summary>
         /// Gets all asynchronous.
         /// </summary>

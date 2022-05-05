@@ -25,10 +25,10 @@ export interface NotificationTranslation extends BaseDto {
   description: string;
 }
 
-export class NotificationTeam {
-  id: number;
-  typeId: number;
+export class NotificationTeam extends BaseDto {
   display: string;
+  team: OptionDto;
+  teamTypeId: number;
   roles: OptionDto[];
 }
 

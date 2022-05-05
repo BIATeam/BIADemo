@@ -85,7 +85,7 @@ export class NotificationsSignalRService {
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
     const okTeam: Boolean = !notification.notifiedTeams || notification.notifiedTeams.length === 0 ||
       (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => {
-        if (myTeam.id === notifiedTeam.id) {
+        if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
           if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
             return notifiedTeam.roles.some(notifiedRole => myTeam.roles.some(myRole => myRole.id === notifiedRole.id))
           }

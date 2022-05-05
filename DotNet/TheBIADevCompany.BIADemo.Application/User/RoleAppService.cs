@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(int teamTypeId)
         {
-            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: r => r.TeamTypes.Any(t => t.Id == teamTypeId));
+            return this.GetAllAsync<OptionDto, RoleOptionMapper>(filter: teamTypeId == (int)TeamTypeId.All ? null : r => r.TeamTypes.Any(t => t.Id == teamTypeId));
         }
 
         /// <summary>

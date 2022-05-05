@@ -13,10 +13,16 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// </summary>
     public class NotificationTeamDto : BaseDto<int>
     {
+
+        /// <summary>
+        /// Gets or sets the team.
+        /// </summary>
+        public OptionDto Team { get; set; }
+
         /// <summary>
         /// Gets or sets the type id.
         /// </summary>
-        public int TypeId { get; set; }
+        public int? TeamTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the title.

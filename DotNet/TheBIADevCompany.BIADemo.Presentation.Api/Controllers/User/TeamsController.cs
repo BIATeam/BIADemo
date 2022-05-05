@@ -68,6 +68,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
+        /// Gets all option that I can see.
+        /// </summary>
+        /// <returns>The list of production sites.</returns>
+        [HttpGet("allOptions")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Teams.Options)]
+        public async Task<IActionResult> GetAllOptions()
+        {
+            var results = await this.teamService.GetAllOptionsAsync();
+            return this.Ok(results);
+        }
+
+        /// <summary>
         /// Get all teams.
         /// </summary>
         /// <returns>The list of planes.</returns>

@@ -269,7 +269,7 @@
       },
       // Team
       {
-        "Names": [ "Team_Access_All" ],
+        "Names": [ "Team_Access_All", "Team_Options" ],
         "Roles": [ "Admin" ]
       },
       {

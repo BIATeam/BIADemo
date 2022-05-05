@@ -116,6 +116,61 @@
           </span>
         </div>
       </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+      <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="100">
+          <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
+            <p-table [value]="notifiedTeams.controls" [responsive]="true">
+              <ng-template pTemplate="header">
+                  <tr>
+                      <th>Team</th>
+                      <th>Roles</th>
+                      <th>          
+                        <div class="card-footer">  
+                          <button type="button" class="btn btn-primary btn-sm pull-left" (click)="addNewRow()">+</button> 
+                        </div>
+                      </th>
+                  </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                <ng-container formArrayName="notifiedTeams">  
+                  <tr [formGroupName]="rowIndex">  
+                      <td>
+                        <p-dropdown
+                          [options]="teamOptions"
+                          placeholder="&nbsp;"
+                          formControlName="team"
+                          optionLabel="display"
+                          datakey="id"
+                          [style]="{ width: '100%' }"
+                          [showClear]="true"
+                        ></p-dropdown>
+                      </td>  
+                      <td>  
+                        <p-multiSelect
+                          defaultLabel="&nbsp;"
+                          [options]="roleOptions"
+                          formControlName="roles"
+                          optionLabel="display"
+                          datakey="id"
+                          [virtualScroll]="true"
+                          [style]="{ width: '100%' }"
+                          appendTo="body"
+                        ></p-multiSelect>
+                      </td>   
+                      <td>  
+                        <button type="button" class="btn btn-default" title="Delete" (click)="onDeleteRow(rowIndex)">  
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>  
+                        </button>  
+                      </td>  
+                  </tr>  
+                </ng-container> 
+              </ng-template>
+            </p-table>
+          </p-fieldset>
+        </div>
+      </div>
       <div fxLayout="row" fxLayoutAlign="center">
         <div class="app-field-container" fxFlex="90">
           <span class="md-inputfield">
@@ -163,6 +218,7 @@
       </div>
     </div>
   </div>
+
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button
@@ -175,3 +231,4 @@
   </div>
 
 </form>
+

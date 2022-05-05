@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
@@ -37,6 +38,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             this.principal = principal as BIAClaimsPrincipal;
             this.userContext = userContext;
+        }
+
+        /// <summary>
+        /// Return options.
+        /// </summary>
+        /// <returns>List of OptionDto.</returns>
+        /// <param name="teamTypeId">The team type id.</param>
+        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
+        {
+            return this.GetAllAsync<OptionDto, TeamOptionMapper>();
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>

@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             //    nullable: false,
             //    oldClrType: typeof(int),
             //    oldType: "int")
-            //    .OldAnnotation("SqlServer:Identity", "1, 1");
+            //    .OldAnnotation("SqlServer:Identity", "1, 1")
 
             // end remove manualy
 
