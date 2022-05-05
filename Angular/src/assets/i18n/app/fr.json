@@ -122,6 +122,7 @@
     "read": "Lue",
     "createdBy": "Créé par",
     "notifiedPermissions": "Autorisations notifiées",
+    "notifiedTeams": "Equipes notifiées",
     "notifiedUsers": "Utilisateurs notifiés",
     "jData" : "Données en JSON",
     "success": {

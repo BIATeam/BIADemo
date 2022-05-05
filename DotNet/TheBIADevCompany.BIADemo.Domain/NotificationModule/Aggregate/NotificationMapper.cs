@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { "Read", notification => notification.Read },
                     { "CreatedBy", notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
-                    { "NotifiedTeams", notification => notification.NotifiedTeams.Select(x => x.Team.Title) },
+                    { "NotifiedTeams", notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
                     { "NotifiedUsers", notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
@@ -230,12 +230,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     {
                         Id = nt.TeamId,
                         TypeId = nt.Team.TeamTypeId,
-                        Display = nt.Team.Title,
-                        Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
-                        {
-                            Id = ntr.RoleId,
-                            Display = ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
-                        }).ToList() : null,
+                        Display = nt.Team.Title + ((nt.Roles == null || nt.Roles.Count == 0) ? string.Empty : " (" + string.Join(", ", nt.Roles.Select(ntr => ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label)) + ")"),
                     }).ToList(),
 
                     NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto

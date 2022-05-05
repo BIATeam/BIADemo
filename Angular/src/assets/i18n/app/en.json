@@ -123,6 +123,7 @@
     "read": "Read",
     "createdBy": "Created by",
     "notifiedPermissions": "Notified permissions",
+    "notifiedTeams": "Notified teams",
     "notifiedUsers": "Notified users",
     "jData" : "Data in JSON",
     "success": {

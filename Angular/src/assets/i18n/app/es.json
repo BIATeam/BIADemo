@@ -122,6 +122,7 @@
     "read": "Leer",
     "createdBy": "Creado por",
     "notifiedPermissions": "Permisos notificados",
+    "notifiedTeams": "Equipos notificados",
     "notifiedUsers": "Usuarios notificados",
     "jData" : "Datos en JSON",
     "success": {
