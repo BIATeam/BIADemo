@@ -15,7 +15,7 @@
 <BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 1" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === TeamTypeId.Site" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
   </ng-container>
 </div>
 <BR/>
@@ -26,7 +26,7 @@
 <BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 2" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === TeamTypeId.AircraftMaintenanceCompany" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
   </ng-container>
 </div>
 <BR/>
@@ -37,6 +37,6 @@
 <BR/>
 <div fxLayout="row wrap" fxLayoutAlign="space-around">
   <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === 3" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.parentTeamTitle}} > {{team.title}}"></button>
+    <button *ngIf="team.teamTypeId === TeamTypeId.MaintenanceTeam" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.parentTeamTitle}} > {{team.title}}"></button>
   </ng-container>
 </div>
