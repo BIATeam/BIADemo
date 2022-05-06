@@ -93,8 +93,8 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 x.Read ? "X" : string.Empty,
                 x.CreatedDate.ToString("yyyy-MM-dd"),
                 CSVString(x.CreatedBy?.Display),
-                CSVString(string.Join(" - ", x.NotifiedTeams?.Select(nt => nt.Display).ToList())),
                 CSVString(string.Join(" - ", x.NotifiedUsers?.Select(ca => ca.Display).ToList())),
+                CSVString(string.Join(" - ", x.NotifiedTeams?.Select(nt => nt.Display).ToList())),
                 CSVString(x.JData),
             });
         }
