@@ -137,6 +137,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onDetail(notificationId: number) {
     this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
+    // refresh the list to see readed
+    setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()),500)
   }
 
   onDelete() {
