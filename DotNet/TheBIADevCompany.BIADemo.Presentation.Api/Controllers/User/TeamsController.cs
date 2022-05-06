@@ -1,7 +1,7 @@
 // <copyright file="TeamsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInTeam
+// #define UseHubForClientInTeam
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #if UseHubForClientInTeam
         public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IClientForHubRepository clientForHubService)
 #else
-        public TeamsController(ITeamAppService teamService)
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService)
 #endif
         {
 #if UseHubForClientInTeam
