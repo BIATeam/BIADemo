@@ -10,6 +10,6 @@ export class TeamListPipe implements PipeTransform {
       return '';
     }
 
-    return notification.data.teams.reduce((s, team) => s ? (s + ', ' + team.display) : team.display, '');
+    return notification.data.teams.reduce((s, notificationTeam) => s ? (s + ', ' + notificationTeam.team.display) : notificationTeam.team.display, '');
   }
 }

@@ -277,20 +277,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         public override void MapEntityKeysInDto(Notification entity, NotificationDto dto)
         {
             dto.Id = entity.Id;
-
-            dto.NotifiedTeams = entity.NotifiedTeams?.Select(nt => new NotificationTeamDto
-            {
-                Id = nt.TeamId,
-                Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
-                {
-                    Id = ntr.RoleId,
-                }).ToList() : null,
-            }).ToList();
-
-            dto.NotifiedUsers = entity.NotifiedUsers?.Select(nu => new OptionDto
-            {
-                Id = nu.UserId,
-            }).ToList();
         }
 
         /// <inheritdoc/>
