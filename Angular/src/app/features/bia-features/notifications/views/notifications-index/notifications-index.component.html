@@ -2,7 +2,7 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'notification.listOf' | translate"
-      [canAdd]="canAdd&&!useCalcMode"
+      [canAdd]="canAdd"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
@@ -22,7 +22,7 @@
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
     ></bia-table-controller>
-    <bia-table *ngIf="!useCalcMode"
+    <bia-table
       [elements]="notifications$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -39,24 +39,5 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
-    <bia-notification-table *ngIf="useCalcMode"
-      [elements]="notifications$ | async"
-      [dictOptionDtos]="notificationOptionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      [configuration]="tableConfiguration"
-      [showColSearch]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canEdit]="canEdit"
-      [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      (save)="onSave($event)"
-    ></bia-notification-table>
   </div>
 </div>

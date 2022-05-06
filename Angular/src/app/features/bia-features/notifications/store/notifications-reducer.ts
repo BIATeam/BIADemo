@@ -3,10 +3,11 @@ import { createReducer, on } from '@ngrx/store';
 import { FeatureNotificationsActions } from './notifications-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { Notification } from '../model/notification';
+import { NotificationListItem } from '../model/notificationListItem';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
-export const notificationsAdapter = createEntityAdapter<Notification>({
-  selectId: (notification: Notification) => notification.id,
+export const notificationsAdapter = createEntityAdapter<NotificationListItem>({
+  selectId: (notification: NotificationListItem) => notification.id,
   sortComparer: false
 });
 
@@ -21,7 +22,7 @@ export const notificationsAdapter = createEntityAdapter<Notification>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<Notification> {
+export interface State extends EntityState<NotificationListItem> {
   // additional props here
   totalCount: number;
   currentNotification: Notification;

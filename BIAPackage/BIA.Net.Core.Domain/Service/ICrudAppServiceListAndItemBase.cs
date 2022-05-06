@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Domain.Service
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
-    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto>
+    public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TListItemDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
@@ -144,68 +144,5 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false);
-
-        /// <summary>
-        /// Return a DTO for a given identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="specification">Specification Used for Filtering Query.</param>
-        /// <param name="filter">Filter Query.</param>
-        /// <param name="includes">The list of includes.</param>
-        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
-        /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
-        /// <returns>The DTO.</returns>
-        Task<TDto> GetAsync(int id = 0,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            Expression<Func<TEntity, object>>[] includes = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.Read,
-            string mapperMode = MapperMode.Item,
-            bool isReadOnlyMode = false);
-
-        /// <summary>
-        /// Transform the DTO into the corresponding entity and add it to the DB.
-        /// </summary>
-        /// <param name="dto">The DTO.</param>
-        /// <returns>The DTO with id updated.</returns>
-        Task<TDto> AddAsync(TDto dto,
-            string mapperMode = null);
-
-        /// <summary>
-        /// Update an entity in DB with the DTO values.
-        /// </summary>
-        /// <param name="dto">The DTO.</param>
-        /// <returns>The DTO updated.</returns>
-        Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update,
-            string mapperMode = null);
-
-        /// <summary>
-        /// Remove an entity with its identifier.
-        /// </summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveAsync(int id, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
-
-        /// <summary>
-        /// Save the DTO in DB regarding to theirs state.
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns></returns>
-        Task SaveAsync(TDto dto,
-            string accessMode = null,
-            string queryMode = null,
-            string mapperMode = null);
-
-        /// <summary>
-        /// Save the list of DTO in DB regarding to theirs state.
-        /// </summary>
-        /// <param name="dtos">The list of DTO to save.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SaveAsync(IEnumerable<TDto> dtos,
-            string accessMode = null,
-            string queryMode = null,
-            string mapperMode = null);
     }
 }

@@ -4,7 +4,7 @@ import { getAllNotifications, getNotificationsTotalCount, getNotificationLoading
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
-import { Notification } from '../../model/notification';
+import { NotificationListItem } from '../../model/notificationListItem';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
   BiaListConfig,
@@ -34,7 +34,6 @@ import { skip } from 'rxjs/operators';
   styleUrls: ['./notifications-index.component.scss']
 })
 export class NotificationsIndexComponent implements OnInit, OnDestroy {
-  useCalcMode = false;
   useSignalR = false;
   useView = true;
   useRefreshAtLanguageChange = true;
@@ -47,8 +46,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   defaultPageSize = DEFAULT_PAGE_SIZE;
   pageSize = this.defaultPageSize;
   totalRecords: number;
-  notifications$: Observable<Notification[]>;
-  selectedNotifications: Notification[];
+  notifications$: Observable<NotificationListItem[]>;
+  selectedNotifications: NotificationListItem[];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
   canEdit = false;
@@ -91,13 +90,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.totalCount$ = this.store.select(getNotificationsTotalCount);
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
     this.OnDisplay();
-    if (this.useCalcMode) {
-      this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.notificationOptionsService.loadAllOptions();
-        })
-      );
-    }
+
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
@@ -135,34 +128,15 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   onCreate() {
-    if (!this.useCalcMode) {
-      this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
 
   onEdit(notificationId: number) {
-    if (!this.useCalcMode) {
-      this.router.navigate(['./' + notificationId + '/edit'], { relativeTo: this.activatedRoute });
-    }
+    this.router.navigate(['./' + notificationId + '/edit'], { relativeTo: this.activatedRoute });
   }
 
   onDetail(notificationId: number) {
-    if (!this.useCalcMode) {
-      this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
-    }
-  }
-  onSave(notification: Notification) {
-    if (this.useCalcMode) {
-      if (notification?.id > 0) {
-        if (this.canEdit) {
-          this.store.dispatch(FeatureNotificationsActions.update({ notification: notification }));
-        }
-      } else {
-        if (this.canAdd) {
-          this.store.dispatch(FeatureNotificationsActions.create({ notification: notification }));
-        }
-      }
-    }
+    this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
   }
 
   onDelete() {
@@ -171,7 +145,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectedElementsChanged(notifications: Notification[]) {
+  onSelectedElementsChanged(notifications: NotificationListItem[]) {
     this.selectedNotifications = notifications;
   }
 

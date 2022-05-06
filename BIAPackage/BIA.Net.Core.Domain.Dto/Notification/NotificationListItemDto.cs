@@ -12,22 +12,12 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// <summary>
     /// The DTO used for notifications.
     /// </summary>
-    public class NotificationDto : BaseDto<int>
+    public class NotificationListItemDto : BaseDto<int>
     {
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        public string Title { get; set; }
-
         /// <summary>
         /// Gets or sets the title translated.
         /// </summary>
         public string TitleTranslated { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the description translated.
@@ -59,7 +49,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// The users amongst one of these teams will be notified if
         /// the have, for these teams, one of the given roles (NotifiedTeams.Roles)
         /// </summary>
-        public ICollection<NotificationTeamDto> NotifiedTeams { get; set; }
+        public ICollection<OptionDto> NotifiedTeams { get; set; }
 
         /// <summary>
         /// Gets or sets the list of users id to be notified.
@@ -70,10 +60,5 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// Gets ot sets the target info to load on notification click or custom action.
         /// </summary>
         public string JData { get; set; }
-
-        /// <summary>
-        /// Gets ot sets the notification translations
-        /// </summary>
-        public ICollection<NotificationTranslationDto> NotificationTranslations { get; set; }
     }
 }

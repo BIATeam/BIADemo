@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class NotificationDomainService : CrudAppServiceBase<NotificationDto, Notification, int, LazyLoadDto, NotificationMapper>, INotificationDomainService
+    public class NotificationDomainService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationDomainService
     {
         /// <summary>
         /// The claims principal.

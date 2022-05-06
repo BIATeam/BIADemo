@@ -13,7 +13,6 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     /// </summary>
     public class NotificationTeamDto : BaseDto<int>
     {
-
         /// <summary>
         /// Gets or sets the team.
         /// </summary>
@@ -22,12 +21,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the type id.
         /// </summary>
-        public int? TeamTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        public string Display { get; set; }
+        public int TeamTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the roles, if any, to filter.

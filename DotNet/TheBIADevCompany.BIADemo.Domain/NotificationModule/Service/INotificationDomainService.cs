@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The interface defining the notification application service.
     /// </summary>
-    public interface INotificationDomainService : ICrudAppServiceBase<NotificationDto, Notification, int, LazyLoadDto>
+    public interface INotificationDomainService : ICrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto>
     {
         /// <summary>
         /// Set the notification as read.

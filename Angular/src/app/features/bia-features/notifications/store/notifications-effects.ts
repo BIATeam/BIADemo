@@ -6,12 +6,12 @@ import { FeatureNotificationsActions } from './notifications-actions';
 import { NotificationDas } from '../services/notification-das.service';
 import { Store } from '@ngrx/store';
 import { getLastLazyLoadEvent } from './notification.state';
-import { Notification } from '../model/notification';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { NotificationListItem } from '../model/notificationListItem';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -26,8 +26,8 @@ export class NotificationsEffects {
       ofType(FeatureNotificationsActions.loadAllByPost),
       pluck('event'),
       switchMap((event) =>
-        this.notificationDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Notification[]>) => FeatureNotificationsActions.loadAllByPostSuccess({ result: result, event: event })),
+        this.notificationDas.getListItemsByPost<NotificationListItem>({ event: event }).pipe(
+          map((result: DataResult<NotificationListItem[]>) => FeatureNotificationsActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(FeatureNotificationsActions.failure({ error: err }));
