@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getAllNotifications, getNotificationsTotalCount, getNotificationLoadingGetAll } from '../../store/notification.state';
+import { getAllNotifications, getNotificationsTotalCount, getNotificationLoadingGetAll, getNotificationById } from '../../store/notification.state';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
@@ -26,7 +26,7 @@ import { NotificationsEffects } from '../../store/notifications-effects';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { NotificationOptionsService } from '../../services/notification-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { skip } from 'rxjs/operators';
+import { first, skip } from 'rxjs/operators';
 
 @Component({
   selector: 'bia-notifications-index',
@@ -137,8 +137,16 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onDetail(notificationId: number) {
     this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
-    // refresh the list to see readed
-    setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()),500)
+    
+    this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe( notif =>
+      {
+        if (notif && !notif.read)
+        {
+            // refresh the list to see readed
+            setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()),500)
+        }
+      }
+    )
   }
 
   onDelete() {
