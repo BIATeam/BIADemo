@@ -1,7 +1,7 @@
+import { BaseDto } from "src/app/shared/bia-shared/model/base-dto";
 import { OptionDto } from "src/app/shared/bia-shared/model/option-dto";
 
-export interface User {
-  id: number;
+export interface User extends BaseDto {
   lastName: string;
   firstName: string;
   login: string;
