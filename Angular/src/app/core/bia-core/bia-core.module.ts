@@ -7,7 +7,6 @@ import { MessageService } from 'primeng/api';
 
 // Interceptor
 import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-encode-http-params-interceptor.service';
-import { biaXhrWithCredInterceptor } from './interceptors/bia-xhr-with-cred-interceptor.service';
 import { biaTokenInterceptor } from './interceptors/token.interceptor';
 
 // Services
@@ -20,19 +19,19 @@ import { NotificationSignalRService } from 'src/app/domains/bia-domains/notifica
 import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-settings.module';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { KeycloakAngularModule } from 'keycloak-angular';
 
 export function initializeApp(appInitService: BiaAppInitService) {
-  return (): Promise<any> => {
-    return appInitService.Init();
-  };
+  return (): Promise<any> =>
+    appInitService.initKeycloack().then(x => appInitService.init());
 }
 
-const MODULES = [HttpClientModule, TeamModule, AppSettingsModule, ServiceWorkerModule];
+const MODULES = [HttpClientModule, TeamModule, AppSettingsModule, ServiceWorkerModule, KeycloakAngularModule];
 
 /* Warning: the order matters */
-const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];
+const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaTokenInterceptor];
 
-const SERVICES = [MessageService, AuthService, BiaThemeService, BiaTranslationService, NotificationSignalRService];
+const SERVICES = [BiaAppInitService, MessageService, AuthService, BiaThemeService, BiaTranslationService, NotificationSignalRService];
 
 const BASE_HREF = [
   {
@@ -49,7 +48,6 @@ const BASE_HREF = [
     ...INTERCEPTORS,
     ...SERVICES,
     ...BASE_HREF,
-    BiaAppInitService,
     { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BiaAppInitService], multi: true }
   ]
 })

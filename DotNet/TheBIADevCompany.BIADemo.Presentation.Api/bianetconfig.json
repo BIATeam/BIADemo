@@ -37,299 +37,305 @@
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
     },
-    "Roles": [
-    ],
-    "UserProfile": {
-      "url": "http://localhost/DMIndex/UserProfile/GetUserProfile"
+    "KeycloakConfiguration": {
+      "Authority": "http://localhost:8080/realms/BIA-Realm",
+      "Audience": "biademo-back",
+      "RequireHttpsMetadata": false,
+      "ValidAudience": "account"
     },
-    "Cultures": [
-      {
-        "Label": "English",
-        "Code": "en-GB",
-        "AcceptedCodes": [ "en-GB", "default", "en" ],
-        "IsDefaultForCountryCodes": [ "GB" ],
-        "DateFormat": "dd/MM/yyyy",
-        "TimeFormat": "HH:mm",
-        "TimeFormatSec": "HH:mm:ss",
-        "LanguageCode": "en",
-        "LanguageId": "1"
+      "Roles": [
+      ],
+      "UserProfile": {
+        "url": "http://localhost/DMIndex/UserProfile/GetUserProfile"
       },
-      {
-        "Label": "English US",
-        "Code": "en-US",
-        "AcceptedCodes": [ "en-US" ],
-        "IsDefaultForCountryCodes": [ "US" ],
-        "DateFormat": "MM/dd/yyyy",
-        "TimeFormat": "h:mm a",
-        "TimeFormatSec": "h:mm:ss a",
-        "LanguageCode": "en",
-        "LanguageId": "1"
-      },
-      {
-        "Label": "Deutsh",
-        "Code": "de-DE",
-        "AcceptedCodes": [ "de-DE", "de" ],
-        "IsDefaultForCountryCodes": [ "DE" ],
-        "DateFormat": "dd.MM.yyyy",
-        "TimeFormat": "HH:mm",
-        "TimeFormatSec": "HH:mm:ss a",
-        "LanguageCode": "en",
-        "LanguageId": "4"
-      },
-      {
-        "Label": "Española",
-        "Code": "es-ES",
-        "AcceptedCodes": [ "es-ES", "es" ],
-        "IsDefaultForCountryCodes": [ "ES" ],
-        "DateFormat": "dd/MM/yyyy",
-        "TimeFormat": "H:mm",
-        "TimeFormatSec": "H:mm:ss",
-        "LanguageCode": "es",
-        "LanguageId": "3"
-      },
-      {
-        "Label": "Española MX",
-        "Code": "es-MX",
-        "AcceptedCodes": [ "es-MX" ],
-        "IsDefaultForCountryCodes": [ "MX" ],
-        "DateFormat": "dd/MM/yyyy",
-        "TimeFormat": "hh:mm a",
-        "TimeFormatSec": "hh:mm:ss a",
-        "LanguageCode": "es",
-        "LanguageId": "3"
-      },
-      {
-        "Label": "Français",
-        "Code": "fr-FR",
-        "AcceptedCodes": [ "fr-FR", "fr" ],
-        "IsDefaultForCountryCodes": [ "FR", "MA" ],
-        "DateFormat": "dd/MM/yyyy",
-        "TimeFormat": "HH:mm",
-        "TimeFormatSec": "HH:mm:ss",
-        "LanguageCode": "fr",
-        "LanguageId": "2"
-      }
-    ],
-    "Permissions": [
-      {
-        "Names": [ "Admin" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_Admin" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Begin BIADemo
-      {
-        "Names": [ "Pilot" ],
-        "Roles": [ "Pilot" ]
-      },
-      // Hangfire
-      {
-        "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      // Plane
-      {
-        "Names": [ "Plane_List_Access", "Plane_Read" ],
-        "Roles": [ "User" ]
-      },
-      {
-        "Names": [ "Plane_Update", "Plane_Save" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Plane_Create", "Plane_Delete" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Aircraft Maintenance Company
-      {
-        "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
-        "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "AircraftMaintenanceCompany_Member_Save" ],
-        "Roles": [ "Admin", "Supervisor" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Supervisor" ]
-      },
-      {
-        "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Supervisor" ]
-      },
-      // Maintenance Team
-      {
-        "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
-        "Roles": [ "Admin", "Supervisor" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
-        "Roles": [ "Admin", "Supervisor", "MaintenanceTeam_Member" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Team_Leader" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
-      },
-      // Airport
-      {
-        "Name": "Airport_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      // PlaneType
-      {
-        "Name": "PlaneType_Options",
-        "Roles": [ "Admin", "Site_Member" ]
-      },
-      {
-        "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      // End BIADemo
-      // Home
-      {
-        "Name": "Home_Access",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member", "User" ]
-      },
-      // Log
-      {
-        "Name": "Logs_Create",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      // Member
-      {
-        "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      // Permission
-      {
-        "Names": [ "Permissions_Options" ],
-        "Roles": [ "User" ]
-      },
-      // Role
-      {
-        "Names": [ "Roles_Options" ],
-        "Roles": [ "User" ]
-      },
-      {
-        "Names": [ "Roles_List" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      {
-        "Name": "Roles_List_For_Current_User",
-        "Roles": [ "User", "Admin", "Site_Admin" ]
-      },
-      // Language
-      {
-        "Name": "Languages_Options",
-        "Roles": [ "User", "Admin" ]
-      },
-      // Ldap Domain
-      {
-        "Name": "LdapDomains_List",
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      // Site
-      {
-        "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_List_Access", "Site_Read", "Site_Member_List_Access" ],
-        "Roles": [ "Admin", "Site_Admin" /*, "Site_Member" */ ]
-      },
-      {
-        "Names": [ "Site_Member_Create", "Site_Member_Read", "Site_Member_Update", "Site_Member_Delete", "Site_Member_Save" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
-        "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
-      // Team
-      {
-        "Names": [ "Team_Access_All" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Team_List_Access" ],
-        "Roles": [ "User" ]
-      },
-      {
-        "Name": "Team_Set_Default_Team",
-        "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
-      },
-      {
-        "Name": "Team_Set_Default_Roles",
-        "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
-      },
-      // User
-      {
-        "Names": [ "User_Options" ],
-        "Roles": [ "User" ]
-      },
-      {
-        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Delete", "User_Sync", "User_UpdateRoles" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Admin" ]
-      },
-      // View
-      {
-        "Name": "View_List",
-        "Roles": [ "User" ]
-      },
-      {
-        "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
-        "Roles": [ "User" ]
-      },
-      // this functionnality is deprecated (the unassign do the job)
-      //{
-      //  "Name": "View_Delete_TeamView",
-      //  "Roles": [ "Admin" ]
-      //},
-      // Notifications
-      {
-        "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
-        "Roles": [ "User" ]
-      },
-      {
-        "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Name": "Background_Task_Admin",
-        "LightToken": true,
-        "Roles": [ "Back_Admin" ]
-      },
-      {
-        "Name": "Background_Task_Read_Only",
-        "LightToken": true,
-        "Roles": [ "Back_Read_Only" ]
-      }
-    ]
-  }
+      "Cultures": [
+        {
+          "Label": "English",
+          "Code": "en-GB",
+          "AcceptedCodes": [ "en-GB", "default", "en" ],
+          "IsDefaultForCountryCodes": [ "GB" ],
+          "DateFormat": "dd/MM/yyyy",
+          "TimeFormat": "HH:mm",
+          "TimeFormatSec": "HH:mm:ss",
+          "LanguageCode": "en",
+          "LanguageId": "1"
+        },
+        {
+          "Label": "English US",
+          "Code": "en-US",
+          "AcceptedCodes": [ "en-US" ],
+          "IsDefaultForCountryCodes": [ "US" ],
+          "DateFormat": "MM/dd/yyyy",
+          "TimeFormat": "h:mm a",
+          "TimeFormatSec": "h:mm:ss a",
+          "LanguageCode": "en",
+          "LanguageId": "1"
+        },
+        {
+          "Label": "Deutsh",
+          "Code": "de-DE",
+          "AcceptedCodes": [ "de-DE", "de" ],
+          "IsDefaultForCountryCodes": [ "DE" ],
+          "DateFormat": "dd.MM.yyyy",
+          "TimeFormat": "HH:mm",
+          "TimeFormatSec": "HH:mm:ss a",
+          "LanguageCode": "en",
+          "LanguageId": "4"
+        },
+        {
+          "Label": "Española",
+          "Code": "es-ES",
+          "AcceptedCodes": [ "es-ES", "es" ],
+          "IsDefaultForCountryCodes": [ "ES" ],
+          "DateFormat": "dd/MM/yyyy",
+          "TimeFormat": "H:mm",
+          "TimeFormatSec": "H:mm:ss",
+          "LanguageCode": "es",
+          "LanguageId": "3"
+        },
+        {
+          "Label": "Española MX",
+          "Code": "es-MX",
+          "AcceptedCodes": [ "es-MX" ],
+          "IsDefaultForCountryCodes": [ "MX" ],
+          "DateFormat": "dd/MM/yyyy",
+          "TimeFormat": "hh:mm a",
+          "TimeFormatSec": "hh:mm:ss a",
+          "LanguageCode": "es",
+          "LanguageId": "3"
+        },
+        {
+          "Label": "Français",
+          "Code": "fr-FR",
+          "AcceptedCodes": [ "fr-FR", "fr" ],
+          "IsDefaultForCountryCodes": [ "FR", "MA" ],
+          "DateFormat": "dd/MM/yyyy",
+          "TimeFormat": "HH:mm",
+          "TimeFormatSec": "HH:mm:ss",
+          "LanguageCode": "fr",
+          "LanguageId": "2"
+        }
+      ],
+      "Permissions": [
+        {
+          "Names": [ "Admin" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Names": [ "Site_Admin" ],
+          "Roles": [ "Site_Admin" ]
+        },
+        // Begin BIADemo
+        {
+          "Names": [ "Pilot" ],
+          "Roles": [ "Pilot" ]
+        },
+        // Hangfire
+        {
+          "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
+          "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        },
+        // Plane
+        {
+          "Names": [ "Plane_List_Access", "Plane_Read" ],
+          "Roles": [ "User" ]
+        },
+        {
+          "Names": [ "Plane_Update", "Plane_Save" ],
+          "Roles": [ "Site_Admin" ]
+        },
+        {
+          "Names": [ "Plane_Create", "Plane_Delete" ],
+          "Roles": [ "Site_Admin" ]
+        },
+        // Aircraft Maintenance Company
+        {
+          "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
+          "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
+        },
+        {
+          "Names": [ "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "AircraftMaintenanceCompany_Member_Save" ],
+          "Roles": [ "Admin", "Supervisor" ]
+        },
+        {
+          "Names": [ "User_ListAD", "User_Add" ],
+          "Roles": [ "Supervisor" ]
+        },
+        {
+          "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
+          "Roles": [ "Admin", "Supervisor" ]
+        },
+        // Maintenance Team
+        {
+          "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
+          "Roles": [ "Admin", "Supervisor" ]
+        },
+        {
+          "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+          "Roles": [ "Admin", "Supervisor", "MaintenanceTeam_Member" ]
+        },
+        {
+          "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
+          "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        },
+        {
+          "Names": [ "User_ListAD", "User_Add" ],
+          "Roles": [ "Team_Leader" ]
+        },
+        {
+          "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
+          "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        },
+        // Airport
+        {
+          "Name": "Airport_Options",
+          "Roles": [ "Admin", "Site_Member" ]
+        },
+        {
+          "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
+          "Roles": [ "Admin" ]
+        },
+        // PlaneType
+        {
+          "Name": "PlaneType_Options",
+          "Roles": [ "Admin", "Site_Member" ]
+        },
+        {
+          "Names": [ "PlaneType_List_Access", "PlaneType_Create", "PlaneType_Read", "PlaneType_Update", "PlaneType_Delete", "PlaneType_Save" ],
+          "Roles": [ "Admin" ]
+        },
+        // End BIADemo
+        // Home
+        {
+          "Name": "Home_Access",
+          "Roles": [ "Admin", "Site_Admin", "Site_Member", "User" ]
+        },
+        // Log
+        {
+          "Name": "Logs_Create",
+          "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        },
+        // Member
+        {
+          "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
+          "Roles": [ "Admin", "Site_Admin" ]
+        },
+        // Permission
+        {
+          "Names": [ "Permissions_Options" ],
+          "Roles": [ "User" ]
+        },
+        // Role
+        {
+          "Names": [ "Roles_Options" ],
+          "Roles": [ "User" ]
+        },
+        {
+          "Names": [ "Roles_List" ],
+          "Roles": [ "Admin", "Site_Admin" ]
+        },
+        {
+          "Name": "Roles_List_For_Current_User",
+          "Roles": [ "User", "Admin", "Site_Admin" ]
+        },
+        // Language
+        {
+          "Name": "Languages_Options",
+          "Roles": [ "User", "Admin" ]
+        },
+        // Ldap Domain
+        {
+          "Name": "LdapDomains_List",
+          "Roles": [ "Admin", "Site_Admin" ]
+        },
+        // Site
+        {
+          "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Names": [ "Site_List_Access", "Site_Read", "Site_Member_List_Access" ],
+          "Roles": [ "Admin", "Site_Admin" /*, "Site_Member" */ ]
+        },
+        {
+          "Names": [ "Site_Member_Create", "Site_Member_Read", "Site_Member_Update", "Site_Member_Delete", "Site_Member_Save" ],
+          "Roles": [ "Admin", "Site_Admin" ]
+        },
+        {
+          "Names": [ "User_ListAD", "User_Add" ],
+          "Roles": [ "Site_Admin" ]
+        },
+        {
+          "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
+          "Roles": [ "Admin", "Site_Admin" ]
+        },
+        // Team
+        {
+          "Names": [ "Team_Access_All" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Names": [ "Team_List_Access" ],
+          "Roles": [ "User" ]
+        },
+        {
+          "Name": "Team_Set_Default_Team",
+          "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
+        },
+        {
+          "Name": "Team_Set_Default_Roles",
+          "Roles": [ "User", "Admin", "Site_Admin", "Site_Member" ]
+        },
+        // User
+        {
+          "Names": [ "User_Options" ],
+          "Roles": [ "User" ]
+        },
+        {
+          "Names": [ "User_List_Access", "User_List", "User_Read", "User_Delete", "User_Sync", "User_UpdateRoles" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Names": [ "User_ListAD", "User_Add" ],
+          "Roles": [ "Admin" ]
+        },
+        // View
+        {
+          "Name": "View_List",
+          "Roles": [ "User" ]
+        },
+        {
+          "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
+          "Roles": [ "User" ]
+        },
+        // this functionnality is deprecated (the unassign do the job)
+        //{
+        //  "Name": "View_Delete_TeamView",
+        //  "Roles": [ "Admin" ]
+        //},
+        // Notifications
+        {
+          "Names": [ "Notification_List_Access", "Notification_Delete", "Notification_Read" ],
+          "Roles": [ "User" ]
+        },
+        {
+          "Names": [ "Notification_Update", "Notification_Create", "NotificationType_Options" ],
+          "Roles": [ "Admin" ]
+        },
+        {
+          "Name": "Background_Task_Admin",
+          "LightToken": true,
+          "Roles": [ "Back_Admin" ]
+        },
+        {
+          "Name": "Background_Task_Read_Only",
+          "LightToken": true,
+          "Roles": [ "Back_Read_Only" ]
+        }
+      ]
+    }
 }

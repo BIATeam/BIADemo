@@ -50,6 +50,11 @@ namespace BIA.Net.Core.Common.Configuration
         public Jwt Jwt { get; set; }
 
         /// <summary>
+        /// Gets or sets the keycloak configuration.
+        /// </summary>
+        public KeycloakConfiguration KeycloakConfiguration { get; set; }
+
+        /// <summary>
         /// Gets or sets the Roles configuration.
         /// </summary>
         public IEnumerable<Role> Roles { get; set; }

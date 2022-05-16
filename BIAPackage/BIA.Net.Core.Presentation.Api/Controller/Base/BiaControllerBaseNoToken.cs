@@ -4,7 +4,7 @@
 
 namespace BIA.Net.Presentation.Api.Controllers.Base
 {
-    using Microsoft.AspNetCore.Authentication.Negotiate;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace BIA.Net.Presentation.Api.Controllers.Base
     [ApiController]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = StartupConfiguration.JwtBearerKeycloak)]
     public abstract class BiaControllerBaseNoToken : ControllerBase
     {
     }

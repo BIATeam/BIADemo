@@ -1,4 +1,4 @@
-import {NgxLoggerLevel} from 'ngx-logger';
+import { NgxLoggerLevel } from 'ngx-logger';
 
 export const environment = {
   helpUrl: '',
@@ -15,4 +15,11 @@ export const environment = {
       serverLogLevel: NgxLoggerLevel.ERROR
     }
   },
+  keycloak: {
+    conf: {
+      realm: 'BIA-Realm',
+      authServerUrl: 'http://localhost:8080/',
+      resource: 'biademo-front'
+    }
+  }
 };

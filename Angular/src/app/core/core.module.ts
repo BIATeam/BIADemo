@@ -12,18 +12,18 @@ import { BiaCoreModule } from './bia-core/bia-core.module';
 import { BiaTranslationService } from './bia-core/services/bia-translation.service';
 
 // Begin BIADemo
-import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
-import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
-import { AppDB } from './bia-core/db';
-const ONLINEOFFLINE = [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB];
+// import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
+// import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
+// import { AppDB } from './bia-core/db';
+// const ONLINEOFFLINE = [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB];
 // End BIADemo
 
 @NgModule({
   imports: [RouterModule, BiaCoreModule],
   // Begin BIADemo
-  providers: [
-    ...ONLINEOFFLINE,
-  ]
+  // providers: [
+  //   ...ONLINEOFFLINE,
+  // ]
   // End BIADemo
 })
 

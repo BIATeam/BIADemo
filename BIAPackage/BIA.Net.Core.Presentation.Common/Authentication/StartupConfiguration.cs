@@ -5,12 +5,10 @@
 namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using System;
-    using System.Net;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authentication.Negotiate;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
@@ -20,6 +18,15 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     /// </summary>
     public static class StartupConfiguration
     {
+        /// <summary>
+        /// The JWT bearer default.
+        /// </summary>
+        public const string JwtBearerDefault = "Default";
+
+        /// <summary>
+        /// The JWT bearer keycloak
+        /// </summary>
+        public const string JwtBearerKeycloak = "Keycloak";
 
         /// <summary>
         /// Configure the authentication.
@@ -60,8 +67,21 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddNegotiate() // force user to be authenticated if no jwt 
-            .AddJwtBearer(configureOptions =>
+                .AddJwtBearer("Keycloak", o =>
+                {
+                    o.Authority = configuration.KeycloakConfiguration.Authority;
+                    o.Audience = configuration.KeycloakConfiguration.Audience;
+                    o.RequireHttpsMetadata = configuration.KeycloakConfiguration.RequireHttpsMetadata;
+#if DEBUG
+                    o.IncludeErrorDetails = true;
+#endif
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudience = configuration.KeycloakConfiguration.ValidAudience
+                    };
+                })
+            //.AddNegotiate() // force user to be authenticated if no jwt 
+            .AddJwtBearer("Default", configureOptions =>
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
@@ -128,7 +148,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                     //                var Token = cookies["HangFireCookie"];
                     //                bool test = true;
                     //            }
-                                    
+
                     //        }//Else
                     //    }//If
 

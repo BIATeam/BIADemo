@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -144,10 +145,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.Unauthorized();
             }
 
-            var login = identity.Name.Split('\\').LastOrDefault();
-#pragma warning disable CA1416 // Validate platform compatibility
-            var sid = ((System.Security.Principal.WindowsIdentity)identity).User.Value;
-#pragma warning restore CA1416 // Validate platform compatibility
+#if !DEBUG
+            string login = identity.Name.Split('\\').LastOrDefault();
+            string sid = ((System.Security.Principal.WindowsIdentity)identity).User.Value;
+#else
+            string login = "L028400";
+            string sid = "S-1-5-21-3982025812-335733460-1456478496-139505";
+#endif
 
             if (string.IsNullOrEmpty(login))
             {
