@@ -49,6 +49,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                         .AuditTypeMapper(typeName => typeName.Name == "User" ? typeof(UserAudit) : typeof(AuditLog))
                         .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
                         {
+                            if (evt.Environment.Exception != null)
+                            {
+                                return Task.FromResult(false);
+                            }
+
                             if (auditEntity.GetType() == typeof(AuditLog))
                             {
                                 return GeneralAudit(evt, entry, (AuditLog)auditEntity);
