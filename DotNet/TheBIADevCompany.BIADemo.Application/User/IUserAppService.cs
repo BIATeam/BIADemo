@@ -114,5 +114,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
         Task<byte[]> ExportCSV(PagingFilterFormatDto filters);
+
+        /// <summary>
+        /// Selects the default language.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        void SelectDefaultLanguage(UserInfoDto userInfo);
     }
 }

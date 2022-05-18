@@ -363,7 +363,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return buffer;
         }
 
-        private void SelectDefaultLanguage(UserInfoDto userInfo)
+        /// <summary>
+        /// Selects the default language.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        public void SelectDefaultLanguage(UserInfoDto userInfo)
         {
             userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == userInfo.Country))
                 .Select(s => s.Code)

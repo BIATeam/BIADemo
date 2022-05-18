@@ -14,6 +14,7 @@ import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaTranslationService } from '../services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakService } from 'keycloak-angular';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -37,7 +38,8 @@ export class TokenInterceptor implements HttpInterceptor {
       url.toLowerCase().indexOf(allEnvironments.urlAuth.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
-      url.toLowerCase().indexOf('./assets/') > -1
+      url.toLowerCase().indexOf('./assets/') > -1 ||
+      url.toLowerCase().startsWith(environment.keycloak.conf.authServerUrl) === true
     );
   }
 

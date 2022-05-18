@@ -13,6 +13,11 @@ export class UserFromDirectoryDas extends AbstractDas<UserFromDirectory> {
   }
 
   public getAllByFilter(filter: string, ldapName: string, returnSize: number): Observable<Array<UserFromDirectory>> {
+    // const url = `${environment.keycloak.conf.authServerUrl}admin/realms/${environment.keycloak.conf.realm}/users?first=0&max=20&search=${filter}`;
+    // return this.userService.formatDisplayNameFromADObs(
+    //   this.http.get<Array<UserFromDirectory>>(url)
+    // );
+
     return this.userService.formatDisplayNameFromADObs(
       this.http.get<Array<UserFromDirectory>>(`${this.route}fromAD?filter=${filter}&ldapName=${ldapName}&returnSize=${returnSize}`)
     );

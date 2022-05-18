@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
+    using System.Net.Http;
     using System.Security.Principal;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
@@ -19,7 +20,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Safran.EZwins.Infrastructure.Service.Repositories;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
     /// <summary>
@@ -93,6 +96,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);
+
+            services.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = true,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
         }
 
         /// <summary>

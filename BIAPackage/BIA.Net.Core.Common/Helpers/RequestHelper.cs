@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Common.Helpers
     /// <summary>
     /// The helper used to encapsulate the API calls.
     /// </summary>
+    [Obsolete("Use instead BIA.Net.Core.Infrastructure.Service.Repositories.WebApiRepository")]
     public static class RequestHelper
     {
         /// <summary>

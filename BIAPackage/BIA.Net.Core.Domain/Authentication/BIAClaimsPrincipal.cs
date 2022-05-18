@@ -44,7 +44,9 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             var userId = this.FindFirst(x => x.Type == ClaimTypes.Sid).Value;
-            return string.IsNullOrEmpty(userId) ? 0 : int.Parse(userId);
+            int.TryParse(userId, out int result);
+
+            return result;
         }
 
         /// <summary>
@@ -53,12 +55,35 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user login.</returns>
         public virtual string GetUserLogin()
         {
-            if (!this.HasClaim(x => x.Type == ClaimTypes.Name))
-            {
-                return string.Empty;
-            }
+            return GetClaimValue(ClaimTypes.Name);
+        }
 
-            return this.FindFirst(x => x.Type == ClaimTypes.Name).Value;
+        public virtual string GetUserFirstName()
+        {
+            return GetClaimValue(ClaimTypes.GivenName);
+        }
+
+        public virtual string GetUserLastName()
+        {
+            return GetClaimValue(ClaimTypes.Surname);
+        }
+
+        public virtual string GetUserCountry()
+        {
+            return GetClaimValue(ClaimTypes.Country);
+        }
+
+        public virtual string GetUserEmail()
+        {
+            return GetClaimValue(ClaimTypes.Email);
+        }
+
+        public virtual string GetSid()
+        {
+            var sValue = GetClaimValue(ClaimTypes.Sid);
+
+            // TODO To be adapted for Linux
+            return new System.Security.Principal.SecurityIdentifier(System.Convert.FromBase64String(sValue), 0).ToString();
         }
 
         /// <summary>
@@ -95,6 +120,16 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        protected virtual string GetClaimValue(string claimType)
+        {
+            if (!this.HasClaim(x => x.Type == claimType))
+            {
+                return string.Empty;
+            }
+
+            return this.FindFirst(x => x.Type == claimType).Value;
         }
     }
 }
