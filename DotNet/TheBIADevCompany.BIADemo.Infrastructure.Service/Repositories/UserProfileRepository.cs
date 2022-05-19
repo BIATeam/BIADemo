@@ -1,5 +1,5 @@
-﻿// <copyright file="UserProfileRepository.cs" company="Safran">
-// Copyright (c) Safran. All rights reserved.
+﻿// <copyright file="UserProfileRepository.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace Safran.EZwins.Infrastructure.Service.Repositories
@@ -9,7 +9,6 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;

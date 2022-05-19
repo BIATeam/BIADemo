@@ -26,7 +26,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         /// <summary>
         /// The JWT bearer keycloak
         /// </summary>
-        public const string JwtBearerKeycloak = "Keycloak";
+        public const string JwtBearerIdentityProvider = "IdentityProvider";
 
         /// <summary>
         /// Configure the authentication.
@@ -67,21 +67,21 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-                .AddJwtBearer("Keycloak", o =>
+                .AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
-                    o.Authority = configuration.KeycloakConfiguration.Authority;
-                    o.Audience = configuration.KeycloakConfiguration.Audience;
-                    o.RequireHttpsMetadata = configuration.KeycloakConfiguration.RequireHttpsMetadata;
+                    o.Authority = configuration.Keycloak.BaseUrl + configuration.Keycloak.Configuration.Authority;
+                    o.Audience = configuration.Keycloak.Configuration.Audience;
+                    o.RequireHttpsMetadata = configuration.Keycloak.Configuration.RequireHttpsMetadata;
 #if DEBUG
                     o.IncludeErrorDetails = true;
 #endif
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidAudience = configuration.KeycloakConfiguration.ValidAudience
+                        ValidAudience = configuration.Keycloak.Configuration.ValidAudience
                     };
                 })
             //.AddNegotiate() // force user to be authenticated if no jwt 
-            .AddJwtBearer("Default", configureOptions =>
+            .AddJwtBearer(JwtBearerDefault, configureOptions =>
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
@@ -94,66 +94,12 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                             context.NoResult();
                             context.Response.Headers.Add("Token-Expired-Or-Invalid", "true");
                             context.Response.ContentType = "text/plain";
-                            context.Response.StatusCode = 498;// (int)HttpStatusCode.PreconditionFailed;
+                            context.Response.StatusCode = 498; // 498 = Token expired/invalid
                             await context.Response.WriteAsync("Un-Authorized");
                         });
 
                         return Task.CompletedTask;
                     },
-                    //OnMessageReceived = mrCtx =>
-                    //{
-                    //    // Look for HangFire stuff
-                    //    var path = mrCtx.Request.Path.HasValue ? mrCtx.Request.Path.Value : "";
-                    //    var pathBase = mrCtx.Request.PathBase.HasValue ? mrCtx.Request.PathBase.Value : path;
-                    //    var isFromHangFire = true;// path.StartsWith(WebsiteConstants.HANG_FIRE_URL) || pathBase.StartsWith(WebsiteConstants.HANG_FIRE_URL);
-
-                    //    //If it's HangFire look for token.
-                    //    if (isFromHangFire)
-                    //    {
-                    //        mrCtx.HttpContext.Response.Cookies
-                    //            .Append("HangFireCookie666",
-                    //                "Coucou",
-                    //                new CookieOptions()
-                    //                {
-                    //                    Secure = true,
-                    //                    Path = "/",
-                    //                    SameSite = SameSiteMode.None,
-                    //                    IsEssential = true,
-                    //                    Expires = DateTime.Now.AddMinutes(10)
-                    //                });
-                    //        if (mrCtx.Request.Query.ContainsKey("jwt_token"))
-                    //        {
-                    //            //If we find token add it to the response cookies
-                    //            //mrCtx.Token = mrCtx.Request.Query["jwt_token"];
-                    //            var Token = mrCtx.Request.Query["jwt_token"];
-                    //            mrCtx.HttpContext.Response.Cookies
-                    //            .Append("HangFireCookie",
-                    //                Token,
-                    //                new CookieOptions()
-                    //                {
-                    //                    Secure = true,
-                    //                    Path = "/",
-                    //                    SameSite = SameSiteMode.None,
-                    //                    IsEssential = true,
-                    //                    Expires = DateTime.Now.AddMinutes(10)
-                    //                });
-                    //        }
-                    //        else
-                    //        {
-                    //            //Check if we have a cookie from the previous request.
-                    //            var cookies = mrCtx.Request.Cookies;
-                    //            if (cookies.ContainsKey("HangFireCookie"))
-                    //            {
-                    //                // mrCtx.Token = cookies["HangFireCookie"];
-                    //                var Token = cookies["HangFireCookie"];
-                    //                bool test = true;
-                    //            }
-
-                    //        }//Else
-                    //    }//If
-
-                    //    return Task.CompletedTask;
-                    //}
                 };
             });
 

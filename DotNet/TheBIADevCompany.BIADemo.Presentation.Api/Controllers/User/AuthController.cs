@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     /// <summary>
     /// The API controller used to authenticate users.
     /// </summary>
-    public class AuthController : BiaControllerBaseNoToken
+    public class AuthController : BiaControllerBaseIdP
     {
         private readonly IAuthAppService authService;
 
@@ -75,6 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> LoginOnTeams(LoginParamDto loginParam)
         {
             try

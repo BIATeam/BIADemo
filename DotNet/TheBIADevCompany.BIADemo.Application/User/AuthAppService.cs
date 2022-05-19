@@ -281,7 +281,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             var teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                             var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                            CurrentTeamDto currentTeam = new();
+                            CurrentTeamDto currentTeam = new CurrentTeamDto();
                             currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
                             if (team != null)

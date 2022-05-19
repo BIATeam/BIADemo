@@ -4,7 +4,9 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
+    using System.Collections.Generic;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Logging;
@@ -82,7 +84,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="url">The URL.</param>
         /// <param name="content">Content of the post.</param>
         /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<T, U>(string url, U body)
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<T, U>(string url, U body, bool isFormUrlEncoded = false)
         {
             if (!string.IsNullOrWhiteSpace(url) && body != null)
             {
@@ -90,11 +92,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 string json = JsonConvert.SerializeObject(body);
 
-                HttpResponseMessage response = default;
-                using (HttpContent httpContent = new StringContent(json, Encoding.UTF8, "application/json"))
+                HttpContent httpContent = default;
+
+                if (isFormUrlEncoded)
                 {
-                    response = await this.HttpClient.PostAsync(url, httpContent);
+                    Dictionary<string, string> dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                    httpContent = new FormUrlEncodedContent(dictionary);
                 }
+                else
+                {
+                    httpContent = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+                }
+
+                HttpResponseMessage response = await this.HttpClient.PostAsync(url, httpContent);
+                httpContent?.Dispose();
 
                 if (response.IsSuccessStatusCode)
                 {

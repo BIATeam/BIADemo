@@ -5,7 +5,6 @@
 namespace BIA.Net.Core.Common.Configuration
 {
     using BIA.Net.Core.Common.Configuration.ApiFeature;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
 
@@ -52,7 +51,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// Gets or sets the keycloak configuration.
         /// </summary>
-        public KeycloakConfiguration KeycloakConfiguration { get; set; }
+        public Keycloak.Keycloak Keycloak { get; set; }
 
         /// <summary>
         /// Gets or sets the Roles configuration.

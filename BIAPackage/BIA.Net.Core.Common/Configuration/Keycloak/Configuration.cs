@@ -1,13 +1,13 @@
-// <copyright file="KeycloakConfiguration.cs" company="BIA">
+﻿// <copyright file="Configuration.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Configuration
+namespace BIA.Net.Core.Common.Configuration.Keycloak
 {
     /// <summary>
     /// Keycloak Configuration.
     /// </summary>
-    public class KeycloakConfiguration
+    public class Configuration
     {
         /// <summary>
         /// Gets or sets the authority.

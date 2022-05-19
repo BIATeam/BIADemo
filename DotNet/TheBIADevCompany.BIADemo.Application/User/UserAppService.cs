@@ -26,6 +26,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
@@ -59,8 +60,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         private readonly ILogger<UserAppService> logger;
 
+        private readonly IIdentityProviderRepository identityProviderRepository;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserAppService"/> class.
+        /// Initializes a new instance of the <see cref="UserAppService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userPermissionDomainService">The user right domain service.</param>
@@ -69,6 +72,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="userContext">The user context.</param>
+        /// <param name="identityProviderRepository">The identity provider repository.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
             IUserPermissionDomainService userPermissionDomainService,
@@ -76,7 +80,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger,
-            UserContext userContext)
+            UserContext userContext,
+            IIdentityProviderRepository identityProviderRepository)
             : base(repository)
         {
             this.userPermissionDomainService = userPermissionDomainService;
@@ -85,6 +90,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
             this.userContext = userContext;
+            this.identityProviderRepository = identityProviderRepository;
 
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
@@ -190,9 +196,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetAllADUserAsync"/>
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10)
         {
-            return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, max).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
-                .Select(UserFromDirectoryMapper.EntityToDto())
-                .ToList());
+            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchAsync(filter, max);
+            return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>

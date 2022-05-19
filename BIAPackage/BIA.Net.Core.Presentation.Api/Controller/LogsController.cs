@@ -15,7 +15,7 @@ namespace BIA.Net.Presentation.Api.Controllers
     /// <summary>
     /// The API controller used to manage users.
     /// </summary>
-    public class LogsController : BiaControllerBaseNoToken
+    public class LogsController : BiaControllerBaseIdP
     {
         /// <summary>
         /// The logger.

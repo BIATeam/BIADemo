@@ -103,6 +103,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 AllowAutoRedirect = false,
                 UseProxy = false,
             });
+            services.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = false,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
         }
 
         /// <summary>

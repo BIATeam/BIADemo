@@ -12,7 +12,9 @@ namespace BIA.Net.Core.Domain.Authentication
     /// A <see cref="ClaimsPrincipal"/> implementation with additional utility methods.
     /// </summary>
     /// <seealso cref="ClaimsPrincipal" />
+#pragma warning disable S101 // Types should be named in PascalCase
     public class BIAClaimsPrincipal : ClaimsPrincipal
+#pragma warning restore S101 // Types should be named in PascalCase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class.
@@ -82,7 +84,6 @@ namespace BIA.Net.Core.Domain.Authentication
         {
             var sValue = GetClaimValue(ClaimTypes.Sid);
 
-            // TODO To be adapted for Linux
             return new System.Security.Principal.SecurityIdentifier(System.Convert.FromBase64String(sValue), 0).ToString();
         }
 

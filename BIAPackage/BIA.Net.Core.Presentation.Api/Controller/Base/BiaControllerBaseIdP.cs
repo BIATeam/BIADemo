@@ -1,10 +1,10 @@
-﻿// <copyright file="BiaControllerBase.cs" company="BIA">
+﻿// <copyright file="BiaControllerBaseIdP.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Presentation.Api.Controllers.Base
 {
-    using Microsoft.AspNetCore.Authentication.Negotiate;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -16,8 +16,8 @@ namespace BIA.Net.Presentation.Api.Controllers.Base
     [ApiController]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
-    public abstract class BiaControllerBaseNoToken : ControllerBase
+    [Authorize(AuthenticationSchemes = StartupConfiguration.JwtBearerIdentityProvider)]
+    public abstract class BiaControllerBaseIdP : ControllerBase
     {
     }
 }
