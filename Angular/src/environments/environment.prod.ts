@@ -20,6 +20,9 @@ export const environment = {
       realm: 'BIA Realm',
       authServerUrl: 'http://localhost:8080/',
       resource: 'biademo-front'
+    },
+    login: {
+      idpHint: 'darwin'
     }
   }
 };
