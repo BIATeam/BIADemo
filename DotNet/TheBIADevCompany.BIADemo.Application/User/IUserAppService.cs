@@ -75,6 +75,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
+        /// Adds from identity provider identifier.
+        /// </summary>
+        /// <param name="userFromDirectoryDtos">The user from directory dtos.</param>
+        /// <returns>A <see cref="ResultAddUsersFromDirectoryDto"/>.</returns>
+        Task<ResultAddUsersFromDirectoryDto> AddFromIdPAsync(IEnumerable<UserFromDirectoryDto> userFromDirectoryDtos);
+
+        /// <summary>
+        /// Deactivates the users asynchronous.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task DeactivateUsersAsync(List<int> ids);
+
+        /// <summary>
         /// Remove a user in a group in AD.
         /// </summary>
         /// <param name="id">The identifier of the user to remove.</param>
