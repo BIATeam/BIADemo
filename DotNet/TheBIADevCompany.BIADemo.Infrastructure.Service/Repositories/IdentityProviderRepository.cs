@@ -27,6 +27,11 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository
     {
         /// <summary>
+        /// The Bearer.
+        /// </summary>
+        protected const string Bearer = "Bearer";
+
+        /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
         private readonly BiaNetSection configuration;
@@ -46,14 +51,14 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IIdentityProviderRepository.SearchAsync"/>
         public virtual async Task<List<UserFromDirectory>> SearchAsync(string search, int returnSize)
         {
-            if (string.IsNullOrWhiteSpace(this.configuration.Keycloak.BaseUrl) || string.IsNullOrWhiteSpace(search))
+            if (string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl) || string.IsNullOrWhiteSpace(search))
             {
                 return null;
             }
 
             await this.FillTokenAsync();
 
-            string searchUrl = $"{this.configuration.Keycloak.BaseUrl}{this.configuration.Keycloak.Api.SearchUserUrl}?first=0&max={returnSize}&search={search}";
+            string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserUrl}?first=0&max={returnSize}&search={search}";
 
             List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectory(searchUserResponseDtos);
@@ -67,18 +72,16 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected virtual async Task FillTokenAsync()
         {
-            this.HttpClient.DefaultRequestHeaders.Authorization = null;
-
-            if (!string.IsNullOrWhiteSpace(this.configuration.Keycloak.BaseUrl))
+            if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl) && this.HttpClient.DefaultRequestHeaders.Authorization?.Scheme != Bearer)
             {
-                string url = $"{this.configuration.Keycloak.BaseUrl}{this.configuration.Keycloak.Api.TokenConf.Url}";
+                string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.Url}";
 
-                Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
+                Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
 
                 TokenRequestDto tokenRequestDto = new TokenRequestDto()
                 {
-                    ClientId = this.configuration.Keycloak.Api.TokenConf.ClientId,
-                    GrantType = this.configuration.Keycloak.Api.TokenConf.GrantType,
+                    ClientId = this.configuration.Authentication.Keycloak.Api.TokenConf.ClientId,
+                    GrantType = this.configuration.Authentication.Keycloak.Api.TokenConf.GrantType,
                     Username = cred?.UserName,
                     Password = cred?.Password,
                 };
@@ -87,7 +90,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
 
                 if (!string.IsNullOrWhiteSpace(tokenResponseDto?.AccessToken))
                 {
-                    this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponseDto?.AccessToken);
+                    this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, tokenResponseDto?.AccessToken);
                 }
             }
         }

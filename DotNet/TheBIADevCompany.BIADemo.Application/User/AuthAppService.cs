@@ -115,6 +115,140 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
+        public async Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(WindowsIdentity identity, LoginParamDto loginParam)
+        {
+            // user data
+            var userData = new UserDataDto();
+
+            if (identity == null || !identity.IsAuthenticated)
+            {
+                if (identity == null)
+                {
+                    this.logger.LogInformation("Unauthorized because identity is null");
+                }
+                else if (!identity.IsAuthenticated)
+                {
+                    this.logger.LogInformation("Unauthorized because not authenticated");
+                }
+
+                throw new UnauthorizedException();
+            }
+
+            var login = identity.Name.Split('\\').LastOrDefault();
+            var sid = identity.User.Value;
+
+            if (string.IsNullOrEmpty(login))
+            {
+                this.logger.LogWarning("Unauthorized because bad login");
+                throw new BadRequestException("Incorrect login");
+            }
+
+            if (string.IsNullOrEmpty(sid))
+            {
+                this.logger.LogWarning("Unauthorized because bad sid");
+                throw new BadRequestException("Incorrect sid");
+            }
+
+            // parallel launch the get user profile
+            Task<UserProfileDto> userProfileTask = null;
+            if (!loginParam.LightToken)
+            {
+                userProfileTask = this.userAppService.GetUserProfileAsync(login);
+            }
+
+            // get roles
+            var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
+
+            if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
+            {
+                this.logger.LogInformation("Unauthorized because No roles found");
+                throw new ForbiddenException("No roles found");
+            }
+
+            // get user info
+            UserInfoDto userInfo = null;
+            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            {
+                try
+                {
+                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                }
+                catch (Exception)
+                {
+                    this.logger.LogWarning("Cannot create user... Probably database is read only...");
+                }
+
+                if (userInfo != null)
+                {
+                    try
+                    {
+                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
+                    }
+                    catch (Exception)
+                    {
+                        this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
+                    }
+                }
+            }
+
+            if (userInfo == null)
+            {
+                userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
+            }
+
+            var userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRolesFromUserDirectory, loginParam.LightToken);
+
+            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
+            if (!loginParam.LightToken)
+            {
+                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
+            }
+
+            List<string> allRoles = await this.GetRolesAsync(loginParam, userData, userRolesFromUserDirectory, userInfo, allTeams);
+
+            if (allRoles == null || !allRoles.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no role found");
+                throw new UnauthorizedException("No role found");
+            }
+
+            // translate roles in permission
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles, loginParam.LightToken);
+
+            if (!userPermissions.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no permission found");
+                throw new UnauthorizedException("No permission found");
+            }
+
+            var tokenDto = new TokenDto<UserDataDto> { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+
+            UserProfileDto userProfile = null;
+            if (userProfileTask != null)
+            {
+                userProfile = await userProfileTask;
+                userProfile = userProfile ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
+            }
+
+            AdditionalInfoDto additionnalInfo = null;
+            if (!loginParam.LightToken)
+            {
+                additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
+            }
+
+            var authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam.LightToken);
+
+            return authInfo;
+        }
+
+        /// <summary>
+        /// Logins the on teams asynchronous.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <param name="loginParam">The login parameter.</param>
+        /// <returns>
+        /// AuthInfo.
+        /// </returns>
         public async Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(IIdentity identity, LoginParamDto loginParam)
         {
             if (identity?.IsAuthenticated != true || string.IsNullOrWhiteSpace(this.principal?.GetUserLogin()))
@@ -208,10 +342,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new UnauthorizedException("No role found");
             }
 
-            List<string> userPermissions = null;
-
             // translate roles in permission
-            userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles, loginParam.LightToken);
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles, loginParam.LightToken);
 
             if (!userPermissions.Any())
             {

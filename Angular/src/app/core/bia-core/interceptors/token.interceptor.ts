@@ -24,7 +24,11 @@ export class TokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
-      return this.launchRequestKeycloak(request, next);
+      if (allEnvironments.useKeycloak === true) {
+        return this.launchRequestKeycloak(request, next);
+      } else {
+        return next.handle(this.addLanguageOnly(request));
+      }
     }
     if (this.isRefreshing === false) {
       return this.launchRequest(request, next);
@@ -48,7 +52,6 @@ export class TokenInterceptor implements HttpInterceptor {
     return from(this.keycloakService.getToken()).pipe(
       switchMap(jwtToken => {
         if (jwtToken?.length > 0) {
-          console.log('jwtToken: ' + jwtToken);
           request = this.addToken(request, jwtToken);
         }
         return next.handle(this.addLanguageOnly(request));

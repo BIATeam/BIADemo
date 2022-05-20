@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 
 // Interceptor
 import { standardEncodeHttpParamsInterceptor } from './interceptors/standard-encode-http-params-interceptor.service';
+import { biaXhrWithCredInterceptor } from './interceptors/bia-xhr-with-cred-interceptor.service';
 import { biaTokenInterceptor } from './interceptors/token.interceptor';
 
 // Services
@@ -20,16 +21,23 @@ import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { KeycloakAngularModule } from 'keycloak-angular';
+import { allEnvironments } from 'src/environments/all-environments';
 
 export function initializeApp(appInitService: BiaAppInitService) {
-  return (): Promise<any> =>
-    appInitService.initKeycloack().then(x => appInitService.init());
+  return (): Promise<any> => {
+    if (allEnvironments.useKeycloak === true) {
+      return appInitService.initKeycloack().then(x => appInitService.init());
+    }
+    else {
+      return appInitService.initAuth();
+    }
+  };
 }
 
 const MODULES = [HttpClientModule, TeamModule, AppSettingsModule, ServiceWorkerModule, KeycloakAngularModule];
 
 /* Warning: the order matters */
-const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaTokenInterceptor];
+const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];
 
 const SERVICES = [BiaAppInitService, MessageService, AuthService, BiaThemeService, BiaTranslationService, NotificationSignalRService];
 

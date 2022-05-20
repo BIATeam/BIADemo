@@ -69,18 +69,18 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
             })
                 .AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
-                    o.Authority = configuration.Keycloak.BaseUrl + configuration.Keycloak.Configuration.Authority;
-                    o.Audience = configuration.Keycloak.Configuration.Audience;
-                    o.RequireHttpsMetadata = configuration.Keycloak.Configuration.RequireHttpsMetadata;
+                    o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                    o.Audience = configuration.Authentication.Keycloak.Configuration.Audience;
+                    o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
 #if DEBUG
                     o.IncludeErrorDetails = true;
 #endif
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidAudience = configuration.Keycloak.Configuration.ValidAudience
+                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience
                     };
                 })
-            //.AddNegotiate() // force user to be authenticated if no jwt 
+            .AddNegotiate() // force user to be authenticated if no jwt 
             .AddJwtBearer(JwtBearerDefault, configureOptions =>
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;

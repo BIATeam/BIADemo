@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -80,7 +81,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
+                AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = default;
+
+                if (this.IsNegotiateAuth())
+                {
+                    authInfo = await this.authService.LoginOnTeamsAsync((System.Security.Principal.WindowsIdentity)this.User.Identity, loginParam);
+                }
+                else
+                {
+                    authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
+                }
+
                 return this.Ok(authInfo);
             }
             catch (UnauthorizedException ex)
@@ -110,6 +121,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public IActionResult GetFrontEndVersion()
         {
             return this.Ok(Constants.Application.FrontEndVersion);
+        }
+
+        /// <summary>
+        /// Determines whether [is negotiate authentication].
+        /// </summary>
+        private bool IsNegotiateAuth()
+        {
+            AuthorizeAttribute authorizeAttribute = (AuthorizeAttribute)Attribute.GetCustomAttribute(typeof(AuthController), typeof(AuthorizeAttribute));
+            return authorizeAttribute?.AuthenticationSchemes == Microsoft.AspNetCore.Authentication.Negotiate.NegotiateDefaults.AuthenticationScheme;
         }
     }
 }

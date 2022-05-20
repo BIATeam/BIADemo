@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakGuard } from './core/bia-core/guards/keycloak.guard';
 import { HOME_ROUTES } from './features/home/home.module';
 import { LayoutComponent } from './shared/bia-shared/components/layout/layout.component';
@@ -9,7 +10,7 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: [KeycloakGuard],
+    canActivate: allEnvironments.useKeycloak == true ? [KeycloakGuard] : undefined,
     children: [
       ...HOME_ROUTES,
       {

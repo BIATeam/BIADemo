@@ -1,8 +1,8 @@
-﻿// <copyright file="LogsController.cs" company="BIA">
-//     Copyright (c) BIA. All rights reserved.
+﻿// <copyright file="LogsController.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Presentation.Api.Controllers
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 {
     using System;
     using BIA.Net.Core.Common.Enum;
