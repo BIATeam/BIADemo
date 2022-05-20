@@ -124,7 +124,7 @@
     "notifiedPermissions": "Autorisations notifiées",
     "notifiedTeams": "Equipes notifiées",
     "notifiedUsers": "Utilisateurs notifiés",
-    "jData" : "Données en JSON",
+    "jData": "Données en JSON",
     "success": {
       "deprecated:": "translation will be done in database in next version",
       "title": "Succès envoi de notification",
