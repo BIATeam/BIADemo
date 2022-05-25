@@ -9,18 +9,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Presentation.Api.Configuration;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>
     /// The API controller used to authenticate users.
     /// </summary>
-    public class AuthController : BiaControllerBaseIdP
+    public class AuthController : AuthControllerBase
     {
         private readonly IAuthAppService authService;
 

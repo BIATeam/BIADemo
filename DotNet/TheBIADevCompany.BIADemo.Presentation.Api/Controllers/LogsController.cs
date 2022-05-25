@@ -7,15 +7,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto;
-    using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>
     /// The API controller used to manage users.
     /// </summary>
-    public class LogsController : BiaControllerBaseIdP
+    public class LogsController : AuthControllerBase
     {
         /// <summary>
         /// The logger.

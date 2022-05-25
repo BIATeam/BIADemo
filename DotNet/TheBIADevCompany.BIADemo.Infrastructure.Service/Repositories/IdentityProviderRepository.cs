@@ -9,6 +9,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -106,58 +107,72 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
 
             if (searchUserResponseDtos?.Any() == true)
             {
+
                 foreach (SearchUserResponseDto searchUserResponseDto in searchUserResponseDtos)
                 {
-                    if (!string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.ObjectSid?.FirstOrDefault()))
+                    string sid = null;
+
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.ObjectSid))
                     {
-                        string sid = new System.Security.Principal.SecurityIdentifier(System.Convert.FromBase64String(searchUserResponseDto.Attribute.ObjectSid?.FirstOrDefault()), 0).ToString();
+                        sid = new System.Security.Principal.SecurityIdentifier(Convert.FromBase64String(searchUserResponseDto.Attribute.ObjectSid), 0).ToString();
+                    }
 
-                        UserFromDirectory userFromDirectory = new UserFromDirectory
+                    UserFromDirectory userFromDirectory = new UserFromDirectory
+                    {
+                        FirstName = searchUserResponseDto.FirstName,
+                        LastName = searchUserResponseDto.LastName,
+                        Login = searchUserResponseDto.Username,
+                        Domain = !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.LdapEntryDn) ? searchUserResponseDto.Attribute.LdapEntryDn?.Split(',')?.FirstOrDefault(x => x.StartsWith("DC="))?.Split('=')?.LastOrDefault()?.ToUpper() : default,
+                        Sid = sid,
+                        Country = searchUserResponseDto.Attribute.Country,
+                        Company = searchUserResponseDto.Attribute.Company,
+                        Department = searchUserResponseDto.Attribute.Department,
+                        DistinguishedName = searchUserResponseDto.Attribute.LdapEntryDn,
+                        Email = searchUserResponseDto.Email,
+                        IsEmployee = true,
+                        Manager = searchUserResponseDto.Attribute.Manager,
+                        Office = searchUserResponseDto.Attribute.PhysicalDeliveryOfficeName,
+                    };
+
+                    if (Guid.TryParse(searchUserResponseDto.Attribute.LdapId, out Guid resultLdapId))
+                    {
+                        userFromDirectory.Guid = resultLdapId;
+                    }
+                    else if (Guid.TryParse(searchUserResponseDto.Id, out Guid resultId))
+                    {
+                        userFromDirectory.Guid = resultId;
+                    }
+
+                    userFromDirectory.Site = userFromDirectory.Domain == "CORP" ? userFromDirectory.Office : searchUserResponseDto.Attribute.Description;
+
+                    // Set external company
+                    string jobTitle = searchUserResponseDto.Attribute.Title;
+
+                    if (!string.IsNullOrEmpty(jobTitle) && jobTitle.IndexOf(':') <= 0)
+                    {
+                        string[] extInfo = jobTitle.Split(':');
+                        if (extInfo[0] == "EXT" && extInfo.Length != 2)
                         {
-                            FirstName = searchUserResponseDto.FirstName,
-                            LastName = searchUserResponseDto.LastName,
-                            Login = searchUserResponseDto.Username,
-                            Domain = searchUserResponseDto.Attribute.LdapEntryDn?.FirstOrDefault()?.Split(',')?.FirstOrDefault(x => x.StartsWith("DC="))?.Split('=')?.LastOrDefault()?.ToUpper(),
-                            Sid = sid,
-                            Guid = new Guid(searchUserResponseDto.Attribute.LdapId?.FirstOrDefault()),
-                            Country = searchUserResponseDto.Attribute.Country?.FirstOrDefault(),
-                            Company = searchUserResponseDto.Attribute.Company?.FirstOrDefault(),
-                            Department = searchUserResponseDto.Attribute.Department?.FirstOrDefault(),
-                            DistinguishedName = searchUserResponseDto.Attribute.LdapEntryDn?.FirstOrDefault(),
-                            Email = searchUserResponseDto.Email,
-                            IsEmployee = true,
-                            Manager = searchUserResponseDto.Attribute.Manager?.FirstOrDefault(),
-                            Office = searchUserResponseDto.Attribute.PhysicalDeliveryOfficeName?.FirstOrDefault(),
-                        };
-
-                        userFromDirectory.Site = userFromDirectory.Domain == "CORP" ? userFromDirectory.Office : searchUserResponseDto.Attribute.Description?.FirstOrDefault();
-
-                        // Set external company
-                        string jobTitle = searchUserResponseDto.Attribute.Title?.FirstOrDefault();
-
-                        if (!string.IsNullOrEmpty(jobTitle) && jobTitle.IndexOf(':') <= 0)
-                        {
-                            string[] extInfo = jobTitle.Split(':');
-                            if (extInfo[0] == "EXT" && extInfo.Length != 2)
-                            {
-                                userFromDirectory.IsEmployee = false;
-                                userFromDirectory.IsExternal = true;
-                                userFromDirectory.ExternalCompany = extInfo[1];
-                            }
+                            userFromDirectory.IsEmployee = false;
+                            userFromDirectory.IsExternal = true;
+                            userFromDirectory.ExternalCompany = extInfo[1];
                         }
+                    }
 
-                        // Set sub department
-                        string fullDepartment = userFromDirectory.Department;
-                        int zero = 0;
-                        if (!string.IsNullOrWhiteSpace(fullDepartment) && (fullDepartment.IndexOf('-') > zero))
+                    // Set sub department
+                    string fullDepartment = userFromDirectory.Department;
+                    int zero = 0;
+                    if (!string.IsNullOrWhiteSpace(fullDepartment) && (fullDepartment.IndexOf('-') > zero))
+                    {
+                        userFromDirectory.Department = fullDepartment.Substring(0, fullDepartment.IndexOf('-') - 1);
+                        if (fullDepartment.Length > fullDepartment.IndexOf('-') + 2)
                         {
-                            userFromDirectory.Department = fullDepartment.Substring(0, fullDepartment.IndexOf('-') - 1);
-                            if (fullDepartment.Length > fullDepartment.IndexOf('-') + 2)
-                            {
-                                userFromDirectory.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
-                            }
+                            userFromDirectory.SubDepartment = fullDepartment.Substring(fullDepartment.IndexOf('-') + 3);
                         }
+                    }
 
+                    if (!string.IsNullOrWhiteSpace(userFromDirectory.Sid) || userFromDirectory.Guid != Guid.Empty)
+                    {
                         userFromDirectories.Add(userFromDirectory);
                     }
                 }

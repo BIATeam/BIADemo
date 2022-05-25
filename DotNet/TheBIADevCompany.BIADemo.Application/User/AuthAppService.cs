@@ -115,6 +115,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "Only run on windows")]
         public async Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(WindowsIdentity identity, LoginParamDto loginParam)
         {
             // user data
@@ -269,8 +270,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new UnauthorizedException();
             }
 
-            string login = identity.Name?.Split('\\').LastOrDefault();
-            string sid = this.principal.GetSid();
+            string login = identity.Name?.Split('\\')?.LastOrDefault()?.ToUpper();
+            Guid.TryParse(this.principal.GetSid(), out Guid guid);
 
             // parallel launch the get user profile
             Task<UserProfileDto> userProfileTask = null;
@@ -279,7 +280,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 userProfileTask = this.userProfileRepository.GetAsync(login);
             }
 
-            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(sid);
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(guid);
             List<string> userRoles = this.principal.GetUserPermissions()?.Intersect(this.configuration?.Roles?.Select(x => x.Label))?.Distinct()?.ToList();
 
             // If the user does not exist in the database and has no role

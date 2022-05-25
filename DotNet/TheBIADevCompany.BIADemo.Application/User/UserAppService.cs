@@ -143,6 +143,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
         }
 
+        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
+        public async Task<UserInfoDto> GetUserInfoAsync(Guid guid)
+        {
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Guid == guid);
+        }
+
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
         public async Task<UserProfileDto> GetUserProfileAsync(string login)
         {
@@ -258,9 +264,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 List<int> userIdAddeds = new List<int>();
                 List<User> userToAdds = new List<User>();
 
-                List<string> sids = userFromDirectoryDtos.Select(x => x.Sid).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
-                List<User> userDbs = (await this.Repository.GetAllEntityAsync(filter: x => sids.Contains(x.Sid))).ToList();
-                List<UserFromDirectoryDto> userFromDirectoryDtoToAdds = userFromDirectoryDtos.Where(x => !userDbs.Select(userDb => userDb.Sid).Contains(x.Sid)).ToList();
+                List<Guid> guids = userFromDirectoryDtos.Select(x => x.Guid).Where(x => x != Guid.Empty).ToList();
+                List<User> userDbs = (await this.Repository.GetAllEntityAsync(filter: x => guids.Contains(x.Guid))).ToList();
+                List<UserFromDirectoryDto> userFromDirectoryDtoToAdds = userFromDirectoryDtos.Where(x => !userDbs.Select(userDb => userDb.Guid).Contains(x.Guid)).ToList();
 
                 // ADD
                 List<UserFromDirectory> userFromDirectoryToAdds = PropertyMapper.Map<UserFromDirectoryDto, UserFromDirectory>(userFromDirectoryDtoToAdds).ToList();
@@ -271,6 +277,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         User user = new User();
                         UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectoryToAdd);
+                        user.Login = user.Login?.ToUpper();
+                        if (string.IsNullOrWhiteSpace(user.Sid) && user.Guid != Guid.Empty)
+                        {
+                            user.Sid = user.Guid.ToString();
+                        }
+
                         userToAdds.Add(user);
                     }
 

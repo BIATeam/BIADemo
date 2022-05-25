@@ -52,6 +52,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<UserInfoDto> GetUserInfoAsync(string sid);
 
         /// <summary>
+        /// Gets user info with its guid.
+        /// </summary>
+        /// <param name="guid">The guid to search with.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> GetUserInfoAsync(Guid guid);
+
+        /// <summary>
         /// Gets the profile of the given user.
         /// </summary>
         /// <param name="login">The user login.</param>

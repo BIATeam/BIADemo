@@ -82,9 +82,7 @@ namespace BIA.Net.Core.Domain.Authentication
 
         public virtual string GetSid()
         {
-            var sValue = GetClaimValue(ClaimTypes.Sid);
-
-            return new System.Security.Principal.SecurityIdentifier(System.Convert.FromBase64String(sValue), 0).ToString();
+            return GetClaimValue(ClaimTypes.Sid);
         }
 
         /// <summary>

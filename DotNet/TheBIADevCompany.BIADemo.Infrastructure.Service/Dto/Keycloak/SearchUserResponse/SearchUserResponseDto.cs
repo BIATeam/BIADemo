@@ -15,42 +15,42 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Dto.Keycloak.SearchUse
         /// Gets or sets the identifier.
         /// </summary>
         [JsonProperty("id")]
-        public string Id { get; set; }
+        internal string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the username.
         /// </summary>
         [JsonProperty("username")]
-        public string Username { get; set; }
+        internal string Username { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="SearchUserResponseDto"/> is enabled.
         /// </summary>
         [JsonProperty("enabled")]
-        public bool Enabled { get; set; }
+        internal bool Enabled { get; set; }
 
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
         [JsonProperty("firstName")]
-        public string FirstName { get; set; }
+        internal string FirstName { get; set; }
 
         /// <summary>
         /// Gets or sets the last name.
         /// </summary>
         [JsonProperty("lastName")]
-        public string LastName { get; set; }
+        internal string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the email.
         /// </summary>
         [JsonProperty("email")]
-        public string Email { get; set; }
+        internal string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the attribute.
         /// </summary>
         [JsonProperty("attributes")]
-        public AttributesDto Attribute { get; set; }
+        internal AttributesDto Attribute { get; set; }
     }
 }

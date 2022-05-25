@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
@@ -62,26 +63,11 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 ClockSkew = TimeSpan.Zero,
             };
 
-            services.AddAuthentication(options =>
+            AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(JwtBearerIdentityProvider, o =>
-                {
-                    o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
-                    o.Audience = configuration.Authentication.Keycloak.Configuration.Audience;
-                    o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
-#if DEBUG
-                    o.IncludeErrorDetails = true;
-#endif
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience
-                    };
-                })
-            .AddNegotiate() // force user to be authenticated if no jwt 
-            .AddJwtBearer(JwtBearerDefault, configureOptions =>
+            }).AddJwtBearer(JwtBearerDefault, configureOptions =>
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
@@ -102,6 +88,27 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                     },
                 };
             });
+
+            if (!string.IsNullOrWhiteSpace(configuration.Authentication.Keycloak?.BaseUrl))
+            {
+                authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
+                {
+                    o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                    o.Audience = configuration.Authentication.Keycloak.Configuration.Audience;
+                    o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+#if DEBUG
+                    o.IncludeErrorDetails = true;
+#endif
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience
+                    };
+                });
+            }
+            else
+            {
+                authenticationBuilder.AddNegotiate(); // force user to be authenticated if no jwt 
+            }
 
             // api user claim policy
             services.AddAuthorization(options =>
