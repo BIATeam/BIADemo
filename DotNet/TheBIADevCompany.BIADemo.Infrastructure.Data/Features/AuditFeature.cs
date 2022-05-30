@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
                     .UseEntityFramework(_ => _
-                        .AuditTypeMapper(typeName => typeName.Name == "User" ? typeof(UserAudit) : typeof(AuditLog))
+                        .AuditTypeMapper(type => AuditTypeMapper(type))
                         .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
                         {
                             if (evt.Environment.Exception != null)
@@ -88,6 +88,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 //        .IgnoreMatchedProperties(true)
                 //    );
 #pragma warning restore S125 // Sections of code should not be commented out
+            }
+        }
+
+        private static Type AuditTypeMapper(Type type)
+        {
+            switch (type.Name)
+            {
+                case "User":
+                    return typeof(UserAudit);
+                default:
+                    return typeof(AuditLog);
             }
         }
 
