@@ -19,23 +19,23 @@
       "SmtpPort": 25
     },
     "Authentication": {
-      "Keycloak": {
-        "BaseUrl": "http://localhost:8080",
-        "Configuration": {
-          "Authority": "/realms/BIA-Realm",
-          "RequireHttpsMetadata": false,
-          "ValidAudience": "account"
-        },
-        "Api": {
-          "TokenConf": {
-            "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
-            "ClientId": "biademo-front",
-            "GrantType": "password",
-            "CredentialKeyInWindowsVault": "BIA:KeycloakSearchUserAccount"
-          },
-          "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
-        }
-      },
+      //"Keycloak": {
+      //  "BaseUrl": "http://localhost:8080",
+      //  "Configuration": {
+      //    "Authority": "/realms/BIA-Realm",
+      //    "RequireHttpsMetadata": false,
+      //    "ValidAudience": "account"
+      //  },
+      //  "Api": {
+      //    "TokenConf": {
+      //      "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
+      //      "ClientId": "biademo-front",
+      //      "GrantType": "password",
+      //      "CredentialKeyInWindowsVault": "BIA:KeycloakSearchUserAccount"
+      //    },
+      //    "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
+      //  }
+      //},
       "LdapDomains": [
         {
           "Name": "DOMAIN_BIA_1",
