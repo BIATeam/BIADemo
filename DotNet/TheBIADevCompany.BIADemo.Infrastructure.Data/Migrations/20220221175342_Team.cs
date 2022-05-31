@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             // remove manualy
 
+#pragma warning disable S125 // Sections of code should not be commented out
             //migrationBuilder.AlterColumn<int>(
             //    name: "Id",
             //    table: "Sites",
@@ -30,7 +31,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             //    nullable: false,
             //    oldClrType: typeof(int),
             //    oldType: "int")
-            //    .OldAnnotation("SqlServer:Identity", "1, 1")
+            //    .OldAnnotation("SqlServer:Identity", "1, 1");
+#pragma warning disable S125 // Sections of code should not be commented out
 
             // end remove manualy
 

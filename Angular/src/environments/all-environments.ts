@@ -9,11 +9,12 @@ export const allEnvironments = {
     urlEnv: '/api/Environment',
     urlAppIcon: 'assets/bia/AppIcon.svg',
     version: '0.0.0',
+    useKeycloak: false,
     teams: [
-        {teamTypeId: TeamTypeId.Site, roleMode: RoleMode.AllRoles, inHeader: true},
+        { teamTypeId: TeamTypeId.Site, roleMode: RoleMode.AllRoles, inHeader: true },
         // Begin BIADemo
-        {teamTypeId: TeamTypeId.AircraftMaintenanceCompany, roleMode: RoleMode.MultiRoles, inHeader: true},
-        {teamTypeId: TeamTypeId.MaintenanceTeam, roleMode: RoleMode.AllRoles, inHeader: false},
+        { teamTypeId: TeamTypeId.AircraftMaintenanceCompany, roleMode: RoleMode.MultiRoles, inHeader: true },
+        { teamTypeId: TeamTypeId.MaintenanceTeam, roleMode: RoleMode.AllRoles, inHeader: false },
         // End BIADemo
     ],
 };

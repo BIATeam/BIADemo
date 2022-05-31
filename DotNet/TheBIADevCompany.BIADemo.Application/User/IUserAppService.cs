@@ -52,6 +52,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<UserInfoDto> GetUserInfoAsync(string sid);
 
         /// <summary>
+        /// Gets user info with its guid.
+        /// </summary>
+        /// <param name="guid">The guid to search with.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> GetUserInfoAsync(Guid guid);
+
+        /// <summary>
         /// Gets the profile of the given user.
         /// </summary>
         /// <param name="login">The user login.</param>
@@ -73,6 +80,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
+
+        /// <summary>
+        /// Adds from identity provider identifier.
+        /// </summary>
+        /// <param name="userFromDirectoryDtos">The user from directory dtos.</param>
+        /// <returns>A <see cref="ResultAddUsersFromDirectoryDto"/>.</returns>
+        Task<ResultAddUsersFromDirectoryDto> AddFromIdPAsync(IEnumerable<UserFromDirectoryDto> userFromDirectoryDtos);
+
+        /// <summary>
+        /// Deactivates the users asynchronous.
+        /// </summary>
+        /// <param name="ids">The ids.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task DeactivateUsersAsync(List<int> ids);
 
         /// <summary>
         /// Remove a user in a group in AD.
@@ -114,5 +135,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="filters">Represents the columns and their traductions.</param>
         /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
         Task<byte[]> ExportCSV(PagingFilterFormatDto filters);
+
+        /// <summary>
+        /// Selects the default language.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        void SelectDefaultLanguage(UserInfoDto userInfo);
     }
 }

@@ -5,12 +5,11 @@
 namespace BIA.Net.Core.Presentation.Common.Authentication
 {
     using System;
-    using System.Net;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Authentication.Negotiate;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Tokens;
@@ -20,6 +19,15 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     /// </summary>
     public static class StartupConfiguration
     {
+        /// <summary>
+        /// The JWT bearer default.
+        /// </summary>
+        public const string JwtBearerDefault = "Default";
+
+        /// <summary>
+        /// The JWT bearer keycloak
+        /// </summary>
+        public const string JwtBearerIdentityProvider = "IdentityProvider";
 
         /// <summary>
         /// Configure the authentication.
@@ -55,87 +63,67 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 ClockSkew = TimeSpan.Zero,
             };
 
-            services.AddAuthentication(options =>
+            var jwtBearerEvents = new JwtBearerEvents()
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    context.Response.OnStarting(async () =>
+                    {
+                        context.NoResult();
+                        context.Response.Headers.Add("Token-Expired-Or-Invalid", "true");
+                        context.Response.ContentType = "text/plain";
+                        context.Response.StatusCode = 498; // 498 = Token expired/invalid
+                        await context.Response.WriteAsync("Un-Authorized");
+                    });
+
+                    return Task.CompletedTask;
+                },
+            };
+
+            AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddNegotiate() // force user to be authenticated if no jwt 
-            .AddJwtBearer(configureOptions =>
+            }).AddJwtBearer(JwtBearerDefault, configureOptions =>
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
-                configureOptions.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        context.Response.OnStarting(async () =>
-                        {
-                            context.NoResult();
-                            context.Response.Headers.Add("Token-Expired-Or-Invalid", "true");
-                            context.Response.ContentType = "text/plain";
-                            context.Response.StatusCode = 498;// (int)HttpStatusCode.PreconditionFailed;
-                            await context.Response.WriteAsync("Un-Authorized");
-                        });
-
-                        return Task.CompletedTask;
-                    },
-                    //OnMessageReceived = mrCtx =>
-                    //{
-                    //    // Look for HangFire stuff
-                    //    var path = mrCtx.Request.Path.HasValue ? mrCtx.Request.Path.Value : "";
-                    //    var pathBase = mrCtx.Request.PathBase.HasValue ? mrCtx.Request.PathBase.Value : path;
-                    //    var isFromHangFire = true;// path.StartsWith(WebsiteConstants.HANG_FIRE_URL) || pathBase.StartsWith(WebsiteConstants.HANG_FIRE_URL);
-
-                    //    //If it's HangFire look for token.
-                    //    if (isFromHangFire)
-                    //    {
-                    //        mrCtx.HttpContext.Response.Cookies
-                    //            .Append("HangFireCookie666",
-                    //                "Coucou",
-                    //                new CookieOptions()
-                    //                {
-                    //                    Secure = true,
-                    //                    Path = "/",
-                    //                    SameSite = SameSiteMode.None,
-                    //                    IsEssential = true,
-                    //                    Expires = DateTime.Now.AddMinutes(10)
-                    //                });
-                    //        if (mrCtx.Request.Query.ContainsKey("jwt_token"))
-                    //        {
-                    //            //If we find token add it to the response cookies
-                    //            //mrCtx.Token = mrCtx.Request.Query["jwt_token"];
-                    //            var Token = mrCtx.Request.Query["jwt_token"];
-                    //            mrCtx.HttpContext.Response.Cookies
-                    //            .Append("HangFireCookie",
-                    //                Token,
-                    //                new CookieOptions()
-                    //                {
-                    //                    Secure = true,
-                    //                    Path = "/",
-                    //                    SameSite = SameSiteMode.None,
-                    //                    IsEssential = true,
-                    //                    Expires = DateTime.Now.AddMinutes(10)
-                    //                });
-                    //        }
-                    //        else
-                    //        {
-                    //            //Check if we have a cookie from the previous request.
-                    //            var cookies = mrCtx.Request.Cookies;
-                    //            if (cookies.ContainsKey("HangFireCookie"))
-                    //            {
-                    //                // mrCtx.Token = cookies["HangFireCookie"];
-                    //                var Token = cookies["HangFireCookie"];
-                    //                bool test = true;
-                    //            }
-                                    
-                    //        }//Else
-                    //    }//If
-
-                    //    return Task.CompletedTask;
-                    //}
-                };
+                configureOptions.Events = jwtBearerEvents;
             });
+
+            if (!string.IsNullOrWhiteSpace(configuration.Authentication.Keycloak?.BaseUrl))
+            {
+                authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
+                {
+                    o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                    o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+#if DEBUG
+                    o.IncludeErrorDetails = true;
+#endif
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html
+                        // JWT signature is validated without providing any key or certification in our service’s source code.
+                        // JWT signing key is retrieved from the well-known URL, based on Authority property. (MetadataAddress = Authority + '/.well-known/openid-configuration')
+                        // The signing key is cached in the singleton instance, and so our ASP.NET Core service only needs to retrieve it once throughout its lifecycle.JwtBearerHandler
+
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        RequireExpirationTime = true,
+                        RequireSignedTokens = true,
+                        RequireAudience = true,
+                    };
+
+                    o.Events = jwtBearerEvents;
+                });
+            }
+            else
+            {
+                authenticationBuilder.AddNegotiate(); // force user to be authenticated if no jwt 
+            }
 
             // api user claim policy
             services.AddAuthorization(options =>
