@@ -63,6 +63,23 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 ClockSkew = TimeSpan.Zero,
             };
 
+            var jwtBearerEvents = new JwtBearerEvents()
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    context.Response.OnStarting(async () =>
+                    {
+                        context.NoResult();
+                        context.Response.Headers.Add("Token-Expired-Or-Invalid", "true");
+                        context.Response.ContentType = "text/plain";
+                        context.Response.StatusCode = 498; // 498 = Token expired/invalid
+                        await context.Response.WriteAsync("Un-Authorized");
+                    });
+
+                    return Task.CompletedTask;
+                },
+            };
+
             AuthenticationBuilder authenticationBuilder = services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -71,22 +88,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
             {
                 configureOptions.ClaimsIssuer = configuration.Jwt.Issuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
-                configureOptions.Events = new JwtBearerEvents()
-                {
-                    OnAuthenticationFailed = context =>
-                    {
-                        context.Response.OnStarting(async () =>
-                        {
-                            context.NoResult();
-                            context.Response.Headers.Add("Token-Expired-Or-Invalid", "true");
-                            context.Response.ContentType = "text/plain";
-                            context.Response.StatusCode = 498; // 498 = Token expired/invalid
-                            await context.Response.WriteAsync("Un-Authorized");
-                        });
-
-                        return Task.CompletedTask;
-                    },
-                };
+                configureOptions.Events = jwtBearerEvents;
             });
 
             if (!string.IsNullOrWhiteSpace(configuration.Authentication.Keycloak?.BaseUrl))
@@ -94,15 +96,28 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
                     o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
-                    o.Audience = configuration.Authentication.Keycloak.Configuration.Audience;
                     o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
 #if DEBUG
                     o.IncludeErrorDetails = true;
 #endif
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience
+                        // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html
+                        // JWT signature is validated without providing any key or certification in our service’s source code.
+                        // JWT signing key is retrieved from the well-known URL, based on Authority property. (MetadataAddress = Authority + '/.well-known/openid-configuration')
+                        // The signing key is cached in the singleton instance, and so our ASP.NET Core service only needs to retrieve it once throughout its lifecycle.JwtBearerHandler
+
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        RequireExpirationTime = true,
+                        RequireSignedTokens = true,
+                        RequireAudience = true,
                     };
+
+                    o.Events = jwtBearerEvents;
                 });
             }
             else

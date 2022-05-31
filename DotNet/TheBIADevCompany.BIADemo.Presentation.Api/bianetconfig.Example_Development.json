@@ -23,18 +23,17 @@
         "BaseUrl": "http://localhost:8080",
         "Configuration": {
           "Authority": "/realms/BIA-Realm",
-          "Audience": "biademo-back",
           "RequireHttpsMetadata": false,
           "ValidAudience": "account"
         },
         "Api": {
           "TokenConf": {
-            "Url": "/realms/BIA-Realm/protocol/openid-connect/token",
+            "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
             "ClientId": "biademo-front",
             "GrantType": "password",
             "CredentialKeyInWindowsVault": "BIA:KeycloakSearchUserAccount"
           },
-          "SearchUserUrl": "/admin/realms/BIA-Realm/users"
+          "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
         }
       },
       "LdapDomains": [

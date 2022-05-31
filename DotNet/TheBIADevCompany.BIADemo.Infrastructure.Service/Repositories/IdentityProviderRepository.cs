@@ -59,7 +59,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
 
             await this.FillTokenAsync();
 
-            string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserUrl}?first=0&max={returnSize}&search={search}";
+            string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?first=0&max={returnSize}&search={search}";
 
             List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(searchUrl)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectory(searchUserResponseDtos);
@@ -75,7 +75,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         {
             if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl) && this.HttpClient.DefaultRequestHeaders.Authorization?.Scheme != Bearer)
             {
-                string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.Url}";
+                string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
                 Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
 

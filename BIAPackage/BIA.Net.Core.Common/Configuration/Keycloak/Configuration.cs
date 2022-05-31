@@ -15,11 +15,6 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
         public string Authority { get; set; }
 
         /// <summary>
-        /// Gets or sets the audience.
-        /// </summary>
-        public string Audience { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether [require HTTPS metadata].
         /// </summary>
         public bool RequireHttpsMetadata { get; set; }

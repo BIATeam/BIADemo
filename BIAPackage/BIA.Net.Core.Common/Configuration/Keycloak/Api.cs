@@ -17,6 +17,6 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
         /// <summary>
         /// Gets or sets the search user URL.
         /// </summary>
-        public string SearchUserUrl { get; set; }
+        public string SearchUserRelativeUrl { get; set; }
     }
 }

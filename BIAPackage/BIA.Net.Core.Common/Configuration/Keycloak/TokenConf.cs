@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
         /// <summary>
         /// Gets or sets the URL.
         /// </summary>
-        public string Url { get; set; }
+        public string RelativeUrl { get; set; }
 
         /// <summary>
         /// Gets or sets the client identifier.
