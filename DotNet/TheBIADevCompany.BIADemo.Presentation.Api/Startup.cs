@@ -41,18 +41,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         private readonly BiaNetSection biaNetSection;
 
         /// <summary>
-        /// The current environment.
-        /// </summary>
-        private readonly IWebHostEnvironment currentEnvironment;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="env">The environment.</param>
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            this.currentEnvironment = env;
             this.configuration = configuration;
             this.biaNetSection = new BiaNetSection();
             this.configuration.GetSection("BiaNet").Bind(this.biaNetSection);

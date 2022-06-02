@@ -91,17 +91,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
             }
         }
 
-        private static Type AuditTypeMapper(Type type)
-        {
-            switch (type.Name)
-            {
-                case "User":
-                    return typeof(UserAudit);
-                default:
-                    return typeof(AuditLog);
-            }
-        }
-
         /// <summary>
         /// Configure the Audit feature in order to retrieve
         /// the current (associated to the request) user.
@@ -116,6 +105,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                     BIAClaimsPrincipal principal = serviceProvider.GetRequiredService<IPrincipal>() as BIAClaimsPrincipal;
                     scope.Event.Environment.CustomFields["UserLogin"] = principal.Identity.Name;
                 });
+            }
+        }
+
+        private static Type AuditTypeMapper(Type type)
+        {
+            switch (type.Name)
+            {
+                case "User":
+                    return typeof(UserAudit);
+                default:
+                    return typeof(AuditLog);
             }
         }
 

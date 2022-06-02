@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
     <Copyright>Copyright © TheBIADevCompany 2021</Copyright>
     <Configurations>Debug;Release</Configurations>
@@ -9,8 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="3.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-    <PackageReference Include="System.DirectoryServices" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="System.DirectoryServices" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

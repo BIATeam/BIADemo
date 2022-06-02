@@ -77,7 +77,9 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
             {
                 string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
+#pragma warning disable CA1416 // Validate platform compatibility
                 Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
+#pragma warning restore CA1416 // Validate platform compatibility
 
                 TokenRequestDto tokenRequestDto = new TokenRequestDto()
                 {
@@ -107,7 +109,6 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
 
             if (searchUserResponseDtos?.Any() == true)
             {
-
                 foreach (SearchUserResponseDto searchUserResponseDto in searchUserResponseDtos)
                 {
                     string sid = null;
