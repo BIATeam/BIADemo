@@ -65,13 +65,6 @@ export class ViewListComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-
-    const defaultView = this.views.find((v) => v.id === this.defaultView);
-    if (defaultView) {
-      sessionStorage.setItem(this.tableStateKey, defaultView.preference);
-    } else {
-      sessionStorage.removeItem(this.tableStateKey);
-    }
   }
 
   onViewChange(event: any) {
