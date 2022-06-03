@@ -38,6 +38,7 @@
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
+      [sortFieldValue]="sortFieldValue"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
     <app-plane-table *ngIf="useCalcMode"
