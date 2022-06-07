@@ -92,7 +92,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            var results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
+            IEnumerable<UserFromDirectoryDto> results = default;
+
+            if (AuthorizationConfiguration.IsNegotiate())
+            {
+                results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
+            }
+            else
+            {
+                results = await this.userService.GetAllIdPUserAsync(filter, returnSize);
+            }
+
             int resultCount = results.Count();
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, resultCount.ToString());

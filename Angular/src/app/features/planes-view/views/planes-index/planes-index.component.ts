@@ -72,6 +72,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   tableStateKey = this.useView ? 'planesGrid' : undefined;
   useViewTeamWithTypeId = this.useView ? useViewTeamWithTypeId : null;
   parentIds: string[];
+  sortFieldValue = 'msn';
 
   constructor(
     private store: Store<AppState>,

@@ -190,6 +190,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetAllADUserAsync"/>
         public async Task<IEnumerable<UserFromDirectoryDto>> GetAllADUserAsync(string filter, string ldapName = null, int max = 10)
         {
+            return await Task.FromResult(this.userDirectoryHelper.SearchUsers(filter, ldapName, max).OrderBy(o => o.LastName).ThenBy(o => o.FirstName)
+                .Select(UserFromDirectoryMapper.EntityToDto())
+                .ToList());
+        }
+
+        /// <inheritdoc cref="IUserAppService.GetAllIdPUserAsync"/>
+        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdPUserAsync(string filter, int max = 10)
+        {
             List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchAsync(filter, max);
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }

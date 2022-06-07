@@ -1,4 +1,8 @@
-﻿namespace TheBIADevCompany.BIADemo.Presentation.Api.Configuration
+﻿// <copyright file="AuthorizationConfiguration.cs" company="TheBIADevCompany">
+// Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Configuration
 {
     using System;
     using Microsoft.AspNetCore.Authorization;
