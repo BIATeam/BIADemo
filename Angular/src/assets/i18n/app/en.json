@@ -106,8 +106,7 @@
   "notification": {
     "action": "Action",
     "add": "Add notification",
-     "add": "Add notification",
-   "listOf": "Notifications",
+    "listOf": "Notifications",
     "title": "Title",
     "detail": "Notification detail",
     "description": "Description",

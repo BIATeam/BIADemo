@@ -20,7 +20,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateSiteModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Site>().ToTable("Sites");
-            modelBuilder.Entity<Site>().Property(s => s.Title).IsRequired().HasMaxLength(256);
         }
     }
 }

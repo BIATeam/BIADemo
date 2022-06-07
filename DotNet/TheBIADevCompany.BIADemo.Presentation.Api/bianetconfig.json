@@ -214,15 +214,15 @@
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
       // Member
-      {
-        "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
+      //{
+      //  "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
+      //  "Roles": [ "Admin", "Site_Admin" ]
+      //},
       // Permission
-      {
-        "Names": [ "Permissions_Options" ],
-        "Roles": [ "User" ]
-      },
+      //{
+      //  "Names": [ "Permissions_Options" ],
+      //  "Roles": [ "User" ]
+      //},
       // Role
       {
         "Names": [ "Roles_Options" ],
