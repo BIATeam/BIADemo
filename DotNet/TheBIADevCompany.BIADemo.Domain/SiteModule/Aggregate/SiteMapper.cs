@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The mapper used for site.
@@ -85,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                 Title = entity.Title,
                 SiteAdmins = entity.Members
                     .Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin))
-                    .Select(s => new SiteMemberDto { UserFirstName = s.User.FirstName, UserLastName = s.User.LastName, UserLogin = s.User.Login }),
+                    .Select(s => new MemberInfoDto { UserFirstName = s.User.FirstName, UserLastName = s.User.LastName, UserLogin = s.User.Login }),
             };
         }
     }

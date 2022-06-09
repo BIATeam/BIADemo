@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The DTO used to manage site information.
@@ -20,6 +21,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
         /// <summary>
         /// Gets or sets the list of site admin.
         /// </summary>
-        public IEnumerable<SiteMemberDto> SiteAdmins { get; set; }
+        public IEnumerable<MemberInfoDto> SiteAdmins { get; set; }
     }
 }

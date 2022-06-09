@@ -54,10 +54,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().HasKey(r => r.Id);
             modelBuilder.Entity<RoleTranslation>().Property(r => r.RoleId).IsRequired();
             modelBuilder.Entity<RoleTranslation>().Property(r => r.LanguageId).IsRequired();
-
-            modelBuilder.Entity<RoleTranslation>().HasIndex(u => new { u.RoleId, u.LanguageId }).IsUnique();
-
             modelBuilder.Entity<RoleTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+            modelBuilder.Entity<RoleTranslation>().HasIndex(u => new { u.RoleId, u.LanguageId }).IsUnique();
 
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Admin, LanguageId = LanguageId.French, Id = 1000101, Label = "Administrateur" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.Admin, LanguageId = LanguageId.Spanish, Id = 1000102, Label = "Administrador" });
@@ -70,6 +68,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.French, Id = 1000301, Label = "Visualisation des tâches en arrière-plan" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.Spanish, Id = 1000302, Label = "Visualización de tareas en segundo plano" });
             modelBuilder.Entity<RoleTranslation>().HasData(new RoleTranslation { RoleId = (int)RoleId.BackReadOnly, LanguageId = LanguageId.German, Id = 1000303, Label = "Visualisierung von Hintergrundaufgaben" });
+
 
             // Begin BIADemo
             if (false)
