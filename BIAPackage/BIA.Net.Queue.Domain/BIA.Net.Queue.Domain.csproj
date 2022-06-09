@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <Authors>BIA Team</Authors>
+    <Company>BIA</Company>
+    <Description>Domain layer classes for BIA.Net Queue Framework</Description>
+    <Copyright>Copyright © BIA 2021</Copyright>
+    <PackageIcon>LogoBIA.png</PackageIcon>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\Images\LogoBIA.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BIA.Net.Queue.Domain.Dto\BIA.Net.Queue.Domain.Dto.csproj" />
+  </ItemGroup>
+
+</Project>
