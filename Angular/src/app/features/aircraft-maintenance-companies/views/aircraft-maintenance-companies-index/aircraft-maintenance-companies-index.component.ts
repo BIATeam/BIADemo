@@ -219,7 +219,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.aircraftMaintenanceCompanyListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.aircraftMaintenanceCompanyListComponent.getLazyLoadMetadata()
     };

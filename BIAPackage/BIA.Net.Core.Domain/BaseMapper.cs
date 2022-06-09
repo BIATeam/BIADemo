@@ -140,19 +140,21 @@ namespace BIA.Net.Core.Domain
         /// Create a record from a DTO.
         /// </summary>
         /// <param name="mapperMode">The mode of mapping.</param>
+        /// <param name="headerNames">The list of header names.</param>
         /// <returns>Func.</returns>
-        public virtual Func<TDto, object[]> DtoToRecord(string mapperMode)
+        public virtual Func<TDto, object[]> DtoToRecord(string mapperMode, List<string> headerNames = null)
         {
-            return DtoToRecord();
+            return DtoToRecord(headerNames);
         }
 
         /// <summary>
         /// Create a record from a DTO.
         /// </summary>
+        /// <param name="headerNames">The list of header names.</param>
         /// <returns>Func.</returns>
-        public virtual Func<TDto, object[]> DtoToRecord()
+        public virtual Func<TDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            throw new NotImplementedException("This mapper is not build to generate reccords, or the implementation of DtoToRecord is missing.");
+            throw new NotImplementedException("This mapper is not build to generate records, or the implementation of DtoToRecord is missing.");
         }
 
         public static string CSVString(string x)

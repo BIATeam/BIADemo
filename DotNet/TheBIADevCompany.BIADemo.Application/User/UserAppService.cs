@@ -422,48 +422,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(PagingFilterFormatDto filters)
-        {
-            // We ignore paging to return all records
-            filters.First = 0;
-            filters.Rows = 0;
-
-            var queryFilter = new PagingFilterFormatDto
-            {
-                Filters = filters.Filters,
-                GlobalFilter = filters.GlobalFilter,
-                SortField = filters.SortField,
-                SortOrder = filters.SortOrder,
-            };
-
-            var query = await this.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: queryFilter);
-
-            List<object[]> records = query.results.Select(user => new object[]
-            {
-                user.LastName,
-                user.FirstName,
-                user.Login,
-                string.Join("|", user.Roles.Select(r => r.Display)),
-            }).ToList();
-
-            List<string> columnHeaders = null;
-            if (filters is PagingFilterFormatDto fileFilters)
-            {
-                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
-            }
-
-            StringBuilder csv = new StringBuilder();
-            records.ForEach(line =>
-            {
-                csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
-            });
-
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
-            return buffer;
-        }
-
         /// <summary>
         /// Selects the default language.
         /// </summary>
@@ -481,6 +439,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }
+        }
+
+        /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
+        public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
+        {
+            return await this.GetCsvAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters);
         }
     }
 }

@@ -20,6 +20,42 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     public class UserMapper : BaseMapper<UserDto, User, int>
     {
         /// <summary>
+        /// Header Name.
+        /// </summary>
+        public enum HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            Id,
+
+            /// <summary>
+            /// header name LastName.
+            /// </summary>
+            LastName,
+
+            /// <summary>
+            /// header name FirstName.
+            /// </summary>
+            FirstName,
+
+            /// <summary>
+            /// header name Login.
+            /// </summary>
+            Login,
+
+            /// <summary>
+            /// header name Guid.
+            /// </summary>
+            Guid,
+
+            /// <summary>
+            /// header name Roles.
+            /// </summary>
+            Roles,
+        }
+
+        /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
         public override ExpressionCollection<User> ExpressionCollection
@@ -27,13 +63,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             get
             {
                 return new ExpressionCollection<User>
-                   {
-                       { "Id", user => user.Id },
-                       { "LastName", user => user.LastName },
-                       { "FirstName", user => user.FirstName },
-                       { "Login", user => user.Login },
-                       { "Guid", user => user.Guid },
-                   };
+                {
+                    { HeaderName.Id.ToString(), user => user.Id },
+                    { HeaderName.LastName.ToString(), user => user.LastName },
+                    { HeaderName.FirstName.ToString(), user => user.FirstName },
+                    { HeaderName.Login.ToString(), user => user.Login },
+                    { HeaderName.Guid.ToString(), user => user.Guid },
+                };
             }
         }
 
@@ -81,6 +117,48 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     entity.Roles.Add(role);
                 }
             }
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Func<UserDto, object[]> DtoToRecord(List<string> headerNames = null)
+        {
+            return x =>
+            {
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.LastName.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.LastName));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.FirstName.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.FirstName));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.Login.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Login));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.Guid.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Guid.ToString()));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.Roles.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.Roles));
+                        }
+                    }
+                }
+
+                return records.ToArray();
+            };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>

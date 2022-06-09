@@ -6,16 +6,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -138,16 +133,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
-        /// Generates CSV content.
-        /// </summary>
-        /// <param name="filters">Represents the columns and their traductions.</param>
-        /// <returns>A <see cref="Task"/> holding the buffered data to return in a file.</returns>
-        Task<byte[]> ExportCSV(PagingFilterFormatDto filters);
-
-        /// <summary>
         /// Selects the default language.
         /// </summary>
         /// <param name="userInfo">The user information.</param>
         void SelectDefaultLanguage(UserInfoDto userInfo);
+
+        /// <summary>
+        /// Get Csv.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <returns>binary csv.</returns>
+        Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters);
     }
 }

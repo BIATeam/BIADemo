@@ -23,32 +23,39 @@
     editMode="row"
     dataKey="id"
     styleClass="p-datatable-striped"
+    (onColReorder)="onColReorder($event)"
   >
-    <!-- HEADER -->
+  <!-- HEADER -->
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th class="bia-table-select-col" *ngIf="canSelectElement">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
-          <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field">
+          <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
             {{ col?.header | translate }}
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
-          <th *ngIf="col?.isSortable !== true">
+          <th *ngIf="col?.isSortable !== true" pReorderableColumn>
             {{ col?.header | translate }}
           </th>
         </ng-container>
       </tr>
-      <tr *ngIf="showColSearch">
+      <tr *ngIf="showColSearch" class="searchTR">
         <th *ngIf="canSelectElement"></th>
-        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+        <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
           <span *ngIf="col.isSearchable === true" class="p-float-label">
             <input
               pInputText
               class="input-search"
               type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-              placeholder="{{ col.searchPlaceholder !== undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+              placeholder="{{
+                col.searchPlaceholder !== undefined
+                  ? col.searchPlaceholder
+                  : col.isDate === true
+                  ? ('bia.dateIso8601' | translate)
+                  : ''
+              }}"
               (input)="dt.filter($event.target.value, col.field, col.filterMode)"
               [value]="dt.filters[col.field]?.value"
               [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value !== '' }"

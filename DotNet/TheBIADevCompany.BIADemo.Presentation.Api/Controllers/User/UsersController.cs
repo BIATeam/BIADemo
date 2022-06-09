@@ -325,15 +325,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Users.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.userService.ExportCSV(filters);
-            string fileName = $"Users-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", fileName);
+            byte[] buffer = await this.userService.GetCsvAsync(filters);
+            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BIAConstants.Csv.Extension}");
         }
     }
 }

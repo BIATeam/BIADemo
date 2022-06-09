@@ -113,7 +113,7 @@ export class PlanesTypesIndexComponent implements OnInit {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.planeTypeListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.planeTypeListComponent.getLazyLoadMetadata() };
     this.planeTypeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planesTypes') + '.csv');

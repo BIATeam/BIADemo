@@ -38,6 +38,7 @@ export class BiaTableComponent implements OnChanges {
   @Output() filter = new EventEmitter<number>();
   @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
+  @Output() colReorder = new EventEmitter<KeyValuePair[]>();
 
   @ViewChild('dt', { static: false }) table: Table;
 
@@ -143,32 +144,37 @@ export class BiaTableComponent implements OnChanges {
   protected getColumns(): PrimeTableColumn[] {
     const tableState: TableState | null = this.getTableState();
     let columns: PrimeTableColumn[] = [];
-    if (tableState && tableState.columnOrder && tableState.columnOrder?.length > 0) {
+    let columnOrder: string[] = [];
+    if (this.table) {
+      columnOrder = this.table.columns.map(x => x.field);
+    } else if (tableState && tableState.columnOrder) {
+      columnOrder = tableState.columnOrder;
+    }
+
+    if (columnOrder && columnOrder?.length > 0) {
 
       // The primeTableColumns are sorted by columnOrder.
-      tableState.columnOrder.forEach(colName => {
+      columnOrder.forEach(colName => {
         const column: PrimeTableColumn = this.configuration.columns.filter((col) => col.field === colName)[0];
         columns.push(column);
       });
 
-      if (tableState && tableState.columnOrder) {
-        // A hide then show column does not appear in sorted fields,
-        // We start by finding them (missingColumns)
-        const missingColumns = this.configuration.columns.filter(
-          (col) => tableState.columnOrder?.indexOf(col.field) === -1
-        );
+      // A hide then show column does not appear in sorted fields,
+      // We start by finding them (missingColumns)
+      const missingColumns = this.configuration.columns.filter(
+        (col) => columnOrder?.indexOf(col.field) === -1
+      );
 
-        missingColumns.forEach(missingColumn => {
-          // Then, missing columns are added in relation to their initial position
-          const index: number = this.configuration.columns.indexOf(missingColumn);
-          columns.splice(index, 0, missingColumn);
-        });
-      }
+      missingColumns.forEach(missingColumn => {
+        // Then, missing columns are added in relation to their initial position
+        const index: number = this.configuration.columns.indexOf(missingColumn);
+        columns.splice(index, 0, missingColumn);
+      });
 
     } else {
       columns = this.configuration.columns;
     }
-    
+
     return columns;
   }
 
@@ -252,6 +258,11 @@ export class BiaTableComponent implements OnChanges {
     }
   }
 
+  onColReorder(event: { dragIndex: number, dropIndex: number, columns: PrimeTableColumn[] }) {
+    const displayedColumns: KeyValuePair[] = event.columns.map(x => <KeyValuePair>{ key: x.field, value: x.header });
+    this.colReorder.emit(displayedColumns);
+  }
+
   protected saveTableState() {
     if (this.table && this.table.isStateful()) {
       this.table.columns = this.displayedColumns;
@@ -301,5 +312,9 @@ export class BiaTableComponent implements OnChanges {
 
   getLazyLoadOnInit(): boolean {
     return !this.tableStateKey;
+  }
+
+  getPrimeNgTable(): Table {
+    return this.table;
   }
 }
