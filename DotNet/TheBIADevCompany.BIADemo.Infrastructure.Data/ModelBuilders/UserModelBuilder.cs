@@ -128,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
-            modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
+            modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Admin, Code = "Admin", Label = "Administrator" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" });
