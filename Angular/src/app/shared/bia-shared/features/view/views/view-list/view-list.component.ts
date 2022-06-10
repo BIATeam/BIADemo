@@ -24,6 +24,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   views: View[];
   selectedView: number;
   defaultView: number;
+  currentView = -1;
   private sub = new Subscription();
   @Input() tableStateKey: string;
   @Input() tableState: string;
@@ -74,8 +75,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
-      this.selectedView = -1;
-      // this.viewChange.emit(this.tableState);
+      this.selectedView = this.currentView;
     }
   }
 
@@ -163,12 +163,13 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         : defaultView;
     this.defaultView = defaultView;
 
-    this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: -1 });
+    this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
   }
 
   private updateFilterValues(preference?: string | null) {
     if (preference) {
-      this.selectedView = this.defaultView;
+      const currentView = this.views.find(v => v.preference === preference);
+      this.selectedView = currentView ? currentView.id : this.currentView;
       this.viewChange.emit(preference);
     } else {
       if (this.selectedView !== 0) {

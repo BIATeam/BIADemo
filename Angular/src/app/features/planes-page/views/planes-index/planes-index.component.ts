@@ -70,6 +70,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
+  tableState: string;
+  sortFieldValue = 'msn';
   parentIds: string[];
 
   constructor(
@@ -195,6 +197,11 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onViewChange(viewPreference: string) {
     this.viewPreference = viewPreference;
+  }
+
+  onStateSave(tableState: string) {
+    this.viewPreference = tableState;
+    this.tableState = tableState;
   }
 
   onExportCSV() {

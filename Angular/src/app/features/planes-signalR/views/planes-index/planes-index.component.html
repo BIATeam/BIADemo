@@ -2,7 +2,7 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
-      [canAdd]="canAdd&&!useCalcMode"
+      [canAdd]="canAdd && !useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
@@ -21,8 +21,10 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
     ></bia-table-controller>
-    <bia-table *ngIf="!useCalcMode"
+    <bia-table
+      *ngIf="!useCalcMode"
       [elements]="planes$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -38,8 +40,11 @@
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
     ></bia-table>
-    <app-plane-table *ngIf="useCalcMode"
+    <app-plane-table
+      *ngIf="useCalcMode"
       [elements]="planes$ | async"
       [dictOptionDtos]="planeOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
@@ -56,6 +61,8 @@
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
     ></app-plane-table>
   </div>
