@@ -76,6 +76,7 @@
     },
     "view": "View",
     "views": {
+      "current": "Current view",
       "default": "Default view",
       "defineDefault": "Set default",
       "description": "Description",

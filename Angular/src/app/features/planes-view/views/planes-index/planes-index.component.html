@@ -21,6 +21,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
     ></bia-table-controller>
     <bia-table *ngIf="!useCalcMode"
@@ -40,6 +41,7 @@
       [tableStateKey]="tableStateKey"
       [sortFieldValue]="sortFieldValue"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      (stateSave)="onStateSave($event)"
     ></bia-table>
     <app-plane-table *ngIf="useCalcMode"
       [elements]="planes$ | async"

@@ -74,6 +74,7 @@
     },
     "view": "Ver",
     "views": {
+      "current": "Vista actual",
       "default": "Vista predeterminada",
       "defineDefault": "Establecer por defecto",
       "description": "Descripción",

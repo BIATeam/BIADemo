@@ -209,10 +209,6 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     });
   }
 
-  onColReorder(columns: KeyValuePair[]) {
-    this.displayedColumns = columns;
-  }
-
   private setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.Plane_Update);
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);

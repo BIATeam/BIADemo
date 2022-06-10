@@ -39,7 +39,6 @@
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      (colReorder)="onColReorder($event)"
     ></bia-table>
     <app-plane-table *ngIf="useCalcMode"
       [elements]="planes$ | async"

@@ -75,7 +75,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   protected membersSignalRService: MembersSignalRService;
   public memberOptionsService: MemberOptionsService;
 
-  constructor( injector: Injector ) {
+  constructor(injector: Injector) {
     this.store = injector.get<Store<AppState>>(Store);
     this.router = injector.get<Router>(Router);
     this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
@@ -99,7 +99,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
         this.setPermissions();
       })
     );
-    
+
     this.members$ = this.store.select(getAllMembers);
     this.totalCount$ = this.store.select(getMembersTotalCount);
     this.loading$ = this.store.select(getMemberLoadingGetAll);
@@ -118,7 +118,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }
@@ -214,7 +214,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.memberListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
+    this.memberListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata()
     };

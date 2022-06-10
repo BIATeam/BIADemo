@@ -105,7 +105,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.maintenanceTeamOptionsService.loadAllOptions();
+          this.maintenanceTeamOptionsService.loadAllOptions();
         })
       );
     }
@@ -114,12 +114,12 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
       let isinit = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) {
-              isinit = false;
-            } else {
-              this.onLoadLazy(this.maintenanceTeamListComponent.getLazyLoadMetadata());
-            }
-          })
+          if (isinit) {
+            isinit = false;
+          } else {
+            this.onLoadLazy(this.maintenanceTeamListComponent.getLazyLoadMetadata());
+          }
+        })
       );
     }
   }
@@ -156,14 +156,14 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
 
   onEdit() {
     if (this.selectedMaintenanceTeams.length == 1) {
-      this.router.navigate([this.selectedMaintenanceTeams[0].id , 'edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.selectedMaintenanceTeams[0].id, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
-  
+
   onManageMember(maintenanceTeamId: number) {
     if (maintenanceTeamId && maintenanceTeamId > 0) {
-      this.router.navigate([ maintenanceTeamId , 'members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([maintenanceTeamId, 'members'], { relativeTo: this.activatedRoute });
     }
   }
 
@@ -218,7 +218,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.maintenanceTeamListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
+    this.maintenanceTeamListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.maintenanceTeamListComponent.getLazyLoadMetadata()
     };

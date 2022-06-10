@@ -70,6 +70,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   viewPreference: string;
   popupTitle: string;
   tableStateKey = this.useView ? 'planesGrid' : undefined;
+  tableState: string;
   useViewTeamWithTypeId = this.useView ? useViewTeamWithTypeId : null;
   parentIds: string[];
   sortFieldValue = 'msn';
@@ -100,7 +101,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.planeOptionsService.loadAllOptions();
+          this.planeOptionsService.loadAllOptions();
         })
       );
     }
@@ -109,7 +110,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }
@@ -199,9 +200,14 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.viewPreference = viewPreference;
   }
 
+  onStateSave(tableState: string) {
+    this.viewPreference = tableState;
+    this.tableState = tableState;
+  }
+
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
+    this.planeListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
     };
