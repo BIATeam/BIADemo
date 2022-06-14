@@ -1,8 +1,8 @@
 // BIADemo only
-// <copyright file="ExampleTask.cs" company="TheBIADevCompany">
+// <copyright file="LongTask.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-namespace TheBIADevCompany.BIADemo.WorkerService.Job
+namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System;
     using System.Threading.Tasks;
@@ -15,15 +15,14 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Job
     /// Example of task lanched manualy with hangfire.
     /// </summary>
     [AutomaticRetry(Attempts = 0, LogEvents = true)]
-    internal class ExampleTask : BaseJob
+    internal class LongTask : BaseJob
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExampleTask"/> class.
+        /// Initializes a new instance of the <see cref="LongTask"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public ExampleTask(IConfiguration configuration, ILogger<SynchronizeUserTask> logger)
+        public LongTask(IConfiguration configuration, ILogger<LongTask> logger)
             : base(configuration, logger)
         {
         }
@@ -36,6 +35,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
+            await Task.Delay(3000);
+
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job ExampleTask.");
         }
     }

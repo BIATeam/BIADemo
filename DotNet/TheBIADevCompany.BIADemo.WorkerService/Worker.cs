@@ -22,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.WorkerService.Job;
+    using TheBIADevCompany.BIADemo.Application.Job;
 
     /// <summary>
     /// Worker class.

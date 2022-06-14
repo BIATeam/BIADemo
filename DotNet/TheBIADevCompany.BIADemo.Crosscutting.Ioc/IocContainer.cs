@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using System.Net.Http;
     using Audit.Core;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
@@ -16,7 +17,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Safran.EZwins.Infrastructure.Service.Repositories;
-    using System.Net.Http;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
