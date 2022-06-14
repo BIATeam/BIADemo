@@ -4,20 +4,24 @@
 
 #pragma warning disable SA1200 // Using directives should be placed correctly
 using System;
+using BIA.Net.Core.Common.Configuration;
+using BIA.Net.Core.Presentation.Common.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
 using TheBIADevCompany.BIADemo.Presentation.Api;
 #pragma warning restore SA1200 // Using directives should be placed correctly
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // NLog: setup the logger first to catch all errors
 try
 {
+    WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
     builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     {
         config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -29,7 +33,19 @@ try
         IConfiguration configuration = hostingContext.Configuration;
         LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
     })
-.UseNLog();
+    .UseNLog();
+
+    Startup startup = new Startup(builder.Configuration);
+
+    startup.ConfigureServices(builder.Services);
+
+    WebApplication app = builder.Build();
+
+    BiaNetSection biaNetSection = new BiaNetSection();
+    builder.Configuration.GetSection("BiaNet").Bind(biaNetSection);
+    startup.Configure(app, app.Environment, new JwtFactory(Options.Create<Jwt>(biaNetSection.Jwt)));
+
+    app.Run();
 }
 catch (Exception ex)
 {
@@ -43,13 +59,3 @@ finally
     // Ensure to flush and stop internal timers/threads before application-exit
     LogManager.Shutdown();
 }
-
-Startup startup = new Startup(builder.Configuration);
-
-startup.ConfigureServices(builder.Services);
-
-WebApplication app = builder.Build();
-
-startup.Configure(app, app.Environment);
-
-app.Run();

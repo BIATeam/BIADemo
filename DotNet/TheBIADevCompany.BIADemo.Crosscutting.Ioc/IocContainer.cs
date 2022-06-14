@@ -15,6 +15,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Safran.EZwins.Infrastructure.Service.Repositories;
+    using System.Net.Http;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
@@ -129,6 +131,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
+
+            collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = true,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
+
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = false,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
         }
     }
 }

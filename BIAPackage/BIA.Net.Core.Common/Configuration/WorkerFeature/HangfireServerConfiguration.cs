@@ -21,11 +21,6 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         /// </summary>
         public string ConnectionStringName { get; set; }
 
-        /// <summary>
-        /// If true a dashboard is available to monitor jobs.
-        /// </summary>
-        public bool UseDashboard { get; set; }
-
         public HangfireServerConfiguration()
         {
             this.IsActive = false;

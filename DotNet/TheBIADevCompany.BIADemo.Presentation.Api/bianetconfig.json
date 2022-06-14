@@ -1,6 +1,15 @@
 {
   "BiaNet": {
     "ApiFeatures": {
+      "HangfireDashboard": {
+        "IsActive": true,
+        "DashboardAdmin": true,
+        "DashboardAdminPermission": "Background_Task_Admin",
+        "DashboardReadOnly": true,
+        "DashboardReadOnlyPermission": "Background_Task_Read_Only",
+        "ServerName": "BIADemo",
+        "ConnectionStringName": "BIADemoDatabase"
+      },
       "DistributedCache": {
         "IsActive": true,
         "ConnectionStringName": "BIADemoDatabase"

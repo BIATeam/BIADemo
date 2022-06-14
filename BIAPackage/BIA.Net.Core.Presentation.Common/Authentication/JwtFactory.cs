@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
@@ -25,16 +26,25 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         /// <summary>
         /// The current JWT options.
         /// </summary>
-        private readonly JwtOptions jwtOptions;
+        private readonly Jwt jwt;
+
+        /// <summary>
+        /// The signing key to use when generating tokens.
+        /// </summary>
+        public SigningCredentials signingCredentials { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JwtFactory"/> class.
         /// </summary>
         /// <param name="jwtOptions">The JWT options.</param>
-        public JwtFactory(IOptions<JwtOptions> jwtOptions)
+        public JwtFactory(IOptions<Jwt> jwtOptions)
         {
-            this.jwtOptions = jwtOptions.Value;
-            ThrowIfInvalidOptions(this.jwtOptions);
+            this.jwt = jwtOptions.Value;
+
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwt.SecretKey));
+            this.signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+            ThrowIfInvalidOptions(this.jwt);
         }
 
         public ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey)
@@ -45,7 +55,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = this.jwtOptions.SigningCredentials.Key,
+                IssuerSigningKey = this.signingCredentials.Key,
                 ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
             };
             try
@@ -88,18 +98,18 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
             claims.AddRange(new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, identity.Name),
-                new Claim(JwtRegisteredClaimNames.Jti, await this.jwtOptions.JtiGenerator()),
-                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwtOptions.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Jti, await this.jwt.JtiGenerator()),
+                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
             });
 
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
-                issuer: this.jwtOptions.Issuer,
-                audience: this.jwtOptions.Audience,
+                issuer: this.jwt.Issuer,
+                audience: this.jwt.Audience,
                 claims: claims,
-                notBefore: this.jwtOptions.NotBefore,
-                expires: this.jwtOptions.Expiration,
-                signingCredentials: this.jwtOptions.SigningCredentials);
+                notBefore: this.jwt.NotBefore,
+                expires: this.jwt.Expiration,
+                signingCredentials: this.signingCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -131,7 +141,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         /// Throw an exception if a JWT option is not correctly set.
         /// </summary>
         /// <param name="options">The JWT options to check.</param>
-        private static void ThrowIfInvalidOptions(JwtOptions options)
+        private static void ThrowIfInvalidOptions(Jwt options)
         {
             if (options == null)
             {
@@ -141,11 +151,6 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
             if (options.ValidFor <= TimeSpan.Zero)
             {
                 throw new ArgumentException($"The value of {nameof(options.ValidFor)} must be a non-zero TimeSpan.", nameof(options));
-            }
-
-            if (options.SigningCredentials == null)
-            {
-                throw new ArgumentNullException(nameof(options), $"The attribute {nameof(options.SigningCredentials)} is null.");
             }
 
             if (options.JtiGenerator == null)

@@ -13,6 +13,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features;
+    using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -91,18 +93,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);
 
-            services.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                UseDefaultCredentials = true,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            });
-            services.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                UseDefaultCredentials = false,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            });
         }
 
         /// <summary>
@@ -110,7 +100,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="jwtFactory">The JWT factory.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IJwtFactory jwtFactory)
         {
             if (env.IsDevelopment())
             {
@@ -141,7 +132,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures);
+            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new ();
+            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
+
+            app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }
 }

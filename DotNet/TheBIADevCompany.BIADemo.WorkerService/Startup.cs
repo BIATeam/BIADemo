@@ -16,7 +16,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using BIA.Net.Core.WorkerService.Features.HangfireServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -118,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
         /// <param name="jwtFactory">The jwt Factory.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IJwtFactory jwtFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (!env.IsDevelopment())
             {
@@ -136,11 +135,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             PlaneHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
 
             // End BIADemo
-            HangfireServerAuthorizations hangfireServerAuthorizations = new ();
-            hangfireServerAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
-            hangfireServerAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
-
-            app.UseBiaWorkerFeatures<AuditFeature>(this.biaNetSection.WorkerFeatures, hangfireServerAuthorizations);
+            app.UseBiaWorkerFeatures<AuditFeature>(this.biaNetSection.WorkerFeatures);
         }
     }
 }

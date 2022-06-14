@@ -14,7 +14,6 @@
     using Hangfire.Dashboard;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
-    using BIA.Net.Core.WorkerService.Features.HangfireServer;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Common.Authentication;
 
@@ -123,37 +122,8 @@
         }
 
         public static IApplicationBuilder UseBiaWorkerFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
-            WorkerFeatures workerFeatures, HangfireServerAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
+            WorkerFeatures workerFeatures) where AuditFeature : IAuditFeature
         {
-            // Hangfire Server
-            if (workerFeatures?.HangfireServer?.IsActive == true)
-            {
-                //app.UseHangfireDashboard();
-
-                //app.UseEndpoints(endpoints =>
-                //{
-                //    endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
-                //    {
-                //        Authorization =  new[] { new HangfireAuthorizationFilter() }
-                //    })
-                //    /*.RequireAuthorization(HangfirePolicyName)*/;
-                //});
-
-                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                {
-                    DashboardTitle = () => workerFeatures.HangfireServer.ServerName,
-                });
-                app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
-                {
-                    Authorization = hangfireServerAuthorizations.Authorization
-                });
-                app.UseHangfireDashboard("/hangfire", new DashboardOptions
-                {
-                    IsReadOnlyFunc = (DashboardContext context) => true,
-                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
-                });
-            }
-
             app.ApplicationServices.GetRequiredService<AuditFeature>().
                 UseAuditFeatures(app.ApplicationServices);
 

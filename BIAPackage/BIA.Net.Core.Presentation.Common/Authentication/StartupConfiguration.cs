@@ -40,13 +40,13 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
 
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
             // Configure JwtIssuerOptions
-            services.Configure<JwtOptions>(options =>
+            services.Configure<Jwt>(options =>
             {
                 options.Issuer = configuration.Jwt.Issuer;
                 options.Audience = configuration.Security?.Audience;
-                options.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+                options.SecretKey = configuration.Jwt.SecretKey;
+                options.ValidTime = configuration.Jwt.ValidTime;
             });
-
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
