@@ -45,7 +45,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         {
             this.Configuration = configuration;
             this.logger = logger;
-
         }
 
         /// <summary>
@@ -59,9 +58,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// </summary>
         /// <param name="stoppingToken">Triggered when <see cref="M:Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)" /> is called.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
             string projectName = this.Configuration["Project:Name"];

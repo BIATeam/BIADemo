@@ -20,10 +20,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using NLog.Extensions.Logging;
     using NLog.Web;
 
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.WorkerService.Features;
-
-    // End BIADemo
 
     /// <summary>
     /// The base program class.
@@ -61,7 +57,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     IConfiguration configuration = hostingContext.Configuration;
                     startup = new Startup(configuration);
                     startup.ConfigureServices(services);
-
                 })
                 .UseNLog()
                 .UseWindowsService()
@@ -84,54 +79,5 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 LogManager.Shutdown();
             }
         }
-
-        /// <summary>
-        /// Create the web host builder.
-        /// </summary>
-        /// <param name="args">The command line arguments.</param>
-        /// <returns>The web host builder.</returns>
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
-                    config.AddJsonFile($"bianetconfig.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    IConfiguration configuration = hostingContext.Configuration;
-                    LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
-                })
-                .UseNLog()
-                .UseStartup<Startup>();
-
-        /// <summary>
-        /// Create the host builder.
-        /// </summary>
-        /// <param name="args">The command line arguments.</param>
-        /// <returns>The web host builder.</returns>
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
-                    config.AddJsonFile($"bianetconfig.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
-                })
-                .ConfigureLogging((hostingContext, logging) =>
-                {
-                    IConfiguration configuration = hostingContext.Configuration;
-                    LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
-                })
-                .UseNLog()
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseUrls("https://*:8081", "http://*:8080");
-                    webBuilder.UseStartup<Startup>();
-                })
-                .UseWindowsService();
     }
 }

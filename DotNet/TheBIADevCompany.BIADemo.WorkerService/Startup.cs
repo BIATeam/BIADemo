@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
     using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
@@ -81,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal() { });
+            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(ClaimsPrincipal.Current));
             services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 
             services.Configure<ClientForHubConfiguration>(
@@ -108,24 +109,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
-        /// <param name="app">The application builder.</param>
-        /// <param name="env">The environment.</param>
-        /// <param name="jwtFactory">The jwt Factory.</param>
+        /// <param name="host">The host.</param>
         public static void Configure(IHost host)
         {
-            /*
-            if (!env.IsDevelopment())
-            {
-                app.UseHsts();
-            }
-
-            app.UseResponseCompression();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-            */
 
             // Begin BIADemo
             using (var scope = host.Services.CreateScope())
