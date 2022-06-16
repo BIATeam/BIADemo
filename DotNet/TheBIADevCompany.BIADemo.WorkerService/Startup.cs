@@ -45,18 +45,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         private readonly BiaNetSection biaNetSection;
 
         /// <summary>
-        /// The current environment.
-        /// </summary>
-        private readonly IWebHostEnvironment currentEnvironment;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="env">The environment.</param>
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            this.currentEnvironment = env;
             this.configuration = configuration;
             this.biaNetSection = new BiaNetSection();
             this.configuration.GetSection("BiaNet").Bind(this.biaNetSection);
@@ -68,22 +62,22 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="services">The collection of services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddCors();
-            services.AddResponseCompression();
+            // services.AddControllers();
+            // services.AddCors();
+            // services.AddResponseCompression();
 
-            services.AddHsts(options =>
+            /* services.AddHsts(options =>
             {
                 options.Preload = true;
                 options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
                 options.MaxAge = TimeSpan.FromDays(365); // One year expiry
-            });
+            }); */
 
-            services.Configure<CookiePolicyOptions>(options =>
+            /*services.Configure<CookiePolicyOptions>(options =>
             {
                 options.Secure = CookieSecurePolicy.Always;
                 options.HttpOnly = HttpOnlyPolicy.Always;
-            });
+            }); */
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -117,8 +111,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
         /// <param name="jwtFactory">The jwt Factory.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IHost host)
         {
+            /*
             if (!env.IsDevelopment())
             {
                 app.UseHsts();
@@ -130,12 +125,17 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             app.UseAuthentication();
             app.UseAuthorization();
+            */
 
             // Begin BIADemo
-            PlaneHandlerRepository.Configure(app.ApplicationServices.GetService<IClientForHubRepository>());
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                PlaneHandlerRepository.Configure(services.GetService<IClientForHubRepository>());
+            }
 
             // End BIADemo
-            app.UseBiaWorkerFeatures<AuditFeature>(this.biaNetSection.WorkerFeatures);
+            host.UseBiaWorkerFeatures<AuditFeature>(/*this.biaNetSection.WorkerFeatures*/);
         }
     }
 }

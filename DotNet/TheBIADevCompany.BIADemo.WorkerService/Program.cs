@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -33,18 +34,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// The main method that start the project.
         /// </summary>
         /// <param name="args">The command line arguments.</param>
-        public static void Main(string[] args)
+        /// <returns>The async task.</returns>
+        public static async Task Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
             try
             {
-                /// CreateWebHostBuilder(args).Build().Run();
+                IHostBuilder builder = Host.CreateDefaultBuilder(args);
+                Startup startup;
 
-                // If use as a windows service: CreateHostBuilder(args).Build().Run()
-
-
-                WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-                builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+                IHost host = builder.ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
@@ -56,18 +55,21 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     IConfiguration configuration = hostingContext.Configuration;
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
                 })
-                .UseNLog();
+                .ConfigureServices((hostingContext, services) =>
+                {
+                    services.AddHostedService<Worker>();
+                    IConfiguration configuration = hostingContext.Configuration;
+                    startup = new Startup(configuration);
+                    startup.ConfigureServices(services);
 
-                Startup startup = new Startup(builder.Configuration, builder.Environment);
+                })
+                .UseNLog()
+                .UseWindowsService()
+                .Build();
 
-                startup.ConfigureServices(builder.Services);
+                Startup.Configure(host);
 
-                WebApplication app = builder.Build();
-
-                startup.Configure(app, app.Environment);
-
-                app.Run();
-
+                await host.RunAsync();
             }
             catch (Exception ex)
             {

@@ -121,13 +121,15 @@
             return services;
         }
 
-        public static IApplicationBuilder UseBiaWorkerFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
-            WorkerFeatures workerFeatures) where AuditFeature : IAuditFeature
+        public static IHost UseBiaWorkerFeatures<AuditFeature>([NotNull] this IHost host/*, WorkerFeatures workerFeatures*/) where AuditFeature : IAuditFeature
         {
-            app.ApplicationServices.GetRequiredService<AuditFeature>().
-                UseAuditFeatures(app.ApplicationServices);
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                services.GetRequiredService<AuditFeature>().UseAuditFeatures(services);
+            }
 
-            return app;
+            return host;
         }
     }
 }
