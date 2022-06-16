@@ -39,6 +39,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="distributedCache">The distributed cache.</param>
         public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IDistributedCache distributedCache)
             : base(httpClient, logger, distributedCache)
         {

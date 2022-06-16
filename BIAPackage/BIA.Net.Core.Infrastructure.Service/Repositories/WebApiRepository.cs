@@ -149,6 +149,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return (default(T), default(bool), default(string));
         }
 
+        /// <summary>
+        /// Add bearer in http request authorization.
+        /// </summary>
+        /// <returns>A async task.</returns>
         protected virtual async Task AddAuthorizationBearerAsync()
         {
             if (this.httpClient.DefaultRequestHeaders.Authorization?.Scheme != Bearer)
@@ -168,12 +172,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 else
                 {
                     _ = this.SetBearerTokenInCacheAsync(null);
-                    throw new ArgumentNullException($"{nameof(bearerToken)} is empty in AddAuthorizationBearerAsync");
                 }
             }
         }
 
-
+        /// <summary>
+        /// Get the jwt expiration date.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns></returns>
         protected virtual DateTimeOffset GetJwtTokenExpirationDate(string token)
         {
             DateTimeOffset expirationDate = default;
@@ -206,16 +213,29 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return isValid;
         }
 
+        /// <summary>
+        /// Get the storage key of the token in the cache. 
+        /// </summary>
+        /// <returns>The storage key.</returns>
         protected virtual string GetBearerCacheKey()
         {
             return $"{this.className}|{Bearer}";
         }
 
+        /// <summary>
+        /// Get the bearer token in the cache.
+        /// </summary>
+        /// <returns>The bearer token.</returns>
         protected virtual async Task<string> GetBearerTokenInCacheAsync()
         {
             return await this.distributedCache.GetStringAsync(this.GetBearerCacheKey());
         }
 
+        /// <summary>
+        /// Set the bearer token in cache.
+        /// </summary>
+        /// <param name="bearerToken">The bearer token.</param>
+        /// <returns>A async task.</returns>
         protected virtual async Task SetBearerTokenInCacheAsync(string bearerToken)
         {
             if (!string.IsNullOrWhiteSpace(bearerToken))
