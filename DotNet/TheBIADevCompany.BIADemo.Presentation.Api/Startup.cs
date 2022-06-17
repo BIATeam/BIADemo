@@ -83,9 +83,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
             services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString()));
 
-            services.Configure<ClientForHubConfiguration>(
-                this.configuration.GetSection("BiaNet:ApiFeatures:ClientForHub"));
-
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaApiFeatures(this.biaNetSection.ApiFeatures, this.configuration);

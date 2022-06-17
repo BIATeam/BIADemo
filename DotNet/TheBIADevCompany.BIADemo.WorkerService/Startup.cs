@@ -96,9 +96,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             );
             services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 
-            services.Configure<ClientForHubConfiguration>(
-                this.configuration.GetSection("BiaNet:WorkerFeatures:ClientForHub"));
-
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(

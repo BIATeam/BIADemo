@@ -19,9 +19,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private static bool started = false;
         private readonly ClientForHubConfiguration _ClientForHubConfiguration;
 
-        public SignalRClientForHubRepository(IOptions<ClientForHubConfiguration> options)
+        public SignalRClientForHubRepository(IOptions<CommonFeatures> options)
         {
-            _ClientForHubConfiguration = options.Value;
+            _ClientForHubConfiguration = options.Value.ClientForHub;
         }
 
         public Task StartAsync()
