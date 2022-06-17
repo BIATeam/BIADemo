@@ -52,6 +52,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Role
         {
             /// <summary>
+            /// The admin role code.
+            /// </summary>
+            public const string Admin = "Admin";
+
+            /// <summary>
             /// The user role code.
             /// </summary>
             public const string User = "User";
