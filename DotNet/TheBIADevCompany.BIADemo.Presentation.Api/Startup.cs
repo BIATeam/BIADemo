@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Presentation.Common.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
     using Microsoft.AspNetCore.Hosting;
@@ -86,13 +87,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 this.configuration.GetSection("BiaNet:ApiFeatures:ClientForHub"));
 
             // Begin BIA Standard service
+            services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaApiFeatures(this.biaNetSection.ApiFeatures, this.configuration);
 
             // End BIA Standard service
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);
-
         }
 
         /// <summary>
@@ -136,6 +137,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
+            CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
             app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

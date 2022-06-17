@@ -1,6 +1,6 @@
 {
   "BiaNet": {
-    "WorkerFeatures": {
+    "CommonFeatures": {
       "ClientForHub": {
         "SignalRUrl": "https://the-bia-dev-team-int.the-deploy-domain-name.bia/BIADemo/WebApi/HubForClients"
       }

@@ -4,6 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Common.Authentication;
@@ -35,39 +36,6 @@
             ApiFeatures apiFeatures,
             IConfiguration configuration)
         {
-            var biaNetSection = new BiaNetSection();
-            configuration.GetSection("BiaNet").Bind(biaNetSection);
-
-            // Authentication
-            services.ConfigureAuthentication(biaNetSection);
-
-            // Local memory cache
-            services.AddMemoryCache();
-
-            // Distributed Cache
-            if (apiFeatures.DistributedCache.IsActive)
-            {
-                string dbEngine = configuration.GetDBEngine(apiFeatures.DistributedCache.ConnectionStringName);
-                if (dbEngine.ToLower().Equals("sqlserver"))
-                {
-                    services.AddDistributedSqlServerCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(apiFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
-                    });
-                }
-                else if (dbEngine.ToLower().Equals("postgresql"))
-                {
-                    services.AddDistributedPostgreSqlCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(apiFeatures.DistributedCache.ConnectionStringName);
-                        config.SchemaName = "dbo";
-                        config.TableName = "DistCache";
-                    });
-                }
-            }
-
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {
@@ -126,7 +94,7 @@
             // Delegate Job Worker
             if (apiFeatures.DelegateJobToWorker?.IsActive == true)
             {
-                string dbEngine = configuration.GetDBEngine(apiFeatures.DistributedCache.ConnectionStringName);
+                string dbEngine = configuration.GetDBEngine(apiFeatures.DelegateJobToWorker.ConnectionStringName);
 
                 if (dbEngine.ToLower().Equals("sqlserver"))
                 {
@@ -215,9 +183,6 @@
                     Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
                 });
             }
-
-            app.ApplicationServices.GetRequiredService<AuditFeature>().
-                UseAuditFeatures(app.ApplicationServices);
 
             return app;
         }

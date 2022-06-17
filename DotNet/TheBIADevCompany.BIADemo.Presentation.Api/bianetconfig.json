@@ -1,5 +1,18 @@
 {
   "BiaNet": {
+    "CommonFeatures": {
+      "DistributedCache": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "ClientForHub": {
+        "IsActive": true
+      },
+      "AuditConfiguration": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      }
+    },
     "ApiFeatures": {
       "HangfireDashboard": {
         "IsActive": true,
@@ -10,23 +23,12 @@
         "ServerName": "BIADemo",
         "ConnectionStringName": "BIADemoDatabase"
       },
-      "DistributedCache": {
-        "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
-      },
       "DelegateJobToWorker": {
         "IsActive": true,
         "ConnectionStringName": "BIADemoDatabase"
       },
       "HubForClients": {
         "IsActive": true
-      },
-      "ClientForHub": {
-        "IsActive": true
-      },
-      "AuditConfiguration": {
-        "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
       }
     },
     "EmailConfiguration": {

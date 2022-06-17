@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BIA.Net.Core.Common.Configuration.CommonFeature
+namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
     /// <summary>
     /// Api Feature Hub for Client Coniguration.

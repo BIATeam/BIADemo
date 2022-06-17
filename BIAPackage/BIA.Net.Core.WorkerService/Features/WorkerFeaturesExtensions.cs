@@ -16,6 +16,7 @@
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
 
     /// <summary>
     /// Add the standard service.
@@ -40,35 +41,6 @@
 
             // Authentication
             services.ConfigureAuthentication(biaNetSection);
-
-            // Local memory cache
-            services.AddMemoryCache();
-
-            // Distributed Cache
-            if (workerFeatures?.DistributedCache?.IsActive == true)
-            {
-                string dbEngine = configuration.GetDBEngine(workerFeatures.DistributedCache.ConnectionStringName);
-                if (dbEngine.ToLower().Equals("sqlserver"))
-                {
-                    services.AddDistributedSqlServerCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(workerFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
-                    });
-                }
-                else if (dbEngine.ToLower().Equals("postgresql"))
-                {
-                    services.AddDistributedPostgreSqlCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(workerFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
-                    });
-                }
-
-                services.AddMemoryCache();
-            }
 
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)
@@ -97,7 +69,7 @@
                 });
                 services.AddHangfire(config =>
                 {
-                    string dbEngine = configuration.GetDBEngine(workerFeatures.DistributedCache.ConnectionStringName);
+                    string dbEngine = configuration.GetDBEngine(workerFeatures.HangfireServer.ConnectionStringName);
                     if (dbEngine.ToLower().Equals("sqlserver"))
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
@@ -119,17 +91,6 @@
             }
 
             return services;
-        }
-
-        public static IHost UseBiaWorkerFeatures<AuditFeature>([NotNull] this IHost host/*, WorkerFeatures workerFeatures*/) where AuditFeature : IAuditFeature
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                services.GetRequiredService<AuditFeature>().UseAuditFeatures(services);
-            }
-
-            return host;
         }
     }
 }

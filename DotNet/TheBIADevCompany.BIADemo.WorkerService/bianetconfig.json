@@ -1,20 +1,9 @@
 {
   "BiaNet": {
-    "WorkerFeatures": {
-      "HangfireServer": {
-        "IsActive": true,
-        "ServerName": "BIADemo",
-        "ConnectionStringName": "BIADemoDatabase"
-      },
+    "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
         "ConnectionStringName": "BIADemoDatabase"
-      },
-      "DatabaseHandler": {
-        // Except BIADemo "IsActive": false
-        // Begin BIADemo
-        "IsActive": true
-        // End BIADemo
       },
       "ClientForHub": {
         "IsActive": true
@@ -24,6 +13,19 @@
         "ConnectionStringName": "BIADemoDatabase"
       }
     },
+    "WorkerFeatures": {
+      "HangfireServer": {
+        "IsActive": true,
+        "ServerName": "BIADemo",
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "DatabaseHandler": {
+        // Except BIADemo "IsActive": false
+        // Begin BIADemo
+        "IsActive": true
+        // End BIADemo
+      }
+    },
 
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
@@ -31,7 +33,7 @@
       "SmtpPort": 25
     },
     "Authentication": {
-      "LdapCacheGroupDuration": 20, // in minutes
+      "LdapCacheGroupDuration": 1, // in minutes
       "LdapCacheUserDuration": 180 // in minutes
     },
     "Jwt": {
