@@ -88,7 +88,7 @@ export class BiaOnlineOfflineService {
         this.ping().pipe(
           first()
         ).subscribe((ping) => {
-          if (ping?.length > 0) {
+          if (ping?.length > 0 && this.serverAvailableSubject.value === false) {
             this.serverAvailableSubject.next(true);
             this.sendHttpRequestsFromIndexedDb();
           }
