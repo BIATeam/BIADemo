@@ -5,12 +5,14 @@
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
       "UrlMatomo": "https://matomo-int.the-shared-tools-domain-name.bia/matomo(torename)"
     },
+    "CommonFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "https://the-bia-dev-team-int.the-deploy-domain-name.bia/BIADemo/WebApi/HubForClients"
+      }
+    },
     "ApiFeatures": {
       "Swagger": {
         "IsActive": true
-      },
-      "ClientForHub": {
-        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
       }
     },
     "EmailConfiguration": {

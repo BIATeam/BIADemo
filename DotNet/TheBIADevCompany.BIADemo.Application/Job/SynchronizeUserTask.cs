@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.WorkerService.Job
+namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Job
     /// Task to synchronize users from LDAP.
     /// </summary>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    internal class SynchronizeUserTask : BaseJob
+    public class SynchronizeUserTask : BaseJob
     {
         private readonly IUserAppService userService;
 

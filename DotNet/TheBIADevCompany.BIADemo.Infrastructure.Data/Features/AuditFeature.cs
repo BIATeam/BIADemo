@@ -32,10 +32,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="auditConfigurationOptions">the audit configuration.</param>
-        public AuditFeature(IConfiguration configuration, IOptions<AuditConfiguration> auditConfigurationOptions)
+        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures>commonFeaturesConfigurationOptions)
         {
             Audit.Core.Configuration.AuditDisabled = true;
-            AuditConfiguration auditConfiguration = auditConfigurationOptions.Value;
+            AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
             this.isActive = auditConfiguration?.IsActive == true;
 
             // Audit
