@@ -12,6 +12,7 @@
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using EFCore.BulkExtensions;
+    using Microsoft.EntityFrameworkCore.Storage;
 
     public class BIADataContext : DbContext, IQueryableUnitOfWork
     {
@@ -118,7 +119,11 @@
         /// <param name="items">List of the items to update.</param>
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-           await this.BulkUpdateAsync(items?.ToList());
+            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
+            {
+                await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+                await transaction.CommitAsync();
+            }
         }
 
         /// <summary>
@@ -128,7 +133,11 @@
         /// <param name="items">List of the items to delete.</param>
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            await this.BulkDeleteAsync(items?.ToList());
+            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
+            {
+                await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+                await transaction.CommitAsync();
+            }
         }
 
         /// <summary>

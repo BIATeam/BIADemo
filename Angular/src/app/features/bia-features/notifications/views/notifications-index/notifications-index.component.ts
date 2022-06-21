@@ -137,15 +137,13 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onDetail(notificationId: number) {
     this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
-    
-    this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe( notif =>
-      {
-        if (notif && !notif.read)
-        {
-            // refresh the list to see readed
-            setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()),500)
-        }
+
+    this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe(notif => {
+      if (notif && !notif.read) {
+        // refresh the list to see readed
+        setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()), 500)
       }
+    }
     )
   }
 
@@ -186,7 +184,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.notificationListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
+    this.notificationListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
     };

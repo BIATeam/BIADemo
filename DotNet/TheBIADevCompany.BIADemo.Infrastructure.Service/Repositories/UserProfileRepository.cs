@@ -9,6 +9,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -30,8 +31,9 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
-        public UserProfileRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<UserProfileRepository> logger)
-            : base(httpClient, logger)
+        /// <param name="distributedCache">The distributed cache.</param>
+        public UserProfileRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<UserProfileRepository> logger, IDistributedCache distributedCache)
+            : base(httpClient, logger, distributedCache)
         {
             this.configuration = configuration.Value;
         }

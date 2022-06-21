@@ -38,7 +38,7 @@ export class BiaTableComponent implements OnChanges {
   @Output() filter = new EventEmitter<number>();
   @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
-  @Output() colReorder = new EventEmitter<KeyValuePair[]>();
+  @Output() stateSave = new EventEmitter<string>();
 
   @ViewChild('dt', { static: false }) table: Table;
 
@@ -145,10 +145,10 @@ export class BiaTableComponent implements OnChanges {
     const tableState: TableState | null = this.getTableState();
     let columns: PrimeTableColumn[] = [];
     let columnOrder: string[] = [];
-    if (this.table) {
-      columnOrder = this.table.columns.map(x => x.field);
-    } else if (tableState && tableState.columnOrder) {
+    if (tableState && tableState.columnOrder) {
       columnOrder = tableState.columnOrder;
+    } else if (this.table) {
+      columnOrder = this.table.columns.map(x => x.field);
     }
 
     if (columnOrder && columnOrder?.length > 0) {
@@ -253,14 +253,11 @@ export class BiaTableComponent implements OnChanges {
       const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
       if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
-        storage.setItem(this.table.stateKey, JSON.stringify(customState));
+        const jsonCustomState: string = JSON.stringify(customState);
+        storage.setItem(this.table.stateKey, jsonCustomState);
+        setTimeout(() => this.stateSave.emit(jsonCustomState), 0);
       }
     }
-  }
-
-  onColReorder(event: { dragIndex: number, dropIndex: number, columns: PrimeTableColumn[] }) {
-    const displayedColumns: KeyValuePair[] = event.columns.map(x => <KeyValuePair>{ key: x.field, value: x.header });
-    this.colReorder.emit(displayedColumns);
   }
 
   protected saveTableState() {

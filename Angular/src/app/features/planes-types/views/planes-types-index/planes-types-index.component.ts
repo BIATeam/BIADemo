@@ -58,7 +58,7 @@ export class PlanesTypesIndexComponent implements OnInit {
     private planeTypeDas: PlaneTypeDas,
     private translateService: TranslateService,
     private biaTranslationService: BiaTranslationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initTableConfiguration();
@@ -113,7 +113,7 @@ export class PlanesTypesIndexComponent implements OnInit {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeTypeListComponent.getPrimeNgTable().columns.map((x:PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
+    this.planeTypeListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.planeTypeListComponent.getLazyLoadMetadata() };
     this.planeTypeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planesTypes') + '.csv');
