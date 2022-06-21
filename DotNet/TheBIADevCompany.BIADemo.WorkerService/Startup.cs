@@ -111,7 +111,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     });
 
             // End BIA Standard service
+            // Begin BIADemo
             services.AddHostedService<Worker>();
+
+            // End BIADemo
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);

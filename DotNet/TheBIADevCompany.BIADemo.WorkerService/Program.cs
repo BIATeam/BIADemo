@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 })
                 .ConfigureServices((hostingContext, services) =>
                 {
-                    services.AddHostedService<Worker>();
+                    // services.AddHostedService<Worker>();
                     IConfiguration configuration = hostingContext.Configuration;
                     startup = new Startup(configuration);
                     startup.ConfigureServices(services);

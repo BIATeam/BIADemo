@@ -47,6 +47,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     services.AddHangfireServer(hfOptions =>
                     {
                         hfOptions.ServerName = "DeployHangfireDB";
+                        hfOptions.Queues = new string[] { "Deploy" };
                     });
                     services.AddHangfire(config =>
                     {

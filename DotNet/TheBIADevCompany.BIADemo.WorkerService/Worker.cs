@@ -61,22 +61,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
-            string projectName = this.Configuration["Project:Name"];
-
-            try
-            {
-                // RecuringJobsHelper.CleanHangfireServerQueue()
-                RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), this.Configuration["Tasks:WakeUp:CRON"]);
-                RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), this.Configuration["Tasks:SynchronizeUser:CRON"]);
-            }
-            catch (Exception e)
-            {
-                this.logger.LogWarning("Cannot create reccuring job... Probably database is read only...");
-            }
-
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Begin BIADem
+                // Begin BIADemo
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
 
