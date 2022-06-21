@@ -1,9 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { liveQuery } from 'dexie';
-import { BehaviorSubject, from, Observable, Subscription, timer } from 'rxjs';
-import { filter, first, map, skip } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
+import { filter, first, skip } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
 import { AuthService } from './auth.service';
@@ -30,7 +29,8 @@ export class BiaOnlineOfflineService implements OnDestroy {
 
   protected serverAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public serverAvailable$: Observable<boolean> = this.serverAvailableSubject.asObservable();
-  public syncCompleted$: Observable<boolean>;
+  protected syncCompletedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public syncCompleted$: Observable<boolean> = this.syncCompletedSubject.asObservable();
   public static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
   protected sub = new Subscription();
   protected static _IsModeEnabled = false;
@@ -86,18 +86,18 @@ export class BiaOnlineOfflineService implements OnDestroy {
   }
 
   protected init() {
-    this.checkServerAvailable();
+    this.checkSyncCompleted();
     this.initObsSyncCompleted();
+    this.checkServerAvailable();
   }
 
   protected initObsSyncCompleted() {
-    this.syncCompleted$ = from(liveQuery(() => this.db.httpRequests.count())).pipe(map((x: Number) => x < 1));
+    this.sub.add(this.syncCompleted$.pipe(skip(1), filter(x => x === true)).subscribe(() => this.biaMessageService.showSyncSuccess()));
+  }
 
-    this.sub.add(
-      this.syncCompleted$.pipe(skip(1), filter(x => x === true)).subscribe(() =>
-        this.biaMessageService.showSyncSuccess()
-      )
-    );
+  protected async checkSyncCompleted() {
+    const nbHttpRequestItems: number = await this.db.httpRequests.count();
+    this.syncCompletedSubject.next(nbHttpRequestItems < 1);
   }
 
   /**
@@ -172,13 +172,15 @@ export class BiaOnlineOfflineService implements OnDestroy {
     );
   }
 
-  protected addHttpRequestItem(httpRequest: HttpRequest<any>) {
-    this.db.httpRequests.add(<HttpRequestItem>{ httpRequest: { ...httpRequest } });
+  protected async addHttpRequestItem(httpRequest: HttpRequest<any>) {
+    await this.db.httpRequests.add(<HttpRequestItem>{ httpRequest: { ...httpRequest } });
+    await this.checkSyncCompleted();
   }
 
-  protected deleteHttpRequestItem(httpRequestItem: HttpRequestItem) {
+  protected async deleteHttpRequestItem(httpRequestItem: HttpRequestItem) {
     if (httpRequestItem.id) {
-      this.db.httpRequests.delete(httpRequestItem.id);
+      await this.db.httpRequests.delete(httpRequestItem.id);
+      await this.checkSyncCompleted();
     }
   }
 }
