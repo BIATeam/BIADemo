@@ -1,10 +1,12 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { liveQuery } from 'dexie';
+import { BehaviorSubject, from, Observable, Subscription, timer } from 'rxjs';
+import { filter, first, map, skip } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
+import { AuthService } from './auth.service';
 import { BiaMessageService } from './bia-message.service';
 import { HttpOptions } from './generic-das.service';
 
@@ -24,12 +26,13 @@ enum HTTPMethod {
 @Injectable({
   providedIn: 'root'
 })
-export class BiaOnlineOfflineService {
+export class BiaOnlineOfflineService implements OnDestroy {
 
   protected serverAvailableSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public serverAvailable$: Observable<boolean> = this.serverAvailableSubject.asObservable();
+  public syncCompleted$: Observable<boolean>;
   public static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
-
+  protected sub = new Subscription();
   protected static _IsModeEnabled = false;
   public static get isModeEnabled() {
     return BiaOnlineOfflineService._IsModeEnabled;
@@ -39,9 +42,16 @@ export class BiaOnlineOfflineService {
     protected http: HttpClient,
     protected db: AppDB,
     protected biaMessageService: BiaMessageService,
-    protected translateService: TranslateService) {
+    protected translateService: TranslateService,
+    protected authService: AuthService) {
     BiaOnlineOfflineService._IsModeEnabled = true;
     this.init();
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   public static isServerAvailable(error: any) {
@@ -77,6 +87,17 @@ export class BiaOnlineOfflineService {
 
   protected init() {
     this.checkServerAvailable();
+    this.initObsSyncCompleted();
+  }
+
+  protected initObsSyncCompleted() {
+    this.syncCompleted$ = from(liveQuery(() => this.db.httpRequests.count())).pipe(map((x: Number) => x < 1));
+
+    this.sub.add(
+      this.syncCompleted$.pipe(skip(1), filter(x => x === true)).subscribe(() =>
+        this.biaMessageService.showSyncSuccess()
+      )
+    );
   }
 
   /**
@@ -90,6 +111,7 @@ export class BiaOnlineOfflineService {
         ).subscribe((ping) => {
           if (ping?.length > 0 && this.serverAvailableSubject.value === false) {
             this.serverAvailableSubject.next(true);
+            this.authService.shouldRefreshToken = true;
             this.sendHttpRequestsFromIndexedDb();
           }
         });
@@ -117,8 +139,6 @@ export class BiaOnlineOfflineService {
           this.httpRequestDelete(httpRequestItem);
         }
       });
-
-      this.biaMessageService.showSyncSuccess();
     }
   }
 
