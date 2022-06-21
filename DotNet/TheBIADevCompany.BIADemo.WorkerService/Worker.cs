@@ -1,3 +1,4 @@
+// BIADemo only
 // <copyright file="Worker.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -63,11 +64,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Begin BIADemo
+
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
 
-                // End BIADemo
                 await Task.Delay(2000);
             }
         }

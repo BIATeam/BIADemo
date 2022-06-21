@@ -5,13 +5,7 @@
 namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.WorkerService.Features;
-    using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using Microsoft.AspNetCore;
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using NLog;
     using NLog.Extensions.Logging;
     using NLog.Web;
-
 
     /// <summary>
     /// The base program class.
@@ -53,7 +46,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 })
                 .ConfigureServices((hostingContext, services) =>
                 {
-                    // services.AddHostedService<Worker>();
+                    // Begin BIADemo
+                    services.AddHostedService<Worker>();
+
+                    // End BIADemo
                     IConfiguration configuration = hostingContext.Configuration;
                     startup = new Startup(configuration);
                     startup.ConfigureServices(services);

@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -51,9 +52,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     });
                     services.AddHangfire(config =>
                     {
-                        config
-                            .UseSqlServerStorage(
-                               configuration.GetConnectionString("BIADemoDatabase"));
+                        config.UseSqlServerStorage(configuration.GetConnectionString("BIADemoDatabase"));
+                        string projectName = configuration["Project:Name"];
+
+                        // Initialize here the recuring jobs
+                        RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
+                        RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
                     });
                 })
                 .ConfigureLogging((hostingContext, logging) =>
