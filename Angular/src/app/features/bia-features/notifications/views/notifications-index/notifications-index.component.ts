@@ -202,7 +202,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('titleTranslated', 'notification.title'),
@@ -233,6 +233,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

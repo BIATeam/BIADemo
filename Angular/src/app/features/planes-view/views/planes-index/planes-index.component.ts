@@ -216,7 +216,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('msn', 'plane.msn'),
@@ -252,6 +252,6 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }
