@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, Subscription, timer } from 'rxjs';
-import { filter, first, skip } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription, throwError, timer } from 'rxjs';
+import { catchError, filter, first, skip } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
 import { AuthService } from './auth.service';
@@ -97,7 +97,10 @@ export class BiaOnlineOfflineService implements OnDestroy {
 
   protected async checkSyncCompleted() {
     const nbHttpRequestItems: number = await this.db.httpRequests.count();
-    this.syncCompletedSubject.next(nbHttpRequestItems < 1);
+    const syncCompleted: boolean = nbHttpRequestItems < 1;
+    if (syncCompleted !== this.syncCompletedSubject.value) {
+      this.syncCompletedSubject.next(syncCompleted);
+    }
   }
 
   /**
@@ -143,28 +146,29 @@ export class BiaOnlineOfflineService implements OnDestroy {
   }
 
   protected httpRequestPost(httpRequestItem: HttpRequestItem) {
-    this.http.post(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body).pipe(
-      first()
-    ).subscribe(
-      () => {
-        this.deleteHttpRequestItem(httpRequestItem);
-      },
-    );
+    const obs$ = this.http.post(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body);
+    return this.httpRequest(httpRequestItem, obs$);
   }
 
   protected httpRequestPut(httpRequestItem: HttpRequestItem) {
-    this.http.put(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body).pipe(
-      first()
-    ).subscribe(
-      () => {
-        this.deleteHttpRequestItem(httpRequestItem);
-      },
-    );
+    const obs$ = this.http.put(httpRequestItem.httpRequest.urlWithParams, httpRequestItem.httpRequest.body);
+    return this.httpRequest(httpRequestItem, obs$);
   }
 
   protected httpRequestDelete(httpRequestItem: HttpRequestItem) {
-    this.http.delete(httpRequestItem.httpRequest.urlWithParams).pipe(
-      first()
+    const obs$ = this.http.delete(httpRequestItem.httpRequest.urlWithParams);
+    return this.httpRequest(httpRequestItem, obs$);
+  }
+
+  protected httpRequest(httpRequestItem: HttpRequestItem, obs$: Observable<any>) {
+    return obs$.pipe(
+      first(),
+      catchError((error) => {
+        if (BiaOnlineOfflineService.isServerAvailable(error) === true && error.status !== 498) {
+          this.deleteHttpRequestItem(httpRequestItem);
+        }
+        return throwError(error);
+      })
     ).subscribe(
       () => {
         this.deleteHttpRequestItem(httpRequestItem);
