@@ -168,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // get user info
             UserInfoDto userInfo = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User)||userRolesFromUserDirectory.Contains(Constants.Role.Admin))
+            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
                 try
                 {
@@ -387,7 +387,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             var allRoles = userRolesFromUserDirectory;
 
             // get user rights
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userRolesFromUserDirectory.Contains(Constants.Role.User) || userRolesFromUserDirectory.Contains(Constants.Role.Admin))
             {
                 var userRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
                 allRoles.AddRange(userRoles);
