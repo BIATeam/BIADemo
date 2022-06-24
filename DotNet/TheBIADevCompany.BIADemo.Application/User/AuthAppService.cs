@@ -168,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // get user info
             UserInfoDto userInfo = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userRolesFromUserDirectory.Contains(Constants.Role.User)||userRolesFromUserDirectory.Contains(Constants.Role.Admin))
             {
                 try
                 {
