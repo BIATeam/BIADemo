@@ -62,11 +62,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 ConfigureInfrastructureDataContainer(collection, configuration);
                 ConfigureCommonContainer(collection, configuration);
+                collection.Configure<CommonFeatures>(configuration.GetSection("BiaNet:CommonFeatures"));
+                collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
+                collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
-
-            collection.Configure<CommonFeatures>(configuration.GetSection("BiaNet:CommonFeatures"));
-            collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
-            collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
         }
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
