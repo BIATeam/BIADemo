@@ -227,7 +227,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   protected initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           Object.assign(new PrimeTableColumn('user', 'member.user'), {
@@ -241,6 +241,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

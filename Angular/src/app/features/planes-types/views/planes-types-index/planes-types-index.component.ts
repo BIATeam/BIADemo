@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllPlanesTypes, getPlanesTypesTotalCount, getPlaneTypeLoadingGetAll } from '../../store/plane-type.state';
 import {
@@ -8,7 +8,7 @@ import {
   openDialogEdit,
   openDialogNew
 } from '../../store/planes-types-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { PlaneType } from '../../model/plane-type';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -32,9 +32,10 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
   templateUrl: './planes-types-index.component.html',
   styleUrls: ['./planes-types-index.component.scss']
 })
-export class PlanesTypesIndexComponent implements OnInit {
+export class PlanesTypesIndexComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) planeTypeListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -51,7 +52,7 @@ export class PlanesTypesIndexComponent implements OnInit {
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
-
+  
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
@@ -66,6 +67,12 @@ export class PlanesTypesIndexComponent implements OnInit {
     this.planesTypes$ = this.store.select(getAllPlanesTypes);
     this.totalCount$ = this.store.select(getPlanesTypesTotalCount);
     this.loading$ = this.store.select(getPlaneTypeLoadingGetAll);
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   onCreate() {
@@ -127,7 +134,7 @@ export class PlanesTypesIndexComponent implements OnInit {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('title', 'planeType.title'),
@@ -140,6 +147,6 @@ export class PlanesTypesIndexComponent implements OnInit {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

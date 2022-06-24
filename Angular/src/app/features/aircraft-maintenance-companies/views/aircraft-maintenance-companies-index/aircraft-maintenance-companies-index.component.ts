@@ -236,7 +236,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new PrimeTableColumn('title', 'aircraftMaintenanceCompany.title'),
@@ -245,6 +245,6 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }
