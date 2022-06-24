@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
@@ -17,15 +17,17 @@ import { Permission } from 'src/app/shared/permission';
   templateUrl: './view-list.component.html',
   styleUrls: ['./view-list.component.scss']
 })
-export class ViewListComponent implements OnInit, OnDestroy {
+export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];
-  translateKeys: string[] = ['bia.views.system', 'bia.views.default', 'bia.views.team', 'bia.views.user'];
+  translateKeys: string[] = ['bia.views.current', 'bia.views.system', 'bia.views.default', 'bia.views.team', 'bia.views.user'];
   translations: any;
   views: View[];
   selectedView: number;
   defaultView: number;
+  currentView = -1;
   private sub = new Subscription();
   @Input() tableStateKey: string;
+  @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Output() viewChange = new EventEmitter<string>();
 
@@ -61,16 +63,19 @@ export class ViewListComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    this.onTableStateChange(changes);
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
+  }
 
-    const defaultView = this.views.find((v) => v.id === this.defaultView);
-    if (defaultView) {
-      sessionStorage.setItem(this.tableStateKey, defaultView.preference);
-    } else {
-      sessionStorage.removeItem(this.tableStateKey);
+  protected onTableStateChange(changes: SimpleChanges) {
+    if (changes.tableState && changes.tableState.isFirstChange() !== true) {
+      this.selectedView = this.currentView;
     }
   }
 
@@ -99,14 +104,14 @@ export class ViewListComponent implements OnInit, OnDestroy {
     );
     const teamViews = this.views.filter(
       (v) =>
-        v.viewType === ViewType.Team && (v.viewTeams.some((vs) => currentTeamId == vs.teamId ))
+        v.viewType === ViewType.Team && (v.viewTeams.some((vs) => currentTeamId == vs.teamId))
     );
     const userViews = this.views.filter((v) => v.viewType === ViewType.User);
     if (systemViews.length > 0) {
       this.groupedViews = [{
         label: this.translations['bia.views.system'],
         items: systemViews.map((v) => ({ label: this.translations['bia.views.' + v.name], value: v.id }))
-       }];
+      }];
 
       const systemDefault = systemViews.filter((v) =>
         v.name === 'default')[0];
@@ -131,7 +136,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
       });
 
       const teamDefault = teamViews.filter((v) =>
-        v.viewTeams.some((y) => currentTeamId == y.teamId  && y.isDefault === true)
+        v.viewTeams.some((y) => currentTeamId == y.teamId && y.isDefault === true)
       )[0];
       if (teamDefault) {
         defaultView = teamDefault.id;
@@ -157,11 +162,14 @@ export class ViewListComponent implements OnInit, OnDestroy {
         ? this.selectedView
         : defaultView;
     this.defaultView = defaultView;
+
+    this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
   }
 
   private updateFilterValues(preference?: string | null) {
     if (preference) {
-      this.selectedView = this.defaultView;
+      const currentView = this.views.find(v => v.preference === preference);
+      this.selectedView = currentView ? currentView.id : this.currentView;
       this.viewChange.emit(preference);
     } else {
       if (this.selectedView !== 0) {
@@ -197,8 +205,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
 
   showEditButton() {
     let canSetTeamView = false;
-    if (this.useViewTeamWithTypeId != null)
-    {
+    if (this.useViewTeamWithTypeId != null) {
       var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamWithTypeId)?.value;
       canSetTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix) ||
         this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix) ||

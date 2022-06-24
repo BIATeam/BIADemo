@@ -155,7 +155,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
 
   onEdit(userId: number) {
     if (!this.useCalcMode) {
-      this.router.navigate([ userId , 'edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([userId, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
@@ -210,7 +210,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.userListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.userListComponent.getLazyLoadMetadata()
     };

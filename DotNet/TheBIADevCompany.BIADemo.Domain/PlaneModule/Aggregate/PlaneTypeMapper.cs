@@ -6,6 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -15,6 +17,27 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// </summary>
     public class PlaneTypeMapper : BaseMapper<PlaneTypeDto, PlaneType, int>
     {
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public enum HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            Id,
+
+            /// <summary>
+            /// header name Title.
+            /// </summary>
+            Title,
+
+            /// <summary>
+            /// header name Certification Date.
+            /// </summary>
+            CertificationDate,
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<PlaneType> ExpressionCollection
         {
@@ -22,9 +45,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<PlaneType>
                 {
-                    { "Id", planeType => planeType.Id },
-                    { "Title", planeType => planeType.Title },
-                    { "CertificationDate", planeType => planeType.CertificationDate },
+                    { HeaderName.Id.ToString(), planeType => planeType.Id },
+                    { HeaderName.Title.ToString(), planeType => planeType.Title },
+                    { HeaderName.CertificationDate.ToString(), planeType => planeType.CertificationDate },
                 };
             }
         }
@@ -54,12 +77,29 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneTypeDto, object[]> DtoToRecord()
+        public override Func<PlaneTypeDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => new object[]
+            return x =>
             {
-                CSVString(x.Title),
-                CSVDateTime(x.CertificationDate),
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Title.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Title));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CertificationDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.CertificationDate));
+                        }
+                    }
+                }
+
+                return records.ToArray();
             };
         }
     }

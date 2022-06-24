@@ -32,10 +32,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="auditConfigurationOptions">the audit configuration.</param>
-        public AuditFeature(IConfiguration configuration, IOptions<AuditConfiguration> auditConfigurationOptions)
+        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures>commonFeaturesConfigurationOptions)
         {
             Audit.Core.Configuration.AuditDisabled = true;
-            AuditConfiguration auditConfiguration = auditConfigurationOptions.Value;
+            AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
             this.isActive = auditConfiguration?.IsActive == true;
 
             // Audit
@@ -46,9 +46,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 // Log some Audit in dedicated table and all other in AuditLog
                 Audit.Core.Configuration.Setup()
                     .UseEntityFramework(_ => _
-                        .AuditTypeMapper(typeName => typeName.Name == "User" ? typeof(UserAudit) : typeof(AuditLog))
+                        .AuditTypeMapper(type => AuditTypeMapper(type))
                         .AuditEntityAction<IAuditEntity>((evt, entry, auditEntity) =>
                         {
+                            if (evt.Environment.Exception != null)
+                            {
+                                return Task.FromResult(false);
+                            }
+
                             if (auditEntity.GetType() == typeof(AuditLog))
                             {
                                 return GeneralAudit(evt, entry, (AuditLog)auditEntity);
@@ -100,6 +105,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                     BIAClaimsPrincipal principal = serviceProvider.GetRequiredService<IPrincipal>() as BIAClaimsPrincipal;
                     scope.Event.Environment.CustomFields["UserLogin"] = principal.Identity.Name;
                 });
+            }
+        }
+
+        private static Type AuditTypeMapper(Type type)
+        {
+            switch (type.Name)
+            {
+                case "User":
+                    return typeof(UserAudit);
+                default:
+                    return typeof(AuditLog);
             }
         }
 

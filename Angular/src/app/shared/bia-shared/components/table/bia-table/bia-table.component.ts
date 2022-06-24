@@ -38,6 +38,7 @@ export class BiaTableComponent implements OnChanges {
   @Output() filter = new EventEmitter<number>();
   @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
+  @Output() stateSave = new EventEmitter<string>();
 
   @ViewChild('dt', { static: false }) table: Table;
 
@@ -56,10 +57,10 @@ export class BiaTableComponent implements OnChanges {
   displayedColumns: PrimeTableColumn[];
   showLoading$: Observable<any>;
 
-  private defaultSortField: string;
-  private defaultSortOrder: number;
-  private defaultPageSize: number;
-  private defaultColumns: string[];
+  protected defaultSortField: string;
+  protected defaultSortOrder: number;
+  protected defaultPageSize: number;
+  protected defaultColumns: string[];
 
   constructor(public authService: AuthService, public translateService: TranslateService) { }
 
@@ -103,18 +104,18 @@ export class BiaTableComponent implements OnChanges {
 
   protected onConfigurationChange(changes: SimpleChanges) {
     if (this.configuration && changes.configuration) {
-      this.updateDisplayedColumns();
+      this.updateDisplayedColumns(true);
     }
   }
 
   protected onColumnToDisplayChange(changes: SimpleChanges) {
     if (this.columnToDisplays && changes.columnToDisplays) {
-      this.updateDisplayedColumns();
       if (changes.columnToDisplays.isFirstChange()) {
         this.initDefaultSort();
         this.defaultPageSize = this.pageSize;
         this.defaultColumns = this.displayedColumns.map((x) => x.field);
       }
+      this.updateDisplayedColumns(true);
     }
   }
 
@@ -126,15 +127,55 @@ export class BiaTableComponent implements OnChanges {
     this.defaultSortOrder = this.sortOrderValue;
   }
 
-  protected updateDisplayedColumns() {
+  protected updateDisplayedColumns(saveTableState: boolean) {
+    const columns: PrimeTableColumn[] = this.getColumns();
     if (this.columnToDisplays) {
-      this.displayedColumns = this.configuration.columns.filter(
+      this.displayedColumns = columns.filter(
         (col) => this.columnToDisplays.map((x) => x.key).indexOf(col.field) > -1
       );
     } else {
-      this.displayedColumns = this.configuration.columns.slice();
+      this.displayedColumns = columns.slice();
     }
-    this.saveTableState();
+    if (saveTableState === true) {
+      this.saveTableState();
+    }
+  }
+
+  protected getColumns(): PrimeTableColumn[] {
+    const tableState: TableState | null = this.getTableState();
+    let columns: PrimeTableColumn[] = [];
+    let columnOrder: string[] = [];
+    if (tableState && tableState.columnOrder) {
+      columnOrder = tableState.columnOrder;
+    } else if (this.table) {
+      columnOrder = this.table.columns.map(x => x.field);
+    }
+
+    if (columnOrder && columnOrder?.length > 0) {
+
+      // The primeTableColumns are sorted by columnOrder.
+      columnOrder.forEach(colName => {
+        const column: PrimeTableColumn = this.configuration.columns.filter((col) => col.field === colName)[0];
+        columns.push(column);
+      });
+
+      // A hide then show column does not appear in sorted fields,
+      // We start by finding them (missingColumns)
+      const missingColumns = this.configuration.columns.filter(
+        (col) => columnOrder?.indexOf(col.field) === -1
+      );
+
+      missingColumns.forEach(missingColumn => {
+        // Then, missing columns are added in relation to their initial position
+        const index: number = this.configuration.columns.indexOf(missingColumn);
+        columns.splice(index, 0, missingColumn);
+      });
+
+    } else {
+      columns = this.configuration.columns;
+    }
+
+    return columns;
   }
 
   protected onPageSizeChange(changes: SimpleChanges) {
@@ -212,7 +253,9 @@ export class BiaTableComponent implements OnChanges {
       const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
       if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
-        storage.setItem(this.table.stateKey, JSON.stringify(customState));
+        const jsonCustomState: string = JSON.stringify(customState);
+        storage.setItem(this.table.stateKey, jsonCustomState);
+        setTimeout(() => this.stateSave.emit(jsonCustomState), 0);
       }
     }
   }
@@ -226,33 +269,34 @@ export class BiaTableComponent implements OnChanges {
 
   protected restoreStateTable() {
     if (this.table) {
-      if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
-        const storage = this.table.getStorage();
-        const stateString = storage.getItem(this.table.stateKey);
+      const tableState: TableState | null = this.getTableState();
+      if (tableState?.columnOrder) {
 
-        if (stateString) {
-          const state: TableState = JSON.parse(stateString);
-          if (state && state.columnOrder) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            this.displayedColumns = this.configuration.columns.filter(
-              (col) => state.columnOrder && state.columnOrder.indexOf(col.field) > -1
-            );
-          }
-          this.table.restoreState();
-          this.table.sortSingle();
+        this.updateDisplayedColumns(false);
+        this.table.restoreState();
+        this.table.sortSingle();
 
-          this.showColSearch = false;
-          if (this.table.hasFilter()) {
-            for (const key in this.table.filters) {
-              if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
-                this.showColSearch = true;
-                break;
-              }
+        this.showColSearch = false;
+        if (this.table.hasFilter()) {
+          for (const key in this.table.filters) {
+            if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
+              this.showColSearch = true;
+              break;
             }
           }
         }
       }
     }
+  }
+
+  protected getTableState(): TableState | null {
+    const stateString: string | null = sessionStorage.getItem(this.tableStateKey);
+    if (stateString && stateString?.length > 0) {
+      const state: TableState = JSON.parse(stateString);
+      return state;
+    }
+
+    return null;
   }
 
   hasPermission(permission: string): boolean {
@@ -265,5 +309,9 @@ export class BiaTableComponent implements OnChanges {
 
   getLazyLoadOnInit(): boolean {
     return !this.tableStateKey;
+  }
+
+  getPrimeNgTable(): Table {
+    return this.table;
   }
 }

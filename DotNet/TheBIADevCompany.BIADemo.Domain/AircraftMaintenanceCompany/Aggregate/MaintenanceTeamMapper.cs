@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<MaintenanceTeamDto, object[]> DtoToRecord()
+        public override Func<MaintenanceTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             return x => (new object[]
             {

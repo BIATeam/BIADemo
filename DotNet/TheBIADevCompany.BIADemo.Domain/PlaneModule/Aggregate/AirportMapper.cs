@@ -6,6 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -15,6 +17,27 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// </summary>
     public class AirportMapper : BaseMapper<AirportDto, Airport, int>
     {
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public enum HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            Id,
+
+            /// <summary>
+            /// header name Name.
+            /// </summary>
+            Name,
+
+            /// <summary>
+            /// header name City.
+            /// </summary>
+            City,
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Airport> ExpressionCollection
         {
@@ -22,9 +45,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<Airport>
                 {
-                    { "Id", planeType => planeType.Id },
-                    { "Name", planeType => planeType.Name },
-                    { "City", planeType => planeType.City },
+                    { HeaderName.Id.ToString(), planeType => planeType.Id },
+                    { HeaderName.Name.ToString(), planeType => planeType.Name },
+                    { HeaderName.City.ToString(), planeType => planeType.City },
                 };
             }
         }
@@ -54,12 +77,29 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<AirportDto, object[]> DtoToRecord()
+        public override Func<AirportDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => new object[]
+            return x =>
             {
-                CSVString(x.Name),
-                CSVString(x.City),
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Name.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Name));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.City.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.City));
+                        }
+                    }
+                }
+
+                return records.ToArray();
             };
         }
     }

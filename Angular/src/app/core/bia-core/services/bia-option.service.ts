@@ -5,7 +5,7 @@ export class BiaOptionService {
 
   public static Clone<T>(value: any) {
     if (!value) {
-      return null;
+      return null as any;
     }
     return <T>{ ...value };
   }

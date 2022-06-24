@@ -14,9 +14,9 @@
     using Hangfire.Dashboard;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
-    using BIA.Net.Core.WorkerService.Features.HangfireServer;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
 
     /// <summary>
     /// Add the standard service.
@@ -41,35 +41,6 @@
 
             // Authentication
             services.ConfigureAuthentication(biaNetSection);
-
-            // Local memory cache
-            services.AddMemoryCache();
-
-            // Distributed Cache
-            if (workerFeatures?.DistributedCache?.IsActive == true)
-            {
-                string dbEngine = configuration.GetDBEngine(workerFeatures.DistributedCache.ConnectionStringName);
-                if (dbEngine.ToLower().Equals("sqlserver"))
-                {
-                    services.AddDistributedSqlServerCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(workerFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
-                    });
-                }
-                else if (dbEngine.ToLower().Equals("postgresql"))
-                {
-                    services.AddDistributedPostgreSqlCache(config =>
-                    {
-                        config.ConnectionString = configuration.GetConnectionString(workerFeatures.DistributedCache.ConnectionStringName);
-                        config.TableName = "DistCache";
-                        config.SchemaName = "dbo";
-                    });
-                }
-
-                services.AddMemoryCache();
-            }
 
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)
@@ -98,7 +69,7 @@
                 });
                 services.AddHangfire(config =>
                 {
-                    string dbEngine = configuration.GetDBEngine(workerFeatures.DistributedCache.ConnectionStringName);
+                    string dbEngine = configuration.GetDBEngine(workerFeatures.HangfireServer.ConnectionStringName);
                     if (dbEngine.ToLower().Equals("sqlserver"))
                     {
                         config.UseSimpleAssemblyNameTypeSerializer()
@@ -120,44 +91,6 @@
             }
 
             return services;
-        }
-
-        public static IApplicationBuilder UseBiaWorkerFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
-            WorkerFeatures workerFeatures, HangfireServerAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
-        {
-            // Hangfire Server
-            if (workerFeatures?.HangfireServer?.IsActive == true)
-            {
-                //app.UseHangfireDashboard();
-
-                //app.UseEndpoints(endpoints =>
-                //{
-                //    endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
-                //    {
-                //        Authorization =  new[] { new HangfireAuthorizationFilter() }
-                //    })
-                //    /*.RequireAuthorization(HangfirePolicyName)*/;
-                //});
-
-                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                {
-                    DashboardTitle = () => workerFeatures.HangfireServer.ServerName,
-                });
-                app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
-                {
-                    Authorization = hangfireServerAuthorizations.Authorization
-                });
-                app.UseHangfireDashboard("/hangfire", new DashboardOptions
-                {
-                    IsReadOnlyFunc = (DashboardContext context) => true,
-                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
-                });
-            }
-
-            app.ApplicationServices.GetRequiredService<AuditFeature>().
-                UseAuditFeatures(app.ApplicationServices);
-
-            return app;
         }
     }
 }

@@ -198,10 +198,12 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
-            List<string> columnHeaders = null;
+            List<string> columnHeaderKeys = null;
+            List<string> columnHeaderValues = null;
             if (filters is PagingFilterFormatDto fileFilters)
             {
-                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
+                columnHeaderKeys = fileFilters.Columns.Select(x => x.Key).ToList();
+                columnHeaderValues = fileFilters.Columns.Select(x => x.Value).ToList();
             }
 
             // We reset these parameters, used for paging, in order to recover the totality of the data.
@@ -211,7 +213,7 @@ namespace BIA.Net.Core.Domain.Service
             IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
 
             TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
-            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode)).ToList();
+            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
             StringBuilder csv = new();
             records.ForEach(line =>
@@ -220,7 +222,7 @@ namespace BIA.Net.Core.Domain.Service
             });
 
             string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
         }
 
         /// <summary>

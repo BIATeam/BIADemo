@@ -4,9 +4,12 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using System.Net.Http;
     using Audit.Core;
     using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -15,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Safran.EZwins.Infrastructure.Service.Repositories;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
@@ -59,6 +63,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 ConfigureInfrastructureDataContainer(collection, configuration);
                 ConfigureCommonContainer(collection, configuration);
             }
+
+            collection.Configure<CommonFeatures>(configuration.GetSection("BiaNet:CommonFeatures"));
+            collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
+            collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
         }
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
@@ -71,6 +79,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            collection.AddTransient<IAuthAppService, AuthAppService>();
 
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
@@ -117,8 +126,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
-            collection.Configure<AuditConfiguration>(
-               configuration.GetSection("BiaNet:ApiFeatures:AuditConfiguration"));
             collection.AddSingleton<AuditFeature>();
         }
 
@@ -128,6 +135,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
+
+            collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = true,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
+
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = false,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
         }
     }
 }

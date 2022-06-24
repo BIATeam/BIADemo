@@ -12,7 +12,9 @@ namespace BIA.Net.Core.Domain.Authentication
     /// A <see cref="ClaimsPrincipal"/> implementation with additional utility methods.
     /// </summary>
     /// <seealso cref="ClaimsPrincipal" />
+#pragma warning disable S101 // Types should be named in PascalCase
     public class BIAClaimsPrincipal : ClaimsPrincipal
+#pragma warning restore S101 // Types should be named in PascalCase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class.
@@ -44,7 +46,9 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             var userId = this.FindFirst(x => x.Type == ClaimTypes.Sid).Value;
-            return string.IsNullOrEmpty(userId) ? 0 : int.Parse(userId);
+            int.TryParse(userId, out int result);
+
+            return result;
         }
 
         /// <summary>
@@ -53,12 +57,32 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user login.</returns>
         public virtual string GetUserLogin()
         {
-            if (!this.HasClaim(x => x.Type == ClaimTypes.Name))
-            {
-                return string.Empty;
-            }
+            return GetClaimValue(ClaimTypes.Name);
+        }
 
-            return this.FindFirst(x => x.Type == ClaimTypes.Name).Value;
+        public virtual string GetUserFirstName()
+        {
+            return GetClaimValue(ClaimTypes.GivenName);
+        }
+
+        public virtual string GetUserLastName()
+        {
+            return GetClaimValue(ClaimTypes.Surname);
+        }
+
+        public virtual string GetUserCountry()
+        {
+            return GetClaimValue(ClaimTypes.Country);
+        }
+
+        public virtual string GetUserEmail()
+        {
+            return GetClaimValue(ClaimTypes.Email);
+        }
+
+        public virtual string GetSid()
+        {
+            return GetClaimValue(ClaimTypes.Sid);
         }
 
         /// <summary>
@@ -95,6 +119,16 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        protected virtual string GetClaimValue(string claimType)
+        {
+            if (!this.HasClaim(x => x.Type == claimType))
+            {
+                return string.Empty;
+            }
+
+            return this.FindFirst(x => x.Type == claimType).Value;
         }
     }
 }

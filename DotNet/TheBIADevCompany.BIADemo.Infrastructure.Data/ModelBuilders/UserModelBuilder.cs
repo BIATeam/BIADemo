@@ -99,6 +99,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<Team>().ToTable("Teams");
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
+            modelBuilder.Entity<Team>().Property(t => t.Title).IsRequired().HasMaxLength(256);
             modelBuilder.Entity<Team>().Property(u => u.TeamTypeId).IsRequired().HasDefaultValue(TeamTypeId.Site);
         }
 
@@ -127,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>().HasKey(r => r.Id);
-            modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(20);
+            modelBuilder.Entity<Role>().Property(r => r.Code).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Role>().Property(r => r.Label).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Admin, Code = "Admin", Label = "Administrator" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" });
@@ -168,21 +169,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 .UsingEntity(rt =>
                 {
                     rt.ToTable("RoleTeamTypes");
-                    rt.HasData(new { RolesId = (int)RoleId.Admin, TeamTypesId = (int)TeamTypeId.Root });
-                    rt.HasData(new { RolesId = (int)RoleId.BackAdmin, TeamTypesId = (int)TeamTypeId.Root });
-                    rt.HasData(new { RolesId = (int)RoleId.BackReadOnly, TeamTypesId = (int)TeamTypeId.Root });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.Admin });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackAdmin });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Root, RolesId = (int)RoleId.BackReadOnly });
 
-                    rt.HasData(new { RolesId = (int)RoleId.SiteAdmin, TeamTypesId = (int)TeamTypeId.Site });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
 
                     // Begin BIADemo
-                    rt.HasData(new { RolesId = (int)RoleId.Pilot, TeamTypesId = (int)TeamTypeId.Site });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.Pilot });
 
-                    rt.HasData(new { RolesId = (int)RoleId.Supervisor, TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany });
-                    rt.HasData(new { RolesId = (int)RoleId.Expert, TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Expert });
 
-                    rt.HasData(new { RolesId = (int)RoleId.TeamLeader, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
-                    rt.HasData(new { RolesId = (int)RoleId.Operator, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
-                    rt.HasData(new { RolesId = (int)RoleId.Expert, TeamTypesId = (int)TeamTypeId.MaintenanceTeam });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.TeamLeader });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Operator });
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Expert });
 
                     // End BIADemo
                 });

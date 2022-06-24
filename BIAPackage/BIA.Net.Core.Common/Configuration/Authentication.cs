@@ -12,6 +12,11 @@ namespace BIA.Net.Core.Common.Configuration
     public class Authentication
     {
         /// <summary>
+        /// Gets or sets the keycloak configuration.
+        /// </summary>
+        public Keycloak.Keycloak Keycloak { get; set; }
+
+        /// <summary>
         /// The Ldap domain.
         /// </summary>
         public IEnumerable<LdapDomain> LdapDomains { get; set; }

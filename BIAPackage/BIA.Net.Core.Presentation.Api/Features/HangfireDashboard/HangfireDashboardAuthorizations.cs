@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BIA.Net.Core.WorkerService.Features.HangfireServer
+namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 {
-    public class HangfireServerAuthorizations
+    public class HangfireDashboardAuthorizations
     {
         public IEnumerable<IDashboardAuthorizationFilter> Authorization { get; set; }
         public IEnumerable<IDashboardAuthorizationFilter> AuthorizationReadOnly { get; set; }

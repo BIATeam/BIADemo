@@ -5,8 +5,14 @@
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
       "UrlMatomo": "https://matomo-int.the-shared-tools-domain-name.bia/matomo(torename)"
     },
+    "CommonFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
+      }
+    },
     "ApiFeatures": {
       "HubForClients": {
+        // requiered only if you have several front server => you need a redis server
         "RedisConnectionString": "the-bia-dev-team-redis-int.the-deploy-domain-name.bia",
         "RedisChannelPrefix": "TheBIADevCompany.BIADemo"
       }

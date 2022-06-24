@@ -1,8 +1,26 @@
 {
   "BiaNet": {
-    "ApiFeatures": {
+    "CommonFeatures": {
       "DistributedCache": {
         "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      },
+      "ClientForHub": {
+        "IsActive": true
+      },
+      "AuditConfiguration": {
+        "IsActive": true,
+        "ConnectionStringName": "BIADemoDatabase"
+      }
+    },
+    "ApiFeatures": {
+      "HangfireDashboard": {
+        "IsActive": true,
+        "DashboardAdmin": true,
+        "DashboardAdminPermission": "Background_Task_Admin",
+        "DashboardReadOnly": true,
+        "DashboardReadOnlyPermission": "Background_Task_Read_Only",
+        "ServerName": "BIADemo",
         "ConnectionStringName": "BIADemoDatabase"
       },
       "DelegateJobToWorker": {
@@ -11,13 +29,6 @@
       },
       "HubForClients": {
         "IsActive": true
-      },
-      "ClientForHub": {
-        "IsActive": true
-      },
-      "AuditConfiguration": {
-        "IsActive": true,
-        "ConnectionStringName": "BIADemoDatabase"
       }
     },
     "EmailConfiguration": {
@@ -214,15 +225,15 @@
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
       // Member
-      {
-        "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
-        "Roles": [ "Admin", "Site_Admin" ]
-      },
+      //{
+      //  "Names": [ "App_Member_List_Access", "App_Member_Create", "App_Member_Read", "App_Member_Update", "App_Member_Delete", "App_Member_Save" ],
+      //  "Roles": [ "Admin", "Site_Admin" ]
+      //},
       // Permission
-      {
-        "Names": [ "Permissions_Options" ],
-        "Roles": [ "User" ]
-      },
+      //{
+      //  "Names": [ "Permissions_Options" ],
+      //  "Roles": [ "User" ]
+      //},
       // Role
       {
         "Names": [ "Roles_Options" ],

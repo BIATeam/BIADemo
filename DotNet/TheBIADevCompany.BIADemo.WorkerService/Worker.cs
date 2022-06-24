@@ -1,3 +1,4 @@
+// BIADemo only
 // <copyright file="Worker.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -22,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.WorkerService.Job;
+    using TheBIADevCompany.BIADemo.Application.Job;
 
     /// <summary>
     /// Worker class.
@@ -45,18 +46,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         {
             this.Configuration = configuration;
             this.logger = logger;
-            string projectName = configuration["Project:Name"];
-
-            try
-            {
-                // RecuringJobsHelper.CleanHangfireServerQueue()
-                RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-                RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
-            }
-            catch (Exception)
-            {
-                this.logger.LogWarning("Cannot create reccuring job... Probably database is read only...");
-            }
         }
 
         /// <summary>
@@ -70,27 +59,17 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// </summary>
         /// <param name="stoppingToken">Triggered when <see cref="M:Microsoft.Extensions.Hosting.IHostedService.StopAsync(System.Threading.CancellationToken)" /> is called.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
-
-            // Begin BIADemo
-            bool continueTask = true;
-
-            // for a custom scheduling
-#pragma warning disable S2589 // Boolean expressions should not be gratuitous
-            while (continueTask)
-#pragma warning restore S2589 // Boolean expressions should not be gratuitous
+            while (!stoppingToken.IsCancellationRequested)
             {
+
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
-                await Task.Delay(RandomNumberGenerator.GetInt32(1800000, 7200000)); // Random delay beetween 1 800 000 ms (=30 min) and 7 200 000 ms (=2 h)
-                continueTask = true;
-            }
 
-            // End BIADemo
+                await Task.Delay(2000);
+            }
         }
     }
 }

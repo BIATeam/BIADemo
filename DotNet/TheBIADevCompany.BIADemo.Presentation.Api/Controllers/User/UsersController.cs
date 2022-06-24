@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Configuration;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -91,7 +92,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            var results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
+            IEnumerable<UserFromDirectoryDto> results = default;
+
+            if (AuthorizationConfiguration.IsNegotiate())
+            {
+                results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
+            }
+            else
+            {
+                results = await this.userService.GetAllIdPUserAsync(filter, returnSize);
+            }
+
             int resultCount = results.Count();
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, resultCount.ToString());
@@ -143,8 +154,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Add)]
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
-            ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
-            if (result.Errors.Any())
+            ResultAddUsersFromDirectoryDto result = default;
+            if (AuthorizationConfiguration.IsNegotiate())
+            {
+                result = await this.userService.AddFromDirectory(users);
+            }
+            else
+            {
+                result = await this.userService.AddFromIdPAsync(users);
+            }
+
+            if (result.Errors?.Any() == true)
             {
                 return this.StatusCode(303, result.Errors);
             }
@@ -253,21 +273,28 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            StringBuilder sb = new StringBuilder();
-
-            foreach (int id in ids)
+            if (AuthorizationConfiguration.IsNegotiate())
             {
-                var error = await this.userService.RemoveInGroupAsync(id);
-                if (error != string.Empty)
+                StringBuilder sb = new StringBuilder();
+
+                foreach (int id in ids)
                 {
-                    sb.Append(error);
+                    var error = await this.userService.RemoveInGroupAsync(id);
+                    if (error != string.Empty)
+                    {
+                        sb.Append(error);
+                    }
+                }
+
+                var errors = sb.ToString();
+                if (!string.IsNullOrEmpty(errors))
+                {
+                    return this.Problem(errors);
                 }
             }
-
-            var errors = sb.ToString();
-            if (!string.IsNullOrEmpty(errors))
+            else
             {
-                return this.Problem(errors);
+                await this.userService.DeactivateUsersAsync(ids);
             }
 
             return this.Ok();
@@ -298,15 +325,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Generates a csv file according to the filters.
         /// </summary>
-        /// <param name="filters">filters ( <see cref="LazyLoadDto"/>).</param>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = Rights.Users.ListAccess)]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.userService.ExportCSV(filters);
-            string fileName = $"Users-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", fileName);
+            byte[] buffer = await this.userService.GetCsvAsync(filters);
+            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BIAConstants.Csv.Extension}");
         }
     }
 }

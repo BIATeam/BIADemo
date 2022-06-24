@@ -20,6 +20,57 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public enum HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            Id,
+
+            /// <summary>
+            /// header name Msn.
+            /// </summary>
+            Msn,
+
+            /// <summary>
+            /// header name IsActive.
+            /// </summary>
+            IsActive,
+
+            /// <summary>
+            /// header name LastFlightDate.
+            /// </summary>
+            LastFlightDate,
+
+            /// <summary>
+            /// header name DeliveryDate.
+            /// </summary>
+            DeliveryDate,
+
+            /// <summary>
+            /// header name SyncTime.
+            /// </summary>
+            SyncTime,
+
+            /// <summary>
+            /// header name Capacity.
+            /// </summary>
+            Capacity,
+
+            /// <summary>
+            /// header name PlaneType.
+            /// </summary>
+            PlaneType,
+
+            /// <summary>
+            /// header name ConnectingAirports.
+            /// </summary>
+            ConnectingAirports,
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
@@ -28,15 +79,15 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<Plane>
                 {
-                    { "Id", plane => plane.Id },
-                    { "Msn", plane => plane.Msn },
-                    { "IsActive", plane => plane.IsActive },
-                    { "LastFlightDate", plane => plane.LastFlightDate },
-                    { "DeliveryDate", plane => plane.DeliveryDate },
-                    { "SyncTime", plane => plane.SyncTime },
-                    { "Capacity", plane => plane.Capacity },
-                    { "PlaneType", plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
-                    { "ConnectingAirports", plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
+                    { HeaderName.Id.ToString(), plane => plane.Id },
+                    { HeaderName.Msn.ToString(), plane => plane.Msn },
+                    { HeaderName.IsActive.ToString(), plane => plane.IsActive },
+                    { HeaderName.LastFlightDate.ToString(), plane => plane.LastFlightDate },
+                    { HeaderName.DeliveryDate.ToString(), plane => plane.DeliveryDate },
+                    { HeaderName.SyncTime.ToString(), plane => plane.SyncTime },
+                    { HeaderName.Capacity.ToString(), plane => plane.Capacity },
+                    { HeaderName.PlaneType.ToString(), plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
+                    { HeaderName.ConnectingAirports.ToString(), plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -121,19 +172,60 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneDto, object[]> DtoToRecord()
+        public override Func<PlaneDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => (new object[]
+            return x =>
             {
-                CSVString(x.Msn),
-                CSVBool(x.IsActive),
-                CSVDateTime(x.LastFlightDate),
-                CSVDate(x.DeliveryDate),
-                CSVTime(x.SyncTime),
-                CSVNumber(x.Capacity),
-                CSVString(x.PlaneType?.Display),
-                CSVList(x.ConnectingAirports),
-            });
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Msn.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Msn));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IsActive.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVBool(x.IsActive));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.LastFlightDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.LastFlightDate));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.DeliveryDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDate(x.DeliveryDate));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.SyncTime.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVTime(x.SyncTime));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.Capacity.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Capacity));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.PlaneType.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.PlaneType?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.ConnectingAirports.ToString(), StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.ConnectingAirports));
+                        }
+                    }
+                }
+
+                return records.ToArray();
+            };
         }
 
         /// <inheritdoc/>

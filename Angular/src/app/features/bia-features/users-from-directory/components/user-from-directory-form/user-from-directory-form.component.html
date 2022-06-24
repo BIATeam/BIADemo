@@ -2,8 +2,8 @@
   <div class="p-fluid app-field-container" fxLayout="column" fxLayoutAlign="flex-start">
     <div fxLayout="row" fxLayoutAlign="center">
       <div class="app-field-container" fxFlex="50">
-        <div class="p-float-label">
-            <p-dropdown
+        <div *ngIf="useKeycloak !== true" class="p-float-label">
+          <p-dropdown
             [options]="domains"
             placeholder="&nbsp;"
             formControlName="domains"
@@ -16,17 +16,16 @@
           <label>LDAP Domain</label>
         </div>
       </div>
-      <div class="app-field-container" fxFlex="10">
-      </div>
+      <div class="app-field-container" fxFlex="10"></div>
       <div class="app-field-container" fxFlex="30">
         <div class="p-float-label">
           <p-dropdown
-          [options]="returnSizeOptions"
-          placeholder="&nbsp;"
-          formControlName="returnSize"
-          [style]="{ width: '100%' }"
-          appendTo="body"
-        ></p-dropdown>
+            [options]="returnSizeOptions"
+            placeholder="&nbsp;"
+            formControlName="returnSize"
+            [style]="{ width: '100%' }"
+            appendTo="body"
+          ></p-dropdown>
           <label>{{ 'bia.itemsBySearch' | translate }}</label>
         </div>
       </div>

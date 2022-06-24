@@ -15,12 +15,17 @@ namespace BIA.Net.Core.Common.Configuration
     public class BiaNetSection
     {
         /// <summary>
+        /// Configure the activation of common feature (worker and webApi).
+        /// </summary>
+        public CommonFeatures CommonFeatures { get; set; }
+
+        /// <summary>
         /// Configure the activation of feature for worker.
         /// </summary>
         public WorkerFeatures WorkerFeatures { get; set; }
 
         /// <summary>
-        /// Configure the activation of feature for worker.
+        /// Configure the activation of feature for webApi.
         /// </summary>
         public ApiFeatures ApiFeatures { get; set; }
 
@@ -48,6 +53,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the authentication configuration.
         /// </summary>
         public Jwt Jwt { get; set; }
+
 
         /// <summary>
         /// Gets or sets the Roles configuration.

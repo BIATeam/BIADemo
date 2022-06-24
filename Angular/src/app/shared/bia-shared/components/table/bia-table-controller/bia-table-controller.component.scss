@@ -16,6 +16,7 @@
       padding: 0.125rem !important;
     }
   }
+
   p-multiselect {
     .p-multiselect-label {
       padding: 0.125rem !important;
@@ -26,6 +27,7 @@
 .result-contenair {
   padding-top: 15px;
 }
+
 .options {
   padding-top: 20px;
 }
@@ -39,15 +41,23 @@ span,
 label {
   font-family: 'oswald-light';
 }
+
 .result {
   margin-top: 1px;
 }
+
 .pi-filter {
   margin-bottom: 10px;
 }
+
 .p-dropdown-label {
   padding: 0.125rem !important;
 }
+
 .p-multiselect .p-multiselect-label {
   padding: 0.125rem !important;
+}
+
+#bia-input-search {
+  width: 15vw;
 }

@@ -101,7 +101,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            this.aircraftMaintenanceCompanyOptionsService.loadAllOptions();
+          this.aircraftMaintenanceCompanyOptionsService.loadAllOptions();
         })
       );
     }
@@ -110,12 +110,12 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
       let isinit = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-            if (isinit) {
-              isinit = false;
-            } else {
-              this.onLoadLazy(this.aircraftMaintenanceCompanyListComponent.getLazyLoadMetadata());
-            }
-          })
+          if (isinit) {
+            isinit = false;
+          } else {
+            this.onLoadLazy(this.aircraftMaintenanceCompanyListComponent.getLazyLoadMetadata());
+          }
+        })
       );
     }
   }
@@ -152,19 +152,19 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
   onEdit() {
     if (this.selectedAircraftMaintenanceCompanies.length == 1) {
-      this.router.navigate([ this.selectedAircraftMaintenanceCompanies[0].id , 'edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.selectedAircraftMaintenanceCompanies[0].id, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
   onMaintenanceTeams() {
     if (this.selectedAircraftMaintenanceCompanies.length == 1) {
-      this.router.navigate([this.selectedAircraftMaintenanceCompanies[0].id , 'maintenance-teams'], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.selectedAircraftMaintenanceCompanies[0].id, 'maintenance-teams'], { relativeTo: this.activatedRoute });
     }
   }
 
   onManageMember(aircraftMaintenanceCompanyId: number) {
     if (aircraftMaintenanceCompanyId && aircraftMaintenanceCompanyId > 0) {
-      this.router.navigate([ aircraftMaintenanceCompanyId , 'members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([aircraftMaintenanceCompanyId, 'members'], { relativeTo: this.activatedRoute });
     }
   }
 
@@ -219,7 +219,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.aircraftMaintenanceCompanyListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.header.split('.')[1]] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.aircraftMaintenanceCompanyListComponent.getLazyLoadMetadata()
     };

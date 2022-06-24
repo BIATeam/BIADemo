@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.WorkerService.Job
+namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Job
     /// Task to wake up.
     /// </summary>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    internal class WakeUpTask : BaseJob
+    public class WakeUpTask : BaseJob
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="WakeUpTask"/> class.

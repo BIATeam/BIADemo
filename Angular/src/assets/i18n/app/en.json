@@ -106,8 +106,7 @@
   "notification": {
     "action": "Action",
     "add": "Add notification",
-     "add": "Add notification",
-   "listOf": "Notifications",
+    "listOf": "Notifications",
     "title": "Title",
     "detail": "Notification detail",
     "description": "Description",
@@ -125,7 +124,7 @@
     "notifiedPermissions": "Notified permissions",
     "notifiedTeams": "Notified teams",
     "notifiedUsers": "Notified users",
-    "jData" : "Data in JSON",
+    "jData": "Data in JSON",
     "success": {
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notification sent successfully",
