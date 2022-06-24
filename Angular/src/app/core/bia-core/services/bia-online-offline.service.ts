@@ -115,7 +115,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
           if (ping?.length > 0 && this.serverAvailableSubject.value === false) {
             this.serverAvailableSubject.next(true);
             this.authService.shouldRefreshToken = true;
-            this.sendHttpRequestsFromIndexedDb();
+            this.launchFirstHttpRequestItem();
           }
         });
       }
@@ -129,19 +129,15 @@ export class BiaOnlineOfflineService implements OnDestroy {
   /**
    * Retrieve HttpRequests stored in local database and execute them.
    */
-  protected async sendHttpRequestsFromIndexedDb() {
-    const httpRequestItems: HttpRequestItem[] = await this.db.httpRequests.toArray();
-    if (httpRequestItems?.length > 0) {
-      httpRequestItems.forEach((httpRequestItem: HttpRequestItem) => {
-        if (httpRequestItem.httpRequest.method == HTTPMethod.POST) {
-          this.httpRequestPost(httpRequestItem);
-        } else if (httpRequestItem.httpRequest.method == HTTPMethod.PUT) {
-          this.httpRequestPut(httpRequestItem);
-
-        } else if (httpRequestItem.httpRequest.method == HTTPMethod.DELETE) {
-          this.httpRequestDelete(httpRequestItem);
-        }
-      });
+  protected async sendHttpRequest(httpRequestItem: HttpRequestItem | null) {
+    if (httpRequestItem) {
+      if (httpRequestItem.httpRequest.method == HTTPMethod.POST) {
+        this.httpRequestPost(httpRequestItem);
+      } else if (httpRequestItem.httpRequest.method == HTTPMethod.PUT) {
+        this.httpRequestPut(httpRequestItem);
+      } else if (httpRequestItem.httpRequest.method == HTTPMethod.DELETE) {
+        this.httpRequestDelete(httpRequestItem);
+      }
     }
   }
 
@@ -166,6 +162,8 @@ export class BiaOnlineOfflineService implements OnDestroy {
       catchError((error) => {
         if (BiaOnlineOfflineService.isServerAvailable(error) === true && error.status !== 498) {
           this.deleteHttpRequestItem(httpRequestItem);
+        } else {
+          this.launchNextHttpRequestItem(httpRequestItem);
         }
         return throwError(error);
       })
@@ -182,9 +180,53 @@ export class BiaOnlineOfflineService implements OnDestroy {
   }
 
   protected async deleteHttpRequestItem(httpRequestItem: HttpRequestItem) {
-    if (httpRequestItem.id) {
+    if (httpRequestItem && httpRequestItem.id) {
+      const nextHttpRequestItem: HttpRequestItem | null = await this.takeNextHttpRequest(httpRequestItem);
       await this.db.httpRequests.delete(httpRequestItem.id);
       await this.checkSyncCompleted();
+      if (nextHttpRequestItem) {
+        await this.sendHttpRequest(nextHttpRequestItem);
+      }
     }
+  }
+
+  protected async launchFirstHttpRequestItem() {
+    const nextHttpRequestItem: HttpRequestItem | null = await this.takeFirstHttpRequest();
+    if (nextHttpRequestItem) {
+      await this.sendHttpRequest(nextHttpRequestItem);
+    }
+  }
+
+  protected async launchNextHttpRequestItem(httpRequestItem: HttpRequestItem) {
+    if (httpRequestItem && httpRequestItem.id) {
+      const nextHttpRequestItem: HttpRequestItem | null = await this.takeNextHttpRequest(httpRequestItem);
+      if (nextHttpRequestItem) {
+        await this.sendHttpRequest(nextHttpRequestItem);
+      }
+    }
+  }
+
+  protected async takeFirstHttpRequest() {
+    const httpRequestItems: HttpRequestItem[] = await this.getAllHttpRequestItem();
+    if (httpRequestItems?.length > 0) {
+      return httpRequestItems[0];
+    }
+
+    return null;
+  }
+
+  protected async takeNextHttpRequest(httpRequestItem: HttpRequestItem) {
+    const httpRequestItems: HttpRequestItem[] = await this.getAllHttpRequestItem();
+
+    if (httpRequestItems?.length > 0) {
+      const index = httpRequestItems.findIndex(x => x.id === httpRequestItem.id);
+      return httpRequestItems[index + 1];
+    }
+
+    return null;
+  }
+
+  protected async getAllHttpRequestItem() {
+    return await this.db.httpRequests.orderBy('id').toArray();
   }
 }
