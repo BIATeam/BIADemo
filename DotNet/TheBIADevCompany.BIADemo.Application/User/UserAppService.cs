@@ -149,36 +149,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Guid == guid);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
-        public async Task<UserProfileDto> GetUserProfileAsync(string login)
-        {
-            var profile = new UserProfileDto();
-
-            var url = this.configuration.UserProfile.Url;
-            if (!string.IsNullOrEmpty(url))
-            {
-                var parameters = new Dictionary<string, string> { { "login", login } };
-                Dictionary<string, string> result;
-
-                try
-                {
-                    result = await RequestHelper.GetAsync<Dictionary<string, string>>(url, parameters);
-                }
-                catch (Exception exception)
-                {
-                    result = new Dictionary<string, string>();
-                    this.logger.LogError(exception, "An error occured while getting the user profile.");
-                }
-
-                foreach (var item in result)
-                {
-                    typeof(UserProfileDto).GetProperty(item.Key)?.SetValue(profile, item.Value);
-                }
-            }
-
-            return profile;
-        }
-
         /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<List<string>> GetAllLdapUsersDomains()
