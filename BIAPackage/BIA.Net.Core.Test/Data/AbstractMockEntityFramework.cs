@@ -12,8 +12,9 @@ namespace BIA.Net.Core.Test.Data
     /// (and thus specific to the project).
     /// It can be empty if you want to always add data manually in your tests, rather than do it automatically before each test through AbstractUnitTest.InitTestBase().
     /// </summary>
-    public abstract class AbstractMockEntityFramework<TDbContext> : IMockEntityFramework<TDbContext>
+    public abstract class AbstractMockEntityFramework<TDbContext, TDbContextReadOnly> : IMockEntityFramework<TDbContext, TDbContextReadOnly>
         where TDbContext : class, IQueryableUnitOfWork
+        where TDbContextReadOnly : class, IQueryableUnitOfWorkReadOnly
     {
         /// <summary>
         /// The database context.
@@ -21,12 +22,19 @@ namespace BIA.Net.Core.Test.Data
         private readonly TDbContext dbContext;
 
         /// <summary>
+        /// The database context.
+        /// </summary>
+        private readonly TDbContextReadOnly dbContextReadOnly;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AbstractMockEntityFramework{TDbContext}"/> class.
         /// </summary>
         /// <param name="dbContext">The DB context.</param>
-        protected AbstractMockEntityFramework(IQueryableUnitOfWork dbContext)
+        /// <param name="dbContextReadOnly">The DB context ReadOnly.</param>
+        protected AbstractMockEntityFramework(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkReadOnly dbContextReadOnly)
         {
             this.dbContext = dbContext as TDbContext;
+            this.dbContextReadOnly = dbContextReadOnly as TDbContextReadOnly;
         }
 
         /// <inheritdoc cref="IMockEntityFramework{TDbContext}.GetDbContext"/>
@@ -34,6 +42,13 @@ namespace BIA.Net.Core.Test.Data
         public TDbContext GetDbContext()
         {
             return this.dbContext;
+        }
+
+        /// <inheritdoc cref="IMockEntityFramework{TDbContext}.GetDbContextReadOnly"/>
+        /// <returns>The "in memory" database context read only.</returns>
+        public TDbContextReadOnly GetDbContextReadOnly()
+        {
+            return this.dbContextReadOnly;
         }
 
         /// <inheritdoc cref="IMockEntityFramework{TDbContext}.InitDefaultData"/>

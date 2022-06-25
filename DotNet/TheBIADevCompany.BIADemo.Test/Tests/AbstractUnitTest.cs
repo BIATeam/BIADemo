@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
     /// Base class for all unit tests of the project.
     /// </summary>
     /// <seealso cref="BIAAbstractUnitTest{TMockEF, TDbContext}" />
-    public abstract class AbstractUnitTest : BIAAbstractUnitTest<MockEntityFrameworkInMemory, DataContext>
+    public abstract class AbstractUnitTest : BIAAbstractUnitTest<MockEntityFrameworkInMemory, DataContext, DataContextReadOnly>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractUnitTest"/> class.

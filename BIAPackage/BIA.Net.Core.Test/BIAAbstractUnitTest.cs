@@ -17,9 +17,10 @@ namespace BIA.Net.Core.Test
     /// </summary>
     /// <typeparam name="TMockEF">The type of the Entity Framework mock.</typeparam>
     /// <typeparam name="TDbContext">The type of the database context.</typeparam>
-    public abstract class BIAAbstractUnitTest<TMockEF, TDbContext>
+    public abstract class BIAAbstractUnitTest<TMockEF, TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
-        where TMockEF : class, IMockEntityFramework<TDbContext>
+        where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly
+        where TMockEF : class, IMockEntityFramework<TDbContext, TDbContextReadOnly>
     {
         /// <summary>
         /// Shall we initialize the database with some default values?
@@ -98,7 +99,7 @@ namespace BIA.Net.Core.Test
         protected void InitDbMock()
         {
             // Initialize database mock.
-            this.DbMock = GetService<IMockEntityFramework<TDbContext>>() as TMockEF;
+            this.DbMock = GetService<IMockEntityFramework<TDbContext, TDbContextReadOnly>>() as TMockEF;
 
             if (this.isInitDB)
             {

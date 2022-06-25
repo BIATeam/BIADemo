@@ -9,8 +9,10 @@ namespace BIA.Net.Core.Test.Data
     /// Interface for database mock.
     /// </summary>
     /// <typeparam name="TDbContext">Type of the database context.</typeparam>
-    public interface IMockEntityFramework<TDbContext>
+    /// <typeparam name="TDbContextReadOnly">Type of the database context readonly.</typeparam>
+    public interface IMockEntityFramework<TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
+        where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly
     {
         /// <summary>
         /// Get the database context.
@@ -18,6 +20,13 @@ namespace BIA.Net.Core.Test.Data
         /// </summary>
         /// <returns>The database context.</returns>
         TDbContext GetDbContext();
+
+        /// <summary>
+        /// Get the database context ReadOnly.
+        /// It gives access to the available tables and can be used to add data in the database.
+        /// </summary>
+        /// <returns>The database context ReadOnly.</returns>
+        TDbContextReadOnly GetDbContextReadOnly();
 
         /// <summary>
         /// Add default data in the database.

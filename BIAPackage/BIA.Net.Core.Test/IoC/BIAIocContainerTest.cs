@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Test.IoC
     /// <summary>
     /// IoC container used for unit tests.
     /// </summary>
-    public class BIAIocContainerTest
+    public static class BIAIocContainerTest
     {
         static Mock<IHubClients> mockClients;
         static Mock<IClientProxy> mockClientProxy;
@@ -29,13 +29,14 @@ namespace BIA.Net.Core.Test.IoC
         /// The method used to register all instances for unit test purposes.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
-        public static void ConfigureContainerTest<TDbContext>(IServiceCollection services)
+        public static void ConfigureContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
+            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
         {
             services.AddLogging();
 
-            ConfigureInfrastructureDataContainerTest<TDbContext>(services);
-            ConfigureInfrastructureServiceContainerTest<TDbContext>(services);
+            ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(services);
+            ConfigureInfrastructureServiceContainerTest(services);
 
 
         }
@@ -44,8 +45,9 @@ namespace BIA.Net.Core.Test.IoC
         /// Configure the database IoC.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
-        public static void ConfigureInfrastructureDataContainerTest<TDbContext>(IServiceCollection services)
+        public static void ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
+              where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
         {
             services.AddDbContext<IQueryableUnitOfWork, TDbContext>(
                 options =>
@@ -53,6 +55,14 @@ namespace BIA.Net.Core.Test.IoC
                     options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                     options.EnableSensitiveDataLogging();
                 });
+
+            services.AddDbContext<IQueryableUnitOfWorkReadOnly, TDbContextReadOnly>(
+               options =>
+               {
+                   options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                   options.EnableSensitiveDataLogging();
+               }, contextLifetime: ServiceLifetime.Transient);
+
             services.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
         }
 
@@ -60,8 +70,7 @@ namespace BIA.Net.Core.Test.IoC
         /// Configure the database IoC.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
-        public static void ConfigureInfrastructureServiceContainerTest<TDbContext>(IServiceCollection services)
-            where TDbContext : DbContext, IQueryableUnitOfWork
+        public static void ConfigureInfrastructureServiceContainerTest(IServiceCollection services)
         {
             mockClients = new Mock<IHubClients>();
             mockClientProxy = new Mock<IClientProxy>();
@@ -69,7 +78,7 @@ namespace BIA.Net.Core.Test.IoC
             hubContext = new Mock<IHubContext<HubForClients>>();
             hubContext.Setup(x => x.Clients).Returns(() => mockClients.Object);
 
-            services.AddSingleton<IHubContext<HubForClients>>(hubContext.Object);
+            services.AddSingleton(hubContext.Object);
         }
 
         /// <summary>
