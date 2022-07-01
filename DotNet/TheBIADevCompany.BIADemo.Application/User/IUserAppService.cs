@@ -54,13 +54,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<UserInfoDto> GetUserInfoAsync(Guid guid);
 
         /// <summary>
-        /// Gets the profile of the given user.
-        /// </summary>
-        /// <param name="login">The user login.</param>
-        /// <returns>The user profile.</returns>
-        Task<UserProfileDto> GetUserProfileAsync(string login);
-
-        /// <summary>
         /// Gets all AD user corresponding to a filter.
         /// </summary>
         /// <param name="filter">The filter.</param>

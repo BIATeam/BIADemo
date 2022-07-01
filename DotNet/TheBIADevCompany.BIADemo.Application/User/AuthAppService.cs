@@ -154,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             Task<UserProfileDto> userProfileTask = null;
             if (!loginParam.LightToken)
             {
-                userProfileTask = this.userAppService.GetUserProfileAsync(login);
+                userProfileTask = this.userProfileRepository.GetAsync(login);
             }
 
             // get roles

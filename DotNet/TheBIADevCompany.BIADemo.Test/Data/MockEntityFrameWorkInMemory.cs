@@ -22,14 +22,15 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     /// Manage the mock of the DB context as an "in memory" database.
     /// </summary>
     /// <seealso cref="AbstractMockEntityFramework{TDbContext}"/>
-    public class MockEntityFrameworkInMemory : AbstractMockEntityFramework<DataContext>
+    public class MockEntityFrameworkInMemory : AbstractMockEntityFramework<DataContext, DataContextReadOnly>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MockEntityFrameworkInMemory"/> class.
         /// </summary>
         /// <param name="dbContext">The DB context.</param>
-        public MockEntityFrameworkInMemory(IQueryableUnitOfWork dbContext)
-            : base(dbContext)
+        /// <param name="dbContextReadOnly">The DB context readonly.</param>
+        public MockEntityFrameworkInMemory(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkReadOnly dbContextReadOnly)
+            : base(dbContext, dbContextReadOnly)
         {
             // Do nothing. Used to create the DbContext through IoC.
         }
@@ -55,15 +56,19 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 
             foreach (string title in DataConstants.DefaultSitesTitles)
             {
-                this.GetDbContext().Sites.Add(new Site
+                Site site = new Site
                 {
                     Id = id++,
                     Title = title,
                     Members = new List<Member>(),
-                });
+                };
+
+                this.GetDbContext().Sites.Add(site);
+                this.GetDbContextReadOnly().Sites.Add(site);
             }
 
             this.GetDbContext().SaveChanges();
+            this.GetDbContextReadOnly().SaveChanges();
         }
 
         #endregion Sites methods
@@ -73,20 +78,25 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataUsers.AddMember(int, int, int, ICollection{MemberRole})"/>
         public void AddMember(int id, int teamId, int userId, ICollection<MemberRole> roles)
         {
-            this.GetDbContext().Members.Add(new Member()
+            Member member = new Member()
             {
                 Id = id,
                 TeamId = teamId,
                 UserId = userId,
                 MemberRoles = roles,
-            });
+            };
+
+            this.GetDbContext().Members.Add(member);
             this.GetDbContext().SaveChanges();
+
+            this.GetDbContextReadOnly().Members.Add(member);
+            this.GetDbContextReadOnly().SaveChanges();
         }
 
         /// <inheritdoc cref="IDataUsers.AddUser(int, string, string, int?, int?, ICollection{MemberRole})"/>
         public void AddUser(int id, string firstName, string lastName, int? memberId = null, int? memberSiteId = null, ICollection<MemberRole> memberRoles = null)
         {
-            this.GetDbContext().Users.Add(new User()
+            User user = new User()
             {
                 Id = id,
                 Company = "TheBIADevCompany",
@@ -112,7 +122,10 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 Site = DataConstants.DefaultSitesTitles[0],
                 SubDepartment = "BIA",
                 ViewUsers = new List<ViewUser>(),
-            });
+            };
+
+            this.GetDbContext().Users.Add(user);
+            this.GetDbContextReadOnly().Users.Add(user);
 
             if (memberId != null)
             {
@@ -122,6 +135,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
             {
                 // We do not save changes in the "if", because it is already done by AddMember().
                 this.GetDbContext().SaveChanges();
+                this.GetDbContextReadOnly().SaveChanges();
             }
         }
 
@@ -133,7 +147,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataPlanes.InitDefaultPlanes"/>
         public void InitDefaultPlanes()
         {
-            this.GetDbContext().Planes.Add(new Plane
+            var plane1 = new Plane
             {
                 SiteId = 1,
                 Id = 1,
@@ -143,8 +157,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
                 Msn = DataConstants.DefaultPlanesMsn[0],
-            });
-            this.GetDbContext().Planes.Add(new Plane
+            };
+
+            var plane2 = new Plane
             {
                 SiteId = 1,
                 Id = 2,
@@ -154,8 +169,15 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
                 Msn = DataConstants.DefaultPlanesMsn[1],
-            });
+            };
+
+            this.GetDbContext().Planes.Add(plane1);
+            this.GetDbContext().Planes.Add(plane2);
             this.GetDbContext().SaveChanges();
+
+            this.GetDbContextReadOnly().Planes.Add(plane1);
+            this.GetDbContextReadOnly().Planes.Add(plane2);
+            this.GetDbContextReadOnly().SaveChanges();
         }
 
         /// <inheritdoc cref="IDataPlanes.CountPlanes"/>
