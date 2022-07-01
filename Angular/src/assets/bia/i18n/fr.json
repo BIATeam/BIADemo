@@ -202,7 +202,7 @@
     "medium": "Medium",
     "strong": "Strong",
     "passwordPrompt": "Enrez un mot de passe",
-    "emptyMessage": "Aucun résutlat trouvé",
+    "emptyMessage": "Aucun résultat trouvé",
     "emptyFilterMessage": "Aucun résultat trouvé"
   }
 }
