@@ -13,64 +13,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
     public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
-        /// <summary>
-        /// Header Name.
-        /// </summary>
-        public enum HeaderName
-        {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            Id,
-
-            /// <summary>
-            /// header name Msn.
-            /// </summary>
-            Msn,
-
-            /// <summary>
-            /// header name IsActive.
-            /// </summary>
-            IsActive,
-
-            /// <summary>
-            /// header name LastFlightDate.
-            /// </summary>
-            LastFlightDate,
-
-            /// <summary>
-            /// header name DeliveryDate.
-            /// </summary>
-            DeliveryDate,
-
-            /// <summary>
-            /// header name SyncTime.
-            /// </summary>
-            SyncTime,
-
-            /// <summary>
-            /// header name Capacity.
-            /// </summary>
-            Capacity,
-
-            /// <summary>
-            /// header name PlaneType.
-            /// </summary>
-            PlaneType,
-
-            /// <summary>
-            /// header name ConnectingAirports.
-            /// </summary>
-            ConnectingAirports,
-        }
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
@@ -79,15 +27,15 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<Plane>
                 {
-                    { HeaderName.Id.ToString(), plane => plane.Id },
-                    { HeaderName.Msn.ToString(), plane => plane.Msn },
-                    { HeaderName.IsActive.ToString(), plane => plane.IsActive },
-                    { HeaderName.LastFlightDate.ToString(), plane => plane.LastFlightDate },
-                    { HeaderName.DeliveryDate.ToString(), plane => plane.DeliveryDate },
-                    { HeaderName.SyncTime.ToString(), plane => plane.SyncTime },
-                    { HeaderName.Capacity.ToString(), plane => plane.Capacity },
-                    { HeaderName.PlaneType.ToString(), plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
-                    { HeaderName.ConnectingAirports.ToString(), plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
+                    { HeaderName.Id, plane => plane.Id },
+                    { HeaderName.Msn, plane => plane.Msn },
+                    { HeaderName.IsActive, plane => plane.IsActive },
+                    { HeaderName.LastFlightDate, plane => plane.LastFlightDate },
+                    { HeaderName.DeliveryDate, plane => plane.DeliveryDate },
+                    { HeaderName.SyncTime, plane => plane.SyncTime },
+                    { HeaderName.Capacity, plane => plane.Capacity },
+                    { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
+                    { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -167,7 +115,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     Id = ca.Airport.Id,
                     Display = ca.Airport.Name,
-                }).ToList(),
+                }).OrderBy(x => x.Display).ToList(),
             };
         }
 
@@ -182,42 +130,42 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, HeaderName.Msn.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Msn));
                         }
 
-                        if (string.Equals(headerName, HeaderName.IsActive.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVBool(x.IsActive));
                         }
 
-                        if (string.Equals(headerName, HeaderName.LastFlightDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.LastFlightDate, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVDateTime(x.LastFlightDate));
                         }
 
-                        if (string.Equals(headerName, HeaderName.DeliveryDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.DeliveryDate, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVDate(x.DeliveryDate));
                         }
 
-                        if (string.Equals(headerName, HeaderName.SyncTime.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVTime(x.SyncTime));
                         }
 
-                        if (string.Equals(headerName, HeaderName.Capacity.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.Capacity, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.Capacity));
                         }
 
-                        if (string.Equals(headerName, HeaderName.PlaneType.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.PlaneType?.Display));
                         }
 
-                        if (string.Equals(headerName, HeaderName.ConnectingAirports.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.ConnectingAirports, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVList(x.ConnectingAirports));
                         }
@@ -239,6 +187,57 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
             return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports };
+        }
+
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// Header Name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// Header Name Msn.
+            /// </summary>
+            public const string Msn = "msn";
+
+            /// <summary>
+            /// Header Name IsActive.
+            /// </summary>
+            public const string IsActive = "isActive";
+
+            /// <summary>
+            /// Header Name LastFlightDate.
+            /// </summary>
+            public const string LastFlightDate = "lastFlightDate";
+
+            /// <summary>
+            /// Header Name DeliveryDate.
+            /// </summary>
+            public const string DeliveryDate = "deliveryDate";
+
+            /// <summary>
+            /// Header Name SyncTime.
+            /// </summary>
+            public const string SyncTime = "syncTime";
+
+            /// <summary>
+            /// Header Name Capacity.
+            /// </summary>
+            public const string Capacity = "capacity";
+
+            /// <summary>
+            /// Header Name PlaneType.
+            /// </summary>
+            public const string PlaneType = "planeType";
+
+            /// <summary>
+            /// Header Name ConnectingAirports.
+            /// </summary>
+            public const string ConnectingAirports = "connectingAirports";
         }
     }
 }

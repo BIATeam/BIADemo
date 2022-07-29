@@ -314,4 +314,19 @@ export class BiaTableComponent implements OnChanges {
   getPrimeNgTable(): Table {
     return this.table;
   }
+
+  getCellData(rowData: any, col: any): any {
+    const nestedProperties: string[] = col.field.split('.');
+    let value: any = rowData;
+    for (const prop of nestedProperties) {
+      if(value == null)
+      {
+        return null;
+      }
+      
+      value = value[prop];
+    }
+ 
+    return value;
+  }
 }
