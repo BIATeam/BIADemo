@@ -4,10 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start4iis": "ng serve --configuration iis",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build:iis": "ng build --configuration iis",
     "build:aot": "ng build --aot --base-href /BIADemo/App/",
     "build:aot2": "ng build --aot --base-href /BIADemo2/App/ --output-path dist/BIADemo2",
     "build:prod": "ng build --configuration production --base-href /BIADemo/App/",

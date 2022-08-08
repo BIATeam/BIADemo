@@ -67,6 +67,14 @@
             "allowedCommonJsDependencies": ["keycloak-js"]
           },
           "configurations": {
+            "iis": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.iis.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -108,6 +116,9 @@
             "browserTarget": "BIADemo:build"
           },
           "configurations": {
+            "iis": {
+              "browserTarget": "BIADemo:build:iis"
+            },
             "production": {
               "browserTarget": "BIADemo:build:production"
             },
