@@ -17,27 +17,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// </summary>
     public class PlaneTypeMapper : BaseMapper<PlaneTypeDto, PlaneType, int>
     {
-        /// <summary>
-        /// Header Name.
-        /// </summary>
-        public enum HeaderName
-        {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            Id,
-
-            /// <summary>
-            /// header name Title.
-            /// </summary>
-            Title,
-
-            /// <summary>
-            /// header name Certification Date.
-            /// </summary>
-            CertificationDate,
-        }
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<PlaneType> ExpressionCollection
         {
@@ -45,9 +24,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<PlaneType>
                 {
-                    { HeaderName.Id.ToString(), planeType => planeType.Id },
-                    { HeaderName.Title.ToString(), planeType => planeType.Title },
-                    { HeaderName.CertificationDate.ToString(), planeType => planeType.CertificationDate },
+                    { HeaderName.Id, planeType => planeType.Id },
+                    { HeaderName.Title, planeType => planeType.Title },
+                    { HeaderName.CertificationDate, planeType => planeType.CertificationDate },
                 };
             }
         }
@@ -87,12 +66,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, HeaderName.Title.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.Title, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Title));
                         }
 
-                        if (string.Equals(headerName, HeaderName.CertificationDate.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.CertificationDate, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVDateTime(x.CertificationDate));
                         }
@@ -101,6 +80,27 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 
                 return records.ToArray();
             };
+        }
+
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// header name Title.
+            /// </summary>
+            public const string Title = "title";
+
+            /// <summary>
+            /// header name Certification Date.
+            /// </summary>
+            public const string CertificationDate = "certificationDate";
         }
     }
 }

@@ -17,27 +17,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// </summary>
     public class AirportMapper : BaseMapper<AirportDto, Airport, int>
     {
-        /// <summary>
-        /// Header Name.
-        /// </summary>
-        public enum HeaderName
-        {
-            /// <summary>
-            /// header name Id.
-            /// </summary>
-            Id,
-
-            /// <summary>
-            /// header name Name.
-            /// </summary>
-            Name,
-
-            /// <summary>
-            /// header name City.
-            /// </summary>
-            City,
-        }
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Airport> ExpressionCollection
         {
@@ -45,9 +24,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<Airport>
                 {
-                    { HeaderName.Id.ToString(), planeType => planeType.Id },
-                    { HeaderName.Name.ToString(), planeType => planeType.Name },
-                    { HeaderName.City.ToString(), planeType => planeType.City },
+                    { HeaderName.Id, planeType => planeType.Id },
+                    { HeaderName.Name, planeType => planeType.Name },
+                    { HeaderName.City, planeType => planeType.City },
                 };
             }
         }
@@ -87,12 +66,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, HeaderName.Name.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.Name, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Name));
                         }
 
-                        if (string.Equals(headerName, HeaderName.City.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.City, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.City));
                         }
@@ -101,6 +80,27 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 
                 return records.ToArray();
             };
+        }
+
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// header name Name.
+            /// </summary>
+            public const string Name = "name";
+
+            /// <summary>
+            /// header name City.
+            /// </summary>
+            public const string City = "city";
         }
     }
 }

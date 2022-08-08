@@ -75,7 +75,6 @@ namespace BIA.Net.Core.Domain
         public virtual Expression<Func<TEntity, TDto>> EntityToDto()
         {
             throw new NotImplementedException("This mapper is not build to create dto, or the implementation of EntityToDto is missing.");
-            //return null;
         }
 
         /// <summary>
