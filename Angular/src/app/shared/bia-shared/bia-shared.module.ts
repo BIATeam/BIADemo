@@ -8,7 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
-import { AccordionModule } from 'primeng/accordion';
+// import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
@@ -20,9 +20,28 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ContextMenuModule } from 'primeng/contextmenu';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
-import { EditorModule } from 'primeng/editor';
+// import { EditorModule } from 'primeng/editor';
+// Warning it requiered to install Quill package: 
+//    - npm install quill
+// And modify angular.json to add quill css and js :
+// "styles": [
+//   "node_modules/primeng/resources/primeng.min.css",
+//   "node_modules/primeicons/primeicons.css",
+//+   "node_modules/quill/dist/quill.core.css",
+//+   "node_modules/quill/dist/quill.snow.css",
+//   "src/styles.scss"
+// ],
+// "scripts": [
+//+   "node_modules/quill/dist/quill.js"
+// ],
+  
 import { FieldsetModule } from 'primeng/fieldset';
-import { FullCalendarModule } from 'primeng/fullcalendar';
+// import { FullCalendarModule } from 'primeng/fullcalendar';
+// Warning it requiered to install Fullcalandar package: 
+//    - npm install @fullcalendar/core
+//    - npm install @fullcalendar/daygrid
+//    - npm install @fullcalendar/interaction
+//    - npm install @fullcalendar/timegrid
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,7 +54,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { PaginatorModule } from 'primeng/paginator';
+// import { PaginatorModule } from 'primeng/paginator';
 import { PanelModule } from 'primeng/panel';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -100,7 +119,7 @@ import { HangfireContainerComponent } from './components/hangfire-container/hang
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 
 const PRIMENG_MODULES = [
-  AccordionModule,
+//  AccordionModule,
   AutoCompleteModule,
   BreadcrumbModule,
   ButtonModule,
@@ -112,9 +131,9 @@ const PRIMENG_MODULES = [
   ContextMenuModule,
   DialogModule,
   DropdownModule,
-  EditorModule,
+//  EditorModule,
   FieldsetModule,
-  FullCalendarModule,
+//  FullCalendarModule,
   InputMaskModule,
   InputSwitchModule,
   InputTextModule,
@@ -127,7 +146,7 @@ const PRIMENG_MODULES = [
   MessageModule,
   MessagesModule,
   MultiSelectModule,
-  PaginatorModule,
+//  PaginatorModule,
   PanelModule,
   PanelMenuModule,
   ProgressBarModule,
