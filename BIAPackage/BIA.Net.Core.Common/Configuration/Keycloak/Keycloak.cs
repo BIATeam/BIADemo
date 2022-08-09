@@ -10,6 +10,11 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
     public class Keycloak
     {
         /// <summary>
+        /// Gets or sets a value indicating whether keycloak is used.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// Gets or sets the base URL.
         /// </summary>
         public string BaseUrl { get; set; }

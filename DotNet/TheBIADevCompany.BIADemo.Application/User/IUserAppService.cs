@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="filter">The filter.</param>
         /// <param name="max">The max number of items to return.</param>
         /// <returns>The top 10 users found.</returns>
-        Task<IEnumerable<UserFromDirectoryDto>> GetAllIdPUserAsync(string filter, int max = 10);
+        Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int max = 10);
 
         /// <summary>
         /// Add a list of users in a group in AD.

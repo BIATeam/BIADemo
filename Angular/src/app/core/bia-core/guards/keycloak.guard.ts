@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { KeycloakAuthGuard, KeycloakService } from 'keycloak-angular';
-import { environment } from 'src/environments/environment';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +22,7 @@ export class KeycloakGuard extends KeycloakAuthGuard {
         if (!this.authenticated) {
             await this.keycloakService.login({
                 redirectUri: window.location.origin + state.url,
-                idpHint: environment.keycloak.login.idpHint
+                idpHint: AppSettingsService.appSettings?.keycloak?.configuration?.idpHint
             });
         }
 

@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
@@ -17,11 +18,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Configuration;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -34,12 +35,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IUserAppService userService;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly BiaNetSection configuration;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
-        public UsersController(IUserAppService userService)
+        /// <param name="configuration">The configuration.</param>
+        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration)
         {
             this.userService = userService;
+            this.configuration = configuration.Value;
         }
 
         /// <summary>
@@ -94,13 +102,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             IEnumerable<UserFromDirectoryDto> results = default;
 
-            if (AuthorizationConfiguration.IsNegotiate())
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
-                results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
+                results = await this.userService.GetAllIdpUserAsync(filter, returnSize);
             }
             else
             {
-                results = await this.userService.GetAllIdPUserAsync(filter, returnSize);
+                results = await this.userService.GetAllADUserAsync(filter, ldapName, returnSize);
             }
 
             int resultCount = results.Count();
@@ -155,13 +163,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = default;
-            if (AuthorizationConfiguration.IsNegotiate())
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
-                result = await this.userService.AddFromDirectory(users);
+                result = await this.userService.AddFromIdPAsync(users);
             }
             else
             {
-                result = await this.userService.AddFromIdPAsync(users);
+                result = await this.userService.AddFromDirectory(users);
             }
 
             if (result.Errors?.Any() == true)
@@ -273,7 +281,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            if (AuthorizationConfiguration.IsNegotiate())
+            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
+            {
+                await this.userService.DeactivateUsersAsync(ids);
+            }
+            else
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -291,10 +303,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 {
                     return this.Problem(errors);
                 }
-            }
-            else
-            {
-                await this.userService.DeactivateUsersAsync(ids);
             }
 
             return this.Ok();

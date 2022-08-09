@@ -91,7 +91,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
                 configureOptions.Events = jwtBearerEvents;
             });
 
-            if (!string.IsNullOrWhiteSpace(configuration.Authentication.Keycloak?.BaseUrl))
+            if (configuration?.Authentication?.Keycloak?.IsActive == true)
             {
                 authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
