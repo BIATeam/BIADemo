@@ -19,7 +19,7 @@ export class TeamsEffects {
         this.teamDas.setDefaultTeam(data.teamTypeId, data.teamId).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ DomainTeamsActions.setDefaultTeamSuccess()];
+            return [ DomainTeamsActions.setDefaultTeamSuccess(data)];
           }),
           catchError((err) => {
             this.biaMessageService.showError();
@@ -36,7 +36,7 @@ export class TeamsEffects {
         this.teamDas.setDefaultRoles(data.teamId, data.roleIds).pipe(
           switchMap(() => {
             this.biaMessageService.showUpdateSuccess();
-            return [ DomainTeamsActions.setDefaultRolesSuccess()];
+            return [ DomainTeamsActions.setDefaultRolesSuccess(data)];
           }),
           catchError((err) => {
             this.biaMessageService.showError();

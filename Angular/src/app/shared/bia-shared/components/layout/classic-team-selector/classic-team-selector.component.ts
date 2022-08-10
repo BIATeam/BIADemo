@@ -88,7 +88,6 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultTeam() {
-    this.defaultTeamId = this.currentTeam.id;
     this.store.dispatch(DomainTeamsActions.setDefaultTeam({ teamTypeId: this.teamTypeId, teamId: this.currentTeam.id }));
   }
 
@@ -115,9 +114,8 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   }
 
   onSetDefaultRoles() {
-    this.defaultRoleIds = this.currentRoles.map(r => r.id);
     this.store.dispatch(DomainTeamsActions.setDefaultRoles({ teamId: this.currentTeam.id, roleIds: this.currentRoles.map(r => r.id) }));
-  }
+ }
 
   isDefaultRoles(): boolean {
     return (this.defaultRoleIds?.sort().toString() === this.currentRoles?.map(r => r.id).sort().toString());
