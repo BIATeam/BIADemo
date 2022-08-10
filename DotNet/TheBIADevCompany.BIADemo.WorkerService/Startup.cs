@@ -46,8 +46,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// </summary>
         private readonly BiaNetSection biaNetSection;
 
-        /// 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>

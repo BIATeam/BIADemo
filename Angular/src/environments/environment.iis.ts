@@ -14,15 +14,5 @@ export const environment = {
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }
-  },
-  keycloak: {
-    conf: {
-      realm: 'BIA-Realm',
-      authServerUrl: 'http://localhost:8080/',
-      resource: 'biademo-front'
-    },
-    login: {
-      idpHint: 'darwin'
-    }
   }
 };

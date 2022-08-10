@@ -21,16 +21,10 @@ import { AppSettingsModule } from 'src/app/domains/bia-domains/app-settings/app-
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { KeycloakAngularModule } from 'keycloak-angular';
-import { allEnvironments } from 'src/environments/all-environments';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return (): Promise<any> => {
-    if (allEnvironments.useKeycloak === true) {
-      return appInitService.initKeycloack().then(x => appInitService.init());
-    }
-    else {
-      return appInitService.initAuth();
-    }
+    return appInitService.initAuth();
   };
 }
 

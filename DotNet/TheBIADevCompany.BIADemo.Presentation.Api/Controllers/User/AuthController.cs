@@ -6,15 +6,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Configuration;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
     /// <summary>
@@ -22,15 +23,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     /// </summary>
     public class AuthController : AuthControllerBase
     {
+        /// <summary>
+        /// The authentication service.
+        /// </summary>
         private readonly IAuthAppService authService;
+
+        /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly BiaNetSection configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
-        public AuthController(IAuthAppService authService)
+        /// <param name="configuration">The configuration.</param>
+        public AuthController(IAuthAppService authService, IOptions<BiaNetSection> configuration)
         {
             this.authService = authService;
+            this.configuration = configuration.Value;
         }
 
         /// <summary>
@@ -83,13 +94,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = default;
 
-                if (AuthorizationConfiguration.IsNegotiate())
+                if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
                 {
-                    authInfo = await this.authService.LoginOnTeamsAsync((System.Security.Principal.WindowsIdentity)this.User.Identity, loginParam);
+                    authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
                 }
                 else
                 {
-                    authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
+                    authInfo = await this.authService.LoginOnTeamsAsync((System.Security.Principal.WindowsIdentity)this.User.Identity, loginParam);
                 }
 
                 return this.Ok(authInfo);

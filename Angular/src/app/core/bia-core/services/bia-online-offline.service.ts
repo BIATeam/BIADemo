@@ -3,6 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subscription, throwError, timer } from 'rxjs';
 import { catchError, filter, first, skip } from 'rxjs/operators';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
 import { AuthService } from './auth.service';
@@ -107,8 +108,8 @@ export class BiaOnlineOfflineService implements OnDestroy {
    * Checks at regular intervals if the backend is available.
    */
   protected checkServerAvailable() {
-    timer(0, 2000).subscribe(() => {
-      if (this.serverAvailableSubject.value === false) {
+    timer(500, 2000).subscribe(() => {
+      if (this.serverAvailableSubject.value === false && AppSettingsService.appSettings) {
         this.ping().pipe(
           first()
         ).subscribe((ping) => {

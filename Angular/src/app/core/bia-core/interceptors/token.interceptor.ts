@@ -14,13 +14,15 @@ import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaTranslationService } from '../services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakService } from 'keycloak-angular';
-import { environment } from 'src/environments/environment';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
   private isRefreshing = false;
 
-  constructor(private biaTranslationService: BiaTranslationService, public authService: AuthService, public keycloakService: KeycloakService) { }
+  constructor(private biaTranslationService: BiaTranslationService,
+    public authService: AuthService,
+    public keycloakService: KeycloakService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
@@ -43,7 +45,7 @@ export class TokenInterceptor implements HttpInterceptor {
       url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
-      url.toLowerCase().startsWith(environment.keycloak.conf.authServerUrl) === true
+      allEnvironments.useKeycloak === true && url.toLowerCase().startsWith(AppSettingsService.appSettings?.keycloak?.baseUrl) === true
     );
   }
 

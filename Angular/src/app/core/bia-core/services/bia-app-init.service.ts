@@ -1,5 +1,5 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { Subscription, throwError } from 'rxjs';
+import { from, Observable, Subscription, throwError } from 'rxjs';
 import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
 import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 import { AppState } from 'src/app/store/state';
@@ -8,7 +8,11 @@ import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter, first, switchMap } from 'rxjs/operators';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { AppSettingsDas } from 'src/app/domains/bia-domains/app-settings/services/app-settings-das.service';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 
 @Injectable({
   providedIn: 'root'
@@ -17,26 +21,26 @@ export class BiaAppInitService implements OnDestroy {
   protected sub: Subscription;
   constructor(
     protected authService: AuthService,
+    protected appSettingsDas: AppSettingsDas,
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
     protected keycloakService: KeycloakService) { }
 
   public initAuth() {
     return new Promise<void>((resolve) => {
-      this.sub = this.authService
-        .login()
+      this.store.dispatch(DomainAppSettingsActions.loadAll());
+      this.getObsAppSettings()
         .pipe(
-          catchError((error) => {
-            if (!isDevMode()) {
-              window.location.href = environment.urlErrorPage + '?num=' + error.status;
+          switchMap((appSettings: AppSettings | null) => {
+            if (appSettings?.keycloak?.isActive === true) {
+              return from(this.initKeycloack(appSettings)).pipe(
+                switchMap(() => this.getObsAuthInfo())
+              );
+            } else {
+              return this.getObsAuthInfo();
             }
-            return throwError(error);
           })
-        )
-        .subscribe(() => {
-          // Load app settings:
-          this.store.dispatch(DomainAppSettingsActions.loadAll());
-
+        ).subscribe(() => {
           if (allEnvironments.enableNotifications === true) {
             this.notificationSignalRService.initialize();
           }
@@ -46,20 +50,12 @@ export class BiaAppInitService implements OnDestroy {
     });
   }
 
-  public init(): void {
-    this.store.dispatch(DomainAppSettingsActions.loadAll());
-
-    if (allEnvironments.enableNotifications === true) {
-      this.notificationSignalRService.initialize();
-    }
-  }
-
-  public initKeycloack(): Promise<boolean> {
+  protected initKeycloack(appSettings: AppSettings): Promise<boolean> {
     return this.keycloakService.init({
       config: {
-        url: environment.keycloak.conf.authServerUrl,
-        realm: environment.keycloak.conf.realm,
-        clientId: environment.keycloak.conf.resource
+        url: appSettings.keycloak?.baseUrl,
+        realm: appSettings.keycloak?.configuration.realm,
+        clientId: appSettings.keycloak?.api.tokenConf.clientId,
       },
       enableBearerInterceptor: false,
       initOptions: {
@@ -67,7 +63,26 @@ export class BiaAppInitService implements OnDestroy {
         silentCheckSsoRedirectUri:
           window.location.origin + '/assets/silent-check-sso.html'
       }
-    })
+    });
+  }
+
+  protected getObsAuthInfo(): Observable<AuthInfo> {
+    return this.authService.login().pipe(first(), catchError((error) => this.catchError(error)));
+  }
+
+  protected getObsAppSettings(): Observable<AppSettings | null> {
+    return this.store.select(getAppSettings)
+      .pipe(
+        filter(appSettings => !!appSettings && appSettings.environment?.type?.length > 0),
+        first(),
+        catchError((error) => this.catchError(error)));
+  }
+
+  protected catchError(error: any) {
+    if (!isDevMode()) {
+      window.location.href = environment.urlErrorPage + '?num=' + error.status;
+    }
+    return throwError(error);
   }
 
   ngOnDestroy() {
