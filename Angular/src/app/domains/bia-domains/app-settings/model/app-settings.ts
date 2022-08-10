@@ -15,6 +15,7 @@ export interface AppSettings {
 export interface Environment {
   type: EnvironmentType;
   urlMatomo: string;
+  siteIdMatomo: string
   urlsAdditionalJS: string[];
   urlsAdditionalCSS: string[];
 }
