@@ -13,7 +13,6 @@ import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/a
 import { AppSettingsDas } from 'src/app/domains/bia-domains/app-settings/services/app-settings-das.service';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
-import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +32,8 @@ export class BiaAppInitService implements OnDestroy {
       this.getObsAppSettings()
         .pipe(
           switchMap((appSettings: AppSettings | null) => {
-            if (appSettings) {
-              AppSettingsService.appSettings = appSettings;
-            }
-
-            if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
-              return from(this.initKeycloack(AppSettingsService.appSettings)).pipe(
+            if (appSettings?.keycloak?.isActive === true) {
+              return from(this.initKeycloack(appSettings)).pipe(
                 switchMap(() => this.getObsAuthInfo())
               );
             } else {
