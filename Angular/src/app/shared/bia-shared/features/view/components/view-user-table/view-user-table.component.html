@@ -42,7 +42,7 @@
       <td *ngIf="canUpdate" class="app-action-col">
         <p-tableRadioButton *ngIf="view.viewType === 2 || view.viewType === 1" [value]="view"></p-tableRadioButton>
       </td>
-      <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="pi pi-star-border"></i></td>
+      <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="pi pi-star-fill-border"></i></td>
       <td>{{ view.description }}</td>
       <td>{{ (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser') | translate }}</td>
     </tr>

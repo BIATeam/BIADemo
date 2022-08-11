@@ -8,11 +8,11 @@
 >
   <ng-template let-item pTemplate="selectedItem">
     <span>{{ item.label }}</span>
-    <i *ngIf="defaultView === item.value" class="pi pi-star-o"></i>
+    <i *ngIf="defaultView === item.value" class="pi pi-star"></i>
   </ng-template>
   <ng-template let-object pTemplate="item">
     <span>{{ object.label }}</span>
-    <i *ngIf="defaultView === object.value" class="pi pi-star-o"></i>
+    <i *ngIf="defaultView === object.value" class="pi pi-star"></i>
   </ng-template>
 </p-dropdown>
 <i *ngIf="showEditButton() === true" class="pi pi-user-edit bia-pointer" (click)="onManageView()"></i>
