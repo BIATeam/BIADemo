@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { environment } from 'src/environments/environment';
 
@@ -118,7 +118,7 @@ export class BiaSignalRService {
     this.hubConnection.onclose(async () => {
       if (this.isStarting) {
         console.log('%c [SignalRService] Hub connection closed. Try restarting it...', 'color: red; font-weight: bold');
-        setTimeout((e) => {
+        setTimeout(() => {
           this.startConnection();
         }, 5000);
       } else {
@@ -147,7 +147,7 @@ export class BiaSignalRService {
             '%c [SignalRService] Error while establishing connection, retrying...' + err,
             'color: red; font-weight: bold'
           );
-          setTimeout((e) => {
+          setTimeout(() => {
             this.startConnection();
           }, 5000);
         } else {
