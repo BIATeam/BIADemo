@@ -120,8 +120,7 @@
               "browserTarget": "BIADemo:build:production"
             },
             "es5": {
-              "browserTarget": "BIADemo:build:es5",
-              "aot": true
+              "browserTarget": "BIADemo:build:es5"
             }
           }
         },

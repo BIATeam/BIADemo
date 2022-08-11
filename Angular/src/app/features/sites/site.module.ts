@@ -50,21 +50,20 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    SiteFormComponent,
-    SiteFilterComponent,
-    SiteEditDialogComponent,
-    SiteNewDialogComponent,
-    SitesIndexComponent,
-    SiteItemComponent,
-  ],
-  entryComponents: [SiteEditDialogComponent, SiteNewDialogComponent],
-  imports: [
-    SharedModule,
-    UserOptionModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('sites', reducers),
-    EffectsModule.forFeature([SitesEffects]),
-  ]
+    declarations: [
+        SiteFormComponent,
+        SiteFilterComponent,
+        SiteEditDialogComponent,
+        SiteNewDialogComponent,
+        SitesIndexComponent,
+        SiteItemComponent,
+    ],
+    imports: [
+        SharedModule,
+        UserOptionModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature('sites', reducers),
+        EffectsModule.forFeature([SitesEffects]),
+    ]
 })
 export class SiteModule { }
