@@ -44,7 +44,7 @@
     "@ngx-translate/core": "^11.0.0",
     "@types/file-saver": "^2.0.5",
     "deepmerge": "^4.2.2",
-    "dexie": "^3.2.0",
+    "dexie": "^3.2.2",
     "file-saver": "^2.0.5",
     "keycloak-angular": "^9.1.0",
     "keycloak-js": "^18.0.0",
