@@ -125,6 +125,7 @@
     "notifiedTeams": "Notified teams",
     "notifiedUsers": "Notified users",
     "jData": "Data in JSON",
+    "setUnread": "Mark as unread",
     "success": {
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notification sent successfully",

@@ -80,6 +80,18 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         }
 
         /// <inheritdoc/>
+        public async Task SetUnread(NotificationDto dto)
+        {
+            var notification = await this.Repository.GetEntityAsync(dto.Id);
+
+            notification.Read = false;
+            await this.Repository.UnitOfWork.CommitAsync();
+            dto.Read = false;
+
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
+        }
+
+        /// <inheritdoc/>
         public override async Task<NotificationDto> UpdateAsync(
             NotificationDto dto,
             string accessMode = AccessMode.Update,

@@ -53,6 +53,22 @@ export class NotificationsEffects {
     )
   );
 
+  setUnread$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeatureNotificationsActions.setUnread),
+      pluck('id'),
+      switchMap((id) => {
+        return this.notificationDas.setUnread(id).pipe(
+          map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(FeatureNotificationsActions.failure({ error: err }));
+          })
+        );
+      })
+    )
+  );
+
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.create),

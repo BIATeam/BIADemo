@@ -307,6 +307,48 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
                 if (!dto.Read)
                 {
                     await this.notificationService.SetAsRead(id);
+                    dto.Read = true;
+                }
+
+                return this.Ok(dto);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
+        }
+
+        /// <summary>
+        /// Set a notification to unread and return notification.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The notification.</returns>
+        [HttpGet("setUnRead/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Notifications.Read)]
+        public async Task<IActionResult> SetUnread(int id)
+        {
+            if (id == 0)
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                var dto = await this.notificationService.GetAsync(id);
+
+                // If it's the first time this notification is read
+                if (dto.Read)
+                {
+                    await this.notificationService.SetUnread(dto);
+                    // dto.Read = false;
                 }
 
                 return this.Ok(dto);

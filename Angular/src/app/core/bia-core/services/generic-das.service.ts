@@ -86,8 +86,14 @@ export abstract class GenericDas {
     return environment.apiUrl + route;
   }
 
+  concatRoute(route: string, endpoint: string | undefined)
+  {
+    return route + `${endpoint ? endpoint + '/' : ''}`.replace('//', '/');
+  }
+
   getItem<TOut>(param?: GetParam): Observable<TOut> {
-    const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
+    const url = `${this.concatRoute(this.route,param?.endpoint)}${param?.id ?? ''}`;
+    //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map((data) => {

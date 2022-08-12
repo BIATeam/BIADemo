@@ -80,4 +80,8 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+  onSetUnread(id: number)
+  {
+    this.store.dispatch(FeatureNotificationsActions.setUnread({id}))
+  }
 }
