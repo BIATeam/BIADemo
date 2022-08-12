@@ -47,8 +47,8 @@ export class NotificationsSignalRService {
       this.myTeams = teams;
     });
 
-    console.log('%c [Notifications] Register SignalR : refresh-notifications', 'color: purple; font-weight: bold');
-    this.signalRService.addMethod('refresh-notifications', (args) => {
+    console.log('%c [Notifications] Register SignalR : refresh-notification', 'color: purple; font-weight: bold');
+    this.signalRService.addMethod('refresh-notification', (args) => {
       const notification: Notification = JSON.parse(args);
       if (this.IsInMyDisplay(notification)) {
         this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
@@ -99,8 +99,9 @@ export class NotificationsSignalRService {
   }
 
   destroy() {
-    console.log('%c [Notifications] Unregister SignalR : refresh-notifications', 'color: purple; font-weight: bold');
-    this.signalRService.removeMethod('refresh-notifications');
+    console.log('%c [Notifications] Unregister SignalR : refresh-notification', 'color: purple; font-weight: bold');
+    this.signalRService.removeMethod('refresh-notification');
+    this.signalRService.removeMethod('refresh-notification');
     this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

@@ -197,7 +197,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 
             try
             {
-                await this.notificationService.SetAsRead(id);
+                var dto = await this.notificationService.GetAsync(id);
+
+                // If it's the first time this notification is read
+                if (!dto.Read)
+                {
+                    await this.notificationService.SetAsRead(dto);
+                }
+
                 return this.Ok();
             }
             catch (ArgumentNullException)
@@ -306,7 +313,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
                 // If it's the first time this notification is read
                 if (!dto.Read)
                 {
-                    await this.notificationService.SetAsRead(id);
+                    await this.notificationService.SetAsRead(dto);
                     dto.Read = true;
                 }
 

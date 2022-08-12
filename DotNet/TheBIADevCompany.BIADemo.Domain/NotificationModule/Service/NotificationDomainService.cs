@@ -69,14 +69,16 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         }
 
         /// <inheritdoc/>
-        public async Task SetAsRead(int id)
+        public async Task SetAsRead(NotificationDto dto)
         {
-            var notification = await this.Repository.GetEntityAsync(id);
+            var notification = await this.Repository.GetEntityAsync(dto.Id);
 
             notification.Read = true;
             await this.Repository.UnitOfWork.CommitAsync();
+            dto.Read = true;
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
         }
 
         /// <inheritdoc/>
@@ -89,6 +91,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             dto.Read = false;
 
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
         }
 
         /// <inheritdoc/>
@@ -117,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                     _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", dto.Id);
                 }
 
-                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", dto);
+                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
 
                 mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
 
@@ -138,7 +141,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
             _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", notification);
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
             return notification;
         }
 
@@ -163,7 +166,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
                 _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", notification);
             }
 
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications", notification);
+            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
             return notification;
         }
 
