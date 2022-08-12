@@ -2,7 +2,7 @@ import { ActionReducer } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { storeLogger } from 'ngrx-store-logger';
 import { environment } from 'src/environments/environment';
-import { AppState } from '../store/state';
+import { AppState } from '../../store/state';
 
 
 // the Ngrx Store DevTools is to use with the chrome extension Redux Devtools Extension (https://github.com/reduxjs/redux-devtools)

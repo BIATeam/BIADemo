@@ -18,7 +18,7 @@ import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-h
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { buildSpecificModules } from './build-specifics';
+import { buildSpecificModules } from './build-specifics/bia-build-specifics';
 
 export const getLocaleId = () => getInitialLang(APP_SUPPORTED_TRANSLATIONS);
 

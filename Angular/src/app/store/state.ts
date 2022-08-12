@@ -1,7 +1,7 @@
 import { Action, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { InjectionToken } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { logger } from '../build-specifics';
+import { logger } from '../build-specifics/bia-build-specifics';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppState {
