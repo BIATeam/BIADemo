@@ -78,7 +78,7 @@
   </ng-template>
   <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-      <td class="app-empty-message" [attr.colspan]="columns.length + 1">
+      <td class="app-empty-message" [attr.colspan]="columns?.length + 1">
         {{ 'bia.NoRecordsFound' | translate }}
       </td>
     </tr>

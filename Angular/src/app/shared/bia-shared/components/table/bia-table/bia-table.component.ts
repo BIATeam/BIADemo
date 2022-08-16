@@ -131,7 +131,7 @@ export class BiaTableComponent implements OnChanges {
     const columns: PrimeTableColumn[] = this.getColumns();
     if (this.columnToDisplays) {
       this.displayedColumns = columns.filter(
-        (col) => this.columnToDisplays.map((x) => x.key).indexOf(col.field) > -1
+        (col) => this.columnToDisplays.map((x) => x.key).indexOf(col?.field) > -1
       );
     } else {
       this.displayedColumns = columns.slice();
