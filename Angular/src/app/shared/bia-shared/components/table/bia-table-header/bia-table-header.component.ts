@@ -52,7 +52,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
           break;
         }
     });
-}
+  }
 
   ngOnChanges() {
     if (this.selectedElements) {

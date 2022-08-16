@@ -52,14 +52,14 @@ const routes: Routes = [
               {
                 path: 'planes-view',
                 data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesViewMode',
                   canNavigate: true,
                   // noMargin: true // Add noMargin if you wish the content of a route to stick to the borders of the screen.
                 },
                 loadChildren: () => import('./features/planes-view/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-signalR',
+                path: 'planes-planesSignalRMode',
                 data: {
                   breadcrumb: 'app.planes',
                   canNavigate: true
@@ -69,7 +69,7 @@ const routes: Routes = [
               {
                 path: 'planes-calc',
                 data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesCalcMode',
                   canNavigate: true
                 },
                 loadChildren: () => import('./features/planes-calc/plane.module').then((m) => m.PlaneModule)
@@ -77,10 +77,18 @@ const routes: Routes = [
               {
                 path: 'planes-offline',
                 data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesOfflineMode',
                   canNavigate: true
                 },
                 loadChildren: () => import('./features/planes-offline/plane.module').then((m) => m.PlaneModule)
+              },
+              {
+                path: 'planes-specific',
+                data: {
+                  breadcrumb: 'app.planesSpecific',
+                  canNavigate: true
+                },
+                loadChildren: () => import('./features/planes-specific/plane.module').then((m) => m.PlaneModule)
               },
               {
                 path: 'airports',

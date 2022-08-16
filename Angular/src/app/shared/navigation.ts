@@ -53,6 +53,11 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/planes-offline']
       },
       {
+        labelKey: 'app.planesSpecific',
+        permissions: [Permission.Plane_List_Access],
+        path: ['/examples/planes-specific']
+      },
+      {
         labelKey: 'app.hangfire',
         permissions: [Permission.Hangfire_Access],
         path: ['/examples/hangfire']

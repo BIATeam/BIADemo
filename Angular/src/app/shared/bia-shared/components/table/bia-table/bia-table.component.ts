@@ -1,6 +1,6 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges, ContentChildren, QueryList, TemplateRef } from '@angular/core';
 import { Table } from 'primeng/table';
-import { LazyLoadEvent, TableState } from 'primeng/api';
+import { LazyLoadEvent, PrimeTemplate, TableState } from 'primeng/api';
 import { BiaListConfig, PropType, PrimeTableColumn } from './bia-table-config';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { DEFAULT_VIEW, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
@@ -42,6 +42,10 @@ export class BiaTableComponent implements OnChanges {
 
   @ViewChild('dt', { static: false }) table: Table;
 
+  @ContentChildren(PrimeTemplate) templates: QueryList<any>;
+  // specificInputTemplate: TemplateRef<any>;
+  specificOutputTemplate: TemplateRef<any>;
+
   get selectedElements(): any[] {
     if (this.table) {
       return this.table.selection as any[];
@@ -63,6 +67,19 @@ export class BiaTableComponent implements OnChanges {
   protected defaultColumns: string[];
 
   constructor(public authService: AuthService, public translateService: TranslateService) { }
+
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+        switch(item.getType()) {
+          /*case 'specificInput':
+            this.specificInputTemplate = item.template;
+          break;*/
+          case 'specificOutput':
+            this.specificOutputTemplate = item.template;
+          break;
+        }
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.onElementsChange(changes);
