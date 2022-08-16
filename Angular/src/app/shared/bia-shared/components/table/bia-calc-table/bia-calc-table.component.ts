@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit } from '@angular/core';
+import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -22,7 +22,6 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   public form: FormGroup;
   public element: any = {};
   public hasChanged = false;
-  public specificInputs: string[] = [];
   protected mandatoryFields: string[] = [];
 
   protected sub = new Subscription();
@@ -30,6 +29,8 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   protected currentRow: HTMLElement;
   protected isInMultiSelect = false;
 
+  specificInputTemplate: TemplateRef<any>;
+  
   constructor(
     public formBuilder: FormBuilder,
     public authService: AuthService,
@@ -38,6 +39,19 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   ) {
     super(authService, translateService);
     this.initForm();
+  }
+
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+        switch(item.getType()) {
+          case 'specificInput':
+            this.specificInputTemplate = item.template;
+          break;
+          case 'specificOutput':
+            this.specificOutputTemplate = item.template;
+          break;
+        }
+    });
   }
 
   ngOnInit() {
@@ -85,10 +99,6 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
 
   public onChange() {
     this.hasChanged = true;
-  }
-
-  public isSpecificInput(field: string) {
-    return this.specificInputs && this.specificInputs.some((x) => field === x);
   }
 
   public initEditableRow(rowData: any) {

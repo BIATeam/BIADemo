@@ -90,6 +90,31 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-    ></app-plane-table>
+    >
+    <ng-template pTemplate="specificOutput" let-col="col" let-rowData="rowData">
+      <ng-container [ngSwitch]="col.field">
+        <ng-container *ngSwitchCase="'isActive'">
+          <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
+        </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+        <ng-container *ngSwitchCase="'capacity'">
+          <ng-container *ngIf="rowData[col.field] < 0">
+            - Negative -
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] === 0">
+            0 Empty 0
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] > 0 && rowData[col.field] < 10">
+            + Small +
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] >= 10 && rowData[col.field] < 100">
+            ++ Medium ++
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] >= 100">
+            +++ Large +++
+          </ng-container>
+        </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+      </ng-container>
+    </ng-template>
+  </app-plane-table>
   </div>
 </div>

@@ -80,29 +80,7 @@
         <!-- OTHER COLUMNS -->
         <td (click)="initEditableRow(rowData)" *ngFor="let col of columns">
           <p-cellEditor>
-            <!-- SPECIFIC INPUT -->
-            <ng-template pTemplate="input" *ngIf="isSpecificInput(col.field) === true">
-              <ng-container [ngSwitch]="col.field">
-                <!-- Begin Add here specific input -->                
-                <!-- End Add here specific input -->
-                <ng-container *ngSwitchDefault>
-                  <input pInputText type="text" [formControlName]="col.field" (change)="onChange()" />
-                </ng-container>
-              </ng-container>
-              <span *ngIf="isRequired(col.field) === true" class="bia-star-mandatory">*</span>
-            </ng-template>
-            <!-- SPECIFIC OUTPUT -->
-            <ng-template pTemplate="output" *ngIf="isSpecificInput(col.field) === true">
-              <ng-container [ngSwitch]="col.field">
-                <!-- Begin Add here specific output -->
-                <!-- End Add here specific output -->
-                <ng-container *ngSwitchDefault>
-                  {{ rowData[col.field] }}
-                </ng-container>
-              </ng-container>
-            </ng-template>
-            <!-- INPUT -->
-            <ng-template pTemplate="input" *ngIf="isSpecificInput(col.field) !== true">
+            <ng-template pTemplate="input">
               <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
                 <ng-container [ngSwitch]="col.type">
                   <ng-container *ngSwitchCase="'OneToMany'">
@@ -257,12 +235,15 @@
               </ng-template>
             </ng-template>
             <!-- OUTPUT -->
-            <ng-template pTemplate="output" *ngIf="isSpecificInput(col.field) !== true">
+            <ng-template pTemplate="output">
               <ng-template [ngIf]="isFooter(rowData) === true" [ngIfElse]="editRow">
                 <label *ngIf="col.isEditable === true">-</label>
               </ng-template>
               <ng-template #editRow>
-                <ng-container [ngSwitch]="col.type">
+                <ng-container *ngIf="col.specificOutput === true">
+                  <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { col: col, rowData: rowData }" ></ng-container>
+                </ng-container>
+                <ng-container [ngSwitch]="col.type" *ngIf="col.specificOutput !== true">
                   <ng-container *ngSwitchCase="'OneToMany'">
                     {{ rowData[col.field]?.display }}
                   </ng-container>
