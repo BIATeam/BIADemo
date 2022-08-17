@@ -1,13 +1,13 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { allEnvironments } from 'src/environments/all-environments';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { environment } from 'src/environments/environment';
 
 export class XhrWithCredInterceptorService implements HttpInterceptor {
   constructor() { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!environment.useXhrWithCred || allEnvironments.useKeycloak === true) {
+    if (!environment.useXhrWithCred || AppSettingsService.appSettings?.keycloak?.isActive === true) {
       return next.handle(req);
     }
     const authReq = req.clone({

@@ -18,15 +18,15 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  private isRefreshing = false;
+  protected isRefreshing = false;
 
-  constructor(private biaTranslationService: BiaTranslationService,
+  constructor(protected biaTranslationService: BiaTranslationService,
     public authService: AuthService,
     public keycloakService: KeycloakService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
-      if (allEnvironments.useKeycloak === true) {
+      if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
         return this.launchRequestKeycloak(request, next);
       } else {
         return next.handle(this.addLanguageOnly(request));
@@ -39,17 +39,17 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  private checkUrlNoToken(url: string) {
+  protected checkUrlNoToken(url: string) {
     return (
       url.toLowerCase().indexOf(allEnvironments.urlAuth.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
-      allEnvironments.useKeycloak === true && url.toLowerCase().startsWith(AppSettingsService.appSettings?.keycloak?.baseUrl) === true
+      AppSettingsService.appSettings?.keycloak?.isActive === true && url.toLowerCase().startsWith(AppSettingsService.appSettings?.keycloak?.baseUrl) === true
     );
   }
 
-  private launchRequestKeycloak(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  protected launchRequestKeycloak(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     return from(this.keycloakService.getToken()).pipe(
       switchMap(jwtToken => {
@@ -62,7 +62,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   }
 
-  private launchRequest(request: HttpRequest<any>, next: HttpHandler) {
+  protected launchRequest(request: HttpRequest<any>, next: HttpHandler) {
     if (this.authService.shouldRefreshToken) {
       return this.handle401Error(request, next);
     }
@@ -80,7 +80,7 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  private addToken(request: HttpRequest<any>, token: string) {
+  protected addToken(request: HttpRequest<any>, token: string) {
     const langSelected = this.biaTranslationService.getLangSelected();
     return request.clone({
       withCredentials: false,
@@ -91,7 +91,7 @@ export class TokenInterceptor implements HttpInterceptor {
     });
   }
 
-  private addLanguageOnly(request: HttpRequest<any>) {
+  protected addLanguageOnly(request: HttpRequest<any>) {
     const langSelected = this.biaTranslationService.getLangSelected();
     return request.clone({
       setHeaders: {
@@ -100,7 +100,7 @@ export class TokenInterceptor implements HttpInterceptor {
     });
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+  protected handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     if (this.isRefreshing === false) {
       return this.login(request, next);
     } else {
@@ -108,9 +108,12 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  private login(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  protected login(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.isRefreshing = true;
     this.authService.logout();
+    if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
+      this.loginIdP();
+    }
     return this.authService.login().pipe(
       switchMap((authInfo: AuthInfo) => {
         this.isRefreshing = false;
@@ -119,7 +122,18 @@ export class TokenInterceptor implements HttpInterceptor {
     );
   }
 
-  private waitLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  protected loginIdP() {
+    this.keycloakService.isLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn !== true) {
+        this.keycloakService.login({
+          redirectUri: window.location.href,
+          idpHint: AppSettingsService.appSettings?.keycloak?.configuration?.idpHint
+        });
+      }
+    });
+  }
+
+  protected waitLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.authService.authInfo$.pipe(
       take(1),
       switchMap((authInfo) => {

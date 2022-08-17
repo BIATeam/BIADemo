@@ -33,9 +33,7 @@ export class BiaAppInitService implements OnDestroy {
         .pipe(
           switchMap((appSettings: AppSettings | null) => {
             if (appSettings?.keycloak?.isActive === true) {
-              return from(this.initKeycloack(appSettings)).pipe(
-                switchMap(() => this.getObsAuthInfo())
-              );
+              return from(this.initKeycloack(appSettings));
             } else {
               return this.getObsAuthInfo();
             }
