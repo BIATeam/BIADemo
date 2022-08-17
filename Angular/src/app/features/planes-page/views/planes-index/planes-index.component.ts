@@ -26,7 +26,7 @@ import { PlanesSignalRService } from '../../services/plane-signalr.service';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { PlaneTableComponent } from 'src/app/features/planes/components/plane-table/plane-table.component';
+import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { useCalcMode, useSignalR, useView } from '../../plane.constants';
 import { skip } from 'rxjs/operators';
 
