@@ -234,6 +234,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
             isSearchable: false,
             isSortable: true,
             specificOutput: true,
+            specificInput:true,
             type: PropType.Boolean
           }),
           Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
@@ -251,6 +252,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
           Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
             type: PropType.Number,
             specificOutput: true,
+            specificInput:true,
             filterMode: PrimeNGFiltering.Equals
           }),
           Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
@@ -265,5 +267,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
     }));
+  }
+
+  onChange() {
+    this.planeTableComponent.onChange();
   }
 }

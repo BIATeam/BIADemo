@@ -48,7 +48,7 @@
         <ng-container [ngSwitch]="col.field">
           <ng-container *ngSwitchCase="'isActive'">
             <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
-          </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+          </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
             <ng-container *ngIf="rowData[col.field] < 0">
               - Negative -
@@ -65,7 +65,7 @@
             <ng-container *ngIf="rowData[col.field] >= 100">
               +++ Large +++
             </ng-container>
-          </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+          </ng-container> <!-- capacity -->
         </ng-container>
       </ng-template>
     </bia-table>
@@ -95,7 +95,7 @@
       <ng-container [ngSwitch]="col.field">
         <ng-container *ngSwitchCase="'isActive'">
           <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
-        </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+        </ng-container> <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
           <ng-container *ngIf="rowData[col.field] < 0">
             - Negative -
@@ -112,8 +112,20 @@
           <ng-container *ngIf="rowData[col.field] >= 100">
             +++ Large +++
           </ng-container>
-        </ng-container> <!-- *ngSwitchCase="'capacity'" -->
+        </ng-container> <!-- capacity -->
       </ng-container>
+    </ng-template>
+    <ng-template pTemplate="specificInput" let-col="col" let-rowData="rowData" let-form="form">
+      <div [formGroup]="form">
+        <ng-container [ngSwitch]="col.field">
+          <ng-container *ngSwitchCase="'isActive'">
+            <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
+          </ng-container> <!-- isActive -->
+          <ng-container *ngSwitchCase="'capacity'">
+            <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
+          </ng-container> <!-- capacity -->
+        </ng-container>
+      </div>
     </ng-template>
   </app-plane-table>
   </div>

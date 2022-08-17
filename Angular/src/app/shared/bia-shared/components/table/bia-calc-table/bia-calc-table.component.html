@@ -82,7 +82,10 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
-                <ng-container [ngSwitch]="col.type">
+                <ng-container *ngIf="col.specificInput === true">
+                  <ng-container *ngTemplateOutlet="specificInputTemplate;context: { col: col, rowData: rowData, form: form }" ></ng-container>
+                </ng-container>
+                <ng-container [ngSwitch]="col.type" *ngIf="col.specificInput !== true">
                   <ng-container *ngSwitchCase="'OneToMany'">
                     <p-dropdown
                       placeholder="&nbsp;"
@@ -241,7 +244,7 @@
               </ng-template>
               <ng-template #editRow>
                 <ng-container *ngIf="col.specificOutput === true">
-                  <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { col: col, rowData: rowData }" ></ng-container>
+                  <ng-container *ngTemplateOutlet="specificOutputTemplate; context: { col: col, rowData: rowData }" ></ng-container>
                 </ng-container>
                 <ng-container [ngSwitch]="col.type" *ngIf="col.specificOutput !== true">
                   <ng-container *ngSwitchCase="'OneToMany'">
