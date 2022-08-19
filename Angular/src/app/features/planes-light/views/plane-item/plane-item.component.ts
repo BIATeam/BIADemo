@@ -9,8 +9,8 @@ import { AppState } from 'src/app/store/state';
 import { PlaneFacadeService } from '../../services/plane-facade.service';
 
 @Component({
-  templateUrl: './plane-item.component.html',
-  styleUrls: ['./plane-item.component.scss']
+  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
 export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
   constructor(protected store: Store<AppState>,

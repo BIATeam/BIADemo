@@ -10,7 +10,6 @@ import { PlaneFacadeService } from '../../services/plane-facade.service';
 @Component({
   selector: 'app-plane-new',
   templateUrl: './plane-new.component.html',
-  styleUrls: ['./plane-new.component.scss']
 })
 export class PlaneNewComponent extends CrudItemNewComponent<Plane>  {
    constructor(
