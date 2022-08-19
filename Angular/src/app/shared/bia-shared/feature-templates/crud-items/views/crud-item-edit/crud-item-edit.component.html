@@ -1,0 +1,6 @@
+<app-crud-item-form 
+    [crudItem]="facadeService.crudItem$ | async" 
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-crud-item-form>
+<bia-spinner *ngIf="facadeService.loadingGet$ | async" [overlay]="true"></bia-spinner>

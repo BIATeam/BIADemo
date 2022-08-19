@@ -91,6 +91,14 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes-specific/plane.module').then((m) => m.PlaneModule)
               },
               {
+                path: 'planes-light',
+                data: {
+                  breadcrumb: 'app.planesLight',
+                  canNavigate: true
+                },
+                loadChildren: () => import('./features/planes-light/plane.module').then((m) => m.PlaneModule)
+              },
+              {
                 path: 'airports',
                 data: {
                   breadcrumb: 'app.airports',
