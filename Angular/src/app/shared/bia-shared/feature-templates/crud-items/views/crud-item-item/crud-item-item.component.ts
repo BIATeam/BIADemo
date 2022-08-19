@@ -26,7 +26,7 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
         this.store.select(getCurrentCrudItem).subscribe((crudItem) => {
           if (crudItem?.msn) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = crudItem.msn;
+              (routeData as any)['breadcrumb'] = crudItem.msn;
             });
             this.layoutService.refreshBreadcrumb();
           }

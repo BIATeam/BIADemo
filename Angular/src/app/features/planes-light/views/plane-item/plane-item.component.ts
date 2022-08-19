@@ -28,7 +28,7 @@ export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
         this.facadeService.crudItem$.subscribe((plane) => {
           if (plane?.msn) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = plane.msn;
+              (routeData as any)['breadcrumb'] = plane.msn;
             });
             this.layoutService.refreshBreadcrumb();
           }

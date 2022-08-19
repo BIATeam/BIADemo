@@ -30,7 +30,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentPlane).subscribe((plane) => {
           if (plane?.msn) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = plane.msn;
+              (routeData as any)['breadcrumb'] = plane.msn;
             });
             this.layoutService.refreshBreadcrumb();
           }
