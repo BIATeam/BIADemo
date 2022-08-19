@@ -8,7 +8,7 @@ import {
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { from, Observable, throwError } from 'rxjs';
-import { catchError, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaTranslationService } from '../services/bia-translation.service';
@@ -111,26 +111,20 @@ export class TokenInterceptor implements HttpInterceptor {
   protected login(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.isRefreshing = true;
     this.authService.logout();
-    if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
-      this.loginIdP();
-    }
-    return this.authService.login().pipe(
+
+    const obs$: Observable<HttpEvent<any>> = this.authService.login().pipe(
       switchMap((authInfo: AuthInfo) => {
         this.isRefreshing = false;
         return next.handle(this.addToken(request, authInfo.token));
-      })
-    );
-  }
+      }));
 
-  protected loginIdP() {
-    this.keycloakService.isLoggedIn().then((isLoggedIn) => {
-      if (isLoggedIn !== true) {
-        this.keycloakService.login({
-          redirectUri: window.location.href,
-          idpHint: AppSettingsService.appSettings?.keycloak?.configuration?.idpHint
-        });
-      }
-    });
+    if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
+      return from(this.keycloakService.isLoggedIn()).pipe(
+        filter((x) => x === true),
+        switchMap(() => obs$))
+    } else {
+      return obs$;
+    }
   }
 
   protected waitLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
