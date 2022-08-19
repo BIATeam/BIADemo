@@ -15,7 +15,9 @@ export const NAVIGATION: BiaNavigation[] = [
   // Begin BIADemo
   {
     labelKey: 'app.examples',
-    permissions: [Permission.Plane_List_Access],
+    permissions: [Permission.Plane_List_Access, 
+      Permission.AircraftMaintenanceCompany_List_Access ,
+      Permission.Hangfire_Access ],
     children: [
       {
         labelKey: 'app.aircraft-maintenance-companies',
