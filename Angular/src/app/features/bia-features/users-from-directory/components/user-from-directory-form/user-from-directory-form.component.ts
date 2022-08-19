@@ -26,14 +26,15 @@ export class UserFromLdapFormComponent implements OnChanges {
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
   @Input() returnSizeOptions: number[] = [10, 25, 50, 100];
- 
+
   selectedUsers: UserFromDirectory[];
   selectedDomain: string;
   form: FormGroup;
-  useKeycloak = AppSettingsService.appSettings?.keycloak?.isActive;
+  useKeycloak = false;
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: FormBuilder, appSettingsService: AppSettingsService) {
     this.initForm();
+    this.useKeycloak = appSettingsService.appSettings?.keycloak?.isActive;
   }
 
   ngOnChanges(changes: SimpleChanges) {

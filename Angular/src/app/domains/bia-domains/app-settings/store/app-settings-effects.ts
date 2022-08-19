@@ -7,6 +7,7 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { of } from 'rxjs';
 import { AppSettings } from '../model/app-settings';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
+import { AppSettingsService } from '../services/app-settings.service';
 
 const STORAGE_APPSETTINGS_KEY = 'AppSettings';
 
@@ -23,6 +24,7 @@ export class AppSettingsEffects {
               if (BiaOnlineOfflineService.isModeEnabled === true) {
                 localStorage.setItem(STORAGE_APPSETTINGS_KEY, JSON.stringify(appSettings));
               }
+              this.appSettingsService.appSettings = appSettings;
               return DomainAppSettingsActions.loadAllSuccess({ appSettings });
             }),
             catchError((err) => {
@@ -30,6 +32,7 @@ export class AppSettingsEffects {
                 const json: string | null = localStorage.getItem(STORAGE_APPSETTINGS_KEY);
                 if (json) {
                   const appSettings = <AppSettings>JSON.parse(json);
+                  this.appSettingsService.appSettings = appSettings;
                   return of(DomainAppSettingsActions.loadAllSuccess({ appSettings }));
                 }
               }
@@ -44,6 +47,7 @@ export class AppSettingsEffects {
   constructor(
     private actions$: Actions,
     private appSettingsDas: AppSettingsDas,
-    private biaMessageService: BiaMessageService
+    private biaMessageService: BiaMessageService,
+    private appSettingsService: AppSettingsService
   ) { }
 }

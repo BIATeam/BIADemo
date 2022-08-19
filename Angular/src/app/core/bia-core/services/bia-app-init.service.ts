@@ -15,6 +15,10 @@ import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
+// const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
+// const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
+// const STORAGE_KEYCLOAK_IDTOKEN = 'KeyCloak_IdToken';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +29,8 @@ export class BiaAppInitService implements OnDestroy {
     protected appSettingsDas: AppSettingsDas,
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
-    protected keycloakService: KeycloakService) { }
+    protected keycloakService: KeycloakService,
+    protected appSettingsService: AppSettingsService) { }
 
   public initAuth() {
     return new Promise<void>((resolve) => {
@@ -53,6 +58,11 @@ export class BiaAppInitService implements OnDestroy {
 
     this.initEventKeycloakLogin();
     const obs$: Observable<AuthInfo> = this.initEventKeycloakSuccess();
+
+    // const token = localStorage.getItem(STORAGE_KEYCLOAK_TOKEN);
+    // const refreshToken = localStorage.getItem(STORAGE_KEYCLOAK_REFRESHTOKEN);
+    // const idToken = localStorage.getItem(STORAGE_KEYCLOAK_IDTOKEN);
+
     this.keycloakService.init({
       config: {
         url: appSettings.keycloak?.baseUrl,
@@ -62,8 +72,12 @@ export class BiaAppInitService implements OnDestroy {
       enableBearerInterceptor: false,
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
+        // checkLoginIframe: false,
+        enableLogging: isDevMode(),
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        // token: token ?? undefined,
+        // refreshToken: refreshToken ?? undefined,
+        // idToken: idToken ?? undefined,
       }
     });
 
@@ -72,7 +86,7 @@ export class BiaAppInitService implements OnDestroy {
 
   protected initEventKeycloakSuccess(): Observable<AuthInfo> {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
-      filter((x) => x?.type == KeycloakEventType.OnAuthSuccess || x?.type == KeycloakEventType.OnAuthRefreshSuccess
+      filter((keycloakEvent: KeycloakEvent) => keycloakEvent?.type == KeycloakEventType.OnAuthSuccess || keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
       ),
       first(),
       switchMap(() => {
@@ -89,11 +103,23 @@ export class BiaAppInitService implements OnDestroy {
           if (isLoggedIn !== true) {
             this.keycloakService.login({
               redirectUri: window.location.href,
-              idpHint: AppSettingsService.appSettings?.keycloak?.configuration?.idpHint
+              idpHint: this.appSettingsService.appSettings?.keycloak?.configuration?.idpHint,
+              // scope: 'offline_access',
             });
           }
         });
-      }
+      } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
+
+        const token = await this.keycloakService.getToken();
+        localStorage.setItem(STORAGE_KEYCLOAK_TOKEN, token);
+
+        const refreshToken = await this.keycloakService.getKeycloakInstance().refreshToken;
+        localStorage.setItem(STORAGE_KEYCLOAK_REFRESHTOKEN, refreshToken ?? '');
+
+        const idToken = await this.keycloakService.getKeycloakInstance().idToken;
+        localStorage.setItem(STORAGE_KEYCLOAK_IDTOKEN, idToken ?? '');
+      }*/
+
     }));
   }
 

@@ -22,11 +22,12 @@ export class TokenInterceptor implements HttpInterceptor {
 
   constructor(protected biaTranslationService: BiaTranslationService,
     public authService: AuthService,
-    public keycloakService: KeycloakService) { }
+    public keycloakService: KeycloakService,
+    protected appSettingsService: AppSettingsService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
-      if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
+      if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
         return this.launchRequestKeycloak(request, next);
       } else {
         return next.handle(this.addLanguageOnly(request));
@@ -45,7 +46,7 @@ export class TokenInterceptor implements HttpInterceptor {
       url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
-      AppSettingsService.appSettings?.keycloak?.isActive === true && url.toLowerCase().startsWith(AppSettingsService.appSettings?.keycloak?.baseUrl) === true
+      this.appSettingsService.appSettings?.keycloak?.isActive === true && url.toLowerCase().startsWith(this.appSettingsService.appSettings?.keycloak?.baseUrl) === true
     );
   }
 
@@ -118,7 +119,7 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(this.addToken(request, authInfo.token));
       }));
 
-    if (AppSettingsService.appSettings?.keycloak?.isActive === true) {
+    if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
       return from(this.keycloakService.isLoggedIn()).pipe(
         filter((x) => x === true),
         switchMap(() => obs$))

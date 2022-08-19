@@ -44,7 +44,8 @@ export class BiaOnlineOfflineService implements OnDestroy {
     protected db: AppDB,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
-    protected authService: AuthService) {
+    protected authService: AuthService,
+    protected appSettingsService: AppSettingsService) {
     BiaOnlineOfflineService._IsModeEnabled = true;
     this.init();
   }
@@ -109,7 +110,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
    */
   protected checkServerAvailable() {
     timer(500, 2000).subscribe(() => {
-      if (this.serverAvailableSubject.value === false && AppSettingsService.appSettings) {
+      if (this.serverAvailableSubject.value === false && this.appSettingsService.appSettings) {
         this.ping().pipe(
           first()
         ).subscribe((ping) => {
