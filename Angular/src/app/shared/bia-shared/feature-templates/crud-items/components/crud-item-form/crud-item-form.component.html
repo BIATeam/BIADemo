@@ -1,0 +1,117 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <!-- <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <input formControlName="msn" type="text" pInputText maxlength="64" style ="width:100%"/>
+        <label><span class="bia-star-mandatory">*</span>{{ 'crudItem.msn' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <p-checkbox binary="true" formControlName="isActive" label="{{ 'crudItem.isActive' | translate }}"></p-checkbox>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-calendar
+          biaLocale
+          formControlName="lastFlightDate"
+          showTime="true"
+          placeholder="DateTime"
+          dateFormat="yy-mm-dd"
+          placeholder="&nbsp;"
+          [inputStyle]="{'width':'100%'}"
+          appendTo="body"
+        ></p-calendar>
+        <label>{{ 'crudItem.lastFlightDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-calendar
+          biaLocale
+          formControlName="deliveryDate"
+          placeholder="&nbsp;"
+          [showButtonBar]="true"
+          appendTo="body"
+          dateFormat="yy-mm-dd"
+          [inputStyle]="{'width':'100%'}"
+        ></p-calendar>
+        <label>{{ 'crudItem.deliveryDate' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-calendar
+          formControlName="syncTime"
+          showTime="true"
+          showSeconds="true"
+          [timeOnly]="true"
+          placeholder="&nbsp;"
+          dataType="string"
+          [inputStyle]="{'width':'100%'}"
+          appendTo="body"
+        ></p-calendar>
+        <label>{{ 'crudItem.syncTime' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <input formControlName="capacity" type="number" pInputText style="width: 100%;" />
+        <label><span class="bia-star-mandatory">*</span>{{ 'crudItem.capacity' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-dropdown
+          [options]="crudItemTypeOptions"
+          placeholder="&nbsp;"
+          formControlName="crudItemType"
+          optionLabel="display"
+          datakey="id"
+          [style]="{ width: '100%' }"
+          [showClear]="true"
+          appendTo="body"
+        ></p-dropdown>
+        <label>{{ 'crudItem.crudItemType' | translate }}</label>
+      </span>
+    </div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center">
+    <div class="app-field-container" fxFlex="90">
+      <span class="p-float-label">
+        <p-multiSelect
+          defaultLabel="&nbsp;"
+          [options]="airportOptions"
+          formControlName="connectingAirports"
+          optionLabel="display"
+          datakey="id"
+          [virtualScroll]="true"
+          [style]="{ width: '100%' }"
+          appendTo="body"
+        ></p-multiSelect>
+        <label>{{ 'crudItem.connectingAirports' | translate }}</label>
+      </span>
+    </div>
+  </div> -->
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="p-button-outlined"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

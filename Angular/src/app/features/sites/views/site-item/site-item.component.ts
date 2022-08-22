@@ -29,7 +29,7 @@ export class SiteItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentSite).subscribe((site) => {
           if (site?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = site.title;
+              (routeData as any)['breadcrumb'] = site.title;
             });
             this.layoutService.refreshBreadcrumb();
           }

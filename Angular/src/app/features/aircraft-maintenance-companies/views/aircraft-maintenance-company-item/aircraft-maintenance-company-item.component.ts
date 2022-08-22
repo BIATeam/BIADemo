@@ -32,7 +32,7 @@ export class AircraftMaintenanceCompanyItemComponent implements OnInit, OnDestro
         this.store.select(getCurrentAircraftMaintenanceCompany).subscribe((aircraftMaintenanceCompany) => {
           if (aircraftMaintenanceCompany?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = aircraftMaintenanceCompany.title;
+              (routeData as any)['breadcrumb'] = aircraftMaintenanceCompany.title;
             });
             this.layoutService.refreshBreadcrumb();
           }

@@ -29,7 +29,7 @@ export class AirportItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentAirport).subscribe((airport) => {
           if (airport?.name) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = airport.name;
+              (routeData as any)['breadcrumb'] = airport.name;
             });
             this.layoutService.refreshBreadcrumb();
           }

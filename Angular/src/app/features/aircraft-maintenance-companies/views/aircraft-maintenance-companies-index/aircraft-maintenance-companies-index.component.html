@@ -47,7 +47,7 @@
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canDetail"
-      [canSelectElement]="canDelete||canEdit"
+      [canSelectElement]="true"
       [loading]="loading$ | async"
       (clickRow)="onManageMember($event)"
       (loadLazy)="onLoadLazy($event)"

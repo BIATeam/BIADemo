@@ -37,7 +37,7 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentNotification).subscribe((notification) => {
           if (notification?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = notification.title;
+              (routeData as any)['breadcrumb'] = notification.title;
             });
             this.layoutService.refreshBreadcrumb();
           }

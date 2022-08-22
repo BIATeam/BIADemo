@@ -143,7 +143,7 @@
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Read" ],
-        "Roles": [ "User" ]
+        "Roles": [ "Admin", "Site_Member" ]
       },
       {
         "Names": [ "Plane_Update", "Plane_Save" ],
@@ -180,8 +180,16 @@
         "Roles": [ "Admin", "Supervisor" ]
       },
       {
-        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read" ],
+        "Roles": [ "AircraftMaintenanceCompany_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_Member_List_Access" ],
         "Roles": [ "Admin", "Supervisor", "MaintenanceTeam_Member" ]
+      },
+      {
+        "Names": [ "MaintenanceTeam_List_View_All" ],
+        "Roles": [ "Admin", "Supervisor" ]
       },
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
