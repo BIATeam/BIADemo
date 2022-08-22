@@ -197,6 +197,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
             }
 
+            if (userRolesFromUserDirectory.Contains(Constants.Role.User) || userRolesFromUserDirectory.Contains(Constants.Role.Admin))
+            {
+                var userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                userRolesFromUserDirectory.AddRange(userAppRootRoles);
+            }
+
             var userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRolesFromUserDirectory, loginParam.LightToken);
 
             IEnumerable<TeamDto> allTeams = new List<TeamDto>();
@@ -205,7 +211,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
             }
 
-            List<string> allRoles = await this.GetRolesAsync(loginParam, userData, userRolesFromUserDirectory, userInfo, allTeams);
+            List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRolesFromUserDirectory, userInfo, allTeams);
 
             if (allRoles == null || !allRoles.Any())
             {
@@ -326,6 +332,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 this.userAppService.SelectDefaultLanguage(userInfo);
             }
 
+            if (userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin))
+            {
+                var userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                userRoles.AddRange(userAppRootRoles);
+            }
+
             List<string> userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRoles, loginParam.LightToken);
 
             IEnumerable<TeamDto> allTeams = new List<TeamDto>();
@@ -335,7 +347,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             UserDataDto userData = new UserDataDto();
-            List<string> allRoles = await this.GetRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
+            List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
 
             if (allRoles == null || !allRoles.Any())
             {
@@ -381,7 +393,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <returns>List of role.</returns>
-        private async Task<List<string>> GetRolesAsync(LoginParamDto loginParam, UserDataDto userData, List<string> userRolesFromUserDirectory, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
+        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, List<string> userRolesFromUserDirectory, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
         {
             // the main roles
             var allRoles = userRolesFromUserDirectory;
@@ -389,8 +401,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // get user rights
             if (userRolesFromUserDirectory.Contains(Constants.Role.User) || userRolesFromUserDirectory.Contains(Constants.Role.Admin))
             {
-                var userRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
-                allRoles.AddRange(userRoles);
+                /*var userRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                allRoles.AddRange(userRoles);*/
 
                 if (loginParam.TeamsConfig != null)
                 {
