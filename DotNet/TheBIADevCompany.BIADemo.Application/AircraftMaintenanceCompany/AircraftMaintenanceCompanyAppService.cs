@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             : base(repository)
         {
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+            this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 
             IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
