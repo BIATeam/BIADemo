@@ -9,7 +9,7 @@ import {
   PropType
 } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
+import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,10 +18,10 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
-import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../crud-item.constants';
 import { skip } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { CrudConfig } from '../../model/crud-config';
 
 @Component({
   selector: 'app-crud-items-index',
@@ -29,9 +29,7 @@ import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
   styleUrls: ['./crud-items-index.component.scss']
 })
 export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
-  useCalcMode = useCalcMode;
-  useSignalR = useSignalR;
-  useView = useView;
+  public crudConfiguration : CrudConfig;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class.bia-flex') flex = true;
@@ -62,10 +60,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   displayedColumns: KeyValuePair[];
   viewPreference: string;
   popupTitle: string;
-  tableStateKey = this.useView ? 'crud-itemsGrid' : undefined;
+  tableStateKey: string | undefined;
   tableState: string;
   sortFieldValue = 'msn';
-  useViewTeamWithTypeId = this.useView ? useViewTeamWithTypeId : null;
+  useViewTeamWithTypeId: TeamTypeId | null;
   parentIds: string[];
 
   constructor(
@@ -79,6 +77,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   ngOnInit() {
+    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
+    this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
+    
     this.parentIds = [];
     this.sub = new Subscription();
 
@@ -88,7 +89,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.totalCount$ = this.facadeService.totalCount$;
     this.loading$ = this.facadeService.loadingGetAll$;
     this.OnDisplay();
-    if (this.useCalcMode) {
+    if (this.crudConfiguration.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
           this.facadeService.optionsService.loadAllOptions();
@@ -113,36 +114,36 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   OnDisplay() {
-    if (this.useView) {
+    if (this.crudConfiguration.useView) {
       this.store.dispatch(loadAllView());
     }
 
 
-    if (this.useSignalR) {
+    if (this.crudConfiguration.useSignalR) {
       this.facadeService.signalRService.initialize(this.facadeService);
     }
   }
 
   OnHide() {
-    if (this.useSignalR) {
+    if (this.crudConfiguration.useSignalR) {
       this.facadeService.signalRService.destroy();
     }
   }
 
   onCreate() {
-    if (!this.useCalcMode) {
+    if (!this.crudConfiguration.useCalcMode) {
       this.router.navigate(['create'], { relativeTo: this.activatedRoute });
     }
   }
 
   onEdit(crudItemId: number) {
-    if (!this.useCalcMode) {
+    if (!this.crudConfiguration.useCalcMode) {
       this.router.navigate([crudItemId, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
   onSave(crudItem: CrudItem) {
-    if (this.useCalcMode) {
+    if (this.crudConfiguration.useCalcMode) {
       if (crudItem.id > 0) {
         if (this.canEdit) {
           this.facadeService.update(crudItem);
@@ -215,7 +216,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   protected initTableConfiguration() {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
-        columns: this.tableConfiguration.columns.map<PrimeTableColumn>(object => object.clone())}
+        columns: this.crudConfiguration.columns.map<PrimeTableColumn>(object => object.clone())}
  
       this.tableConfiguration.columns.forEach(column => {
         switch (column.type)

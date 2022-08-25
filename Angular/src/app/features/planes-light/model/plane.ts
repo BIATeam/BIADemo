@@ -1,6 +1,8 @@
-import { BiaListConfig, PrimeNGFiltering, PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { PrimeNGFiltering, PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { storeKey, tableStateKey, useCalcMode, usePopup, useSignalR, useView, useViewTeamWithTypeId } from '../plane.constants';
 
 export interface Plane extends BaseDto {
   msn: string;
@@ -14,9 +16,16 @@ export interface Plane extends BaseDto {
   planeType: OptionDto | null;
 }
 
-export const PlaneCRUDConfiguration : BiaListConfig = 
+export const PlaneCRUDConfiguration : CrudConfig = 
 {
-    columns: [
+  storeKey: storeKey,
+  useCalcMode: useCalcMode,
+  useSignalR: useSignalR,
+  useView: useView,
+  tableStateKey: tableStateKey,
+  useViewTeamWithTypeId: useViewTeamWithTypeId,
+  usePopup: usePopup,
+  columns: [
     Object.assign(new PrimeTableColumn('msn', 'plane.msn'), {
       isRequired: true,
     }),

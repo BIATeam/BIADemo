@@ -28,7 +28,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   ) {
     super(store,router,activatedRoute,translateService,
       biaTranslationService,facadeService);
-    this.tableConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = PlaneCRUDConfiguration;
   }
 
   protected setPermissions() {

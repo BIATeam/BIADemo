@@ -2,7 +2,7 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
-      [canAdd]="canAdd && !useCalcMode"
+      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
@@ -25,7 +25,7 @@
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
     ></bia-table-controller>
     <bia-table
-      *ngIf="!useCalcMode"
+      *ngIf="!crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
@@ -45,9 +45,9 @@
       (stateSave)="onStateSave($event)"
     ></bia-table>
     <app-plane-table
-      *ngIf="useCalcMode"
+      *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
-      [dictOptionDtos]="planeOptionsService.dictOptionDtos$ | async"
+      [dictOptionDtos]="facadeService.optionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
