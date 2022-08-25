@@ -18,13 +18,6 @@ export interface Plane extends BaseDto {
 
 export const PlaneCRUDConfiguration : CrudConfig = 
 {
-  storeKey: storeKey,
-  useCalcMode: useCalcMode,
-  useSignalR: useSignalR,
-  useView: useView,
-  tableStateKey: tableStateKey,
-  useViewTeamWithTypeId: useViewTeamWithTypeId,
-  usePopup: usePopup,
   columns: [
     Object.assign(new PrimeTableColumn('msn', 'plane.msn'), {
       isRequired: true,
@@ -54,5 +47,12 @@ export const PlaneCRUDConfiguration : CrudConfig =
     Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
       type: PropType.ManyToMany,
     })
-  ]
+  ],
+  storeKey: storeKey,
+  useCalcMode: useCalcMode,
+  useSignalR: useSignalR,
+  useView: useView,
+  tableStateKey: tableStateKey,
+  useViewTeamWithTypeId: useViewTeamWithTypeId,
+  usePopup: usePopup,
 }
