@@ -14,7 +14,7 @@ export enum PrimeNGFiltering {
 export enum PropType {
   Date = 'Date',
   DateTime = 'DateTime',
-  Time = 'Time',
+  Time = 'Time', // For dateTime field if you just manipulate Time
   TimeOnly = 'TimeOnly',
   TimeSecOnly = 'TimeSecOnly',
   Number = 'Number',
@@ -43,6 +43,7 @@ export class PrimeTableColumn {
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
+  isRequired: boolean;
   get isDate() {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
   }
@@ -63,6 +64,22 @@ export class PrimeTableColumn {
     this.isSortable = true;
     this.isEditable = true;
     this.maxlength = maxlength;
+    this.isRequired = false;
+  }
+  
+  public clone() : PrimeTableColumn
+  {
+    return Object.assign(new PrimeTableColumn(this.field,this.header,this.maxlength), {
+      type : this.type,
+      filterMode : this.filterMode,
+      formatDate : this.formatDate,
+      isSearchable : this.isSearchable,
+      isSortable : this.isSortable,
+      isEditable : this.isEditable,
+      translateKey: this.translateKey,
+      searchPlaceholder: this.searchPlaceholder,
+      isRequired: this.isRequired,
+    })
   }
 }
 

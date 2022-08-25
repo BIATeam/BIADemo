@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { BiaListConfig } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 
 @Component({
   selector: 'app-crud-item-edit',
@@ -15,6 +16,7 @@ import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
 export class CrudItemEditComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
   protected sub = new Subscription();
+  public crudConfiguration : BiaListConfig;
 
   constructor(
     protected store: Store<AppState>,

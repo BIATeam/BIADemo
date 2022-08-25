@@ -6,6 +6,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 import { Subscription } from 'rxjs';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { BiaListConfig } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 
 @Component({
   selector: 'app-crud-item-new',
@@ -14,6 +15,7 @@ import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
 })
 export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy  {
   protected sub = new Subscription();
+  public crudConfiguration : BiaListConfig;
 
   constructor(
     protected store: Store<AppState>,

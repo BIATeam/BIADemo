@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Plane } from '../../model/plane';
+import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -20,5 +20,6 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
     public facadeService: PlaneFacadeService, 
   ) {
     super(store,router,activatedRoute,biaTranslationService,facadeService);
+    this.crudConfiguration = PlaneCRUDConfiguration;
   }
 }

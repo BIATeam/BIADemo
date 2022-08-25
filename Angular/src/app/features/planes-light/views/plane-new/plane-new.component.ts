@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Plane } from '../../model/plane';
+import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
 import { AppState } from 'src/app/store/state';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -20,5 +20,6 @@ export class PlaneNewComponent extends CrudItemNewComponent<Plane>  {
     public facadeService: PlaneFacadeService, 
   ) {
      super(store,router,activatedRoute,biaTranslationService, facadeService);
+     this.crudConfiguration = PlaneCRUDConfiguration;
    }
 }

@@ -5,7 +5,8 @@ import { LazyLoadEvent } from 'primeng/api';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
   BiaListConfig,
-  PrimeTableColumn
+  PrimeTableColumn,
+  PropType
 } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
@@ -56,7 +57,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaListConfig = { columns : []};
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -211,46 +212,34 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.canDelete = true;
     this.canAdd = true;
   }
-
   protected initTableConfiguration() {
-    // TODO redefine in plane
-    /*
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
-        columns: [
-          new PrimeTableColumn('msn', 'crudItem.msn'),
-          Object.assign(new PrimeTableColumn('isActive', 'crudItem.isActive'), {
-            isSearchable: false,
-            isSortable: false,
-            type: PropType.Boolean
-          }),
-          Object.assign(new PrimeTableColumn('lastFlightDate', 'crudItem.lastFlightDate'), {
-            type: PropType.DateTime,
-            formatDate: dateFormat.dateTimeFormat
-          }),
-          Object.assign(new PrimeTableColumn('deliveryDate', 'crudItem.deliveryDate'), {
-            type: PropType.Date,
-            formatDate: dateFormat.dateFormat
-          }),
-          Object.assign(new PrimeTableColumn('syncTime', 'crudItem.syncTime'), {
-            type: PropType.TimeSecOnly,
-            formatDate: dateFormat.timeFormatSec
-          }),
-          Object.assign(new PrimeTableColumn('capacity', 'crudItem.capacity'), {
-            type: PropType.Number,
-            filterMode: PrimeNGFiltering.Equals
-          }),
-          Object.assign(new PrimeTableColumn('crud-itemType', 'crudItem.crudItemType'), {
-            type: PropType.OneToMany
-          }),
-          Object.assign(new PrimeTableColumn('connectingAirports', 'crudItem.connectingAirports'), {
-            type: PropType.ManyToMany
-          })
-        ]
-      };
-
+        columns: this.tableConfiguration.columns.map<PrimeTableColumn>(object => object.clone())}
+ 
+      this.tableConfiguration.columns.forEach(column => {
+        switch (column.type)
+        {
+          case PropType.DateTime :
+            column.formatDate = dateFormat.dateTimeFormat;
+            break;
+          case PropType.Date :
+            column.formatDate = dateFormat.dateFormat;
+            break;
+          case PropType.Time :
+            column.formatDate = dateFormat.timeFormat;
+            break;
+          case PropType.TimeOnly :
+            column.formatDate = dateFormat.timeFormat;
+            break;
+          case PropType.TimeSecOnly :
+            column.formatDate = dateFormat.timeFormatSec;
+            break;
+        }
+      });
+      
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    }));*/
+    }));
   }
 }

@@ -1,109 +1,129 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <input formControlName="msn" type="text" pInputText maxlength="64" style ="width:100%"/>
-        <label><span class="bia-star-mandatory">*</span>{{ 'plane.msn' | translate }}</label>
-      </span>
+  <ng-container *ngFor="let col of crudConfiguration.columns">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <div class="app-field-container" fxFlex="90">
+        <ng-container [ngSwitch]="col.type" *ngIf="col.specificInput !== true">
+          <ng-container *ngSwitchCase="'OneToMany'">
+            <span class="p-float-label">
+              <p-dropdown
+                [options]="getOptionDto(col.field)"
+                placeholder="&nbsp;"
+                [formControlName]="col.field"
+                optionLabel="display"
+                datakey="id"
+                [style]="{ width: '100%' }"
+                [showClear]="true"
+                appendTo="body"
+              ></p-dropdown>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'ManyToMany'">
+            <p-multiSelect
+              defaultLabel="&nbsp;"
+              [formControlName]="col.field"
+              [options]="getOptionDto(col.field)"
+              optionLabel="display"
+              datakey="id"
+              (onChange)="onChange()"
+              (onPanelShow)="onPanelShowMultiSelect()"
+              (onPanelHide)="onPanelHideMultiSelect()"
+              appendTo="body"
+              [style]="{ width: '100%' }"
+            ></p-multiSelect>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Boolean'">
+            <p-checkbox binary="true" [formControlName]="col.field" label="{{ col.header | translate }}"></p-checkbox>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Number'">
+            <span class="p-float-label">
+              <input [formControlName]="col.field" type="number" pInputText style="width: 100%;" />
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Date'">
+            <span class="p-float-label">
+              <p-calendar
+                biaLocale
+                [formControlName]="col.field"
+                placeholder="&nbsp;"
+                showButtonBar="true"
+                appendTo="body"
+                dateFormat="yy-mm-dd"
+                inputStyle="{'width':'100%'}"
+              ></p-calendar>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'Time'">
+            <span class="p-float-label">
+              <p-calendar
+              [formControlName]="col.field"
+                showTime="true"
+                showSeconds="false"
+                timeOnly="true"
+                dateFormat="yy-mm-dd"
+                placeholder="&nbsp;"
+                inputStyle="{'width':'100%'}"
+                appendTo="body"
+              ></p-calendar>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'TimeOnly'">
+            <span class="p-float-label">
+              <p-calendar
+              [formControlName]="col.field"
+                showTime="true"
+                showSeconds="false"
+                timeOnly="true"
+                placeholder="&nbsp;"
+                dataType="string"
+                inputStyle="{'width':'100%'}"
+                appendTo="body"
+              ></p-calendar>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'TimeSecOnly'">
+            <span class="p-float-label">
+              <p-calendar
+              [formControlName]="col.field"
+                showTime="true"
+                showSeconds="true"
+                timeOnly="true"
+                placeholder="&nbsp;"
+                dataType="string"
+                inputStyle="{'width':'100%'}"
+                appendTo="body"
+              ></p-calendar>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchCase="'DateTime'">
+            <span class="p-float-label">
+              <p-calendar
+                biaLocale
+                [formControlName]="col.field"
+                showTime="true"
+                dateFormat="yy-mm-dd"
+                placeholder="&nbsp;"
+                [inputStyle]="{'width':'100%'}"
+                appendTo="body"
+              ></p-calendar>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <span class="p-float-label">
+              <input [formControlName]="col.field" type="text" pInputText maxlength="col.maxlength" style ="width:100%"/>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
+          </ng-container>
+        </ng-container>
+      </div>
     </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <p-checkbox binary="true" formControlName="isActive" label="{{ 'plane.isActive' | translate }}"></p-checkbox>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-calendar
-          biaLocale
-          formControlName="lastFlightDate"
-          showTime="true"
-          placeholder="DateTime"
-          dateFormat="yy-mm-dd"
-          placeholder="&nbsp;"
-          [inputStyle]="{'width':'100%'}"
-          appendTo="body"
-        ></p-calendar>
-        <label>{{ 'plane.lastFlightDate' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-calendar
-          biaLocale
-          formControlName="deliveryDate"
-          placeholder="&nbsp;"
-          [showButtonBar]="true"
-          appendTo="body"
-          dateFormat="yy-mm-dd"
-          [inputStyle]="{'width':'100%'}"
-        ></p-calendar>
-        <label>{{ 'plane.deliveryDate' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-calendar
-          formControlName="syncTime"
-          showTime="true"
-          showSeconds="true"
-          [timeOnly]="true"
-          placeholder="&nbsp;"
-          dataType="string"
-          [inputStyle]="{'width':'100%'}"
-          appendTo="body"
-        ></p-calendar>
-        <label>{{ 'plane.syncTime' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <input formControlName="capacity" type="number" pInputText style="width: 100%;" />
-        <label><span class="bia-star-mandatory">*</span>{{ 'plane.capacity' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-dropdown
-          [options]="planeTypeOptions"
-          placeholder="&nbsp;"
-          formControlName="planeType"
-          optionLabel="display"
-          datakey="id"
-          [style]="{ width: '100%' }"
-          [showClear]="true"
-          appendTo="body"
-        ></p-dropdown>
-        <label>{{ 'plane.planeType' | translate }}</label>
-      </span>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <span class="p-float-label">
-        <p-multiSelect
-          defaultLabel="&nbsp;"
-          [options]="airportOptions"
-          formControlName="connectingAirports"
-          optionLabel="display"
-          datakey="id"
-          [virtualScroll]="true"
-          [style]="{ width: '100%' }"
-          appendTo="body"
-        ></p-multiSelect>
-        <label>{{ 'plane.connectingAirports' | translate }}</label>
-      </span>
-    </div>
-  </div>
+  </ng-container>
   <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button

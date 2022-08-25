@@ -4,10 +4,14 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { BiaListConfig, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 @Component({
@@ -17,8 +21,10 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnChanges {
+export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnInit, OnChanges {
   @Input() crudItem: CrudItem = <CrudItem>{};
+  @Input() crudConfiguration : BiaListConfig;
+  @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancel = new EventEmitter();
@@ -29,11 +35,15 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnChange
       public formBuilder: FormBuilder,
       // protected authService: AuthService
     ) {
+    
+  }
+
+  ngOnInit() {
     this.initForm();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.crudItem) {
+    if (this.crudItem && this.form) {
       this.form.reset();
       if (this.crudItem) {
         this.form.patchValue({ ...this.crudItem });
@@ -41,22 +51,26 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnChange
     }
   }
 
-  protected initForm() {
-    // TODO redefine in plane 
-    /*
-    this.form = this.formBuilder.group({
-      id: [this.crudItem.id],
-      msn: [this.crudItem.msn, Validators.required],
-      isActive: [this.crudItem.isActive],
-      lastFlightDate: [this.crudItem.lastFlightDate],
-      deliveryDate: [this.crudItem.deliveryDate],
-      syncTime: [this.crudItem.syncTime],
-      capacity: [this.crudItem.capacity, Validators.required],
-      connectingAirports: [this.crudItem.connectingAirports],
-      crudItemType: [this.crudItem.crudItemType?.id],
-    });
-    */
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;
+  }
 
+  protected initForm() {
+    this.form = this.formBuilder.group(this.formFields());
+  }
+  protected formFields() {
+      let fields : {[key:string]: any} = {id: [this.crudItem.id]};
+      for (let col of this.crudConfiguration.columns) {
+        if (col.isRequired)
+        {
+          fields[col.field] = [this.crudItem[col.field as keyof CrudItem], Validators.required];
+        }
+        else
+        {
+          fields[col.field] = [this.crudItem[col.field as keyof CrudItem]];
+        }
+      }
+      return fields;
   }
 
   onCancel() {
@@ -68,14 +82,23 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnChange
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.id = crudItem.id > 0 ? crudItem.id : 0;
-      // TODO redefine in plane 
-      /*
-      crudItem.isActive = crudItem.isActive ? crudItem.isActive : false;
-      crudItem.connectingAirports = BiaOptionService.Differential(crudItem.connectingAirports, this.crudItem?.connectingAirports);
-      crudItem.crudItemType = BiaOptionService.Clone(crudItem.crudItemType);
-
-      // force the parent key => siteId from authService or other Id from 'parent'Service
-      crudItem.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site),*/
+      for (let col of this.crudConfiguration.columns) {
+        switch(col.type)
+        {
+          case PropType.Boolean:
+            Reflect.set(crudItem, col.field, crudItem[col.field as keyof CrudItem] ? crudItem[col.field as keyof CrudItem] : false);
+            break;
+          case PropType.ManyToMany:
+            Reflect.set(crudItem, col.field, BiaOptionService.Differential(
+              Reflect.get(crudItem, col.field), 
+              this.crudItem?Reflect.get(this.crudItem, col.field):undefined));
+            break;
+          case PropType.OneToMany:
+            Reflect.set(crudItem, col.field, BiaOptionService.Clone(crudItem[col.field as keyof CrudItem]));
+            break;
+          }        
+      }
+      
       this.save.emit(crudItem);
       this.form.reset();
     }

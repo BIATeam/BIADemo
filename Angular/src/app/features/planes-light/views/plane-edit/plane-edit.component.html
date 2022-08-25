@@ -1,7 +1,7 @@
-<app-plane-form 
+<app-plane-form  
     [crudItem]="facadeService.crudItem$ | async" 
-    [airportOptions]="facadeService.optionsService.airportOptions$ | async"
-    [planeTypeOptions]="facadeService.optionsService.planeTypeOptions$ | async"
+    [crudConfiguration]="crudConfiguration"
+    [dictOptionDtos]="facadeService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-plane-form>
