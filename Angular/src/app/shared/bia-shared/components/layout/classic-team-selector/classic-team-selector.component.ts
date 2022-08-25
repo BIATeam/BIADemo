@@ -69,7 +69,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     );
     this.sub.add(
       this.teams$.subscribe(teams => {
-        this.teams = teams
+        this.teams = this.SortTeams(teams);
         this.initDropdownTeam();
         this.initDropdownRole();
       })
@@ -98,8 +98,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     if (currentTeamId && currentTeamId > 0) {
       this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];
     }
-    if (this.teams?.length > 1) 
-    {
+    if (this.teams?.length > 1) {
       this.displayTeamList = true;
     }
     if (defaultTeamId) {
@@ -118,13 +117,13 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   onSetDefaultRoles() {
     this.store.dispatch(DomainTeamsActions.setDefaultRoles({ teamId: this.currentTeam.id, roleIds: this.currentRoles.map(r => r.id) }));
- }
+  }
 
   isDefaultRoles(): boolean {
     return (this.defaultRoleIds?.sort().toString() === this.currentRoles?.map(r => r.id).sort().toString());
   }
 
-  private initDropdownRole() {
+  protected initDropdownRole() {
     this.displayRoleList = false;
     this.displayRoleMultiSelect = false;
     if (this.singleRoleMode || this.multiRoleMode) {
@@ -137,19 +136,31 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
           this.displayRoleList = true;
           if (this.currentRoles.length === 1) this.currentRole = this.currentRoles[0];
           else this.currentRole = null;
-          this.roles = roles;
+          this.roles = this.SortRoles(roles);
           if (defaultRoleIds && defaultRoleIds.length === 1) {
             this.defaultRoleIds = defaultRoleIds
           }
         }
         if (this.multiRoleMode) {
           this.displayRoleMultiSelect = true;
-          this.roles = roles;
+          this.roles = this.SortRoles(roles);
           if (defaultRoleIds) {
             this.defaultRoleIds = defaultRoleIds
           }
         }
       }
     }
+  }
+
+  protected SortTeams(teams: Team[]): Team[] {
+    return teams?.sort((a, b) => {
+      return a?.title?.localeCompare(b?.title);
+    });
+  }
+
+  protected SortRoles(roles: RoleDto[]): RoleDto[] {
+    return roles?.sort((a, b) => {
+      return a?.display?.localeCompare(b?.display);
+    });
   }
 }

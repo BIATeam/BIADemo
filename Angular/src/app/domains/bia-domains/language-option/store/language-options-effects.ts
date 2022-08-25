@@ -21,7 +21,7 @@ export class LanguageOptionsEffects {
       /* 'Languages Reducers' will take care of the rest */
       switchMap(() =>
         this.languageDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((languages) => DomainLanguageOptionsActions.loadAllSuccess({ languages })),
+          map((languages) => DomainLanguageOptionsActions.loadAllSuccess({ languages: languages?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(DomainLanguageOptionsActions.failure({ error: err }));

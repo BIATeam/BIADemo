@@ -23,7 +23,7 @@ export class UserOptionsEffects {
       /* 'Users Reducers' will take care of the rest */
       switchMap(() =>
         this.userDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((users) => DomainUserOptionsActions.loadAllSuccess({ users })),
+          map((users) => DomainUserOptionsActions.loadAllSuccess({ users: users?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(DomainUserOptionsActions.failure({ error: err }));
@@ -41,7 +41,7 @@ export class UserOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Users Reducers' will take care of the rest */
       switchMap((action) =>
-        this.userDas.getList({ endpoint: 'allOptions', options:  { params: { filter: action.filter } } }).pipe(
+        this.userDas.getList({ endpoint: 'allOptions', options: { params: { filter: action.filter } } }).pipe(
           map((users) => DomainUserOptionsActions.loadAllSuccess({ users })),
           catchError((err) => {
             this.biaMessageService.showError();
