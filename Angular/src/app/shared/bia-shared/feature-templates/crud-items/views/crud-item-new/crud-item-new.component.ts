@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Subscription } from 'rxjs';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
 
 @Component({
@@ -22,13 +22,13 @@ export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, O
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected biaTranslationService: BiaTranslationService,
-    public facadeService: CrudItemFacadeService<CrudItem>,
+    public crudItemService: CrudItemService<CrudItem>,
   ) {}
 
   ngOnInit() {
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.facadeService.optionsService.loadAllOptions();
+          this.crudItemService.optionsService.loadAllOptions();
       })
     );
   }
@@ -40,7 +40,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, O
   }
 
   onSubmitted(crudItemToCreate: CrudItem) {
-    this.facadeService.create(crudItemToCreate);
+    this.crudItemService.create(crudItemToCreate);
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 

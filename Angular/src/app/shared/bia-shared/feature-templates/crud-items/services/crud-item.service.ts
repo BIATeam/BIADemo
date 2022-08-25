@@ -9,7 +9,7 @@ import { CrudItemSignalRService } from './crud-item-signalr.service';
 @Injectable({
     providedIn: 'root'
 })
-export abstract class CrudItemFacadeService<CrudItem extends BaseDto> {
+export abstract class CrudItemService<CrudItem extends BaseDto> {
     constructor(    
         public dasService: CrudItemDas<CrudItem>,
         public signalRService: CrudItemSignalRService<CrudItem>,

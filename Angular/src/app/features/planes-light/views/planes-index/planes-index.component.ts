@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
-import { PlaneFacadeService } from '../../services/plane-facade.service';
+import { PlaneService } from '../../services/plane.service';
 
 @Component({
   selector: 'app-planes-index',
@@ -24,10 +24,10 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     protected authService: AuthService,
     protected translateService: TranslateService,
     protected biaTranslationService: BiaTranslationService,
-    protected facadeService: PlaneFacadeService, 
+    protected planeService: PlaneService, 
   ) {
     super(store,router,activatedRoute,translateService,
-      biaTranslationService,facadeService);
+      biaTranslationService,planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
   }
 

@@ -1,6 +1,6 @@
 <app-crud-item-form 
     [crudConfiguration]="crudConfiguration"
-    [dictOptionDtos]="facadeService.optionsService.dictOptionDtos$ | async"
+    [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-crud-item-form>

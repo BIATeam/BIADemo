@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
   templateUrl: './crud-item-item.component.html',
@@ -14,11 +14,11 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
   constructor(
     //protected store: Store<AppState>,
     protected route: ActivatedRoute,
-    public facadeService: CrudItemFacadeService<CrudItem>,
+    public crudItemService: CrudItemService<CrudItem>,
   ) { }
 
   ngOnInit() {
-    this.facadeService.currentCrudItemId = this.route.snapshot.params.crudItemId;
+    this.crudItemService.currentCrudItemId = this.route.snapshot.params.crudItemId;
     // TODO redefine in plane
     /*
     this.sub.add

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { PlaneFacadeService } from '../../services/plane-facade.service';
+import { PlaneService } from '../../services/plane.service';
 
 @Component({
   selector: 'app-plane-edit',
@@ -17,9 +17,9 @@ export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected biaTranslationService: BiaTranslationService,
-    public facadeService: PlaneFacadeService, 
+    public planeService: PlaneService, 
   ) {
-    super(store,router,activatedRoute,biaTranslationService,facadeService);
+    super(store,router,activatedRoute,biaTranslationService,planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
   }
 }

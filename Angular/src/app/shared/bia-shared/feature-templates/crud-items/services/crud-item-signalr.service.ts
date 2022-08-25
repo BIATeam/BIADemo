@@ -6,7 +6,7 @@ import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.se
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { CrudItemFacadeService } from './crud-item-facade.service';
+import { CrudItemService } from './crud-item.service';
 import { BaseDto } from '../../../model/base-dto';
 
 /**
@@ -36,13 +36,13 @@ export class CrudItemSignalRService<CrudItem extends BaseDto> {
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize(facadeService : CrudItemFacadeService<CrudItem>) {
+  initialize(crudItemService : CrudItemService<CrudItem>) {
     console.log('%c [CrudItems] Register SignalR : refresh-crud-items', 'color: purple; font-weight: bold');
     this.signalRService.addMethod('refresh-crud-items', () => {
-      facadeService.lastLazyLoadEvent$.pipe(first()).subscribe(
+      crudItemService.lastLazyLoadEvent$.pipe(first()).subscribe(
         (event) => {
           console.log('%c [CrudItems] RefreshSuccess', 'color: green; font-weight: bold');
-          facadeService.loadAllByPost(event);
+          crudItemService.loadAllByPost(event);
         }
       );
     });

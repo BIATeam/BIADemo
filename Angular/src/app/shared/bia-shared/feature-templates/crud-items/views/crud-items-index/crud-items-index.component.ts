@@ -20,7 +20,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
 import { skip } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemFacadeService } from '../../services/crud-item-facade.service';
+import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
 
 @Component({
@@ -72,7 +72,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     public activatedRoute: ActivatedRoute,
     protected translateService: TranslateService,
     protected biaTranslationService: BiaTranslationService,
-    protected facadeService: CrudItemFacadeService<CrudItem>, 
+    protected crudItemService: CrudItemService<CrudItem>, 
   ) {
   }
 
@@ -85,14 +85,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
     this.initTableConfiguration();
     this.setPermissions();
-    this.crudItems$ = this.facadeService.crudItems$;
-    this.totalCount$ = this.facadeService.totalCount$;
-    this.loading$ = this.facadeService.loadingGetAll$;
+    this.crudItems$ = this.crudItemService.crudItems$;
+    this.totalCount$ = this.crudItemService.totalCount$;
+    this.loading$ = this.crudItemService.loadingGetAll$;
     this.OnDisplay();
     if (this.crudConfiguration.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.facadeService.optionsService.loadAllOptions();
+          this.crudItemService.optionsService.loadAllOptions();
         })
       );
     }
@@ -120,13 +120,13 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
 
     if (this.crudConfiguration.useSignalR) {
-      this.facadeService.signalRService.initialize(this.facadeService);
+      this.crudItemService.signalRService.initialize(this.crudItemService);
     }
   }
 
   OnHide() {
     if (this.crudConfiguration.useSignalR) {
-      this.facadeService.signalRService.destroy();
+      this.crudItemService.signalRService.destroy();
     }
   }
 
@@ -146,11 +146,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     if (this.crudConfiguration.useCalcMode) {
       if (crudItem.id > 0) {
         if (this.canEdit) {
-          this.facadeService.update(crudItem);
+          this.crudItemService.update(crudItem);
         }
       } else {
         if (this.canAdd) {
-          this.facadeService.create(crudItem);
+          this.crudItemService.create(crudItem);
         }
       }
     }
@@ -158,7 +158,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onDelete() {
     if (this.selectedCrudItems && this.canDelete) {
-      this.facadeService.multiRemove(this.selectedCrudItems.map((x) => x.id));
+      this.crudItemService.multiRemove(this.selectedCrudItems.map((x) => x.id));
     }
   }
 
@@ -172,7 +172,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
-    this.facadeService.loadAllByPost(pagingAndFilter);
+    this.crudItemService.loadAllByPost(pagingAndFilter);
   }
 
   searchGlobalChanged(value: string) {
@@ -202,7 +202,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
-    this.facadeService.dasService.getFile(columnsAndFilter).subscribe((data) => {
+    this.crudItemService.dasService.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.crudItems') + '.csv');
     });
   }
