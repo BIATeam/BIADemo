@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
 import { openViewDialog } from '../../store/views-actions';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
+import { ActivatedRoute } from '@angular/router';
+import { QUERY_STRING_VIEW } from '../../model/view.constants';
 
 @Component({
   selector: 'bia-view-list',
@@ -25,6 +27,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   selectedView: number;
   defaultView: number;
   currentView = -1;
+  urlView: number | null = null;
   private sub = new Subscription();
   @Input() tableStateKey: string;
   @Input() tableState: string;
@@ -34,7 +37,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private store: Store<AppState>,
     public translateService: TranslateService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -48,7 +52,9 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       combineLatest([dataLoaded$, allView$, lastViewChanged$]).subscribe(([dataLoaded, views, view]) => {
         if (dataLoaded === true && views && view) {
           this.views = views;
-          this.selectedView = view.id;
+          if (view && view.id > 0) {
+            this.selectedView = view.id;
+          }
           this.updateGroupedViews();
           this.updateFilterValues(this.getViewState());
         }
@@ -70,6 +76,22 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
+    }
+  }
+
+  protected initViewByQueryParam(views: View[]) {
+    //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
+    if (views?.length > 0) {
+      const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
+      if (viewName && viewName.length > 0) {
+        const view = views.find(v => v.name === viewName);
+        if (view && view.id > 0) {
+          this.urlView = view.id;
+          setTimeout(() => {
+            this.selectedView = view.id;
+          });
+        }
+      }
     }
   }
 
@@ -164,10 +186,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.defaultView = defaultView;
 
     this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
+    this.initViewByQueryParam(this.views);
   }
 
   private updateFilterValues(preference?: string | null) {
-    if (preference) {
+    if (preference && !this.urlView) {
       const currentView = this.views.find(v => v.preference === preference);
       this.selectedView = currentView ? currentView.id : this.currentView;
       this.viewChange.emit(preference);
