@@ -38,7 +38,6 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
     public translateService: TranslateService
   ) {
     super(authService, translateService);
-    this.initForm();
   }
 
   ngAfterContentInit() {
@@ -55,6 +54,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.initForm();
     this.fillMandatoryFields();
   }
 

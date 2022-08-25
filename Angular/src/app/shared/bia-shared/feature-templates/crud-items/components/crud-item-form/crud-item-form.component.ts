@@ -10,9 +10,10 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { BiaListConfig, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { CrudConfig } from '../../model/crud-config';
 
 @Component({
   selector: 'app-crud-item-form',
@@ -23,7 +24,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 export class CrudItemFormComponent<CrudItem extends BaseDto> implements OnInit, OnChanges {
   @Input() crudItem: CrudItem = <CrudItem>{};
-  @Input() crudConfiguration : BiaListConfig;
+  @Input() crudConfiguration : CrudConfig;
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<CrudItem>();
