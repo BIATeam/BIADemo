@@ -22,7 +22,7 @@ export class AirportOptionsEffects {
       /* 'Airports Reducers' will take care of the rest */
       switchMap(() =>
         this.airportDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((airports) => DomainAirportOptionsActions.loadAllSuccess({ airports })),
+          map((airports) => DomainAirportOptionsActions.loadAllSuccess({ airports: airports?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
               this.biaMessageService.showError();
@@ -38,5 +38,5 @@ export class AirportOptionsEffects {
     private actions$: Actions,
     private airportDas: AirportOptionDas,
     private biaMessageService: BiaMessageService
-  ) {}
+  ) { }
 }

@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
             if (user != null)
             {
-                display = $"{user.LastName} {user.FirstName} ({user.Login})";
+                display = $"{user.FirstName} {user.LastName} ({user.Login})";
             }
 
             return display;

@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                         "Roles", member => member.MemberRoles.Select(x =>
                         x.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? x.Role.Label).OrderBy(x => x)
                     },
-                    { "User", member => member.User.LastName + " " + member.User.FirstName + " (" + member.User.Login + ")" },
+                    { "User", member => member.User.FirstName + " " + member.User.LastName + " (" + member.User.Login + ")" },
                 };
             }
         }

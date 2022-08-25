@@ -22,7 +22,7 @@ export class TeamOptionsEffects {
       /* 'Teams Reducers' will take care of the rest */
       switchMap(() =>
         this.teamDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((teams) => DomainTeamOptionsActions.loadAllSuccess({ teams })),
+          map((teams) => DomainTeamOptionsActions.loadAllSuccess({ teams: teams?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
               this.biaMessageService.showError();
