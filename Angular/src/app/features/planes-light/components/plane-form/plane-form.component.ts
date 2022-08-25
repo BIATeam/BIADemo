@@ -1,7 +1,6 @@
 import {
   Component,
 } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { Plane } from '../../model/plane';
 
@@ -12,8 +11,5 @@ import { Plane } from '../../model/plane';
 })
 
 export class PlaneFormComponent extends CrudItemFormComponent<Plane> {
-  constructor(public formBuilder: FormBuilder) {
-    super(formBuilder);
-  }
 }
 
