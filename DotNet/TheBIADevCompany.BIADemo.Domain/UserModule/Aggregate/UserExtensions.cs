@@ -16,7 +16,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <returns>The formated display.</returns>
         public static string SelectDisplay(this User user)
         {
-            return user.FirstName + " " + user.LastName + " (" + user.Login + ")";
+            string display = null;
+
+            if (user != null)
+            {
+                display = $"{user.LastName} {user.FirstName} ({user.Login})";
+            }
+
+            return display;
         }
     }
 }
