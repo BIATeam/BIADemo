@@ -56,7 +56,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
             this.selectedView = view.id;
           }
           this.updateGroupedViews();
-          this.updateFilterValues(this.getViewState());
+          this.updateFilterValues(this.getViewState(), false);
         }
       })
     );
@@ -79,31 +79,23 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  protected initViewByQueryParam(views: View[]) {
-    //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
-    if (views?.length > 0) {
-      const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
-      if (viewName && viewName.length > 0) {
-        const view = views.find(v => v.name === viewName);
-        if (view && view.id > 0) {
-          this.urlView = view.id;
-          setTimeout(() => {
-            this.selectedView = view.id;
-          });
-        }
-      }
-    }
-  }
-
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
-      this.selectedView = this.currentView;
+      const correspondingView = this.views.find(v => v.preference === changes.tableState.currentValue);
+      if (correspondingView)
+      {
+        this.selectedView = correspondingView.id;
+      }
+      else
+      {
+        this.selectedView = this.currentView;
+      }
     }
   }
 
   onViewChange(event: any) {
     this.selectedView = event.value;
-    this.updateFilterValues();
+    this.updateFilterValues(null, true);
   }
 
   private updateGroupedViews() {
@@ -186,25 +178,42 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.defaultView = defaultView;
 
     this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
-    this.initViewByQueryParam(this.views);
+    
   }
-
-  private updateFilterValues(preference?: string | null) {
-    if (preference && !this.urlView) {
-      const currentView = this.views.find(v => v.preference === preference);
-      this.selectedView = currentView ? currentView.id : this.currentView;
-      this.viewChange.emit(preference);
-    } else {
-      if (this.selectedView !== 0) {
-        const view = this.views.find((v) => v.id === this.selectedView);
-        if (view) {
-          this.saveViewState(view.preference);
-          this.viewChange.emit(view.preference);
+  protected initViewByQueryParam(views: View[]) {
+    //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
+    if (views?.length > 0) {
+      const viewName = this.route.snapshot.queryParamMap.get(QUERY_STRING_VIEW);
+      if (viewName && viewName.length > 0) {
+        const view = views.find(v => v.name === viewName);
+        if (view && view.id > 0) {
+          this.urlView = view.id;
+          //setTimeout(() => {
+            this.selectedView = view.id;
+          //});
         }
-      } else {
-        this.viewChange.emit(DEFAULT_VIEW);
       }
     }
+  }
+  private updateFilterValues(preference: string | null, manualChange:boolean) {
+    setTimeout(() => {
+      if (!manualChange) this.initViewByQueryParam(this.views);
+      if (preference && !this.urlView) {
+        const currentView = this.views.find(v => v.preference === preference);
+        this.selectedView = currentView ? currentView.id : this.currentView;
+        this.viewChange.emit(preference);
+      } else {
+        if (this.selectedView !== 0) {
+          const view = this.views.find((v) => v.id === this.selectedView);
+          if (view) {
+            this.saveViewState(view.preference);
+            this.viewChange.emit(view.preference);
+          }
+        } else {
+          this.viewChange.emit(DEFAULT_VIEW);
+        }
+      }
+    });
   }
 
   private saveViewState(stateString: string) {
