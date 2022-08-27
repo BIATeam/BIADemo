@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SelectItemGroup } from 'primeng/api';
+import { SelectItemGroup, TableState } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
@@ -81,7 +81,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
-      const correspondingView = this.views.find(v => v.preference === changes.tableState.currentValue);
+      const correspondingView = this.GetCorrespondingView(changes.tableState.currentValue);
       if (correspondingView)
       {
         this.selectedView = correspondingView.id;
@@ -91,6 +91,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         this.selectedView = this.currentView;
       }
     }
+  }
+
+  private GetCorrespondingView(preference: string) {
+    let pref: TableState = JSON.parse(preference);
+    pref.selection = null;
+    return this.views.find(v => {
+      const viewPref: TableState = JSON.parse(v.preference);
+      viewPref.selection = null;
+      return JSON.stringify(pref) === JSON.stringify(viewPref)
+    });
   }
 
   onViewChange(event: any) {
@@ -199,8 +209,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     setTimeout(() => {
       if (!manualChange) this.initViewByQueryParam(this.views);
       if (preference && !this.urlView) {
-        const currentView = this.views.find(v => v.preference === preference);
-        this.selectedView = currentView ? currentView.id : this.currentView;
+        const correspondingView = this.GetCorrespondingView(preference);
+        this.selectedView = correspondingView ? correspondingView.id : this.currentView;
         this.viewChange.emit(preference);
       } else {
         if (this.selectedView !== 0) {
