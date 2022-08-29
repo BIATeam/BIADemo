@@ -204,7 +204,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   onStateSave(tableState: string) {
-    this.viewPreference = tableState;
+    // this.viewPreference = tableState;
     this.tableState = tableState;
   }
 
