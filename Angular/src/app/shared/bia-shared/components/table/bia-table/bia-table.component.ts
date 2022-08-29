@@ -8,6 +8,13 @@ import { KeyValuePair } from '../../../model/key-value-pair';
 import { Observable, timer, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
+
+const objectsEqual = (o1 :any, o2:any) =>
+Object.keys(o1).length === Object.keys(o2).length 
+    && Object.keys(o1).every(p => o1[p] === o2[p]);
+const arraysEqual = (a1: any, a2:any) => 
+   (!a1 && ! a2) || (a1 && a2 && a1.length === a2.length && a1.every((o:any , idx:any) => objectsEqual(o, a2[idx])));
+
 @Component({
   selector: 'bia-table',
   templateUrl: './bia-table.component.html',
@@ -126,7 +133,7 @@ export class BiaTableComponent implements OnChanges {
   }
 
   protected onColumnToDisplayChange(changes: SimpleChanges) {
-    if (this.columnToDisplays && changes.columnToDisplays) {
+    if (this.displayedColumns && this.columnToDisplays && changes.columnToDisplays) {
       if (changes.columnToDisplays.isFirstChange()) {
         this.initDefaultSort();
         this.defaultPageSize = this.pageSize;
@@ -136,6 +143,7 @@ export class BiaTableComponent implements OnChanges {
     }
   }
 
+
   protected initDefaultSort() {
     if (this.sortFieldValue.length < 1 && this.displayedColumns && this.displayedColumns.length > 0) {
       this.sortFieldValue = this.displayedColumns[0].field;
@@ -144,19 +152,66 @@ export class BiaTableComponent implements OnChanges {
     this.defaultSortOrder = this.sortOrderValue;
   }
 
+
+
   protected updateDisplayedColumns(saveTableState: boolean) {
-    const columns: PrimeTableColumn[] = this.getColumns();
-    if (this.columnToDisplays) {
-      this.displayedColumns = columns.filter(
-        (col) => this.columnToDisplays.map((x) => x.key).indexOf(col?.field) > -1
-      );
-    } else {
-      this.displayedColumns = columns.slice();
-    }
-    if (saveTableState === true) {
-      this.saveTableState();
-    }
+    //setTimeout(() =>{
+      const columns: PrimeTableColumn[] = this.getColumns();
+      let displayedColumns;
+      if (this.columnToDisplays) {
+        displayedColumns = columns.filter(
+          (col) => this.columnToDisplays.map((x) => x.key).indexOf(col?.field) > -1
+        );
+      } else {
+        displayedColumns = columns.slice();
+      }
+
+      if (arraysEqual(displayedColumns,this.displayedColumns)!== true)
+      {
+        this.displayedColumns = displayedColumns;
+        if (saveTableState === true) {
+          this.saveTableState();
+        }
+      }
+    //});
   }
+
+  saveStateNoEmit() {
+    // Copy of the PrimeNG funcion (replace this by this.table) and comment emit and add custom
+    const storage = this.table.getStorage();
+    let state : any = {};
+    if (this.table.paginator) {
+        state.first = this.table.first;
+        state.rows = this.table.rows;
+    }
+    if (this.table.sortField) {
+        state.sortField = this.table.sortField;
+        state.sortOrder = this.table.sortOrder;
+    }
+    if (this.table.multiSortMeta) {
+        state.multiSortMeta = this.table.multiSortMeta;
+    }
+    if (this.table.hasFilter()) {
+        state.filters = this.table.filters;
+    }
+    if (this.table.resizableColumns) {
+        this.table.saveColumnWidths(state);
+    }
+    if (this.table.reorderableColumns) {
+        this.table.saveColumnOrder(state);
+    }
+    if (this.table.selection) {
+        state.selection = this.table.selection;
+    }
+    if (Object.keys(this.table.expandedRowKeys).length) {
+        state.expandedRowKeys = this.table.expandedRowKeys;
+    }
+
+    const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
+
+    storage.setItem(this.table.stateKey, JSON.stringify(customState));
+    //this.table.onStateSave.emit(state);
+}
 
   protected getColumns(): PrimeTableColumn[] {
     const tableState: TableState | null = this.getTableState();
@@ -258,7 +313,9 @@ export class BiaTableComponent implements OnChanges {
   }
 
   onLoadLazy(event: LazyLoadEvent) {
-    setTimeout(() => this.loadLazy.emit(event), 0);
+    setTimeout(() => 
+    this.loadLazy.emit(event)
+    , 0);
   }
 
   onSelectionChange() {
@@ -280,7 +337,8 @@ export class BiaTableComponent implements OnChanges {
   protected saveTableState() {
     if (this.table && this.table.isStateful()) {
       this.table.columns = this.displayedColumns;
-      this.table.saveState();
+      //this.table.saveState();
+      this.saveStateNoEmit();
     }
   }
 
@@ -290,6 +348,7 @@ export class BiaTableComponent implements OnChanges {
       if (tableState?.columnOrder) {
 
         this.updateDisplayedColumns(false);
+
         this.table.restoreState();
         this.table.sortSingle();
 

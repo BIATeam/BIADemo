@@ -78,7 +78,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   onChangeSelectColumn() {
     const cols = this.columns.filter((x) => this.displayedColumns.indexOf(x.key) > -1);
-    this.displayedColumnsChange.emit(cols);
+    setTimeout(() => this.displayedColumnsChange.emit(cols));
   }
 
   onToggleSearch() {
@@ -138,12 +138,21 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   private setControlByViewState(stateString: string) {
     if (stateString === DEFAULT_VIEW) {
       this.pageSize = this.defaultPageSize;
-      this.displayedColumns = this.defaultDisplayedColumns;
+      if (this.displayedColumns !== this.defaultDisplayedColumns)
+      {
+        this.displayedColumns = this.defaultDisplayedColumns;
+        this.onChangeSelectColumn();
+      }
       this.globalFilter = '';
     } else {
       const state: TableState = <TableState>JSON.parse(stateString);
       this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
-      this.displayedColumns = state.columnOrder ? state.columnOrder : [];
+      const newDisplayColumns = state.columnOrder ? state.columnOrder : []
+      if (this.displayedColumns !== newDisplayColumns)
+      {
+        this.displayedColumns = newDisplayColumns;
+        this.onChangeSelectColumn();
+      }
       for (const key in state.filters) {
         if (key.startsWith(TABLE_FILTER_GLOBAL)) {
           this.globalFilter = (state.filters[key] as FilterMetadata ).value;

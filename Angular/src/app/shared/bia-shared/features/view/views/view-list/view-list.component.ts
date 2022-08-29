@@ -7,7 +7,7 @@ import { ViewType, DEFAULT_VIEW, TeamTypeId, TeamTypeRightPrefixe } from 'src/ap
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getAllViews, getLastViewChanged, getDataLoaded } from '../../store/view.state';
-import { map } from 'rxjs/operators';
+import { map, skip } from 'rxjs/operators';
 import { openViewDialog } from '../../store/views-actions';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
@@ -32,6 +32,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() tableStateKey: string;
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
+  @Input() displayedColumns: string[]; 
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -49,7 +50,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     const lastViewChanged$ = this.store.pipe(select(getLastViewChanged));
 
     this.sub.add(
-      combineLatest([dataLoaded$, allView$, lastViewChanged$]).subscribe(([dataLoaded, views, view]) => {
+      combineLatest([dataLoaded$, allView$, lastViewChanged$]).pipe(skip(1)).subscribe(([dataLoaded, views, view]) => {
         if (dataLoaded === true && views && view) {
           this.views = views;
           if (view && view.id > 0) {
@@ -71,6 +72,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     this.onTableStateChange(changes);
+    this.onDisplayedColumnsChange(changes)
   }
 
   ngOnDestroy() {
@@ -79,28 +81,58 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  protected onDisplayedColumnsChange(changes: SimpleChanges) {
+    if (changes.displayedColumns && changes.displayedColumns.isFirstChange() !== true) {
+      setTimeout(() => {
+          let tableStateStr = this.getViewState();
+          if (tableStateStr)
+          {
+            this.AutoSelectView(tableStateStr);
+          }
+      });
+  }
+  }
+
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
-      const correspondingView = this.GetCorrespondingView(changes.tableState.currentValue);
-      if (correspondingView)
-      {
-        this.selectedView = correspondingView.id;
-      }
-      else
-      {
-        this.selectedView = this.currentView;
-      }
+      this.AutoSelectView(changes.tableState.currentValue);
+    }
+  }
+
+  private AutoSelectView(tableStateStr: string) {
+    const correspondingView = this.GetCorrespondingView(tableStateStr);
+    if (correspondingView) {
+      this.selectedView = correspondingView.id;
+    }
+
+    else {
+      this.selectedView = this.currentView;
     }
   }
 
   private GetCorrespondingView(preference: string) {
     let pref: TableState = JSON.parse(preference);
     pref.selection = null;
-    return this.views.find(v => {
-      const viewPref: TableState = JSON.parse(v.preference);
-      viewPref.selection = null;
-      return JSON.stringify(pref) === JSON.stringify(viewPref)
-    });
+    let prefString =  JSON.stringify(pref);
+    // console.log("GetCorrespondingView : " + prefString  )
+    if (this.views)
+    {
+      let correspondingView = this.views.find(v => {
+        const viewPref: TableState = JSON.parse(v.preference);
+        viewPref.selection = null;
+        let correspondFind = prefString === JSON.stringify(viewPref)
+        return correspondFind;
+      });
+  
+      // if (correspondingView) 
+      // {
+      //   console.log("GetCorrespondingView Find : " + correspondingView.name )
+      // }
+      return correspondingView
+    }
+
+
+    return undefined;
   }
 
   onViewChange(event: any) {
