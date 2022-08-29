@@ -56,9 +56,9 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes-view/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-planesSignalRMode',
+                path: 'planes-signalR',
                 data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesSignalRMode',
                   canNavigate: true
                 },
                 loadChildren: () => import('./features/planes-signalR/plane.module').then((m) => m.PlaneModule)
