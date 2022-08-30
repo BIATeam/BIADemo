@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { ActivatedRoute } from '@angular/router';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 
 @Component({
   selector: 'bia-view-list',
@@ -33,6 +34,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Input() displayedColumns: string[]; 
+  @Input() columns: KeyValuePair[]; 
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
@@ -100,19 +102,30 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private AutoSelectView(tableStateStr: string) {
-    const correspondingView = this.GetCorrespondingView(tableStateStr);
-    if (correspondingView) {
-      this.selectedView = correspondingView.id;
-    }
-
-    else {
-      this.selectedView = this.currentView;
-    }
+    this.selectedView =  this.GetCorrespondingViewId(tableStateStr);
   }
 
-  private GetCorrespondingView(preference: string) {
+  private GetCorrespondingViewId(preference: string) : number {
     let pref: TableState = JSON.parse(preference);
     pref.selection = null;
+    pref.columnWidths = undefined;
+    if (pref.first===0 &&
+        (pref.filters === undefined || JSON.stringify(pref.filters) === "{}") &&
+        JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key)) &&
+        pref.rows === 10 &&
+        pref.sortField === this.columns[0].key &&
+        pref.sortOrder === 1)
+    {
+      return 0;
+    }
+    else 
+    {
+      console.log ("GetCorrespondingViewId: pref" + JSON.stringify(pref) + " >> " + JSON.stringify(pref.filters) + " >> " + JSON.stringify(this.columns.map((c) => c.key)) + " >> " + this.columns[0].key)
+      console.log ("GetCorrespondingViewId: 1 >> " + (pref.filters === undefined || JSON.stringify(pref.filters) === "{}"));
+      console.log ("GetCorrespondingViewId: 2 >> " + (JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key))));
+      console.log ("GetCorrespondingViewId: 3 >> " + (pref.sortField === this.columns[0].key));
+    }
+
     let prefString =  JSON.stringify(pref);
     // console.log("GetCorrespondingView : " + prefString  )
     if (this.views)
@@ -123,16 +136,12 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         let correspondFind = prefString === JSON.stringify(viewPref)
         return correspondFind;
       });
-  
-      // if (correspondingView) 
-      // {
-      //   console.log("GetCorrespondingView Find : " + correspondingView.name )
-      // }
-      return correspondingView
+      if (correspondingView)
+      {
+        return correspondingView.id
+      }
     }
-
-
-    return undefined;
+    return this.currentView;
   }
 
   onViewChange(event: any) {
@@ -213,10 +222,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       defaultView = userDefault.id;
     }
 
-    this.selectedView =
-      this.selectedView !== 0 && this.views.some((x) => x.id === this.selectedView) === true
-        ? this.selectedView
-        : defaultView;
     this.defaultView = defaultView;
 
     this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
@@ -237,21 +242,35 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+  isFirstEmitDone = false;
   private updateFilterValues(preference: string | null, manualChange:boolean) {
     setTimeout(() => {
       if (!manualChange) this.initViewByQueryParam(this.views);
       if (preference && !this.urlView) {
-        const correspondingView = this.GetCorrespondingView(preference);
-        this.selectedView = correspondingView ? correspondingView.id : this.currentView;
-        this.viewChange.emit(preference);
+        const correspondingViewId = this.GetCorrespondingViewId(preference);
+        if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId)
+        {
+          this.selectedView = correspondingViewId;
+          this.isFirstEmitDone = true;
+          this.viewChange.emit(preference);
+        }
       } else {
+        if (this.selectedView == undefined)
+        {
+          this.selectedView =
+          this.selectedView !== 0 && this.views.some((x) => x.id === this.selectedView) === true
+            ? this.selectedView
+            : this.defaultView;
+        }
         if (this.selectedView !== 0) {
           const view = this.views.find((v) => v.id === this.selectedView);
           if (view) {
             this.saveViewState(view.preference);
+            this.isFirstEmitDone = true;
             this.viewChange.emit(view.preference);
           }
         } else {
+          this.isFirstEmitDone = true;
           this.viewChange.emit(DEFAULT_VIEW);
         }
       }
