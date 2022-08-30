@@ -36,7 +36,7 @@ const routes: Routes = [
                   breadcrumb: 'app.planes',
                   canNavigate: true
                 },
-                loadChildren: () => import('./features/planes/plane.module').then((m) => m.PlaneModule)
+                loadChildren: () => import('./features/planes-full-code/plane.module').then((m) => m.PlaneModule)
               },
               {
                 path: 'planes-page',
