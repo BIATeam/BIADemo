@@ -7,7 +7,7 @@ export const tableStateKey: string = 'planesGrid';
 
 export const useCalcMode = false;
 export const useSignalR = false;
-export const useView = false;
+export const useView = true;
 export const useViewTeamWithTypeId = TeamTypeId.Site;
 export const usePopup = true;
 export const useOfflineMode = true;

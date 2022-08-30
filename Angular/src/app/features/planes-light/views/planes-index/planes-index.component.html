@@ -9,7 +9,11 @@
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
-    ></bia-table-header>
+    >
+      <ng-template pTemplate="actionOnList">
+        useView : <p-inputSwitch [(ngModel)]="crudConfiguration.useView" (onChange)="useViewChange($event)"></p-inputSwitch>
+      </ng-template>
+    </bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"

@@ -84,10 +84,32 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
   }
 
-  ngOnInit() {
+  useViewChange(e: any) {
+    this.crudConfiguration.useView = e.checked;
+    this.useViewConfig(true);
+  }
+
+  private useViewConfig(useViewChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
-    
+    if (this.crudConfiguration.useView) {
+      if (useViewChange)
+      {
+        setTimeout(() => {
+          if (this.crudItemListComponent?.table) 
+          {
+            this.crudItemListComponent.table.saveState();
+          }
+        });
+      }
+      this.store.dispatch(loadAllView());
+    }
+  }
+
+  ngOnInit() {
+/*    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
+    this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
+*/
     this.parentIds = [];
     this.sub = new Subscription();
 
@@ -133,9 +155,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   OnDisplay() {
-    if (this.crudConfiguration.useView) {
+    this.useViewConfig(false);
+    /*if (this.crudConfiguration.useView) {
       this.store.dispatch(loadAllView());
-    }
+    }*/
 
 
     if (this.crudConfiguration.useSignalR) {
