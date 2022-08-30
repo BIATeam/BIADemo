@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,13 +17,19 @@ export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, O
   protected sub = new Subscription();
   public crudConfiguration : CrudConfig;
 
+  protected store: Store<AppState>;
+  protected router: Router;
+  protected activatedRoute: ActivatedRoute;
+  protected biaTranslationService: BiaTranslationService;
   constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    protected activatedRoute: ActivatedRoute,
-    protected biaTranslationService: BiaTranslationService,
+    protected injector: Injector,
     public crudItemService: CrudItemService<CrudItem>,
-  ) {}
+  ) {
+    this.store = this.injector.get<Store<AppState>>(Store);
+    this.router = this.injector.get<Router>(Router);
+    this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+  }
 
   ngOnInit() {
     this.sub.add(

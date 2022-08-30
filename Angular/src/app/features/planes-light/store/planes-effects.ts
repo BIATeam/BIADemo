@@ -5,14 +5,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeaturePlanesActions } from './planes-actions';
 import { Store } from '@ngrx/store';
 import { FeaturePlanesStore } from './plane.state';
-import { Plane } from '../model/plane';
+import { Plane, PlaneCRUDConfiguration } from '../model/plane';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useSignalR } from '../plane.constants';
-import { CrudItemDas } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-das.service';
+import { PlaneDas } from '../services/plane-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -59,10 +58,10 @@ export class PlanesEffects {
       pluck('plane'),
       concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
-        return this.planeDas.post({ item: plane }).pipe(
+        return this.planeDas.post({ item: plane, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -83,10 +82,10 @@ export class PlanesEffects {
       pluck('plane'),
       concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
-        return this.planeDas.put({ item: plane, id: plane.id }).pipe(
+        return this.planeDas.put({ item: plane, id: plane.id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -107,10 +106,10 @@ export class PlanesEffects {
       pluck('id'),
       concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.planeDas.delete({ id: id }).pipe(
+        return this.planeDas.delete({ id: id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -131,10 +130,10 @@ export class PlanesEffects {
       pluck('ids'),
       concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.planeDas.deletes({ ids: ids }).pipe(
+        return this.planeDas.deletes({ ids: ids, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -151,7 +150,7 @@ export class PlanesEffects {
 
   constructor(
     private actions$: Actions,
-    private planeDas: CrudItemDas<Plane>,
+    private planeDas: PlaneDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
   ) {}

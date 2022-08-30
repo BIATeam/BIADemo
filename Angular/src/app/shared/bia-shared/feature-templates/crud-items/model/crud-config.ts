@@ -10,5 +10,6 @@ export interface CrudConfig {
   tableStateKey: string,
   useViewTeamWithTypeId: TeamTypeId,
   usePopup: boolean,
+  useOfflineMode: boolean,
   columns: PrimeTableColumn[];
 }

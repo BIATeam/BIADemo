@@ -1,12 +1,12 @@
 import { Injectable, Injector } from '@angular/core';
+import { Plane } from '../model/plane';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { BaseDto } from '../../../model/base-dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CrudItemDas<CrudItem extends BaseDto> extends AbstractDas<CrudItem> {
+export class PlaneDas extends AbstractDas<Plane> {
   constructor(injector: Injector) {
-    super(injector, 'CrudItems');
+    super(injector, 'Planes');
   }
 }

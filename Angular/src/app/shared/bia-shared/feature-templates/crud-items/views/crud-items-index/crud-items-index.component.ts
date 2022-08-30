@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
@@ -18,10 +18,11 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
-import { skip } from 'rxjs/operators';
+import { filter, skip } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
+import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 
 @Component({
   selector: 'app-crud-items-index',
@@ -66,14 +67,21 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   useViewTeamWithTypeId: TeamTypeId | null;
   parentIds: string[];
 
+  protected store: Store<AppState>;
+  protected router: Router;
+  public activatedRoute: ActivatedRoute;
+  protected translateService: TranslateService;
+  protected biaTranslationService: BiaTranslationService;
+
   constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    public activatedRoute: ActivatedRoute,
-    protected translateService: TranslateService,
-    protected biaTranslationService: BiaTranslationService,
-    protected crudItemService: CrudItemService<CrudItem>, 
+    protected injector: Injector,
+    public crudItemService: CrudItemService<CrudItem>, 
   ) {
+    this.store = this.injector.get<Store<AppState>>(Store);
+    this.router = this.injector.get<Router>(Router);
+    this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
+    this.translateService = this.injector.get<TranslateService>(TranslateService);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
   }
 
   ngOnInit() {
@@ -103,6 +111,17 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
           this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
         })
       );
+    }
+
+    if (this.crudConfiguration.useOfflineMode)
+    {
+      if (BiaOnlineOfflineService.isModeEnabled) {
+        this.sub.add(
+          this.injector.get<BiaOnlineOfflineService>(BiaOnlineOfflineService).syncCompleted$.pipe(skip(1), filter(x => x === true)).subscribe(() => {
+            this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+          })
+        );
+      }
     }
   }
 
@@ -140,6 +159,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     if (!this.crudConfiguration.useCalcMode) {
       this.router.navigate([crudItemId, 'edit'], { relativeTo: this.activatedRoute });
     }
+  }
+  
+  onChange() {
+    this.crudItemTableComponent.onChange();
   }
 
   onSave(crudItem: CrudItem) {

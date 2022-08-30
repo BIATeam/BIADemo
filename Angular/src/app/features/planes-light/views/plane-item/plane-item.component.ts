@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Plane } from '../../model/plane';
-import { ActivatedRoute } from '@angular/router';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
@@ -14,11 +13,11 @@ import { PlaneService } from '../../services/plane.service';
 })
 export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
   constructor(protected store: Store<AppState>,
-    protected route: ActivatedRoute,
-    protected layoutService: BiaClassicLayoutService,
+    protected injector: Injector,
     public planeService: PlaneService,
+    protected layoutService: BiaClassicLayoutService,
   ) {
-    super(route,planeService);
+    super(injector, planeService);
   }
 
   ngOnInit() {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { BaseDto } from '../../../model/base-dto';
-import { CrudItemDas } from './crud-item-das.service';
 import { CrudItemOptionsService } from './crud-item-options.service';
 import { CrudItemSignalRService } from './crud-item-signalr.service';
 
@@ -11,7 +11,7 @@ import { CrudItemSignalRService } from './crud-item-signalr.service';
 })
 export abstract class CrudItemService<CrudItem extends BaseDto> {
     constructor(    
-        public dasService: CrudItemDas<CrudItem>,
+        public dasService: AbstractDas<CrudItem>,
         public signalRService: CrudItemSignalRService<CrudItem>,
         public optionsService: CrudItemOptionsService,
     )

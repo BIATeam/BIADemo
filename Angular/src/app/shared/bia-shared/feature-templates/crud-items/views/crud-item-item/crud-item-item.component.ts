@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -10,12 +10,13 @@ import { CrudItemService } from '../../services/crud-item.service';
 })
 export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
   protected sub = new Subscription();
-
+  protected route: ActivatedRoute;
   constructor(
-    //protected store: Store<AppState>,
-    protected route: ActivatedRoute,
+    protected injector: Injector,
     public crudItemService: CrudItemService<CrudItem>,
-  ) { }
+  ) { 
+    this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
+  }
 
   ngOnInit() {
     this.crudItemService.currentCrudItemId = this.route.snapshot.params.crudItemId;

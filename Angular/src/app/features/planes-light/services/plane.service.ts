@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { CrudItemDas } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-das.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { TeamTypeId } from 'src/app/shared/constants';
@@ -12,13 +11,14 @@ import { Plane } from '../model/plane';
 import { FeaturePlanesStore } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
 import { PlaneOptionsService } from './plane-options.service';
+import { PlaneDas } from './plane-das.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PlaneService extends CrudItemService<Plane> {
     constructor(private store: Store<AppState>,
-        public dasService: CrudItemDas<Plane>,
+        public dasService: PlaneDas,
         public signalRService: CrudItemSignalRService<Plane>,
         public optionsService: PlaneOptionsService,
         // requiered only for parent key at create

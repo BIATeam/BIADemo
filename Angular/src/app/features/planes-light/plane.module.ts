@@ -18,7 +18,7 @@ import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { PlanesEffects } from '../planes/store/planes-effects';
+import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 
 const ROUTES: Routes = [

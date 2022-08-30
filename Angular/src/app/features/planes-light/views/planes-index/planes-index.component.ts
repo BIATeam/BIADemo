@@ -1,11 +1,6 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, Injector } from '@angular/core';
 import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
-import { AppState } from 'src/app/store/state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { PlaneService } from '../../services/plane.service';
@@ -18,16 +13,11 @@ import { PlaneService } from '../../services/plane.service';
 
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   constructor(
-    protected store: Store<AppState>,
-    protected router: Router,
-    public activatedRoute: ActivatedRoute,
+    protected injector: Injector,
+    public planeService: PlaneService,
     protected authService: AuthService,
-    protected translateService: TranslateService,
-    protected biaTranslationService: BiaTranslationService,
-    protected planeService: PlaneService, 
   ) {
-    super(store,router,activatedRoute,translateService,
-      biaTranslationService,planeService);
+    super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
   }
 
