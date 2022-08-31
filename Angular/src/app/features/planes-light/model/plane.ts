@@ -4,6 +4,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { storeKey, tableStateKey, useCalcMode, useOfflineMode, usePopup, useSignalR, useView, useViewTeamWithTypeId } from '../plane.constants';
 
+// TODO after CRUD creation : adapt the model
 export interface Plane extends BaseDto {
   msn: string;
   isActive: boolean;
@@ -16,6 +17,7 @@ export interface Plane extends BaseDto {
   planeType: OptionDto | null;
 }
 
+// TODO after CRUD creation : adapt the configuration
 export let PlaneCRUDConfiguration : CrudConfig = 
 {
   columns: [

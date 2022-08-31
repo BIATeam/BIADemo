@@ -3,6 +3,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { BaseDto } from '../../../model/base-dto';
+import { TargetedFeature } from '../../../model/signalR';
 import { CrudItemOptionsService } from './crud-item-options.service';
 import { CrudItemSignalRService } from './crud-item-signalr.service';
 
@@ -10,6 +11,8 @@ import { CrudItemSignalRService } from './crud-item-signalr.service';
     providedIn: 'root'
 })
 export abstract class CrudItemService<CrudItem extends BaseDto> {
+    public siganlRTargetedFeature: TargetedFeature;
+    
     constructor(    
         public dasService: AbstractDas<CrudItem>,
         public signalRService: CrudItemSignalRService<CrudItem>,
@@ -18,6 +21,16 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     {
         setTimeout(() => this.InitSub()); // should be done after initialization of the parent constructor
     }
+    protected capitalizeFirstLetter(string : string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      }
+
+    public getFeatureName()  {  return 'crud-items'; };
+    public getConsoleLabel()  {  return this.capitalizeFirstLetter(this.getFeatureName().replace(/-./g, x=>x[1].toUpperCase())); };
+
+    public getSignalRTargetedFeature() { return {featureName : this.getFeatureName()};}
+    public getSignalRRefreshEvent() { return 'refresh-' + this.getFeatureName(); };
+
 
     protected _currentCrudItem: CrudItem;
     protected _currentCrudItemId: any;

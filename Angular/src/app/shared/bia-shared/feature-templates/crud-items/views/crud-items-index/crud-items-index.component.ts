@@ -37,7 +37,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(CrudItemTableComponent, { static: false }) crudItemTableComponent: CrudItemTableComponent<CrudItem>;
   protected get crudItemListComponent() {
-    if (this.crudConfiguration.useCalcMode) {
+    if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
     }
     return this.crudItemTableComponent;
@@ -94,6 +94,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.useClacModeConfig(true);
   }
 
+  useSignalRChange(e: any) {
+    this.crudConfiguration.useSignalR = e.checked;
+    this.useSignalRConfig(true);
+  }
+
   private useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
@@ -120,6 +125,17 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
           this.crudItemService.optionsService.loadAllOptions();
         })
       );
+    }
+  }
+
+  private useSignalRConfig(manualChange: boolean) {
+    if (this.crudConfiguration.useSignalR) {
+      this.crudItemService.signalRService.initialize(this.crudItemService);
+      this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+    }
+    else
+    {
+      this.crudItemService.signalRService.destroy();
     }
   }
 
@@ -168,14 +184,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   OnDisplay() {
     this.useViewConfig(false);
     this.useClacModeConfig(false);
+    this.useSignalRConfig(false);    
     /*if (this.crudConfiguration.useView) {
       this.store.dispatch(loadAllView());
     }*/
-
-
-    if (this.crudConfiguration.useSignalR) {
-      this.crudItemService.signalRService.initialize(this.crudItemService);
-    }
   }
 
   OnHide() {

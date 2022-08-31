@@ -22,10 +22,10 @@ export class PlaneOptionsService extends CrudItemOptionsService {
         private store: Store<AppState>,
     ) {
         super();
+        // TODO after CRUD creation : get all requiered option dto use in Table calc and create and edit form
         this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 
-        // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.planeTypeOptions$, this.airportOptions$]).pipe(
             map(
                 (options) =>

@@ -13,6 +13,7 @@
       <ng-template pTemplate="actionOnList">
         Calc : <p-inputSwitch [(ngModel)]="crudConfiguration.useCalcMode" (onChange)="useClacModeChange($event)"></p-inputSwitch>
         View : <p-inputSwitch [(ngModel)]="crudConfiguration.useView" (onChange)="useViewChange($event)"></p-inputSwitch>
+        SignalR : <p-inputSwitch [(ngModel)]="crudConfiguration.useSignalR" (onChange)="useSignalRChange($event)"></p-inputSwitch>
       </ng-template>
       
     </bia-table-header>
