@@ -56,6 +56,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   ngOnInit() {
     this.initForm();
     this.fillMandatoryFields();
+    this.addFooterEmptyObject();
   }
 
   protected fillMandatoryFields() {
@@ -77,14 +78,14 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
   public onElementsChange(changes: SimpleChanges) {
     super.onElementsChange(changes);
     if (changes.elements && this.table) {
-      if (this.elements && this.canAdd === true) {
+      //if (this.elements && this.canAdd === true) {
         this.addFooterEmptyObject();
-      }
+      //}
     }
   }
 
   public addFooterEmptyObject() {
-    if (this.elements.filter(el => el.id === 0).length === 0) {
+    if (this.elements && this.canAdd === true && this.elements.filter(el => el.id === 0).length === 0) {
       this.elements = [...this.elements, { id: 0 }];
     }
   }

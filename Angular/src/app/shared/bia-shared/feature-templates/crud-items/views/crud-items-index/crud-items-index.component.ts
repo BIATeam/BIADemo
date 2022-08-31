@@ -37,7 +37,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(CrudItemTableComponent, { static: false }) crudItemTableComponent: CrudItemTableComponent<CrudItem>;
   protected get crudItemListComponent() {
-    if (this.biaTableComponent !== undefined) {
+    if (this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
     }
     return this.crudItemTableComponent;
@@ -89,11 +89,16 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.useViewConfig(true);
   }
 
-  private useViewConfig(useViewChange: boolean) {
+  useClacModeChange(e: any) {
+    this.crudConfiguration.useCalcMode = e.checked;
+    this.useClacModeConfig(true);
+  }
+
+  private useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
     if (this.crudConfiguration.useView) {
-      if (useViewChange)
+      if (manualChange)
       {
         setTimeout(() => {
           if (this.crudItemListComponent?.table) 
@@ -103,6 +108,18 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
         });
       }
       this.store.dispatch(loadAllView());
+    }
+  }
+
+  isLoadAllOptionsSubsribe = false;
+  private useClacModeConfig(manualChange: boolean) {
+    if (this.crudConfiguration.useCalcMode && ! this.isLoadAllOptionsSubsribe) {
+      this.isLoadAllOptionsSubsribe = true;
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(event => {
+          this.crudItemService.optionsService.loadAllOptions();
+        })
+      );
     }
   }
 
@@ -119,13 +136,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.OnDisplay();
-    if (this.crudConfiguration.useCalcMode) {
-      this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.crudItemService.optionsService.loadAllOptions();
-        })
-      );
-    }
+
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
@@ -156,6 +167,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   OnDisplay() {
     this.useViewConfig(false);
+    this.useClacModeConfig(false);
     /*if (this.crudConfiguration.useView) {
       this.store.dispatch(loadAllView());
     }*/
@@ -185,7 +197,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
   
   onChange() {
-    this.crudItemTableComponent.onChange();
+    if (this.crudConfiguration.useCalcMode) {
+      this.crudItemTableComponent.onChange();
+    }
   }
 
   onSave(crudItem: CrudItem) {

@@ -47,7 +47,7 @@
     <app-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
-      [dictOptionDtos]="crudItemOptionsService.dictOptionDtos$ | async"
+      [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"

@@ -11,8 +11,10 @@
       [selectedElements]="selectedCrudItems"
     >
       <ng-template pTemplate="actionOnList">
-        useView : <p-inputSwitch [(ngModel)]="crudConfiguration.useView" (onChange)="useViewChange($event)"></p-inputSwitch>
+        Calc : <p-inputSwitch [(ngModel)]="crudConfiguration.useCalcMode" (onChange)="useClacModeChange($event)"></p-inputSwitch>
+        View : <p-inputSwitch [(ngModel)]="crudConfiguration.useView" (onChange)="useViewChange($event)"></p-inputSwitch>
       </ng-template>
+      
     </bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
