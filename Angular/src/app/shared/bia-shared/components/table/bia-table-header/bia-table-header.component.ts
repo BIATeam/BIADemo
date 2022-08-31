@@ -30,6 +30,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   actionOnSelectedTemplate: TemplateRef<any>;
   actionOnListTemplate: TemplateRef<any>;
+  customControlTemplate: TemplateRef<any>;
   
   nbSelectedElements = 0;
 
@@ -49,6 +50,9 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
           break;
           case 'actionOnList':
             this.actionOnListTemplate = item.template;
+          break;
+          case 'customControl':
+            this.customControlTemplate = item.template;
           break;
         }
     });

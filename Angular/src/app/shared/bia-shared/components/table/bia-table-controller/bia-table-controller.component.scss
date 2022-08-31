@@ -24,8 +24,18 @@
   }
 }
 
-.result-contenair {
-  padding-top: 15px;
+.bia-table-controller-container {
+  padding-top: 10px;
+  padding-right: 20px;
+  white-space: nowrap
+}
+.bia-table-controller-container.bia-table-controller-container-last {
+  padding-right: 0px;
+}
+
+
+.bia-table-controller-container .p-float-label{
+  margin-top: -10px;
 }
 
 .options {
@@ -43,7 +53,7 @@ label {
 }
 
 .result {
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .pi-filter {

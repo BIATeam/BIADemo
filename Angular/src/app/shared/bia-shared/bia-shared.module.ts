@@ -70,7 +70,7 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 // import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
-// import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 // import { ToolbarModule } from 'primeng/toolbar';
 // import { TooltipModule } from 'primeng/tooltip';
 // import { FileUploadModule } from 'primeng/fileupload';
@@ -162,7 +162,7 @@ const PRIMENG_MODULES = [
   TabViewModule,
 //  TieredMenuModule,
   ToastModule,
-//  ToggleButtonModule,
+  ToggleButtonModule,
 //  ToolbarModule,
 //  TooltipModule,
 //  FileUploadModule,

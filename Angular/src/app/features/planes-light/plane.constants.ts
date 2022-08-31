@@ -7,9 +7,10 @@ export const storeKey: string = 'feature-' + featureName;
 // IMPORTANT: this is the key used for the view management it should be unique in all the application.
 export const tableStateKey: string = featureName + 'Grid';
 
+// TODO after CRUD creation : adapt the default values:
 export const useCalcMode = false;
 export const useSignalR = false;
 export const useView = true;
-export const useViewTeamWithTypeId = TeamTypeId.Site;
+export const useViewTeamWithTypeId = TeamTypeId.Site; // use to filter view by teams => should know the type of team
 export const usePopup = true;
 export const useOfflineMode = true;

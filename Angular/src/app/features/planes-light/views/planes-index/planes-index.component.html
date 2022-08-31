@@ -9,14 +9,7 @@
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
-    >
-      <ng-template pTemplate="actionOnList">
-        Calc : <p-inputSwitch [(ngModel)]="crudConfiguration.useCalcMode" (onChange)="useClacModeChange($event)"></p-inputSwitch>
-        View : <p-inputSwitch [(ngModel)]="crudConfiguration.useView" (onChange)="useViewChange($event)"></p-inputSwitch>
-        SignalR : <p-inputSwitch [(ngModel)]="crudConfiguration.useSignalR" (onChange)="useSignalRChange($event)"></p-inputSwitch>
-      </ng-template>
-      
-    </bia-table-header>
+    ></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
@@ -30,7 +23,15 @@
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-    ></bia-table-controller>
+    >
+      <ng-template pTemplate="customControl">
+        <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
+          <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" (click)="useClacModeChange(!crudConfiguration.useCalcMode)"></i>
+          <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" (click)="useViewChange(!crudConfiguration.useView)"></i>
+          <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" (click)="useSignalRChange(!crudConfiguration.useSignalR)"></i>  
+        </div>
+      </ng-template>
+    </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"

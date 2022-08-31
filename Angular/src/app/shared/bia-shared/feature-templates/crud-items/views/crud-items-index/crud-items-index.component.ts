@@ -84,18 +84,18 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
   }
 
-  useViewChange(e: any) {
-    this.crudConfiguration.useView = e.checked;
+  useViewChange(e: boolean) {
+    this.crudConfiguration.useView = e;
     this.useViewConfig(true);
   }
 
-  useClacModeChange(e: any) {
-    this.crudConfiguration.useCalcMode = e.checked;
+  useClacModeChange(e: boolean) {
+    this.crudConfiguration.useCalcMode = e;
     this.useClacModeConfig(true);
   }
 
-  useSignalRChange(e: any) {
-    this.crudConfiguration.useSignalR = e.checked;
+  useSignalRChange(e: boolean) {
+    this.crudConfiguration.useSignalR = e;
     this.useSignalRConfig(true);
   }
 
