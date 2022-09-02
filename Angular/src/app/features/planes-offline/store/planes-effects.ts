@@ -3,16 +3,15 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeaturePlanesActions } from './planes-actions';
-import { PlaneDas } from '../services/plane-das.service';
 import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './plane.state';
-import { Plane } from '../model/plane';
+import { FeaturePlanesStore } from './plane.state';
+import { Plane, PlaneCRUDConfiguration } from '../model/plane';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useOfflineMode, useSignalR } from '../plane.constants';
+import { PlaneDas } from '../services/plane-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -27,9 +26,7 @@ export class PlanesEffects {
       pluck('event'),
       switchMap((event) =>
         this.planeDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Plane[]>) =>
-            FeaturePlanesActions.loadAllByPostSuccess({ result: result, event: event })
-          ),
+          map((result: DataResult<Plane[]>) => FeaturePlanesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(FeaturePlanesActions.failure({ error: err }));
@@ -59,12 +56,12 @@ export class PlanesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesActions.create),
       pluck('plane'),
-      concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
-        return this.planeDas.post({ item: plane, offlineMode: useOfflineMode }).pipe(
+        return this.planeDas.post({ item: plane, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -83,12 +80,12 @@ export class PlanesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesActions.update),
       pluck('plane'),
-      concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((plane) => of(plane).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([plane, event]) => {
-        return this.planeDas.put({ item: plane, id: plane.id, offlineMode: useOfflineMode }).pipe(
+        return this.planeDas.put({ item: plane, id: plane.id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -107,12 +104,12 @@ export class PlanesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.planeDas.delete({ id: id, offlineMode: useOfflineMode }).pipe(
+        return this.planeDas.delete({ id: id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -131,12 +128,12 @@ export class PlanesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.planeDas.deletes({ ids: ids, offlineMode: useOfflineMode }).pipe(
+        return this.planeDas.deletes({ ids: ids, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (PlaneCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -156,5 +153,5 @@ export class PlanesEffects {
     private planeDas: PlaneDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }
