@@ -30,24 +30,14 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/planes']
       },
       {
+        labelKey: 'app.planesFullCode',
+        permissions: [Permission.Plane_List_Access],
+        path: ['/examples/planes-full-code']
+      },
+      {
         labelKey: 'app.planesPageMode',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes-page']
-      },
-      {
-        labelKey: 'app.planesViewMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-view']
-      },
-      {
-        labelKey: 'app.planesSignalRMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-signalR']
-      },
-      {
-        labelKey: 'app.planesCalcMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-calc']
       },
       {
         labelKey: 'app.planesOfflineMode',
@@ -58,11 +48,6 @@ export const NAVIGATION: BiaNavigation[] = [
         labelKey: 'app.planesSpecific',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes-specific']
-      },
-      {
-        labelKey: 'app.planesLight',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-light']
       },
       {
         labelKey: 'app.hangfire',

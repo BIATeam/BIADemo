@@ -36,6 +36,14 @@ const routes: Routes = [
                   breadcrumb: 'app.planes',
                   canNavigate: true
                 },
+                loadChildren: () => import('./features/planes/plane.module').then((m) => m.PlaneModule)
+              },
+              {
+                path: 'planes-full-code',
+                data: {
+                  breadcrumb: 'app.planesFullCode',
+                  canNavigate: true
+                },
                 loadChildren: () => import('./features/planes-full-code/plane.module').then((m) => m.PlaneModule)
               },
               {
@@ -45,31 +53,6 @@ const routes: Routes = [
                   canNavigate: true
                 },
                 loadChildren: () => import('./features/planes-page/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-view',
-                data: {
-                  breadcrumb: 'app.planesViewMode',
-                  canNavigate: true,
-                  // noMargin: true // Add noMargin if you wish the content of a route to stick to the borders of the screen.
-                },
-                loadChildren: () => import('./features/planes-view/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-signalR',
-                data: {
-                  breadcrumb: 'app.planesSignalRMode',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-signalR/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-calc',
-                data: {
-                  breadcrumb: 'app.planesCalcMode',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-calc/plane.module').then((m) => m.PlaneModule)
               },
               {
                 path: 'planes-offline',
@@ -86,14 +69,6 @@ const routes: Routes = [
                   canNavigate: true
                 },
                 loadChildren: () => import('./features/planes-specific/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-light',
-                data: {
-                  breadcrumb: 'app.planesLight',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-light/plane.module').then((m) => m.PlaneModule)
               },
               {
                 path: 'airports',
