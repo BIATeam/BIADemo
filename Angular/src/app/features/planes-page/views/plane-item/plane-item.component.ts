@@ -1,39 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCurrentPlane} from '../../store/plane.state';
 import { Plane } from '../../model/plane';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { PlaneService } from '../../services/plane.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { AppState } from 'src/app/store/state';
+import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  templateUrl: './plane-item.component.html',
-  styleUrls: ['./plane-item.component.scss']
+  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
-export class PlaneItemComponent implements OnInit, OnDestroy {
-  plane$: Observable<Plane>;
-  private sub = new Subscription();
-
-  constructor(private store: Store<AppState>,
-    private route: ActivatedRoute,
+export class PlaneItemComponent extends CrudItemItemComponent<Plane> {
+  constructor(protected store: Store<AppState>,
+    protected injector: Injector,
     public planeService: PlaneService,
-    private layoutService: BiaClassicLayoutService,
-    private biaTranslationService: BiaTranslationService,
-  ) { }
+    protected layoutService: BiaClassicLayoutService,
+  ) {
+    super(injector, planeService);
+  }
 
   ngOnInit() {
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-        this.planeService.currentPlaneId = this.route.snapshot.params.planeId;
-      })
-    );
+    super.ngOnInit();
     this.sub.add
       (
-        this.store.select(getCurrentPlane).subscribe((plane) => {
+        this.planeService.crudItem$.subscribe((plane) => {
           if (plane?.msn) {
             this.route.data.pipe(first()).subscribe(routeData => {
               (routeData as any)['breadcrumb'] = plane.msn;
@@ -42,11 +33,5 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
           }
         })
       );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }

@@ -1,52 +1,18 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { update } from '../../store/planes-actions';
-import { Subscription } from 'rxjs';
-import { Plane } from '../../model/plane';
-import { AppState } from 'src/app/store/state';
+import { Component, Injector } from '@angular/core';
+import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
+import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { PlaneService } from '../../services/plane.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PlaneOptionsService } from '../../services/plane-options.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'app-plane-edit',
   templateUrl: './plane-edit.component.html',
-  styleUrls: ['./plane-edit.component.scss']
 })
-export class PlaneEditComponent implements OnInit, OnDestroy {
-  @Output() displayChange = new EventEmitter<boolean>();
-  private sub = new Subscription();
-
+export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    public planeOptionsService: PlaneOptionsService,
+    protected injector: Injector,
     public planeService: PlaneService,
-    private biaTranslationService: BiaTranslationService,
-  ) { }
-
-  ngOnInit() {
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.planeOptionsService.loadAllOptions();
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  onSubmitted(planeToUpdate: Plane) {
-    this.store.dispatch(update({ plane: planeToUpdate }));
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  ) {
+    super(injector, planeService);
+    this.crudConfiguration = PlaneCRUDConfiguration;
   }
 }
