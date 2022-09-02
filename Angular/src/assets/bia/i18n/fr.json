@@ -74,6 +74,9 @@
       "language": "Langage",
       "translatedFields": "Champs traduits"
     },
+    "useCalcMode": "Edition en ligne",
+    "useView": "Vues",
+    "useSignalR": "Toujours à jour",
     "view": "Voir",
     "views": {
       "current": "Vue courante",

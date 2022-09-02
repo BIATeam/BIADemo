@@ -72,6 +72,9 @@
       "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },
+    "useCalcMode": "Edición en línea",
+    "useView": "Vistas",
+    "useSignalR": "Siempre actualizado",
     "view": "Ver",
     "views": {
       "current": "Vista actual",
