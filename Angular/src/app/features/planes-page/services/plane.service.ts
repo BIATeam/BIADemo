@@ -6,12 +6,11 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { Plane } from '../model/plane';
+import { Plane, PlaneCRUDConfiguration } from '../model/plane';
 import { FeaturePlanesStore } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
 import { PlaneOptionsService } from './plane-options.service';
 import { PlaneDas } from './plane-das.service';
-import { featureName } from '../plane.constants';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
@@ -35,8 +34,8 @@ export class PlaneService extends CrudItemService<Plane> {
         return this.authService.getCurrentTeamId(TeamTypeId.Site);
     }
 
-    public getFeatureName()  {  return featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : featureName}; }
+    public getFeatureName()  {  return PlaneCRUDConfiguration.featureName; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
 
 
     public crudItems$: Observable<Plane[]> = this.store.select(FeaturePlanesStore.getAllPlanes);

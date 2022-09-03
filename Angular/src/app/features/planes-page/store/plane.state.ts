@@ -1,6 +1,6 @@
 import * as fromPlanes from './planes-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-import { storeKey } from '../plane.constants';
+import { PlaneCRUDConfiguration } from '../model/plane';
 
 export namespace FeaturePlanesStore
 {
@@ -20,7 +20,7 @@ export namespace FeaturePlanesStore
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getPlanesState = createFeatureSelector<PlanesState>(storeKey);
+  export const getPlanesState = createFeatureSelector<PlanesState>(PlaneCRUDConfiguration.storeKey);
 
   export const getPlanesEntitiesState = createSelector(
     getPlanesState,
