@@ -103,7 +103,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.crudConfiguration.usePopup = e;
     this.usePopupConfig(true);
   }
-  private useViewConfig(manualChange: boolean) {
+  protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
     if (this.crudConfiguration.useView) {
@@ -121,7 +121,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   isLoadAllOptionsSubsribe = false;
-  private useClacModeConfig(manualChange: boolean) {
+  protected useClacModeConfig(manualChange: boolean) {
     if (this.crudConfiguration.useCalcMode && ! this.isLoadAllOptionsSubsribe) {
       this.isLoadAllOptionsSubsribe = true;
       this.sub.add(
@@ -132,11 +132,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
-  private usePopupConfig(manualChange: boolean) {
+  protected usePopupConfig(manualChange: boolean) {
 
   }
 
-  private useSignalRConfig(manualChange: boolean) {
+  protected useSignalRConfig(manualChange: boolean) {
     if (this.crudConfiguration.useSignalR) {
       this.crudItemService.signalRService.initialize(this.crudItemService);
       this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
