@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges, ContentChildren, QueryList, TemplateRef } from '@angular/core';
+import { Component, Input, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges, ContentChildren, QueryList, TemplateRef, AfterContentInit } from '@angular/core';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, PrimeTemplate, TableState } from 'primeng/api';
 import { BiaListConfig, PropType, PrimeTableColumn } from './bia-table-config';
@@ -20,7 +20,7 @@ const arraysEqual = (a1: any, a2:any) =>
   templateUrl: './bia-table.component.html',
   styleUrls: ['./bia-table.component.scss']
 })
-export class BiaTableComponent implements OnChanges {
+export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() pageSize: number;
   @Input() totalRecord: number;
   @Input() paginator = true;

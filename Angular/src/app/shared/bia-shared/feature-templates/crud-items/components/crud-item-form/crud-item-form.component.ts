@@ -16,7 +16,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudConfig } from '../../model/crud-config';
 
 @Component({
-  selector: 'app-crud-item-form',
+  selector: 'bia-crud-item-form',
   templateUrl: './crud-item-form.component.html',
   styleUrls: ['./crud-item-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default

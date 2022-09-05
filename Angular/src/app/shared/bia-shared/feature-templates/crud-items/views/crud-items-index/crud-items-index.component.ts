@@ -25,7 +25,7 @@ import { CrudConfig } from '../../model/crud-config';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 
 @Component({
-  selector: 'app-crud-items-index',
+  selector: 'bia-crud-items-index',
   templateUrl: './crud-items-index.component.html',
   styleUrls: ['./crud-items-index.component.scss']
 })
@@ -98,7 +98,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.crudConfiguration.useSignalR = e;
     this.useSignalRConfig(true);
   }
-
+  
+  usePopupChange(e: boolean) {
+    this.crudConfiguration.usePopup = e;
+    this.usePopupConfig(true);
+  }
   private useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
@@ -126,6 +130,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
         })
       );
     }
+  }
+
+  private usePopupConfig(manualChange: boolean) {
+
   }
 
   private useSignalRConfig(manualChange: boolean) {

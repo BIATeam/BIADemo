@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit, TemplateRef, AfterContentInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -12,7 +12,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   templateUrl: './bia-calc-table.component.html',
   styleUrls: ['../bia-table/bia-table.component.scss']
 })
-export class BiaCalcTableComponent extends BiaTableComponent implements OnInit {
+export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, AfterContentInit {
   @Input() canAdd = true;
   @Input() canEdit = true;
   @Output() save = new EventEmitter<any>();

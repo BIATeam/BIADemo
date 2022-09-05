@@ -58,7 +58,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
     ></bia-table>
-    <app-crud-item-table
+    <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
       [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
@@ -80,6 +80,6 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-    ></app-crud-item-table>
+    ></bia-crud-item-table>
   </div>
 </div>

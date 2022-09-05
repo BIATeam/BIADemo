@@ -9,7 +9,7 @@ import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
 
 @Component({
-  selector: 'app-crud-item-new',
+  selector: 'bia-crud-item-new',
   templateUrl: './crud-item-new.component.html',
   styleUrls: ['./crud-item-new.component.scss']
 })

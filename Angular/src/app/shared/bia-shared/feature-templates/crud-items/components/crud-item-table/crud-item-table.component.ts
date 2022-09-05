@@ -10,7 +10,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudConfig } from '../../model/crud-config';
 
 @Component({
-  selector: 'app-crud-item-table',
+  selector: 'bia-crud-item-table',
   templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: ['../../../../components/table/bia-calc-table/bia-calc-table.component.scss']
 })

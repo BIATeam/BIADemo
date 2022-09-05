@@ -1,8 +1,8 @@
-<app-crud-item-form 
+<bia-crud-item-form 
     [crudItem]="crudItemService.crudItem$ | async" 
     [crudConfiguration]="crudConfiguration"
     [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></app-crud-item-form>
+></bia-crud-item-form>
 <bia-spinner *ngIf="crudItemService.loadingGet$ | async" [overlay]="true"></bia-spinner>
