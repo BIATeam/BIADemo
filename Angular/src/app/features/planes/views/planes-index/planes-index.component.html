@@ -34,7 +34,10 @@
           pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
           <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
           (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>  
+          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
+          <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
+          (click)="usePopupChange(!crudConfiguration.usePopup)"
+          pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
         </div>
       </ng-template>
     </bia-table-controller>

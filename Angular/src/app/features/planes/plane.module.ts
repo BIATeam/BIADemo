@@ -12,7 +12,6 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
-import { usePopup } from './plane.constants';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
 import { PlaneNewComponent } from './views/plane-new/plane-new.component';
@@ -22,7 +21,7 @@ import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './model/plane';
 
-const ROUTES: Routes = [
+export let ROUTES: Routes = [
   {
     path: '',
     data: {
@@ -42,8 +41,9 @@ const ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
+          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
-        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -63,8 +63,9 @@ const ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
+              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
-            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {

@@ -10,7 +10,7 @@ import {
 } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -133,7 +133,23 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   protected usePopupConfig(manualChange: boolean) {
+    if (manualChange)
+    {
+      this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
+    }
+  }
 
+  private applyDynamicComponent(routes: Routes |undefined) {
+    if (routes)
+    {
+      routes.forEach((route) => {
+        if ((route.data as any).dynamicComponent)
+        {
+          route.component = (route.data as any).dynamicComponent();
+        }
+        this.applyDynamicComponent(route.children);
+      });
+    }
   }
 
   protected useSignalRConfig(manualChange: boolean) {
