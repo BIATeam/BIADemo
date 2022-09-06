@@ -16,7 +16,6 @@ using NLog.Web;
 using TheBIADevCompany.BIADemo.Presentation.Api;
 #pragma warning restore SA1200 // Using directives should be placed correctly
 
-
 // NLog: setup the logger first to catch all errors
 try
 {

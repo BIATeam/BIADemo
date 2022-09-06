@@ -135,6 +135,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
+            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = true,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
+
+            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                UseDefaultCredentials = true,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            });
+
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 UseDefaultCredentials = true,

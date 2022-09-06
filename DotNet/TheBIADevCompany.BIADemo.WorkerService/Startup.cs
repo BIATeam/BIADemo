@@ -59,28 +59,24 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         }
 
         /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="host">The host.</param>
+        public static void Configure(IHost host)
+        {
+            // Begin BIADemo
+            PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
+
+            // End BIADemo
+            CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
+        }
+
+        /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services">The collection of services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddControllers();
-            // services.AddCors();
-            // services.AddResponseCompression();
-
-            /* services.AddHsts(options =>
-            {
-                options.Preload = true;
-                options.IncludeSubDomains = true; // Enforce HSTS on all Sub-Domains as well
-                options.MaxAge = TimeSpan.FromDays(365); // One year expiry
-            }); */
-
-            /*services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.Secure = CookieSecurePolicy.Always;
-                options.HttpOnly = HttpOnlyPolicy.Always;
-            }); */
-
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -90,8 +86,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
                     return new BIAClaimsPrincipal(new ClaimsPrincipal(userIdentity));
-                }
-            );
+                });
             services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 
             // Begin BIA Standard service
@@ -116,22 +111,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration);
-        }
-
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        /// </summary>
-        /// <param name="host">The host.</param>
-        public static void Configure(IHost host)
-        {
-            //using (var scope = host.Services.CreateScope())
-            {
-                // Begin BIADemo
-                //var services = scope.ServiceProvider;
-                PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
-                // End BIADemo
-                CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
-            }
         }
     }
 }

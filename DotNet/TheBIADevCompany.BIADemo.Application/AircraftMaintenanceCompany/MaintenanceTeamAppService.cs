@@ -46,13 +46,11 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 
             this.filtersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && (accessAll || p.Members.Any(m => m.UserId == userId || p.AircraftMaintenanceCompany.Members.Any(m => m.UserId == userId))))
-            );
+                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && (accessAll || p.Members.Any(m => m.UserId == userId || p.AircraftMaintenanceCompany.Members.Any(m => m.UserId == userId)))));
+
             this.filtersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && p.Id == this.currentAircraftMaintenanceCompanyId)
-            );
-
+                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && p.Id == this.currentAircraftMaintenanceCompanyId));
         }
 
         /// <inheritdoc/>

@@ -355,7 +355,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
                 if (dto.Read)
                 {
                     await this.notificationService.SetUnread(dto);
-                    // dto.Read = false;
                 }
 
                 return this.Ok(dto);

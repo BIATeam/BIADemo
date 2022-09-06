@@ -47,12 +47,11 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 
             this.filtersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId))
-            );
+                new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
+
             this.filtersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == this.currentAircraftMaintenanceCompanyId)
-            );
+                new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == this.currentAircraftMaintenanceCompanyId));
         }
     }
 }

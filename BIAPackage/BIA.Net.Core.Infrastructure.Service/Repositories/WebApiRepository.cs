@@ -85,7 +85,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T content = JsonConvert.DeserializeObject<T>(res);
+                    T content = DeserializeIfRequiered<T>(res);
                     return (content, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -96,6 +96,21 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
 
             return (default(T), default(bool), default(string));
+        }
+
+        private static T DeserializeIfRequiered<T>(string res)
+        {
+            T content;
+            if (typeof(T) == typeof(string))
+            {
+                content = (T)Convert.ChangeType(res, typeof(T));
+            }
+            else
+            {
+                content = JsonConvert.DeserializeObject<T>(res);
+            }
+
+            return content;
         }
 
         /// <summary>
@@ -136,7 +151,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T result = JsonConvert.DeserializeObject<T>(res);
+                    T result = DeserializeIfRequiered<T>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else

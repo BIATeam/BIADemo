@@ -30,10 +30,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<object> Get(string key)
+        public async Task<T> Get<T>(string key)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            localCache.TryGetValue(key, out object item);
+            localCache.TryGetValue(key, out T item);
             return item;
         }
 
