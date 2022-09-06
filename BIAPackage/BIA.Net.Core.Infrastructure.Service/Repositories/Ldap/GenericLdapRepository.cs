@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
     {
 
-        private const string CacheBeginKey = "BIAsid:";
+        private const string CacheBeginKey = "BIAXMLsid:";
 
         /// <summary>
         /// Groups cached.

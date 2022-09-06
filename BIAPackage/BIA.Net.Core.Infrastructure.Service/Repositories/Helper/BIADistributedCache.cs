@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             distibutedCache = cache;
         }
 
-        public async Task Add(string key, object item, double cacheDurationInMinute)
+        public async Task Add<T>(string key, T item, double cacheDurationInMinute)
         {
             byte[] encodedItemResolve = ObjectToByteArray(item);
             var options = new DistributedCacheEntryOptions()
@@ -56,57 +56,34 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             }
         }
 
-        // Convert an object to a byte array
+        /// <summary>
+        /// Convert an object to a Byte Array, using Protobuf.
+        /// </summary>
         private byte[] ObjectToByteArray<T>(T obj)
         {
             if (obj == null)
                 return null;
-            BinaryFormatter bf = new();
-            using MemoryStream ms = new();
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
+
+            using var stream = new MemoryStream();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            xmlSerializer.Serialize(stream, obj);
+
+            return stream.ToArray();
         }
 
-        // Convert a byte array to an Object
+        /// <summary>
+        /// Convert a byte array to an Object of T, using Protobuf.
+        /// </summary>
         private T ByteArrayToObject<T>(byte[] arrBytes)
         {
-            MemoryStream memStream = new();
-            BinaryFormatter binForm = new();
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            T obj = (T)binForm.Deserialize(memStream);
+            using var stream = new MemoryStream();
 
-            return obj;
+            // Ensure that our stream is at the beginning.
+            stream.Write(arrBytes, 0, arrBytes.Length);
+            stream.Seek(0, SeekOrigin.Begin);
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            return (T)xmlSerializer.Deserialize(stream);
         }
-
-        ///// <summary>
-        ///// Convert an object to a Byte Array, using Protobuf.
-        ///// </summary>
-        //private byte[] ObjectToByteArray<T>(T obj)
-        //{
-        //    if (obj == null)
-        //        return null;
-
-        //    using var stream = new MemoryStream();
-        //    XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-        //    xmlSerializer.Serialize(stream, obj);
-
-        //    return stream.ToArray();
-        //}
-
-        ///// <summary>
-        ///// Convert a byte array to an Object of T, using Protobuf.
-        ///// </summary>
-        //private T ByteArrayToObject<T>(byte[] arrBytes)
-        //{
-        //    using var stream = new MemoryStream();
-
-        //    // Ensure that our stream is at the beginning.
-        //    stream.Write(arrBytes, 0, arrBytes.Length);
-        //    stream.Seek(0, SeekOrigin.Begin);
-        //    XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
-        //    return (T)xmlSerializer.Deserialize(stream);
-        //}
 
     }
 }
