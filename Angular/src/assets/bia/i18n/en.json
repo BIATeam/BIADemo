@@ -75,8 +75,9 @@
       "translatedFields": "Translated fields"
     },
     "useCalcMode": "Online editing",
-    "useView": "Views",
+    "usePopup": "Use popups",
     "useSignalR": "Always up to date",
+    "useView": "Views",
     "view": "View",
     "views": {
       "current": "Current view",

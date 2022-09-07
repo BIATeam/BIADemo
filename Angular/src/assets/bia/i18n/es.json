@@ -1,7 +1,8 @@
 {
   "@@lang": "es",
   "bia": {
-    "actions": "Valores",
+    "action": "Acción",
+    "actions": "Acciones",
     "add": "Añadir",
     "administer": "Administrar",
     "administration" : "Administración",
@@ -25,6 +26,7 @@
     "greetings": "¡Hola!",
     "help": "Ayuda",
     "id": "id",
+    "ignore": "Ignorar",
     "info": "Info",
     "itemsBySearch": "Artículos per búsqueda",
     "itemsPerPage": "Artículos por página",
@@ -51,6 +53,7 @@
     "NoRecordsFound": "No se han encontrado registros",
     "noResult": "Sin resultados",
     "refresh": "Actualizar",
+    "relatedTo": "Relacionado con",
     "report": "Relación",
     "notifications": "Notificaciones",
     "reset": "Reajustar",
@@ -64,8 +67,7 @@
     "theme": "Aspecto",
     "themeDark": "Dark",
     "themeLight": "Light",
-    "translation": 
-    {  
+    "translation": {  
       "add" : "Agregar traducción",
       "addAll" : "Agregar todas las traducciones",
       "delete" : "Eliminar traducción",
@@ -73,8 +75,9 @@
       "translatedFields" : "Campos traducidos"
     },
     "useCalcMode": "Edición en línea",
-    "useView": "Vistas",
+    "usePopup": "Usar popups",
     "useSignalR": "Siempre actualizado",
+    "useView": "Vistas",
     "view": "Ver",
     "views": {
       "current": "Vista actual",

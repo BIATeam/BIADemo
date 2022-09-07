@@ -75,8 +75,9 @@
       "translatedFields": "Champs traduits"
     },
     "useCalcMode": "Edition en ligne",
-    "useView": "Vues",
+    "usePopup": "Utiliser les popups",
     "useSignalR": "Toujours à jour",
+    "useView": "Vues",
     "view": "Voir",
     "views": {
       "current": "Vue courante",
@@ -150,7 +151,13 @@
     "upload": "Upload",
     "cancel": "Annuler",
     "dayNames": [
-      "Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi"
     ],
     "dayNamesShort": [
       "Dim",
