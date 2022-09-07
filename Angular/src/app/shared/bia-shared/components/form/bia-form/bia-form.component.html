@@ -22,18 +22,19 @@
             </span>
           </ng-container>
           <ng-container *ngSwitchCase="'ManyToMany'">
-            <p-multiSelect
-              defaultLabel="&nbsp;"
-              [formControlName]="col.field"
-              [options]="getOptionDto(col.field)"
-              optionLabel="display"
-              datakey="id"
-              (onChange)="onChange()"
-              (onPanelShow)="onPanelShowMultiSelect()"
-              (onPanelHide)="onPanelHideMultiSelect()"
-              appendTo="body"
-              [style]="{ width: '100%' }"
-            ></p-multiSelect>
+            <span class="p-float-label">
+              <p-multiSelect
+                defaultLabel="&nbsp;"
+                [formControlName]="col.field"
+                [options]="getOptionDto(col.field)"
+                optionLabel="display"
+                datakey="id"
+                appendTo="body"
+                [virtualScroll]="true"
+                [style]="{ width: '100%' }"
+              ></p-multiSelect>
+              <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            </span>
           </ng-container>
           <ng-container *ngSwitchCase="'Boolean'">
             <p-checkbox binary="true" [formControlName]="col.field" label="{{ col.header | translate }}"></p-checkbox>
