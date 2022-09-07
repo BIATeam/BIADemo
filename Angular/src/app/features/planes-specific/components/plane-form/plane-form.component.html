@@ -5,7 +5,7 @@
   (save)="onSave($event)"
   (cancel)="onCancel()"
 >
-  <ng-template pTemplate="specificInput" let-col="col" let-rowData="rowData" let-form="form">
+  <ng-template pTemplate="specificInput" let-col="col" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="col.field">
         <ng-container *ngSwitchCase="'isActive'">

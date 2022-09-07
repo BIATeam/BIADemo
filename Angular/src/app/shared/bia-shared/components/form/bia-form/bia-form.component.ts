@@ -69,10 +69,6 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
     }
   }
 
-  public getOptionDto(key: string) {
-    return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;
-  }
-
   protected initForm() {
     this.form = this.formBuilder.group(this.formFields());
   }
