@@ -2,13 +2,13 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
-      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canAdd]="canAdd && !useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"
+      [selectedElements]="selectedPlanes"
     ></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
@@ -23,27 +23,10 @@
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-    >
-      <ng-template pTemplate="customControl">
-        <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
-          <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
-          (click)="useClacModeChange(!crudConfiguration.useCalcMode)" 
-          pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
-          (click)="useViewChange(!crudConfiguration.useView)"
-          pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
-          (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
-          (click)="usePopupChange(!crudConfiguration.usePopup)"
-          pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
-        </div>
-      </ng-template>
-    </bia-table-controller>
+    ></bia-table-controller>
     <bia-table
-      *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
+      *ngIf="!useCalcMode"
+      [elements]="planes$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -87,14 +70,13 @@
       </ng-template>
     </bia-table>
     <app-plane-table
-      *ngIf="crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
+      *ngIf="useCalcMode"
+      [elements]="planes$ | async"
+      [dictOptionDtos]="planeOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="tableConfiguration"
-      [crudConfiguration]="crudConfiguration"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
@@ -109,42 +91,42 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
     >
-      <ng-template pTemplate="specificOutput" let-col="col" let-rowData="rowData">
+    <ng-template pTemplate="specificOutput" let-col="col" let-rowData="rowData">
+      <ng-container [ngSwitch]="col.field">
+        <ng-container *ngSwitchCase="'isActive'">
+          <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
+        </ng-container> <!-- isActive -->
+        <ng-container *ngSwitchCase="'capacity'">
+          <ng-container *ngIf="rowData[col.field] < 0">
+            - Negative -
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] === 0">
+            0 Empty 0
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] > 0 && rowData[col.field] < 10">
+            + Small +
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] >= 10 && rowData[col.field] < 100">
+            ++ Medium ++
+          </ng-container>
+          <ng-container *ngIf="rowData[col.field] >= 100">
+            +++ Large +++
+          </ng-container>
+        </ng-container> <!-- capacity -->
+      </ng-container>
+    </ng-template>
+    <ng-template pTemplate="specificInput" let-col="col" let-rowData="rowData" let-form="form">
+      <div [formGroup]="form">
         <ng-container [ngSwitch]="col.field">
           <ng-container *ngSwitchCase="'isActive'">
-            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
+            <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
           </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="rowData[col.field] < 0">
-              - Negative -
-            </ng-container>
-            <ng-container *ngIf="rowData[col.field] === 0">
-              0 Empty 0
-            </ng-container>
-            <ng-container *ngIf="rowData[col.field] > 0 && rowData[col.field] < 10">
-              + Small +
-            </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 10 && rowData[col.field] < 100">
-              ++ Medium ++
-            </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 100">
-              +++ Large +++
-            </ng-container>
+            <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
           </ng-container> <!-- capacity -->
         </ng-container>
-      </ng-template>
-      <ng-template pTemplate="specificInput" let-col="col" let-rowData="rowData" let-form="form">
-        <div [formGroup]="form">
-          <ng-container [ngSwitch]="col.field">
-            <ng-container *ngSwitchCase="'isActive'">
-              <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
-            </ng-container> <!-- isActive -->
-            <ng-container *ngSwitchCase="'capacity'">
-              <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
-            </ng-container> <!-- capacity -->
-          </ng-container>
-        </div>
-      </ng-template>
-    </app-plane-table>
+      </div>
+    </ng-template>
+  </app-plane-table>
   </div>
 </div>

@@ -1,10 +1,12 @@
 import { TeamTypeId } from "src/app/shared/constants";
 
-// IMPORTANT: this key should be unique in all the application. Use the path of the feature.
-export const storeKey: string = 'feature-planes-specific';
 
-export const useCalcMode = true;
+export const featureName: string = 'planes-specific';
+
+// TODO after CRUD creation : adapt the default values:
+export const useCalcMode = false;
 export const useSignalR = false;
 export const useView = false;
-export const useViewTeamWithTypeId = TeamTypeId.Site;
+export const useViewTeamWithTypeId = TeamTypeId.Site; // use to filter view by teams => should know the type of team
 export const usePopup = true;
+export const useOfflineMode = false;

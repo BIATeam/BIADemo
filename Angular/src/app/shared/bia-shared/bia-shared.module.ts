@@ -117,6 +117,7 @@ import { TeamListPipe } from './components/notification-team-warning/team-list/t
 import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
 import { HangfireContainerComponent } from './components/hangfire-container/hangfire-container.component';
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { BiaFormComponent } from './components/table/bia-form/bia-form.component';
 
 const PRIMENG_MODULES = [
 //  AccordionModule,
@@ -189,6 +190,7 @@ const COMPONENTS = [
   SpinnerComponent,
   IeWarningComponent,
   BiaTableComponent,
+  BiaFormComponent,
   BiaCalcTableComponent,
   BiaTableHeaderComponent,
   BiaTableControllerComponent,

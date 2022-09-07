@@ -47,22 +47,6 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes-full-code/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-page',
-                data: {
-                  breadcrumb: 'app.planesPageMode',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-page/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-offline',
-                data: {
-                  breadcrumb: 'app.planesOfflineMode',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-offline/plane.module').then((m) => m.PlaneModule)
-              },
-              {
                 path: 'planes-specific',
                 data: {
                   breadcrumb: 'app.planesSpecific',

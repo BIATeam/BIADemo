@@ -44,6 +44,8 @@ export class PrimeTableColumn {
   translateKey: string;
   searchPlaceholder: string;
   isRequired: boolean;
+  specificOutput: boolean;
+  specificInput: boolean;
   get isDate() {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
   }
@@ -65,6 +67,8 @@ export class PrimeTableColumn {
     this.isEditable = true;
     this.maxlength = maxlength;
     this.isRequired = false;
+    this.specificOutput = false;
+    this.specificInput = false;
   }
   
   public clone() : PrimeTableColumn
@@ -79,6 +83,8 @@ export class PrimeTableColumn {
       translateKey: this.translateKey,
       searchPlaceholder: this.searchPlaceholder,
       isRequired: this.isRequired,
+      specificOutput: this.specificOutput,
+      specificInput: this.specificInput,
     })
   }
 }

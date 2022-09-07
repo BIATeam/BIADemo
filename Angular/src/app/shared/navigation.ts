@@ -35,16 +35,6 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/planes-full-code']
       },
       {
-        labelKey: 'app.planesPageMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-page']
-      },
-      {
-        labelKey: 'app.planesOfflineMode',
-        permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-offline']
-      },
-      {
         labelKey: 'app.planesSpecific',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes-specific']

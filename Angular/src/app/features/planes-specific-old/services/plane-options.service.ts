@@ -7,25 +7,25 @@ import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/stor
 import { getAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/plane-type-option.state';
 import { DomainPlaneTypeOptionsActions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
-import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PlaneOptionsService extends CrudItemOptionsService {
+export class PlaneOptionsService {
+    dictOptionDtos$: Observable<DictOptionDto[]>;
+
     planeTypeOptions$: Observable<OptionDto[]>;
     airportOptions$: Observable<OptionDto[]>;
 
     constructor(
         private store: Store<AppState>,
     ) {
-        super();
-        // TODO after CRUD creation : get all requiered option dto use in Table calc and create and edit form
         this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 
+        // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.planeTypeOptions$, this.airportOptions$]).pipe(
             map(
                 (options) =>
