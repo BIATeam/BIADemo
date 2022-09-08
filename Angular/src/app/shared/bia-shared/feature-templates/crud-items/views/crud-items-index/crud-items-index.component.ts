@@ -159,7 +159,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
     else
     {
-      this.crudItemService.signalRService.destroy();
+      if (manualChange)
+      {
+        this.crudItemService.signalRService.destroy();
+      }
     }
   }
 

@@ -57,9 +57,9 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 
             var jwtToken = string.Empty;
 
-            if (httpContext.Request.Query.ContainsKey("jwt_token"))
+            if (httpContext.Request.Headers.Authorization.First(m => m.Substring(0, 7) == "Bearer ") != null)
             {
-                jwtToken = httpContext.Request.Query["jwt_token"].FirstOrDefault();
+                jwtToken = httpContext.Request.Headers.Authorization.First().Substring(7);
                 this.SetCookie(httpContext, jwtToken, httpContext.Request.Host.Value == "localhost");
             }
             else
