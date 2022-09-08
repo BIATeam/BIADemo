@@ -211,10 +211,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   OnDisplay() {
     this.useViewConfig(false);
     this.useClacModeConfig(false);
-    this.useSignalRConfig(false);    
-    /*if (this.crudConfiguration.useView) {
-      this.store.dispatch(loadAllView());
-    }*/
+    this.useSignalRConfig(false);
+    this.usePopupConfig(false);
   }
 
   OnHide() {
