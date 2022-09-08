@@ -57,7 +57,7 @@ export const PlaneCRUDConfiguration : CrudConfig = new CrudConfig(
     useViewTeamWithTypeId: useViewTeamWithTypeId,
     usePopup: usePopup,
     useOfflineMode: useOfflineMode,
-    // IMPORTANT: this key should be unique in all the application (except if share same store with same object format).
+    // IMPORTANT: this key should be unique in all the application.
     // storeKey: 'feature-' + featureName,
     // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
     // tableStateKey: featureName + 'Grid',

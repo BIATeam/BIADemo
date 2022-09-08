@@ -1,6 +1,6 @@
 import { TeamTypeId } from "src/app/shared/constants";
 
-
+// IMPORTANT: this key should be unique in all the application.
 export const featureName: string = 'planes-specific';
 
 // TODO after CRUD creation : adapt the default values:
