@@ -51,7 +51,7 @@
           showButtonBar="true"
           appendTo="body"
           dateFormat="yy-mm-dd"
-          inputStyle="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
       </span>
@@ -65,7 +65,7 @@
           timeOnly="true"
           dateFormat="yy-mm-dd"
           placeholder="&nbsp;"
-          inputStyle="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
           appendTo="body"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
@@ -80,7 +80,7 @@
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
-          inputStyle="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
           appendTo="body"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
@@ -95,7 +95,7 @@
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
-          inputStyle="{'width':'100%'}"
+          [inputStyle]="{'width':'100%'}"
           appendTo="body"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
