@@ -39,15 +39,6 @@
       "us": "US"
     },
     "languages": "Idiomas",
-    "locale": {
-      "clear": "Despejado",
-      "dayNames": "Domingo,Lunes,Martes,Miércoles,Jueves,Viernes,Sábado",
-      "dayNamesMin": "So,Lu,Ma,Mi,Ju,Vi,Sá",
-      "dayNamesShort": "Sol,Lun,Mar,Mié,Jue,Vie,Sáb",
-      "monthNames": "Enero,Febrero,Marzo,Abril,Mayo,Junio,Julio,Agosto,Septiembre,Octubre,Noviembre,Diciembre",
-      "monthNamesShort": "Ene,Feb,Mar,Abr,May,Jun,Jul,Ago,Sep,Oct,Nov,Dic",
-      "today": "Hoy"
-    },
     "new": "Nuevo",
     "no": "No",
     "NoRecordsFound": "No se han encontrado registros",

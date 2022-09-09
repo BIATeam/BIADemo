@@ -90,7 +90,6 @@ import { BiaTableControllerComponent } from './components/table/bia-table-contro
 import { BiaTableComponent } from './components/table/bia-table/bia-table.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PageLayoutComponent } from './components/layout/page-layout.component';
-import { PrimengCalendarLocaleDirective } from './directives/primeng-calendar-locale.directive';
 import { ViewListComponent } from './features/view/views/view-list/view-list.component';
 import { ViewDialogComponent } from './features/view/views/view-dialog/view-dialog.component';
 import { ViewTeamTableComponent } from './features/view/components/view-team-table/view-team-table.component';
@@ -200,7 +199,6 @@ const COMPONENTS = [
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
-  PrimengCalendarLocaleDirective,
   BiaOnlineOfflineIconComponent,
   NotificationTeamWarningComponent,
   HangfireContainerComponent,
