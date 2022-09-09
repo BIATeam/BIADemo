@@ -143,7 +143,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     if (routes)
     {
       routes.forEach((route) => {
-        if ((route.data as any).dynamicComponent)
+        if (route.data && (route.data as any).dynamicComponent)
         {
           route.component = (route.data as any).dynamicComponent();
         }
