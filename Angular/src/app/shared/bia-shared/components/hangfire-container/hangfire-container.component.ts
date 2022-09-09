@@ -25,12 +25,12 @@ import { AuthService } from "src/app/core/bia-core/services/auth.service";
           this.token = authinfo.token;
           //this.urlToken = this.url + "?jwt_token=" + this.token;
           let content = `<html><head></head><body style="margin: 0;">
-<form id="loginForm" target="myFrame" action="`+ this.url + `" method="POST">
+<form id="hangfireForm" target="iFrame1" action="`+ this.url + `" method="POST" style="display:none">
   <input type="text" name="jwt_token" value="` + this.token + `" />
   <input type="submit">
 </form>
 
-<iframe  frameborder="0" name="myFrame" style="width:100%;height:850px;">
+<iframe  frameborder="0" name="iFrame1" style="width:100%;height:850px;">
     Your browser does not support inline frames.
 </iframe>
 
@@ -46,9 +46,8 @@ import { AuthService } from "src/app/core/bia-core/services/auth.service";
       });
     }
     ready(function(){
-        var loginform= document.getElementById("loginForm");
-        loginform.style.display = "none";
-        loginform.submit();
+        var hangfireForm= document.getElementById("hangfireForm");
+        hangfireForm.submit();
     });
 </script>
 </html>`
