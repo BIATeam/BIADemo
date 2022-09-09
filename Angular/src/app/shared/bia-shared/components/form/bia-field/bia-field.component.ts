@@ -20,7 +20,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 })
 
 export class BiaFieldComponent implements AfterContentInit {
-  @Input() col: PrimeTableColumn;
+  @Input() field: PrimeTableColumn;
   @Input() form: FormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 
@@ -51,4 +51,5 @@ export class BiaFieldComponent implements AfterContentInit {
   public getOptionDto(key: string) {
     return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;
   }
+  
 }

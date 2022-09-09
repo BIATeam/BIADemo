@@ -1,14 +1,14 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
-  <ng-container *ngFor="let col of columns">
+  <ng-container *ngFor="let field of fields">
     <div fxLayout="row" fxLayoutAlign="center">
       <div class="app-field-container" fxFlex="90">
         <bia-field
-          [col]="col"
+          [field]="field"
           [form]="form"
           [dictOptionDtos]="dictOptionDtos"
         >
-        <ng-template pTemplate="specificInput" let-col="col" let-form="form">
-          <ng-container *ngTemplateOutlet="specificInputTemplate;context: { col: col, form: form }" ></ng-container>
+        <ng-template pTemplate="specificInput" let-field="field" let-form="form">
+          <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
         </ng-template>
         </bia-field>
       </div>

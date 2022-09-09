@@ -1,124 +1,128 @@
 <div [formGroup]="form">
-  <ng-container *ngIf="col.specificInput === true">
-    <ng-container *ngTemplateOutlet="specificInputTemplate;context: { col: col, form: form }" ></ng-container>
+  <ng-container *ngIf="field.specificInput === true">
+    <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
   </ng-container>
-  <ng-container [ngSwitch]="col.type" *ngIf="col.specificInput !== true">
+  <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
       <span class="p-float-label">
         <p-dropdown
-          [options]="getOptionDto(col.field)"
+          [options]="getOptionDto(field.field)"
           placeholder="&nbsp;"
-          [formControlName]="col.field"
+          [formControlName]="field.field"
           optionLabel="display"
           datakey="id"
           [style]="{ width: '100%' }"
           [showClear]="true"
           appendTo="body"
         ></p-dropdown>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <span class="p-float-label">
         <p-multiSelect
           defaultLabel="&nbsp;"
-          [formControlName]="col.field"
-          [options]="getOptionDto(col.field)"
+          [formControlName]="field.field"
+          [options]="getOptionDto(field.field)"
           optionLabel="display"
           datakey="id"
           appendTo="body"
           [virtualScroll]="true"
           [style]="{ width: '100%' }"
         ></p-multiSelect>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox binary="true" [formControlName]="col.field" label="{{ col.header | translate }}"></p-checkbox>
+      <p-checkbox binary="true" [formControlName]="field.field" label="{{ field.header | translate }}"></p-checkbox>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <span class="p-float-label">
-        <input [formControlName]="col.field" type="number" pInputText style="width: 100%;" />
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <input [formControlName]="field.field" type="number" pInputText style="width: 100%;" />
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <span class="p-float-label">
         <p-calendar
           biaLocale
-          [formControlName]="col.field"
+          [formControlName]="field.field"
           placeholder="&nbsp;"
           showButtonBar="true"
           appendTo="body"
-          dateFormat="yy-mm-dd"
+          [dateFormat]="field.formatDate"
           [inputStyle]="{'width':'100%'}"
         ></p-calendar>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
       <span class="p-float-label">
         <p-calendar
-        [formControlName]="col.field"
+        [formControlName]="field.field"
           showTime="true"
           showSeconds="false"
           timeOnly="true"
-          dateFormat="yy-mm-dd"
+          [dateFormat]="field.formatDate"
+          [hourFormat]="field.hourFormat"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"
           appendTo="body"
         ></p-calendar>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
       <span class="p-float-label">
         <p-calendar
-        [formControlName]="col.field"
+        [formControlName]="field.field"
           showTime="true"
           showSeconds="false"
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
+          [hourFormat]="24"
           [inputStyle]="{'width':'100%'}"
           appendTo="body"
-        ></p-calendar>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        ></p-calendar><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
       <span class="p-float-label">
         <p-calendar
-        [formControlName]="col.field"
+        [formControlName]="field.field"
           showTime="true"
           showSeconds="true"
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
+          [hourFormat]="24"
           [inputStyle]="{'width':'100%'}"
           appendTo="body"
-        ></p-calendar>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+          ></p-calendar><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
       <span class="p-float-label">
         <p-calendar
           biaLocale
-          [formControlName]="col.field"
+          [formControlName]="field.field"
           showTime="true"
-          dateFormat="yy-mm-dd"
+          [dateFormat]="field.formatDate"
+          [hourFormat]="field.hourFormat"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"
           appendTo="body"
         ></p-calendar>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <span class="p-float-label">
-        <input [formControlName]="col.field" type="text" pInputText maxlength="col.maxlength" style ="width:100%"/>
-        <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+        <input [formControlName]="field.field" type="text" pInputText maxlength="field.maxlength" style ="width:100%"/>
+        <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
   </ng-container>

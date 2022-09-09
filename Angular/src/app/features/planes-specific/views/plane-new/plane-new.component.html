@@ -1,5 +1,5 @@
 <app-plane-form 
-    [crudConfiguration]="crudConfiguration"
+    [fields]="fields"
     [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"

@@ -27,7 +27,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 
 export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
   @Input() element: any = {};
-  @Input() columns: PrimeTableColumn[];
+  @Input() fields: PrimeTableColumn[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter();
@@ -74,7 +74,7 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
   }
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
-      for (let col of this.columns) {
+      for (let col of this.fields) {
         if (col.isRequired)
         {
           fields[col.field] = [this.element[col.field], Validators.required];
@@ -96,7 +96,7 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
     if (this.form.valid) {
       const element: any = this.form.value;
       element.id = element.id > 0 ? element.id : 0;
-      for (let col of this.columns) {
+      for (let col of this.fields) {
         switch(col.type)
         {
           case PropType.Boolean:
