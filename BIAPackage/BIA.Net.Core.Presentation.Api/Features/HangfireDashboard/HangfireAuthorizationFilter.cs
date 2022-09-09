@@ -62,6 +62,11 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 jwtToken = httpContext.Request.Query["jwt_token"].FirstOrDefault();
                 this.SetCookie(httpContext, jwtToken, httpContext.Request.Host.Value == "localhost");
             }
+            else if (httpContext.Request.HasFormContentType && httpContext.Request.Form != null && httpContext.Request.Form.ContainsKey("jwt_token"))
+            {
+                jwtToken = httpContext.Request.Form["jwt_token"].FirstOrDefault();
+                this.SetCookie(httpContext, jwtToken, httpContext.Request.Host.Value == "localhost");
+            }
             else
             {
                 jwtToken = httpContext.Request.Cookies["_hangfireCookie"];
