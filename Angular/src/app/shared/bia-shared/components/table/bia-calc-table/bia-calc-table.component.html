@@ -133,7 +133,7 @@
                       readonlyInput="true"
                       [style]="{ width: '100%' }"
                       [inputStyle]="{ width: '100%' }"
-                      dateFormat="yy-mm-dd"
+                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
                     ></p-calendar>
                   </ng-container>
                   <ng-container *ngSwitchCase="'Time'">
@@ -151,8 +151,9 @@
                       [inputStyle]="{ width: '100%' }"
                       showTime="true"
                       [timeOnly]="true"
-                      dateFormat="yy-mm-dd"
-                    ></p-calendar>
+                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
+                      [hourFormat]="24"
+                    ></p-calendar> <!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
                   </ng-container>
                   <ng-container *ngSwitchCase="'TimeOnly'">
                     <p-calendar
@@ -170,7 +171,8 @@
                       showTime="true"
                       dataType="string"
                       [timeOnly]="true"
-                    ></p-calendar>
+                      [hourFormat]="24"
+                    ></p-calendar><!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
                   </ng-container>
                   <ng-container *ngSwitchCase="'TimeSecOnly'">
                     <p-calendar
@@ -189,7 +191,8 @@
                       showSeconds="true"
                       dataType="string"
                       [timeOnly]="true"
-                    ></p-calendar>
+                      [hourFormat]="24"
+                    ></p-calendar><!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
                   </ng-container>
                   <ng-container *ngSwitchCase="'DateTime'">
                     <p-calendar
@@ -206,7 +209,8 @@
                       [style]="{ width: '100%' }"
                       [inputStyle]="{ width: '100%' }"
                       showTime="true"
-                      dateFormat="yy-mm-dd"
+                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
+                      [hourFormat]="col.hourFormat?col.hourFormat:24"
                     ></p-calendar>
                   </ng-container>
                   <ng-container *ngSwitchDefault>

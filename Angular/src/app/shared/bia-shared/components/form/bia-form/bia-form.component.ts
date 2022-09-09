@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   QueryList,
@@ -14,7 +15,9 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
+import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
@@ -25,7 +28,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
+export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   @Input() element: any = {};
   @Input() fields: PrimeTableColumn[];
   @Input() dictOptionDtos: DictOptionDto[];
@@ -36,9 +39,11 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
   // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
   form: FormGroup;
+  protected sub = new Subscription();
 
   constructor(
       public formBuilder: FormBuilder,
+      public biaTranslationService: BiaTranslationService
       // protected authService: AuthService
     ) {
     
@@ -46,6 +51,13 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
 
   ngOnInit() {
     this.initForm();
+    this.initFieldsConfiguration()
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
   ngAfterContentInit() {
     this.templates.forEach((item) => {
@@ -116,6 +128,37 @@ export class BiaFormComponent implements OnInit, OnChanges, AfterContentInit {
       this.save.emit(element);
       this.form.reset();
     }
+  }
+
+  protected initFieldsConfiguration() {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+      //this.fields = this.crudConfiguration.columns.map<PrimeTableColumn>(object => object.clone());
+ 
+      this.fields.forEach(field => {
+        switch (field.type)
+        {
+          case PropType.DateTime :
+            field.primeDateFormat = dateFormat.primeDateFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.Date :
+            field.primeDateFormat = dateFormat.primeDateFormat;
+            break;
+          case PropType.Time :
+            field.primeDateFormat = dateFormat.timeFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.TimeOnly :
+            field.primeDateFormat = dateFormat.timeFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.TimeSecOnly :
+            field.primeDateFormat = dateFormat.timeFormatSec;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+        }
+      });
+    }));
   }
 }
 

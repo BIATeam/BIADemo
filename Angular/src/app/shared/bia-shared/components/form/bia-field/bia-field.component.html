@@ -50,7 +50,7 @@
           placeholder="&nbsp;"
           showButtonBar="true"
           appendTo="body"
-          [dateFormat]="field.formatDate"
+          [dateFormat]="field.primeFormatDate"
           [inputStyle]="{'width':'100%'}"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
@@ -63,12 +63,12 @@
           showTime="true"
           showSeconds="false"
           timeOnly="true"
-          [dateFormat]="field.formatDate"
-          [hourFormat]="field.hourFormat"
+          [dateFormat]="field.primeFormatDate"
+          [hourFormat]="24"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"
           appendTo="body"
-        ></p-calendar>
+        ></p-calendar><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
         <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
       </span>
     </ng-container>
@@ -110,7 +110,7 @@
           biaLocale
           [formControlName]="field.field"
           showTime="true"
-          [dateFormat]="field.formatDate"
+          [dateFormat]="field.primeFormatDate"
           [hourFormat]="field.hourFormat"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"

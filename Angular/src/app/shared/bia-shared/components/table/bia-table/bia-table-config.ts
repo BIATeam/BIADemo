@@ -37,6 +37,7 @@ export class PrimeTableColumn {
   type: PropType;
   filterMode: PrimeNGFiltering;
   formatDate: string;
+  primeDateFormat: string;
   hourFormat: number;
   isSearchable: boolean;
   isSortable: boolean;

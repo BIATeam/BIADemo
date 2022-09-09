@@ -312,30 +312,37 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
   protected initTableConfiguration() {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-      this.tableConfiguration = {
+      let tableConfiguration = {
         columns: this.crudConfiguration.columns.map<PrimeTableColumn>(object => object.clone())}
  
-      this.tableConfiguration.columns.forEach(column => {
+      tableConfiguration.columns.forEach(column => {
         switch (column.type)
         {
           case PropType.DateTime :
             column.formatDate = dateFormat.dateTimeFormat;
+            column.primeDateFormat = dateFormat.primeDateFormat;
+            column.hourFormat = dateFormat.hourFormat;
             break;
           case PropType.Date :
             column.formatDate = dateFormat.dateFormat;
+            column.primeDateFormat = dateFormat.primeDateFormat;
             break;
           case PropType.Time :
             column.formatDate = dateFormat.timeFormat;
+            column.hourFormat = dateFormat.hourFormat;
             break;
           case PropType.TimeOnly :
             column.formatDate = dateFormat.timeFormat;
+            column.hourFormat = dateFormat.hourFormat;
             break;
           case PropType.TimeSecOnly :
             column.formatDate = dateFormat.timeFormatSec;
+            column.hourFormat = dateFormat.hourFormat;
             break;
         }
       });
       
+      this.tableConfiguration = tableConfiguration;
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
     }));
