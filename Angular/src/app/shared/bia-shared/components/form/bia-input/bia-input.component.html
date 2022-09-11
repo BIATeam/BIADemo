@@ -50,7 +50,7 @@
           placeholder="&nbsp;"
           showButtonBar="true"
           appendTo="body"
-          [dateFormat]="field.primeFormatDate"
+          [dateFormat]="field.primeDateFormat"
           [inputStyle]="{'width':'100%'}"
         ></p-calendar>
         <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
@@ -63,7 +63,7 @@
           showTime="true"
           showSeconds="false"
           timeOnly="true"
-          [dateFormat]="field.primeFormatDate"
+          [dateFormat]="field.primeDateFormat"
           [hourFormat]="24"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"
@@ -110,7 +110,7 @@
           biaLocale
           [formControlName]="field.field"
           showTime="true"
-          [dateFormat]="field.primeFormatDate"
+          [dateFormat]="field.primeDateFormat"
           [hourFormat]="field.hourFormat"
           placeholder="&nbsp;"
           [inputStyle]="{'width':'100%'}"
