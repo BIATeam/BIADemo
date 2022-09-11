@@ -27,7 +27,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   protected sub = new Subscription();
 
 
-  protected isInMultiSelect = false;
+  protected isInComplexInput = false;
 
   specificInputTemplate: TemplateRef<any>;
   
@@ -146,7 +146,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
 
   public onFocusout() {
     setTimeout(() => {
-      if (this.isInMultiSelect !== true &&
+      if (this.isInComplexInput !== true &&
         this.getParentComponent(document.activeElement, 'bia-calc-form') === null &&
         this.getParentComponent(document.activeElement, 'p-datepicker') === null
       ) {
@@ -155,13 +155,16 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
     }, 200);
   }
 
-  public onPanelShowMultiSelect() {
-    this.isInMultiSelect = true;
-  }
-
-  public onPanelHideMultiSelect() {
-    this.isInMultiSelect = false;
-    this.onFocusout();
+  public onComplexInput(isIn : boolean)
+  {
+    if (isIn) {
+      this.isInComplexInput = true;
+    }
+    else
+    {
+      this.isInComplexInput = false;
+      this.onFocusout();
+    }
   }
 
   public getParentComponent(el: Element | null, parentClassName: string): HTMLElement | null {

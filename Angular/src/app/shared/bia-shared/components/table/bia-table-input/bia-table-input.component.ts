@@ -31,6 +31,7 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() valueChange = new EventEmitter();
+  @Output() complexInput = new EventEmitter<boolean>();
   
   protected currentRow: HTMLElement;
   protected mandatoryFields: string[] = [];
@@ -111,6 +112,10 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
 
   public getOptionDto(key: string) {
     return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;
+  }
+
+  public onComplexInput(isIn : boolean) {
+    this.complexInput.emit(isIn);
   }
 
   private initFieldConfiguration() {

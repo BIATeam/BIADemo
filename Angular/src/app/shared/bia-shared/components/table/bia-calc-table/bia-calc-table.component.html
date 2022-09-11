@@ -87,6 +87,7 @@
                   [form]="form"
                   [dictOptionDtos]="dictOptionDtos"
                   (valueChange)="onChange()"
+                  (complexInput)="onComplexInput($event)"
                 >
                 <ng-template pTemplate="specificInput">
                   <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: col, form: form }" ></ng-container>
