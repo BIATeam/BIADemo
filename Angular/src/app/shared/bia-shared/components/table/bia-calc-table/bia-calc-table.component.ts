@@ -22,11 +22,8 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   public form: FormGroup;
   public element: any = {};
   public hasChanged = false;
-  protected mandatoryFields: string[] = [];
   protected currentRow: HTMLElement;
   protected sub = new Subscription();
-
-
   protected isInComplexInput = false;
 
   specificInputTemplate: TemplateRef<any>;
@@ -55,21 +52,9 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
 
   ngOnInit() {
     this.initForm();
-    this.fillMandatoryFields();
     this.addFooterEmptyObject();
   }
 
-  protected fillMandatoryFields() {
-    Object.keys(this.form.controls).forEach(key => {
-      if (this.form.controls[key]?.validator?.name === 'required') {
-        this.mandatoryFields.push(key);
-      }
-    });
-  }
-
-  public isRequired(field: string): boolean {
-    return this.mandatoryFields.includes(field);
-  }
 
   public getOptionDto(key: string) {
     return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;

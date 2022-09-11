@@ -7,7 +7,7 @@
           [form]="form"
           [dictOptionDtos]="dictOptionDtos"
         >
-        <ng-template pTemplate="specificInput" let-field="field" let-form="form">
+        <ng-template pTemplate="specificInput">
           <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
         </ng-template>
         </bia-input>

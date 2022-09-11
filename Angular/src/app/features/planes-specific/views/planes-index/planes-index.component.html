@@ -61,25 +61,25 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
     >
-      <ng-template pTemplate="specificOutput" let-field="field" let-rowData="rowData">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'isActive'">
-            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[field.field]?'green':'red')"></i>
+            <i class="pi pi-circle-fill" [style]="'color: ' + (data?'green':'red')"></i>
           </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="rowData[field.field] < 0">
+            <ng-container *ngIf="data < 0">
               - Negative -
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] === 0">
+            <ng-container *ngIf="data === 0">
               0 Empty 0
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] > 0 && rowData[field.field] < 10">
+            <ng-container *ngIf="data > 0 && data < 10">
               + Small +
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] >= 10 && rowData[field.field] < 100">
+            <ng-container *ngIf="data >= 10 && data < 100">
               ++ Medium ++
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] >= 100">
+            <ng-container *ngIf="data >= 100">
               +++ Large +++
             </ng-container>
           </ng-container> <!-- capacity -->
@@ -109,25 +109,25 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
     >
-      <ng-template pTemplate="specificOutput" let-field="field" let-rowData="rowData">
+      <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'isActive'">
-            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[field.field]?'green':'red')"></i>
+            <i class="pi pi-circle-fill" [style]="'color: ' + (data?'green':'red')"></i>
           </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="rowData[field.field] < 0">
+            <ng-container *ngIf="data < 0">
               - Negative -
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] === 0">
+            <ng-container *ngIf="data === 0">
               0 Empty 0
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] > 0 && rowData[field.field] < 10">
+            <ng-container *ngIf="data > 0 && data < 10">
               + Small +
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] >= 10 && rowData[field.field] < 100">
+            <ng-container *ngIf="data >= 10 && data < 100">
               ++ Medium ++
             </ng-container>
-            <ng-container *ngIf="rowData[field.field] >= 100">
+            <ng-container *ngIf="data >= 100">
               +++ Large +++
             </ng-container>
           </ng-container> <!-- capacity -->

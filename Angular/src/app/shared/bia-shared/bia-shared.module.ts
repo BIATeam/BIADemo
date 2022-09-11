@@ -119,6 +119,7 @@ import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
 import { BiaInputComponent } from './components/form/bia-input/bia-input.component';
 import { BiaTableInputComponent } from './components/table/bia-table-input/bia-table-input.component';
+import { BiaTableOutputComponent } from './components/table/bia-table-output/bia-table-output.component';
 
 const PRIMENG_MODULES = [
 //  AccordionModule,
@@ -194,6 +195,7 @@ const COMPONENTS = [
   BiaFormComponent,
   BiaInputComponent,
   BiaTableInputComponent,
+  BiaTableOutputComponent,
   BiaCalcTableComponent,
   BiaTableHeaderComponent,
   BiaTableControllerComponent,

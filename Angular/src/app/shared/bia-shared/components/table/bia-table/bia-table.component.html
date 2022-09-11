@@ -59,23 +59,14 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
-        <ng-container *ngIf="col !== undefined && col.specificOutput === true">
-          <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, rowData: rowData }" ></ng-container>
-        </ng-container>
-        <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined && col.specificOutput !== true">
-          <ng-container *ngSwitchCase="'OneToMany'">
-            {{ rowData[col.field]?.display }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'ManyToMany'">
-            {{ rowData[col.field] | pluck: 'display'| join: ', ' }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'Boolean'">
-            <i class="pi pi-check" *ngIf="getCellData(rowData, col) === true"></i>
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-              {{ getCellData(rowData, col) | formatValue: col }}
-          </ng-container>
-        </ng-container>
+        <bia-table-output
+        [field]="col"
+        [data]="getCellData(rowData, col)"
+        >
+          <ng-template pTemplate="specificOutput">
+            <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+          </ng-template>
+        </bia-table-output>
       </td>
     </tr>
   </ng-template>

@@ -96,17 +96,14 @@
               </ng-template>
               <ng-template #isNotEditable>
                 <ng-container *ngIf="isFooter(rowData) !== true">
-                  <ng-container [ngSwitch]="col.type">
-                    <ng-container *ngSwitchCase="'OneToMany'">
-                      {{ rowData[col.field]?.display }}
-                    </ng-container>
-                    <ng-container *ngSwitchCase="'ManyToMany'">
-                      {{ formatDisplayName(rowData[col.field]) }}
-                    </ng-container>
-                    <ng-container *ngSwitchDefault>
-                      {{ rowData[col.field] | formatValue: col }}
-                    </ng-container>
-                  </ng-container>
+                  <bia-table-output
+                  [field]="col"
+                  [data]="getCellData(rowData, col)"
+                  >
+                    <ng-template pTemplate="specificOutput">
+                      <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+                    </ng-template>
+                  </bia-table-output>
                 </ng-container>
               </ng-template>
             </ng-template>
@@ -116,23 +113,14 @@
                 <label *ngIf="col.isEditable === true">-</label>
               </ng-template>
               <ng-template #editRow>
-                <ng-container *ngIf="col.specificOutput === true">
-                  <ng-container *ngTemplateOutlet="specificOutputTemplate; context: { field: col, rowData: rowData }" ></ng-container>
-                </ng-container>
-                <ng-container [ngSwitch]="col.type" *ngIf="col.specificOutput !== true">
-                  <ng-container *ngSwitchCase="'OneToMany'">
-                    {{ rowData[col.field]?.display }}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'ManyToMany'">
-                    {{ formatDisplayName(rowData[col.field]) }}
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Boolean'">
-                    <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    {{ rowData[col.field] | formatValue: col }}
-                  </ng-container>
-                </ng-container>
+                <bia-table-output
+                [field]="col"
+                [data]="getCellData(rowData, col)"
+                >
+                  <ng-template pTemplate="specificOutput">
+                    <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+                  </ng-template>
+                </bia-table-output>
               </ng-template>
             </ng-template>
           </p-cellEditor>
