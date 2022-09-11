@@ -64,6 +64,8 @@ export class PrimeTableColumn {
     this.type = PropType.String;
     this.filterMode = PrimeNGFiltering.Contains;
     this.formatDate = '';
+    this.primeDateFormat = 'yy/mm/dd';
+    this.hourFormat = 12;
     this.isSearchable = true;
     this.isSortable = true;
     this.isEditable = true;
@@ -79,6 +81,8 @@ export class PrimeTableColumn {
       type : this.type,
       filterMode : this.filterMode,
       formatDate : this.formatDate,
+      primeDateFormat : this.primeDateFormat,
+      hourFormat : this.hourFormat,
       isSearchable : this.isSearchable,
       isSortable : this.isSortable,
       isEditable : this.isEditable,
