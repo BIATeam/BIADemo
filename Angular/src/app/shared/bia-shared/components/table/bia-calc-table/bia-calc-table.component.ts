@@ -26,7 +26,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
 
   protected sub = new Subscription();
 
-  protected currentRow: HTMLElement;
+
   protected isInMultiSelect = false;
 
   specificInputTemplate: TemplateRef<any>;
@@ -153,18 +153,6 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
         this.initEditableRow(null);
       }
     }, 200);
-  }
-
-  public onShowCalendar() {
-    this.currentRow = this.getParentComponent(document.activeElement, 'p-selectable-row') as HTMLElement;
-  }
-
-  public onBlurCalendar() {
-    this.currentRow?.focus();
-  }
-
-  public onCloseCalendar() {
-    this.currentRow?.focus();
   }
 
   public onPanelShowMultiSelect() {

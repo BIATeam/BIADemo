@@ -5,16 +5,16 @@
   (save)="onSave($event)"
   (cancel)="onCancel()"
 >
-  <ng-template pTemplate="specificInput" let-col="col" let-form="form">
+  <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
-      <ng-container [ngSwitch]="col.field">
+      <ng-container [ngSwitch]="field.field">
         <ng-container *ngSwitchCase="'isActive'">
-          <p-checkbox binary="true" [formControlName]="col.field" label="{{ col.header | translate }}"></p-checkbox>
+          <p-checkbox binary="true" [formControlName]="field.field" label="{{ field.header | translate }}"></p-checkbox>
         </ng-container> <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
           <span class="p-float-label">
-            <input [formControlName]="col.field" type="number" pInputText style="width: 100%;" />
-            <label><span class="bia-star-mandatory" *ngIf="col.isRequired">*</span>{{ col.header | translate }}</label>
+            <input [formControlName]="field.field" type="number" pInputText style="width: 100%;" />
+            <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
           </span>
         </ng-container> <!-- capacity -->
       </ng-container>

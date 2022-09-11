@@ -61,25 +61,25 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
     >
-      <ng-template pTemplate="specificOutput" let-col="col" let-rowData="rowData">
-        <ng-container [ngSwitch]="col.field">
+      <ng-template pTemplate="specificOutput" let-field="field" let-rowData="rowData">
+        <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'isActive'">
-            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
+            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[field.field]?'green':'red')"></i>
           </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="rowData[col.field] < 0">
+            <ng-container *ngIf="rowData[field.field] < 0">
               - Negative -
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] === 0">
+            <ng-container *ngIf="rowData[field.field] === 0">
               0 Empty 0
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] > 0 && rowData[col.field] < 10">
+            <ng-container *ngIf="rowData[field.field] > 0 && rowData[field.field] < 10">
               + Small +
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 10 && rowData[col.field] < 100">
+            <ng-container *ngIf="rowData[field.field] >= 10 && rowData[field.field] < 100">
               ++ Medium ++
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 100">
+            <ng-container *ngIf="rowData[field.field] >= 100">
               +++ Large +++
             </ng-container>
           </ng-container> <!-- capacity -->
@@ -109,38 +109,38 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
     >
-      <ng-template pTemplate="specificOutput" let-col="col" let-rowData="rowData">
-        <ng-container [ngSwitch]="col.field">
+      <ng-template pTemplate="specificOutput" let-field="field" let-rowData="rowData">
+        <ng-container [ngSwitch]="field.field">
           <ng-container *ngSwitchCase="'isActive'">
-            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[col.field]?'green':'red')"></i>
+            <i class="pi pi-circle-fill" [style]="'color: ' + (rowData[field.field]?'green':'red')"></i>
           </ng-container> <!-- isActive -->
           <ng-container *ngSwitchCase="'capacity'">
-            <ng-container *ngIf="rowData[col.field] < 0">
+            <ng-container *ngIf="rowData[field.field] < 0">
               - Negative -
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] === 0">
+            <ng-container *ngIf="rowData[field.field] === 0">
               0 Empty 0
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] > 0 && rowData[col.field] < 10">
+            <ng-container *ngIf="rowData[field.field] > 0 && rowData[field.field] < 10">
               + Small +
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 10 && rowData[col.field] < 100">
+            <ng-container *ngIf="rowData[field.field] >= 10 && rowData[field.field] < 100">
               ++ Medium ++
             </ng-container>
-            <ng-container *ngIf="rowData[col.field] >= 100">
+            <ng-container *ngIf="rowData[field.field] >= 100">
               +++ Large +++
             </ng-container>
           </ng-container> <!-- capacity -->
         </ng-container>
       </ng-template>
-      <ng-template pTemplate="specificInput" let-col="col" let-form="form">
+      <ng-template pTemplate="specificInput" let-field="field" let-form="form">
         <div [formGroup]="form">
-          <ng-container [ngSwitch]="col.field">
+          <ng-container [ngSwitch]="field.field">
             <ng-container *ngSwitchCase="'isActive'">
-              <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
+              <p-checkbox [binary]="true" [formControlName]="field.field" (onChange)="onChange()"></p-checkbox>
             </ng-container> <!-- isActive -->
             <ng-container *ngSwitchCase="'capacity'">
-              <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
+              <input pInputText type="number" [formControlName]="field.field" (change)="onChange()" />
             </ng-container> <!-- capacity -->
           </ng-container>
         </div>

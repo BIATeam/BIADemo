@@ -82,148 +82,16 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
-                <ng-container *ngIf="col.specificInput === true">
-                  <ng-container *ngTemplateOutlet="specificInputTemplate;context: { col: col, rowData: rowData, form: form }" ></ng-container>
-                </ng-container>
-                <ng-container [ngSwitch]="col.type" *ngIf="col.specificInput !== true">
-                  <ng-container *ngSwitchCase="'OneToMany'">
-                    <p-dropdown
-                      placeholder="&nbsp;"
-                      [formControlName]="col.field"
-                      [options]="getOptionDto(col.field)"
-                      optionLabel="display"
-                      dataKey="id"
-                      showClear="true"
-                      (onChange)="onChange()"
-                      appendTo="body"
-                      [style]="{ width: '100%' }"
-                    ></p-dropdown>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'ManyToMany'">
-                    <p-multiSelect
-                      defaultLabel="&nbsp;"
-                      [formControlName]="col.field"
-                      [options]="getOptionDto(col.field)"
-                      optionLabel="display"
-                      datakey="id"
-                      (onChange)="onChange()"
-                      (onPanelShow)="onPanelShowMultiSelect()"
-                      (onPanelHide)="onPanelHideMultiSelect()"
-                      appendTo="body"
-                      [style]="{ width: '100%' }"
-                    ></p-multiSelect>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Boolean'">
-                    <p-checkbox [binary]="true" [formControlName]="col.field" (onChange)="onChange()"></p-checkbox>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Number'">
-                    <input pInputText type="number" [formControlName]="col.field" (change)="onChange()" />
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Date'">
-                    <p-calendar
-                      biaLocale
-                      [formControlName]="col.field"
-                      placeholder="&nbsp;"
-                      [showButtonBar]="true"
-                      (onShow)="onShowCalendar()"
-                      (onSelect)="onChange()"
-                      (onBlur)="onBlurCalendar()"
-                      (onClose)="onCloseCalendar()"
-                      appendTo="body"
-                      readonlyInput="true"
-                      [style]="{ width: '100%' }"
-                      [inputStyle]="{ width: '100%' }"
-                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
-                    ></p-calendar>
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'Time'">
-                    <p-calendar
-                      biaLocale
-                      [formControlName]="col.field"
-                      placeholder="&nbsp;"
-                      (onShow)="onShowCalendar()"
-                      (onSelect)="onChange()"
-                      (onBlur)="onBlurCalendar()"
-                      (onClose)="onCloseCalendar()"
-                      appendTo="body"
-                      readonlyInput="true"
-                      [style]="{ width: '100%' }"
-                      [inputStyle]="{ width: '100%' }"
-                      showTime="true"
-                      [timeOnly]="true"
-                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
-                      [hourFormat]="24"
-                    ></p-calendar> <!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'TimeOnly'">
-                    <p-calendar
-                      biaLocale
-                      [formControlName]="col.field"
-                      placeholder="&nbsp;"
-                      (onShow)="onShowCalendar()"
-                      (onSelect)="onChange()"
-                      (onBlur)="onBlurCalendar()"
-                      (onClose)="onCloseCalendar()"
-                      appendTo="body"
-                      readonlyInput="true"
-                      [style]="{ width: '100%' }"
-                      [inputStyle]="{ width: '100%' }"
-                      showTime="true"
-                      dataType="string"
-                      [timeOnly]="true"
-                      [hourFormat]="24"
-                    ></p-calendar><!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'TimeSecOnly'">
-                    <p-calendar
-                      biaLocale
-                      [formControlName]="col.field"
-                      placeholder="&nbsp;"
-                      (onShow)="onShowCalendar()"
-                      (onSelect)="onChange()"
-                      (onBlur)="onBlurCalendar()"
-                      (onClose)="onCloseCalendar()"
-                      appendTo="body"
-                      readonlyInput="true"
-                      [style]="{ width: '100%' }"
-                      [inputStyle]="{ width: '100%' }"
-                      showTime="true"
-                      showSeconds="true"
-                      dataType="string"
-                      [timeOnly]="true"
-                      [hourFormat]="24"
-                    ></p-calendar><!-- [hourFormat]="col.hourFormat?col.hourFormat:24" not work for 12 (PrimeNG 13)-->
-                  </ng-container>
-                  <ng-container *ngSwitchCase="'DateTime'">
-                    <p-calendar
-                      biaLocale
-                      [formControlName]="col.field"
-                      placeholder="&nbsp;"
-                      [showButtonBar]="true"
-                      (onShow)="onShowCalendar()"
-                      (onSelect)="onChange()"
-                      (onBlur)="onBlurCalendar()"
-                      (onClose)="onCloseCalendar()"
-                      appendTo="body"
-                      readonlyInput="true"
-                      [style]="{ width: '100%' }"
-                      [inputStyle]="{ width: '100%' }"
-                      showTime="true"
-                      [dateFormat]="col.primeDateFormat?col.primeDateFormat:'yy-mm-dd'"
-                      [hourFormat]="col.hourFormat?col.hourFormat:24"
-                    ></p-calendar>
-                  </ng-container>
-                  <ng-container *ngSwitchDefault>
-                    <input
-                      pInputText
-                      type="text"
-                      [maxlength]="col.maxlength"
-                      [formControlName]="col.field"
-                      (change)="onChange()"
-                    />
-                  </ng-container>
-                </ng-container>
-                <span *ngIf="isRequired(col.field) === true" class="bia-star-mandatory">*</span>
+                  <bia-table-input
+                  [field]="col"
+                  [form]="form"
+                  [dictOptionDtos]="dictOptionDtos"
+                  (valueChange)="onChange()"
+                >
+                <ng-template pTemplate="specificInput">
+                  <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: col, form: form }" ></ng-container>
+                </ng-template>
+                </bia-table-input>
               </ng-template>
               <ng-template #isNotEditable>
                 <ng-container *ngIf="isFooter(rowData) !== true">
@@ -248,7 +116,7 @@
               </ng-template>
               <ng-template #editRow>
                 <ng-container *ngIf="col.specificOutput === true">
-                  <ng-container *ngTemplateOutlet="specificOutputTemplate; context: { col: col, rowData: rowData }" ></ng-container>
+                  <ng-container *ngTemplateOutlet="specificOutputTemplate; context: { field: col, rowData: rowData }" ></ng-container>
                 </ng-container>
                 <ng-container [ngSwitch]="col.type" *ngIf="col.specificOutput !== true">
                   <ng-container *ngSwitchCase="'OneToMany'">

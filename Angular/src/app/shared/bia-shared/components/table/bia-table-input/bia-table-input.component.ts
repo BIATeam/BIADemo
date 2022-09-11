@@ -3,9 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   QueryList,
   TemplateRef
 } from '@angular/core';
@@ -17,16 +19,21 @@ import { PrimeTableColumn, PropType} from 'src/app/shared/bia-shared/components/
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
-  selector: 'bia-input',
-  templateUrl: './bia-input.component.html',
-  styleUrls: ['./bia-input.component.scss'],
+  selector: 'bia-table-input',
+  templateUrl: './bia-table-input.component.html',
+  styleUrls: ['./bia-table-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
+export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() field: PrimeTableColumn;
   @Input() form: FormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
+
+  @Output() valueChange = new EventEmitter();
+  
+  protected currentRow: HTMLElement;
+  protected mandatoryFields: string[] = [];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
@@ -59,6 +66,47 @@ export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
           break;
         }
     });
+  }
+
+  public onChange() {
+    this.valueChange.emit();
+  }
+
+  protected fillMandatoryFields() {
+    Object.keys(this.form.controls).forEach(key => {
+      if (this.form.controls[key]?.validator?.name === 'required') {
+        this.mandatoryFields.push(key);
+      }
+    });
+  }
+
+  public onShowCalendar() {
+    this.currentRow = this.getParentComponent(document.activeElement, 'p-selectable-row') as HTMLElement;
+  }
+
+  public onBlurCalendar() {
+    this.currentRow?.focus();
+  }
+
+  public getParentComponent(el: Element | null, parentClassName: string): HTMLElement | null {
+    if (el) {
+      while (el.parentElement) {
+        if (el.parentElement.classList.contains(parentClassName)) {
+          return el.parentElement;
+        } else {
+          el = el.parentElement;
+        }
+      }
+    }
+    return null;
+  }
+
+  public onCloseCalendar() {
+    this.currentRow?.focus();
+  }
+
+  public isRequired(field: string): boolean {
+    return this.mandatoryFields.includes(field);
   }
 
   public getOptionDto(key: string) {

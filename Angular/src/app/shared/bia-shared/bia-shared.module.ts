@@ -118,6 +118,7 @@ import { HangfireContainerComponent } from './components/hangfire-container/hang
 import { SafeUrlPipe } from './pipes/safe-url.pipe';
 import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
 import { BiaInputComponent } from './components/form/bia-input/bia-input.component';
+import { BiaTableInputComponent } from './components/table/bia-table-input/bia-table-input.component';
 
 const PRIMENG_MODULES = [
 //  AccordionModule,
@@ -192,6 +193,7 @@ const COMPONENTS = [
   BiaTableComponent,
   BiaFormComponent,
   BiaInputComponent,
+  BiaTableInputComponent,
   BiaCalcTableComponent,
   BiaTableHeaderComponent,
   BiaTableControllerComponent,

@@ -60,7 +60,7 @@
       </td>
       <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
         <ng-container *ngIf="col !== undefined && col.specificOutput === true">
-          <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { col: col, rowData: rowData }" ></ng-container>
+          <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, rowData: rowData }" ></ng-container>
         </ng-container>
         <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined && col.specificOutput !== true">
           <ng-container *ngSwitchCase="'OneToMany'">
