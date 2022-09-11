@@ -239,6 +239,12 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
+  onComplexInput(isIn: boolean) {
+    if (this.crudConfiguration.useCalcMode) {
+      this.crudItemTableComponent.onComplexInput(isIn);
+    }
+  }
+
   onSave(crudItem: CrudItem) {
     if (this.crudConfiguration.useCalcMode) {
       if (crudItem.id > 0) {
