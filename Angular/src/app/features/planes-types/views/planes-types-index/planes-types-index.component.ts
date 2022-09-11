@@ -13,10 +13,10 @@ import { LazyLoadEvent } from 'primeng/api';
 import { PlaneType } from '../../model/plane-type';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -48,7 +48,7 @@ export class PlanesTypesIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -120,7 +120,7 @@ export class PlanesTypesIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeTypeListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.planeTypeListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.planeTypeListComponent.getLazyLoadMetadata() };
     this.planeTypeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planesTypes') + '.csv');
@@ -137,8 +137,8 @@ export class PlanesTypesIndexComponent implements OnInit, OnDestroy {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'planeType.title'),
-          Object.assign(new PrimeTableColumn('certificationDate', 'planeType.certificationDate'), {
+          new BiaFieldConfig('title', 'planeType.title'),
+          Object.assign(new BiaFieldConfig('certificationDate', 'planeType.certificationDate'), {
             type: PropType.Date,
             formatDate: dateFormat.dateTimeFormat
           })

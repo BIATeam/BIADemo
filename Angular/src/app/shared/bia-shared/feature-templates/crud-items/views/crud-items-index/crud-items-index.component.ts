@@ -4,10 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
@@ -56,7 +56,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig = { columns : []};
+  tableConfiguration: BiaFieldsConfig = { columns : []};
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -295,7 +295,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.crudItemListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.crudItemListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
@@ -313,7 +313,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   protected initTableConfiguration() {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       let tableConfiguration = {
-        columns: this.crudConfiguration.columns.map<PrimeTableColumn>(object => object.clone())}
+        columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}
  
       tableConfiguration.columns.forEach(column => {
         switch (column.type)

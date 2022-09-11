@@ -1,4 +1,4 @@
-import { PrimeNGFiltering, PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { PrimeNGFiltering, BiaFieldConfig, PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -22,36 +22,36 @@ export const PlaneCRUDConfiguration : CrudConfig = new CrudConfig(
   {
     featureName: featureName,
     columns: [
-      Object.assign(new PrimeTableColumn('msn', 'plane.msn'), {
+      Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
         isRequired: true,
       }),
-      Object.assign(new PrimeTableColumn('isActive', 'plane.isActive'), {
+      Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
         isSearchable: false,
         isSortable: false,
         specificOutput: true,
         specificInput:true,
         type: PropType.Boolean,
       }),
-      Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
+      Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
         type: PropType.DateTime,
       }),
-      Object.assign(new PrimeTableColumn('deliveryDate', 'plane.deliveryDate'), {
+      Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
         type: PropType.Date,
       }),
-      Object.assign(new PrimeTableColumn('syncTime', 'plane.syncTime'), {
+      Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
         type: PropType.TimeSecOnly,
       }),
-      Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
+      Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
         type: PropType.Number,
         filterMode: PrimeNGFiltering.Equals,
         specificOutput: true,
         specificInput:true,
         isRequired: true,
       }),
-      Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
+      Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
         type: PropType.OneToMany,
       }),
-      Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
+      Object.assign(new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'), {
         type: PropType.ManyToMany,
       })
     ],

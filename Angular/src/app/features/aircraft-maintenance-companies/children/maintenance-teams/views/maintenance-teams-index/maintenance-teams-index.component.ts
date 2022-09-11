@@ -7,9 +7,9 @@ import { LazyLoadEvent } from 'primeng/api';
 import { MaintenanceTeam } from '../../model/maintenance-team';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+  BiaFieldsConfig,
+  BiaFieldConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -66,7 +66,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
   canDetail = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -218,7 +218,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.maintenanceTeamListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.maintenanceTeamListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.maintenanceTeamListComponent.getLazyLoadMetadata()
     };
@@ -238,7 +238,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'maintenanceTeam.title'),
+          new BiaFieldConfig('title', 'maintenanceTeam.title'),
         ]
       };
 

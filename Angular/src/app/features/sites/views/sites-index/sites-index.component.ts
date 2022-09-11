@@ -7,7 +7,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { map } from 'rxjs/operators';
 import { SiteInfo } from '../../model/site/site-info';
 import { SiteMember } from '../../model/site/site-member';
-import { BiaListConfig, PrimeTableColumn } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { BiaFieldsConfig, BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, DEFAULT_VIEW } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -49,7 +49,7 @@ export class SitesIndexComponent implements OnInit {
   canDelete = false;
   canAdd = false;
   canManageMembers = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -179,8 +179,8 @@ export class SitesIndexComponent implements OnInit {
   private initTableConfiguration() {
     this.tableConfiguration = {
       columns: [
-        new PrimeTableColumn('title', 'site.title'),
-        Object.assign(new PrimeTableColumn('siteAdmin', 'site.admins'), {
+        new BiaFieldConfig('title', 'site.title'),
+        Object.assign(new BiaFieldConfig('siteAdmin', 'site.admins'), {
         })
       ]
     };

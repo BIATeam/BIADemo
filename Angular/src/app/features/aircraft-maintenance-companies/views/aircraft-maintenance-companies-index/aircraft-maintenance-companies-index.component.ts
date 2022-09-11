@@ -7,9 +7,9 @@ import { LazyLoadEvent } from 'primeng/api';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+  BiaFieldsConfig,
+  BiaFieldConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -63,7 +63,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
   canDetail = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -219,7 +219,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.aircraftMaintenanceCompanyListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.aircraftMaintenanceCompanyListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.aircraftMaintenanceCompanyListComponent.getLazyLoadMetadata()
     };
@@ -239,7 +239,7 @@ export class AircraftMaintenanceCompaniesIndexComponent implements OnInit, OnDes
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'aircraftMaintenanceCompany.title'),
+          new BiaFieldConfig('title', 'aircraftMaintenanceCompany.title'),
         ]
       };
 

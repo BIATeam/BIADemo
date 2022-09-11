@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild, Output, EventEmitter, OnChanges, SimpleChanges, ContentChildren, QueryList, TemplateRef, AfterContentInit } from '@angular/core';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, PrimeTemplate, TableState } from 'primeng/api';
-import { BiaListConfig, PropType, PrimeTableColumn } from './bia-table-config';
+import { BiaFieldsConfig, PropType, BiaFieldConfig } from '../../../model/bia-field-config';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { DEFAULT_VIEW, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
 import { KeyValuePair } from '../../../model/key-value-pair';
@@ -28,7 +28,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() columnToDisplays: KeyValuePair[];
   @Input() sortFieldValue = '';
   @Input() sortOrderValue = 1;
-  @Input() configuration: BiaListConfig;
+  @Input() configuration: BiaFieldsConfig;
   @Input() showColSearch = false;
   @Input() globalSearchValue = '';
   @Input() canClickRow = true;
@@ -65,7 +65,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  displayedColumns: PrimeTableColumn[];
+  displayedColumns: BiaFieldConfig[];
   showLoading$: Observable<any>;
 
   protected defaultSortField: string;
@@ -156,7 +156,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   protected updateDisplayedColumns(saveTableState: boolean) {
     //setTimeout(() =>{
-      const columns: PrimeTableColumn[] = this.getColumns();
+      const columns: BiaFieldConfig[] = this.getColumns();
       let displayedColumns;
       if (this.columnToDisplays) {
         displayedColumns = columns.filter(
@@ -213,9 +213,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     //this.table.onStateSave.emit(state);
 }
 
-  protected getColumns(): PrimeTableColumn[] {
+  protected getColumns(): BiaFieldConfig[] {
     const tableState: TableState | null = this.getTableState();
-    let columns: PrimeTableColumn[] = [];
+    let columns: BiaFieldConfig[] = [];
     let columnOrder: string[] = [];
     if (tableState && tableState.columnOrder) {
       columnOrder = tableState.columnOrder;
@@ -227,7 +227,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
       // The primeTableColumns are sorted by columnOrder.
       columnOrder.forEach(colName => {
-        const column: PrimeTableColumn = this.configuration.columns.filter((col) => col.field === colName)[0];
+        const column: BiaFieldConfig = this.configuration.columns.filter((col) => col.field === colName)[0];
         columns.push(column);
       });
 

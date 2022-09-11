@@ -7,9 +7,9 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Airport } from '../../model/airport';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+  BiaFieldsConfig,
+  BiaFieldConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -49,7 +49,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -166,7 +166,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.airportListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.airportListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.airportListComponent.getLazyLoadMetadata() };
     this.airportDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.airports') + '.csv');
@@ -183,8 +183,8 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('name', 'airport.name'),
-          new PrimeTableColumn('city', 'airport.city')
+          new BiaFieldConfig('name', 'airport.name'),
+          new BiaFieldConfig('city', 'airport.city')
         ]
       };
 

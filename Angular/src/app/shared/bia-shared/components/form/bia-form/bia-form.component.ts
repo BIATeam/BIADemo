@@ -17,7 +17,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { PrimeTableColumn, PropType } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { BiaFieldConfig, PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
@@ -29,7 +29,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 
 export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   @Input() element: any = {};
-  @Input() fields: PrimeTableColumn[];
+  @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter();

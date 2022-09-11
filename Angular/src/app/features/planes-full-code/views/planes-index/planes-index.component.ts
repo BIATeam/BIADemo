@@ -7,11 +7,11 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Plane } from '../../model/plane';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType,
   PrimeNGFiltering
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -64,7 +64,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -207,7 +207,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeListComponent.getPrimeNgTable().columns.map((x: PrimeTableColumn) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.planeListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
     };
@@ -226,32 +226,32 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('msn', 'plane.msn'),
-          Object.assign(new PrimeTableColumn('isActive', 'plane.isActive'), {
+          new BiaFieldConfig('msn', 'plane.msn'),
+          Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
             isSearchable: false,
             isSortable: false,
             type: PropType.Boolean
           }),
-          Object.assign(new PrimeTableColumn('lastFlightDate', 'plane.lastFlightDate'), {
+          Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
             type: PropType.DateTime,
             formatDate: dateFormat.dateTimeFormat
           }),
-          Object.assign(new PrimeTableColumn('deliveryDate', 'plane.deliveryDate'), {
+          Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
             type: PropType.Date,
             formatDate: dateFormat.dateFormat
           }),
-          Object.assign(new PrimeTableColumn('syncTime', 'plane.syncTime'), {
+          Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
             type: PropType.TimeSecOnly,
             formatDate: dateFormat.timeFormatSec
           }),
-          Object.assign(new PrimeTableColumn('capacity', 'plane.capacity'), {
+          Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
             type: PropType.Number,
             filterMode: PrimeNGFiltering.Equals
           }),
-          Object.assign(new PrimeTableColumn('planeType', 'plane.planeType'), {
+          Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
             type: PropType.OneToMany
           }),
-          Object.assign(new PrimeTableColumn('connectingAirports', 'plane.connectingAirports'), {
+          Object.assign(new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'), {
             type: PropType.ManyToMany
           })
         ]

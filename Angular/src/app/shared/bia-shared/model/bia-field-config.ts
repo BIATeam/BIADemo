@@ -24,14 +24,7 @@ export enum PropType {
   ManyToMany = 'ManyToMany'
 }
 
-export interface CustomButton {
-  classValue: string;
-  numEvent: number;
-  pTooltipValue: string;
-  permission: string;
-}
-
-export class PrimeTableColumn {
+export class BiaFieldConfig {
   field: string;
   header: string;
   type: PropType;
@@ -75,9 +68,9 @@ export class PrimeTableColumn {
     this.specificInput = false;
   }
   
-  public clone() : PrimeTableColumn
+  public clone() : BiaFieldConfig
   {
-    return Object.assign(new PrimeTableColumn(this.field,this.header,this.maxlength), {
+    return Object.assign(new BiaFieldConfig(this.field,this.header,this.maxlength), {
       type : this.type,
       filterMode : this.filterMode,
       formatDate : this.formatDate,
@@ -95,6 +88,6 @@ export class PrimeTableColumn {
   }
 }
 
-export interface BiaListConfig {
-  columns: PrimeTableColumn[];
+export interface BiaFieldsConfig {
+  columns: BiaFieldConfig[];
 }

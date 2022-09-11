@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { PrimeTableColumn, PropType} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { BiaFieldConfig, PropType} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
@@ -24,7 +24,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 })
 
 export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
-  @Input() field: PrimeTableColumn;
+  @Input() field: BiaFieldConfig;
   @Input() form: FormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 

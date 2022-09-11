@@ -5,7 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { PrimeTableColumn } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
@@ -18,7 +18,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 export class CrudItemFormComponent<CrudItem extends BaseDto>  {
   @Input() crudItem: CrudItem = <CrudItem>{};
-  @Input() fields: PrimeTableColumn[];
+  @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<CrudItem>();

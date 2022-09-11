@@ -1,5 +1,5 @@
 import { TeamTypeId } from "src/app/shared/constants";
-import { PrimeTableColumn } from "../../../components/table/bia-table/bia-table-config";
+import { BiaFieldConfig } from "../../../model/bia-field-config";
 
 
 export class CrudConfig {
@@ -12,7 +12,7 @@ export class CrudConfig {
   useViewTeamWithTypeId: TeamTypeId;
   usePopup: boolean;
   useOfflineMode: boolean;
-  columns: PrimeTableColumn[];
+  columns: BiaFieldConfig[];
 
   constructor({featureName,
     columns,
@@ -27,7 +27,7 @@ export class CrudConfig {
     } :
     {
       featureName: string,
-      columns: PrimeTableColumn[],
+      columns: BiaFieldConfig[],
       storeKey?: string,
       useCalcMode?: boolean,
       useSignalR?: boolean,
