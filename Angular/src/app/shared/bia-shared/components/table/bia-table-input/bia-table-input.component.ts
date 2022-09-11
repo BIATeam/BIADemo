@@ -92,29 +92,30 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
     )
     {
       this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-        //this.fields = this.crudConfiguration.columns.map<PrimeTableColumn>(object => object.clone())
-          switch (this.field.type)
-          {
-            case PropType.DateTime :
-              this.field.primeDateFormat = dateFormat.primeDateFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.Date :
-              this.field.primeDateFormat = dateFormat.primeDateFormat;
-              break;
-            case PropType.Time :
-              this.field.primeDateFormat = dateFormat.timeFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.TimeOnly :
-              this.field.primeDateFormat = dateFormat.timeFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.TimeSecOnly :
-              //this.field.primeDateFormat = dateFormat.timeFormatSec;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-          }
+        let field = this.field.clone();
+        switch (field.type)
+        {
+          case PropType.DateTime :
+            field.primeDateFormat = dateFormat.primeDateFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.Date :
+            field.primeDateFormat = dateFormat.primeDateFormat;
+            break;
+          case PropType.Time :
+            field.primeDateFormat = dateFormat.timeFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.TimeOnly :
+            field.primeDateFormat = dateFormat.timeFormat;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+          case PropType.TimeSecOnly :
+            field.primeDateFormat = dateFormat.timeFormatSec;
+            field.hourFormat = dateFormat.hourFormat;
+            break;
+        }
+        this.field = field;
       }));
     }
 

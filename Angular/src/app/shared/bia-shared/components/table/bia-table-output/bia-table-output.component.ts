@@ -67,28 +67,26 @@ export class BiaTableOutputComponent implements OnInit, OnDestroy, AfterContentI
     )
     {
       this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-          switch (this.field.type)
-          {
-            case PropType.DateTime :
-              this.field.primeDateFormat = dateFormat.primeDateFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.Date :
-              this.field.primeDateFormat = dateFormat.primeDateFormat;
-              break;
-            case PropType.Time :
-              this.field.primeDateFormat = dateFormat.timeFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.TimeOnly :
-              this.field.primeDateFormat = dateFormat.timeFormat;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-            case PropType.TimeSecOnly :
-              //this.field.primeDateFormat = dateFormat.timeFormatSec;
-              this.field.hourFormat = dateFormat.hourFormat;
-              break;
-          }
+        let field = this.field.clone();
+        switch (field.type)
+        {
+          case PropType.DateTime :
+            field.formatDate = dateFormat.dateTimeFormat;
+            break;
+          case PropType.Date :
+            field.formatDate = dateFormat.dateFormat;
+            break;
+          case PropType.Time :
+            field.formatDate = dateFormat.timeFormat;
+            break;
+          case PropType.TimeOnly :
+            field.formatDate = dateFormat.timeFormat;
+            break;
+          case PropType.TimeSecOnly :
+            field.formatDate = dateFormat.timeFormatSec;
+            break;
+        }
+        this.field = field;
       }));
     }
   }

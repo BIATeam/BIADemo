@@ -4,9 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaFieldsConfig,
   BiaFieldConfig,
-  PropType
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
@@ -56,7 +54,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaFieldsConfig = { columns : []};
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -317,40 +314,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.canAdd = true;
   }
   protected initTableConfiguration() {
-    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-      let tableConfiguration = {
-        columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}
- 
-      tableConfiguration.columns.forEach(column => {
-        switch (column.type)
-        {
-          case PropType.DateTime :
-            column.formatDate = dateFormat.dateTimeFormat;
-            column.primeDateFormat = dateFormat.primeDateFormat;
-            column.hourFormat = dateFormat.hourFormat;
-            break;
-          case PropType.Date :
-            column.formatDate = dateFormat.dateFormat;
-            column.primeDateFormat = dateFormat.primeDateFormat;
-            break;
-          case PropType.Time :
-            column.formatDate = dateFormat.timeFormat;
-            column.hourFormat = dateFormat.hourFormat;
-            break;
-          case PropType.TimeOnly :
-            column.formatDate = dateFormat.timeFormat;
-            column.hourFormat = dateFormat.hourFormat;
-            break;
-          case PropType.TimeSecOnly :
-            column.formatDate = dateFormat.timeFormatSec;
-            column.hourFormat = dateFormat.hourFormat;
-            break;
-        }
-      });
-      
-      this.tableConfiguration = tableConfiguration;
-      this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
+    //this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+      /*let tableConfiguration = {
+        columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}*/
+      this.columns = this.crudConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    }));
+    //}));
   }
 }
