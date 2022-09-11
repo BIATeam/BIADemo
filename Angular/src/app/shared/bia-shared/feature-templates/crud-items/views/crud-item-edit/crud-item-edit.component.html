@@ -1,6 +1,6 @@
 <bia-crud-item-form 
     [crudItem]="crudItemService.crudItem$ | async" 
-    [fields]="crudConfiguration.columns"
+    [fields]="crudConfiguration.fieldsConfig.columns"
     [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"

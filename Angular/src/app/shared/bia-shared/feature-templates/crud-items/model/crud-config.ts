@@ -1,5 +1,5 @@
 import { TeamTypeId } from "src/app/shared/constants";
-import { BiaFieldConfig } from "../../../model/bia-field-config";
+import { BiaFieldsConfig } from "../../../model/bia-field-config";
 
 
 export class CrudConfig {
@@ -12,10 +12,10 @@ export class CrudConfig {
   useViewTeamWithTypeId: TeamTypeId;
   usePopup: boolean;
   useOfflineMode: boolean;
-  columns: BiaFieldConfig[];
+  fieldsConfig: BiaFieldsConfig;
 
   constructor({featureName,
-    columns,
+    fieldsConfig,
     storeKey = 'feature-' + featureName,
     useCalcMode = false,
     useSignalR = false,
@@ -27,7 +27,7 @@ export class CrudConfig {
     } :
     {
       featureName: string,
-      columns: BiaFieldConfig[],
+      fieldsConfig: BiaFieldsConfig,
       storeKey?: string,
       useCalcMode?: boolean,
       useSignalR?: boolean,
@@ -47,6 +47,6 @@ export class CrudConfig {
     this.useViewTeamWithTypeId = useViewTeamWithTypeId;
     this.usePopup = usePopup;
     this.useOfflineMode = useOfflineMode;
-    this.columns = columns;
+    this.fieldsConfig = fieldsConfig;
   }
 }

@@ -317,7 +317,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     //this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       /*let tableConfiguration = {
         columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}*/
-      this.columns = this.crudConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
+      this.columns = this.crudConfiguration.fieldsConfig.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
     //}));
   }

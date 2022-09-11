@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, OnChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -7,7 +7,6 @@ import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.serv
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudConfig } from '../../model/crud-config';
 
 @Component({
   selector: 'bia-crud-item-table',
@@ -15,8 +14,6 @@ import { CrudConfig } from '../../model/crud-config';
   styleUrls: ['../../../../components/table/bia-calc-table/bia-calc-table.component.scss']
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTableComponent implements OnChanges {
-  @Input() crudConfiguration : CrudConfig;
-
   constructor(
     public formBuilder: FormBuilder,
     public authService: AuthService,
@@ -31,7 +28,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
   }
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
-      for (let col of this.crudConfiguration.columns) {
+      for (let col of this.configuration.columns) {
         if (col.isRequired)
         {
           fields[col.field] = [this.element[col.field as keyof CrudItem], Validators.required];
@@ -48,7 +45,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.id = crudItem.id > 0 ? crudItem.id : 0;
-      for (let col of this.crudConfiguration.columns) {
+      for (let col of this.configuration.columns) {
         switch(col.type)
         {
           case PropType.Boolean:
