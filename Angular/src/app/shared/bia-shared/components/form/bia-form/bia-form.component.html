@@ -2,7 +2,7 @@
   <ng-container *ngFor="let field of fields">
     <div fxLayout="row" fxLayoutAlign="center">
       <div class="app-field-container" fxFlex="90">
-        <bia-field
+        <bia-input
           [field]="field"
           [form]="form"
           [dictOptionDtos]="dictOptionDtos"
@@ -10,7 +10,7 @@
         <ng-template pTemplate="specificInput" let-field="field" let-form="form">
           <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
         </ng-template>
-        </bia-field>
+        </bia-input>
       </div>
     </div>
   </ng-container>

@@ -13,13 +13,13 @@ import { PrimeTableColumn} from 'src/app/shared/bia-shared/components/table/bia-
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
-  selector: 'bia-field',
-  templateUrl: './bia-field.component.html',
-  styleUrls: ['./bia-field.component.scss'],
+  selector: 'bia-input',
+  templateUrl: './bia-input.component.html',
+  styleUrls: ['./bia-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 
-export class BiaFieldComponent implements AfterContentInit {
+export class BiaInputComponent implements AfterContentInit {
   @Input() field: PrimeTableColumn;
   @Input() form: FormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
