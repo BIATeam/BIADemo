@@ -23,7 +23,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   public element: any = {};
   public hasChanged = false;
   protected mandatoryFields: string[] = [];
-
+  protected currentRow: HTMLElement;
   protected sub = new Subscription();
 
 
@@ -147,8 +147,8 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   public onFocusout() {
     setTimeout(() => {
       if (this.isInComplexInput !== true &&
-        this.getParentComponent(document.activeElement, 'bia-calc-form') === null &&
-        this.getParentComponent(document.activeElement, 'p-datepicker') === null
+        this.getParentComponent(document.activeElement, 'bia-calc-form') === null /*&&
+        this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
       ) {
         this.initEditableRow(null);
       }
@@ -159,10 +159,12 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   {
     if (isIn) {
       this.isInComplexInput = true;
+      this.currentRow = this.getParentComponent(document.activeElement, 'p-selectable-row') as HTMLElement;
     }
     else
     {
       this.isInComplexInput = false;
+      this.currentRow?.focus();
       this.onFocusout();
     }
   }

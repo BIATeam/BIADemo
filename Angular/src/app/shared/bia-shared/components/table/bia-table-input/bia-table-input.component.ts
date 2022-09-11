@@ -33,7 +33,6 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
   @Output() valueChange = new EventEmitter();
   @Output() complexInput = new EventEmitter<boolean>();
   
-  protected currentRow: HTMLElement;
   protected mandatoryFields: string[] = [];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
@@ -79,31 +78,6 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
         this.mandatoryFields.push(key);
       }
     });
-  }
-
-  public onShowCalendar() {
-    this.currentRow = this.getParentComponent(document.activeElement, 'p-selectable-row') as HTMLElement;
-  }
-
-  public onBlurCalendar() {
-    this.currentRow?.focus();
-  }
-
-  public getParentComponent(el: Element | null, parentClassName: string): HTMLElement | null {
-    if (el) {
-      while (el.parentElement) {
-        if (el.parentElement.classList.contains(parentClassName)) {
-          return el.parentElement;
-        } else {
-          el = el.parentElement;
-        }
-      }
-    }
-    return null;
-  }
-
-  public onCloseCalendar() {
-    this.currentRow?.focus();
   }
 
   public isRequired(field: string): boolean {
