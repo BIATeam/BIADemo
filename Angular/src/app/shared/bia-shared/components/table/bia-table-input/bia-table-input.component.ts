@@ -32,8 +32,6 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
 
   @Output() valueChange = new EventEmitter();
   @Output() complexInput = new EventEmitter<boolean>();
-  
-  protected mandatoryFields: string[] = [];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
@@ -47,7 +45,7 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
     
   }
   ngOnInit() {
-    this.initFieldConfiguration()
+    this.initFieldConfiguration();
   }
 
   ngOnDestroy() {
@@ -70,18 +68,6 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
 
   public onChange() {
     this.valueChange.emit();
-  }
-
-  protected fillMandatoryFields() {
-    Object.keys(this.form.controls).forEach(key => {
-      if (this.form.controls[key]?.validator?.name === 'required') {
-        this.mandatoryFields.push(key);
-      }
-    });
-  }
-
-  public isRequired(field: string): boolean {
-    return this.mandatoryFields.includes(field);
   }
 
   public getOptionDto(key: string) {
