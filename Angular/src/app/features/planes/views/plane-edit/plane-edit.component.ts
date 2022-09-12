@@ -1,5 +1,6 @@
 import { Component, Injector } from '@angular/core';
-import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
+import { Plane } from '../../model/plane';
+import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { PlaneService } from '../../services/plane.service';
 

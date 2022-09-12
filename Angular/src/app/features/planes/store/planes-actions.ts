@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
-import { Plane, PlaneCRUDConfiguration } from '../model/plane';
+import { Plane } from '../model/plane';
+import { PlaneCRUDConfiguration } from '../plane.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 
 export namespace FeaturePlanesActions

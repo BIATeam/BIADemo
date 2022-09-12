@@ -1,8 +1,6 @@
 import { PrimeNGFiltering, BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { featureName, useCalcMode, useOfflineMode, usePopup, useSignalR, useView, useViewTeamWithTypeId } from '../plane.constants';
 
 // TODO after CRUD creation : adapt the model
 export interface Plane extends BaseDto {
@@ -51,21 +49,3 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
     })
   ]
 }
-
-// TODO after CRUD creation : adapt the global configuration
-export const PlaneCRUDConfiguration : CrudConfig = new CrudConfig(
-  {
-    fieldsConfig: PlaneFieldsConfiguration,
-    featureName: featureName,
-    useCalcMode: useCalcMode,
-    useSignalR: useSignalR,
-    useView: useView,
-    useViewTeamWithTypeId: useViewTeamWithTypeId,
-    usePopup: usePopup,
-    useOfflineMode: useOfflineMode,
-    // IMPORTANT: this key should be unique in all the application.
-    // storeKey: 'feature-' + featureName,
-    // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
-    // tableStateKey: featureName + 'Grid',
-  }
-)

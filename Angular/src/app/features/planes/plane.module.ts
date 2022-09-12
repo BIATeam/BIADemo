@@ -19,7 +19,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
-import { PlaneCRUDConfiguration } from './model/plane';
+import { PlaneCRUDConfiguration } from './plane.constants';
 
 export let ROUTES: Routes = [
   {

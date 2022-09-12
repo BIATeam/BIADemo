@@ -1,6 +1,6 @@
 import * as fromPlanes from './planes-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-import { PlaneCRUDConfiguration } from '../model/plane';
+import { PlaneCRUDConfiguration } from '../plane.constants';
 
 export namespace FeaturePlanesStore
 {

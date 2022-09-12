@@ -1,5 +1,6 @@
 import { Component, Injector, ViewChild } from '@angular/core';
-import { Plane, PlaneCRUDConfiguration } from '../../model/plane';
+import { Plane } from '../../model/plane';
+import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
