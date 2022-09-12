@@ -2,28 +2,18 @@ import { CrudConfig } from "src/app/shared/bia-shared/feature-templates/crud-ite
 import { TeamTypeId } from "src/app/shared/constants";
 import { PlaneFieldsConfiguration } from "./model/plane";
 
-// IMPORTANT: this key should be unique in all the application.
-export const featureName: string = 'planes';
-
-// TODO after CRUD creation : adapt the default values:
-export const useCalcMode = false;
-export const useSignalR = false;
-export const useView = false;
-export const useViewTeamWithTypeId = TeamTypeId.Site; // use to filter view by teams => should know the type of team
-export const usePopup = true;
-export const useOfflineMode = false;
-
 // TODO after CRUD creation : adapt the global configuration
 export const PlaneCRUDConfiguration : CrudConfig = new CrudConfig(
     {
-        featureName: featureName,
+        // IMPORTANT: this key should be unique in all the application.
+        featureName: 'planes',
         fieldsConfig: PlaneFieldsConfiguration,
-        useCalcMode: useCalcMode,
-        useSignalR: useSignalR,
-        useView: useView,
-        useViewTeamWithTypeId: useViewTeamWithTypeId,
-        usePopup: usePopup,
-        useOfflineMode: useOfflineMode,
+        useCalcMode: false,
+        useSignalR: false,
+        useView: false,
+        useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
+        usePopup: true,
+        useOfflineMode: false,
         // IMPORTANT: this key should be unique in all the application.
         // storeKey: 'feature-' + featureName,
         // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
