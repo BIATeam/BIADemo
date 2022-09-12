@@ -31,6 +31,9 @@
         "IsActive": true
       }
     },
+    "Security": {
+      "Audience": ""
+    },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
       "SmtpHost": "smtp",
