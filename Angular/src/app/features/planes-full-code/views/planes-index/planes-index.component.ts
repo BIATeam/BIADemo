@@ -223,10 +223,12 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    //this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new BiaFieldConfig('msn', 'plane.msn'),
+          Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
+            isRequired: true,
+          }),
           Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
             isSearchable: false,
             isSortable: false,
@@ -234,19 +236,20 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
             type: PropType.DateTime,
-            formatDate: dateFormat.dateTimeFormat
+            //formatDate: dateFormat.dateTimeFormat
           }),
           Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
             type: PropType.Date,
-            formatDate: dateFormat.dateFormat
+            //formatDate: dateFormat.dateFormat
           }),
           Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
             type: PropType.TimeSecOnly,
-            formatDate: dateFormat.timeFormatSec
+            //formatDate: dateFormat.timeFormatSec
           }),
           Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
             type: PropType.Number,
-            filterMode: PrimeNGFiltering.Equals
+            filterMode: PrimeNGFiltering.Equals,
+            isRequired: true,
           }),
           Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
             type: PropType.OneToMany
@@ -259,6 +262,6 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    }));
+    //}));
   }
 }
