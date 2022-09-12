@@ -18,7 +18,7 @@ namespace BIA.Net.Queue.Common
         /// <summary>
         /// Get Default value of queue's name for file Receiver.
         /// </summary>
-        public static string DefaultFileReceiverQueueName = "Safran_GenericTransfertAgent_Queue";
+        public static string DefaultFileReceiverQueueName = "Bia_GenericTransfertAgent_Queue";
 
         /// <summary>
         /// Get Default value of number of retry.

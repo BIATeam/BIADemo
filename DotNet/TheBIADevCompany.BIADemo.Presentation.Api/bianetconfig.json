@@ -40,9 +40,6 @@
       "LdapCacheGroupDuration": 200, //in minutes
       "LdapCacheUserDuration": 1800 //in minutes
     },
-    "Security": {
-      "Audience": "https://studio-jetlab.analytics.safran,https://app-jetlab.analytics.safran"
-    },
     "Jwt": {
       "Issuer": "BIADemoApi",
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh

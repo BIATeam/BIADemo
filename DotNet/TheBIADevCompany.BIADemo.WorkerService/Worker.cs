@@ -64,7 +64,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": BIADemo Server started.");
             while (!stoppingToken.IsCancellationRequested)
             {
-
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
 

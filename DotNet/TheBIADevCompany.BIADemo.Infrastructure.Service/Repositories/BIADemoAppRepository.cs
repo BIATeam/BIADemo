@@ -1,8 +1,8 @@
-﻿// <copyright file="BIADemoWebApiRepository.cs" company="TheBIADevCompany">
+﻿// <copyright file="BIADemoAppRepository.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace Safran.EZwins.Infrastructure.Service.Repositories
+namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="Safran.EZwins.Domain.RepoContract.IWorkInstructionRepository" />
+    /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
 #pragma warning disable S101 // Types should be named in PascalCase
     public class BIADemoAppRepository : WebApiRepository, IBIADemoAppRepository
 #pragma warning restore S101 // Types should be named in PascalCase

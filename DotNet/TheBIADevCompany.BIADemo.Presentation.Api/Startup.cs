@@ -23,9 +23,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Safran.EZwins.Infrastructure.Service.Repositories;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
     /// <summary>
