@@ -32,7 +32,7 @@
       }
     },
     "Security": {
-      "Audience": ""
+      "Audience": "http://localhost/"
     },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
