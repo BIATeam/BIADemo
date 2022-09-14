@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
   </ItemGroup>

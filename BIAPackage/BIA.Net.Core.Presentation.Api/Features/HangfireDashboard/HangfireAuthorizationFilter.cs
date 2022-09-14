@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
     using System;
     using System.Linq;
     using System.Net;
+    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Presentation.Common.Authentication;
     using Hangfire.Dashboard;
     using Microsoft.AspNetCore.Http;

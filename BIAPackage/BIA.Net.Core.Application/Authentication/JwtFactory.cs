@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Common.Authentication
+namespace BIA.Net.Core.Application.Authentication
 {
     using System;
     using System.Collections.Generic;

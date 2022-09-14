@@ -26,6 +26,8 @@
 
   <ItemGroup>
     <PackageReference Include="Hangfire" Version="1.7.31" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
   </ItemGroup>
 
 </Project>

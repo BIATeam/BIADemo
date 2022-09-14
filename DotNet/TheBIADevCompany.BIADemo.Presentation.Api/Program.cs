@@ -4,6 +4,7 @@
 
 #pragma warning disable SA1200 // Using directives should be placed correctly
 using System;
+using BIA.Net.Core.Application.Authentication;
 using BIA.Net.Core.Common.Configuration;
 using BIA.Net.Core.Presentation.Common.Authentication;
 using Microsoft.AspNetCore.Builder;

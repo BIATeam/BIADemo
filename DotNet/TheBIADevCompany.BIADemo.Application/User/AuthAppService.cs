@@ -9,12 +9,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Presentation.Common.Authentication;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;

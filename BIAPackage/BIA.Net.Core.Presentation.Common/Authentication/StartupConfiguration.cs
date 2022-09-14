@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     using System;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
