@@ -29,7 +29,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
+
+    // End BIADemo
 
     /// <summary>
     /// The startup class.
