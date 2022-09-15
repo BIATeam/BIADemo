@@ -224,7 +224,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
-  onEdit(crudItemId: number) {
+  onClickRow(crudItemId: any) {
+    this.onEdit(crudItemId)
+  }
+
+  onEdit(crudItemId: any) {
     if (!this.crudConfiguration.useCalcMode) {
       this.router.navigate([crudItemId, 'edit'], { relativeTo: this.activatedRoute });
     }

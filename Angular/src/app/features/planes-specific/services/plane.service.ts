@@ -31,7 +31,7 @@ export class PlaneService extends CrudItemService<Plane> {
 
     public getParentKey()
     {
-        // TODO after CRUD creation : adapt the parent Key the the context can be null if root crud
+        // TODO after CRUD creation : adapt the parent Key tothe context. It can be null if root crud
         return this.authService.getCurrentTeamId(TeamTypeId.Site);
     }
 

@@ -1,32 +1,30 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCurrentSite} from '../../store/site.state';
-import { Site } from '../../model/site/site';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { SiteService } from '../../services/site.service';
+import { Site } from '../../model/site';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { AppState } from 'src/app/store/state';
+import { SiteService } from '../../services/site.service';
 
 @Component({
-  templateUrl: './site-item.component.html',
-  styleUrls: ['./site-item.component.scss']
+  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
-export class SiteItemComponent implements OnInit, OnDestroy {
-  site$: Observable<Site>;
-  private sub = new Subscription();
-
-  constructor(private store: Store<AppState>,
-    private route: ActivatedRoute,
+export class SiteItemComponent extends CrudItemItemComponent<Site> implements OnInit {
+  constructor(protected store: Store<AppState>,
+    protected injector: Injector,
     public siteService: SiteService,
-    private layoutService: BiaClassicLayoutService) { }
+    protected layoutService: BiaClassicLayoutService,
+  ) {
+    super(injector, siteService);
+  }
 
   ngOnInit() {
-    this.siteService.currentSiteId = +this.route.snapshot.params.siteId;
+    super.ngOnInit();
     this.sub.add
       (
-        this.store.select(getCurrentSite).subscribe((site) => {
+        this.siteService.crudItem$.subscribe((site) => {
           if (site?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
               (routeData as any)['breadcrumb'] = site.title;
@@ -35,11 +33,5 @@ export class SiteItemComponent implements OnInit, OnDestroy {
           }
         })
       );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }

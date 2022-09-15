@@ -18,7 +18,7 @@ export class SiteMemberNewComponent extends MemberNewComponent implements OnInit
   }
 
   ngOnInit() {
-    this.teamId = this.siteService.currentSiteId;
+    this.teamId = this.siteService.currentCrudItemId;
     this.teamTypeId=TeamTypeId.Site;
     super.ngOnInit();
   }
