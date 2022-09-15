@@ -1,4 +1,12 @@
 <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+  <app-site-filter
+    [hidden]="!showFilter"
+    [fxFlexValue]="25"
+    [userOptions]="userOptions$ | async"
+    (searchUsers)="onSearchUsers($event)"
+    (filter)="onFilter($event)"
+    (closeFilter)="onCloseFilter()"
+  ></app-site-filter>
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'site.listOf' | translate"
@@ -9,6 +17,11 @@
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
+
+      [showBtnFilter]="true"
+      [showFilter]="showFilter"
+      [haveFilter]="haveFilter"
+      (openFilter)="onOpenFilter()"
     >
     <!-- // Custo for teams -->
       <ng-template pTemplate="actionOnSelected">
