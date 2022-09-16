@@ -6,9 +6,11 @@ import {
   ViewChild,
   ViewContainerRef,
   TemplateRef,
-  Input
+  Input,
+  SimpleChanges,
+  OnChanges
 } from '@angular/core';
-import { User } from 'src/app/features/bia-features/users/model/user';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 
@@ -17,18 +19,28 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
   templateUrl: './site-filter.component.html',
   styleUrls: ['./site-filter.component.scss']
 })
-export class SiteFilterComponent implements OnInit {
+export class SiteFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() fxFlexValue: string;
   @Input() userOptions: OptionDto[];
   @Input() hidden = false;
+  @Input() advancedFilter: SiteAdvancedFilter;
   @Output() closeFilter = new EventEmitter();
   @Output() searchUsers = new EventEmitter<string>();
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 
-  userSelected: User;
+  firstChange = true;
+  form: FormGroup;
+  
+  constructor(public formBuilder: FormBuilder,private viewContainerRef: ViewContainerRef) {
+    this.initForm();
+  }
 
-  constructor(private viewContainerRef: ViewContainerRef) {}
+  private initForm() {
+    this.form = this.formBuilder.group({
+      userSelected: null,
+    });
+  }
 
   ngOnInit() {
     // The goal here is that the html content of the component is not contained in its tag "app-user-filter".
@@ -40,18 +52,39 @@ export class SiteFilterComponent implements OnInit {
   }
 
   onReset() {
-    this.userSelected = <User>{};
+    this.form.reset();
     this.onFilter();
   }
 
   onFilter() {
-    const advancedFilter = <SiteAdvancedFilter>{
-      userId: this.userSelected ? this.userSelected.id : 0
-    };
-    this.filter.emit(advancedFilter);
+    if (this.form.valid) {
+      const vm = this.form.value;
+      const advancedFilter = <SiteAdvancedFilter>{
+        userId: vm.userSelected ? vm.userSelected.id : 0
+      };
+      this.filter.emit(advancedFilter);
+    }
   }
 
   onSearchUsers(event: any) {
     this.searchUsers.emit(event.query);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.advancedFilter && this.allDataLoaded() && (this.firstChange === true || changes.advancedFilter)) {
+      this.firstChange = false;
+      const vm = {
+        userSelected: this.advancedFilter.userId
+          ? this.userOptions.filter((x) => this.advancedFilter.userId == x.id)
+          : [],
+      };
+      this.form.patchValue({ ...vm });
+    }
+  }
+  private allDataLoaded(): boolean {
+    return (
+      this.userOptions &&
+      this.userOptions.length > 0
+    );
   }
 }

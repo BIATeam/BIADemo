@@ -6,6 +6,7 @@
     (searchUsers)="onSearchUsers($event)"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
+    [advancedFilter]="crudItemListComponent?.advancedFilter"
   ></app-site-filter>
   <div fxFlex="100">
     <bia-table-header
@@ -74,7 +75,7 @@
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canEdit"
+      [canClickRow]="canManageMembers"
       [canSelectElement]="canDelete"
       [loading]="loading$ | async"
       (clickRow)="onClickRow($event)"

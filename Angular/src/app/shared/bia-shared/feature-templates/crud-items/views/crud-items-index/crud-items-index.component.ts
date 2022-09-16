@@ -34,7 +34,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(CrudItemTableComponent, { static: false }) crudItemTableComponent: CrudItemTableComponent<CrudItem>;
-  protected get crudItemListComponent() {
+  public get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
     }

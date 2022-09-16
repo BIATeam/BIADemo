@@ -177,40 +177,42 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   saveStateNoEmit() {
-    // Copy of the PrimeNG funcion (replace this by this.table) and comment emit and add custom
-    const storage = this.table.getStorage();
-    let state : any = {};
-    if (this.table.paginator) {
-        state.first = this.table.first;
-        state.rows = this.table.rows;
-    }
-    if (this.table.sortField) {
-        state.sortField = this.table.sortField;
-        state.sortOrder = this.table.sortOrder;
-    }
-    if (this.table.multiSortMeta) {
-        state.multiSortMeta = this.table.multiSortMeta;
-    }
-    if (this.table.hasFilter()) {
-        state.filters = this.table.filters;
-    }
-    if (this.table.resizableColumns) {
-        this.table.saveColumnWidths(state);
-    }
-    if (this.table.reorderableColumns) {
-        this.table.saveColumnOrder(state);
-    }
-    if (this.table.selection) {
-        state.selection = this.table.selection;
-    }
-    if (Object.keys(this.table.expandedRowKeys).length) {
-        state.expandedRowKeys = this.table.expandedRowKeys;
-    }
+    if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
+      // Copy of the PrimeNG funcion (replace this by this.table) and comment emit and add custom
+      const storage = this.table.getStorage();
+      let state : any = {};
+      if (this.table.paginator) {
+          state.first = this.table.first;
+          state.rows = this.table.rows;
+      }
+      if (this.table.sortField) {
+          state.sortField = this.table.sortField;
+          state.sortOrder = this.table.sortOrder;
+      }
+      if (this.table.multiSortMeta) {
+          state.multiSortMeta = this.table.multiSortMeta;
+      }
+      if (this.table.hasFilter()) {
+          state.filters = this.table.filters;
+      }
+      if (this.table.resizableColumns) {
+          this.table.saveColumnWidths(state);
+      }
+      if (this.table.reorderableColumns) {
+          this.table.saveColumnOrder(state);
+      }
+      if (this.table.selection) {
+          state.selection = this.table.selection;
+      }
+      if (Object.keys(this.table.expandedRowKeys).length) {
+          state.expandedRowKeys = this.table.expandedRowKeys;
+      }
 
-    const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
+      const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
 
-    storage.setItem(this.table.stateKey, JSON.stringify(customState));
-    //this.table.onStateSave.emit(state);
+      storage.setItem(this.table.stateKey, JSON.stringify(customState));
+      //this.table.onStateSave.emit(state);
+  }
 }
 
   protected getColumns(): BiaFieldConfig[] {
@@ -313,6 +315,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   onLoadLazy(event: LazyLoadEvent) {
+    this.saveTableState();
     setTimeout(() => 
     this.loadLazy.emit(event)
     , 0);

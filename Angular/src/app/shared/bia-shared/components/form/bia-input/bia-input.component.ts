@@ -62,7 +62,7 @@ export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
   }
 
   public getOptionDto(key: string) {
-    return this.dictOptionDtos.filter((x) => x.key === key)[0]?.value;
+    return this.dictOptionDtos?.filter((x) => x.key === key)[0]?.value;
   }
 
   private initFieldConfiguration() {

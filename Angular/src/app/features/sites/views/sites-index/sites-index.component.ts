@@ -25,9 +25,11 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   showFilter = false;
   haveFilter = false;
   userOptions$: Observable<OptionDto[]>;
-  
+  canManageMembers = false;
+
   onFilter(advancedFilter: SiteAdvancedFilter) {
     this.crudItemListComponent.advancedFilter = advancedFilter;
+    this.crudItemListComponent.saveStateNoEmit();
     this.haveFilter = advancedFilter && advancedFilter.userId > 0;
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }
@@ -38,18 +40,16 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   }
 
   private updateAdvancedFilterByView(viewPreference: string) {
-    let advancedFilter: SiteAdvancedFilter = <SiteAdvancedFilter>{};
     let haveFilter = false;
 
     if (viewPreference && viewPreference !== DEFAULT_VIEW) {
       const state = JSON.parse(viewPreference);
       if (state && state.advancedFilter) {
-        advancedFilter = state.advancedFilter;
+        this.crudItemListComponent.advancedFilter = state.advancedFilter;
         haveFilter = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0;
       }
     }
-
-    this.crudItemListComponent.advancedFilter = advancedFilter;
+    
     this.haveFilter = haveFilter;
   }
 
@@ -95,6 +95,8 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.canEdit = this.authService.hasPermission(Permission.Site_Update);
     this.canDelete = this.authService.hasPermission(Permission.Site_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Site_Create);
+    // Custo for teams
+    this.canManageMembers = this.authService.hasPermission(Permission.Site_Member_List_Access);
   }
   
   // Custo for teams
