@@ -5,7 +5,7 @@
   <span class="p-float-label">
     <input type="text" pInputText style ="width: 0px; padding-left: 0px; padding-right: 0px;" class="read-only p-filled" disabled="disabled"/>
     <ng-container *ngSwitchCase="'OneToMany'">
-      {{data?.displa}}
+      {{ data?.display }}
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       {{ data | pluck: 'display'| join: ', ' }}
