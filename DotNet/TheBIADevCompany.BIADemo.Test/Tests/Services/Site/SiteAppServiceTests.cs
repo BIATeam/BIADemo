@@ -152,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             {
                 Filters = new Dictionary<string, Dictionary<string, object>>(),
             };
-            (IEnumerable<SiteInfoDto> sites, int total) = service.GetAllWithMembersAsync(filters).Result;
+            (IEnumerable<SiteInfoDto> sites, int total) = service.GetRangeWithMembersAsync(filters).Result;
 
             // Only one site is returned (the one the user is a member of).
             Assert.IsNotNull(sites);

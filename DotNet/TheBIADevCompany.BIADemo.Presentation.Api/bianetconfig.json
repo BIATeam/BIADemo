@@ -272,7 +272,7 @@
       },
       {
         "Names": [ "Site_List_Access", "Site_Read", "Site_Member_List_Access" ],
-        "Roles": [ "Admin", "Site_Admin" /*, "Site_Member" */ ]
+        "Roles": [ "Admin", "Site_Member" ]
       },
       {
         "Names": [ "Site_Member_Create", "Site_Member_Read", "Site_Member_Update", "Site_Member_Delete", "Site_Member_Save" ],

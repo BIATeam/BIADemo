@@ -2,15 +2,27 @@
   <ng-container *ngFor="let field of fields">
     <div fxLayout="row" fxLayoutAlign="center">
       <div class="app-field-container" fxFlex="90">
-        <bia-input
-          [field]="field"
-          [form]="form"
-          [dictOptionDtos]="dictOptionDtos"
-        >
-        <ng-template pTemplate="specificInput">
-          <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
+        <ng-template [ngIf]="field.isEditable === true" [ngIfElse]="isNotEditable">
+          <bia-input
+            [field]="field"
+            [form]="form"
+            [dictOptionDtos]="dictOptionDtos"
+          >
+          <ng-template pTemplate="specificInput">
+            <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
+          </ng-template>
+          </bia-input>
         </ng-template>
-        </bia-input>
+        <ng-template #isNotEditable>
+          <bia-table-output
+          [field]="field"
+          [data]="getCellData(field)"
+          >
+            <ng-template pTemplate="specificOutput">
+              <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: field, data: getCellData(field) }" ></ng-container>
+            </ng-template>
+          </bia-table-output>
+        </ng-template>
       </div>
     </div>
   </ng-container>

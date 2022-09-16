@@ -20,14 +20,13 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         /// </summary>
         /// <param name="filters">The filters.</param>
         /// <returns>The list of SiteInfoDto.</returns>
-        Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetAllWithMembersAsync(SiteFilterDto filters);
+        Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetRangeWithMembersAsync(SiteFilterDto filters);
 
         /// <summary>
-        /// Gets all asynchronous.
+        /// Get Site with list of admins.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <param name="userPermissions">The user rights.</param>
-        /// <returns>all sites.</returns>
-        Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null);
+        /// <param name="id">id of the site.</param>
+        /// <returns>The site.</returns>
+        Task<SiteInfoDto> GetWithMembersAsync(int id);
     }
 }

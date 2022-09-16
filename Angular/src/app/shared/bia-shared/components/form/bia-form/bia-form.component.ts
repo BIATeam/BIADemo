@@ -126,5 +126,19 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
       this.form.reset();
     }
   }
+  getCellData(field: any): any {
+    const nestedProperties: string[] = field.field.split('.');
+    let value: any = this.element;
+    for (const prop of nestedProperties) {
+      if(value == null)
+      {
+        return null;
+      }
+      
+      value = value[prop];
+    }
+ 
+    return value;
+  }
 }
 
