@@ -50,7 +50,7 @@ export let ROUTES: Routes = [
         path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: true,
+          canNavigate: false,
         },
         component: SiteItemComponent,
         canActivate: [PermissionGuard],

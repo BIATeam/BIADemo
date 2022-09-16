@@ -14,14 +14,14 @@
           </bia-input>
         </ng-template>
         <ng-template #isNotEditable>
-          <bia-table-output
+          <bia-output
           [field]="field"
           [data]="getCellData(field)"
           >
             <ng-template pTemplate="specificOutput">
               <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: field, data: getCellData(field) }" ></ng-container>
             </ng-template>
-          </bia-table-output>
+          </bia-output>
         </ng-template>
       </div>
     </div>
