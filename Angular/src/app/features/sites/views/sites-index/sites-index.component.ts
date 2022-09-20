@@ -44,7 +44,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
     if (viewPreference && viewPreference !== DEFAULT_VIEW) {
       const state = JSON.parse(viewPreference);
-      if (state && state.advancedFilter) {
+      if (state) {
         this.crudItemListComponent.advancedFilter = state.advancedFilter;
         haveFilter = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0;
       }
