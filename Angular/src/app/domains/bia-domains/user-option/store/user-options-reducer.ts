@@ -32,7 +32,9 @@ export const INIT_STATE: State = userOptionsAdapter.getInitialState({
 
 export const userOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainUserOptionsActions.loadAllSuccess, (state, { users }) => userOptionsAdapter.setAll(users, state)),
+  on(DomainUserOptionsActions.loadAllSuccess,
+     (state, { users }) => userOptionsAdapter.setAll(users, state)
+     ),
   // on(loadSuccess, (state, { user }) => userOptionsAdapter.upsertOne(user, state))
   on(DomainUserOptionsActions.userAddedInListSuccess, (state, { usersAdded }) => {
     return { ...state, lastUsersAdded: usersAdded };

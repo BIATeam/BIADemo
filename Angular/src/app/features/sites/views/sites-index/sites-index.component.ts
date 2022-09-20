@@ -61,10 +61,6 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.showFilter = true;
   }
 
-  onSearchUsers(value: string) {
-    this.store.dispatch(DomainUserOptionsActions.loadAllByFilter({ filter: value }));
-  }
-
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const userId: number = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0 ? this.crudItemListComponent.advancedFilter.userId : 0;
     const customEvent: any = { userId: userId, ...lazyLoadEvent };
@@ -72,6 +68,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   }
   
   private initUsers() {
+    this.store.dispatch(DomainUserOptionsActions.loadAll());
     this.userOptions$ = this.store.select(getAllUserOptions);
   }
 

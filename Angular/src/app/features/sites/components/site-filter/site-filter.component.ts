@@ -75,8 +75,8 @@ export class SiteFilterComponent implements OnInit, OnChanges {
       this.firstChange = false;
       const vm = {
         userSelected: this.advancedFilter.userId
-          ? this.userOptions.filter((x) => this.advancedFilter.userId == x.id)
-          : [],
+          ? this.userOptions.find((x) => this.advancedFilter.userId == x.id)
+          : null,
       };
       this.form.patchValue({ ...vm });
     }

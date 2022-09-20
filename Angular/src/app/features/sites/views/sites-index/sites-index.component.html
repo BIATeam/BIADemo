@@ -3,7 +3,6 @@
     [hidden]="!showFilter"
     [fxFlexValue]="25"
     [userOptions]="userOptions$ | async"
-    (searchUsers)="onSearchUsers($event)"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudItemListComponent?.advancedFilter"

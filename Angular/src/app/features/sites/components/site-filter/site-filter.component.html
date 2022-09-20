@@ -16,17 +16,17 @@
       <div fxLayout="row" fxLayoutAlign="center">
         <div class="app-filter-container" fxFlex="90">
           <span class="p-float-label">
-          <p-autoComplete
-            [multiple]="false"
+            <p-dropdown
+            [options]="userOptions"
+            placeholder="&nbsp;"
             formControlName="userSelected"
-            [suggestions]="userOptions"
-            (completeMethod)="onSearchUsers($event)"
-            [size]="30"
-            [minLength]="2"
-            field="display"
+            optionLabel="display"
+            datakey="id"
             [style]="{ width: '100%' }"
-            [inputStyle]="{ width: '100%' }"
-          ></p-autoComplete>
+            [showClear]="true"
+            appendTo="body"
+            filter=true
+          ></p-dropdown>
           <label>{{ 'site.selectUser' | translate }}</label>
         </span>
         </div>
