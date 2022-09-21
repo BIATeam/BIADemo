@@ -60,7 +60,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   popupTitle: string;
   tableStateKey: string | undefined;
   tableState: string;
-  sortFieldValue = 'msn';
+  sortFieldValue = '';
   useViewTeamWithTypeId: TeamTypeId | null;
   parentIds: string[];
 
@@ -324,6 +324,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
         columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}*/
       this.columns = this.crudConfiguration.fieldsConfig.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
+      this.sortFieldValue = this.columns[0].key;
     //}));
   }
 

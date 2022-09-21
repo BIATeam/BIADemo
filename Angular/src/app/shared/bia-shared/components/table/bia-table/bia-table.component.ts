@@ -7,6 +7,7 @@ import { DEFAULT_VIEW, TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { Observable, timer, of } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { BiaTableState } from '../../../model/bia-table-state';
 
 
 const objectsEqual = (o1 :any, o2:any) =>
@@ -216,7 +217,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 }
 
   protected getColumns(): BiaFieldConfig[] {
-    const tableState: TableState | null = this.getTableState();
+    const tableState: BiaTableState | null = this.getTableState();
     let columns: BiaFieldConfig[] = [];
     let columnOrder: string[] = [];
     if (tableState && tableState.columnOrder) {
@@ -268,7 +269,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     if (this.table && this.table.isStateful() && changes.viewPreference) {
       let viewPreference = changes.viewPreference.currentValue;
       if (viewPreference === DEFAULT_VIEW) {
-        const defaultState: TableState = this.createDefaultTableState();
+        const defaultState: BiaTableState = this.createDefaultTableState();
         viewPreference = JSON.stringify(defaultState);
       }
       sessionStorage.setItem(this.tableStateKey, viewPreference);
@@ -276,14 +277,15 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  protected createDefaultTableState(): TableState {
-    return <TableState>{
+  protected createDefaultTableState(): BiaTableState {
+    return <BiaTableState>{
       first: 0,
       rows: this.defaultPageSize,
       sortField: this.defaultSortField,
       sortOrder: this.defaultSortOrder,
       filters: {},
-      columnOrder: this.defaultColumns
+      columnOrder: this.defaultColumns,
+      advancedFilter: undefined,
     };
   }
 
@@ -327,7 +329,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   onStateSave(state: TableState) {
     if (this.table && Object.keys(state).length) {
-      const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
+      const customState: BiaTableState = { advancedFilter: this.advancedFilter, ...state };
       if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
         const jsonCustomState: string = JSON.stringify(customState);
@@ -347,7 +349,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   protected restoreStateTable() {
     if (this.table) {
-      const tableState: TableState | null = this.getTableState();
+      const tableState: BiaTableState | null = this.getTableState();
       if (tableState?.columnOrder) {
 
         this.updateDisplayedColumns(false);
@@ -368,10 +370,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  protected getTableState(): TableState | null {
+  protected getTableState(): BiaTableState | null {
     const stateString: string | null = sessionStorage.getItem(this.tableStateKey);
     if (stateString && stateString?.length > 0) {
-      const state: TableState = JSON.parse(stateString);
+      const state: BiaTableState = JSON.parse(stateString);
       return state;
     }
 

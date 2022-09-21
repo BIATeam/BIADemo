@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SelectItemGroup, TableState } from 'primeng/api';
+import { SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
@@ -14,6 +14,7 @@ import { Permission } from 'src/app/shared/permission';
 import { ActivatedRoute } from '@angular/router';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 
 @Component({
   selector: 'bia-view-list',
@@ -106,7 +107,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private GetCorrespondingViewId(preference: string) : number {
-    let pref: TableState = JSON.parse(preference);
+    let pref: BiaTableState = JSON.parse(preference);
     pref.selection = null;
     pref.columnWidths = undefined;
     if (pref.first===0 &&
@@ -114,7 +115,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key)) &&
         pref.rows === 10 &&
         pref.sortField === this.columns[0].key &&
-        pref.sortOrder === 1)
+        pref.sortOrder === 1 &&
+        pref.advancedFilter === undefined)
     {
       return 0;
     }
@@ -124,17 +126,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       console.log ("GetCorrespondingViewId: 1 >> " + (pref.filters === undefined || JSON.stringify(pref.filters) === "{}"));
       console.log ("GetCorrespondingViewId: 2 >> " + (JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key))));
       console.log ("GetCorrespondingViewId: 3 >> " + (pref.sortField === this.columns[0].key));
+      console.log ("GetCorrespondingViewId: 4 >> " + (pref.advancedFilter === undefined));
     }
 
-    let prefString =  JSON.stringify(pref);
+    // let prefString =  JSON.stringify(pref);
     // console.log("GetCorrespondingView : " + prefString  )
     if (this.views)
     {
       let correspondingView = this.views.find(v => {
-        const viewPref: TableState = JSON.parse(v.preference);
-        viewPref.selection = null;
-        let correspondFind = prefString === JSON.stringify(viewPref)
-        return correspondFind;
+        const viewPref: BiaTableState = JSON.parse(v.preference);
+        return this.areViewEgals(pref,viewPref);
       });
       if (correspondingView)
       {
@@ -142,6 +143,27 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     return this.currentView;
+  }
+
+  private areViewEgals(view1: BiaTableState, view2: BiaTableState)
+  {
+    return (  
+      view1.first===view2.first &&
+      (
+        ((view1.filters === undefined || JSON.stringify(view1.filters) === "{}") && (view2.filters === undefined || JSON.stringify(view2.filters) === "{}"))
+        ||
+        (JSON.stringify(view1.filters) === JSON.stringify(view2.filters))
+      ) &&
+      JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
+      view1.rows === view2.rows &&
+      view1.sortField === view2.sortField &&
+      view1.sortOrder === view2.sortOrder &&
+      (
+        (view1.advancedFilter === undefined && view2.advancedFilter === undefined)
+        ||
+        JSON.stringify(view1.advancedFilter) === JSON.stringify(view2.advancedFilter)
+      )
+    )
   }
 
   onViewChange(event: any) {
