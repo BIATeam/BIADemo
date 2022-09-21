@@ -7,10 +7,10 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Member } from '../../model/member';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -57,7 +57,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -75,7 +75,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   protected membersSignalRService: MembersSignalRService;
   public memberOptionsService: MemberOptionsService;
 
-  constructor( injector: Injector ) {
+  constructor(injector: Injector) {
     this.store = injector.get<Store<AppState>>(Store);
     this.router = injector.get<Router>(Router);
     this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
@@ -99,7 +99,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
         this.setPermissions();
       })
     );
-    
+
     this.members$ = this.store.select(getAllMembers);
     this.totalCount$ = this.store.select(getMembersTotalCount);
     this.loading$ = this.store.select(getMemberLoadingGetAll);
@@ -118,7 +118,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
           this.onLoadLazy(this.memberListComponent.getLazyLoadMetadata());
-          })
+        })
       );
     }
   }
@@ -214,7 +214,7 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.memberListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.memberListComponent.getLazyLoadMetadata()
     };
@@ -227,13 +227,13 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
   }
 
   protected initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          Object.assign(new PrimeTableColumn('user', 'member.user'), {
+          Object.assign(new BiaFieldConfig('user', 'member.user'), {
             type: PropType.OneToMany
           }),
-          Object.assign(new PrimeTableColumn('roles', 'member.rolesForSite'), {
+          Object.assign(new BiaFieldConfig('roles', 'member.rolesForSite'), {
             type: PropType.ManyToMany
           })
         ]
@@ -241,6 +241,6 @@ export class MembersIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

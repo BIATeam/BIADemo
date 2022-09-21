@@ -1,0 +1,144 @@
+<div [formGroup]="form">
+  <ng-container *ngIf="field.specificInput === true">
+    <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
+  </ng-container>
+  <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
+    <ng-container *ngSwitchCase="'OneToMany'">
+      <p-dropdown
+        placeholder="&nbsp;"
+        [formControlName]="field.field"
+        [options]="getOptionDto(field.field)"
+        optionLabel="display"
+        dataKey="id"
+        showClear="true"
+        (onChange)="onChange()"
+        appendTo="body"
+        [style]="{ width: '100%' }"
+      ></p-dropdown>
+    </ng-container>
+    <ng-container *ngSwitchCase="'ManyToMany'">
+      <p-multiSelect
+        defaultLabel="&nbsp;"
+        [formControlName]="field.field"
+        [options]="getOptionDto(field.field)"
+        optionLabel="display"
+        datakey="id"
+        (onChange)="onChange()"
+        (onPanelShow)="onComplexInput(true)"
+        (onPanelHide)="onComplexInput(false)"
+        appendTo="body"
+        [style]="{ width: '100%' }"
+      ></p-multiSelect>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Boolean'">
+      <p-checkbox [binary]="true" [formControlName]="field.field" (onChange)="onChange()"></p-checkbox>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Number'">
+      <input pInputText type="number" [formControlName]="field.field" (change)="onChange()" />
+    </ng-container>
+    <ng-container *ngSwitchCase="'Date'">
+      <p-calendar
+        biaLocale
+        [formControlName]="field.field"
+        placeholder="&nbsp;"
+        [showButtonBar]="true"
+        (onShow)="onComplexInput(true)"
+        (onSelect)="onChange()"
+        (onClearClick)="onChange()"
+        (onClose)="onComplexInput(false)"
+        appendTo="body"
+        (onInput)="onChange()"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+        [dateFormat]="field.primeDateFormat?field.primeDateFormat:'yy-mm-dd'"
+      ></p-calendar>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Time'">
+      <p-calendar
+        biaLocale
+        [formControlName]="field.field"
+        placeholder="&nbsp;"
+        (onShow)="onComplexInput(true)"
+        (onSelect)="onChange()"
+        (onClearClick)="onChange()"      
+        (onClose)="onComplexInput(false)"
+        appendTo="body"
+        (onInput)="onChange()"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+        showTime="true"
+        [timeOnly]="true"
+        [dateFormat]="field.primeDateFormat?field.primeDateFormat:'yy-mm-dd'"
+        [hourFormat]="24"
+      ></p-calendar> <!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+    </ng-container>
+    <ng-container *ngSwitchCase="'TimeOnly'">
+      <p-calendar
+        biaLocale
+        [formControlName]="field.field"
+        placeholder="&nbsp;"
+        (onShow)="onComplexInput(true)"
+        (onSelect)="onChange()"
+        (onClearClick)="onChange()"        
+        (onClose)="onComplexInput(false)"
+        appendTo="body"
+        (onInput)="onChange()"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+        showTime="true"
+        dataType="string"
+        [timeOnly]="true"
+        [hourFormat]="24"
+      ></p-calendar><!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+    </ng-container>
+    <ng-container *ngSwitchCase="'TimeSecOnly'">
+      <p-calendar
+        biaLocale
+        [formControlName]="field.field"
+        placeholder="&nbsp;"
+        (onShow)="onComplexInput(true)"
+        (onSelect)="onChange()"
+        (onInput)="onChange()"
+        (onClearClick)="onChange()"        
+        (onClose)="onComplexInput(false)"
+        appendTo="body"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+        showTime="true"
+        showSeconds="true"
+        dataType="string"
+        [timeOnly]="true"
+        [hourFormat]="24"
+      ></p-calendar><!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+    </ng-container>
+    <ng-container *ngSwitchCase="'DateTime'">
+      <p-calendar
+        biaLocale
+        [formControlName]="field.field"
+        placeholder="&nbsp;"
+        [showButtonBar]="true"
+        (onShow)="onComplexInput(true)"
+        (onSelect)="onChange()"
+        (onClearClick)="onChange()"        
+        (onClose)="onComplexInput(false)"
+        appendTo="body"
+        (onInput)="onChange()"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
+        showTime="true"
+        [dateFormat]="field.primeDateFormat?field.primeDateFormat:'yy-mm-dd'"
+        [hourFormat]="field.hourFormat?field.hourFormat:24"
+      ></p-calendar>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <input
+        pInputText
+        type="text"
+        [maxlength]="field.maxlength"
+        [formControlName]="field.field"
+        (change)="onChange()"
+      />
+    </ng-container>
+  </ng-container>
+  <span *ngIf="field.isRequired" class="bia-star-mandatory">*</span>
+</div>

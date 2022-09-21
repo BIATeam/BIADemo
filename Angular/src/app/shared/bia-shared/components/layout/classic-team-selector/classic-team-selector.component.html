@@ -23,7 +23,7 @@
   </p-multiSelect>
   <i
     *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
-    class="pi pi-star-o  app-icon-header bia-pointer"
+    class="pi pi-star  app-icon-header bia-pointer"
     (click)="onSetDefaultRoles()"
     pTooltip="{{ 'bia.defineDefault' | translate }}"
     tooltipPosition="bottom"
@@ -31,7 +31,7 @@
   ></i>
   <i
     *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && isDefaultRoles()"
-    class="pi pi-star app-icon-header"
+    class="pi pi-star-fill app-icon-header"
   ></i>
   <p-dropdown
     *ngIf="displayTeamList === true"
@@ -43,7 +43,7 @@
   ></p-dropdown>
   <i
     *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
-    class="pi pi-star-o  app-icon-header bia-pointer"
+    class="pi pi-star  app-icon-header bia-pointer"
     (click)="onSetDefaultTeam()"
     pTooltip="{{ 'bia.defineDefault' | translate }}"
     tooltipPosition="bottom"
@@ -51,6 +51,6 @@
   ></i>
   <i
     *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
-    class="pi pi-star app-icon-header"
+    class="pi pi-star-fill app-icon-header"
   ></i>
 </div>

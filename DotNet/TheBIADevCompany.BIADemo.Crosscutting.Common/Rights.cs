@@ -109,37 +109,42 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
-        /// The aircraft maintenance companies rights.
+        /// The maintenance team rights.
         /// </summary>
         public static class MaintenanceTeams
         {
             /// <summary>
-            /// The right to access to the list of aircraft maintenance companies.
+            /// The right to access to the list of maintenance team.
             /// </summary>
             public const string ListAccess = "MaintenanceTeam_List_Access";
 
             /// <summary>
-            /// The right to create aircraft maintenance companies.
+            /// The right to view all maintenance team for current aircraft maintenance companies.
+            /// </summary>
+            public const string ListViewAll = "MaintenanceTeam_List_View_All";
+
+            /// <summary>
+            /// The right to create maintenance team.
             /// </summary>
             public const string Create = "MaintenanceTeam_Create";
 
             /// <summary>
-            /// The right to read aircraft maintenance companies.
+            /// The right to read maintenance team.
             /// </summary>
             public const string Read = "MaintenanceTeam_Read";
 
             /// <summary>
-            /// The right to update aircraft maintenance companies.
+            /// The right to update maintenance team.
             /// </summary>
             public const string Update = "MaintenanceTeam_Update";
 
             /// <summary>
-            /// The right to delete aircraft maintenance companies.
+            /// The right to delete maintenance team.
             /// </summary>
             public const string Delete = "MaintenanceTeam_Delete";
 
             /// <summary>
-            /// The right to save aircraft maintenance companies.
+            /// The right to save maintenance team.
             /// </summary>
             public const string Save = "MaintenanceTeam_Save";
         }

@@ -26,18 +26,17 @@ const ROUTES: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    PlaneTypeFormComponent,
-    PlanesTypesIndexComponent,
-    PlaneTypeNewDialogComponent,
-    PlaneTypeEditDialogComponent,
-  ],
-  entryComponents: [PlaneTypeNewDialogComponent, PlaneTypeEditDialogComponent],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('planes-types', reducers),
-    EffectsModule.forFeature([PlanesTypesEffects])
-  ]
+    declarations: [
+        PlaneTypeFormComponent,
+        PlanesTypesIndexComponent,
+        PlaneTypeNewDialogComponent,
+        PlaneTypeEditDialogComponent,
+    ],
+    imports: [
+        SharedModule,
+        RouterModule.forChild(ROUTES),
+        StoreModule.forFeature('planes-types', reducers),
+        EffectsModule.forFeature([PlanesTypesEffects])
+    ]
 })
 export class PlaneTypeModule {}

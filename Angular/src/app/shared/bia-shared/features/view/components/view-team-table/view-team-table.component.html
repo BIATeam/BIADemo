@@ -63,7 +63,7 @@
       <td *ngIf="canUpdate" class="app-action-col">
         <p-tableRadioButton [value]="view"></p-tableRadioButton>
       </td>
-      <td>{{ view.name }} <i *ngIf="isTeamDefault(view) === true" class="pi pi-star-o"></i></td>
+      <td>{{ view.name }} <i *ngIf="isTeamDefault(view) === true" class="pi pi-star"></i></td>
       <td>{{ view.description }}</td>
       <td>{{ formatTeams(view.viewTeams) }}</td>
     </tr>

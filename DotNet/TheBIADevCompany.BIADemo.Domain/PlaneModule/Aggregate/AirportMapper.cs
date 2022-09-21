@@ -6,6 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -22,9 +24,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<Airport>
                 {
-                    { "Id", planeType => planeType.Id },
-                    { "Name", planeType => planeType.Name },
-                    { "City", planeType => planeType.City },
+                    { HeaderName.Id, planeType => planeType.Id },
+                    { HeaderName.Name, planeType => planeType.Name },
+                    { HeaderName.City, planeType => planeType.City },
                 };
             }
         }
@@ -54,13 +56,51 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<AirportDto, object[]> DtoToRecord()
+        public override Func<AirportDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => new object[]
+            return x =>
             {
-                CSVString(x.Name),
-                CSVString(x.City),
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Name));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.City, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.City));
+                        }
+                    }
+                }
+
+                return records.ToArray();
             };
+        }
+
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// header name Name.
+            /// </summary>
+            public const string Name = "name";
+
+            /// <summary>
+            /// header name City.
+            /// </summary>
+            public const string City = "city";
         }
     }
 }

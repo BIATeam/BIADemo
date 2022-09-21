@@ -7,10 +7,10 @@ import { LazyLoadEvent } from 'primeng/api';
 import { User } from '../../model/user';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType,
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -65,7 +65,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
   canDelete = false;
   canAdd = false;
   canSync = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -155,7 +155,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
 
   onEdit(userId: number) {
     if (!this.useCalcMode) {
-      this.router.navigate([ userId , 'edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([userId, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 
@@ -210,7 +210,7 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.userListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.userListComponent.getLazyLoadMetadata()
     };
@@ -231,13 +231,13 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('lastName', 'user.lastName'),
-          new PrimeTableColumn('firstName', 'user.firstName'),
-          new PrimeTableColumn('login', 'user.login'),
-          Object.assign(new PrimeTableColumn('roles', 'member.roles'), {
+          new BiaFieldConfig('lastName', 'user.lastName'),
+          new BiaFieldConfig('firstName', 'user.firstName'),
+          new BiaFieldConfig('login', 'user.login'),
+          Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
             type: PropType.ManyToMany
           })
         ]
@@ -245,6 +245,6 @@ export class UsersIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

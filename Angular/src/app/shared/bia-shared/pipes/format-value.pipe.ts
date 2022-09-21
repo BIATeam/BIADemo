@@ -1,6 +1,6 @@
 import { DatePipe, Time } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { PrimeTableColumn, PropType } from '../components/table/bia-table/bia-table-config';
+import { BiaFieldConfig, PropType } from '../model/bia-field-config';
 
 @Pipe({
   name: 'formatValue',
@@ -8,7 +8,7 @@ import { PrimeTableColumn, PropType } from '../components/table/bia-table/bia-ta
 export class FormatValuePipe implements PipeTransform {
   constructor(private datePipe: DatePipe){
   }
-  transform(value: any, col: PrimeTableColumn ): string | null {
+  transform(value: any, col: BiaFieldConfig ): string | null {
     if (value === null || value === undefined)
     {
       return null;

@@ -77,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            if (filters.ParentIds != null && filters.ParentIds.Length > 0)
+            if (filters.ParentIds != null && filters.ParentIds.Length > 0 && filters.ParentIds[0] != null)
             {
                 if (!this.IsAuthorizeForTeam(int.Parse(filters.ParentIds[0]), Rights.Members.ListAccessSuffix).Result)
                 {

@@ -15,6 +15,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+
+    // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -63,7 +68,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
             else
             {
-                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Team>(team => team.Members.Any(member => member.UserId == userId)));
+                return await this.Repository.GetAllResultAsync(
+                    mapper.EntityToDto(userId),
+                    specification: new DirectSpecification<Team>(team =>
+                        team.Members.Any(member =>
+
+                        // Begin BIADemo
+                        (team is MaintenanceTeam && (team as MaintenanceTeam).AircraftMaintenanceCompany.Members.Any(member => member.UserId == userId)) ||
+
+                        // End BIADemo
+                        member.UserId == userId)));
             }
         }
     }

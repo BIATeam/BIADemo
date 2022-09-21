@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [Authorize(Roles = Rights.Sites.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] SiteFilterDto filters)
         {
-            var (results, total) = await this.siteService.GetAllWithMembersAsync(filters);
+            var (results, total) = await this.siteService.GetRangeWithMembersAsync(filters);
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
 
@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
 
             try
             {
-                var dto = await this.siteService.GetAsync(id);
+                var dto = await this.siteService.GetWithMembersAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

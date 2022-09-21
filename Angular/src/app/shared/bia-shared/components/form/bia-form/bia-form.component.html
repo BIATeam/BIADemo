@@ -1,0 +1,39 @@
+<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
+  <ng-container *ngFor="let field of fields">
+    <div fxLayout="row" fxLayoutAlign="center">
+      <div class="app-field-container" fxFlex="90">
+        <ng-template [ngIf]="field.isEditable === true" [ngIfElse]="isNotEditable">
+          <bia-input
+            [field]="field"
+            [form]="form"
+            [dictOptionDtos]="dictOptionDtos"
+          >
+          <ng-template pTemplate="specificInput">
+            <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
+          </ng-template>
+          </bia-input>
+        </ng-template>
+        <ng-template #isNotEditable>
+          <bia-output
+          [field]="field"
+          [data]="getCellData(field)"
+          >
+            <ng-template pTemplate="specificOutput">
+              <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: field, data: getCellData(field) }" ></ng-container>
+            </ng-template>
+          </bia-output>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.cancel' | translate }}"
+      type="button"
+      class="p-button-outlined"
+      (click)="onCancel()"
+    ></button>
+  </div>
+</form>

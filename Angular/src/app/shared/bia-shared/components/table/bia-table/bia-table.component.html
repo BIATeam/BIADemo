@@ -59,26 +59,20 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
-        <ng-container [ngSwitch]="col.type" *ngIf="col !== undefined">
-          <ng-container *ngSwitchCase="'OneToMany'">
-            {{ rowData[col.field]?.display }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'ManyToMany'">
-            {{ rowData[col.field] | pluck: 'display'| join: ', ' }}
-          </ng-container>
-          <ng-container *ngSwitchCase="'Boolean'">
-            <i class="pi pi-check" *ngIf="rowData[col.field] === true"></i>
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-            {{ rowData[col.field] | formatValue: col }}
-          </ng-container>
-        </ng-container>
+        <bia-table-output
+        [field]="col"
+        [data]="getCellData(rowData, col)"
+        >
+          <ng-template pTemplate="specificOutput">
+            <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+          </ng-template>
+        </bia-table-output>
       </td>
     </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage" let-columns>
     <tr>
-      <td class="app-empty-message" [attr.colspan]="columns.length + 1">
+      <td class="app-empty-message" [attr.colspan]="columns?.length + 1">
         {{ 'bia.NoRecordsFound' | translate }}
       </td>
     </tr>

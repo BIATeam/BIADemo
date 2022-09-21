@@ -16,6 +16,7 @@
       padding: 0.125rem !important;
     }
   }
+
   p-multiselect {
     .p-multiselect-label {
       padding: 0.125rem !important;
@@ -23,9 +24,20 @@
   }
 }
 
-.result-contenair {
-  padding-top: 15px;
+.bia-table-controller-container {
+  padding-top: 10px;
+  padding-right: 20px;
+  white-space: nowrap
 }
+.bia-table-controller-container.bia-table-controller-container-last {
+  padding-right: 0px;
+}
+
+
+.bia-table-controller-container .p-float-label{
+  margin-top: -10px;
+}
+
 .options {
   padding-top: 20px;
 }
@@ -39,15 +51,23 @@ span,
 label {
   font-family: 'oswald-light';
 }
+
 .result {
-  margin-top: 1px;
+  margin-top: 2px;
 }
+
 .pi-filter {
   margin-bottom: 10px;
 }
+
 .p-dropdown-label {
   padding: 0.125rem !important;
 }
+
 .p-multiselect .p-multiselect-label {
   padding: 0.125rem !important;
+}
+
+#bia-input-search {
+  width: 15vw;
 }

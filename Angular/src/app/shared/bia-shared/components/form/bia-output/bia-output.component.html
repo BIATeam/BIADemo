@@ -1,0 +1,21 @@
+<ng-container *ngIf="field !== undefined && field.specificOutput === true">
+  <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: field, data: data }" ></ng-container>
+</ng-container>
+<ng-container [ngSwitch]="field.type" *ngIf="field !== undefined && field.specificOutput !== true">
+  <span class="p-float-label">
+    <input type="text" pInputText style ="width: 0px; padding-left: 0px; padding-right: 0px;" class="read-only p-filled" disabled="disabled"/>
+    <ng-container *ngSwitchCase="'OneToMany'">
+      {{ data?.display }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'ManyToMany'">
+      {{ data | pluck: 'display'| join: ', ' }}
+    </ng-container>
+    <ng-container *ngSwitchCase="'Boolean'">
+      <i class="pi pi-check" *ngIf="data === true"></i>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      {{ data | formatValue: field }}
+    </ng-container>
+    <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
+  </span>
+</ng-container>

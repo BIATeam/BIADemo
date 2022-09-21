@@ -1,14 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { PlanesEffects } from './store/planes-effects';
-import { reducers } from './store/plane.state';
+// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { PlaneFormComponent } from './components/plane-form/plane-form.component';
 import { PlanesIndexComponent } from './views/planes-index/planes-index.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { PlaneNewComponent } from './views/plane-new/plane-new.component';
-import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
@@ -17,9 +12,16 @@ import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/la
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
-import { storeKey, usePopup } from './plane.constants';
+import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
+import { PlaneNewComponent } from './views/plane-new/plane-new.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { PlanesEffects } from './store/planes-effects';
+import { FeaturePlanesStore } from './store/plane.state';
+import { PlaneCRUDConfiguration } from './plane.constants';
 
-const ROUTES: Routes = [
+export let ROUTES: Routes = [
   {
     path: '',
     data: {
@@ -39,12 +41,13 @@ const ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
+          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
-        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
-        path: ':planeId',
+        path: ':crudItemId',
         data: {
           breadcrumb: '',
           canNavigate: true,
@@ -60,8 +63,9 @@ const ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
+              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
-            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -89,9 +93,11 @@ const ROUTES: Routes = [
   ],
   imports: [
     SharedModule,
+    CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(storeKey, reducers),
+    StoreModule.forFeature(PlaneCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
     EffectsModule.forFeature([PlanesEffects]),
+    // TODO after CRUD creation : select the optioDto dommain module requiered for link
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,

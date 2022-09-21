@@ -32,7 +32,7 @@ export class MaintenanceTeamItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentMaintenanceTeam).subscribe((maintenanceTeam) => {
           if (maintenanceTeam?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = maintenanceTeam.title;
+              (routeData as any)['breadcrumb'] = maintenanceTeam.title;
             });
             this.layoutService.refreshBreadcrumb();
           }

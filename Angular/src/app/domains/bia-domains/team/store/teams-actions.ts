@@ -10,9 +10,9 @@ export namespace DomainTeamsActions
 
     export const setDefaultTeam = createAction('[' + storeKey + '] Set default team', props<{ teamTypeId: number, teamId: number }>());
 
-    export const setDefaultTeamSuccess = createAction('[' + storeKey + '] Set default team success');
+    export const setDefaultTeamSuccess = createAction('[' + storeKey + '] Set default team success', props<{ teamTypeId: number, teamId: number }>());
 
     export const setDefaultRoles = createAction('[' + storeKey + '] Set default role', props<{ teamId: number, roleIds: number[]  }>());
 
-    export const setDefaultRolesSuccess = createAction('[' + storeKey + '] Set default role success');
+    export const setDefaultRolesSuccess = createAction('[' + storeKey + '] Set default role success', props<{ teamId: number, roleIds: number[]  }>());
 }

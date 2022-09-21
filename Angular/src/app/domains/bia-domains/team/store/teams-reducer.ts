@@ -1,4 +1,4 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, createEntityAdapter, Update } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 import { Team } from '../model/team';
 import { DomainTeamsActions } from './teams-actions';
@@ -31,7 +31,46 @@ export const INIT_STATE: State = teamsAdapter.getInitialState({
 export const teamReducers = createReducer<State>(
   INIT_STATE,
   on(DomainTeamsActions.loadAllSuccess, (state, { teams }) => teamsAdapter.setAll(teams, state)),
+  on(DomainTeamsActions.setDefaultTeamSuccess, (state, { teamTypeId,teamId }) => 
+    {
+      let updates: Update<Team>[] = [];
+      for (let key in state.entities) {
+        let value = state.entities[key];
+        // Use `key` and `value`
+        if (value?.teamTypeId == teamTypeId)
+        {
+          if (value.id == teamId)
+          {
+            updates.push({id: key, changes: {isDefault: true}})
+          }
+          else if (value.isDefault)
+          {
+            updates.push({id: key, changes: {isDefault: false}})
+          }
+        }
+      }
+      return teamsAdapter.updateMany(updates, state);
+    }
+  ),
+  on(DomainTeamsActions.setDefaultRolesSuccess, (state, { teamId,roleIds }) => 
+    {
+      for (let key in state.entities) {
+        let value = state.entities[key];
+        // Use `key` and `value`
+        if (value?.id == teamId)
+        {
+          //let roles = value.roles.map(role => ({role, isDefault: roleIds.indexOf(role.id) > -1}));
+          let roles = [...value.roles];
+          roles.forEach(role => role.isDefault = (roleIds.indexOf(role.id) > -1))
+
+          return teamsAdapter.updateOne({id:key, changes:{ roles : roles} }, state);
+        }
+      }
+      return state;
+    }
+  )
   // on(loadSuccess, (state, { team }) => teamsAdapter.upsertOne(team, state))
 );
+
 
 export const getTeamById = (id: number) => (state: State) => state.entities[id];

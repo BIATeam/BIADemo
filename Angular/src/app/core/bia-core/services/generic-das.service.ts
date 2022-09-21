@@ -86,8 +86,14 @@ export abstract class GenericDas {
     return environment.apiUrl + route;
   }
 
+  concatRoute(route: string, endpoint: string | undefined)
+  {
+    return route + `${endpoint ? endpoint + '/' : ''}`.replace('//', '/');
+  }
+
   getItem<TOut>(param?: GetParam): Observable<TOut> {
-    const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
+    const url = `${this.concatRoute(this.route,param?.endpoint)}${param?.id ?? ''}`;
+    //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
       map((data) => {
@@ -164,11 +170,12 @@ export abstract class GenericDas {
       });
     }
 
+    const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options));
+      return this.setWithCatchErrorOffline(this.http.post<TOut>(url, param.items, param.options));
     } else {
-      return this.http.post<TOut>(`${this.route}${param.endpoint}`, param.items, param.options);
+      return this.http.post<TOut>(url, param.items, param.options);
     }
   }
 
@@ -176,11 +183,12 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
+    const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options));
+      return this.setWithCatchErrorOffline(this.http.put<TOut>(url, param.item, param.options));
     } else {
-      return this.http.put<TOut>(`${this.route}${param.endpoint}${param.id}`, param.item, param.options);
+      return this.http.put<TOut>(url, param.item, param.options);
     }
   }
 
@@ -188,33 +196,36 @@ export abstract class GenericDas {
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
+    const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.post<TOut>(this.route, param.item, param.options));
+      return this.setWithCatchErrorOffline(this.http.post<TOut>(url, param.item, param.options));
     } else {
-      return this.http.post<TOut>(`${this.route}${param.endpoint}`, param.item, param.options);
+      return this.http.post<TOut>(url, param.item, param.options);
     }
   }
 
   deleteItem(param: DeleteParam) {
     param.endpoint = param.endpoint ?? '';
 
+    const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options));
+      return this.setWithCatchErrorOffline(this.http.delete<void>(url, param.options));
     } else {
-      return this.http.delete<void>(`${this.route}${param.endpoint}${param.id}`, param.options);
+      return this.http.delete<void>(url, param.options);
     }
   }
 
   deleteItems(param: DeletesParam) {
     param.endpoint = param.endpoint ?? '';
 
+    const url = `${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options));
+      return this.setWithCatchErrorOffline(this.http.delete<void>(url, param.options));
     } else {
-      return this.http.delete<void>(`${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`, param.options);
+      return this.http.delete<void>(url, param.options);
     }
   }
 

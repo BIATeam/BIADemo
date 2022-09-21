@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
     {
 
-        private const string CacheBeginKey = "BIAsid:";
+        private const string CacheBeginKey = "BIAXMLsid:";
 
         /// <summary>
         /// Groups cached.
@@ -654,7 +654,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
-            itemResolve = (SidResolvedGroup)await this.ldapRepositoryHelper.distributedCache.Get(CacheBeginKey + sid);
+            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(CacheBeginKey + sid);
             if (itemResolve != null)
             {
                 return itemResolve;
@@ -764,7 +764,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public async Task<TUserFromDirectory> ResolveUserBySid(string sid)
         {
             TUserFromDirectory itemResolve;
-            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.localCache.Get(CacheBeginKey + sid);
+            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.localCache.Get<TUserFromDirectory>(CacheBeginKey + sid);
             if (itemResolve != null)
             {
                 return itemResolve;

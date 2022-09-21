@@ -1,7 +1,7 @@
-import { Action, ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
-import { storeLogger } from 'ngrx-store-logger';
+import { Action, ActionReducerMap, MetaReducer } from '@ngrx/store';
 import { InjectionToken } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { logger } from '../build-specifics/bia-build-specifics';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppState {
@@ -13,8 +13,6 @@ export const ROOT_REDUCERS = new InjectionToken<ActionReducerMap<AppState, Actio
   factory: () => ({})
 });
 
-export function logger(reducer: ActionReducer<AppState>): any {
-  return storeLogger()(reducer);
-}
+
 
 export const metaReducers: MetaReducer<AppState>[] = environment.production ? [] : [logger];

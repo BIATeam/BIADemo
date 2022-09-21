@@ -39,15 +39,6 @@
       "us": "US"
     },
     "languages": "Languages",
-    "locale": {
-      "clear": "Clear",
-      "dayNames": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
-      "dayNamesMin": "Su,Mo,Tu,We,Th,Fr,Sa",
-      "dayNamesShort": "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
-      "monthNames": "January,February,March,April,May,June,July,August,September,October,November,December",
-      "monthNamesShort": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
-      "today": "Today"
-    },
     "new": "New",
     "no": "No",
     "NoRecordsFound": "No records found",
@@ -74,8 +65,13 @@
       "language": "Language",
       "translatedFields": "Translated fields"
     },
+    "useCalcMode": "Online editing",
+    "usePopup": "Use popups",
+    "useSignalR": "Always up to date",
+    "useView": "Views",
     "view": "View",
     "views": {
+      "current": "Current view",
       "default": "Default view",
       "defineDefault": "Set default",
       "description": "Description",

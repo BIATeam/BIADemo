@@ -31,6 +31,8 @@ export const getInitialLang = (supportedLangs: string[]) => {
 export interface DateFormat {
   dateFormat: string;
   dateTimeFormat: string;
+  primeDateFormat: string;
+  hourFormat: number;
   timeFormat: string;
   timeFormatSec: string
 }
@@ -147,7 +149,18 @@ export class BiaTranslationService {
         timeFormatSec = culture.timeFormatSec;
       }
     }
-    return { dateFormat: dateFormat, dateTimeFormat: `${dateFormat} ${timeFormat}`, timeFormat: timeFormat, timeFormatSec: timeFormatSec };
+    let primeDateFormat = dateFormat.replace("MM","mm").replace("yyyy","yy");
+    let hourFormat = 24;
+    if (timeFormat.indexOf("h:") > -1) 
+    {
+      hourFormat = 12
+    }
+    
+    return { dateFormat: dateFormat, 
+      dateTimeFormat: `${dateFormat} ${timeFormat}`, 
+      primeDateFormat: primeDateFormat,
+      hourFormat: hourFormat,
+      timeFormat: timeFormat, timeFormatSec: timeFormatSec };
   }
   private getLanguageId(code: string | null, appSettings: AppSettings| null): number {
     let LanguageId = 0;

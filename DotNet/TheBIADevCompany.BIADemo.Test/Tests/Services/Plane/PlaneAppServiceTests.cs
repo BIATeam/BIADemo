@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Plane;
@@ -115,6 +116,26 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             Assert.AreEqual(isActive, plane.IsActive);
             Assert.AreEqual(lastFlightDate, plane.LastFlightDate);
             Assert.AreEqual(msn, plane.Msn);
+        }
+
+        /// <summary>
+        /// Test parallel requests with readonly context.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
+        [TestMethod("PlaneAppServiceTests.GetInParallelAsyncTest")]
+        public async Task GetInParallelAsyncTest()
+        {
+            int id1 = 1;
+            int id2 = 2;
+
+            var task1 = this.service.GetAsync(id: id1, isReadOnlyMode: true);
+            var task2 = this.service.GetAsync(id: id2, isReadOnlyMode: true);
+
+            var obj1 = await task1;
+            var obj2 = await task2;
+
+            Assert.AreEqual(id1, obj1.Id);
+            Assert.AreEqual(id2, obj2.Id);
         }
     }
 }

@@ -40,6 +40,7 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
     ></bia-table>
     <bia-member-table *ngIf="useCalcMode"
+      [parentIds]="parentIds"
       [elements]="members$ | async"
       [dictOptionDtos]="memberOptionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"

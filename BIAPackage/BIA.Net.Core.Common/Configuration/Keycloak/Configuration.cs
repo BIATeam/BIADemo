@@ -10,6 +10,16 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
     public class Configuration
     {
         /// <summary>
+        /// Gets or sets IdpHint. Used to tell Keycloak which IDP the user wants to authenticate with.
+        /// </summary>
+        public string IdpHint { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Realm.
+        /// </summary>
+        public string Realm { get; set; }
+
+        /// <summary>
         /// Gets or sets the authority.
         /// </summary>
         public string Authority { get; set; }

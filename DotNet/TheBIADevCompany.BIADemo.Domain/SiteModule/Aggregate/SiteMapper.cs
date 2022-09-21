@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The mapper used for site.
@@ -28,10 +27,6 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                 {
                     { "Id", site => site.Id },
                     { "Title", site => site.Title },
-                    {
-                        "SiteAdmin", site =>
-                        site.Members.Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin)).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
-                    },
                 };
             }
         }
@@ -72,22 +67,6 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
             entity.Id = dto.Id;
             entity.Title = dto.Title;
             entity.TeamTypeId = (int)TeamTypeId.Site;
-        }
-
-        /// <summary>
-        /// Create a site info DTO from a entity.
-        /// </summary>
-        /// <returns>The site info DTO.</returns>
-        public Expression<Func<Site, SiteInfoDto>> EntityToSiteInfo()
-        {
-            return entity => new SiteInfoDto
-            {
-                Id = entity.Id,
-                Title = entity.Title,
-                SiteAdmins = entity.Members
-                    .Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin))
-                    .Select(s => new MemberInfoDto { UserFirstName = s.User.FirstName, UserLastName = s.User.LastName, UserLogin = s.User.Login }),
-            };
         }
     }
 }

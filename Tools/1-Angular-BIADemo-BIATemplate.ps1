@@ -143,16 +143,19 @@ function ReplaceProjectName {
   
 }
 
-RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules')
+RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
 
 Write-Host "Copy from $oldPath to $newPath"
-Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules')).FullName -Destination $newPath -Recurse -Force
+Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules', '.angular')).FullName -Destination $newPath -Recurse -Force
 
 Set-Location -Path $newPath
 
 New-Item -ItemType Directory -Path '.\docs'
 Write-Host "Zip plane"
 compress-archive -path '.\src\app\features\planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
+
+Write-Host "Zip plane full code"
+compress-archive -path '.\src\app\features\planes-full-code\*' -destinationpath '.\docs\feature-planes-full-code.zip' -compressionlevel optimal
 
 Write-Host "Zip airport option"
 compress-archive -path '.\src\app\domains\airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
@@ -171,20 +174,12 @@ RemoveFolder -path 'src\app\features\aircraft-maintenance-companies'
 
 Write-Host "RemoveFolder src\app\features\planes"
 RemoveFolder -path 'src\app\features\planes'
-Write-Host "RemoveFolder src\app\features\planes-popup"
-RemoveFolder -path 'src\app\features\planes-popup'
-Write-Host "RemoveFolder src\app\features\planes-page"
-RemoveFolder -path 'src\app\features\planes-page'
-Write-Host "RemoveFolder src\app\features\planes-view"
-RemoveFolder -path 'src\app\features\planes-view'
+Write-Host "RemoveFolder src\app\features\planes-full-code"
+RemoveFolder -path 'src\app\features\planes-full-code'
+Write-Host "RemoveFolder src\app\features\planes-specific"
+RemoveFolder -path 'src\app\features\planes-specific'
 Write-Host "RemoveFolder src\app\features\planes-types"
 RemoveFolder -path 'src\app\features\planes-types'
-Write-Host "RemoveFolder src\app\features\planes-signalR"
-RemoveFolder -path 'src\app\features\planes-signalR'
-Write-Host "RemoveFolder src\app\features\planes-calc"
-RemoveFolder -path 'src\app\features\planes-calc'
-Write-Host "RemoveFolder src\app\features\planes-offline"
-RemoveFolder -path 'src\app\features\planes-offline'
 Write-Host "RemoveFolder src\app\features\airports"
 RemoveFolder -path 'src\app\features\airports'
 Write-Host "RemoveFolder src\app\features\hangfire"
@@ -201,17 +196,17 @@ RemoveFolder -path 'src\app\domains\plane-type-option'
 #RemoveFolderContentss -path 'src\assets\bia\primeng\theme' -extension '*.scss'
 
 Write-Host "Remove BIA demo only files"
-RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules')
+RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular')
 
 Write-Host "Remove Empty Folder"
-RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', 'PublishProfiles','RepoContract')
+RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'PublishProfiles','RepoContract')
 
 Write-Host "Remove code example partial files"
-RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', 'docs', 'scss' )
+RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'docs', 'scss' )
 
 Write-Host "replace project name"
-ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'scss')
-ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', 'scss')
+ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
+ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 
 # Write-Host "npm install"
 # npm install

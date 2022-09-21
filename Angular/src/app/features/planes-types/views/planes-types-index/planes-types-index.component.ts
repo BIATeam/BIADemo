@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getAllPlanesTypes, getPlanesTypesTotalCount, getPlaneTypeLoadingGetAll } from '../../store/plane-type.state';
 import {
@@ -8,15 +8,15 @@ import {
   openDialogEdit,
   openDialogNew
 } from '../../store/planes-types-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { PlaneType } from '../../model/plane-type';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
+  BiaFieldsConfig,
+  BiaFieldConfig,
   PropType
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -32,9 +32,10 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
   templateUrl: './planes-types-index.component.html',
   styleUrls: ['./planes-types-index.component.scss']
 })
-export class PlanesTypesIndexComponent implements OnInit {
+export class PlanesTypesIndexComponent implements OnInit, OnDestroy {
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) planeTypeListComponent: BiaTableComponent;
+  private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -47,18 +48,18 @@ export class PlanesTypesIndexComponent implements OnInit {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
-
+  
   constructor(
     private store: Store<AppState>,
     private authService: AuthService,
     private planeTypeDas: PlaneTypeDas,
     private translateService: TranslateService,
     private biaTranslationService: BiaTranslationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.initTableConfiguration();
@@ -66,6 +67,12 @@ export class PlanesTypesIndexComponent implements OnInit {
     this.planesTypes$ = this.store.select(getAllPlanesTypes);
     this.totalCount$ = this.store.select(getPlanesTypesTotalCount);
     this.loading$ = this.store.select(getPlaneTypeLoadingGetAll);
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   onCreate() {
@@ -113,7 +120,7 @@ export class PlanesTypesIndexComponent implements OnInit {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.planeTypeListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.planeTypeListComponent.getLazyLoadMetadata() };
     this.planeTypeDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.planesTypes') + '.csv');
@@ -127,11 +134,11 @@ export class PlanesTypesIndexComponent implements OnInit {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('title', 'planeType.title'),
-          Object.assign(new PrimeTableColumn('certificationDate', 'planeType.certificationDate'), {
+          new BiaFieldConfig('title', 'planeType.title'),
+          Object.assign(new BiaFieldConfig('certificationDate', 'planeType.certificationDate'), {
             type: PropType.Date,
             formatDate: dateFormat.dateTimeFormat
           })
@@ -140,6 +147,6 @@ export class PlanesTypesIndexComponent implements OnInit {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

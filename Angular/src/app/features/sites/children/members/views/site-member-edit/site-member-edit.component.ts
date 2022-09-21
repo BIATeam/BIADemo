@@ -17,7 +17,7 @@ export class SiteMemberEditComponent extends MemberEditComponent implements OnIn
   }
 
   ngOnInit() {
-    this.teamId = this.siteService.currentSiteId;
+    this.teamId = this.siteService.currentCrudItemId;
     this.teamTypeId=TeamTypeId.Site;
     super.ngOnInit();
   }

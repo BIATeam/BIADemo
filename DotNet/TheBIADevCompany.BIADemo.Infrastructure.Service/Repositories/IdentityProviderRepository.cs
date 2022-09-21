@@ -2,7 +2,7 @@
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace Safran.EZwins.Infrastructure.Service.Repositories
+namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System;
     using System.Collections.Generic;
@@ -14,6 +14,7 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Meziantou.Framework.Win32;
+    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -24,14 +25,9 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
-    /// <seealso cref="Safran.EZwins.Domain.RepoContract.IWorkInstructionRepository" />
+    /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
     public class IdentityProviderRepository : WebApiRepository, IIdentityProviderRepository
     {
-        /// <summary>
-        /// The Bearer.
-        /// </summary>
-        protected const string Bearer = "Bearer";
-
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
@@ -43,8 +39,9 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
-        public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger)
-            : base(httpClient, logger)
+        /// <param name="distributedCache">The distributed cache.</param>
+        public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IDistributedCache distributedCache)
+            : base(httpClient, logger, distributedCache)
         {
             this.configuration = configuration.Value;
         }
@@ -57,23 +54,20 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
                 return null;
             }
 
-            await this.FillTokenAsync();
-
             string searchUrl = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.SearchUserRelativeUrl}?first=0&max={returnSize}&search={search}";
 
-            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(searchUrl)).Result;
+            List<SearchUserResponseDto> searchUserResponseDtos = (await this.GetAsync<List<SearchUserResponseDto>>(url: searchUrl, useBearerToken: true)).Result;
             List<UserFromDirectory> userFromDirectories = this.ConvertToUserDirectory(searchUserResponseDtos);
 
             return userFromDirectories;
         }
 
-        /// <summary>
-        /// Fill the token.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected virtual async Task FillTokenAsync()
+        /// <inheritdoc />
+        protected override async Task<string> GetBearerTokenAsync()
         {
-            if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl) && this.HttpClient.DefaultRequestHeaders.Authorization?.Scheme != Bearer)
+            string token = null;
+
+            if (!string.IsNullOrWhiteSpace(this.configuration.Authentication.Keycloak.BaseUrl))
             {
                 string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
@@ -89,13 +83,11 @@ namespace Safran.EZwins.Infrastructure.Service.Repositories
                     Password = cred?.Password,
                 };
 
-                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url, tokenRequestDto, true)).Result;
-
-                if (!string.IsNullOrWhiteSpace(tokenResponseDto?.AccessToken))
-                {
-                    this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, tokenResponseDto?.AccessToken);
-                }
+                TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true, useBearerToken: false)).Result;
+                token = tokenResponseDto?.AccessToken;
             }
+
+            return token;
         }
 
         /// <summary>

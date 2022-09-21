@@ -5,6 +5,8 @@
 
 namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
@@ -13,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
@@ -36,7 +39,18 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             : base(repository)
         {
             this.currentAircraftMaintenanceCompanyId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany);
-            this.filtersContext.Add(AccessMode.Read, new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId));
+
+            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            bool accessAll = currentUserPermissions?.Any(x => x == Rights.MaintenanceTeams.ListViewAll) == true;
+            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+
+            this.filtersContext.Add(
+                AccessMode.Read,
+                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && (accessAll || p.Members.Any(m => m.UserId == userId || p.AircraftMaintenanceCompany.Members.Any(m => m.UserId == userId)))));
+
+            this.filtersContext.Add(
+                AccessMode.Update,
+                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && p.Id == this.currentAircraftMaintenanceCompanyId));
         }
 
         /// <inheritdoc/>

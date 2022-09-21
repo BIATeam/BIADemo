@@ -6,14 +6,19 @@
     <div><b>{{ 'notification.createdDate' | translate }}</b><br />{{ notification.createdDate | date:'short' }}</div>
     <div><b>{{ 'notification.type.title' | translate }}</b><br />{{ notification.type.display }}</div>
   </div>
-  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
-    <bia-notification-team-warning [notification]="notification"></bia-notification-team-warning>
-    <button pButton [label]="notification.data?.display ?? 'notification.action' | translate" type="button"
-      class="p-button-primary" (click)="onAction(notification)" *ngIf="canAction(notification)"></button>
-    <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="p-button-secondary" (click)="onEdit()"
-      *ngIf="canEdit"></button>
-    <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="p-button-secondary"
-      (click)="onCancelled()"></button>
+  <div fxLayout="row" fxLayoutAlign="space-between center" >
+    <button pButton label="{{'notification.setUnread' | translate}}" type="button"
+    class="p-button-secondary" (click)="onSetUnread(notification.id)" *ngIf="notification.read"></button>
+    <span></span>
+    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+      <bia-notification-team-warning [notification]="notification"></bia-notification-team-warning>
+      <button pButton [label]="notification.data?.display ?? 'notification.action' | translate" type="button"
+        class="p-button-primary" (click)="onAction(notification)" *ngIf="canAction(notification)"></button>
+      <button pButton label="{{ 'bia.edit' | translate }}" type="button" class="p-button-secondary" (click)="onEdit()"
+        *ngIf="canEdit"></button>
+      <button pButton label="{{ 'bia.cancel' | translate }}" type="button" class="p-button-secondary"
+        (click)="onCancelled()"></button>
+    </div>
   </div>
 </ng-container>
 <bia-spinner *ngIf="loading$ | async" [overlay]="true"></bia-spinner>

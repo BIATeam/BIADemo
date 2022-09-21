@@ -6,3 +6,11 @@
     }
     line-height: 2.143em!important;
 }
+
+
+.bia-table-controller-container {
+  padding-top: 10px;
+  white-space: nowrap;
+  .pi.disabled {opacity: $disabledOpacity!important;}
+  .pi.enable {color:$primaryColor!important}
+}

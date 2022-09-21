@@ -9,10 +9,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         Task AddDefaultMode(string key, object item, double cacheDurationInMinute);
         Task AddDistributed(string sid, object item, double cacheDurationInMinute);
         Task AddLocal(string key, object item, double cacheDurationInMinute);
-        Task<object> GetAllSources(string key);
-        Task<object> GetDefaultMode(string key);
-        Task<object> GetLocal(string key);
-        Task<object> GetDistibuted(string key);
+        Task<T> GetAllSources<T>(string key);
+        Task<T> GetDefaultMode<T>(string key);
+        Task<T> GetLocal<T>(string key);
+        Task<T> GetDistibuted<T>(string key);
         Task RemoveAllSources(string key);
         Task RemoveDefaultMode(string key);
         Task RemoveDistributed(string key);
