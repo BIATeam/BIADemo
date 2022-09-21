@@ -10,6 +10,7 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
     
@@ -36,15 +37,17 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
         }
 
         /// <summary>
-        /// Send Message 
+        /// Send Message to a specific endpoint.
         /// </summary>
-        /// <param name="endpoint"></param>
-        /// <param name="queueName"></param>
-        /// <param name="body"></param>
-        /// <returns></returns>
-        public bool SendMessage(string endpoint, string queueName, object body)
+        /// <param name="endpoint">The message endpoint destination.</param>
+        /// <param name="queueName">The name of the destination queue.</param>
+        /// <param name="body">The message body.</param>
+        /// <param name="user">The optional username.</param>
+        /// <param name="password">The optional password.</param>
+        /// <returns>The result of the sending.</returns>
+        public bool SendMessage(string endpoint, string queueName, object body, string user = null, string password = null)
         {
-            IModel channel = GetChannelByEndpointAndQueueName(endpoint, queueName);
+            IModel channel = GetChannelByEndpointAndQueueName(endpoint, queueName, user, password);
 
             using (MemoryStream stream = new MemoryStream())
             {
@@ -61,9 +64,18 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             return true;
         }
 
-        public void ReceiveMessage<T>(string endpoint, string queueName, Action<T> action) where T : class
+        /// <summary>
+        /// Recieve a message.
+        /// </summary>
+        /// <typeparam name="T">The type of the body.</typeparam>
+        /// <param name="endpoint">The endpoint to listen.</param>
+        /// <param name="queueName">the queue nameto listen.</param>
+        /// <param name="action">The action to perform.</param>
+        /// <param name="user">The optional username.</param>
+        /// <param name="password">The optional password.</param>
+        public void ReceiveMessage<T>(string endpoint, string queueName, Action<T> action, string user = null, string password = null) where T : class
         {
-            var channel = GetChannelByEndpointAndQueueName(endpoint, queueName);
+            var channel = GetChannelByEndpointAndQueueName(endpoint, queueName, user, password);
 
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, ea) =>
@@ -103,16 +115,16 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             connectionFactories.Clear();
         }
 
-        private IModel GetChannelByEndpointAndQueueName(string endpoint, string queueName)
+        private IModel GetChannelByEndpointAndQueueName(string endpoint, string queueName, string user, string password)
         {
-            string key = $"%_{endpoint}_{queueName}_%";
+            string key = $"%_{endpoint}_{queueName}_{user ?? "guest"}_%";
 
             if (channels.ContainsKey(key))
             {
                 return channels[key];
             }
 
-            IConnection connection = GetConnectionByEndpoint(endpoint);
+            IConnection connection = GetConnectionByEndpoint(endpoint, user, password);
             IModel channel = connection.CreateModel();
 
             channel.QueueDeclare(queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
@@ -122,15 +134,26 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             return channel;
         }
 
-        private IConnection GetConnectionByEndpoint(string endpoint)
+        private IConnection GetConnectionByEndpoint(string endpoint, string user, string password)
         {
-            if (connections.ContainsKey(endpoint))
+            string key = $"_{endpoint}_{user ?? "guest"}_";
+
+            if (connections.ContainsKey(key))
             {
-                return connections[endpoint];
+                return connections[key];
             }
 
-            ConnectionFactory connectionFactory = connectionFactories.ContainsKey(endpoint) ? connectionFactories[endpoint] : new ConnectionFactory { HostName = endpoint };
-            connectionFactories.Add(endpoint, connectionFactory);
+            ConnectionFactory connectionFactory = connectionFactories.ContainsKey(key) ? connectionFactories[key] :
+                user == null ? new ConnectionFactory { HostName = endpoint, Port = AmqpTcpEndpoint.UseDefaultPort} :
+                new ConnectionFactory
+                {
+                    UserName = user,
+                    Password = password,
+                    VirtualHost = "/",
+                    HostName = endpoint,
+                    Port = AmqpTcpEndpoint.UseDefaultPort,
+                };
+            connectionFactories.Add(key, connectionFactory);
 
             IConnection connection = connectionFactory.CreateConnection();
             connections.Add(endpoint, connection);

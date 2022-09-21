@@ -17,8 +17,14 @@ namespace BIA.Net.Queue.Domain.Dto.FileQueue
         /// </summary>
         public string FileName { get; set; }
 
-        public string? OutputPath { get; set; }
+        /// <summary>
+        /// Gets or Sets the output path folder to put the file.
+        /// </summary>
+        public string OutputPath { get; set; }
 
+        /// <summary>
+        /// Gets or sets the data of the files en bytes.
+        /// </summary>
         public byte[] Data { get; set; }
     }
 }

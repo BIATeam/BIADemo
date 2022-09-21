@@ -11,6 +11,7 @@ namespace BIA.Net.Queue.Infrastructure.Service.Repositories
     using BIA.Net.Queue.Infrastructure.Service.Helpers;
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Threading;
 
     /// <summary>
@@ -66,9 +67,31 @@ namespace BIA.Net.Queue.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc />
+        public IDisposable Subscribe(IObserver<FileQueueDto> observer, string user, string password)
+        {
+            // Check whether observer is already registered. If not, add it
+            if (!observers.Contains(observer))
+            {
+                observers.Add(observer);
+
+                foreach (QueueDto queue in queues)
+                {
+                    queuesHelper.ReceiveMessage<FileQueueDto>(queue.Endpoint, queue.QueueName, observer.OnNext, user, password);
+                }
+            }
+            return new Unsubscriber<FileQueueDto>(observers, observer);
+        }
+
+        /// <inheritdoc />
         public bool SendFile(string endpoint, string queueName, FileQueueDto file)
         {
              return queuesHelper.SendMessage(endpoint, queueName, file);
+        }
+
+        /// <inheritdoc />
+        public bool SendFile(string endpoint, string queueName, FileQueueDto file, string user, string password)
+        {
+            return queuesHelper.SendMessage(endpoint, queueName, file, user, password);
         }
 
         /// <summary>
