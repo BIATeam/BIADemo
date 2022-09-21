@@ -275,7 +275,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
+    const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudItemListComponent.advancedFilter, parentIds: this.parentIds, ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
   }
 

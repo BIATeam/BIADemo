@@ -7,7 +7,6 @@ import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templ
 import { SiteService } from '../../services/site.service';
 import { SiteTableComponent } from '../../components/site-table/site-table.component';
 import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
-import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
   selector: 'app-sites-index',
@@ -21,16 +20,6 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   checkHaveAdvancedFilter()
   {
     this.haveAdvancedFilter =  SiteAdvancedFilter.haveFilter(this.crudItemListComponent.advancedFilter);
-  }
-
-  onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    //const userId: number = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0 ? this.crudItemListComponent.advancedFilter.userId : 0;
-    const customEvent: any = { advancedFilter: this.crudItemListComponent.advancedFilter, ...lazyLoadEvent };
-    super.onLoadLazy(customEvent)
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
   }
   
   @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;

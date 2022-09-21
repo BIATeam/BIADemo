@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Site;
@@ -116,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         }
 
         /// <summary>
-        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(SiteFilterDto)"/> method when user:
+        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto<SiteAdvancedFilterDto>)"/> method when user:
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
@@ -148,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            SiteFilterDto filters = new SiteFilterDto()
+            PagingFilterFormatDto<SiteAdvancedFilterDto> filters = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
             {
                 Filters = new Dictionary<string, Dictionary<string, object>>(),
             };

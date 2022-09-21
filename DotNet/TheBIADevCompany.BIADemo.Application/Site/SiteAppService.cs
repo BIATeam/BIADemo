@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
@@ -21,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     /// <summary>
     /// The application service used for site.
     /// </summary>
-    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, SiteFilterDto, SiteMapper>, ISiteAppService
+    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto<SiteAdvancedFilterDto>, SiteMapper>, ISiteAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SiteAppService"/> class.
@@ -48,9 +49,9 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         }
 
         /// <inheritdoc cref="ISiteAppService.GetRangeWithMembersAsync"/>
-        public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetRangeWithMembersAsync(SiteFilterDto filters)
+        public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetRangeWithMembersAsync(PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
         {
-            return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters));
+            return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, PagingFilterFormatDto<SiteAdvancedFilterDto>>(filters: filters, specification: SiteSpecification.SearchGetAll(filters));
         }
 
         /// <inheritdoc cref="ISiteAppService.GetWithMembersAsync"/>

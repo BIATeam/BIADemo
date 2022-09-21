@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
 {
     using System.Linq;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
@@ -20,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         /// <returns>
         /// The specification.
         /// </returns>
-        public static Specification<Site> SearchGetAll(SiteFilterDto filter)
+        public static Specification<Site> SearchGetAll(PagingFilterFormatDto<SiteAdvancedFilterDto> filter)
         {
             Specification<Site> specification = new TrueSpecification<Site>();
 

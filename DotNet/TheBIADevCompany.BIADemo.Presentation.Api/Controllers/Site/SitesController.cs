@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -58,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Sites.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] SiteFilterDto filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
         {
             var (results, total) = await this.siteService.GetRangeWithMembersAsync(filters);
 

@@ -6,11 +6,17 @@ namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
     using System.Text;
+    /// <summary>
+    /// The DTO used for lazy loading with filters, sort and paging.
+    /// </summary>
+    public class PagingFilterFormatDto : PagingFilterFormatDto<object>
+    {
+    }
 
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
-    public class PagingFilterFormatDto : LazyLoadDto
+    public class PagingFilterFormatDto<TAdvancedFilter> : LazyLoadDto
     {
         /// <summary>
         /// Gets or sets the parent ids.
@@ -21,6 +27,11 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// Name of the property and her translation for file export.
         /// </summary>
         public Dictionary<string, string> Columns { get; set; }
+
+        /// <summary>
+        /// Name of the property and her translation for file export.
+        /// </summary>
+        public TAdvancedFilter AdvancedFilter { get; set; }
 
         /// <summary>
         /// Returns a string that represents of the current object.

@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
+    using BIA.Net.Core.Domain.Dto.Base;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -194,10 +195,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            SiteFilterDto filter = new SiteFilterDto()
+            PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
             {
                 Filters = null,
-                UserId = 1,
+                AdvancedFilter = new SiteAdvancedFilterDto () { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);
