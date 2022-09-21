@@ -24,10 +24,10 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         {
             Specification<Site> specification = new TrueSpecification<Site>();
 
-            if (filter.UserId > 0)
+            if (filter.AdvancedFilter?.UserId > 0)
             {
                 specification &= new DirectSpecification<Site>(s =>
-                    s.Members.Any(a => a.UserId == filter.UserId));
+                    s.Members.Any(a => a.UserId == filter.AdvancedFilter.UserId));
             }
 
             return specification;

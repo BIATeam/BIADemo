@@ -1,8 +1,6 @@
 <div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
-  <app-site-filter
-    [hidden]="!showFilter"
+  <app-site-filter *ngIf="showAdvancedFilter"
     [fxFlexValue]="25"
-    [userOptions]="userOptions$ | async"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudItemListComponent?.advancedFilter"
@@ -19,8 +17,8 @@
       [selectedElements]="selectedCrudItems"
 
       [showBtnFilter]="true"
-      [showFilter]="showFilter"
-      [haveFilter]="haveFilter"
+      [showFilter]="showAdvancedFilter"
+      [haveFilter]="haveAdvancedFilter"
       (openFilter)="onOpenFilter()"
     >
     <!-- // Custo for teams -->

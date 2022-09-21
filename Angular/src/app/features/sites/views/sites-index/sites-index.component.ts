@@ -7,11 +7,6 @@ import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templ
 import { SiteService } from '../../services/site.service';
 import { SiteTableComponent } from '../../components/site-table/site-table.component';
 import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
-import { DEFAULT_VIEW } from 'src/app/shared/constants';
-import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
-import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
-import { Observable } from 'rxjs';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { LazyLoadEvent } from 'primeng/api';
 
 @Component({
@@ -21,60 +16,21 @@ import { LazyLoadEvent } from 'primeng/api';
 })
 
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
-  
-  showFilter = false;
-  haveFilter = false;
-  userOptions$: Observable<OptionDto[]>;
   canManageMembers = false;
 
-  onFilter(advancedFilter: SiteAdvancedFilter) {
-    this.crudItemListComponent.advancedFilter = advancedFilter;
-    this.crudItemListComponent.saveStateNoEmit();
-    this.haveFilter = advancedFilter && advancedFilter.userId > 0;
-    this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
-  }
-
-  onViewChange(viewPreference: string) {
-    this.updateAdvancedFilterByView(viewPreference);
-    super.onViewChange(viewPreference)
-  }
-
-  private updateAdvancedFilterByView(viewPreference: string) {
-    let haveFilter = false;
-
-    if (viewPreference && viewPreference !== DEFAULT_VIEW) {
-      const state = JSON.parse(viewPreference);
-      if (state) {
-        this.crudItemListComponent.advancedFilter = state.advancedFilter;
-        haveFilter = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0;
-      }
-    }
-    
-    this.haveFilter = haveFilter;
-  }
-
-  onCloseFilter() {
-    this.showFilter = false;
-  }
-
-  onOpenFilter() {
-    this.showFilter = true;
+  checkHaveAdvancedFilter()
+  {
+    this.haveAdvancedFilter =  SiteAdvancedFilter.haveFilter(this.crudItemListComponent.advancedFilter);
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const userId: number = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0 ? this.crudItemListComponent.advancedFilter.userId : 0;
-    const customEvent: any = { userId: userId, ...lazyLoadEvent };
+    //const userId: number = this.crudItemListComponent.advancedFilter && this.crudItemListComponent.advancedFilter.userId > 0 ? this.crudItemListComponent.advancedFilter.userId : 0;
+    const customEvent: any = { advancedFilter: this.crudItemListComponent.advancedFilter, ...lazyLoadEvent };
     super.onLoadLazy(customEvent)
-  }
-  
-  private initUsers() {
-    this.store.dispatch(DomainUserOptionsActions.loadAll());
-    this.userOptions$ = this.store.select(getAllUserOptions);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.initUsers();
   }
   
   @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;

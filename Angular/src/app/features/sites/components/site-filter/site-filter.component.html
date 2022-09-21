@@ -17,9 +17,10 @@
         <div class="app-filter-container" fxFlex="90">
           <span class="p-float-label">
             <p-dropdown
-            [options]="userOptions"
+            [options]="userOptions$ | async"
             placeholder="&nbsp;"
             formControlName="userSelected"
+            optionValue="id"
             optionLabel="display"
             datakey="id"
             [style]="{ width: '100%' }"
@@ -27,7 +28,7 @@
             appendTo="body"
             filter=true
           ></p-dropdown>
-          <label>{{ 'site.selectUser' | translate }}</label>
+          <label>{{ 'site.filterMember' | translate }}</label>
         </span>
         </div>
       </div>

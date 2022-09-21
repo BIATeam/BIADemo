@@ -12,8 +12,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Site
     public class SiteFilterDto : LazyLoadDto
     {
         /// <summary>
-        /// Gets or sets the user identifier.
+        /// Gets or sets the advancedFilter.
         /// </summary>
-        public int UserId { get; set; }
+        public SiteAdvancedFilterDto AdvancedFilter { get; set; }
     }
 }

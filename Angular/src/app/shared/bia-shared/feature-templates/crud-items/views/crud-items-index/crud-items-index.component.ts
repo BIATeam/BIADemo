@@ -7,7 +7,7 @@ import {
   BiaFieldConfig,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
+import { DEFAULT_PAGE_SIZE, DEFAULT_VIEW, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
@@ -293,6 +293,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onViewChange(viewPreference: string) {
     this.viewPreference = viewPreference;
+    this.updateAdvancedFilterByView(viewPreference);
   }
 
   onStateSave(tableState: string) {
@@ -324,5 +325,41 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       this.columns = this.crudConfiguration.fieldsConfig.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
     //}));
+  }
+
+
+  // Advanced Filter;
+  showAdvancedFilter = false;
+  haveAdvancedFilter = false;
+
+
+  onFilter(advancedFilter: any) {
+    this.crudItemListComponent.advancedFilter = advancedFilter;
+    this.crudItemListComponent.saveStateNoEmit();
+    this.checkHaveAdvancedFilter();
+    this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+  }
+
+  checkHaveAdvancedFilter()
+  {
+    this.haveAdvancedFilter =  false;
+  }
+
+  private updateAdvancedFilterByView(viewPreference: string) {
+    if (viewPreference && viewPreference !== DEFAULT_VIEW) {
+      const state = JSON.parse(viewPreference);
+      if (state) {
+        this.crudItemListComponent.advancedFilter = state.advancedFilter;
+        this.checkHaveAdvancedFilter();
+      }
+    }
+  }
+
+  onCloseFilter() {
+    this.showAdvancedFilter = false;
+  }
+
+  onOpenFilter() {
+    this.showAdvancedFilter = true;
   }
 }

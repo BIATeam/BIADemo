@@ -11,7 +11,12 @@ import {
   OnChanges
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { AppState } from 'src/app/store/state';
 import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 
 @Component({
@@ -22,17 +27,19 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 export class SiteFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() fxFlexValue: string;
-  @Input() userOptions: OptionDto[];
   @Input() hidden = false;
   @Input() advancedFilter: SiteAdvancedFilter;
   @Output() closeFilter = new EventEmitter();
   @Output() searchUsers = new EventEmitter<string>();
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 
+  userOptions$: Observable<OptionDto[]>;
   firstChange = true;
   form: FormGroup;
   
-  constructor(public formBuilder: FormBuilder,private viewContainerRef: ViewContainerRef) {
+  constructor(public formBuilder: FormBuilder,
+    private viewContainerRef: ViewContainerRef,
+    protected store: Store<AppState>) {
     this.initForm();
   }
 
@@ -45,6 +52,12 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   ngOnInit() {
     // The goal here is that the html content of the component is not contained in its tag "app-user-filter".
     this.viewContainerRef.createEmbeddedView(this.template);
+    this.initUsers();
+  }
+
+  private initUsers() {
+    this.store.dispatch(DomainUserOptionsActions.loadAll());
+    this.userOptions$ = this.store.select(getAllUserOptions);
   }
 
   onClose() {
@@ -60,7 +73,7 @@ export class SiteFilterComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       const vm = this.form.value;
       const advancedFilter = <SiteAdvancedFilter>{
-        userId: vm.userSelected ? vm.userSelected.id : 0
+        userId: vm.userSelected
       };
       this.filter.emit(advancedFilter);
     }
@@ -71,20 +84,12 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.advancedFilter && this.allDataLoaded() && (this.firstChange === true || changes.advancedFilter)) {
+    if (this.advancedFilter && (this.firstChange === true || changes.advancedFilter)) {
       this.firstChange = false;
-      const vm = {
-        userSelected: this.advancedFilter.userId
-          ? this.userOptions.find((x) => this.advancedFilter.userId == x.id)
-          : null,
-      };
-      this.form.patchValue({ ...vm });
+        const vm = {
+          userSelected: this.advancedFilter.userId
+        };
+        this.form.patchValue({ ...vm });
     }
-  }
-  private allDataLoaded(): boolean {
-    return (
-      this.userOptions &&
-      this.userOptions.length > 0
-    );
   }
 }
