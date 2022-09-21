@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.1</Version>
+    <Version>1.1.1</Version>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
     <Description>Infrastructure service layer classes for BIA.Net Queue Framework</Description>
