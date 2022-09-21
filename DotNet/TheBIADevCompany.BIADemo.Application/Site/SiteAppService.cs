@@ -24,11 +24,6 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, SiteFilterDto, SiteMapper>, ISiteAppService
     {
         /// <summary>
-        /// The claims principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SiteAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -36,34 +31,32 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         public SiteAppService(ITGenericRepository<Site, int> repository, IPrincipal principal)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            int currentId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+
+            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
+            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+
+            this.filtersContext.Add(
+                AccessMode.Read,
+                new DirectSpecification<Site>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
+
+            this.filtersContext.Add(
+                AccessMode.Update,
+                new DirectSpecification<Site>(p => p.Id == currentId));
         }
 
-        /// <inheritdoc cref="ISiteAppService.GetAllWithMembersAsync"/>
-        public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetAllWithMembersAsync(SiteFilterDto filters)
+        /// <inheritdoc cref="ISiteAppService.GetRangeWithMembersAsync"/>
+        public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetRangeWithMembersAsync(SiteFilterDto filters)
         {
-            UserDataDto userData = this.principal.GetUserData<UserDataDto>();
-            IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
-            int siteId = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true ? default : userData.GetCurrentTeamId((int)TeamTypeId.Site);
-
-            return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters, siteId));
+            return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, SiteFilterDto>(filters: filters, specification: SiteSpecification.SearchGetAll(filters));
         }
 
-        /// <inheritdoc cref="ISiteAppService.GetAllAsync"/>
-        public async Task<IEnumerable<SiteDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
+        /// <inheritdoc cref="ISiteAppService.GetWithMembersAsync"/>
+        public async Task<SiteInfoDto> GetWithMembersAsync(int id)
         {
-            userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
-            userId = userId > 0 ? userId : this.principal.GetUserId();
-
-            SiteMapper mapper = this.InitMapper<SiteDto, SiteMapper>();
-            if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
-            {
-                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));
-            }
-            else
-            {
-                return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId), specification: new DirectSpecification<Site>(site => site.Members.Any(member => member.UserId == userId)));
-            }
+            return await this.GetAsync<SiteInfoDto, SiteInfoMapper>(id: id);
         }
     }
 }

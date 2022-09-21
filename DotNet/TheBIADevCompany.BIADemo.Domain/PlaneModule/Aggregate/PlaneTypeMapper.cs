@@ -6,6 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -22,9 +24,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 return new ExpressionCollection<PlaneType>
                 {
-                    { "Id", planeType => planeType.Id },
-                    { "Title", planeType => planeType.Title },
-                    { "CertificationDate", planeType => planeType.CertificationDate },
+                    { HeaderName.Id, planeType => planeType.Id },
+                    { HeaderName.Title, planeType => planeType.Title },
+                    { HeaderName.CertificationDate, planeType => planeType.CertificationDate },
                 };
             }
         }
@@ -54,13 +56,51 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneTypeDto, object[]> DtoToRecord()
+        public override Func<PlaneTypeDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
-            return x => new object[]
+            return x =>
             {
-                CSVString(x.Title),
-                CSVDateTime(x.CertificationDate),
+                List<object> records = new List<object>();
+
+                if (headerNames?.Any() == true)
+                {
+                    foreach (string headerName in headerNames)
+                    {
+                        if (string.Equals(headerName, HeaderName.Title, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Title));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CertificationDate, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.CertificationDate));
+                        }
+                    }
+                }
+
+                return records.ToArray();
             };
+        }
+
+        /// <summary>
+        /// Header Name.
+        /// </summary>
+        public struct HeaderName
+        {
+            /// <summary>
+            /// header name Id.
+            /// </summary>
+            public const string Id = "id";
+
+            /// <summary>
+            /// header name Title.
+            /// </summary>
+            public const string Title = "title";
+
+            /// <summary>
+            /// header name Certification Date.
+            /// </summary>
+            public const string CertificationDate = "certificationDate";
         }
     }
 }

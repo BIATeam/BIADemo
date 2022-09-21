@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Copyright>Copyright © BIA 2021</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.6.0</Version>
+    <Version>3.7.0</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>
@@ -14,11 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
+    <EmbeddedResource Remove="Authentication\**" />
+    <None Remove="Authentication\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.5" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
+    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,10 +39,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Authentication\" />
   </ItemGroup>
 
 </Project>

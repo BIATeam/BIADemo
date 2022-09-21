@@ -39,15 +39,6 @@
       "us": "US"
     },
     "languages": "Langue",
-    "locale": {
-      "clear": "Effacer",
-      "dayNames": "Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi",
-      "dayNamesMin": "Di,Lu,Ma,Me,Je,Ve,Sa",
-      "dayNamesShort": "Dim,Lun,Mar,Mer,Jeu,Ven,Sam",
-      "monthNames": "Janvier,Février,Mars,Avril,Mai,Juin,Juillet,Août,Septembre,Octobre,Novembre,Décembre",
-      "monthNamesShort": "Jan,Fév,Mar,Avr,Mai,Jun,Jul,Aoû,Sep,Oct,Nov,Déc",
-      "today": "Aujourd'hui"
-    },
     "new": "Nouveau",
     "no": "Non",
     "NoRecordsFound": "Aucun enregistrement trouvé",
@@ -74,8 +65,13 @@
       "language": "Langage",
       "translatedFields": "Champs traduits"
     },
+    "useCalcMode": "Edition en ligne",
+    "usePopup": "Utiliser les popups",
+    "useSignalR": "Toujours à jour",
+    "useView": "Vues",
     "view": "Voir",
     "views": {
+      "current": "Vue courante",
       "default": "Vue par défaut",
       "defineDefault": "Définir par défaut",
       "description": "Description",
@@ -136,8 +132,8 @@
     "dateAfter": "Date est après",
     "clear": "Effacer",
     "apply": "Appliquer",
-    "matchAll": "Match All",
-    "matchAny": "Match Any",
+    "matchAll": "Tous correspondent",
+    "matchAny": "Aucune correspondance",
     "addRule": "Ajouter une règle",
     "removeRule": "Supprimer une règle",
     "accept": "Oui",
@@ -146,7 +142,13 @@
     "upload": "Upload",
     "cancel": "Annuler",
     "dayNames": [
-      "Dimanche,Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi"
+      "Dimanche",
+      "Lundi",
+      "Mardi",
+      "Mercredi",
+      "Jeudi",
+      "Vendredi",
+      "Samedi"
     ],
     "dayNamesShort": [
       "Dim",
@@ -196,12 +198,12 @@
     ],
     "dateFormat": "mm/dd/yy",
     "today": "Aujourd'hui",
-    "weekHeader": "Wk",
-    "weak": "Weak",
-    "medium": "Medium",
+    "weekHeader": "S",
+    "weak": "Semaine",
+    "medium": "Moyen",
     "strong": "Strong",
     "passwordPrompt": "Enrez un mot de passe",
-    "emptyMessage": "Aucun résutlat trouvé",
+    "emptyMessage": "Aucun résultat trouvé",
     "emptyFilterMessage": "Aucun résultat trouvé"
   }
 }

@@ -21,7 +21,7 @@ export class NotificationTypeOptionsEffects {
       /* 'NotificationTypes Reducers' will take care of the rest */
       switchMap(() =>
         this.notificationTypeDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((notificationTypes) => DomainNotificationTypeOptionsActions.loadAllSuccess({ notificationTypes })),
+          map((notificationTypes) => DomainNotificationTypeOptionsActions.loadAllSuccess({ notificationTypes: notificationTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             this.biaMessageService.showError();
             return of(DomainNotificationTypeOptionsActions.failure({ error: err }));
@@ -53,5 +53,5 @@ export class NotificationTypeOptionsEffects {
     private actions$: Actions,
     private notificationTypeDas: NotificationTypeOptionDas,
     private biaMessageService: BiaMessageService
-  ) {}
+  ) { }
 }

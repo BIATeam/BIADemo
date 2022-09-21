@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -29,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                     { "Id", site => site.Id },
                     { "Title", site => site.Title },
                     {
-                        "SiteAdmin", site =>
+                        "SiteAdmins", site =>
                         site.Members.Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin)).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
                     },
                 };
@@ -48,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
                 Title = entity.Title,
                 SiteAdmins = entity.Members
                     .Where(w => w.MemberRoles.Any(a => a.RoleId == (int)RoleId.SiteAdmin))
-                    .Select(s => new MemberInfoDto { UserFirstName = s.User.FirstName, UserLastName = s.User.LastName, UserLogin = s.User.Login }),
+                    .Select(s => new OptionDto { Id = s.User.Id, Display = s.User.LastName + " " + s.User.FirstName }),
             };
         }
     }

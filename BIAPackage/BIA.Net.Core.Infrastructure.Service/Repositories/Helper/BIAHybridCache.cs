@@ -52,27 +52,27 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             await this.localCache.Add(key, item, cacheDurationInMinute);
         }
 
-        public async Task<object> GetAllSources(string key)
+        public async Task<T> GetAllSources<T>(string key)
         {
-            object item = await GetLocal(key);
+            T item = await GetLocal<T>(key);
             if (item != null) return item;
-            return await GetDistibuted(key);
+            return await GetDistibuted<T>(key);
         }
 
-        public async Task<object> GetDefaultMode(string key)
+        public async Task<T> GetDefaultMode<T>(string key)
         {
-            if (DefaultCacheMode == CacheMode.Local) return await GetLocal(key);
-            else return await GetDistibuted(key);
+            if (DefaultCacheMode == CacheMode.Local) return await GetLocal<T>(key);
+            else return await GetDistibuted<T>(key);
         }
 
-        public async Task<object> GetDistibuted(string key)
+        public async Task<T> GetDistibuted<T>(string key)
         {
-            return await this.distributedCache.Get(key);
+            return await this.distributedCache.Get<T>(key);
         }
 
-        public async Task<object> GetLocal(string key)
+        public async Task<T> GetLocal<T>(string key)
         {
-            return await this.localCache.Get(key);
+            return await this.localCache.Get<T>(key);
         }
 
         public async Task RemoveAllSources(string key)

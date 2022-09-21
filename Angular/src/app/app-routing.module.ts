@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { allEnvironments } from 'src/environments/all-environments';
-import { KeycloakGuard } from './core/bia-core/guards/keycloak.guard';
 import { HOME_ROUTES } from './features/home/home.module';
 import { LayoutComponent } from './shared/bia-shared/components/layout/layout.component';
 import { PageLayoutComponent } from './shared/bia-shared/components/layout/page-layout.component';
@@ -10,7 +8,6 @@ const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    canActivate: allEnvironments.useKeycloak == true ? [KeycloakGuard] : undefined,
     children: [
       ...HOME_ROUTES,
       {
@@ -42,45 +39,20 @@ const routes: Routes = [
                 loadChildren: () => import('./features/planes/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-page',
+                path: 'planes-full-code',
                 data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesFullCode',
                   canNavigate: true
                 },
-                loadChildren: () => import('./features/planes-page/plane.module').then((m) => m.PlaneModule)
+                loadChildren: () => import('./features/planes-full-code/plane.module').then((m) => m.PlaneModule)
               },
               {
-                path: 'planes-view',
+                path: 'planes-specific',
                 data: {
-                  breadcrumb: 'app.planes',
-                  canNavigate: true,
-                  // noMargin: true // Add noMargin if you wish the content of a route to stick to the borders of the screen.
-                },
-                loadChildren: () => import('./features/planes-view/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-signalR',
-                data: {
-                  breadcrumb: 'app.planes',
+                  breadcrumb: 'app.planesSpecific',
                   canNavigate: true
                 },
-                loadChildren: () => import('./features/planes-signalR/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-calc',
-                data: {
-                  breadcrumb: 'app.planes',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-calc/plane.module').then((m) => m.PlaneModule)
-              },
-              {
-                path: 'planes-offline',
-                data: {
-                  breadcrumb: 'app.planes',
-                  canNavigate: true
-                },
-                loadChildren: () => import('./features/planes-offline/plane.module').then((m) => m.PlaneModule)
+                loadChildren: () => import('./features/planes-specific/plane.module').then((m) => m.PlaneModule)
               },
               {
                 path: 'airports',

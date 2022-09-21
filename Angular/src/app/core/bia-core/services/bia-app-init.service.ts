@@ -1,42 +1,50 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { Subscription, throwError } from 'rxjs';
+import { Observable, Subscription, throwError } from 'rxjs';
 import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
 import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { allEnvironments } from 'src/environments/all-environments';
-import { KeycloakService } from 'keycloak-angular';
+import { KeycloakEvent, KeycloakEventType, KeycloakService } from 'keycloak-angular';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter, first, switchMap } from 'rxjs/operators';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { AppSettingsDas } from 'src/app/domains/bia-domains/app-settings/services/app-settings-das.service';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+
+// const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
+// const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
+// const STORAGE_KEYCLOAK_IDTOKEN = 'KeyCloak_IdToken';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BiaAppInitService implements OnDestroy {
-  protected sub: Subscription;
+  protected sub = new Subscription();
   constructor(
     protected authService: AuthService,
+    protected appSettingsDas: AppSettingsDas,
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
-    protected keycloakService: KeycloakService) { }
+    protected keycloakService: KeycloakService,
+    protected appSettingsService: AppSettingsService) { }
 
   public initAuth() {
     return new Promise<void>((resolve) => {
-      this.sub = this.authService
-        .login()
+      this.store.dispatch(DomainAppSettingsActions.loadAll());
+      this.getObsAppSettings()
         .pipe(
-          catchError((error) => {
-            if (!isDevMode()) {
-              window.location.href = environment.urlErrorPage + '?num=' + error.status;
+          switchMap((appSettings: AppSettings | null) => {
+            if (appSettings?.keycloak?.isActive === true) {
+              return this.initKeycloack(appSettings);
+            } else {
+              return this.getObsAuthInfo();
             }
-            return throwError(error);
           })
-        )
-        .subscribe(() => {
-          // Load app settings:
-          this.store.dispatch(DomainAppSettingsActions.loadAll());
-
+        ).subscribe(() => {
           if (allEnvironments.enableNotifications === true) {
             this.notificationSignalRService.initialize();
           }
@@ -46,28 +54,92 @@ export class BiaAppInitService implements OnDestroy {
     });
   }
 
-  public init(): void {
-    this.store.dispatch(DomainAppSettingsActions.loadAll());
+  protected initKeycloack(appSettings: AppSettings): Observable<AuthInfo> {
 
-    if (allEnvironments.enableNotifications === true) {
-      this.notificationSignalRService.initialize();
-    }
-  }
+    this.initEventKeycloakLogin();
+    const obs$: Observable<AuthInfo> = this.initEventKeycloakSuccess();
 
-  public initKeycloack(): Promise<boolean> {
-    return this.keycloakService.init({
+    // const token = localStorage.getItem(STORAGE_KEYCLOAK_TOKEN);
+    // const refreshToken = localStorage.getItem(STORAGE_KEYCLOAK_REFRESHTOKEN);
+    // const idToken = localStorage.getItem(STORAGE_KEYCLOAK_IDTOKEN);
+
+    this.keycloakService.init({
       config: {
-        url: environment.keycloak.conf.authServerUrl,
-        realm: environment.keycloak.conf.realm,
-        clientId: environment.keycloak.conf.resource
+        url: appSettings.keycloak?.baseUrl,
+        realm: appSettings.keycloak?.configuration.realm,
+        clientId: appSettings.keycloak?.api.tokenConf.clientId,
       },
       enableBearerInterceptor: false,
       initOptions: {
         onLoad: 'check-sso',
-        silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html'
+        // checkLoginIframe: false,
+        enableLogging: isDevMode(),
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        // token: token ?? undefined,
+        // refreshToken: refreshToken ?? undefined,
+        // idToken: idToken ?? undefined,
       }
-    })
+    });
+
+    return obs$;
+  }
+
+  protected initEventKeycloakSuccess(): Observable<AuthInfo> {
+    return this.keycloakService.keycloakEvents$.asObservable().pipe(
+      filter((keycloakEvent: KeycloakEvent) => keycloakEvent?.type == KeycloakEventType.OnAuthSuccess || keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
+      ),
+      first(),
+      switchMap(() => {
+        return this.getObsAuthInfo();
+      }));
+  }
+
+  protected initEventKeycloakLogin(): void {
+    this.sub.add(this.keycloakService.keycloakEvents$.asObservable().subscribe(async (keycloakEvent: KeycloakEvent) => {
+      if (keycloakEvent?.type == KeycloakEventType.OnAuthLogout ||
+        keycloakEvent?.type == KeycloakEventType.OnReady ||
+        keycloakEvent?.type == KeycloakEventType.OnTokenExpired) {
+        this.keycloakService.isLoggedIn().then((isLoggedIn) => {
+          if (isLoggedIn !== true) {
+            this.keycloakService.login({
+              redirectUri: window.location.href,
+              idpHint: this.appSettingsService.appSettings?.keycloak?.configuration?.idpHint,
+              // scope: 'offline_access',
+            });
+          }
+        });
+      } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
+
+        const token = await this.keycloakService.getToken();
+        localStorage.setItem(STORAGE_KEYCLOAK_TOKEN, token);
+
+        const refreshToken = await this.keycloakService.getKeycloakInstance().refreshToken;
+        localStorage.setItem(STORAGE_KEYCLOAK_REFRESHTOKEN, refreshToken ?? '');
+
+        const idToken = await this.keycloakService.getKeycloakInstance().idToken;
+        localStorage.setItem(STORAGE_KEYCLOAK_IDTOKEN, idToken ?? '');
+      }*/
+
+    }));
+  }
+
+  protected getObsAuthInfo(): Observable<AuthInfo> {
+    return this.authService.login().pipe(first(), catchError((error) => this.catchError(error)));
+  }
+
+  protected getObsAppSettings(): Observable<AppSettings | null> {
+    return this.store.select(getAppSettings)
+      .pipe(
+        filter(appSettings => !!appSettings && appSettings.environment?.type?.length > 0),
+        first(),
+        catchError((error) => this.catchError(error)));
+  }
+
+  protected catchError(error: any) {
+    if (!isDevMode()) {
+      window.location.href = environment.urlErrorPage + '?num=' + error.status;
+    }
+    return throwError(error);
   }
 
   ngOnDestroy() {

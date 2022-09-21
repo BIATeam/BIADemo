@@ -9,6 +9,8 @@ export namespace FeatureNotificationsActions
 
   export const load = createAction('[Notifications] Load', props<{ id: number }>());
 
+  export const setUnread = createAction('[Notifications] Set Unread', props<{ id: number }>());
+
   export const create = createAction('[Notifications] Create', props<{ notification: Notification }>());
 
   export const update = createAction('[Notifications] Update', props<{ notification: Notification }>());

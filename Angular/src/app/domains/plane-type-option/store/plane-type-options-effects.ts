@@ -22,7 +22,7 @@ export class PlaneTypeOptionsEffects {
       /* 'PlanesTypes Reducers' will take care of the rest */
       switchMap(() =>
         this.planeTypeDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((planesTypes) => DomainPlaneTypeOptionsActions.loadAllSuccess({ planesTypes })),
+          map((planesTypes) => DomainPlaneTypeOptionsActions.loadAllSuccess({ planesTypes: planesTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
               this.biaMessageService.showError();
@@ -38,5 +38,5 @@ export class PlaneTypeOptionsEffects {
     private actions$: Actions,
     private planeTypeDas: PlaneTypeOptionDas,
     private biaMessageService: BiaMessageService
-  ) {}
+  ) { }
 }

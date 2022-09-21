@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Copyright>Copyright © BIA 2021</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.6.0</Version>
+    <Version>3.7.0</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
@@ -20,17 +20,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.5" />
+    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="3.1.2" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.8" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
+    <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>

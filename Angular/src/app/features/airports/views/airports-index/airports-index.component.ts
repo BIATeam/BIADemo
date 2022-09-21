@@ -2,14 +2,14 @@ import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/c
 import { Store } from '@ngrx/store';
 import { getAllAirports, getAirportsTotalCount, getAirportLoadingGetAll } from '../../store/airport.state';
 import { multiRemove, loadAllByPost, update, create } from '../../store/airports-actions';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { Airport } from '../../model/airport';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
-  BiaListConfig,
-  PrimeTableColumn,
-} from 'src/app/shared/bia-shared/components/table/bia-table/bia-table-config';
+  BiaFieldsConfig,
+  BiaFieldConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -34,6 +34,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   useSignalR = true;
   useView = false;
 
+  private sub = new Subscription();
   @HostBinding('class.bia-flex') flex = true;
   @ViewChild(BiaTableComponent, { static: false }) airportListComponent: BiaTableComponent;
   showColSearch = false;
@@ -48,7 +49,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   canEdit = false;
   canDelete = false;
   canAdd = false;
-  tableConfiguration: BiaListConfig;
+  tableConfiguration: BiaFieldsConfig;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
   viewPreference: string;
@@ -78,6 +79,9 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
     this.OnHide();
   }
 
@@ -162,7 +166,7 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.columns.map((x) => (columns[x.value.split('.')[1]] = this.translateService.instant(x.value)));
+    this.airportListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const customEvent: any = { columns: columns, ...this.airportListComponent.getLazyLoadMetadata() };
     this.airportDas.getFile(customEvent).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.airports') + '.csv');
@@ -176,16 +180,16 @@ export class AirportsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
+    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
-          new PrimeTableColumn('name', 'airport.name'),
-          new PrimeTableColumn('city', 'airport.city')
+          new BiaFieldConfig('name', 'airport.name'),
+          new BiaFieldConfig('city', 'airport.city')
         ]
       };
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    });
+    }));
   }
 }

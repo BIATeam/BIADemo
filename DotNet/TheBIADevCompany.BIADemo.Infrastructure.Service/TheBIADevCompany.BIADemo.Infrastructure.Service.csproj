@@ -8,14 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.2.0" />
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="3.7.*" />
+    <PackageReference Include="MailKit" Version="3.4.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="System.DirectoryServices" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
   </ItemGroup>
 
 </Project>

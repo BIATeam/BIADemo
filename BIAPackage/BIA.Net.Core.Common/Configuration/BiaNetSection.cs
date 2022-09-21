@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Common.Configuration
 {
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using System.Collections.Generic;
 
@@ -14,12 +15,17 @@ namespace BIA.Net.Core.Common.Configuration
     public class BiaNetSection
     {
         /// <summary>
+        /// Configure the activation of common feature (worker and webApi).
+        /// </summary>
+        public CommonFeatures CommonFeatures { get; set; }
+
+        /// <summary>
         /// Configure the activation of feature for worker.
         /// </summary>
         public WorkerFeatures WorkerFeatures { get; set; }
 
         /// <summary>
-        /// Configure the activation of feature for worker.
+        /// Configure the activation of feature for webApi.
         /// </summary>
         public ApiFeatures ApiFeatures { get; set; }
 

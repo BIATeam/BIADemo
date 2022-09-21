@@ -1,10 +1,9 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { SiteService } from 'src/app/features/sites/services/site.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { Member } from '../../model/member';
 
@@ -14,13 +13,12 @@ import { Member } from '../../model/member';
   styleUrls: ['../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })
 export class MemberTableComponent extends BiaCalcTableComponent implements OnChanges {
-
+  @Input() parentIds: string[];
   constructor(
     public formBuilder: FormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService,
-    public siteService: SiteService,
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
   }
@@ -41,7 +39,7 @@ export class MemberTableComponent extends BiaCalcTableComponent implements OnCha
       member.user = {...member.user};
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      member.teamId = this.siteService.currentSiteId;
+      member.teamId = + this.parentIds[0];
       this.save.emit(member);
       this.form.reset();
     }

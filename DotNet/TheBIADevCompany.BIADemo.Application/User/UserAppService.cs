@@ -149,36 +149,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Guid == guid);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
-        public async Task<UserProfileDto> GetUserProfileAsync(string login)
-        {
-            var profile = new UserProfileDto();
-
-            var url = this.configuration.UserProfile.Url;
-            if (!string.IsNullOrEmpty(url))
-            {
-                var parameters = new Dictionary<string, string> { { "login", login } };
-                Dictionary<string, string> result;
-
-                try
-                {
-                    result = await RequestHelper.GetAsync<Dictionary<string, string>>(url, parameters);
-                }
-                catch (Exception exception)
-                {
-                    result = new Dictionary<string, string>();
-                    this.logger.LogError(exception, "An error occured while getting the user profile.");
-                }
-
-                foreach (var item in result)
-                {
-                    typeof(UserProfileDto).GetProperty(item.Key)?.SetValue(profile, item.Value);
-                }
-            }
-
-            return profile;
-        }
-
         /// <inheritdoc/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<List<string>> GetAllLdapUsersDomains()
@@ -195,8 +165,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 .ToList());
         }
 
-        /// <inheritdoc cref="IUserAppService.GetAllIdPUserAsync"/>
-        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdPUserAsync(string filter, int max = 10)
+        /// <inheritdoc cref="IUserAppService.GetAllIdpUserAsync"/>
+        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int max = 10)
         {
             List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchAsync(filter, max);
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
@@ -422,48 +392,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc/>
-        public async Task<byte[]> ExportCSV(PagingFilterFormatDto filters)
-        {
-            // We ignore paging to return all records
-            filters.First = 0;
-            filters.Rows = 0;
-
-            var queryFilter = new PagingFilterFormatDto
-            {
-                Filters = filters.Filters,
-                GlobalFilter = filters.GlobalFilter,
-                SortField = filters.SortField,
-                SortOrder = filters.SortOrder,
-            };
-
-            var query = await this.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: queryFilter);
-
-            List<object[]> records = query.results.Select(user => new object[]
-            {
-                user.LastName,
-                user.FirstName,
-                user.Login,
-                string.Join("|", user.Roles.Select(r => r.Display)),
-            }).ToList();
-
-            List<string> columnHeaders = null;
-            if (filters is PagingFilterFormatDto fileFilters)
-            {
-                columnHeaders = fileFilters.Columns.Select(x => x.Value).ToList();
-            }
-
-            StringBuilder csv = new StringBuilder();
-            records.ForEach(line =>
-            {
-                csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
-            });
-
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
-            return buffer;
-        }
-
         /// <summary>
         /// Selects the default language.
         /// </summary>
@@ -481,6 +409,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }
+        }
+
+        /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
+        public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
+        {
+            return await this.GetCsvAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters);
         }
     }
 }

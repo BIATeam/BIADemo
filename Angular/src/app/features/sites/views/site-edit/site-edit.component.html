@@ -1,0 +1,8 @@
+<app-site-form  
+    [crudItem]="siteService.crudItem$ | async" 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="siteService.optionsService.dictOptionDtos$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-site-form>
+<bia-spinner *ngIf="siteService.loadingGet$ | async" [overlay]="true"></bia-spinner>

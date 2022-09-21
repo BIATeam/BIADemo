@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The framework version.
             /// </summary>
-            public const string FrameworkVersion = "3.6.1";
+            public const string FrameworkVersion = "3.7.0";
         }
 
         /// <summary>
@@ -51,6 +51,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class Role
         {
+            /// <summary>
+            /// The admin role code.
+            /// </summary>
+            public const string Admin = "Admin";
+
             /// <summary>
             /// The user role code.
             /// </summary>

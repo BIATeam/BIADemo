@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFromDirectory } from '../../model/user-from-Directory';
 import { UserFilter } from '../../model/user-filter';
-import { allEnvironments } from 'src/environments/all-environments';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Component({
   selector: 'bia-user-from-directory-form',
@@ -26,14 +26,15 @@ export class UserFromLdapFormComponent implements OnChanges {
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
   @Input() returnSizeOptions: number[] = [10, 25, 50, 100];
- 
+
   selectedUsers: UserFromDirectory[];
   selectedDomain: string;
   form: FormGroup;
-  useKeycloak = allEnvironments.useKeycloak;
+  useKeycloak = false;
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: FormBuilder, appSettingsService: AppSettingsService) {
     this.initForm();
+    this.useKeycloak = appSettingsService.appSettings?.keycloak?.isActive;
   }
 
   ngOnChanges(changes: SimpleChanges) {

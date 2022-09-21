@@ -30,7 +30,7 @@ export class UserItemComponent implements OnInit, OnDestroy {
         this.store.select(getCurrentUser).subscribe((user) => {
           if (user?.displayName) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              routeData['breadcrumb'] = user.displayName;
+              (routeData as any)['breadcrumb'] = user.displayName;
             });
             this.layoutService.refreshBreadcrumb();
           }

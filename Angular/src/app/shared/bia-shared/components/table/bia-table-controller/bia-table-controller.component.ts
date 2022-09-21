@@ -1,9 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { FilterMetadata, SelectItem, TableState } from 'primeng/api';
+import { FilterMetadata, PrimeTemplate, SelectItem, TableState } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 
@@ -18,13 +18,14 @@ import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from
     ])
   ]
 })
-export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy {
+export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() defaultPageSize: number;
   @Input() length: number;
   @Input() columns: KeyValuePair[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() tableStateKey: string;
+  @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
 
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
@@ -32,6 +33,10 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Output() pageSizeChange = new EventEmitter<number>();
   @Output() toggleSearch = new EventEmitter();
   @Output() viewChange = new EventEmitter<string>();
+
+
+  @ContentChildren(PrimeTemplate) templates: QueryList<any>;
+  customControlTemplate: TemplateRef<any>;
 
   pageSize: number;
   pageSizes: SelectItem[];
@@ -50,6 +55,16 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   private sub = new Subscription();
 
   constructor(public translateService: TranslateService) {}
+
+  ngAfterContentInit() {
+    this.templates.forEach((item) => {
+        switch(item.getType()) {
+          case 'customControl':
+            this.customControlTemplate = item.template;
+          break;
+        }
+    });
+  }
 
   ngOnInit() {
     this.initPageSize();
@@ -77,7 +92,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   onChangeSelectColumn() {
     const cols = this.columns.filter((x) => this.displayedColumns.indexOf(x.key) > -1);
-    this.displayedColumnsChange.emit(cols);
+    setTimeout(() => this.displayedColumnsChange.emit(cols));
   }
 
   onToggleSearch() {
@@ -137,12 +152,21 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   private setControlByViewState(stateString: string) {
     if (stateString === DEFAULT_VIEW) {
       this.pageSize = this.defaultPageSize;
-      this.displayedColumns = this.defaultDisplayedColumns;
+      if (this.displayedColumns !== this.defaultDisplayedColumns)
+      {
+        this.displayedColumns = this.defaultDisplayedColumns;
+        this.onChangeSelectColumn();
+      }
       this.globalFilter = '';
     } else {
       const state: TableState = <TableState>JSON.parse(stateString);
       this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
-      this.displayedColumns = state.columnOrder ? state.columnOrder : [];
+      const newDisplayColumns = state.columnOrder ? state.columnOrder : []
+      if (this.displayedColumns !== newDisplayColumns)
+      {
+        this.displayedColumns = newDisplayColumns;
+        this.onChangeSelectColumn();
+      }
       for (const key in state.filters) {
         if (key.startsWith(TABLE_FILTER_GLOBAL)) {
           this.globalFilter = (state.filters[key] as FilterMetadata ).value;

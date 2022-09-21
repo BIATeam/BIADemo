@@ -1,5 +1,5 @@
-<div fxLayout="row" fxLayoutAlign="space-between center">
-  <div fxLayout="row" fxFlex="25" fxLayoutAlign="baseline" fxLayoutGap="20px" class="result-contenair">
+<div fxLayout="row" fxLayoutAlign="space-between center"> 
+  <div fxLayout="row" fxLayoutAlign="baseline" fxLayoutGap="20px" class="bia-table-controller-container">
     <span class="result">
       <strong>{{
         length | i18nPlural: resultMessageMapping:translateService.currentLang | translate: { length: length }
@@ -12,13 +12,8 @@
         [(ngModel)]="pageSize"
         (onChange)="onPageSizeChange()"
         [style]="{ 'min-width': 'initial' }"
+        scrollHeight="50vh"
       ></p-dropdown>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayoutGap="20px" fxFlex="75" fxLayoutAlign="flex-end end">
-    <div *ngIf="tableStateKey">
-      <span>{{ 'bia.views.view' | translate }} : </span>
-      <bia-view-list [tableStateKey]="tableStateKey" [useViewTeamWithTypeId]="useViewTeamWithTypeId" (viewChange)="onViewChange($event)"></bia-view-list>
     </div>
     <div>
       <span>{{ 'bia.display' | translate }} </span>
@@ -29,10 +24,27 @@
         (onChange)="onChangeSelectColumn()"
         autoWidth="false"
         [style]="{ width: '300px' }"
+        scrollHeight="50vh"
       ></p-multiSelect>
     </div>
-    <span class="p-float-label">
-      <input pInputText type="text" [formControl]="filterCtrl" [value]="globalFilter" />
+    <div *ngIf="tableStateKey">
+      <span>{{ 'bia.views.view' | translate }} : </span>
+      <bia-view-list
+        [tableStateKey]="tableStateKey"
+        [tableState]="tableState"
+        [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+        [displayedColumns]="displayedColumns"
+        [columns]="columns"
+        (viewChange)="onViewChange($event)"
+      ></bia-view-list>
+    </div>
+  </div>
+  <div>
+    <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
+  </div>
+  <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="flex-end end" class="bia-table-controller-container bia-table-controller-container-last">
+    <span class="p-float-label" style="margin-top: -15px;">
+      <input id="bia-input-search" pInputText type="text" [formControl]="filterCtrl" [value]="globalFilter" />
       <label for="name">{{ 'bia.search' | translate }}</label>
       <i class="pi pi-search bia-pointer"></i>
     </span>

@@ -1,57 +1,87 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { TeamTypeId } from 'src/app/shared/constants';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Site } from '../model/site/site';
-import { getCurrentSite, getSiteLoadingGet } from '../store/site.state';
-import { load } from '../store/sites-actions';
+import { Site } from '../model/site';
+import { SiteCRUDConfiguration } from '../site.constants';
+import { FeatureSitesStore } from '../store/site.state';
+import { FeatureSitesActions } from '../store/sites-actions';
+import { SiteOptionsService } from './site-options.service';
+import { SiteDas } from './site-das.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 @Injectable({
     providedIn: 'root'
 })
-export class SiteService {
-    constructor(
-        private store: Store<AppState>,
-        private authService: AuthService,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getSiteLoadingGet);
-    }
-    private _currentSite: Site;
-    private _currentSiteId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
+export class SiteService extends CrudItemService<Site> {
 
-    public get currentSite() {
-        if (this._currentSite?.id === this._currentSiteId) {
-            return this._currentSite;
-        } else {
-            return null;
-        }
+    constructor(private store: Store<AppState>,
+        public dasService: SiteDas,
+        public signalRService: CrudItemSignalRService<Site>,
+        public optionsService: SiteOptionsService,
+        // requiered only for parent key
+        protected authService: AuthService,
+        ) {
+        super(dasService,signalRService,optionsService);
     }
 
-    public get currentSiteId(): number {
-        return this._currentSiteId;
+    // Custo for teams
+    public get currentCrudItemId(): any {
+        // should be redifine due to the setter
+        return super.currentCrudItemId;
     }
-    public set currentSiteId(id: number) {
-        if (this._currentSiteId !== id)
+
+    // Custo for teams
+    public set currentCrudItemId(id: any) {
+        if (this._currentCrudItemId !== id)
         {
-            this._currentSiteId = Number(id);
+            this._currentCrudItemId = id;
             this.authService.changeCurrentTeamId(TeamTypeId.Site, id);
-            this.store.dispatch(load({ id: id }));
         }
+        this.load( id );
     }
 
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentSite).subscribe((site) => {
-                if (site) {
-                    this._currentSite = site;
-                }
-            })
-        );
+    public getParentKey(): any | null
+    {
+        // TODO after CRUD creation : adapt the parent Key tothe context. It can be null if root crud
+        //return this.authService.getCurrentTeamId(TeamTypeId.Site);
+        return null;
+    }
+
+    public getFeatureName()  {  return SiteCRUDConfiguration.featureName; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
+
+
+    public crudItems$: Observable<Site[]> = this.store.select(FeatureSitesStore.getAllSites);
+    public totalCount$: Observable<number> = this.store.select(FeatureSitesStore.getSitesTotalCount);
+    public loadingGetAll$: Observable<boolean> = this.store.select(FeatureSitesStore.getSiteLoadingGetAll);;
+    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeatureSitesStore.getLastLazyLoadEvent);
+
+    public crudItem$: Observable<Site> = this.store.select(FeatureSitesStore.getCurrentSite);
+    public loadingGet$: Observable<boolean> = this.store.select(FeatureSitesStore.getSiteLoadingGet);
+
+    public load(id: any){
+        this.store.dispatch(FeatureSitesActions.load({ id }));
+    }
+    public loadAllByPost(event: LazyLoadEvent){
+        this.store.dispatch(FeatureSitesActions.loadAllByPost({ event }));
+    }
+    public create(crudItem: Site){
+        // TODO after CRUD creation : map parent Key on the corresponding field
+        // crudItem.siteId = this.getParentKey(),
+        this.store.dispatch(FeatureSitesActions.create({ site : crudItem }));
+    }
+    public update(crudItem: Site){
+        this.store.dispatch(FeatureSitesActions.update({ site : crudItem }));
+    }
+    public remove(id: any){
+        this.store.dispatch(FeatureSitesActions.remove({ id }));
+    }
+    public multiRemove(ids: any[]){
+        this.store.dispatch(FeatureSitesActions.multiRemove({ ids }));
     }
 }
