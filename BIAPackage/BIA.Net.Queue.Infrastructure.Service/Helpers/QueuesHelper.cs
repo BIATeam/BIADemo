@@ -156,7 +156,7 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             connectionFactories.Add(key, connectionFactory);
 
             IConnection connection = connectionFactory.CreateConnection();
-            connections.Add(endpoint, connection);
+            connections.Add(key, connection);
 
             return connection;
         }

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
     <Description>Domain Dto layer classes for BIA.Net Queue Framework</Description>
