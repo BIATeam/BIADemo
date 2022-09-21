@@ -33,6 +33,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   private sub = new Subscription();
   @Input() tableStateKey: string;
   @Input() tableState: string;
+  @Input() defaultViewPref: BiaTableState;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Input() displayedColumns: string[]; 
   @Input() columns: KeyValuePair[]; 
@@ -108,25 +109,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   private GetCorrespondingViewId(preference: string) : number {
     let pref: BiaTableState = JSON.parse(preference);
-    pref.selection = null;
     pref.columnWidths = undefined;
-    if (pref.first===0 &&
-        (pref.filters === undefined || JSON.stringify(pref.filters) === "{}") &&
-        JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key)) &&
-        pref.rows === 10 &&
-        pref.sortField === this.columns[0].key &&
-        pref.sortOrder === 1 &&
-        pref.advancedFilter === undefined)
+    if (this.defaultViewPref != undefined)
     {
-      return 0;
+        if (this.areViewsEgals(pref, this.defaultViewPref))
+        {
+          return 0;
+        }
     }
-    else 
-    {
-      console.log ("GetCorrespondingViewId: pref" + JSON.stringify(pref) + " >> " + JSON.stringify(pref.filters) + " >> " + JSON.stringify(this.columns.map((c) => c.key)) + " >> " + this.columns[0].key)
-      console.log ("GetCorrespondingViewId: 1 >> " + (pref.filters === undefined || JSON.stringify(pref.filters) === "{}"));
-      console.log ("GetCorrespondingViewId: 2 >> " + (JSON.stringify(pref.columnOrder) === JSON.stringify(this.columns.map((c) => c.key))));
-      console.log ("GetCorrespondingViewId: 3 >> " + (pref.sortField === this.columns[0].key));
-      console.log ("GetCorrespondingViewId: 4 >> " + (pref.advancedFilter === undefined));
+    else{
+      console.log ("ViewList component Error: defaultViewPref is not defined");
     }
 
     // let prefString =  JSON.stringify(pref);
@@ -135,7 +127,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     {
       let correspondingView = this.views.find(v => {
         const viewPref: BiaTableState = JSON.parse(v.preference);
-        return this.areViewEgals(pref,viewPref);
+        return this.areViewsEgals(pref,viewPref);
       });
       if (correspondingView)
       {
@@ -145,7 +137,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return this.currentView;
   }
 
-  private areViewEgals(view1: BiaTableState, view2: BiaTableState)
+  private areViewsEgals(view1: BiaTableState, view2: BiaTableState)
   {
     return (  
       view1.first===view2.first &&

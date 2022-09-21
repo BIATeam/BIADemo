@@ -1,5 +1,6 @@
 import { TeamTypeId } from "src/app/shared/constants";
 import { BiaFieldsConfig } from "../../../model/bia-field-config";
+import { BiaTableState } from "../../../model/bia-table-state";
 
 
 export class CrudConfig {
@@ -13,6 +14,7 @@ export class CrudConfig {
   usePopup: boolean;
   useOfflineMode: boolean;
   fieldsConfig: BiaFieldsConfig;
+  defaultViewPref: BiaTableState; 
 
   constructor({featureName,
     fieldsConfig,

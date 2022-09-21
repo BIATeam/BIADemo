@@ -28,6 +28,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Input() tableStateKey: string;
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
+  @Input() defaultViewPref: BiaTableState;
 
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();
@@ -71,6 +72,19 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
     this.initPageSize();
     this.updateDisplayedPageSizeOptions();
     this.initFilterCtrl();
+    if (this.defaultViewPref === undefined)
+    {
+      // compatibility with old system
+      this.defaultViewPref = <BiaTableState>{
+        first: 0,
+        rows: this.defaultPageSize,
+        sortField: this.columns[0].key,
+        sortOrder: 1,
+        filters: {},
+        columnOrder: this.columns.map((x) => x.key),
+        advancedFilter: undefined,
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

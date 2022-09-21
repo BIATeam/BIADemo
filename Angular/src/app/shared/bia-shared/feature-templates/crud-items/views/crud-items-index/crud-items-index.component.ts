@@ -21,6 +21,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
+import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -63,6 +64,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   sortFieldValue = '';
   useViewTeamWithTypeId: TeamTypeId | null;
   parentIds: string[];
+  defaultViewPref: BiaTableState;
+
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -319,13 +322,19 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.canAdd = true;
   }
   protected initTableConfiguration() {
-    //this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-      /*let tableConfiguration = {
-        columns: this.crudConfiguration.columns.map<BiaFieldConfig>(object => object.clone())}*/
-      this.columns = this.crudConfiguration.fieldsConfig.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
-      this.displayedColumns = [...this.columns];
-      this.sortFieldValue = this.columns[0].key;
-    //}));
+    this.columns = this.crudConfiguration.fieldsConfig.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
+    this.displayedColumns = [...this.columns];
+    this.sortFieldValue = this.columns[0].key;
+
+    this.defaultViewPref = <BiaTableState>{
+        first: 0,
+        rows: this.defaultPageSize,
+        sortField: this.sortFieldValue,
+        sortOrder: 1,
+        filters: {},
+        columnOrder: this.crudConfiguration.fieldsConfig.columns.map((x) => x.field),
+        advancedFilter: undefined,
+      }
   }
 
 
