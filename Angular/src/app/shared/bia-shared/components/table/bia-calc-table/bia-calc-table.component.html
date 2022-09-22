@@ -43,23 +43,8 @@
       <tr *ngIf="showColSearch" class="searchTR">
         <th *ngIf="canSelectElement"></th>
         <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
-          <span *ngIf="col.isSearchable === true" class="p-float-label">
-            <input
-              pInputText
-              class="input-search"
-              type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-              placeholder="{{
-                col.searchPlaceholder !== undefined
-                  ? col.searchPlaceholder
-                  : col.isDate === true
-                  ? ('bia.dateIso8601' | translate)
-                  : ''
-              }}"
-              (input)="dt.filter($event.target.value, col.field, col.filterMode)"
-              [value]="dt.filters[col.field]?.value"
-              [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value !== '' }"
-            />
-          </span>
+          <bia-table-filter [col]="col" [table]="dt">
+          </bia-table-filter>
         </th>
       </tr>
     </ng-template>
