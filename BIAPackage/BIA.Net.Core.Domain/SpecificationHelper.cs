@@ -208,97 +208,19 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "contains":
-                    if (IsCollectionType(expressionBody.Type))
-                    {
-                        valueExpression = Expression.Constant(value);
-                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                        ParameterExpression pe = Expression.Parameter(typeof(string), "a");
-                        var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
-                        var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
-
-                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
-                    }
-                    else
-                    {
-                        valueExpression = Expression.Constant(value);
-                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                        if (expressionBody.Type != typeof(string))
-                        {
-                            expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-                        }
-
-                        binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
-                    }
-
-                    // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
-                    // if (IsCollectionType(valueType))
-                    // {
-                    //    valueExpression = Expression.Constant(valueFormated);
-                    //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
-                    //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
-                    //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
-                    //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
-
-                    //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
-                    // }
-                    // else
-                    // {
-                    //    if (expressionBody.Type != typeof(string))
-                    //    {
-                    //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-                    //    }
-
-                    //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
-                    //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
-                    //        expressionBody, Expression.Constant($"%{valueFormated}%"));
-                    // }
-
+                    binaryExpression = ComputeExpression(expressionBody, "Contains", value);
                     break;
 
                 case "notcontains":
-                    if (IsCollectionType(expressionBody.Type))
-                    {
-                        valueExpression = Expression.Constant(value);
-                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                        ParameterExpression pe = Expression.Parameter(typeof(string), "a");
-                        var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
-                        var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
-
-                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr));
-                    }
-                    else
-                    {
-                        valueExpression = Expression.Constant(value);
-                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
-                        if (expressionBody.Type != typeof(string))
-                        {
-                            expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-                        }
-
-                        binaryExpression = Expression.Not(Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression));
-                    }
+                    binaryExpression = Expression.Not(ComputeExpression(expressionBody, "Contains", value));
                     break;
 
                 case "startswith":
-                    valueExpression = Expression.Constant(value);
-                    method = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
-                    if (expressionBody.Type != typeof(string))
-                    {
-                        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-                    }
-
-                    binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
+                    binaryExpression = ComputeExpression(expressionBody, "StartsWith", value);
                     break;
 
                 case "endswith":
-                    valueExpression = Expression.Constant(value);
-                    method = typeof(string).GetMethod("EndsWith", new[] { typeof(string) });
-                    if (expressionBody.Type != typeof(string))
-                    {
-                        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
-                    }
-
-                    binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
+                    binaryExpression = ComputeExpression(expressionBody, "EndsWith", value);
                     break;
 
                 default:
@@ -306,6 +228,60 @@ namespace BIA.Net.Core.Domain
             }
 
             return Expression.Lambda<Func<TEntity, bool>>(binaryExpression, parameterExpression);
+        }
+
+        private static Expression ComputeExpression(Expression expressionBody, string filterFonction, string value)
+        {
+            ConstantExpression valueExpression;
+            MethodInfo method;
+            Expression binaryExpression;
+            var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
+            if (IsCollectionType(expressionBody.Type))
+            {
+                valueExpression = Expression.Constant(value);
+                method = typeof(string).GetMethod(filterFonction, new[] { typeof(string) });
+                ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+                var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+                var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+
+                binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
+            }
+            else
+            {
+                valueExpression = Expression.Constant(value);
+                method = typeof(string).GetMethod(filterFonction, new[] { typeof(string) });
+                if (expressionBody.Type != typeof(string))
+                {
+                    expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+                }
+
+                binaryExpression = Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression);
+            }
+
+            return binaryExpression;
+
+            // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
+            // if (IsCollectionType(valueType))
+            // {
+            //    valueExpression = Expression.Constant(valueFormated);
+            //    method = typeof(string).GetMethod("ILike", new[] { typeof(string) });
+            //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+            //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+            //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+
+            //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
+            // }
+            // else
+            // {
+            //    if (expressionBody.Type != typeof(string))
+            //    {
+            //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+            //    }
+
+            //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
+            //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
+            //        expressionBody, Expression.Constant($"%{valueFormated}%"));
+            // }
         }
 
         public static bool IsCollectionType(Type valueType)
