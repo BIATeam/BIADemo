@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
     using System.Text;
+    using System.Text.Json;
 
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
@@ -36,7 +37,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// <summary>
         /// Gets or sets the list of columns filters.
         /// </summary>
-        public Dictionary<string, Dictionary<string, object>> Filters { get; set; }
+        public Dictionary<string, JsonElement> Filters { get; set; }
 
         /// <summary>
         /// Gets or sets the global filter.

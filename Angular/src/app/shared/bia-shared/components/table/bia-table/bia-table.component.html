@@ -40,15 +40,61 @@
       <th *ngIf="canSelectElement"></th>
       <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
         <span *ngIf="col.isSearchable === true" class="p-float-label">
-          <input
-            pInputText
-            class="input-search"
-            type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-            placeholder="{{ col.searchPlaceholder !== undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
-            (input)="dt.filter($event.target.value, col.field, col.filterMode)"
-            [value]="dt.filters[col.field]?.value"
-            [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value !== '' }"
-          />
+          <div fxLayout="row" fxLayoutAlign="center">
+            <div class="app-field-container" fxFlex="10">
+              <ng-container *ngIf="!isArraySimple(col)">
+                <p-columnFilter [type]="col.type==='Date'?'date':'text'" 
+                                [field]="col.field" display="menu"></p-columnFilter>
+              </ng-container>
+            </div>
+            <div class="app-field-container" fxFlex="90" >
+              <span *ngIf="isArrayFilter(col)"style="padding-left:20px; vertical-align: text-top;" >
+                <ng-container *ngFor="let filter of dt.filters[col.field]" >
+                  <ng-container *ngIf="filter.value != null">
+                    <ng-container [ngSwitch]="filter.matchMode">
+                      <ng-container *ngSwitchCase="'startsWith'">
+                        [{{ filter.value }}*]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'contains'">
+                        [*{{ filter.value }}*]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'notContains'">
+                        ![*{{ filter.value }}*]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'endsWith'">
+                        [*{{ filter.value }}]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'dateIs'">
+                        [<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'dateIsNot'">
+                        ![<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'dateBefore'">
+                        <[<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                      </ng-container>
+                      <ng-container *ngSwitchCase="'dateAfter'">
+                        >[<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                      </ng-container>
+                      <ng-container *ngSwitchDefault>{{ filter.matchMode + " " + filter.value }}</ng-container>
+                    </ng-container>
+                    
+                  </ng-container>
+                </ng-container>
+              </span>
+              <ng-container *ngIf="!isArrayFilter(col)">
+                <input
+                  pInputText
+                  class="input-search"
+                  type="{{ col.type === 'Number' ? 'number' : 'text' }}"
+                  placeholder="{{ col.searchPlaceholder !== undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+                  (input)="setSimpleFilter($event.target.value, col)"
+                  [value]="dt.filters[col.field]?.value !== undefined ? dt.filters[col.field]?.value:''"
+                  [ngClass]="{ 'p-state-filled': dt.filters[col.field]?.value !== '' }"
+                />
+              </ng-container>
+            </div>
+          </div>
         </span>
       </th>
     </tr>

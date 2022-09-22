@@ -9,10 +9,12 @@ namespace BIA.Net.Core.Domain
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Text.Json;
 
     /// <summary>
     /// The helpers for specifications.
@@ -43,55 +45,22 @@ namespace BIA.Net.Core.Domain
 
             Specification<TEntity> globalFilterSpecification = null;
 
-            foreach (var (key, value) in dto.Filters)
+            foreach (var (key, json) in dto.Filters)
             {
-                var isGlobal = key.Contains("global|", StringComparison.InvariantCultureIgnoreCase);
-                var matchKey = key.Replace("global|", string.Empty, StringComparison.InvariantCultureIgnoreCase);
 
-                try
+                if (json.ValueKind == System.Text.Json.JsonValueKind.Array)
                 {
-                    Expression<Func<TEntity, bool>> matchingCriteria = null;
-
-
-                    if (!whereClauses.ContainsKey(matchKey))
+                    var values = JsonSerializer.Deserialize<Dictionary<string, object>[]>(json);
+                    foreach (var value in values)
                     {
-                        continue;
-                    }
-                    LambdaExpression expression = whereClauses[matchKey];
-                    if (expression == null)
-                    {
-                        continue;
-                    }
-
-
-                    matchingCriteria = LazyDynamicFilterExpression<TEntity>(
-                        expression,
-                        value["matchMode"].ToString(),
-                        value["value"].ToString());
-
-                    if (isGlobal)
-                    {
-                        if (globalFilterSpecification == null)
-                        {
-                            globalFilterSpecification = new DirectSpecification<TEntity>(matchingCriteria);
-                        }
-                        else
-                        {
-                            globalFilterSpecification |= new DirectSpecification<TEntity>(matchingCriteria);
-                        }
-                    }
-                    else
-                    {
-                        specification &= new DirectSpecification<TEntity>(matchingCriteria);
+                        AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
                     }
                 }
-                catch (FormatException)
+                else
                 {
-#pragma warning disable S3626 // Jump statements should not be redundant
-                    continue;
-#pragma warning restore S3626 // Jump statements should not be redundant
+                    var value = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+                    AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
                 }
-
 
             }
 
@@ -101,6 +70,58 @@ namespace BIA.Net.Core.Domain
             }
 
             return specification;
+        }
+
+        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value) where TEntity : class, IEntity<TKey>, new()
+        {
+            if (value["value"] == null)
+            {
+                return;
+            }
+
+            var isGlobal = key.Contains("global|", StringComparison.InvariantCultureIgnoreCase);
+            var matchKey = key.Replace("global|", string.Empty, StringComparison.InvariantCultureIgnoreCase);
+
+            try
+            {
+                Expression<Func<TEntity, bool>> matchingCriteria = null;
+                if (!whereClauses.ContainsKey(matchKey))
+                {
+                    return;
+                }
+                LambdaExpression expression = whereClauses[matchKey];
+                if (expression == null)
+                {
+                    return;
+                }
+
+                matchingCriteria = LazyDynamicFilterExpression<TEntity>(
+                    expression,
+                    value["matchMode"].ToString(),
+                    value["value"].ToString());
+
+                if (isGlobal)
+                {
+                    if (globalFilterSpecification == null)
+                    {
+                        globalFilterSpecification = new DirectSpecification<TEntity>(matchingCriteria);
+                    }
+                    else
+                    {
+                        globalFilterSpecification |= new DirectSpecification<TEntity>(matchingCriteria);
+                    }
+                }
+                else
+                {
+                    specification &= new DirectSpecification<TEntity>(matchingCriteria);
+                }
+            }
+            catch (FormatException)
+            {
+#pragma warning disable S3626 // Jump statements should not be redundant
+                return;
+#pragma warning restore S3626 // Jump statements should not be redundant
+            }
         }
 
         /// <summary>
@@ -133,6 +154,10 @@ namespace BIA.Net.Core.Domain
                 case "lte":
                 case "gte":
                 case "notequals":
+                case "dateis":
+                case "dateisnot":
+                case "datebefore":
+                case "dateafter":
                     try 
                     {
                         //object valueFormated = AsType(value, expressionBody.Type);
@@ -140,16 +165,19 @@ namespace BIA.Net.Core.Domain
                         switch (criteria.ToLower())
                         {
                             case "gt":
+                            case "dateafter":
                                 valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                                 binaryExpression = Expression.GreaterThan(expressionBody, valueExpression);
                                 break;
 
                             case "lt":
+                            case "datebefore":
                                 valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                                 binaryExpression = Expression.LessThan(expressionBody, valueExpression);
                                 break;
 
                             case "equals":
+                            case "dateis":
                                 valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                                 binaryExpression = Expression.Equal(expressionBody, valueExpression);
                                 break;
@@ -165,6 +193,7 @@ namespace BIA.Net.Core.Domain
                                 break;
 
                             case "notequals":
+                            case "dateisnot":
                                 valueExpression = Expression.Constant(valueFormated, expressionBody.Type);
                                 binaryExpression = Expression.NotEqual(expressionBody, valueExpression);
                                 break;
@@ -177,7 +206,6 @@ namespace BIA.Net.Core.Domain
                         return new FalseSpecification<TEntity>().SatisfiedBy();
                     }
                     break;
-
 
                 case "contains":
                     if (IsCollectionType(expressionBody.Type))
@@ -225,6 +253,30 @@ namespace BIA.Net.Core.Domain
                     //        expressionBody, Expression.Constant($"%{valueFormated}%"));
                     // }
 
+                    break;
+
+                case "notcontains":
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        valueExpression = Expression.Constant(value);
+                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                        ParameterExpression pe = Expression.Parameter(typeof(string), "a");
+                        var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
+                        var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
+
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr));
+                    }
+                    else
+                    {
+                        valueExpression = Expression.Constant(value);
+                        method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+                        if (expressionBody.Type != typeof(string))
+                        {
+                            expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
+                        }
+
+                        binaryExpression = Expression.Not(Expression.Call(expressionBody, method ?? throw new InvalidOperationException(), valueExpression));
+                    }
                     break;
 
                 case "startswith":

@@ -5,6 +5,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
@@ -151,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
 
             PagingFilterFormatDto<SiteAdvancedFilterDto> filters = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
             {
-                Filters = new Dictionary<string, Dictionary<string, object>>(),
+                Filters = new Dictionary<string, JsonElement>(),
             };
             (IEnumerable<SiteInfoDto> sites, int total) = service.GetRangeWithMembersAsync(filters).Result;
 
