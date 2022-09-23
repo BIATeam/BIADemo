@@ -47,14 +47,15 @@ namespace BIA.Net.Core.Domain
 
             foreach (var (key, json) in dto.Filters)
             {
-
                 if (json.ValueKind == System.Text.Json.JsonValueKind.Array)
                 {
                     var values = JsonSerializer.Deserialize<Dictionary<string, object>[]>(json);
+                    Specification<TEntity> ruleSpecification = null;
                     foreach (var value in values)
                     {
-                        AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
+                        AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClauses, ref globalFilterSpecification, key, value);
                     }
+                    specification &= ruleSpecification;
                 }
                 else
                 {
@@ -113,7 +114,21 @@ namespace BIA.Net.Core.Domain
                 }
                 else
                 {
-                    specification &= new DirectSpecification<TEntity>(matchingCriteria);
+                    if (specification == null)
+                    {
+                        specification = new DirectSpecification<TEntity>(matchingCriteria);
+                    }
+                    else
+                    {
+                        if (value.ContainsKey("operator") && value["operator"]?.ToString() == "or")
+                        {
+                            specification |= new DirectSpecification<TEntity>(matchingCriteria);
+                        }
+                        else
+                        {
+                            specification &= new DirectSpecification<TEntity>(matchingCriteria);
+                        }
+                    }
                 }
             }
             catch (FormatException)
