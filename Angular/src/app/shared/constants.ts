@@ -10,8 +10,6 @@ export const ROUTE_DATA_NO_MARGIN = 'noMargin';
 export const THEME_LIGHT = 'light';
 export const THEME_DARK = 'dark';
 
-export const DEFAULT_VIEW = 'defaultView';
-
 export const TABLE_FILTER_GLOBAL = 'global|';
 
 export enum ViewType {

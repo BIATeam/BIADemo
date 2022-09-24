@@ -3,7 +3,7 @@ import { SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
-import { ViewType, DEFAULT_VIEW, TeamTypeId, TeamTypeRightPrefixe } from 'src/app/shared/constants';
+import { ViewType, TeamTypeId, TeamTypeRightPrefixe } from 'src/app/shared/constants';
 import { Store, select } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
 import { getAllViews, getLastViewChanged, getDataLoaded } from '../../store/view.state';
@@ -285,7 +285,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
           }
         } else {
           this.isFirstEmitDone = true;
-          this.viewChange.emit(DEFAULT_VIEW);
+          this.viewChange.emit(JSON.stringify(this.defaultViewPref));
         }
       }
     });

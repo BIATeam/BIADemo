@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
-import { DEFAULT_VIEW, DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
+import { DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { BiaTableState } from '../../../model/bia-table-state';
 
 @Component({
@@ -165,28 +165,18 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   }
 
   private setControlByViewState(stateString: string) {
-    if (stateString === DEFAULT_VIEW) {
-      this.pageSize = this.defaultPageSize;
-      if (this.displayedColumns !== this.defaultDisplayedColumns)
-      {
-        this.displayedColumns = this.defaultDisplayedColumns;
-        this.onChangeSelectColumn();
-      }
-      this.globalFilter = '';
-    } else {
-      const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
-      this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
-      const newDisplayColumns = state.columnOrder ? state.columnOrder : []
-      if (this.displayedColumns !== newDisplayColumns)
-      {
-        this.displayedColumns = newDisplayColumns;
-        this.onChangeSelectColumn();
-      }
-      for (const key in state.filters) {
-        if (key.startsWith(TABLE_FILTER_GLOBAL)) {
-          this.globalFilter = (state.filters[key] as FilterMetadata ).value;
-          break;
-        }
+    const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
+    this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
+    const newDisplayColumns = state.columnOrder ? state.columnOrder : []
+    if (this.displayedColumns !== newDisplayColumns)
+    {
+      this.displayedColumns = newDisplayColumns;
+      this.onChangeSelectColumn();
+    }
+    for (const key in state.filters) {
+      if (key.startsWith(TABLE_FILTER_GLOBAL)) {
+        this.globalFilter = (state.filters[key] as FilterMetadata ).value;
+        break;
       }
     }
   }

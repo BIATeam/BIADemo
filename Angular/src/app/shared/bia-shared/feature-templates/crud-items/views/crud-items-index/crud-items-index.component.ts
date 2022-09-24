@@ -7,7 +7,7 @@ import {
   BiaFieldConfig,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE, DEFAULT_VIEW, TeamTypeId } from 'src/app/shared/constants';
+import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 import * as FileSaver from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
@@ -356,12 +356,17 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   private updateAdvancedFilterByView(viewPreference: string) {
-    if (viewPreference && viewPreference !== DEFAULT_VIEW) {
+    if (viewPreference) {
       const state = JSON.parse(viewPreference);
       if (state) {
         this.crudItemListComponent.advancedFilter = state.advancedFilter;
         this.checkHaveAdvancedFilter();
       }
+    }
+    else
+    {
+      this.crudItemListComponent.advancedFilter = {};
+      this.checkHaveAdvancedFilter();
     }
   }
 
