@@ -300,7 +300,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   onStateSave(tableState: string) {
-    // this.viewPreference = tableState;
+    this.viewPreference = tableState;
     this.tableState = tableState;
   }
 

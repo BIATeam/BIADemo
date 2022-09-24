@@ -34,7 +34,6 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 
   userOptions$: Observable<OptionDto[]>;
-  firstChange = true;
   form: FormGroup;
   
   constructor(public formBuilder: FormBuilder,
@@ -84,10 +83,9 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.advancedFilter && (this.firstChange === true || changes.advancedFilter)) {
-      this.firstChange = false;
+    if (changes.advancedFilter) {
         const vm = {
-          userSelected: this.advancedFilter.userId
+          userSelected: this.advancedFilter?.userId
         };
         this.form.patchValue({ ...vm });
     }
