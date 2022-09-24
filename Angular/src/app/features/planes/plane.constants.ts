@@ -10,7 +10,7 @@ export const PlaneCRUDConfiguration : CrudConfig = new CrudConfig(
         fieldsConfig: PlaneFieldsConfiguration,
         useCalcMode: false,
         useSignalR: false,
-        useView: false,
+        useView: true,
         useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
         usePopup: true,
         useOfflineMode: false,

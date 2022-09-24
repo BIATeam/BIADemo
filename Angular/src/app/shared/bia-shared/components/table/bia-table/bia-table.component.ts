@@ -265,11 +265,14 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
+  private firstViewPreferenceApply : boolean = false;
+
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {
       let viewPreference = changes.viewPreference.currentValue;
-      if (sessionStorage.getItem(this.tableStateKey)!==changes.viewPreference.currentValue)
+      if (!this.firstViewPreferenceApply || sessionStorage.getItem(this.tableStateKey)!==viewPreference)
       {
+        this.firstViewPreferenceApply = true;
         sessionStorage.setItem(this.tableStateKey, viewPreference);
         this.restoreStateTable();
       }

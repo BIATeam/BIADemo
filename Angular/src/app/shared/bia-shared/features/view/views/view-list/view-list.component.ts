@@ -279,7 +279,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         if (this.selectedView !== 0) {
           const view = this.views.find((v) => v.id === this.selectedView);
           if (view) {
-            this.saveViewState(view.preference);
+            //this.saveViewState(view.preference);
             this.isFirstEmitDone = true;
             this.viewChange.emit(view.preference);
           }
@@ -290,7 +290,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
   }
-
+/*
   private saveViewState(stateString: string) {
     if (stateString) {
       const state = JSON.parse(stateString);
@@ -300,7 +300,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       stateString = JSON.stringify(state);
       sessionStorage.setItem(this.tableStateKey, stateString);
     }
-  }
+  }*/
 
   private getViewState(): string | null {
     return sessionStorage.getItem(this.tableStateKey);
