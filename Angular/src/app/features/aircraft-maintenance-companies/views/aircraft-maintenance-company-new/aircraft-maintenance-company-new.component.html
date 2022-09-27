@@ -1,4 +1,6 @@
 <app-aircraft-maintenance-company-form 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-aircraft-maintenance-company-form>

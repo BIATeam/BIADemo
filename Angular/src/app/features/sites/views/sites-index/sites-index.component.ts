@@ -15,6 +15,7 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 })
 
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
+  // Custo for teams
   canManageMembers = false;
 
   checkHaveAdvancedFilter()
@@ -48,7 +49,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   onManageMember(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
-      this.router.navigate(['sites', crudItemId, 'members']);
+      this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
     }
   }
 }

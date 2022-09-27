@@ -3,16 +3,16 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
-import { AircraftMaintenanceCompanyDas } from '../services/aircraft-maintenance-company-das.service';
 import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './aircraft-maintenance-company.state';
+import { FeatureAircraftMaintenanceCompaniesStore } from './aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
+import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useSignalR } from '../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompanyDas } from '../services/aircraft-maintenance-company-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -57,12 +57,12 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.create),
       pluck('aircraftMaintenanceCompany'),
-      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.post({ item: aircraftMaintenanceCompany }).pipe(
+        return this.aircraftMaintenanceCompanyDas.post({ item: aircraftMaintenanceCompany, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (useSignalR) {
+            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -81,12 +81,12 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.update),
       pluck('aircraftMaintenanceCompany'),
-      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.put({ item: aircraftMaintenanceCompany, id: aircraftMaintenanceCompany.id }).pipe(
+        return this.aircraftMaintenanceCompanyDas.put({ item: aircraftMaintenanceCompany, id: aircraftMaintenanceCompany.id, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (useSignalR) {
+            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -105,12 +105,12 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.aircraftMaintenanceCompanyDas.delete({ id: id }).pipe(
+        return this.aircraftMaintenanceCompanyDas.delete({ id: id, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -129,12 +129,12 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.aircraftMaintenanceCompanyDas.deletes({ ids: ids }).pipe(
+        return this.aircraftMaintenanceCompanyDas.deletes({ ids: ids, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -154,5 +154,5 @@ export class AircraftMaintenanceCompaniesEffects {
     private aircraftMaintenanceCompanyDas: AircraftMaintenanceCompanyDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

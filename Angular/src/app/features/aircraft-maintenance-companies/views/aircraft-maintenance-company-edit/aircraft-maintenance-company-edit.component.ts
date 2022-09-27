@@ -1,52 +1,19 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FeatureAircraftMaintenanceCompaniesActions } from '../../store/aircraft-maintenance-companies-actions';
-import { Subscription } from 'rxjs';
+import { Component, Injector } from '@angular/core';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
-import { AppState } from 'src/app/store/state';
+import { AircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AircraftMaintenanceCompanyOptionsService } from '../../services/aircraft-maintenance-company-options.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-edit',
   templateUrl: './aircraft-maintenance-company-edit.component.html',
-  styleUrls: ['./aircraft-maintenance-company-edit.component.scss']
 })
-export class AircraftMaintenanceCompanyEditComponent implements OnInit, OnDestroy {
-  @Output() displayChange = new EventEmitter<boolean>();
-  private sub = new Subscription();
-
+export class AircraftMaintenanceCompanyEditComponent extends CrudItemEditComponent<AircraftMaintenanceCompany> {
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    public aircraftMaintenanceCompanyOptionsService: AircraftMaintenanceCompanyOptionsService,
+    protected injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
-    private biaTranslationService: BiaTranslationService,
-  ) { }
-
-  ngOnInit() {
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.aircraftMaintenanceCompanyOptionsService.loadAllOptions();
-      })
-    );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  onSubmitted(aircraftMaintenanceCompanyToUpdate: AircraftMaintenanceCompany) {
-    this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.update({ aircraftMaintenanceCompany: aircraftMaintenanceCompanyToUpdate }));
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  ) {
+    super(injector, aircraftMaintenanceCompanyService);
+    this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;
   }
 }

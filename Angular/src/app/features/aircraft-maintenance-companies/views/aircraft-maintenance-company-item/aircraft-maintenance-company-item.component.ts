@@ -1,35 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCurrentAircraftMaintenanceCompany} from '../../store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
-//import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { AppState } from 'src/app/store/state';
+import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 
 @Component({
-  templateUrl: './aircraft-maintenance-company-item.component.html',
-  styleUrls: ['./aircraft-maintenance-company-item.component.scss']
+  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
-export class AircraftMaintenanceCompanyItemComponent implements OnInit, OnDestroy {
-  aircraftMaintenanceCompany$: Observable<AircraftMaintenanceCompany>;
-  private sub = new Subscription();
-
-  constructor(private store: Store<AppState>,
-    private route: ActivatedRoute,
+export class AircraftMaintenanceCompanyItemComponent extends CrudItemItemComponent<AircraftMaintenanceCompany> implements OnInit {
+  constructor(protected store: Store<AppState>,
+    protected injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
-    private layoutService: BiaClassicLayoutService,
-    //private biaTranslationService: BiaTranslationService,
-  ) { }
+    protected layoutService: BiaClassicLayoutService,
+  ) {
+    super(injector, aircraftMaintenanceCompanyService);
+  }
 
   ngOnInit() {
-    this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId = +this.route.snapshot.params.aircraftMaintenanceCompanyId;
+    super.ngOnInit();
     this.sub.add
       (
-        this.store.select(getCurrentAircraftMaintenanceCompany).subscribe((aircraftMaintenanceCompany) => {
+        this.aircraftMaintenanceCompanyService.crudItem$.subscribe((aircraftMaintenanceCompany) => {
+          // TODO after creation of CRUD Team AircraftMaintenanceCompany : set the field of the item to display in the breadcrump
           if (aircraftMaintenanceCompany?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
               (routeData as any)['breadcrumb'] = aircraftMaintenanceCompany.title;
@@ -38,11 +34,5 @@ export class AircraftMaintenanceCompanyItemComponent implements OnInit, OnDestro
           }
         })
       );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }

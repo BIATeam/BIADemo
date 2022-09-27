@@ -1,59 +1,87 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { getCurrentAircraftMaintenanceCompany, getAircraftMaintenanceCompanyLoadingGet } from '../store/aircraft-maintenance-company.state';
+import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { FeatureAircraftMaintenanceCompaniesStore } from '../store/aircraft-maintenance-company.state';
 import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-maintenance-companies-actions';
-import { TeamTypeId } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { AircraftMaintenanceCompanyOptionsService } from './aircraft-maintenance-company-options.service';
+import { AircraftMaintenanceCompanyDas } from './aircraft-maintenance-company-das.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AircraftMaintenanceCompanyService {
-    constructor(
-        private store: Store<AppState>,
-        private authService: AuthService,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getAircraftMaintenanceCompanyLoadingGet);
-        this.aircraftMaintenanceCompany$ = this.store.select(getCurrentAircraftMaintenanceCompany);
-    }
-    private _currentAircraftMaintenanceCompany: AircraftMaintenanceCompany;
-    private _currentAircraftMaintenanceCompanyId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
-    public aircraftMaintenanceCompany$: Observable<AircraftMaintenanceCompany>;
+export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftMaintenanceCompany> {
 
-    public get currentAircraftMaintenanceCompany() {
-        if (this._currentAircraftMaintenanceCompany?.id === this._currentAircraftMaintenanceCompanyId) {
-            return this._currentAircraftMaintenanceCompany;
-        } else {
-            return null;
-        }
+    constructor(private store: Store<AppState>,
+        public dasService: AircraftMaintenanceCompanyDas,
+        public signalRService: CrudItemSignalRService<AircraftMaintenanceCompany>,
+        public optionsService: AircraftMaintenanceCompanyOptionsService,
+        // requiered only for parent key
+        protected authService: AuthService,
+        ) {
+        super(dasService,signalRService,optionsService);
     }
 
-    public get currentAircraftMaintenanceCompanyId(): number {
-        return this._currentAircraftMaintenanceCompanyId;
+    // Custo for teams
+    public get currentCrudItemId(): any {
+        // should be redifine due to the setter
+        return super.currentCrudItemId;
     }
-    public set currentAircraftMaintenanceCompanyId(id: number) {
-        if (this._currentAircraftMaintenanceCompanyId !== id)
+
+    // Custo for teams
+    public set currentCrudItemId(id: any) {
+        if (this._currentCrudItemId !== id)
         {
-            this._currentAircraftMaintenanceCompanyId = Number(id);
+            this._currentCrudItemId = id;
             this.authService.changeCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany, id);
-            this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.load({ id: id }));
         }
+        this.load( id );
     }
 
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentAircraftMaintenanceCompany).subscribe((aircraftMaintenanceCompany) => {
-                if (aircraftMaintenanceCompany) {
-                    this._currentAircraftMaintenanceCompany = aircraftMaintenanceCompany;
-                }
-            })
-        );
+    public getParentKey() : any | null
+    {
+        // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key tothe context. It can be null if root crud
+        //return this.authService.getCurrentTeamId(TeamTypeId.Site);
+        return null;
+    }
+
+    public getFeatureName()  {  return AircraftMaintenanceCompanyCRUDConfiguration.featureName; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
+
+
+    public crudItems$: Observable<AircraftMaintenanceCompany[]> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAllAircraftMaintenanceCompanies);
+    public totalCount$: Observable<number> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompaniesTotalCount);
+    public loadingGetAll$: Observable<boolean> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompanyLoadingGetAll);;
+    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent);
+
+    public crudItem$: Observable<AircraftMaintenanceCompany> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getCurrentAircraftMaintenanceCompany);
+    public loadingGet$: Observable<boolean> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompanyLoadingGet);
+
+    public load(id: any){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.load({ id }));
+    }
+    public loadAllByPost(event: LazyLoadEvent){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event }));
+    }
+    public create(crudItem: AircraftMaintenanceCompany){
+        // TODO after creation of CRUD Team AircraftMaintenanceCompany : map parent Key on the corresponding field
+        // crudItem.siteId = this.getParentKey(),
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.create({ aircraftMaintenanceCompany : crudItem }));
+    }
+    public update(crudItem: AircraftMaintenanceCompany){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.update({ aircraftMaintenanceCompany : crudItem }));
+    }
+    public remove(id: any){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.remove({ id }));
+    }
+    public multiRemove(ids: any[]){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.multiRemove({ ids }));
     }
 }

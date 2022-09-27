@@ -47,7 +47,7 @@ export class SiteService extends CrudItemService<Site> {
 
     public getParentKey(): any | null
     {
-        // TODO after CRUD creation : adapt the parent Key tothe context. It can be null if root crud
+        // TODO after creation of CRUD Team Site : adapt the parent Key tothe context. It can be null if root crud
         //return this.authService.getCurrentTeamId(TeamTypeId.Site);
         return null;
     }
@@ -71,7 +71,7 @@ export class SiteService extends CrudItemService<Site> {
         this.store.dispatch(FeatureSitesActions.loadAllByPost({ event }));
     }
     public create(crudItem: Site){
-        // TODO after CRUD creation : map parent Key on the corresponding field
+        // TODO after creation of CRUD Team Site : map parent Key on the corresponding field
         // crudItem.siteId = this.getParentKey(),
         this.store.dispatch(FeatureSitesActions.create({ site : crudItem }));
     }

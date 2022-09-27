@@ -1,6 +1,8 @@
-<app-aircraft-maintenance-company-form 
-    [aircraftMaintenanceCompany]="aircraftMaintenanceCompanyService.aircraftMaintenanceCompany$ | async" 
+<app-aircraft-maintenance-company-form  
+    [crudItem]="aircraftMaintenanceCompanyService.crudItem$ | async" 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-aircraft-maintenance-company-form>
-<bia-spinner *ngIf="aircraftMaintenanceCompanyService.loading$ | async" [overlay]="true"></bia-spinner>
+<bia-spinner *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async" [overlay]="true"></bia-spinner>

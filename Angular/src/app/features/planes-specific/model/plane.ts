@@ -2,7 +2,7 @@ import { PrimeNGFiltering, BiaFieldConfig, PropType, BiaFieldsConfig } from 'src
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
-// TODO after CRUD creation : adapt the model
+// TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto {
   msn: string;
   isActive: boolean;
@@ -15,7 +15,7 @@ export interface Plane extends BaseDto {
   planeType: OptionDto | null;
 }
 
-// TODO after CRUD creation : adapt the field configuration
+// TODO after creation of CRUD Plane : adapt the field configuration
 export const PlaneFieldsConfiguration : BiaFieldsConfig =
 {
   columns: [

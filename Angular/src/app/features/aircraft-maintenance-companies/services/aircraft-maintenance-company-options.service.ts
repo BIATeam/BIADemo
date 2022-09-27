@@ -1,14 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
+import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AircraftMaintenanceCompanyOptionsService {
-    dictOptionDtos$: Observable<DictOptionDto[]>;
+export class AircraftMaintenanceCompanyOptionsService extends CrudItemOptionsService {
 
-    constructor() {
+    constructor(
+
+    ) {
+        super();
+        // TODO after creation of CRUD Team AircraftMaintenanceCompany : get all requiered option dto use in Table calc and create and edit form
+
+        this.dictOptionDtos$ = combineLatest([]).pipe(
+            map(
+                (options) =>
+                <DictOptionDto[]>[
+                ]
+            )
+        );
     }
 
     loadAllOptions() {

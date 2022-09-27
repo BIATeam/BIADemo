@@ -88,7 +88,7 @@ export class MaintenanceTeamsIndexComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.parentIds = ['' + this.aircraftMaintenanceCompanyService.currentAircraftMaintenanceCompanyId];
+    this.parentIds = ['' + this.aircraftMaintenanceCompanyService.currentCrudItemId];
     this.sub = new Subscription();
 
     this.initTableConfiguration();

@@ -31,7 +31,7 @@ export class PlaneService extends CrudItemService<Plane> {
 
     public getParentKey()
     {
-        // TODO after CRUD creation : adapt the parent Key tothe context. It can be null if root crud
+        // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
         return this.authService.getCurrentTeamId(TeamTypeId.Site);
     }
 
@@ -54,7 +54,7 @@ export class PlaneService extends CrudItemService<Plane> {
         this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
     }
     public create(crudItem: Plane){
-        // TODO after CRUD creation : map parent Key on the corresponding field
+        // TODO after creation of CRUD Plane : map parent Key on the corresponding field
         crudItem.siteId = this.getParentKey(),
         this.store.dispatch(FeaturePlanesActions.create({ plane : crudItem }));
     }
