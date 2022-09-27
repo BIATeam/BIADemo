@@ -9,7 +9,7 @@ export const AircraftMaintenanceCompanyCRUDConfiguration : CrudConfig = new Crud
         fieldsConfig: AircraftMaintenanceCompanyFieldsConfiguration,
         useCalcMode: false,
         useSignalR: false,
-        useView: true,
+        useView: false,
         // useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
         usePopup: true,
         useOfflineMode: false,

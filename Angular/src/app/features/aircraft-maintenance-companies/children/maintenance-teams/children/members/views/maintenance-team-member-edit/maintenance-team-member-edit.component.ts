@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 import { MemberEditComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-member-edit',
@@ -17,7 +17,7 @@ export class MaintenanceTeamMemberEditComponent extends MemberEditComponent impl
   }
 
   ngOnInit() {
-    this.teamId = this.maintenanceTeamService.currentMaintenanceTeamId;
+    this.teamId = this.maintenanceTeamService.currentCrudItemId;
     this.teamTypeId=TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
   }

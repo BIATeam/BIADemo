@@ -1,35 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCurrentMaintenanceTeam} from '../../store/maintenance-team.state';
 import { MaintenanceTeam } from '../../model/maintenance-team';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
-//import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { AppState } from 'src/app/store/state';
+import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
-  templateUrl: './maintenance-team-item.component.html',
-  styleUrls: ['./maintenance-team-item.component.scss']
+  templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
-export class MaintenanceTeamItemComponent implements OnInit, OnDestroy {
-  maintenanceTeam$: Observable<MaintenanceTeam>;
-  private sub = new Subscription();
-
-  constructor(private store: Store<AppState>,
-    private route: ActivatedRoute,
+export class MaintenanceTeamItemComponent extends CrudItemItemComponent<MaintenanceTeam> implements OnInit {
+  constructor(protected store: Store<AppState>,
+    protected injector: Injector,
     public maintenanceTeamService: MaintenanceTeamService,
-    private layoutService: BiaClassicLayoutService,
-    //private biaTranslationService: BiaTranslationService,
-  ) { }
+    protected layoutService: BiaClassicLayoutService,
+  ) {
+    super(injector, maintenanceTeamService);
+  }
 
   ngOnInit() {
-    this.maintenanceTeamService.currentMaintenanceTeamId = +this.route.snapshot.params.maintenanceTeamId;
+    super.ngOnInit();
     this.sub.add
       (
-        this.store.select(getCurrentMaintenanceTeam).subscribe((maintenanceTeam) => {
+        this.maintenanceTeamService.crudItem$.subscribe((maintenanceTeam) => {
+          // TODO after creation of CRUD Team MaintenanceTeam : set the field of the item to display in the breadcrump
           if (maintenanceTeam?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
               (routeData as any)['breadcrumb'] = maintenanceTeam.title;
@@ -38,11 +34,5 @@ export class MaintenanceTeamItemComponent implements OnInit, OnDestroy {
           }
         })
       );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }

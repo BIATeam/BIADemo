@@ -3,16 +3,16 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
-import { MaintenanceTeamDas } from '../services/maintenance-team-das.service';
 import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './maintenance-team.state';
+import { FeatureMaintenanceTeamsStore } from './maintenance-team.state';
 import { MaintenanceTeam } from '../model/maintenance-team';
+import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useSignalR } from '../maintenance-team.constants';
+import { MaintenanceTeamDas } from '../services/maintenance-team-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -57,12 +57,12 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.create),
       pluck('maintenanceTeam'),
-      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
       switchMap(([maintenanceTeam, event]) => {
-        return this.maintenanceTeamDas.post({ item: maintenanceTeam }).pipe(
+        return this.maintenanceTeamDas.post({ item: maintenanceTeam, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (useSignalR) {
+            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -81,12 +81,12 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.update),
       pluck('maintenanceTeam'),
-      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
       switchMap(([maintenanceTeam, event]) => {
-        return this.maintenanceTeamDas.put({ item: maintenanceTeam, id: maintenanceTeam.id }).pipe(
+        return this.maintenanceTeamDas.put({ item: maintenanceTeam, id: maintenanceTeam.id, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (useSignalR) {
+            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -105,12 +105,12 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.maintenanceTeamDas.delete({ id: id }).pipe(
+        return this.maintenanceTeamDas.delete({ id: id, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -129,12 +129,12 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.maintenanceTeamDas.deletes({ ids: ids }).pipe(
+        return this.maintenanceTeamDas.deletes({ ids: ids, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -154,5 +154,5 @@ export class MaintenanceTeamsEffects {
     private maintenanceTeamDas: MaintenanceTeamDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

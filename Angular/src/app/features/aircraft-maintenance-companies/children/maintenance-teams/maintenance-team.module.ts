@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
-import { reducers } from './store/maintenance-team.state';
+// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { MaintenanceTeamFormComponent } from './components/maintenance-team-form/maintenance-team-form.component';
 import { MaintenanceTeamsIndexComponent } from './views/maintenance-teams-index/maintenance-teams-index.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { MaintenanceTeamNewComponent } from './views/maintenance-team-new/maintenance-team-new.component';
-import { MaintenanceTeamEditComponent } from './views/maintenance-team-edit/maintenance-team-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { MaintenanceTeamItemComponent } from './views/maintenance-team-item/maintenance-team-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { MaintenanceTeamTableComponent } from './components/maintenance-team-table/maintenance-team-table.component';
-import { storeKey, usePopup } from './maintenance-team.constants';
+import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { MaintenanceTeamEditComponent } from './views/maintenance-team-edit/maintenance-team-edit.component';
+import { MaintenanceTeamNewComponent } from './views/maintenance-team-new/maintenance-team-new.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
+import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
+import { MaintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 
-const ROUTES: Routes = [
+export let ROUTES: Routes = [
   {
     path: '',
     data: {
@@ -37,15 +39,16 @@ const ROUTES: Routes = [
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
           InjectComponent: MaintenanceTeamNewComponent,
+          dynamicComponent : () => (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
-        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
-        path: ':maintenanceTeamId',
+        path: ':crudItemId',
         data: {
           breadcrumb: '',
-          canNavigate: false,
+          canNavigate: true,
         },
         component: MaintenanceTeamItemComponent,
         canActivate: [PermissionGuard],
@@ -68,9 +71,14 @@ const ROUTES: Routes = [
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
               InjectComponent: MaintenanceTeamEditComponent,
+              dynamicComponent : () => (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
-            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
+          },
+          {
+            path: '',
+            redirectTo: 'edit'
           },
         ]
       },
@@ -93,9 +101,11 @@ const ROUTES: Routes = [
   ],
   imports: [
     SharedModule,
+    CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(storeKey, reducers),
+    StoreModule.forFeature(MaintenanceTeamCRUDConfiguration.storeKey, FeatureMaintenanceTeamsStore.reducers),
     EffectsModule.forFeature([MaintenanceTeamsEffects]),
+    // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module requiered for link
     // Domain Modules:
   ]
 })

@@ -1,59 +1,86 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { MaintenanceTeam } from '../model/maintenance-team';
-import { getCurrentMaintenanceTeam, getMaintenanceTeamLoadingGet } from '../store/maintenance-team.state';
+import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { FeatureMaintenanceTeamsStore } from '../store/maintenance-team.state';
 import { FeatureMaintenanceTeamsActions } from '../store/maintenance-teams-actions';
-import { TeamTypeId } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { MaintenanceTeamOptionsService } from './maintenance-team-options.service';
+import { MaintenanceTeamDas } from './maintenance-team-das.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MaintenanceTeamService {
-    constructor(
-        private store: Store<AppState>,
-        private authService: AuthService,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getMaintenanceTeamLoadingGet);
-        this.maintenanceTeam$ = this.store.select(getCurrentMaintenanceTeam);
-    }
-    private _currentMaintenanceTeam: MaintenanceTeam;
-    private _currentMaintenanceTeamId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
-    public maintenanceTeam$: Observable<MaintenanceTeam>;
+export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
 
-    public get currentMaintenanceTeam() {
-        if (this._currentMaintenanceTeam?.id === this._currentMaintenanceTeamId) {
-            return this._currentMaintenanceTeam;
-        } else {
-            return null;
-        }
+    constructor(private store: Store<AppState>,
+        public dasService: MaintenanceTeamDas,
+        public signalRService: CrudItemSignalRService<MaintenanceTeam>,
+        public optionsService: MaintenanceTeamOptionsService,
+        // requiered only for parent key
+        protected authService: AuthService,
+        ) {
+        super(dasService,signalRService,optionsService);
     }
 
-    public get currentMaintenanceTeamId(): number {
-        return this._currentMaintenanceTeamId;
+    // Custo for teams
+    public get currentCrudItemId(): any {
+        // should be redifine due to the setter
+        return super.currentCrudItemId;
     }
-    public set currentMaintenanceTeamId(id: number) {
-        if (this._currentMaintenanceTeamId !== id)
+
+    // Custo for teams
+    public set currentCrudItemId(id: any) {
+        if (this._currentCrudItemId !== id)
         {
-            this._currentMaintenanceTeamId = Number(id);
+            this._currentCrudItemId = id;
             this.authService.changeCurrentTeamId(TeamTypeId.MaintenanceTeam, id);
-            this.store.dispatch(FeatureMaintenanceTeamsActions.load({ id: id }));
         }
+        this.load( id );
     }
 
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentMaintenanceTeam).subscribe((maintenanceTeam) => {
-                if (maintenanceTeam) {
-                    this._currentMaintenanceTeam = maintenanceTeam;
-                }
-            })
-        );
+    public getParentKey() : any | null
+    {
+        // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key tothe context. It can be null if root crud
+        return this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany);
+    }
+
+    public getFeatureName()  {  return MaintenanceTeamCRUDConfiguration.featureName; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
+
+
+    public crudItems$: Observable<MaintenanceTeam[]> = this.store.select(FeatureMaintenanceTeamsStore.getAllMaintenanceTeams);
+    public totalCount$: Observable<number> = this.store.select(FeatureMaintenanceTeamsStore.getMaintenanceTeamsTotalCount);
+    public loadingGetAll$: Observable<boolean> = this.store.select(FeatureMaintenanceTeamsStore.getMaintenanceTeamLoadingGetAll);;
+    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent);
+
+    public crudItem$: Observable<MaintenanceTeam> = this.store.select(FeatureMaintenanceTeamsStore.getCurrentMaintenanceTeam);
+    public loadingGet$: Observable<boolean> = this.store.select(FeatureMaintenanceTeamsStore.getMaintenanceTeamLoadingGet);
+
+    public load(id: any){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.load({ id }));
+    }
+    public loadAllByPost(event: LazyLoadEvent){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.loadAllByPost({ event }));
+    }
+    public create(crudItem: MaintenanceTeam){
+        // TODO after creation of CRUD Team MaintenanceTeam : map parent Key on the corresponding field
+        // crudItem.siteId = this.getParentKey(),
+        this.store.dispatch(FeatureMaintenanceTeamsActions.create({ maintenanceTeam : crudItem }));
+    }
+    public update(crudItem: MaintenanceTeam){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.update({ maintenanceTeam : crudItem }));
+    }
+    public remove(id: any){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.remove({ id }));
+    }
+    public multiRemove(ids: any[]){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.multiRemove({ ids }));
     }
 }

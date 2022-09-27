@@ -1,6 +1,8 @@
-<app-maintenance-team-form 
-    [maintenanceTeam]="maintenanceTeamService.maintenanceTeam$ | async" 
+<app-maintenance-team-form  
+    [crudItem]="maintenanceTeamService.crudItem$ | async" 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="maintenanceTeamService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-maintenance-team-form>
-<bia-spinner *ngIf="maintenanceTeamService.loading$ | async" [overlay]="true"></bia-spinner>
+<bia-spinner *ngIf="maintenanceTeamService.loadingGet$ | async" [overlay]="true"></bia-spinner>

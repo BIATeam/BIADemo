@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { AircraftMaintenanceCompanyService } from 'src/app/features/aircraft-maintenance-companies/services/aircraft-maintenance-company.service';
+import { AircraftMaintenanceCompanyService } from '../../../../services/aircraft-maintenance-company.service';
 import { MemberEditComponent } from 'src/app/shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component';
 import { TeamTypeId } from 'src/app/shared/constants';
 
