@@ -26,11 +26,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
     {
         /// <summary>
-        /// The current AircraftMaintenanceCompany Id.
-        /// </summary>
-        private readonly int currentAircraftMaintenanceCompanyId;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompanyAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -39,19 +34,23 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             : base(repository)
         {
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
+            var currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 
             IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
             int userId = (principal as BIAClaimsPrincipal).GetUserId();
 
+            // You can see evrey team if your are member
+            // For AircraftMaintenanceCompany we add
+            //          - right for privilate acces (AccessAll) = Admin
             this.filtersContext.Add(
                 AccessMode.Read,
                 new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
 
+            // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.filtersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == this.currentAircraftMaintenanceCompanyId));
+                new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == currentAircraftMaintenanceCompanyId));
         }
     }
 }

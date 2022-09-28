@@ -26,9 +26,10 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
         /// <summary>
-        /// The current SiteId.
+        /// The current Aircraft Maintenance Company Id.
         /// </summary>
         private readonly int currentAircraftMaintenanceCompanyId;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamAppService"/> class.
@@ -38,19 +39,27 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         public MaintenanceTeamAppService(ITGenericRepository<MaintenanceTeam, int> repository, IPrincipal principal)
             : base(repository)
         {
-            this.currentAircraftMaintenanceCompanyId = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>().GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany);
+            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
+            var currentMaintenanceTeamyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.MaintenanceTeam) : 0;
 
             IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.MaintenanceTeams.ListViewAll) == true;
             int userId = (principal as BIAClaimsPrincipal).GetUserId();
 
+            // You can see every team if your are member
+            // For MaintenanceTeam we add
+            //          - filter on current AircraftMaintenanceCompany to see only MaintenanceTeam of the current AircraftMaintenanceCompany
+            //          - right for privilate acces (ListViewAll) = Admin and Supervisor of the Parent team (AircraftMaintenanceCompany)
+            //          - right for member of the current AircraftMaintenanceCompany
             this.filtersContext.Add(
                 AccessMode.Read,
                 new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && (accessAll || p.Members.Any(m => m.UserId == userId || p.AircraftMaintenanceCompany.Members.Any(m => m.UserId == userId)))));
 
+            // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.filtersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && p.Id == this.currentAircraftMaintenanceCompanyId));
+                new DirectSpecification<MaintenanceTeam>(p => p.Id == currentMaintenanceTeamyId));
         }
 
         /// <inheritdoc/>
