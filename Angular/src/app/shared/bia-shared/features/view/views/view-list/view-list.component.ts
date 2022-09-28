@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SelectItemGroup } from 'primeng/api';
+import { FilterMetadata, SelectItemGroup } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription, combineLatest } from 'rxjs';
 import { View } from '../../model/view';
@@ -142,21 +142,105 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return (  
       view1.first===view2.first &&
       (
-        ((view1.filters === undefined || JSON.stringify(view1.filters) === "{}") && (view2.filters === undefined || JSON.stringify(view2.filters) === "{}"))
-        ||
-        (JSON.stringify(view1.filters) === JSON.stringify(view2.filters))
+        this.areFilterEgals(view1.filters,view2.filters)
       ) &&
       JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
       view1.rows === view2.rows &&
       view1.sortField === view2.sortField &&
       view1.sortOrder === view2.sortOrder &&
       (
-        (view1.advancedFilter === undefined && view2.advancedFilter === undefined)
+        this.isNullUndefEmptyStr(view1.advancedFilter) && this.isNullUndefEmptyStr(view2.advancedFilter)
         ||
         JSON.stringify(view1.advancedFilter) === JSON.stringify(view2.advancedFilter)
       )
     )
   }
+
+  private areFilterEgals(filters1: {[s: string]: FilterMetadata | FilterMetadata[];} | undefined, filters2: {[s: string]: FilterMetadata | FilterMetadata[];} | undefined ) :boolean
+  {
+    if (this.isNullUndefEmptyStr(filters1) && (this.isNullUndefEmptyStr(filters2)))
+    {
+      return true;
+    }
+    if (JSON.stringify(filters1) === JSON.stringify(filters2))
+    {
+      return true;
+    }
+
+    for (let key in filters1) {
+      let value1 = filters1[key];
+      let value2 = filters2?filters2[key]:undefined;
+      if (JSON.stringify(this.standardizeFilterMetadata(value1)) !== JSON.stringify(this.standardizeFilterMetadata(value2)))
+      {
+        return false;
+      }
+    }
+    for (let key in filters2) {
+      if (filters1 == undefined || !(key in filters1))
+      {
+        if (JSON.stringify(this.standardizeFilterMetadata(filters2[key]))!= JSON.stringify([]))
+        {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  private standardizeFilterMetadata( filterMetadata : FilterMetadata | FilterMetadata[] | undefined)  : FilterMetadata[]
+  {
+    let standardized: FilterMetadata[] = []
+    if (this.isValueNullUndefEmptyStr(filterMetadata))
+    {
+      return standardized;
+    }
+    if (Array.isArray(filterMetadata))
+    {
+      (filterMetadata as FilterMetadata[]).forEach(element => {
+        if (!this.isValueNullUndefEmptyStr(element.value))
+        {
+          standardized.push({...element});
+        }
+      });
+    }
+
+    if (!this.isValueNullUndefEmptyStr((filterMetadata as FilterMetadata)['value']))
+    {
+      standardized.push({...filterMetadata as FilterMetadata})
+    }
+
+    if (standardized.length === 1)
+    {
+      standardized[0].operator='and';
+    }
+    return standardized;
+  }
+
+  private isNullUndefEmptyStr(obj : any) : boolean
+  {
+    if (this.isValueNullUndefEmptyStr(obj )) 
+    {
+      return true;
+    }
+    if (JSON.stringify(obj) === "{}")
+    {
+      return true;
+    }
+    return Object.values(obj).every(value => {
+      // 👇️ check for multiple conditions
+      if (this.isValueNullUndefEmptyStr(value)) {
+        return true;
+      }
+      return false;
+    });
+  }
+
+  private isValueNullUndefEmptyStr(obj : any) : boolean
+  {
+    return (obj === null || obj === undefined || obj === '') 
+  }
+  
 
   onViewChange(event: any) {
     this.selectedView = event.value;

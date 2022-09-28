@@ -345,7 +345,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onFilter(advancedFilter: any) {
     this.crudConfiguration.fieldsConfig.advancedFilter = advancedFilter;
-    this.crudItemListComponent.saveStateNoEmit();
+    this.crudItemListComponent.table.saveState();
     this.checkHaveAdvancedFilter();
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }
