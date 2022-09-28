@@ -10,7 +10,7 @@ export class CrudConfig {
   useSignalR: boolean;
   useView: boolean;
   tableStateKey: string;
-  useViewTeamWithTypeId: TeamTypeId;
+  useViewTeamWithTypeId: TeamTypeId | null;
   usePopup: boolean;
   useOfflineMode: boolean;
   fieldsConfig: BiaFieldsConfig;
@@ -23,7 +23,7 @@ export class CrudConfig {
     useSignalR = false,
     useView = false,
     tableStateKey = featureName + 'Grid',
-    useViewTeamWithTypeId = TeamTypeId.Site,
+    useViewTeamWithTypeId = null,
     usePopup = true,
     useOfflineMode = false,
     } :
@@ -35,7 +35,7 @@ export class CrudConfig {
       useSignalR?: boolean,
       useView?: boolean,
       tableStateKey?: string,
-      useViewTeamWithTypeId?: TeamTypeId,
+      useViewTeamWithTypeId?: TeamTypeId | null,
       usePopup?: boolean,
       useOfflineMode?: boolean,
     })
