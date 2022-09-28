@@ -20,7 +20,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   checkHaveAdvancedFilter()
   {
-    this.haveAdvancedFilter =  SiteAdvancedFilter.haveFilter(this.crudItemListComponent.advancedFilter);
+    this.haveAdvancedFilter =  SiteAdvancedFilter.haveFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
   }
   
   @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;

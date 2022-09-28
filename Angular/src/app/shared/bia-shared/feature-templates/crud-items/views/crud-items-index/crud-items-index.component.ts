@@ -278,7 +278,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudItemListComponent.advancedFilter, parentIds: this.parentIds, ...lazyLoadEvent };
+    const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.parentIds, ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
   }
 
@@ -344,7 +344,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
 
   onFilter(advancedFilter: any) {
-    this.crudItemListComponent.advancedFilter = advancedFilter;
+    this.crudConfiguration.fieldsConfig.advancedFilter = advancedFilter;
     this.crudItemListComponent.saveStateNoEmit();
     this.checkHaveAdvancedFilter();
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
@@ -359,13 +359,13 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     if (viewPreference) {
       const state = JSON.parse(viewPreference);
       if (state) {
-        this.crudItemListComponent.advancedFilter = state.advancedFilter;
+        this.crudConfiguration.fieldsConfig.advancedFilter = state.advancedFilter;
         this.checkHaveAdvancedFilter();
       }
     }
     else
     {
-      this.crudItemListComponent.advancedFilter = {};
+      this.crudConfiguration.fieldsConfig.advancedFilter = {};
       this.checkHaveAdvancedFilter();
     }
   }

@@ -3,7 +3,7 @@
     [fxFlexValue]="25"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
-    [advancedFilter]="crudItemListComponent?.advancedFilter"
+    [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
   ></app-site-filter>
   <div fxFlex="100">
     <bia-table-header

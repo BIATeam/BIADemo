@@ -38,7 +38,6 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() loading = false;
   @Input() tableStateKey: string;
   @Input() viewPreference: string;
-  @Input() advancedFilter: any;
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
 
@@ -209,7 +208,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
           state.expandedRowKeys = this.table.expandedRowKeys;
       }
 
-      const customState: any = this.advancedFilter ? { advancedFilter: this.advancedFilter, ...state } : state;
+      const customState: any = this.configuration.advancedFilter ? { advancedFilter: this.configuration.advancedFilter, ...state } : state;
 
       storage.setItem(this.table.stateKey, JSON.stringify(customState));
       //this.table.onStateSave.emit(state);
@@ -319,7 +318,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   onStateSave(state: TableState) {
     if (this.table && Object.keys(state).length) {
-      const customState: BiaTableState = { advancedFilter: this.advancedFilter, ...state };
+      const customState: BiaTableState = { advancedFilter: this.configuration.advancedFilter, ...state };
       if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
         const storage = this.table.getStorage();
         const jsonCustomState: string = JSON.stringify(customState);

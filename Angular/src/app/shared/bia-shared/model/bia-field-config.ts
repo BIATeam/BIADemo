@@ -90,4 +90,5 @@ export class BiaFieldConfig {
 
 export interface BiaFieldsConfig {
   columns: BiaFieldConfig[];
+  advancedFilter?: any;
 }
