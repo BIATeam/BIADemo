@@ -65,7 +65,6 @@ export class SiteFilterComponent implements OnInit, OnChanges {
 
   onReset() {
     this.form.reset();
-    this.onFilter();
   }
 
   onFilter() {
