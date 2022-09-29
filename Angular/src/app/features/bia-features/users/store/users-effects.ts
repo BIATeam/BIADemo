@@ -3,16 +3,16 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureUsersActions } from './users-actions';
-import { UserDas } from '../services/user-das.service';
 import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './user.state';
+import { FeatureUsersStore } from './user.state';
 import { User } from '../model/user';
+import { UserCRUDConfiguration } from '../user.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
-import { useSignalR } from '../user.constants';
+import { UserDas } from '../services/user-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -57,12 +57,12 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.create),
       pluck('user'),
-      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.post({ item: user }).pipe(
+        return this.userDas.post({ item: user, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (useSignalR) {
+            if (UserCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -81,12 +81,12 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.update),
       pluck('user'),
-      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
       switchMap(([user, event]) => {
-        return this.userDas.put({ item: user, id: user.id }).pipe(
+        return this.userDas.put({ item: user, id: user.id, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (useSignalR) {
+            if (UserCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -101,34 +101,16 @@ export class UsersEffects {
     )
   );
 
-  synchronize$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(FeatureUsersActions.synchronize),
-      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
-      switchMap(([x, event]) => {
-        return this.userDas.synchronize().pipe(
-          map(() => {
-            this.biaMessageService.showSyncSuccess();
-            return FeatureUsersActions.loadAllByPost({ event: event });
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
-          })
-        );
-      })
-    )
-  );
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.userDas.delete({ id: id }).pipe(
+        return this.userDas.delete({ id: id, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (UserCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -147,12 +129,12 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.userDas.deletes({ ids: ids }).pipe(
+        return this.userDas.deletes({ ids: ids, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (useSignalR) {
+            if (UserCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -166,6 +148,25 @@ export class UsersEffects {
       })
     )
   );
+
+  synchronize$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(FeatureUsersActions.synchronize),
+    concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+    switchMap(([x, event]) => {
+      return this.userDas.synchronize().pipe(
+        map(() => {
+          this.biaMessageService.showSyncSuccess();
+          return FeatureUsersActions.loadAllByPost({ event: event });
+        }),
+        catchError((err) => {
+          this.biaMessageService.showError();
+          return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
+        })
+      );
+    })
+  )
+);
 
   constructor(
     private actions$: Actions,

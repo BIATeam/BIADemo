@@ -1,5 +1,6 @@
-<bia-user-form 
-    [roleOptions]="userOptionsService.roleOptions$| async"
+<app-user-form 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
-></bia-user-form>
+></app-user-form>

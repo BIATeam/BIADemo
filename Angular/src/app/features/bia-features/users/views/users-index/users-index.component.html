@@ -2,22 +2,22 @@
   <div fxFlex="100">
     <bia-table-header
       [headerTitle]="'user.listOf' | translate"
-      [canAdd]="canAdd&&!useCalcMode"
+      [canAdd]="canAdd"
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
-      [selectedElements]="selectedUsers"
+      [selectedElements]="selectedCrudItems"
     >
-    <ng-template pTemplate="actionOnList">
-      <button
-      pButton
-      *ngIf="canSync"
-      class="p-button-outlined"
-      label="{{ 'bia.synchronize' | translate }}"
-      (click)="onSynchronize()"></button>
-    </ng-template>
+      <ng-template pTemplate="actionOnList">
+        <button
+        pButton
+        *ngIf="canSync"
+        class="p-button-outlined"
+        label="{{ 'bia.synchronize' | translate }}"
+        (click)="onSynchronize()"></button>
+      </ng-template>
     </bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
@@ -30,44 +30,69 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
+      [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-    ></bia-table-controller>
-    <bia-table *ngIf="!useCalcMode"
-      [elements]="users$ | async"
+    >
+      <ng-template pTemplate="customControl">
+        <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
+          <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
+          (click)="useClacModeChange(!crudConfiguration.useCalcMode)" 
+          pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
+          <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
+          (click)="useViewChange(!crudConfiguration.useView)"
+          pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
+          <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
+          (click)="useSignalRChange(!crudConfiguration.useSignalR)"
+          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
+          <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
+          (click)="usePopupChange(!crudConfiguration.usePopup)"
+          pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
+        </div>
+      </ng-template>
+    </bia-table-controller>
+    <bia-table
+      *ngIf="!crudConfiguration.useCalcMode"
+      [elements]="crudItems$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
-      [configuration]="tableConfiguration"
+      [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
       [loading]="loading$ | async"
-      (clickRow)="onEdit($event)"
+      (clickRow)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
     ></bia-table>
-    <bia-user-table *ngIf="useCalcMode"
-      [elements]="users$ | async"
-      [dictOptionDtos]="userOptionsService.dictOptionDtos$ | async"
+    <app-user-table
+      *ngIf="crudConfiguration.useCalcMode"
+      [elements]="crudItems$ | async"
+      [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
-      [configuration]="tableConfiguration"
+      [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
       [canEdit]="canEdit"
-      [canAdd]="canAdd"
+      [canAdd]="false"
       [canSelectElement]="canDelete"
       [loading]="loading$ | async"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-    ></bia-user-table>
+    ></app-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog [(display)]="displayUserAddFromDirectoryDialog"></bia-user-add-from-directory-dialog>

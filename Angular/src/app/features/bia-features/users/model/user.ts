@@ -1,6 +1,8 @@
-import { BaseDto } from "src/app/shared/bia-shared/model/base-dto";
-import { OptionDto } from "src/app/shared/bia-shared/model/option-dto";
+import { BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
+// TODO after creation of CRUD User : adapt the model
 export interface User extends BaseDto {
   lastName: string;
   firstName: string;
@@ -9,4 +11,23 @@ export interface User extends BaseDto {
   // Computed by Angular when data receive
   displayName: string;
   roles: OptionDto[];
+}
+
+// TODO after creation of CRUD User : adapt the field configuration
+export const UserFieldsConfiguration : BiaFieldsConfig =
+{
+  columns: [
+    Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
+      isEditable: false,
+    }),
+    Object.assign(new BiaFieldConfig('firstName', 'user.firstName'), {
+      isEditable: false,
+    }),
+    Object.assign(new BiaFieldConfig('login', 'user.login'), {
+      isEditable: false,
+    }),
+    Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
+      type: PropType.ManyToMany,
+    })
+  ]
 }
