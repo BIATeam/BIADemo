@@ -45,14 +45,13 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
         this.load( id );
     }
 
-    public getParentKey() : any | null
+    public getParentIds(): any[]
     {
         // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key tothe context. It can be null if root crud
-        return this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany);
+        return [this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany)];
     }
 
     public getFeatureName()  {  return MaintenanceTeamCRUDConfiguration.featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
 
 
     public crudItems$: Observable<MaintenanceTeam[]> = this.store.select(FeatureMaintenanceTeamsStore.getAllMaintenanceTeams);
@@ -71,7 +70,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     }
     public create(crudItem: MaintenanceTeam){
         // TODO after creation of CRUD Team MaintenanceTeam : map parent Key on the corresponding field
-        // crudItem.siteId = this.getParentKey(),
+        // crudItem.siteId = this.getParentIds()[0],
         this.store.dispatch(FeatureMaintenanceTeamsActions.create({ maintenanceTeam : crudItem }));
     }
     public update(crudItem: MaintenanceTeam){

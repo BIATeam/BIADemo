@@ -45,16 +45,13 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
         this.load( id );
     }
 
-    public getParentKey() : any | null
+    public getParentIds(): any[]
     {
         // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the parent Key tothe context. It can be null if root crud
-        //return this.authService.getCurrentTeamId(TeamTypeId.Site);
-        return null;
+        return [];
     }
 
     public getFeatureName()  {  return AircraftMaintenanceCompanyCRUDConfiguration.featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
-
 
     public crudItems$: Observable<AircraftMaintenanceCompany[]> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAllAircraftMaintenanceCompanies);
     public totalCount$: Observable<number> = this.store.select(FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompaniesTotalCount);
@@ -72,7 +69,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     }
     public create(crudItem: AircraftMaintenanceCompany){
         // TODO after creation of CRUD Team AircraftMaintenanceCompany : map parent Key on the corresponding field
-        // crudItem.siteId = this.getParentKey(),
+        // crudItem.siteId = this.getParentIds()[0],
         this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.create({ aircraftMaintenanceCompany : crudItem }));
     }
     public update(crudItem: AircraftMaintenanceCompany){

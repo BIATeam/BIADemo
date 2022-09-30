@@ -25,10 +25,21 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
 
+    public getParentIds(): any[]
+    {
+         return [];
+    } 
+
+    public getParentKey(): string
+    {
+        return this.getParentIds().map((id) => id.toString()).join("-");
+    }
+
     public getFeatureName()  {  return 'crud-items'; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey() , featureName : this.getFeatureName()}; }
+
     public getConsoleLabel()  {  return this.capitalizeFirstLetter(this.getFeatureName().replace(/-./g, x=>x[1].toUpperCase())); };
 
-    public getSignalRTargetedFeature() { return {featureName : this.getFeatureName()};}
     public getSignalRRefreshEvent() { return 'refresh-' + this.getFeatureName(); };
 
 

@@ -29,15 +29,13 @@ export class PlaneService extends CrudItemService<Plane> {
         super(dasService,signalRService,optionsService);
     }
 
-    public getParentKey(): any | null
+    public getParentIds(): any[]
     {
         // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
-        return this.authService.getCurrentTeamId(TeamTypeId.Site);
+        return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
     }
 
     public getFeatureName()  {  return PlaneCRUDConfiguration.featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
-
 
     public crudItems$: Observable<Plane[]> = this.store.select(FeaturePlanesStore.getAllPlanes);
     public totalCount$: Observable<number> = this.store.select(FeaturePlanesStore.getPlanesTotalCount);
@@ -55,7 +53,7 @@ export class PlaneService extends CrudItemService<Plane> {
     }
     public create(crudItem: Plane){
         // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-        crudItem.siteId = this.getParentKey(),
+        crudItem.siteId = this.getParentIds()[0],
         this.store.dispatch(FeaturePlanesActions.create({ plane : crudItem }));
     }
     public update(crudItem: Plane){

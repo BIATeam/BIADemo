@@ -45,16 +45,14 @@ export class SiteService extends CrudItemService<Site> {
         this.load( id );
     }
 
-    public getParentKey(): any | null
+    public getParentIds(): any[]
     {
         // TODO after creation of CRUD Team Site : adapt the parent Key tothe context. It can be null if root crud
         //return this.authService.getCurrentTeamId(TeamTypeId.Site);
-        return null;
+        return [];
     }
 
     public getFeatureName()  {  return SiteCRUDConfiguration.featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
-
 
     public crudItems$: Observable<Site[]> = this.store.select(FeatureSitesStore.getAllSites);
     public totalCount$: Observable<number> = this.store.select(FeatureSitesStore.getSitesTotalCount);
@@ -72,7 +70,7 @@ export class SiteService extends CrudItemService<Site> {
     }
     public create(crudItem: Site){
         // TODO after creation of CRUD Team Site : map parent Key on the corresponding field
-        // crudItem.siteId = this.getParentKey(),
+        // crudItem.siteId = this.getParentIds()[0],
         this.store.dispatch(FeatureSitesActions.create({ site : crudItem }));
     }
     public update(crudItem: Site){

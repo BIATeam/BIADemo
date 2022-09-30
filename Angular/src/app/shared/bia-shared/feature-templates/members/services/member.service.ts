@@ -30,15 +30,13 @@ export class MemberService extends CrudItemService<Member> {
     
     teamTypeId: number;
 
-    public getParentKey(): any | null
+    public getParentIds(): any[]
     {
         // TODO after creation of CRUD Member : adapt the parent Key tothe context. It can be null if root crud
-        return this.authService.getCurrentTeamId(this.teamTypeId);
+        return [this.authService.getCurrentTeamId(this.teamTypeId)];
     }
 
     public getFeatureName()  {  return MemberCRUDConfiguration.featureName; };
-    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
-
 
     public crudItems$: Observable<Member[]> = this.store.select(FeatureMembersStore.getAllMembers);
     public totalCount$: Observable<number> = this.store.select(FeatureMembersStore.getMembersTotalCount);
@@ -56,12 +54,12 @@ export class MemberService extends CrudItemService<Member> {
     }
     public create(crudItem: Member){
         // TODO after creation of CRUD Member : map parent Key on the corresponding field
-        crudItem.teamId = this.getParentKey(),
+        crudItem.teamId = this.getParentIds()[0],
         this.store.dispatch(FeatureMembersActions.create({ member : crudItem }));
     }
     public createMulti(membersToCreate: Members){
         // TODO after creation of CRUD Member : map parent Key on the corresponding field
-        membersToCreate.teamId = this.getParentKey(),
+        membersToCreate.teamId = this.getParentIds()[0],
         this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
     }
     public update(crudItem: Member){
