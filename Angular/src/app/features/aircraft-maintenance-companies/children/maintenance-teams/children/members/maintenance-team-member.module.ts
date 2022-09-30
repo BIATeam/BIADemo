@@ -37,7 +37,7 @@ const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: ':memberId',
+        path: ':crudItemId',
         data: {
           breadcrumb: '',
           canNavigate: true,

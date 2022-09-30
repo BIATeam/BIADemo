@@ -1,52 +1,71 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Member } from '../model/member';
-import { getCurrentMember, getMemberLoadingGet } from '../store/member.state';
+import { MemberCRUDConfiguration } from '../member.constants';
+import { FeatureMembersStore } from '../store/member.state';
 import { FeatureMembersActions } from '../store/members-actions';
+import { MemberOptionsService } from './member-options.service';
+import { MemberDas } from './member-das.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MemberService {
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getMemberLoadingGet);
-        this.member$ = this.store.select(getCurrentMember);
-    }
-    private _currentMember: Member;
-    private _currentMemberId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
-    public member$: Observable<Member>;
+export class MemberService extends CrudItemService<Member> {
 
-    public get currentMember() {
-        if (this._currentMember?.id === this._currentMemberId) {
-            return this._currentMember;
-        } else {
-            return null;
-        }
+    constructor(private store: Store<AppState>,
+        public dasService: MemberDas,
+        public signalRService: CrudItemSignalRService<Member>,
+        public optionsService: MemberOptionsService,
+        // requiered only for parent key
+        protected authService: AuthService,
+        ) {
+        super(dasService,signalRService,optionsService);
+    }
+    
+    teamTypeId: number;
+
+    public getParentKey(): any | null
+    {
+        // TODO after creation of CRUD Member : adapt the parent Key tothe context. It can be null if root crud
+        return this.authService.getCurrentTeamId(this.teamTypeId);
     }
 
-    public get currentMemberId(): number {
-        return this._currentMemberId;
-    }
-    public set currentMemberId(id: number) {
-        this._currentMemberId = Number(id);
-        this.store.dispatch(FeatureMembersActions.load({ id: id }));
-    }
+    public getFeatureName()  {  return MemberCRUDConfiguration.featureName; };
+    public getSignalRTargetedFeature() { return {parentKey: this.getParentKey()?.toString() , featureName : this.getFeatureName()}; }
 
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentMember).subscribe((member) => {
-                if (member) {
-                    this._currentMember = member;
-                }
-            })
-        );
+
+    public crudItems$: Observable<Member[]> = this.store.select(FeatureMembersStore.getAllMembers);
+    public totalCount$: Observable<number> = this.store.select(FeatureMembersStore.getMembersTotalCount);
+    public loadingGetAll$: Observable<boolean> = this.store.select(FeatureMembersStore.getMemberLoadingGetAll);;
+    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeatureMembersStore.getLastLazyLoadEvent);
+
+    public crudItem$: Observable<Member> = this.store.select(FeatureMembersStore.getCurrentMember);
+    public loadingGet$: Observable<boolean> = this.store.select(FeatureMembersStore.getMemberLoadingGet);
+
+    public load(id: any){
+        this.store.dispatch(FeatureMembersActions.load({ id }));
+    }
+    public loadAllByPost(event: LazyLoadEvent){
+        this.store.dispatch(FeatureMembersActions.loadAllByPost({ event }));
+    }
+    public create(crudItem: Member){
+        // TODO after creation of CRUD Member : map parent Key on the corresponding field
+        crudItem.teamId = this.getParentKey(),
+        this.store.dispatch(FeatureMembersActions.create({ member : crudItem }));
+    }
+    public update(crudItem: Member){
+        this.store.dispatch(FeatureMembersActions.update({ member : crudItem }));
+    }
+    public remove(id: any){
+        this.store.dispatch(FeatureMembersActions.remove({ id }));
+    }
+    public multiRemove(ids: any[]){
+        this.store.dispatch(FeatureMembersActions.multiRemove({ ids }));
     }
 }

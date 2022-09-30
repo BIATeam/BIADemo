@@ -22,6 +22,7 @@ import { CrudItemService } from '../../services/crud-item.service';
 import { CrudConfig } from '../../model/crud-config';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -72,6 +73,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   public activatedRoute: ActivatedRoute;
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
+  protected authService: AuthService;
 
   constructor(
     protected injector: Injector,
@@ -82,6 +84,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
     this.translateService = this.injector.get<TranslateService>(TranslateService);
     this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+    this.authService = this.injector.get<AuthService>(AuthService);
   }
 
   useViewChange(e: boolean) {
@@ -126,7 +129,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       this.isLoadAllOptionsSubsribe = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.crudItemService.optionsService.loadAllOptions();
+          this.crudItemService.optionsService.loadAllOptions(this.crudConfiguration.optionFilter);
         })
       );
     }
@@ -174,7 +177,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.sub = new Subscription();
 
     this.initTableConfiguration();
-    this.setPermissions();
+    this.sub.add(
+      this.authService.authInfo$.subscribe((authInfo) => {
+        if (authInfo) {
+          this.setPermissions();
+        }
+      })
+    );
+    
     this.crudItems$ = this.crudItemService.crudItems$;
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;

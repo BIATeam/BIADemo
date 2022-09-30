@@ -1,51 +1,39 @@
-import { Component, OnInit, OnDestroy, Injector } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { getCurrentMember} from '../../store/member.state';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Member } from '../../model/member';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { MemberService } from '../../services/member.service';
 import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { MemberService } from '../../services/member.service';
 
 @Component({
-  templateUrl: './member-item.component.html',
-  styleUrls: ['./member-item.component.scss']
+  templateUrl: '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: ['../../../crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
-export class MemberItemComponent implements OnInit, OnDestroy {
-  member$: Observable<Member>;
-  protected sub = new Subscription();
-  protected store: Store<AppState>;
-  protected activatedRoute: ActivatedRoute;
-  public memberService: MemberService;
+export class MemberItemComponent extends CrudItemItemComponent<Member> implements OnInit {
   protected layoutService: BiaClassicLayoutService;
+  protected memberService: MemberService;
 
-  constructor(injector: Injector) { 
-    this.store = injector.get<Store<AppState>>(Store);
-    this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
-    this.memberService = injector.get<MemberService>(MemberService);
+  constructor(
+    protected injector: Injector,
+  ) {
+    super(injector, injector.get<MemberService>(MemberService));
     this.layoutService = injector.get<BiaClassicLayoutService>(BiaClassicLayoutService);
+    this.memberService = injector.get<MemberService>(MemberService);
   }
 
   ngOnInit() {
-    this.memberService.currentMemberId = this.activatedRoute.snapshot.params.memberId;
+    super.ngOnInit();
     this.sub.add
       (
-        this.store.select(getCurrentMember).subscribe((member) => {
-          if (member?.user) {
-            this.activatedRoute.data.pipe(first()).subscribe(routeData => {
+        this.memberService.crudItem$.subscribe((member) => {
+          // TODO after creation of CRUD Member : set the field of the item to display in the breadcrump
+          if (member?.user?.display) {
+            this.route.data.pipe(first()).subscribe(routeData => {
               (routeData as any)['breadcrumb'] = member.user.display;
             });
             this.layoutService.refreshBreadcrumb();
           }
         })
       );
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
   }
 }

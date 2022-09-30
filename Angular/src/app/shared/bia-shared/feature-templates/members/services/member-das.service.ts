@@ -6,7 +6,7 @@ import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service
   providedIn: 'root'
 })
 export class MemberDas extends AbstractDas<Member> {
-  constructor(injector: Injector/*, private translate: TranslateService*/) {
+  constructor(injector: Injector) {
     super(injector, 'Members');
   }
 }

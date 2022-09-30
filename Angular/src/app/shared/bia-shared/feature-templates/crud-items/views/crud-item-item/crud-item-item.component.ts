@@ -5,6 +5,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
+  selector: 'bia-cruditem-item',
   templateUrl: './crud-item-item.component.html',
   styleUrls: ['./crud-item-item.component.scss']
 })

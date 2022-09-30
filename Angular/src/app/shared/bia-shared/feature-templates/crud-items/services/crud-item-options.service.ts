@@ -29,7 +29,7 @@ export class CrudItemOptionsService {
         */
     }
 
-    loadAllOptions() {
+    loadAllOptions(optionFilter: any) {
         // TODO redefine in plane 
         /*
         this.store.dispatch(DomainCrudItemTypeOptionsActions .loadAll());

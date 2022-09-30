@@ -6,7 +6,6 @@ import { TeamTypeId } from 'src/app/shared/constants';
 @Component({
   selector: 'app-maintenance-team-member-edit',
   templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
-  styleUrls: ['../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.scss']
 })
 export class MaintenanceTeamMemberEditComponent extends MemberEditComponent implements OnInit {
   constructor(

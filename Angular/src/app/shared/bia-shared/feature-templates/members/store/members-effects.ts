@@ -3,15 +3,16 @@ import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureMembersActions } from './members-actions';
-import { MemberDas } from '../services/member-das.service';
 import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './member.state';
+import { FeatureMembersStore } from './member.state';
 import { Member } from '../model/member';
+import { MemberCRUDConfiguration } from '../member.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { MemberDas } from '../services/member-das.service';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -20,7 +21,6 @@ import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-a
 
 @Injectable()
 export class MembersEffects {
-  static useSignalR = false;
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.loadAllByPost),
@@ -57,12 +57,12 @@ export class MembersEffects {
     this.actions$.pipe(
       ofType(FeatureMembersActions.create),
       pluck('member'),
-      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.post({ item: member }).pipe(
+        return this.memberDas.post({ item: member, offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (MembersEffects.useSignalR) {
+            if (MemberCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -77,16 +77,17 @@ export class MembersEffects {
     )
   );
 
+  
   createMulti$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.createMulti),
       pluck('members'),
-      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([members, event]) => {
-        return this.memberDas.postItem({ item: members, endpoint:"addMulti" }).pipe(
+        return this.memberDas.postItem({ item: members, endpoint:"addMulti", offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (MembersEffects.useSignalR) {
+            if (MemberCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -100,18 +101,16 @@ export class MembersEffects {
       })
     )
   );
-
-
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.update),
       pluck('member'),
-      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([member, event]) => {
-        return this.memberDas.put({ item: member, id: member.id }).pipe(
+        return this.memberDas.put({ item: member, id: member.id, offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showUpdateSuccess();
-            if (MembersEffects.useSignalR) {
+            if (MemberCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -130,12 +129,12 @@ export class MembersEffects {
     this.actions$.pipe(
       ofType(FeatureMembersActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([id, event]) => {
-        return this.memberDas.delete({ id: id }).pipe(
+        return this.memberDas.delete({ id: id, offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (MembersEffects.useSignalR) {
+            if (MemberCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });
@@ -154,12 +153,12 @@ export class MembersEffects {
     this.actions$.pipe(
       ofType(FeatureMembersActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([ids, event]) => {
-        return this.memberDas.deletes({ ids: ids }).pipe(
+        return this.memberDas.deletes({ ids: ids, offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (MembersEffects.useSignalR) {
+            if (MemberCRUDConfiguration.useSignalR) {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureMembersActions.loadAllByPost({ event: <LazyLoadEvent>event });

@@ -1,10 +1,10 @@
 <bia-member-form-edit 
-    [member]="memberService.member$ | async" 
-    [roleOptions]="memberOptionsService.roleOptions$| async"
-    [userOptions]="memberOptionsService.userOptions$| async"
+    [member]="memberService.crudItem$ | async" 
+    [roleOptions]="memberService.optionsService.roleOptions$| async"
+    [userOptions]="memberService.optionsService.userOptions$| async"
     [teamId]="teamId"
     [canAddFromDirectory]="canAddFromDirectory"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></bia-member-form-edit>
-<bia-spinner *ngIf="memberService.loading$ | async" [overlay]="true"></bia-spinner>
+<bia-spinner *ngIf="memberService.loadingGet$ | async" [overlay]="true"></bia-spinner>

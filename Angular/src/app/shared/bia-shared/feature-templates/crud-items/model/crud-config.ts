@@ -14,7 +14,8 @@ export class CrudConfig {
   usePopup: boolean;
   useOfflineMode: boolean;
   fieldsConfig: BiaFieldsConfig;
-  defaultViewPref: BiaTableState; 
+  defaultViewPref: BiaTableState;
+  optionFilter : any;
 
   constructor({featureName,
     fieldsConfig,
@@ -26,6 +27,7 @@ export class CrudConfig {
     useViewTeamWithTypeId = null,
     usePopup = true,
     useOfflineMode = false,
+    optionFilter = undefined,
     } :
     {
       featureName: string,
@@ -38,9 +40,11 @@ export class CrudConfig {
       useViewTeamWithTypeId?: TeamTypeId | null,
       usePopup?: boolean,
       useOfflineMode?: boolean,
+      optionFilter?: any,
     })
   {
     this.featureName = featureName;
+    this.fieldsConfig = fieldsConfig;
     this.storeKey = storeKey;
     this.useCalcMode = useCalcMode;
     this.useSignalR = useSignalR;
@@ -49,6 +53,6 @@ export class CrudConfig {
     this.useViewTeamWithTypeId = useViewTeamWithTypeId;
     this.usePopup = usePopup;
     this.useOfflineMode = useOfflineMode;
-    this.fieldsConfig = fieldsConfig;
+    this.optionFilter = optionFilter;
   }
 }

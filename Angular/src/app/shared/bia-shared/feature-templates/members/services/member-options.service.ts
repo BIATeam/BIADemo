@@ -7,25 +7,25 @@ import { DomainRoleOptionsActions } from 'src/app/domains/bia-domains/role-optio
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
+import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
     providedIn: 'root'
 })
-export class MemberOptionsService {
-    dictOptionDtos$: Observable<DictOptionDto[]>;
-
+export class MemberOptionsService extends CrudItemOptionsService {
     userOptions$: Observable<OptionDto[]>;
     roleOptions$: Observable<OptionDto[]>;
 
     constructor(
         private store: Store<AppState>,
     ) {
+        super();
+        // TODO after creation of CRUD Member : get all requiered option dto use in Table calc and create and edit form
         this.userOptions$ = this.store.select(getAllUserOptions);
         this.roleOptions$ = this.store.select(getAllRoleOptions);
 
-        // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
         this.dictOptionDtos$ = combineLatest([this.userOptions$, this.roleOptions$]).pipe(
             map(
                 (options) =>
@@ -37,9 +37,9 @@ export class MemberOptionsService {
         );
     }
 
-    loadAllOptions(teamTypeId:number) {
+    loadAllOptions(optionFilter : any) {
         this.store.dispatch(DomainUserOptionsActions.loadAll());
-        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: teamTypeId }));
+        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: optionFilter.teamTypeId }));
     }
 
     refreshUsersOptions() {

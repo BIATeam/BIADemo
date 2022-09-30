@@ -1,68 +1,57 @@
-import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { FeatureMembersActions } from '../../store/members-actions';
-import { Members } from '../../model/member';
-import { AppState } from 'src/app/store/state';
-import { MemberOptionsService } from '../../services/member-options.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
-import { Subscription } from 'rxjs';
-import { skip } from 'rxjs/operators';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { Component, Injector } from '@angular/core';
+import { Member, Members } from '../../model/member';
+import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { MemberService } from '../../services/member.service';
+import { MemberCRUDConfiguration } from '../../member.constants';
 import { Permission } from 'src/app/shared/permission';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
+import { skip } from 'rxjs/operators';
+import { FeatureMembersActions } from '../../store/members-actions';
 
 @Component({
   selector: 'bia-member-new',
   templateUrl: './member-new.component.html',
-  styleUrls: ['./member-new.component.scss']
 })
-export class MemberNewComponent implements OnInit, OnDestroy {
-  public teamId: number;
-  public teamTypeId: number;
+export class MemberNewComponent extends CrudItemNewComponent<Member>  {
 
-  protected store: Store<AppState>;
-  protected router: Router;
-  protected activatedRoute: ActivatedRoute;
-  public memberOptionsService: MemberOptionsService;
-  protected sub = new Subscription();
-  public members : Members;
-  protected authService: AuthService;
+  teamTypeId: number;
+  teamId: number;
+
   canAddFromDirectory = false;
+
+  public memberService: MemberService;
+  private authService: AuthService;
   
-  constructor( injector: Injector ) {
-    this.store = injector.get<Store<AppState>>(Store);
-    this.router = injector.get<Router>(Router);
-    this.activatedRoute = injector.get<ActivatedRoute>(ActivatedRoute);
-    this.memberOptionsService = injector.get<MemberOptionsService>(MemberOptionsService);
+  public members : Members;
+  
+  constructor(
+    protected injector: Injector,
+  ) 
+  {
+    super(injector, injector.get<MemberService>(MemberService));
+    this.crudConfiguration = MemberCRUDConfiguration;
+    this.memberService = injector.get<MemberService>(MemberService);
     this.authService = injector.get<AuthService>(AuthService);
   }
 
-  ngOnInit() {
-    this.sub = new Subscription();
+  ngOnInit()
+  {
     this.canAddFromDirectory = this.authService.hasPermission(Permission.User_Add);
+    this.crudConfiguration.optionFilter = {teamTypeId: this.teamTypeId}
+    this.memberService.teamTypeId = this.teamTypeId;
     this.members = new Members();
-    this.memberOptionsService.loadAllOptions(this.teamTypeId);
     this.sub.add(
       this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(lastUsersAdded => {
-        this.memberOptionsService.refreshUsersOptions();
+        this.memberService.optionsService.refreshUsersOptions();
         this.members.users = lastUsersAdded;
       })
     );
+    super.ngOnInit();
   }
 
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  onSubmitted(membersToCreate: Members) {
+  onSubmittedMulti(membersToCreate: Members) {
     this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
-    this.members = new Members();
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
     this.members = new Members();
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }

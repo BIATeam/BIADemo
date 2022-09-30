@@ -1,47 +1,24 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
+import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-table/crud-item-table.component';
 import { Member } from '../../model/member';
 
 @Component({
   selector: 'bia-member-table',
-  templateUrl: '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: ['../../../../components/table/bia-calc-table/bia-calc-table.component.scss']
 })
-export class MemberTableComponent extends BiaCalcTableComponent implements OnChanges {
-  @Input() parentIds: string[];
+export class MemberTableComponent extends CrudItemTableComponent<Member> {
+
   constructor(
     public formBuilder: FormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
-    public translateService: TranslateService,
+    public translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
-  }
-
-  public initForm() {
-    this.form = this.formBuilder.group({
-      id: [this.element.id], // This field is mandatory. Do not remove it.
-      user: [this.element.user, Validators.required],
-      roles: [this.element.roles],
-    });
-  }
-
-    onSubmit() {
-    if (this.form.valid) {
-      const member: Member = <Member>this.form.value;
-      member.id = member.id > 0 ? member.id : 0;
-      member.roles = BiaOptionService.Differential(member.roles, this.element?.roles);
-      member.user = {...member.user};
-
-      // force the parent key => siteId from authService or other Id from 'parent'Service
-      member.teamId = + this.parentIds[0];
-      this.save.emit(member);
-      this.form.reset();
-    }
   }
 }

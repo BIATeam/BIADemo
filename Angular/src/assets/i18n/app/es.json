@@ -65,10 +65,9 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
-    "listOfSiteMembers": "Lista de miembros",
+    "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "rolesForSite": "Roles",
     "user": "Usuario"
   },
   "msg": {

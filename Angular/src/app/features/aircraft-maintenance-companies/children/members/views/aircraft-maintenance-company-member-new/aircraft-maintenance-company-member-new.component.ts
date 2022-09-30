@@ -6,7 +6,6 @@ import { TeamTypeId } from 'src/app/shared/constants';
 @Component({
   selector: 'app-aircraft-maintenance-company-member-new',
   templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
-  styleUrls: ['../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.scss']
 })
 export class AircraftMaintenanceCompanyMemberNewComponent extends MemberNewComponent implements OnInit {
 
