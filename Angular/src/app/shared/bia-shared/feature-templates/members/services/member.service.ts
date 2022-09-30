@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Member } from '../model/member';
+import { Member, Members } from '../model/member';
 import { MemberCRUDConfiguration } from '../member.constants';
 import { FeatureMembersStore } from '../store/member.state';
 import { FeatureMembersActions } from '../store/members-actions';
@@ -58,6 +58,11 @@ export class MemberService extends CrudItemService<Member> {
         // TODO after creation of CRUD Member : map parent Key on the corresponding field
         crudItem.teamId = this.getParentKey(),
         this.store.dispatch(FeatureMembersActions.create({ member : crudItem }));
+    }
+    public createMulti(membersToCreate: Members){
+        // TODO after creation of CRUD Member : map parent Key on the corresponding field
+        membersToCreate.teamId = this.getParentKey(),
+        this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
     }
     public update(crudItem: Member){
         this.store.dispatch(FeatureMembersActions.update({ member : crudItem }));

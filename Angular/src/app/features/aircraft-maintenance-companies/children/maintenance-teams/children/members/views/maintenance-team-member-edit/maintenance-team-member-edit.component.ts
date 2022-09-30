@@ -16,7 +16,6 @@ export class MaintenanceTeamMemberEditComponent extends MemberEditComponent impl
   }
 
   ngOnInit() {
-    this.teamId = this.maintenanceTeamService.currentCrudItemId;
     this.teamTypeId=TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
   }

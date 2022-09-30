@@ -7,7 +7,6 @@ import { Permission } from 'src/app/shared/permission';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { skip } from 'rxjs/operators';
-import { FeatureMembersActions } from '../../store/members-actions';
 
 @Component({
   selector: 'bia-member-new',
@@ -16,7 +15,6 @@ import { FeatureMembersActions } from '../../store/members-actions';
 export class MemberNewComponent extends CrudItemNewComponent<Member>  {
 
   teamTypeId: number;
-  teamId: number;
 
   canAddFromDirectory = false;
 
@@ -51,7 +49,7 @@ export class MemberNewComponent extends CrudItemNewComponent<Member>  {
   }
 
   onSubmittedMulti(membersToCreate: Members) {
-    this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
+    this.memberService.createMulti(membersToCreate);
     this.members = new Members();
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }

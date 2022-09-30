@@ -2,7 +2,6 @@
     [member]="memberService.crudItem$ | async" 
     [roleOptions]="memberService.optionsService.roleOptions$| async"
     [userOptions]="memberService.optionsService.userOptions$| async"
-    [teamId]="teamId"
     [canAddFromDirectory]="canAddFromDirectory"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"

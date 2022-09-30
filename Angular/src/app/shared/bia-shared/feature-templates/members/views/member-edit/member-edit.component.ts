@@ -12,7 +12,6 @@ import { Permission } from 'src/app/shared/permission';
 })
 export class MemberEditComponent extends CrudItemEditComponent<Member> {
   teamTypeId: number;
-  teamId: number;
   canAddFromDirectory = false;
 
   public memberService: MemberService;

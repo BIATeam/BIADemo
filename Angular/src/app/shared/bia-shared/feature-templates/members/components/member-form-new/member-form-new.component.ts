@@ -24,7 +24,6 @@ export class MemberFormNewComponent implements OnChanges {
   @Input() members: Members = <Members>{};
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
-  @Input() teamId: number;
   @Input() canAddFromDirectory = false;
 
 
@@ -74,8 +73,6 @@ export class MemberFormNewComponent implements OnChanges {
       members.roles = BiaOptionService.Differential(members.roles, this.members?.roles);
       members.users = BiaOptionService.Differential(members.users, []);
 
-      // force the parent key => siteId from authService or other Id from 'parent'Service
-      members.teamId = this.teamId;
       this.save.emit(members);
       this.form.reset();
     }
