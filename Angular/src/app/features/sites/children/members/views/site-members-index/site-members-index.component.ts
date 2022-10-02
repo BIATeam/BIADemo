@@ -20,8 +20,8 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
   ngOnInit() {
     this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
-    this.parentIds = [this.siteService.currentCrudItemId?.toString()];
   }
+  
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.Site_Member_Update);
     this.canDelete = this.authService.hasPermission(Permission.Site_Member_Delete);

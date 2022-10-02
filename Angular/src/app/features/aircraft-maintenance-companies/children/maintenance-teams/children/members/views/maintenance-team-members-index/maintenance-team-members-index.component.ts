@@ -20,8 +20,8 @@ export class MaintenanceTeamMembersIndexComponent extends MembersIndexComponent 
   ngOnInit() {
     this.teamTypeId=TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
-    this.parentIds = [this.maintenanceTeamService.currentCrudItemId?.toString()];
   }
+  
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.MaintenanceTeam_Member_Update);
     this.canDelete = this.authService.hasPermission(Permission.MaintenanceTeam_Member_Delete);

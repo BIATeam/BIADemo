@@ -64,7 +64,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   tableState: string;
   sortFieldValue = '';
   useViewTeamWithTypeId: TeamTypeId | null;
-  parentIds: string[];
   defaultViewPref: BiaTableState;
 
 
@@ -173,7 +172,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 /*    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
 */
-    this.parentIds = [];
     this.sub = new Subscription();
 
     this.initTableConfiguration();
@@ -288,7 +286,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.parentIds, ...lazyLoadEvent };
+    const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.crudItemService.getParentIds().map((id => id.toString())), ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
   }
 
@@ -318,7 +316,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     const columns: { [key: string]: string } = {};
     this.crudItemListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
-      parentIds: this.parentIds, columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
+      parentIds: this.crudItemService.getParentIds().map((id => id.toString())), columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
     this.crudItemService.dasService.getFile(columnsAndFilter).subscribe((data) => {
       FileSaver.saveAs(data, this.translateService.instant('app.crudItems') + '.csv');
