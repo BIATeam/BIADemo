@@ -196,7 +196,7 @@
       "Nov",
       "Dec"
     ],
-    "dateFormat": "mm/dd/yy",
+    "dateFormat": "yy-mm-dd",
     "today": "Today",
     "weekHeader": "Wk",
     "weak": "Weak",

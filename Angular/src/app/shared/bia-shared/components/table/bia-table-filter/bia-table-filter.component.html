@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayoutAlign="center">
     <div class="app-field-container" fxFlex="18px">
       <ng-container *ngIf="!isArraySimple(col)">
-        <p-columnFilter [type]="col.type==='Date'?'date':'text'" 
+        <p-columnFilter [type]="['Date', 'DateTime'].includes(col.type)?'date':'text'" 
                         [field]="col.field" display="menu"></p-columnFilter>
       </ng-container>
     </div>
@@ -37,7 +37,6 @@
               </ng-container>
               <ng-container *ngSwitchDefault>{{ filter.matchMode + " " + filter.value }}</ng-container>
             </ng-container>
-            
           </ng-container>
         </ng-container>
       </span>

@@ -2,6 +2,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { Calendar } from 'primeng/calendar';
 // import * as deepmerge from 'deepmerge';
 import { forkJoin, Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, map, distinctUntilChanged, skip } from 'rxjs/operators';
@@ -60,7 +61,11 @@ export class BiaTranslationService {
     @Inject(LOCALE_ID) localeId: string,
     private store: Store<AppState>,
     private primeNgConfig: PrimeNGConfig
-  ) {}
+  ) {
+    this.currentCultureDateFormat$.subscribe((dateFormat) => { 
+      Calendar.prototype.getDateFormat = () => dateFormat.primeDateFormat;
+    });
+  }
 
   getLangSelected(): string | null {
     return localStorage.getItem(STORAGE_LANG_KEY);

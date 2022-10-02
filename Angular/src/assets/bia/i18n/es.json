@@ -196,7 +196,7 @@
       "Nov",
       "Dic"
     ],
-    "dateFormat": "dd/mm/yy",
+    "dateFormat": "yy-mm-dd",
     "today": "Hoy",
     "weekHeader": "S",
     "weak": "Semana",
