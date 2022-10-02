@@ -1,6 +1,8 @@
-<app-airport-form 
-    [airport]="airportService.airport$ | async" 
+<app-airport-form  
+    [crudItem]="airportService.crudItem$ | async" 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="airportService.optionsService.dictOptionDtos$ | async"
     (cancel)="onCancelled()" 
     (save)="onSubmitted($event)"
 ></app-airport-form>
-<bia-spinner *ngIf="airportService.loading$ | async" [overlay]="true"></bia-spinner>
+<bia-spinner *ngIf="airportService.loadingGet$ | async" [overlay]="true"></bia-spinner>

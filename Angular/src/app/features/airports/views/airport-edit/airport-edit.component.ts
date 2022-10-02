@@ -1,40 +1,19 @@
-import { Component, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { update } from '../../store/airports-actions';
-import { Subscription } from 'rxjs';
+import { Component, Injector } from '@angular/core';
 import { Airport } from '../../model/airport';
-import { AppState } from 'src/app/store/state';
+import { AirportCRUDConfiguration } from '../../airport.constants';
+import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { AirportService } from '../../services/airport.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-airport-edit',
   templateUrl: './airport-edit.component.html',
-  styleUrls: ['./airport-edit.component.scss']
 })
-export class AirportEditComponent implements OnDestroy {
-  @Output() displayChange = new EventEmitter<boolean>();
-  private sub = new Subscription();
-
+export class AirportEditComponent extends CrudItemEditComponent<Airport> {
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+    protected injector: Injector,
     public airportService: AirportService,
-  ) { }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  onSubmitted(airportToUpdate: Airport) {
-    this.store.dispatch(update({ airport: airportToUpdate }));
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
-    this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
+  ) {
+    super(injector, airportService);
+    this.crudConfiguration = AirportCRUDConfiguration;
   }
 }

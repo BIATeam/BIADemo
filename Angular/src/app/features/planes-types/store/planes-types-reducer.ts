@@ -1,16 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadSuccess,
-  loadAllByPostSuccess,
-  loadAllByPost,
-  load,
-  openDialogEdit,
-  closeDialogEdit,
-  openDialogNew,
-  closeDialogNew,
-  failure
-} from './planes-types-actions';
+import { FeaturePlanesTypesActions } from './planes-types-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { PlaneType } from '../model/plane-type';
 
@@ -38,8 +28,6 @@ export interface State extends EntityState<PlaneType> {
   lastLazyLoadEvent: LazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
-  displayEditDialog: boolean;
-  displayNewDialog: boolean;
 }
 
 export const INIT_STATE: State = planesTypesAdapter.getInitialState({
@@ -49,41 +37,27 @@ export const INIT_STATE: State = planesTypesAdapter.getInitialState({
   lastLazyLoadEvent: <LazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
-  displayEditDialog: false,
-  displayNewDialog: false
 });
 
 export const planeTypeReducers = createReducer<State>(
   INIT_STATE,
-  on(openDialogNew, (state) => {
-    return { ...state, displayNewDialog: true };
-  }),
-  on(closeDialogNew, (state) => {
-    return { ...state, displayNewDialog: false };
-  }),
-  on(openDialogEdit, (state) => {
-    return { ...state, displayEditDialog: true };
-  }),
-  on(closeDialogEdit, (state) => {
-    return { ...state, displayEditDialog: false };
-  }),
-  on(loadAllByPost, (state, { event }) => {
+  on(FeaturePlanesTypesActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(load, (state) => {
+  on(FeaturePlanesTypesActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(FeaturePlanesTypesActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = planesTypesAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
     stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { planeType }) => {
+  on(FeaturePlanesTypesActions.loadSuccess, (state, { planeType }) => {
     return { ...state, currentPlaneType: planeType, loadingGet: false };
   }),
-  on(failure, (state, { error }) => {
+  on(FeaturePlanesTypesActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   }),
 );

@@ -1,61 +1,15 @@
 import {
-  ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { PlaneType } from '../../model/plane-type';
 
 @Component({
   selector: 'app-plane-type-form',
-  templateUrl: './plane-type-form.component.html',
-  styleUrls: ['./plane-type-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss'],
 })
-export class PlaneTypeFormComponent implements OnChanges {
-  @Input() planeType: PlaneType = <PlaneType>{};
 
-  @Output() save = new EventEmitter<PlaneType>();
-  @Output() cancel = new EventEmitter();
-
-  form: FormGroup;
-
-  constructor(public formBuilder: FormBuilder) {
-    this.initForm();
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.planeType) {
-      this.form.reset();
-      if (this.planeType) {
-        this.form.patchValue({ ...this.planeType });
-      }
-    }
-  }
-
-  private initForm() {
-    this.form = this.formBuilder.group({
-      id: [this.planeType.id],
-      title: [this.planeType.title, Validators.required],
-      certificationDate: [this.planeType.certificationDate, Validators.required],
-    });
-  }
-
-  onCancel() {
-    this.form.reset();
-    this.cancel.next();
-  }
-
-  onSubmit() {
-    if (this.form.valid) {
-      const planeType: PlaneType = <PlaneType>this.form.value;
-      planeType.id = planeType.id > 0 ? planeType.id : 0;
-      this.save.emit(planeType);
-      this.form.reset();
-    }
-  }
+export class PlaneTypeFormComponent extends CrudItemFormComponent<PlaneType> {
 }
+

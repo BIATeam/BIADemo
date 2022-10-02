@@ -1,0 +1,6 @@
+<app-plane-type-form 
+    [fields]="crudConfiguration.fieldsConfig.columns"
+    [dictOptionDtos]="planeTypeService.optionsService.dictOptionDtos$ | async"
+    (cancel)="onCancelled()" 
+    (save)="onSubmitted($event)"
+></app-plane-type-form>

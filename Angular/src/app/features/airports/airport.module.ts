@@ -1,22 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-import { AirportsEffects } from './store/airports-effects';
-import { reducers } from './store/airport.state';
+// import { ReducerManager, StoreModule } from '@ngrx/store';
 import { AirportFormComponent } from './components/airport-form/airport-form.component';
 import { AirportsIndexComponent } from './views/airports-index/airports-index.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { AirportNewComponent } from './views/airport-new/airport-new.component';
-import { AirportEditComponent } from './views/airport-edit/airport-edit.component';
 import { Permission } from 'src/app/shared/permission';
 import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { AirportItemComponent } from './views/airport-item/airport-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
 import { AirportTableComponent } from './components/airport-table/airport-table.component';
+import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
+import { AirportEditComponent } from './views/airport-edit/airport-edit.component';
+import { AirportNewComponent } from './views/airport-new/airport-new.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AirportsEffects } from './store/airports-effects';
+import { FeatureAirportsStore } from './store/airport.state';
+import { AirportCRUDConfiguration } from './airport.constants';
 
-const ROUTES: Routes = [
+export let ROUTES: Routes = [
   {
     path: '',
     data: {
@@ -36,13 +39,13 @@ const ROUTES: Routes = [
           permission: Permission.Airport_Create,
           title: 'airport.add',
           InjectComponent: AirportNewComponent,
+          dynamicComponent : () => (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
-        component: PopupLayoutComponent,
-        // component: FullPageLayoutComponent,
+        component: (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
-        path: ':airportId',
+        path: ':crudItemId',
         data: {
           breadcrumb: '',
           canNavigate: true,
@@ -58,9 +61,9 @@ const ROUTES: Routes = [
               permission: Permission.Airport_Update,
               title: 'airport.edit',
               InjectComponent: AirportEditComponent,
+              dynamicComponent : () => (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
-            component: PopupLayoutComponent,
-            // component: FullPageLayoutComponent,
+            component: (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -77,10 +80,10 @@ const ROUTES: Routes = [
 @NgModule({
   declarations: [
     AirportItemComponent,
-    // [Calc] : NOT used only for calc (4 lines).
+    AirportsIndexComponent,
+    // [Calc] : NOT used for calc (3 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
     AirportFormComponent,
-    AirportsIndexComponent,
     AirportNewComponent,
     AirportEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
@@ -88,12 +91,15 @@ const ROUTES: Routes = [
   ],
   imports: [
     SharedModule,
+    CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature('airports', reducers),
+    StoreModule.forFeature(AirportCRUDConfiguration.storeKey, FeatureAirportsStore.reducers),
     EffectsModule.forFeature([AirportsEffects]),
+    // TODO after creation of CRUD Airport : select the optioDto dommain module requiered for link
     // Domain Modules:
   ]
 })
+
 export class AirportModule {
 }
 

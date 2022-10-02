@@ -1,12 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  loadSuccess,
-  loadAllByPostSuccess,
-  loadAllByPost,
-  load,
-  failure
-} from './airports-actions';
+import { FeatureAirportsActions } from './airports-actions';
 import { LazyLoadEvent } from 'primeng/api';
 import { Airport } from '../model/airport';
 
@@ -47,23 +41,23 @@ export const INIT_STATE: State = airportsAdapter.getInitialState({
 
 export const airportReducers = createReducer<State>(
   INIT_STATE,
-  on(loadAllByPost, (state, { event }) => {
+  on(FeatureAirportsActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(load, (state) => {
+  on(FeatureAirportsActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
-  on(loadAllByPostSuccess, (state, { result, event }) => {
+  on(FeatureAirportsActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = airportsAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
     stateUpdated.lastLazyLoadEvent = event;
     stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
-  on(loadSuccess, (state, { airport }) => {
+  on(FeatureAirportsActions.loadSuccess, (state, { airport }) => {
     return { ...state, currentAirport: airport, loadingGet: false };
   }),
-  on(failure, (state, { error }) => {
+  on(FeatureAirportsActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   }),
 );

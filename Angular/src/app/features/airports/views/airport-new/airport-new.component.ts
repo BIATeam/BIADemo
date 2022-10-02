@@ -1,29 +1,19 @@
-import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { create } from '../../store/airports-actions';
+import { Component, Injector } from '@angular/core';
 import { Airport } from '../../model/airport';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute, Router } from '@angular/router';
+import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
+import { AirportService } from '../../services/airport.service';
+import { AirportCRUDConfiguration } from '../../airport.constants';
 
 @Component({
   selector: 'app-airport-new',
   templateUrl: './airport-new.component.html',
-  styleUrls: ['./airport-new.component.scss']
 })
-export class AirportNewComponent {
-
-  constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-  ) {}
-
-  onSubmitted(airportToCreate: Airport) {
-    this.store.dispatch(create({ airport: airportToCreate }));
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-  }
-
-  onCancelled() {
-    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
-  }
+export class AirportNewComponent extends CrudItemNewComponent<Airport>  {
+   constructor(
+    protected injector: Injector,
+    public airportService: AirportService,
+  ) {
+     super(injector, airportService);
+     this.crudConfiguration = AirportCRUDConfiguration;
+   }
 }

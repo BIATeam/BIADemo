@@ -1,52 +1,67 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Airport } from '../model/airport';
-import { getCurrentAirport, getAirportLoadingGet } from '../store/airport.state';
-import { load } from '../store/airports-actions';
+import { AirportCRUDConfiguration } from '../airport.constants';
+import { FeatureAirportsStore } from '../store/airport.state';
+import { FeatureAirportsActions } from '../store/airports-actions';
+import { AirportOptionsService } from './airport-options.service';
+import { AirportDas } from './airport-das.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AirportService {
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getAirportLoadingGet);
-        this.airport$ = this.store.select(getCurrentAirport);
-    }
-    private _currentAirport: Airport;
-    private _currentAirportId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
-    public airport$: Observable<Airport>;
+export class AirportService extends CrudItemService<Airport> {
 
-    public get currentAirport() {
-        if (this._currentAirport?.id === this._currentAirportId) {
-            return this._currentAirport;
-        } else {
-            return null;
-        }
+    constructor(private store: Store<AppState>,
+        public dasService: AirportDas,
+        public signalRService: CrudItemSignalRService<Airport>,
+        public optionsService: AirportOptionsService,
+        // requiered only for parent key
+        protected authService: AuthService,
+        ) {
+        super(dasService,signalRService,optionsService);
     }
 
-    public get currentAirportId(): number {
-        return this._currentAirportId;
-    }
-    public set currentAirportId(id: number) {
-        this._currentAirportId = Number(id);
-        this.store.dispatch(load({ id: id }));
+    public getParentIds(): any[]
+    {
+        // TODO after creation of CRUD Airport : adapt the parent Key tothe context. It can be null if root crud
+        return [];
     }
 
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentAirport).subscribe((airport) => {
-                if (airport) {
-                    this._currentAirport = airport;
-                }
-            })
-        );
+    public getFeatureName()  {  return AirportCRUDConfiguration.featureName; };
+
+    public crudItems$: Observable<Airport[]> = this.store.select(FeatureAirportsStore.getAllAirports);
+    public totalCount$: Observable<number> = this.store.select(FeatureAirportsStore.getAirportsTotalCount);
+    public loadingGetAll$: Observable<boolean> = this.store.select(FeatureAirportsStore.getAirportLoadingGetAll);;
+    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeatureAirportsStore.getLastLazyLoadEvent);
+
+    public crudItem$: Observable<Airport> = this.store.select(FeatureAirportsStore.getCurrentAirport);
+    public loadingGet$: Observable<boolean> = this.store.select(FeatureAirportsStore.getAirportLoadingGet);
+
+    public load(id: any){
+        this.store.dispatch(FeatureAirportsActions.load({ id }));
+    }
+    public loadAllByPost(event: LazyLoadEvent){
+        this.store.dispatch(FeatureAirportsActions.loadAllByPost({ event }));
+    }
+    public create(crudItem: Airport){
+        // TODO after creation of CRUD Airport : map parent Key on the corresponding field
+        // crudItem.siteId = this.getParentIds()[0],
+        this.store.dispatch(FeatureAirportsActions.create({ airport : crudItem }));
+    }
+    public update(crudItem: Airport){
+        this.store.dispatch(FeatureAirportsActions.update({ airport : crudItem }));
+    }
+    public remove(id: any){
+        this.store.dispatch(FeatureAirportsActions.remove({ id }));
+    }
+    public multiRemove(ids: any[]){
+        this.store.dispatch(FeatureAirportsActions.multiRemove({ ids }));
     }
 }
