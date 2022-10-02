@@ -38,7 +38,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     }
 
     loadAllOptions() {
-        this.store.dispatch(DomainPlaneTypeOptionsActions .loadAll());
+        this.store.dispatch(DomainPlaneTypeOptionsActions.loadAll());
         this.store.dispatch(DomainAirportOptionsActions.loadAll());
     }
 }
