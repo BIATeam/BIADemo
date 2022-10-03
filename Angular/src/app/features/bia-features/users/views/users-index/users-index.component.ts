@@ -1,4 +1,4 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../model/user';
 import { UserCRUDConfiguration } from '../../user.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -11,12 +11,12 @@ import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store
 import { skip } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-users-index',
+  selector: 'bia-users-index',
   templateUrl: './users-index.component.html',
   styleUrls: ['./users-index.component.scss']
 })
 
-export class UsersIndexComponent extends CrudItemsIndexComponent<User> {
+export class UsersIndexComponent extends CrudItemsIndexComponent<User> implements OnInit{
   canSync = false;
   displayUserAddFromDirectoryDialog = false;
 

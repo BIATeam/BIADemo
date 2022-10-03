@@ -71,7 +71,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
     ></bia-table>
-    <app-user-table
+    <bia-user-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
       [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
@@ -92,7 +92,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-    ></app-user-table>
+    ></bia-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog [(display)]="displayUserAddFromDirectoryDialog"></bia-user-add-from-directory-dialog>

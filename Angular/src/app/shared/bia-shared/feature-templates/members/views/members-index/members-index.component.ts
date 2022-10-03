@@ -1,4 +1,4 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Member } from '../../model/member';
 import { MemberCRUDConfiguration } from '../../member.constants';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -11,7 +11,7 @@ import { MemberTableComponent } from '../../components/member-table/member-table
   styleUrls: ['./members-index.component.scss']
 })
 
-export class MembersIndexComponent extends CrudItemsIndexComponent<Member> {
+export class MembersIndexComponent extends CrudItemsIndexComponent<Member> implements OnInit {
   teamTypeId: number;
   memberService: MemberService;
   @ViewChild(MemberTableComponent, { static: false }) crudItemTableComponent: MemberTableComponent;

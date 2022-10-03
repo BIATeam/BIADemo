@@ -5,7 +5,7 @@ import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templat
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-user-edit',
+  selector: 'bia-user-edit',
   templateUrl: './user-edit.component.html',
 })
 export class UserEditComponent extends CrudItemEditComponent<User> {

@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Member } from '../../model/member';
 import { MemberCRUDConfiguration } from '../../member.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
@@ -10,7 +10,7 @@ import { Permission } from 'src/app/shared/permission';
   selector: 'bia-member-edit',
   templateUrl: './member-edit.component.html',
 })
-export class MemberEditComponent extends CrudItemEditComponent<Member> {
+export class MemberEditComponent extends CrudItemEditComponent<Member> implements OnInit {
   teamTypeId: number;
   canAddFromDirectory = false;
 

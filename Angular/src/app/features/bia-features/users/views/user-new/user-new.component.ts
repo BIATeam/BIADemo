@@ -5,7 +5,7 @@ import { UserService } from '../../services/user.service';
 import { UserCRUDConfiguration } from '../../user.constants';
 
 @Component({
-  selector: 'app-user-new',
+  selector: 'bia-user-new',
   templateUrl: './user-new.component.html',
 })
 export class UserNewComponent extends CrudItemNewComponent<User>  {

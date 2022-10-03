@@ -7,7 +7,7 @@ import { CrudItemTableComponent } from 'src/app/shared/bia-shared/feature-templa
 import { User } from '../../model/user';
 
 @Component({
-  selector: 'app-user-table',
+  selector: 'bia-user-table',
   templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
   styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
 })

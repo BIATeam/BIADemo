@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { Member, Members } from '../../model/member';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { MemberService } from '../../services/member.service';
@@ -12,7 +12,7 @@ import { skip } from 'rxjs/operators';
   selector: 'bia-member-new',
   templateUrl: './member-new.component.html',
 })
-export class MemberNewComponent extends CrudItemNewComponent<Member>  {
+export class MemberNewComponent extends CrudItemNewComponent<Member> implements OnInit {
 
   teamTypeId: number;
 

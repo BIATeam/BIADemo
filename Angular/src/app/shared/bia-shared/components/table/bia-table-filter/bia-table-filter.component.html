@@ -9,7 +9,7 @@
     <div class="app-field-container" fxFlex="*" >
       <span *ngIf="isArrayFilter(col)" class="displayInline">
         <ng-container *ngFor="let filter of table.filters[col.field]" >
-          <ng-container *ngIf="filter.value != null">
+          <ng-container *ngIf="filter.value !== null">
             <ng-container [ngSwitch]="filter.matchMode">
               <ng-container *ngSwitchCase="'startsWith'">
                 [{{ filter.value }}*]
