@@ -8,12 +8,10 @@
     "examples": "Ejemplos",
     "hangfire": "Hangfire",
     "planes": "Planos",
+    "planesFullCode": "Planos (Full code)",
     "planesPageMode": "Planos (Página)",
-    "planesPopupMode": "Planos (Popup)",
-    "planesViewMode": "Planos (Ver)",
-    "planesSignalRMode": "Planos (SignalR)",
-    "planesCalcMode": "Planos (Hoja de cálculo)",
     "planesOfflineMode": "Planos (Desconectado)",
+    "planesSpecific": "Planos (Specific)",
     "planesTypes": "Tipos de planos",
     "sites": "Aerolíneas",
     "End BIADemo" : "To remove in project up to here",
@@ -67,10 +65,9 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
-    "listOfSiteMembers": "Lista de miembros",
+    "listOf": "Lista de miembros",
     "manage": "Gestionar miembro",
     "roles": "Roles",
-    "rolesForSite": "Roles",
     "user": "Usuario"
   },
   "msg": {
@@ -88,7 +85,7 @@
     "edit": "Editar aerolínea",
     "listOf": "Lista de aerolíneas",
     "End BIADemo" : "To remove in project up to here",
-    "selectUser": "Selecciona un usuario",
+    "filterMember": "Usuario miembro",
     "title": "Title"
   },
   "translation": 
@@ -122,8 +119,10 @@
     "read": "Leer",
     "createdBy": "Creado por",
     "notifiedPermissions": "Permisos notificados",
+    "notifiedTeams": "Equipos notificados",
     "notifiedUsers": "Usuarios notificados",
-    "jData" : "Datos en JSON",
+    "jData": "Datos en JSON",
+    "setUnread": "Marcar como no leída",
     "success": {
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notificación enviada con éxito",

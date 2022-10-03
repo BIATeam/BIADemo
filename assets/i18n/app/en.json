@@ -8,12 +8,10 @@
     "examples": "Examples",
     "hangfire": "Hangfire",
     "planes": "Planes",
+    "planesFullCode": "Planes (Full code)",
     "planesPageMode": "Planes (Page)",
-    "planesPopupMode": "Planes (Popup)",
-    "planesViewMode": "Planes (View)",
-    "planesSignalRMode": "Planes (SignalR)",
-    "planesCalcMode": "Planes (Spreadsheet)",
     "planesOfflineMode": "Planes (Offline)",
+    "planesSpecific": "Planes (Specific)",
     "planesTypes": "Planes types",
     "sites": "Airlines",
     "End BIADemo": "To remove in project up to here",
@@ -67,10 +65,9 @@
   "End BIADemo" : "To remove in project up to here",
   "member": {
     "add": "Add member",
-    "listOfSiteMembers": "List of members",
+    "listOf": "List of members",
     "manage": "Manage member",
     "roles": "Roles",
-    "rolesForSite": "Roles",
     "user": "User"
   },
   "msg": {
@@ -88,7 +85,7 @@
     "edit": "Edit airline",
     "listOf": "List of airlines",
     "End BIADemo" : "To remove in project up to here",
-    "selectUser": "Select a user",
+    "filterMember": "Member user",
     "title": "Title"
   },
   "translation": 
@@ -106,8 +103,7 @@
   "notification": {
     "action": "Action",
     "add": "Add notification",
-     "add": "Add notification",
-   "listOf": "Notifications",
+    "listOf": "Notifications",
     "title": "Title",
     "detail": "Notification detail",
     "description": "Description",
@@ -123,8 +119,10 @@
     "read": "Read",
     "createdBy": "Created by",
     "notifiedPermissions": "Notified permissions",
+    "notifiedTeams": "Notified teams",
     "notifiedUsers": "Notified users",
-    "jData" : "Data in JSON",
+    "jData": "Data in JSON",
+    "setUnread": "Mark as unread",
     "success": {
       "deprecated:": "transaltion will be done in database in next version",
       "title": "Notification sent successfully",
