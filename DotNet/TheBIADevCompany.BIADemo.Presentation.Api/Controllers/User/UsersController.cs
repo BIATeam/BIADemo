@@ -172,7 +172,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 result = await this.userService.AddFromDirectory(users);
             }
 
-            if (result.Errors?.Any() == true)
+            if (result.Errors != null && result.Errors?.Any() == true)
             {
                 return this.StatusCode(303, result.Errors);
             }
@@ -276,7 +276,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids?.Any() != true)
+            if (ids == null || ids?.Any() != true)
             {
                 return this.BadRequest();
             }

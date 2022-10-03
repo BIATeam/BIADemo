@@ -99,7 +99,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             List<UserFromDirectory> userFromDirectories = new List<UserFromDirectory>();
 
-            if (searchUserResponseDtos?.Any() == true)
+            if (searchUserResponseDtos != null && searchUserResponseDtos?.Any() == true)
             {
                 foreach (SearchUserResponseDto searchUserResponseDto in searchUserResponseDtos)
                 {

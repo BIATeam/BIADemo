@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
             // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
-            if (dto.ConnectingAirports?.Any() == true)
+            if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
@@ -126,7 +126,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 List<object> records = new List<object>();
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {

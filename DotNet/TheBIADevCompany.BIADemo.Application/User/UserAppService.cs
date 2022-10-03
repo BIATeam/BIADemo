@@ -237,7 +237,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         {
             ResultAddUsersFromDirectoryDto result = null;
 
-            if (userFromDirectoryDtos?.Any() == true)
+            if (userFromDirectoryDtos != null && userFromDirectoryDtos?.Any() == true)
             {
                 List<int> userIdAddeds = new List<int>();
                 List<User> userToAdds = new List<User>();
@@ -249,7 +249,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 // ADD
                 List<UserFromDirectory> userFromDirectoryToAdds = PropertyMapper.Map<UserFromDirectoryDto, UserFromDirectory>(userFromDirectoryDtoToAdds).ToList();
 
-                if (userFromDirectoryToAdds?.Any() == true)
+                if (userFromDirectoryToAdds != null && userFromDirectoryToAdds?.Any() == true)
                 {
                     foreach (UserFromDirectory userFromDirectoryToAdd in userFromDirectoryToAdds)
                     {
@@ -269,7 +269,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 // UPDATE IsActive property
                 List<User> userToUpdates = userDbs.Where(x => !x.IsActive).ToList();
-                if (userToUpdates?.Any() == true)
+                if (userToUpdates != null && userToUpdates?.Any() == true)
                 {
                     foreach (User userToUpdate in userToUpdates)
                     {
@@ -282,12 +282,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 await this.Repository.UnitOfWork.CommitAsync();
 
                 // Fill userIdAddeds
-                if (userToUpdates?.Any() == true)
+                if (userToUpdates != null && userToUpdates?.Any() == true)
                 {
                     userIdAddeds.AddRange(userToUpdates.Select(x => x.Id).ToList());
                 }
 
-                if (userToAdds?.Any() == true)
+                if (userToAdds != null && userToAdds?.Any() == true)
                 {
                     userIdAddeds.AddRange(userToAdds.Select(x => x.Id).ToList());
                 }
@@ -309,11 +309,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task DeactivateUsersAsync(List<int> ids)
         {
-            if (ids?.Any() == true)
+            if (ids != null && ids?.Any() == true)
             {
                 List<User> users = (await this.Repository.GetAllEntityAsync(filter: x => x.IsActive && ids.Contains(x.Id))).ToList();
 
-                if (users?.Any() == true)
+                if (users != null && users?.Any() == true)
                 {
                     foreach (User user in users)
                     {

@@ -30,7 +30,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         /// </summary>
         private readonly int currentAircraftMaintenanceCompanyId;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamAppService"/> class.
         /// </summary>

@@ -90,7 +90,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             {
                 List<object> records = new List<object>();
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {

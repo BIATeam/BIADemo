@@ -157,7 +157,6 @@ namespace BIA.Net.Core.Domain
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
             var expressionBody = expression.Body;
 
-            MethodInfo method;
             Expression binaryExpression;
             var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 

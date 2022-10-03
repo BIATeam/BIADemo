@@ -213,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [Authorize(Roles = Rights.Sites.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids?.Any() != true)
+            if (ids == null || ids?.Any() != true)
             {
                 return this.BadRequest();
             }

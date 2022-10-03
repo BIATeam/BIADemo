@@ -43,7 +43,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration.From, this.configuration.EmailConfiguration.From));
 
-            if (tos?.Any() == true)
+            if (tos != null && tos?.Any() == true)
             {
                 foreach (string to in tos)
                 {
@@ -51,7 +51,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
             }
 
-            if (ccs?.Any() == true)
+            if (ccs != null && ccs?.Any() == true)
             {
                 foreach (string cc in ccs)
                 {

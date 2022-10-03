@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 List<object> records = new List<object>();
 
-                if (headerNames?.Any() == true)
+                if (headerNames != null && headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {

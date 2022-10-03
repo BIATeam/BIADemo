@@ -8,7 +8,7 @@
     </div>
     <div class="app-field-container" fxFlex="*" >
       <span *ngIf="isArrayFilter(col)" class="displayInline">
-        <ng-container *ngFor="let filter of table.filters[col.field]" >
+        <ng-container *ngFor="let filter of table.filters[col.field]; let last = last" >
           <ng-container *ngIf="filter.value !== null">
             <ng-container [ngSwitch]="filter.matchMode">
               <ng-container *ngSwitchCase="'startsWith'">
@@ -24,19 +24,23 @@
                 [*{{ filter.value }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateIs'">
-                [<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                [{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateIsNot'">
-                ![<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                ![{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateBefore'">
-                <[<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                <[{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateAfter'">
-                >[<bia-table-output [field]="col" [data]="filter.value"></bia-table-output>]
+                >[{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchDefault>{{ filter.matchMode + " " + filter.value }}</ng-container>
             </ng-container>
+          </ng-container>
+          <ng-container  *ngIf="!last">
+            <ng-container *ngIf="filter.operator === 'and'"> & </ng-container>
+            <ng-container *ngIf="filter.operator === 'or'"> | </ng-container> 
           </ng-container>
         </ng-container>
       </span>

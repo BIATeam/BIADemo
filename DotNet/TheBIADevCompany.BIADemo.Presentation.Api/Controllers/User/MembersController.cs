@@ -51,8 +51,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-#if UseHubForClientInMember
         /// <param name="clientForHubService">The hub for client.</param>
+#if UseHubForClientInMember
         public MembersController(
             IMemberAppService memberService, ITeamAppService teamAppService, IClientForHubRepository clientForHubService)
 #else
@@ -327,7 +327,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids?.Any() != true)
+            if (ids == null || ids?.Any() != true)
             {
                 return this.BadRequest();
             }

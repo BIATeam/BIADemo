@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
             {
                 Filters = null,
-                AdvancedFilter = new SiteAdvancedFilterDto () { UserId = 1 },
+                AdvancedFilter = new SiteAdvancedFilterDto() { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);

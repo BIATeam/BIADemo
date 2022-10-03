@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             entity.JData = dto.JData;
 
             // Mapping relationship *-* : ICollection<OptionDto> NotifiedUsers
-            if (dto.NotifiedUsers?.Any() == true)
+            if (dto.NotifiedUsers != null && dto.NotifiedUsers?.Any() == true)
             {
                 foreach (var userDto in dto.NotifiedUsers.Where(x => x.DtoState == DtoState.Deleted))
                 {
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             }
 
             // Mapping relationship *-* : ICollection<OptionDto> NotifiedTeams
-            if (dto.NotifiedTeams?.Any() == true)
+            if (dto.NotifiedTeams != null && dto.NotifiedTeams?.Any() == true)
             {
                 foreach (var teamDto in dto.NotifiedTeams.Where(x => x.DtoState == DtoState.Deleted))
                 {
@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             }
 
             // Mapping relationship *-1 : ICollection<NotificationTranslationDto> NotificationTranslation
-            if (dto.NotificationTranslations?.Any() == true)
+            if (dto.NotificationTranslations != null && dto.NotificationTranslations?.Any() == true)
             {
                 foreach (var notificationTranslationDto in dto.NotificationTranslations.Where(x => x.DtoState == DtoState.Deleted))
                 {
