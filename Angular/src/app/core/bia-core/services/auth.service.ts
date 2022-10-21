@@ -12,7 +12,7 @@ import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
-
+import { BiaSwUpdateService } from './bia-sw-update.service';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
@@ -34,6 +34,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
     private store: Store<AppState>,
+    protected biaSwUpdateService: BiaSwUpdateService
   ) {
     super(injector, 'Auth');
     this.init();
@@ -298,20 +299,28 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  protected getLatestVersion() {
-    const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
-    // if a refresh has already been done,
-    if (isReloaded === String(true)) {
-      sessionStorage.removeItem(STORAGE_RELOADED_KEY);
-      const httpCodeUpgradeRequired = 426;
-      window.location.href = environment.urlErrorPage + '?num=' + httpCodeUpgradeRequired;
-    } else {
-      const timer = 7000;
-      this.biaMessageService.showInfo(this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'), timer);
-      setInterval(() => {
-        this.refresh();
-      }, timer);
-    }
+  protected async getLatestVersion() {
+    await this.biaSwUpdateService.checkForUpdate();
+
+    setTimeout(async () => {
+      const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
+      // if a refresh has already been done,
+      if (isReloaded === String(true) && this.biaSwUpdateService.newVersionAvailable !== true) {
+        sessionStorage.removeItem(STORAGE_RELOADED_KEY);
+        const httpCodeUpgradeRequired = 426;
+        window.location.href = environment.urlErrorPage + '?num=' + httpCodeUpgradeRequired;
+      } else {
+        if (this.biaSwUpdateService.newVersionAvailable === true) {
+          await this.biaSwUpdateService.activateUpdate();
+        }
+        const timer = 5000;
+        this.biaMessageService.showInfo(this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'), timer);
+        setInterval(() => {
+          this.refresh();
+        }, timer);
+      }
+
+    }, 1000);
   }
 
   protected refresh() {

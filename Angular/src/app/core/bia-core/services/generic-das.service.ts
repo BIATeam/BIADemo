@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { catchError, first, map } from 'rxjs/operators';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { from, NEVER, Observable, of, throwError } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
@@ -105,10 +105,6 @@ export abstract class GenericDas {
 
     if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
       obs$ = this.getWithCatchErrorOffline(obs$, url);
-      obs$.pipe(first()).subscribe((result: TOut) => {
-        this.clearDataByUrl(url);
-        this.addDataTtem(url, result);
-      });
     }
 
     return obs$;
@@ -128,10 +124,6 @@ export abstract class GenericDas {
 
     if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
       obs$ = this.getWithCatchErrorOffline(obs$, url);
-      obs$.pipe(first()).subscribe((results: TOut[]) => {
-        this.clearDataByUrl(url);
-        this.addDataTtem(url, results);
-      });
     }
 
     return obs$;
@@ -254,6 +246,10 @@ export abstract class GenericDas {
 
   protected getWithCatchErrorOffline(obs$: Observable<any>, url: string) {
     return obs$.pipe(
+      tap((result: any) => {
+        this.clearDataByUrl(url);
+        this.addDataTtem(url, result);
+      }),
       catchError((error) => {
         if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
           return from(this.db.datas.get(url)).pipe(
