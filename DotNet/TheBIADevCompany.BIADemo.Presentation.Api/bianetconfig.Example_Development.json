@@ -8,13 +8,19 @@
     },
     "CommonFeatures": {
       "ClientForHub": {
-        "SignalRUrl": "https://the-bia-dev-team-int.the-deploy-domain-name.bia/BIADemo/WebApi/HubForClients"
+        "SignalRUrl": "http://localhost/BIADemo/WebApi/HubForClients"
       }
     },
     "ApiFeatures": {
       "Swagger": {
         "IsActive": true
+      },
+      "DelegateJobToWorker": {
+        "MonitoringUrl": "http://localhost/BIADemo/WebApi/hangfire"
       }
+    },
+    "Security": {
+      "Audience": "http://localhost:4200"
     },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",
@@ -87,13 +93,13 @@
       //    {
       //      "AddUsersOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
       //      "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
-      //      "LdapName": "EU\\P_LPS_DM_EU_BIADemo_User",
+      //      "LdapName": "DOMAIN_BIA_1\\PREFIX-APP_BIADemo_INT_User",
       //      "Domain": "DOMAIN_BIA_1"
       //    }//,
       //    //{
       //    //  "AddUsersOfDomains": [ "DOMAIN_BIA_3" ],
       //    //  "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_3", "DOMAIN_BIA_SRV" ],
-      //    //  "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_BIADemo_INT_User",
+      //    //  "LdapName": "DOMAIN_BIA_3\\PREFIX-APP_BIADemo_INT_User",
       //    //  "ContainsOnlyUsers": true,
       //    //  "Domain": "DOMAIN_BIA_SRV"
       //    //}
@@ -105,14 +111,14 @@
       //  "LdapGroups": [
       //    {
       //      "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
-      //      "LdapName": "EU\\P_LPS_DM_EU_BIADemo_Admin",
+      //      "LdapName": "DOMAIN_BIA_1\\PREFIX-APP_BIADemo_INT_Admin",
       //      "Domain": "DOMAIN_BIA_1"
       //    }
       //  ]
       //}
     ],
     "UserProfile": {
-      //remove url for faster debug (http://localhost/DMIndex/UserProfile/GetUserProfile)
+      //remove url for faster debug
       "url": ""
     }
   }
