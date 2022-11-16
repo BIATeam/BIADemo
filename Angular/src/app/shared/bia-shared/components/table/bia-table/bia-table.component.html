@@ -49,7 +49,7 @@
       <td *ngIf="canSelectElement">
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
-      <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
+      <td (click)="clickElement(rowData)" *ngFor="let col of columns">
         <bia-table-output
         [field]="col"
         [data]="getCellData(rowData, col)"

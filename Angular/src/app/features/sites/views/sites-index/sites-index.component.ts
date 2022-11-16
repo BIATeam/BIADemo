@@ -43,8 +43,8 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
   }
   
   // Custo for teams
-  onClickRow(crudItemId: any) {
-    this.onManageMember(crudItemId)
+  onClickRow(crudItem: any) {
+    this.onManageMember(crudItem.id)
   }
 
   onManageMember(crudItemId: any) {

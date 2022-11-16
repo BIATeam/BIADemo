@@ -278,9 +278,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  clickElement(itemId: number) {
+  clickElement(rowData: any) {
     if (this.canClickRow) {
-      this.clickRow.emit(itemId);
+      this.clickRow.emit(rowData);
     }
   }
 

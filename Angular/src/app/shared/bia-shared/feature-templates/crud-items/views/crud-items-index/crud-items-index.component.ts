@@ -235,8 +235,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
-  onClickRow(crudItemId: any) {
-    this.onEdit(crudItemId)
+  onClickRow(crudItem: any) {
+    this.onEdit(crudItem.id)
   }
 
   onEdit(crudItemId: any) {
