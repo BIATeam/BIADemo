@@ -145,9 +145,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEdit(planeId: number) {
+  onEdit(plane: any) {
     if (!this.useCalcMode) {
-      this.router.navigate([planeId, 'edit'], { relativeTo: this.activatedRoute });
+      this.router.navigate([plane.id, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
 

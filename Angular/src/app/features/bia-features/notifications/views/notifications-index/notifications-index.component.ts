@@ -135,8 +135,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.router.navigate(['./' + notificationId + '/edit'], { relativeTo: this.activatedRoute });
   }
 
-  onDetail(notificationId: number) {
-    this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
+  onDetail(notification: any) {
+    this.router.navigate(['./' + notification.id + '/detail'], { relativeTo: this.activatedRoute });
 
     // this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe(notif => {
     //   if (notif && !notif.read) {

@@ -41,7 +41,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
 
-  @Output() clickRow = new EventEmitter<number>();
+  @Output() clickRow = new EventEmitter<any>();
   @Output() filter = new EventEmitter<number>();
   @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
@@ -278,9 +278,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  clickElement(itemId: number) {
+  clickElement(rowData: any) {
     if (this.canClickRow) {
-      this.clickRow.emit(itemId);
+      this.clickRow.emit(rowData);
     }
   }
 
