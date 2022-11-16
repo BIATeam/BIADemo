@@ -91,9 +91,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.useViewConfig(true);
   }
 
-  useClacModeChange(e: boolean) {
+  useCalcModeChange(e: boolean) {
     this.crudConfiguration.useCalcMode = e;
-    this.useClacModeConfig(true);
+    this.useCalcModeConfig(true);
   }
 
   useSignalRChange(e: boolean) {
@@ -123,7 +123,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   isLoadAllOptionsSubsribe = false;
-  protected useClacModeConfig(manualChange: boolean) {
+  protected useCalcModeConfig(manualChange: boolean) {
     if (this.crudConfiguration.useCalcMode && ! this.isLoadAllOptionsSubsribe) {
       this.isLoadAllOptionsSubsribe = true;
       this.sub.add(
@@ -218,7 +218,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   OnDisplay() {
     this.useViewConfig(false);
-    this.useClacModeConfig(false);
+    this.useCalcModeConfig(false);
     this.useSignalRConfig(false);
     this.usePopupConfig(false);
   }
