@@ -1,0 +1,290 @@
+@import '../../../../../../scss/bia/bia-variables';
+
+:host {
+  display: flex;
+}
+
+.topbar {
+  position: relative;
+  height: 35px !important;
+  max-height: 35px !important;
+  color: white !important;
+  a {
+    color: white;
+  }
+}
+
+.project-title {
+  // display: flex;
+  // padding-left: 16px;
+  font-family: 'oswald-light';
+  font-size: 19px;
+}
+
+.project-version {
+  font-family: 'oswald-light';
+  font-size: 10px;
+}
+
+.app-logo {
+  height: 30px;
+  width: auto;
+  padding-right: 5px;
+  // margin-right: 0.5em;
+  // https://codepen.io/sosuke/pen/Pjoqqp
+  // hexa: #f8a92b
+  filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg) brightness(98%) contrast(98%);
+}
+
+.notifications {
+  position: relative;
+  display: flex;
+
+  .notification-count {
+    position: absolute;
+    top: -4px;
+    right: 15px;
+    z-index: 10;
+    color: white;
+    background: $biaRed;
+    border-radius: 14%;
+    font-size: 10px;
+    line-height: 11px;
+    padding: 1px 3px;
+  }
+}
+
+// .logos,
+// .controls {
+//   .separator {
+//     height: 24px;
+//     border-left: 1px solid;
+//   }
+//   a {
+//     display: flex;
+//   }
+// }
+
+// .mainbar {
+//   // Warning any change to this area will affect custom main bar
+//   min-height: 70px;
+//   z-index: 1;
+//   // ----
+//   nav {
+//     .nav-button {
+//       text-transform: uppercase;
+//     }
+//   }
+
+//   .action {
+//     padding-right: 8px;
+//     width: 80px;
+
+//     .pi {
+//       font-size: 1.5rem;
+//     }
+
+//     .notifications {
+//       position: relative;
+//       display: flex;
+
+//       .notification-count {
+//         position: absolute;
+//         top: -4px;
+//         right: 15px;
+//         z-index: 10;
+//         color: white;
+//         background: $biaRed;
+//         border-radius: 14%;
+//         font-size: 10px;
+//         line-height: 11px;
+//         padding: 1px 3px;
+//       }
+//     }
+//   }
+
+//   &.env-dev {
+//     background-color: rgba($color: $biaBlue, $alpha: 0.5);
+//     .project-title {
+//       background-color: rgba($color: $biaBlue, $alpha: 0);
+//     }
+//   }
+
+//   &.env-int {
+//     background-color: rgba($color: $biaGreen, $alpha: 0.5);
+//     .project-title {
+//       background-color: rgba($color: $biaGreen, $alpha: 0);
+//     }
+//   }
+
+//   &.env-uat {
+//     background-color: rgba($color: $biaOrange, $alpha: 0.5);
+//     .project-title {
+//       background-color: rgba($color: $biaOrange, $alpha: 0);
+//     }
+//   }
+
+//   &.env-pra {
+//     background-color: rgba($color: $biaRed, $alpha: 0.5);
+//     .project-title {
+//       background-color: rgba($color: $biaRed, $alpha: 0);
+//     }
+//   }
+// }
+
+// .fullscreen-exit {
+//   position: absolute;
+//   top: 12px;
+//   right: 12px;
+//   z-index: 2;
+// }
+
+// .app-full-screen {
+//   margin-right: 16px;
+//   margin-left: 8px;
+// }
+
+// .app-icon-header {
+//   margin-top: auto;
+//   margin-bottom: auto;
+// }
+
+// .notification-actions {
+//   margin-top: 16px;
+// }
+
+// bia-notification-team-warning {
+//   padding-top: 16px;
+// }
+:host ::ng-deep {
+  //   bia-online-offline-icon {
+  //     i {
+  //       margin-left: 8px;
+  //       margin-right: 8px;
+  //       margin-top: auto;
+  //       margin-bottom: auto;
+  //     }
+  //   }
+  //   .separator {
+  //     font-size: xxx-large;
+  //     margin-right: 12px;
+  //   }
+
+  bia-classic-team-selector {
+    span.p-element,
+    .p-dropdown-item span,
+    .p-multiselect-label,
+    .p-multiselect-item span {
+      font-family: 'oswald-light' !important;
+    }
+  }
+  .p-component {
+    border-width: 0px !important;
+  }
+  .p-megamenu,
+  .p-megamenu-root-list {
+    background-color: transparent !important;
+  }
+
+  //   p-menubar .p-menubar {
+  //     .p-menubar-start {
+  //       //   margin-right: auto;
+  //     }
+  //   }
+  p-megamenu {
+    // margin-left: -12px;
+    .p-megamenu {
+      padding: 0;
+    }
+
+    .p-state-active {
+      background-color: transparent;
+    }
+  }
+
+  p-megamenu {
+    // .p-menuitem-link {
+    //   // padding-top: 0.45rem!important;
+    //   //   padding-top: 0.3em !important;
+    // }
+    // .p-megamenu-panel {
+    //   //   width: 10em;
+    // }
+
+    .p-megamenu-submenu {
+      width: 9em;
+    }
+    .p-menuitem-active > a {
+      background-color: transparent !important;
+    }
+    .p-megamenu-root-list > li > .p-menuitem-link {
+      > .p-menuitem-text,
+      .p-submenu-icon {
+        color: white !important;
+      }
+      > .p-menuitem-text {
+        text-transform: uppercase !important;
+      }
+    }
+
+    .p-menuitem-text {
+      font-family: 'oswald-light';
+    }
+  }
+}
+
+// ****************************************************************
+
+:host ::ng-deep {
+  #app-container-tieredMenu {
+    position: absolute;
+    top: 35px;
+    z-index: 1001;
+    -webkit-box-shadow: 2px 0px 7px 0px rgba(112, 106, 112, 1);
+    -moz-box-shadow: 2px 0px 7px 0px rgba(112, 106, 112, 1);
+    box-shadow: 2px 0px 7px 0px rgba(112, 106, 112, 1);
+    p-tieredMenu {
+      .p-tieredmenu,
+      .p-tieredmenu .p-submenu-list {
+        padding: 0px;
+      }
+      > div {
+        width: auto;
+      }
+
+      .pi:before {
+        font-size: x-large;
+      }
+    }
+
+    &.env-dev {
+      li {
+        background-color: rgba($color: $biaBlue, $alpha: 0.5);
+      }
+    }
+
+    &.env-int {
+      li {
+        background-color: rgba($color: $biaGreen, $alpha: 0.5);
+      }
+    }
+
+    &.env-uat {
+      li {
+        background-color: rgba($color: $biaOrange, $alpha: 0.5);
+      }
+    }
+
+    &.env-pra {
+      li {
+        background-color: rgba($color: $biaRed, $alpha: 0.5);
+      }
+    }
+
+    &.app-menu-collapse {
+      ul .p-menuitem-text {
+        display: none;
+      }
+    }
+  }
+}

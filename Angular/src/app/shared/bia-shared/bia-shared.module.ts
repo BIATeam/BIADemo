@@ -34,7 +34,7 @@ import { DropdownModule } from 'primeng/dropdown';
 // "scripts": [
 //+   "node_modules/quill/dist/quill.js"
 // ],
-  
+
 import { FieldsetModule } from 'primeng/fieldset';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
 // Warning it requiered to install Fullcalandar package: 
@@ -68,7 +68,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 // import { TabMenuModule } from 'primeng/tabmenu';
 import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
-// import { TieredMenuModule } from 'primeng/tieredmenu';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 // import { ToolbarModule } from 'primeng/toolbar';
@@ -82,6 +82,7 @@ import { MessageService } from 'primeng/api';
 import { BiaTableHeaderComponent } from './components/table/bia-table-header/bia-table-header.component';
 import { ClassicFooterComponent } from './components/layout/classic-footer/classic-footer.component';
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
+import { ClassicHeaderTabletComponent } from './components/layout/classic-header-tablet/classic-header-tablet.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
 import { IeWarningComponent } from './components/layout/classic-header/ie-warning/ie-warning.component';
@@ -124,53 +125,53 @@ import { BiaOutputComponent } from './components/form/bia-output/bia-output.comp
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
 
 const PRIMENG_MODULES = [
-//  AccordionModule,
+  //  AccordionModule,
   AutoCompleteModule,
   BreadcrumbModule,
   ButtonModule,
   CalendarModule,
   CheckboxModule,
-//  ChipsModule,
-//  CodeHighlighterModule,
+  //  ChipsModule,
+  //  CodeHighlighterModule,
   ConfirmDialogModule,
-//  ContextMenuModule,
+  //  ContextMenuModule,
   DialogModule,
   DropdownModule,
-//  EditorModule,
+  //  EditorModule,
   FieldsetModule,
-//  FullCalendarModule,
-//  InputMaskModule,
+  //  FullCalendarModule,
+  //  InputMaskModule,
   InputSwitchModule,
   InputTextModule,
   InputTextareaModule,
   InputNumberModule,
   ListboxModule,
   MegaMenuModule,
-//  MenuModule,
+  //  MenuModule,
   MenubarModule,
-//  MessageModule,
-//  MessagesModule,
+  //  MessageModule,
+  //  MessagesModule,
   MultiSelectModule,
-//  PaginatorModule,
-//  PanelModule,
-//  PanelMenuModule,
-//  ProgressBarModule,
+  //  PaginatorModule,
+  //  PanelModule,
+  //  PanelMenuModule,
+  //  ProgressBarModule,
   RadioButtonModule,
-//  ScrollPanelModule,
-//  SelectButtonModule,
-//  SlideMenuModule,
-//  SliderModule,
-//  SpinnerModule,
-//  SplitButtonModule,
+  //  ScrollPanelModule,
+  //  SelectButtonModule,
+  //  SlideMenuModule,
+  //  SliderModule,
+  //  SpinnerModule,
+  //  SplitButtonModule,
   TableModule,
-//  TabMenuModule,
+  //  TabMenuModule,
   TabViewModule,
-//  TieredMenuModule,
+  TieredMenuModule,
   ToastModule,
   ToggleButtonModule,
-//  ToolbarModule,
-//  TooltipModule,
-//  FileUploadModule,
+  //  ToolbarModule,
+  //  TooltipModule,
+  //  FileUploadModule,
 ];
 
 const MODULES = [
@@ -188,6 +189,7 @@ const MODULES = [
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
+  ClassicHeaderTabletComponent,
   ClassicTeamSelectorComponent,
   ClassicLayoutComponent,
   ClassicPageLayoutComponent,

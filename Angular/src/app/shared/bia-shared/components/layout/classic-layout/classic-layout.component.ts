@@ -36,6 +36,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
 
   menuItems: MenuItem[];
   private sub = new Subscription();
+  isTabletUiDesign = true;
 
   constructor(
     private biaTranslation: BiaTranslationService,

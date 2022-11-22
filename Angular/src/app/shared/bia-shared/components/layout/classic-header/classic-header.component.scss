@@ -133,6 +133,14 @@ bia-notification-team-warning {
   padding-top: 16px;
 }
 :host ::ng-deep {
+  bia-classic-team-selector {
+    span.p-element,
+    .p-dropdown-item span,
+    .p-multiselect-label,
+    .p-multiselect-item span {
+      font-family: 'oswald-light' !important;
+    }
+  }
   bia-online-offline-icon {
     i {
       margin-left: 8px;
