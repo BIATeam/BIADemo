@@ -86,7 +86,7 @@
                   [data]="getCellData(rowData, col)"
                   >
                     <ng-template pTemplate="specificOutput">
-                      <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+                      <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
                     </ng-template>
                   </bia-table-output>
                 </ng-container>
@@ -103,7 +103,7 @@
                 [data]="getCellData(rowData, col)"
                 >
                   <ng-template pTemplate="specificOutput">
-                    <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+                    <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
                   </ng-template>
                 </bia-table-output>
               </ng-template>

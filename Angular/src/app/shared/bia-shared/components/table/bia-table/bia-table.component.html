@@ -49,13 +49,13 @@
       <td *ngIf="canSelectElement">
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
-      <td (click)="clickElement(rowData.id)" *ngFor="let col of columns">
+      <td (click)="clickElementData(rowData)" *ngFor="let col of columns">
         <bia-table-output
         [field]="col"
         [data]="getCellData(rowData, col)"
         >
           <ng-template pTemplate="specificOutput">
-            <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: col, data: getCellData(rowData, col) }" ></ng-container>
+            <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
           </ng-template>
         </bia-table-output>
       </td>

@@ -33,7 +33,7 @@
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
       [loading]="loading$ | async"
-      (clickRow)="onDetail($event)"
+      (clickRowId)="onDetail($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
