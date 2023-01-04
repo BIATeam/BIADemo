@@ -95,7 +95,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 new CookieOptions()
                 {
                     Secure = !isLocalhost,
-                    SameSite = isLocalhost ? SameSiteMode.Unspecified : SameSiteMode.None,
+                    SameSite = SameSiteMode.Strict,
                     Path = "/",
                     IsEssential = true,
                     Expires = DateTime.Now.AddMinutes(30),
