@@ -94,6 +94,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 jwtToken,
                 new CookieOptions()
                 {
+                    HttpOnly = true,
                     Secure = !isLocalhost,
                     SameSite = SameSiteMode.Strict,
                     Path = "/",
