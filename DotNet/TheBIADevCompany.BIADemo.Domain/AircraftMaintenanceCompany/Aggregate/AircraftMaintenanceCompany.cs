@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -20,5 +21,10 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         [Timestamp]
         [Column("RowVersion")]
         public byte[] RowVersionAircraftMaintenanceCompany { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Maintenance teams.
+        /// </summary>
+        public virtual ICollection<MaintenanceTeam> MaintenanceTeams { get; set; }
     }
 }
