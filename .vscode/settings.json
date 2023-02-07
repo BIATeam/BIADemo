@@ -10,10 +10,9 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "i18nJsonEditor.workspaceFolders": [
-    { "name": "app", "path": "./src/assets/i18n/app" }
+    { "name": "app", "path": "./Angular/src/assets/i18n/app" }
   ],
   "i18n-ally.localesPaths": [
-    "./src/assets/i18n/app"
-  ],
-  "i18n-ally.translate.engines": ["google"]
+    "./Angular/src/assets/i18n/app"
+  ]
 }
