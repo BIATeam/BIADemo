@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             List<User> users = (await this.repository.GetAllEntityAsync()).ToList();
             List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User"))?.ToList();
 
-            if (usersSidInDirectory != null)
+            if (usersSidInDirectory?.Count > 0)
             {
                 var resynchronizeTasks = new List<Task>();
                 foreach (User user in users)

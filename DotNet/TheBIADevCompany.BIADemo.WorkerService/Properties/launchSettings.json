@@ -2,9 +2,17 @@
   "profiles": {
     "WorkerService": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Docker",
+        "ConnectionStrings__BIADemoDatabase": "data source=host.docker.internal;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIADemo_DEV_RW;Password=SQLUser_BIADemo_DEV_RW;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
       }
     }
   }

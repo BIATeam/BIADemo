@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { UserFilter } from '../model/user-filter';
-import { UserFromDirectory } from '../model/user-from-Directory';
+import { UserFromDirectory } from '../model/user-from-directory';
 
 
 

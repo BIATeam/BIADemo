@@ -3,10 +3,10 @@
 // </copyright>
 namespace BIA.Net.Core.Domain.Authentication
 {
-    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// A <see cref="ClaimsPrincipal"/> implementation with additional utility methods.
@@ -57,46 +57,90 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user login.</returns>
         public virtual string GetUserLogin()
         {
-            return GetClaimValue(ClaimTypes.Name);
+            return this.GetClaimValue(ClaimTypes.Name);
         }
 
+        /// <summary>
+        /// Gets the first name of the user.
+        /// </summary>
+        /// <returns>The first name.</returns>
         public virtual string GetUserFirstName()
         {
-            return GetClaimValue(ClaimTypes.GivenName);
+            return this.GetClaimValue(ClaimTypes.GivenName);
         }
 
+        /// <summary>
+        /// Gets the last name of the user.
+        /// </summary>
+        /// <returns>The last name.</returns>
         public virtual string GetUserLastName()
         {
-            return GetClaimValue(ClaimTypes.Surname);
+            return this.GetClaimValue(ClaimTypes.Surname);
         }
 
+        /// <summary>
+        /// Gets the user country.
+        /// </summary>
+        /// <returns>The user country.</returns>
         public virtual string GetUserCountry()
         {
-            return GetClaimValue(ClaimTypes.Country);
+            return this.GetClaimValue(ClaimTypes.Country);
         }
 
+        /// <summary>
+        /// Gets the user email.
+        /// </summary>
+        /// <returns>The user email.</returns>
         public virtual string GetUserEmail()
         {
-            return GetClaimValue(ClaimTypes.Email);
+            return this.GetClaimValue(ClaimTypes.Email);
         }
 
+        /// <summary>
+        /// Gets the sid.
+        /// </summary>
+        /// <returns>The sid.</returns>
         public virtual string GetSid()
         {
-            return GetClaimValue(ClaimTypes.Sid);
+            return this.GetClaimValue(ClaimTypes.Sid);
+        }
+
+        /// <summary>
+        /// Gets the primary sid.
+        /// </summary>
+        /// <returns>The primary sid.</returns>
+        public virtual string GetPrimarySid()
+        {
+            return this.GetClaimValue(ClaimTypes.PrimarySid);
+        }
+
+        /// <summary>
+        /// Gets list of groups where the user is a member.
+        /// </summary>
+        /// <returns>List of groups.</returns>
+        public virtual IEnumerable<string> GetGroups()
+        {
+            return this.GetClaimValues(CustomClaimTypes.Group);
         }
 
         /// <summary>
         /// Get the user rights in the claims.
+        /// This method is called GetUserPermissions while we retrieve the roles. Because we use this claim to store the permissions in the application token.
         /// </summary>
         /// <returns>The user rights.</returns>
         public virtual IEnumerable<string> GetUserPermissions()
         {
-            if (!this.HasClaim(x => x.Type == ClaimTypes.Role))
-            {
-                return new List<string>();
-            }
+            return this.GetClaimValues(ClaimTypes.Role);
+        }
 
-            return this.FindAll(x => x.Type == ClaimTypes.Role).Select(s => s.Value).ToList();
+        /// <summary>
+        /// Get the user roles in the claims.
+        /// This method is used to retrieve the roles contained in the token provided by the IdP.
+        /// </summary>
+        /// <returns>The user roles.</returns>
+        public virtual IEnumerable<string> GetRoles()
+        {
+            return this.GetClaimValues(ClaimTypes.Role);
         }
 
         /// <summary>
@@ -121,6 +165,11 @@ namespace BIA.Net.Core.Domain.Authentication
             return JsonConvert.DeserializeObject<T>(json);
         }
 
+        /// <summary>
+        /// Gets the claim value.
+        /// </summary>
+        /// <param name="claimType">Type of the claim.</param>
+        /// <returns>The claim value.</returns>
         protected virtual string GetClaimValue(string claimType)
         {
             if (!this.HasClaim(x => x.Type == claimType))
@@ -129,6 +178,21 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return this.FindFirst(x => x.Type == claimType).Value;
+        }
+
+        /// <summary>
+        /// Gets the claim values.
+        /// </summary>
+        /// <param name="claimType">Type of the claim.</param>
+        /// <returns>The claim values.</returns>
+        protected virtual IEnumerable<string> GetClaimValues(string claimType)
+        {
+            if (!this.HasClaim(x => x.Type == claimType))
+            {
+                return new List<string>();
+            }
+
+            return this.FindAll(x => x.Type == claimType).Select(s => s.Value).ToList();
         }
     }
 }

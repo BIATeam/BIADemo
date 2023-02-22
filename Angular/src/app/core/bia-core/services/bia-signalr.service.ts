@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
-import { environment } from 'src/environments/environment';
+import { BiaEnvironmentService } from './bia-environment.service';
 
 /**
  * Service managing the SignalR connection.
@@ -35,7 +35,7 @@ export class BiaSignalRService {
    * Constructor.
    */
   public constructor() {
-    this.hubConnection = new HubConnectionBuilder().withUrl(environment.hubUrl).build();
+    this.hubConnection = new HubConnectionBuilder().withUrl(BiaEnvironmentService.getHubUrl()).build();
 
     this.configureConnection();
 

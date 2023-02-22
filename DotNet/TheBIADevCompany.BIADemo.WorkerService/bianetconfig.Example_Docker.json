@@ -1,0 +1,55 @@
+{
+  "BiaNet": {
+    "CommonFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "http://localhost:54321/HubForClients"
+      }
+    },
+    "Environment": {
+      "Type": "DEV"
+    },
+    "EmailConfiguration": {
+      "From": "noreply-BIADemo@domain.com",
+      "SmtpPort": 25
+    },
+    "Authentication": {
+      "Keycloak": {
+        "IsActive": true,
+        "BaseUrl": "https://the-bia-dev-team-keycloak-int.the-deploy-domain-name.bia",
+        "Configuration": {
+          "idpHint": "darwin",
+          "realm": "BIA-Realm",
+          "Authority": "/realms/BIA-Realm",
+          "RequireHttpsMetadata": true,
+          "ValidAudience": "account"
+        },
+        "Api": {
+          "TokenConf": {
+            "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
+            "ClientId": "biaapp",
+            "GrantType": "password",
+            "CredentialKeyInWindowsVault": "BIA:KeycloakSearchUserAccount",
+            "EnvServiceAccountUserName": "KC_SA_USERNAME",
+            "EnvServiceAccountPassword": "KC_SA_PASSWORD"
+          },
+          "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
+        }
+      }
+    },
+    "Roles": [
+      {
+        "Label": "User",
+        "Type": "UserInDB"
+      },
+      {
+        "Label": "Admin",
+        "Type": "IdP",
+        "IdpRoles": [ "BiaAppAdmin" ]
+      }
+    ],
+    "UserProfile": {
+      //remove url for faster debug (http://localhost/DMIndex/UserProfile/GetUserProfile)
+      "url": ""
+    }
+  }
+}

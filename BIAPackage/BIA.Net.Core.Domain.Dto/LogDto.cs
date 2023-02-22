@@ -30,7 +30,7 @@ namespace BIA.Net.Core.Domain.Dto
         /// <summary>
         /// Gets or sets the line number in the file name.
         /// </summary>
-        public string LineNumber { get; set; }
+        public int LineNumber { get; set; }
 
         /// <summary>
         /// Gets or sets the message to log.

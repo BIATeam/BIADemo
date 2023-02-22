@@ -29,6 +29,19 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:54321/swagger",
+      "publishAllPorts": true,
+      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway -p 54321:8080",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Docker",
+        "KC_SA_USERNAME": "dmeu-int-keycloak-service-account",
+        "KC_SA_PASSWORD": "************",
+        "ConnectionStrings__BIADemoDatabase": "data source=host.docker.internal;initial catalog=BIADemo;integrated security=False;User Id=SQLUser_BIADemo_DEV_RW;Password=SQLUser_BIADemo_DEV_RW;MultipleActiveResultSets=True;Encrypt=False;App=BIADemo"
+      }
     }
   }
 }

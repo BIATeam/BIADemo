@@ -29,19 +29,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IAuthAppService authService;
 
         /// <summary>
-        /// The configuration of the BiaNet section.
-        /// </summary>
-        private readonly BiaNetSection configuration;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
         /// <param name="configuration">The configuration.</param>
-        public AuthController(IAuthAppService authService, IOptions<BiaNetSection> configuration)
+        public AuthController(IAuthAppService authService)
         {
             this.authService = authService;
-            this.configuration = configuration.Value;
         }
 
         /// <summary>
@@ -92,16 +86,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = default;
-
-                if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
-                {
-                    authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
-                }
-                else
-                {
-                    authInfo = await this.authService.LoginOnTeamsAsync((System.Security.Principal.WindowsIdentity)this.User.Identity, loginParam);
-                }
+                AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(this.User.Identity, loginParam);
 
                 return this.Ok(authInfo);
             }
@@ -117,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.Forbid(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return this.StatusCode(500, "Internal server error");
             }

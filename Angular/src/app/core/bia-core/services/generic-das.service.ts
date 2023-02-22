@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { from, NEVER, Observable, of, throwError } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
@@ -9,6 +8,7 @@ import { DateHelperService } from './date-helper.service';
 import { MatomoTracker } from './matomo/matomo-tracker.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { AppDB, DataItem } from '../db';
+import { BiaEnvironmentService } from './bia-environment.service';
 
 export interface HttpOptions {
   headers?:
@@ -83,16 +83,15 @@ export abstract class GenericDas {
   public static buildRoute(endpoint: string): string {
     let route = '/' + endpoint + '/';
     route = route.replace('//', '/');
-    return environment.apiUrl + route;
+    return BiaEnvironmentService.getApiUrl() + route;
   }
 
-  concatRoute(route: string, endpoint: string | undefined)
-  {
+  concatRoute(route: string, endpoint: string | undefined) {
     return route + `${endpoint ? endpoint + '/' : ''}`.replace('//', '/');
   }
 
   getItem<TOut>(param?: GetParam): Observable<TOut> {
-    const url = `${this.concatRoute(this.route,param?.endpoint)}${param?.id ?? ''}`;
+    const url = `${this.concatRoute(this.route, param?.endpoint)}${param?.id ?? ''}`;
     //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(

@@ -1,8 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
-import { UserFromDirectoryService } from './user-from-Directory.service';
-import { UserFromDirectory } from '../model/user-from-Directory';
+import { UserFromDirectoryService } from './user-from-directory.service';
+import { UserFromDirectory } from '../model/user-from-directory';
 
 @Injectable({
   providedIn: 'root'

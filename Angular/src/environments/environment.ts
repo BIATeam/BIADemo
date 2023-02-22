@@ -3,6 +3,10 @@ import { NgxLoggerLevel } from 'ngx-logger';
 export const environment = {
   helpUrl: '',
   reportUrl: '',
+  apiUrlDynamic: {
+    oldValue: '',
+    newValue: ''
+  },
   apiUrl: 'http://localhost:54321/api',
   hubUrl: 'http://localhost:54321/HubForClients',
   urlErrorPage: 'http://localhost/static/error.htm',

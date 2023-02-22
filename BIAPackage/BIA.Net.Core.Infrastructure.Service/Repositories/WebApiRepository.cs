@@ -4,9 +4,6 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using Microsoft.Extensions.Caching.Distributed;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
@@ -15,6 +12,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// WebApi Repository.
@@ -52,9 +52,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         protected readonly string className;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiRepository"/> class.
+        /// Initializes a new instance of the <see cref="WebApiRepository" /> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="httpClient">The HTTP client.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="distributedCache">The distributed cache.</param>
         protected WebApiRepository(HttpClient httpClient, ILogger<WebApiRepository> logger, IDistributedCache distributedCache)
         {
             this.httpClient = httpClient;
@@ -68,7 +70,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <typeparam name="T">Type of result.</typeparam>
         /// <param name="url">The URL.</param>
-        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <returns>
+        /// Result, IsSuccessStatusCode, ReasonPhrase.
+        /// </returns>
         protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, bool useBearerToken = false)
         {
             if (!string.IsNullOrWhiteSpace(url))
@@ -77,7 +82,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 if (useBearerToken)
                 {
-                    await AddAuthorizationBearerAsync();
+                    await this.AddAuthorizationBearerAsync();
                 }
 
                 HttpResponseMessage response = await this.httpClient.GetAsync(url);
@@ -85,7 +90,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T content = DeserializeIfRequiered<T>(res);
+                    T content = this.DeserializeIfRequired<T>(res);
                     return (content, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -98,7 +103,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return (default(T), default(bool), default(string));
         }
 
-        private static T DeserializeIfRequiered<T>(string res)
+        /// <summary>
+        /// Deserializes if required.
+        /// </summary>
+        /// <typeparam name="T">Type of return.</typeparam>
+        /// <param name="res">The resource.</param>
+        /// <returns>object T.</returns>
+        protected virtual T DeserializeIfRequired<T>(string res)
         {
             T content;
             if (typeof(T) == typeof(string))
@@ -117,9 +128,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Post the T asynchronous.
         /// </summary>
         /// <typeparam name="T">Type of result.</typeparam>
+        /// <typeparam name="U">Type of body.</typeparam>
         /// <param name="url">The URL.</param>
-        /// <param name="content">Content of the post.</param>
-        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        /// <param name="body">The body.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
+        /// <returns>
+        /// Result, IsSuccessStatusCode, ReasonPhrase.
+        /// </returns>
         protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<T, U>(string url, U body, bool useBearerToken = false, bool isFormUrlEncoded = false)
         {
             if (!string.IsNullOrWhiteSpace(url) && body != null)
@@ -128,7 +144,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 if (useBearerToken)
                 {
-                    await AddAuthorizationBearerAsync();
+                    await this.AddAuthorizationBearerAsync();
                 }
 
                 string json = JsonConvert.SerializeObject(body);
@@ -151,7 +167,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T result = DeserializeIfRequiered<T>(res);
+                    T result = this.DeserializeIfRequired<T>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -195,7 +211,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the jwt expiration date.
         /// </summary>
         /// <param name="token">The token.</param>
-        /// <returns></returns>
+        /// <returns>The DateTimeOffset.</returns>
         protected virtual DateTimeOffset GetJwtTokenExpirationDate(string token)
         {
             DateTimeOffset expirationDate = default;
@@ -213,7 +229,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         ///  Check if the token is valid.
         /// </summary>
-        /// <param name="bearerToken">The bearerToken.</param>
+        /// <param name="token">The bearerToken.</param>
         /// <returns>Return true if the token is valid.</returns>
         protected virtual bool CheckTokenValid(string token)
         {
@@ -229,7 +245,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Get the storage key of the token in the cache. 
+        /// Get the storage key of the token in the cache.
         /// </summary>
         /// <returns>The storage key.</returns>
         protected virtual string GetBearerCacheKey()
@@ -255,7 +271,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
-                DateTimeOffset expirationDate = GetJwtTokenExpirationDate(bearerToken);
+                DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
                 DistributedCacheEntryOptions option = new DistributedCacheEntryOptions() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
                 await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), bearerToken, options: option);
             }
@@ -268,8 +284,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Retrieve a token from the provider.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
+        /// <returns>The token.</returns>
         protected virtual Task<string> GetBearerTokenAsync()
         {
             throw new NotImplementedException("For authentication with bearer token, you must implement the GetBearerTokenAsync() method");

@@ -1,4 +1,4 @@
-import * as fromUsers from './users-from-Directory-reducer';
+import * as fromUsers from './users-from-directory-reducer';
 import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface UsersFromDirectoryState {

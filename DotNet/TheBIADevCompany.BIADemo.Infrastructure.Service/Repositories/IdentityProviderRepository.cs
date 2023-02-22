@@ -71,19 +71,26 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             {
                 string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
-#pragma warning disable CA1416 // Validate platform compatibility
-                Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
-#pragma warning restore CA1416 // Validate platform compatibility
-
                 TokenRequestDto tokenRequestDto = new TokenRequestDto()
                 {
                     ClientId = this.configuration.Authentication.Keycloak.Api.TokenConf.ClientId,
                     GrantType = this.configuration.Authentication.Keycloak.Api.TokenConf.GrantType,
-                    Username = cred?.UserName,
-                    Password = cred?.Password,
                 };
 
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
+                    tokenRequestDto.Username = cred?.UserName;
+                    tokenRequestDto.Password = cred?.Password;
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    tokenRequestDto.Username = Environment.GetEnvironmentVariable(variable: this.configuration.Authentication.Keycloak.Api.TokenConf.EnvServiceAccountUserName);
+                    tokenRequestDto.Password = Environment.GetEnvironmentVariable(variable: this.configuration.Authentication.Keycloak.Api.TokenConf.EnvServiceAccountPassword);
+                }
+
                 TokenResponseDto tokenResponseDto = (await this.PostAsync<TokenResponseDto, TokenRequestDto>(url: url, body: tokenRequestDto, isFormUrlEncoded: true, useBearerToken: false)).Result;
+
                 token = tokenResponseDto?.AccessToken;
             }
 

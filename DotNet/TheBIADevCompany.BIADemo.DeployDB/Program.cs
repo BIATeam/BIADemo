@@ -34,6 +34,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+                    config.AddEnvironmentVariables();
                 })
                 .ConfigureServices((hostingContext, services) =>
                 {

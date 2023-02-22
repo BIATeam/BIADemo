@@ -30,6 +30,9 @@ namespace BIA.Net.Core.Common
             public const string ContentType = "text/csv";
         }
 
+        /// <summary>
+        /// Eclipse.
+        /// </summary>
         public static class Eclipse
         {
             /// <summary>
@@ -43,6 +46,9 @@ namespace BIA.Net.Core.Common
             public const string ContentType = "text/x-ecl";
         }
 
+        /// <summary>
+        /// PDF.
+        /// </summary>
         public static class PDF
         {
             /// <summary>
@@ -55,6 +61,7 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string ContentType = "application/pdf";
         }
+
         /// <summary>
         /// The class containing HTTP headers constants.
         /// </summary>
@@ -64,6 +71,42 @@ namespace BIA.Net.Core.Common
             /// The total count returned on getAll methods.
             /// </summary>
             public const string TotalCount = "X-Total-Count";
+        }
+
+        /// <summary>
+        /// Role Type.
+        /// </summary>
+        public static class RoleType
+        {
+            /// <summary>
+            /// Fake.
+            /// </summary>
+            public const string Fake = "Fake";
+
+            /// <summary>
+            /// User in database.
+            /// </summary>
+            public const string UserInDB = "UserInDB";
+
+            /// <summary>
+            /// identity provider.
+            /// </summary>
+            public const string IdP = "IdP";
+
+            /// <summary>
+            /// From an LDAP group provided by the identity provider.
+            /// </summary>
+            public const string LdapFromIdP = "LdapFromIdP";
+
+            /// <summary>
+            /// From an LDAP group.
+            /// </summary>
+            public const string Ldap = "Ldap";
+
+            /// <summary>
+            /// Synchro.
+            /// </summary>
+            public const string Synchro = "Synchro";
         }
     }
 }
