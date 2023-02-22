@@ -52,6 +52,7 @@ export class MemberFormEditComponent implements OnChanges {
       id: [this.member.id],
       user: [this.member.user, Validators.required],
       roles: [this.member.roles],
+      teamId: [this.member.teamId],
     });
   }
 

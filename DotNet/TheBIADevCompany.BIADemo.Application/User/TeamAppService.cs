@@ -74,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         team.Members.Any(member =>
 
                         // Begin BIADemo
-                        (team is MaintenanceTeam && (team as MaintenanceTeam).AircraftMaintenanceCompany.Members.Any(member => member.UserId == userId)) ||
+                        (team is AircraftMaintenanceCompany && (team as AircraftMaintenanceCompany).MaintenanceTeams.Any(a => a.Members.Any(b => b.UserId == userId))) ||
 
                         // End BIADemo
                         member.UserId == userId)));
