@@ -179,7 +179,13 @@ export abstract class GenericDas {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.put<TOut>(url, param.item, param.options));
     } else {
-      return this.http.put<TOut>(url, param.item, param.options);
+      return this.http.put<TOut>(url, param.item, param.options).pipe(
+        map((data) => {
+          DateHelperService.fillDate(data);
+          this.translateItem(data);
+          return data;
+        })
+      );
     }
   }
 
@@ -192,7 +198,13 @@ export abstract class GenericDas {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
       return this.setWithCatchErrorOffline(this.http.post<TOut>(url, param.item, param.options));
     } else {
-      return this.http.post<TOut>(url, param.item, param.options);
+      return this.http.post<TOut>(url, param.item, param.options).pipe(
+        map((data) => {
+          DateHelperService.fillDate(data);
+          this.translateItem(data);
+          return data;
+        })
+      );
     }
   }
 
