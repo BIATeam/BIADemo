@@ -28,5 +28,15 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
         /// Gets or sets the credential key in windows vault.
         /// </summary>
         public string CredentialKeyInWindowsVault { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the env service account user.
+        /// </summary>
+        public string EnvServiceAccountUserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the env service account password.
+        /// </summary>
+        public string EnvServiceAccountPassword { get; set; }
     }
 }

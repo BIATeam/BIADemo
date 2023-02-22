@@ -162,17 +162,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Add)]
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
-            ResultAddUsersFromDirectoryDto result = default;
-            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
-            {
-                result = await this.userService.AddFromIdPAsync(users);
-            }
-            else
-            {
-                result = await this.userService.AddFromDirectory(users);
-            }
-
-            if (result.Errors != null && result.Errors?.Any() == true)
+            ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
+            if (result.Errors.Any())
             {
                 return this.StatusCode(303, result.Errors);
             }
@@ -276,33 +267,26 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids == null || ids?.Any() != true)
+            if (ids?.Any() != true)
             {
                 return this.BadRequest();
             }
 
-            if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
+            StringBuilder sb = new StringBuilder();
+
+            foreach (int id in ids)
             {
-                await this.userService.DeactivateUsersAsync(ids);
+                var error = await this.userService.RemoveInGroupAsync(id);
+                if (error != string.Empty)
+                {
+                    sb.Append(error);
+                }
             }
-            else
+
+            var errors = sb.ToString();
+            if (!string.IsNullOrEmpty(errors))
             {
-                StringBuilder sb = new StringBuilder();
-
-                foreach (int id in ids)
-                {
-                    var error = await this.userService.RemoveInGroupAsync(id);
-                    if (error != string.Empty)
-                    {
-                        sb.Append(error);
-                    }
-                }
-
-                var errors = sb.ToString();
-                if (!string.IsNullOrEmpty(errors))
-                {
-                    return this.Problem(errors);
-                }
+                return this.Problem(errors);
             }
 
             return this.Ok();

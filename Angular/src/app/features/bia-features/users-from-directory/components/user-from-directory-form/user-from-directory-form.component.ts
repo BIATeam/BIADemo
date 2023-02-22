@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
-import { UserFromDirectory } from '../../model/user-from-Directory';
+import { UserFromDirectory } from '../../model/user-from-directory';
 import { UserFilter } from '../../model/user-filter';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 

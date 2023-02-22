@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using System.Net.Http;
     using Audit.Core;
     using Audit.EntityFramework;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
@@ -18,12 +19,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Application.Plane;
-
     // End BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -51,9 +50,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
+            BiaNetSection biaNetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
+
             BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
-            ConfigureInfrastructureServiceContainer(collection);
+            ConfigureInfrastructureServiceContainer(collection, biaNetSection);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection);
 
@@ -106,17 +108,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
         {
+            string connectionString = configuration.GetConnectionString("BIADemoDatabase");
+
             // Infrastructure Data Layer
             collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
+                options.UseSqlServer(connectionString);
                 options.EnableSensitiveDataLogging();
                 options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
             collection.AddDbContext<IQueryableUnitOfWorkReadOnly, DataContextReadOnly>(
                 options =>
                 {
-                    options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
+                    options.UseSqlServer(connectionString);
                     options.EnableSensitiveDataLogging();
                 },
                 contextLifetime: ServiceLifetime.Transient);
@@ -127,40 +131,44 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<AuditFeature>();
         }
 
-        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection)
+        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
         {
             // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
-            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+        }
+
+        /// <summary>
+        /// Creates the HTTP client handler.
+        /// </summary>
+        /// <param name="biaNetSection">The bia net section.</param>
+        /// <returns>HttpClientHandler object.</returns>
+        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection)
+        {
+            HttpClientHandler httpClientHandler = new HttpClientHandler
             {
                 UseDefaultCredentials = true,
                 AllowAutoRedirect = false,
                 UseProxy = false,
-            });
+            };
 
-            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            if (biaNetSection?.Security?.DisableTlsVerify == true)
             {
-                UseDefaultCredentials = true,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            });
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
+            }
 
-            collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                UseDefaultCredentials = true,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            });
-
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                UseDefaultCredentials = false,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            });
+            return httpClientHandler;
         }
     }
 }

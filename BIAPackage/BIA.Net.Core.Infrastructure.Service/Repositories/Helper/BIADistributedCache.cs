@@ -4,13 +4,13 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
-    using Microsoft.Extensions.Caching.Distributed;
-    using Microsoft.Extensions.Caching.Memory;
     using System;
     using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Store object in distributed with the IDistributedCache service
@@ -20,9 +20,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 #pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly IDistributedCache distibutedCache;
-        public BIADistributedCache(IDistributedCache cache)
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger<BIADistributedCache> logger;
+
+        public BIADistributedCache(IDistributedCache cache, ILogger<BIADistributedCache> logger)
         {
             distibutedCache = cache;
+            this.logger = logger;
         }
 
         public async Task Add<T>(string key, T item, double cacheDurationInMinute)
@@ -50,8 +57,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             {
                 await distibutedCache.RemoveAsync(key);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.logger.LogError("BIADistributedCache.Remove Not in cache", ex);
                 // Not in cache
             }
         }

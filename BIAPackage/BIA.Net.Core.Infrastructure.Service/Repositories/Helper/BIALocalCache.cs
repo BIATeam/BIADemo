@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
     using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.Threading.Tasks;
     /// <summary>
@@ -14,9 +15,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     {
         public readonly IMemoryCache localCache;
 
-        public BIALocalCache(IMemoryCache memoryCache)
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger<BIADistributedCache> logger;
+
+        public BIALocalCache(IMemoryCache memoryCache, ILogger<BIADistributedCache> logger)
         {
             localCache = memoryCache;
+            this.logger = logger;
         }
 
         public async Task Add(string key, object item, double cacheDurationInMinute)
@@ -46,8 +53,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             {
                 localCache.Remove(key);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.logger.LogError("BIALocalCache.Remove Not in cache", ex);
                 // Not in cache
             }
         }

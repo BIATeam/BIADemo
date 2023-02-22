@@ -28,6 +28,7 @@ try
         config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
         config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
         config.AddJsonFile($"bianetconfig.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+        config.AddEnvironmentVariables();
     }).ConfigureLogging((hostingContext, logging) =>
     {
         IConfiguration configuration = hostingContext.Configuration;

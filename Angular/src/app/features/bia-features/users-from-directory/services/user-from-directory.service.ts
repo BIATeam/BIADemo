@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserFromDirectory } from '../model/user-from-Directory';
+import { UserFromDirectory } from '../model/user-from-directory';
 
 @Injectable({
   providedIn: 'root'

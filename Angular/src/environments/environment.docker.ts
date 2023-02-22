@@ -4,17 +4,17 @@ export const environment = {
   helpUrl: '',
   reportUrl: '',
   apiUrlDynamic: {
-    oldValue: '',
-    newValue: ''
+    oldValue: ':4200',
+    newValue: ':54321'
   },
-  apiUrl: '../WebApi/api',
-  hubUrl: '../WebApi/HubForClients',
-  urlErrorPage: '/static/error.htm',
+  apiUrl: '/api',
+  hubUrl: '/HubForClients',
+  urlErrorPage: 'http://localhost/static/error.htm',
   useXhrWithCred: false,
-  production: true,
+  production: false,
   logging: {
     conf: {
-      serverLoggingUrl: '../WebApi/api/logs',
+      serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }

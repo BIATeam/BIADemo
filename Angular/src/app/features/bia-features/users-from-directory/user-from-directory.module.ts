@@ -5,8 +5,8 @@ import { LdapDomainModule } from 'src/app/domains/bia-domains/ldap-domain/ldap-d
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { UserFromLdapFormComponent } from './components/user-from-directory-form/user-from-directory-form.component';
-import { reducers } from './store/user-from-Directory.state';
-import { UsersFromDirectoryEffects } from './store/users-from-Directory-effects';
+import { reducers } from './store/user-from-directory.state';
+import { UsersFromDirectoryEffects } from './store/users-from-directory-effects';
 import { UserAddFromLdapComponent } from './views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 
 const FEATURES = [

@@ -3,6 +3,9 @@
 // </copyright>
 namespace BIA.Net.Presentation.Api.Controllers
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Linq;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -10,7 +13,6 @@ namespace BIA.Net.Presentation.Api.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
-    using System.Linq;
 
     /// <summary>
     /// The API controller used to manage LDAP domains.
@@ -40,7 +42,9 @@ namespace BIA.Net.Presentation.Api.Controllers
         [Authorize(Roles = BIARights.LdapDomains.List)]
         public IActionResult GetAll()
         {
-            var ldapDomains = this.configuration.Authentication.LdapDomains.Where(o => o.ContainsUser);
+            IEnumerable<LdapDomain> ldapDomains = this.configuration?.Authentication?.LdapDomains?.Where(o => o.ContainsUser);
+            ldapDomains = ldapDomains ?? new List<LdapDomain>();
+
             return this.Ok(ldapDomains);
         }
     }

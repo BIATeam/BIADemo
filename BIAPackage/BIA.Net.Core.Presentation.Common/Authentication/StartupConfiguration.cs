@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
 
     /// <summary>
@@ -94,13 +95,30 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
 
             if (configuration?.Authentication?.Keycloak?.IsActive == true)
             {
+                IdentityModelEventSource.ShowPII = true;
+
                 authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
-                    o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                    if (configuration?.Security?.DisableTlsVerify == true)
+                    {
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
+                        o.BackchannelHttpHandler = new System.Net.Http.HttpClientHandler { ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true };
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
+                    }
+
+                    if (configuration.Authentication.Keycloak.Configuration?.Authority?.StartsWith("http", StringComparison.InvariantCultureIgnoreCase) == true)
+                    {
+                        o.Authority = configuration.Authentication.Keycloak.Configuration.Authority;
+                    }
+                    else
+                    {
+                        o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                    }
+
                     o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
-#if DEBUG
+
                     o.IncludeErrorDetails = true;
-#endif
+
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html

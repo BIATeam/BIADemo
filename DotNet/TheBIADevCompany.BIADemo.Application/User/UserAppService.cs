@@ -7,11 +7,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -93,12 +96,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
-        }
-
-        /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
-        public async Task<List<string>> GetUserDirectoryRolesAsync(string sid)
-        {
-            return await this.userDirectoryHelper.GetUserRolesBySid(sid);
         }
 
         /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
@@ -193,9 +190,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
                     }).ToList();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    result.Errors.Add("Error during synchronize. Retry Synchronize.");
+                    string msg = "Error during synchronize. Retry Synchronize.";
+                    this.logger.LogError(msg, ex);
+                    result.Errors.Add(msg);
                 }
             }
             else
@@ -205,7 +204,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     try
                     {
-                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: x => x.Sid == userFormDirectoryDto.Sid)).FirstOrDefault();
+                        Expression<Func<User, bool>> filter = !string.IsNullOrWhiteSpace(userFormDirectoryDto.Sid) ? x => x.Sid == userFormDirectoryDto.Sid : x => x.Guid == userFormDirectoryDto.Guid;
+
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: filter)).FirstOrDefault();
 
                         var addedUser = await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
 
@@ -216,9 +217,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                         await this.Repository.UnitOfWork.CommitAsync();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        result.Errors.Add(userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login);
+                        string msg = userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login;
+                        this.logger.LogError(msg, ex);
+                        result.Errors.Add(msg);
                     }
                 }
 
@@ -232,99 +235,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return result;
         }
 
-        /// <inheritdoc cref="IUserAppService.AddFromIdPAsync"/>
-        public async Task<ResultAddUsersFromDirectoryDto> AddFromIdPAsync(IEnumerable<UserFromDirectoryDto> userFromDirectoryDtos)
-        {
-            ResultAddUsersFromDirectoryDto result = null;
-
-            if (userFromDirectoryDtos != null && userFromDirectoryDtos?.Any() == true)
-            {
-                List<int> userIdAddeds = new List<int>();
-                List<User> userToAdds = new List<User>();
-
-                List<Guid> guids = userFromDirectoryDtos.Select(x => x.Guid).Where(x => x != Guid.Empty).ToList();
-                List<User> userDbs = (await this.Repository.GetAllEntityAsync(filter: x => guids.Contains(x.Guid))).ToList();
-                List<UserFromDirectoryDto> userFromDirectoryDtoToAdds = userFromDirectoryDtos.Where(x => !userDbs.Select(userDb => userDb.Guid).Contains(x.Guid)).ToList();
-
-                // ADD
-                List<UserFromDirectory> userFromDirectoryToAdds = PropertyMapper.Map<UserFromDirectoryDto, UserFromDirectory>(userFromDirectoryDtoToAdds).ToList();
-
-                if (userFromDirectoryToAdds != null && userFromDirectoryToAdds?.Any() == true)
-                {
-                    foreach (UserFromDirectory userFromDirectoryToAdd in userFromDirectoryToAdds)
-                    {
-                        User user = new User();
-                        UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectoryToAdd);
-                        user.Login = user.Login?.ToUpper();
-                        if (string.IsNullOrWhiteSpace(user.Sid) && user.Guid != Guid.Empty)
-                        {
-                            user.Sid = user.Guid.ToString();
-                        }
-
-                        userToAdds.Add(user);
-                    }
-
-                    this.Repository.AddRange(userToAdds);
-                }
-
-                // UPDATE IsActive property
-                List<User> userToUpdates = userDbs.Where(x => !x.IsActive).ToList();
-                if (userToUpdates != null && userToUpdates?.Any() == true)
-                {
-                    foreach (User userToUpdate in userToUpdates)
-                    {
-                        userToUpdate.IsActive = true;
-                        this.Repository.SetModified(userToUpdate);
-                    }
-                }
-
-                // SAVE
-                await this.Repository.UnitOfWork.CommitAsync();
-
-                // Fill userIdAddeds
-                if (userToUpdates != null && userToUpdates?.Any() == true)
-                {
-                    userIdAddeds.AddRange(userToUpdates.Select(x => x.Id).ToList());
-                }
-
-                if (userToAdds != null && userToAdds?.Any() == true)
-                {
-                    userIdAddeds.AddRange(userToAdds.Select(x => x.Id).ToList());
-                }
-
-                // Fill result object
-                result = new ResultAddUsersFromDirectoryDto();
-                result.UsersAddedDtos = (await this.GetAllAsync<OptionDto, UserOptionMapper>(
-                    filter: x => userIdAddeds.Contains(x.Id),
-                    queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName))).ToList();
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Deactivates the users asynchronous.
-        /// </summary>
-        /// <param name="ids">The ids.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task DeactivateUsersAsync(List<int> ids)
-        {
-            if (ids != null && ids?.Any() == true)
-            {
-                List<User> users = (await this.Repository.GetAllEntityAsync(filter: x => x.IsActive && ids.Contains(x.Id))).ToList();
-
-                if (users != null && users?.Any() == true)
-                {
-                    foreach (User user in users)
-                    {
-                        user.IsActive = false;
-                        this.Repository.SetModified(user);
-                    }
-
-                    await this.Repository.UnitOfWork.CommitAsync();
-                }
-            }
-        }
 
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
@@ -344,9 +254,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     await this.SynchronizeWithADAsync();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return "Error during synchronize. Retry Synchronize.";
+                    string msg = "Error during synchronize. Retry Synchronize.";
+                    this.logger.LogError(msg, ex);
+                    return msg;
                 }
 
                 if (notRemovedUser.Count != 0)

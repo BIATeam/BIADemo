@@ -1,7 +1,7 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { UserFromDirectory } from '../model/user-from-Directory';
-import { FeatureUsersFromDirectoryActions } from './users-from-Directory-actions';
+import { UserFromDirectory } from '../model/user-from-directory';
+import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions';
 
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const usersFromDirectoryAdapter = createEntityAdapter<UserFromDirectory>({

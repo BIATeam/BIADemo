@@ -9,6 +9,7 @@ import { UserTableComponent } from '../../components/user-table/user-table.compo
 import { FeatureUsersActions } from '../../store/users-actions';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
 import { skip } from 'rxjs/operators';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Component({
   selector: 'bia-users-index',
@@ -26,13 +27,14 @@ export class UsersIndexComponent extends CrudItemsIndexComponent<User> implement
     protected injector: Injector,
     public userService: UserService,
     protected authService: AuthService,
+    protected appSettingsService: AppSettingsService
   ) {
     super(injector, userService);
     this.crudConfiguration = UserCRUDConfiguration;
   }
 
   protected setPermissions() {
-    this.canSync = this.authService.hasPermission(Permission.User_Sync);
+    this.canSync = this.appSettingsService.appSettings?.keycloak?.isActive !== true && this.authService.hasPermission(Permission.User_Sync);
     this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);

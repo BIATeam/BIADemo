@@ -4,9 +4,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable, Subscription, throwError, timer } from 'rxjs';
 import { catchError, filter, first, skip } from 'rxjs/operators';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
-import { environment } from 'src/environments/environment';
 import { AppDB } from '../db';
 import { AuthService } from './auth.service';
+import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
 import { HttpOptions } from './generic-das.service';
 
@@ -125,7 +125,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
   }
 
   protected ping(): Observable<string> {
-    return this.http.get<string>(environment.logging.conf.serverLoggingUrl + '/ping');
+    return this.http.get<string>(BiaEnvironmentService.getServerLoggingUrl() + '/ping');
   }
 
   /**

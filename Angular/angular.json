@@ -51,8 +51,7 @@
               "node_modules/primeicons/primeicons.css",
               "src/styles.scss"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -61,7 +60,9 @@
             "namedChunks": true,
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json",
-            "allowedCommonJsDependencies": ["keycloak-js"]
+            "allowedCommonJsDependencies": [
+              "keycloak-js"
+            ]
           },
           "configurations": {
             "iis": {
@@ -109,6 +110,22 @@
                 }
               ]
             },
+            "ocp": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ocp.ts"
+                }
+              ]
+            },
+            "docker": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ]
+            },
             "es5": {
               "tsConfig": "tsconfig.es5.json"
             }
@@ -129,6 +146,12 @@
             },
             "es5": {
               "browserTarget": "BIADemo:build:es5"
+            },
+            "ocp": {
+              "browserTarget": "BIADemo:build:ocp"
+            },
+            "docker": {
+              "browserTarget": "BIADemo:build:docker"
             }
           }
         },
