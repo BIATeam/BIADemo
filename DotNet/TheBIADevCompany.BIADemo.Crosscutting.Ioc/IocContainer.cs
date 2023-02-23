@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
             BiaNetSection biaNetSection = new BiaNetSection();
-            configuration.GetSection("BiaNet").Bind(biaNetSection);
+            configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
             BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 

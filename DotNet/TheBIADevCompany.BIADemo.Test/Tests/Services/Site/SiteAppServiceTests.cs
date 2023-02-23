@@ -131,9 +131,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
                 {
                         Rights.Sites.ListAccess,
                 })
+                .MockPrincipalUserId(1)
                 .MockPrincipalUserData(new UserDataDto()
-                {
-                    CurrentTeams =
+                 {
+                     CurrentTeams =
                     {
                         new CurrentTeamDto()
                         {
@@ -141,7 +142,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
                             TeamId = 1,
                         },
                     },
-                });
+                 });
 
             // Insert additional data in the DB.
             this.DbMock.AddUser(1, "John", "DOE", 1, 1, null);
@@ -171,8 +172,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         [TestMethod("SiteAppServiceTests.GetAsyncTest")]
         public void GetAsyncTest()
         {
+            #region Setup context
+            // Mock authentication data (IPrincipal).
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+                {
+                    Rights.Teams.AccessAll,
+                });
+
             // Initialize the service to test.
             ISiteAppService service = this.GetService<ISiteAppService>();
+            #endregion Setup context
 
             SiteDto site = service.GetAsync(1).Result;
 
@@ -208,8 +217,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         [TestMethod("SiteAppServiceTests.RemoveAsyncTest")]
         public async Task RemoveAsyncTest()
         {
+            #region Setup context
+            // Mock authentication data (IPrincipal).
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+                {
+                    Rights.Teams.AccessAll,
+                });
+
             // Initialize the service to test.
             ISiteAppService service = this.GetService<ISiteAppService>();
+            #endregion Setup context
 
             await service.RemoveAsync(2);
 
@@ -225,8 +242,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         [TestMethod("SiteAppServiceTests.UpdateAsyncTest")]
         public void UpdateAsyncTest()
         {
+            #region Setup context
+            // Mock authentication data (IPrincipal).
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+                {
+                    Rights.Teams.AccessAll,
+                });
+
             // Initialize the service to test.
             ISiteAppService service = this.GetService<ISiteAppService>();
+            #endregion Setup context
 
             SiteDto siteDto = new SiteDto()
             {

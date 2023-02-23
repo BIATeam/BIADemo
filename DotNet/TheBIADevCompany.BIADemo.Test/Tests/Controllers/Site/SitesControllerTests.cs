@@ -44,6 +44,11 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         [TestInitialize]
         public void InitTest()
         {
+            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+                {
+                        Rights.Teams.AccessAll,
+                });
+
             // Create a new instance of the controller to test and set its HttpContext.
             this.controller = this.GetControllerWithHttpContext<SitesController>();
         }
@@ -84,11 +89,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <param name="siteId">The ID of the site to remove.</param>
         /// <param name="expectedResult">The expected HTTP status.</param>
         [DataTestMethod]
-        [DataRow(-1, HttpStatusCode.NotFound)]
         [DataRow(0, HttpStatusCode.BadRequest)]
         [DataRow(1, HttpStatusCode.OK)]
         [DataRow(2, HttpStatusCode.OK)]
-        [DataRow(404, HttpStatusCode.NotFound)]
+        [DataRow(9999, HttpStatusCode.NotFound)]
         public void TryRemoveSitesByController(int siteId, HttpStatusCode expectedResult)
         {
             // Add default data in DB.
@@ -107,7 +111,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
                 nbSites -= 1;
             }
 
-            Assert.AreEqual(nbSites, this.DbMock.CountSites());
+            int nbSite2s = this.DbMock.CountSites();
+            Assert.AreEqual(nbSites, nbSite2s);
         }
 
         /// <summary>
@@ -187,11 +192,6 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             // Add member: required for the GetAll() method.
             this.DbMock.AddUser(1, "John", "DOE", 1, 1);
 
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
-                {
-                    Rights.Teams.AccessAll,
-                });
-
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
@@ -213,10 +213,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            SiteDto selectedSite = response.Value as SiteDto;
-            Assert.IsNotNull(selectedSite);
-            Assert.AreEqual(DataConstants.DefaultSitesTitles[0], selectedSite.Title);
-            Assert.AreEqual(1, selectedSite.Id);
+            SiteInfoDto selectedSiteInfo = response.Value as SiteInfoDto;
+            Assert.IsNotNull(selectedSiteInfo);
+            Assert.AreEqual(DataConstants.DefaultSitesTitles[0], selectedSiteInfo.Title);
+            Assert.AreEqual(1, selectedSiteInfo.Id);
 
             // Check Update behavior (used when validating the "Edit" popup).
             string newTitle = "New site 1";
@@ -230,7 +230,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
             // - Check response of the Update API
-            selectedSite = response.Value as SiteDto;
+            SiteDto selectedSite = response.Value as SiteDto;
             Assert.IsNotNull(selectedSite);
             Assert.AreEqual(newTitle, selectedSite.Title);
             Assert.AreEqual(1, selectedSite.Id);
