@@ -38,7 +38,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Presentation.Api\TheBIADevCompany.BIADemo.Presentation.Api.csproj" />
-		<ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
+		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
 	</ItemGroup>
 
 </Project>

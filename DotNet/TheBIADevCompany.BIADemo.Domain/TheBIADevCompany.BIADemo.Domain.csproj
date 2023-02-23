@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain.Dto\TheBIADevCompany.BIADemo.Domain.Dto.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
   </ItemGroup>
 
 </Project>

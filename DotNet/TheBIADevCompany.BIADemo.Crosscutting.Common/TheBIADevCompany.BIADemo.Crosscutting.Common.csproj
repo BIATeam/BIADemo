@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
   </ItemGroup>
 
 </Project>

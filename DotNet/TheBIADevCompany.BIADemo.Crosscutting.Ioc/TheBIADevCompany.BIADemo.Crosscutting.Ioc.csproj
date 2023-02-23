@@ -15,6 +15,6 @@
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
   </ItemGroup>
 </Project>
