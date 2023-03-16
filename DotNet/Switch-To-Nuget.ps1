@@ -1,4 +1,4 @@
-$RelativePathToBIAPackage = "..\..\BIADemo\BIAPackage"
+$RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
