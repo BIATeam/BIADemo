@@ -45,47 +45,45 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
             if (usersSidInDirectory?.Count > 0)
             {
+                List<UserFromDirectory> usersFromDirectory = new List<UserFromDirectory>();
+                foreach (string sid in usersSidInDirectory)
+                {
+                    // 4s for 40 users
+                    var userFromDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
+                    if (userFromDirectory != null)
+                    {
+                        usersFromDirectory.Add(userFromDirectory);
+                    }
+                }
+
                 var resynchronizeTasks = new List<Task>();
                 foreach (User user in users)
                 {
-                    if (user.Domain == "--")
+                    //TODO : use the key in setting.
+                    if (!usersFromDirectory.Any(u => u.Login == user.Login))
                     {
-                        // remap the Domain with the login (use only for migration at V3.2.0)
-                        string domain = await this.userDirectoryHelper.ResolveUserDomainByLogin(user.Login);
-                        if (domain != null)
+                        if (user.IsActive)
                         {
-                            user.Domain = domain;
+                            this.DeactivateUser(user);
                         }
                     }
-
-                    if (user.Sid == "--")
+                    else
                     {
-                        // remap the Sid with the login (use only for migration at V3.2.0)
-                        string sid = await this.userDirectoryHelper.ResolveUserSidByLogin(user.Domain, user.Login);
-                        if (sid != null)
+                        if (fullSynchro)
                         {
-                            user.Sid = sid;
+                            resynchronizeTasks.Add(this.ResynchronizeUser(user));
                         }
-                    }
-
-                    if (!usersSidInDirectory.Contains(user.Sid) && user.IsActive)
-                    {
-                        this.DeactivateUser(user);
-                    }
-
-                    if (fullSynchro && usersSidInDirectory.Contains(user.Sid))
-                    {
-                        resynchronizeTasks.Add(this.ResynchronizeUser(user));
                     }
                 }
 
                 await Task.WhenAll(resynchronizeTasks);
 
-                foreach (string sid in usersSidInDirectory)
+                foreach (UserFromDirectory user in usersFromDirectory)
                 {
-                    var foundUser = users.FirstOrDefault(a => a.Sid == sid);
+                    //TODO : use the key in setting.
+                    var foundUser = users.FirstOrDefault(a => a.Login == user.Login);
 
-                    await this.AddOrActiveUserFromDirectory(sid, foundUser);
+                    this.AddOrActiveUserFromDirectory(user, foundUser);
                 }
 
                 await this.repository.UnitOfWork.CommitAsync();
@@ -104,14 +102,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <summary>
         /// Add or active User from AD.
         /// </summary>
-        /// <param name="sid">the sid in Directory.</param>
+        /// <param name="userFormDirectory">the user in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        public async Task<User> AddOrActiveUserFromDirectory(string sid, User foundUser)
+        public User AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, User foundUser)
         {
             if (foundUser == null)
             {
-                var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
                 if (userFormDirectory != null)
                 {
                     // Create the missing user

@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -28,6 +29,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -98,18 +100,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
-        public async Task<UserInfoDto> GetCreateUserInfoAsync(string sid)
+        /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
+        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string loginInIdentity)
         {
-            UserInfoDto userInfo = await this.GetUserInfoAsync(sid);
-
-            if (userInfo != null)
-            {
-                this.SelectDefaultLanguage(userInfo);
-
-                return userInfo;
-            }
-
             // if user is not found in DB, try to synchronize from AD.
             UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserBySid(sid);
 
@@ -118,32 +111,33 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 User user = new User();
                 UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
 
+                //TODO : use the key in setting.
+                if (!user.Login.Equals(loginInIdentity))
+                {
+                    throw new ForbiddenException("The login in ldap do not correspond to login in identity.");
+                }
+
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
-                userInfo = new UserInfoDto
+                UserInfoDto userInfo = new UserInfoDto
                 {
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
                 };
-                this.SelectDefaultLanguage(userInfo);
+                return userInfo;
             }
 
-            return userInfo;
+            return null;
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(string sid)
+        public async Task<UserInfoDto> GetUserInfoAsync(string login)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
-        }
-
-        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(Guid guid)
-        {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Guid == guid);
+            //TODO : use the key in setting.
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
         }
 
         /// <inheritdoc/>
@@ -204,11 +198,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     try
                     {
-                        Expression<Func<User, bool>> filter = !string.IsNullOrWhiteSpace(userFormDirectoryDto.Sid) ? x => x.Sid == userFormDirectoryDto.Sid : x => x.Guid == userFormDirectoryDto.Guid;
+                        //TODO : use the key in setting.
+                        Expression<Func<User, bool>> filter = x => x.Login == userFormDirectoryDto.Login;
 
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: filter)).FirstOrDefault();
+                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(userFormDirectoryDto.Sid);
 
-                        var addedUser = await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
+                        var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 
                         if (addedUser != null)
                         {
@@ -292,15 +288,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
-            }
-        }
-
-        /// <inheritdoc cref="IUserAppService.AddInDBAsync"/>
-        public async Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users)
-        {
-            foreach (var user in users)
-            {
-                await this.GetCreateUserInfoAsync(user.Sid);
             }
         }
 

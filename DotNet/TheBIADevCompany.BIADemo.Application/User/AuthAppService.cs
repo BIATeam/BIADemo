@@ -138,8 +138,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // Get user profil async
             Task<UserProfileDto> userProfileTask = this.GetUserProfileTask(loginParam, login);
 
+            //TODO : use the key in setting.
             // Get userInfo
-            UserInfoDto userInfo = await (!string.IsNullOrWhiteSpace(sid) ? this.userAppService.GetUserInfoAsync(sid) : this.userAppService.GetUserInfoAsync(guid));
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
             // Get roles
             List<string> userRoles = await this.GetUserRolesAsync(userInfoDto: userInfo, sid: sid);
@@ -151,11 +152,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new ForbiddenException("No roles found");
             }
 
-            if (!string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
+            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
             {
+                // automatic creation from ldap, only use if user do not need fine Role on team.
                 try
                 {
-                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(sid, login);
                 }
                 catch (Exception ex)
                 {
@@ -190,6 +192,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 this.userAppService.SelectDefaultLanguage(userInfo);
             }
+
+            this.userAppService.SelectDefaultLanguage(userInfo);
 
             if (userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin))
             {

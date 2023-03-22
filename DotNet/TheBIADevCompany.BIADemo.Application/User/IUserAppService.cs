@@ -28,23 +28,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Gets user info with its sid and create if not exist.
         /// </summary>
-        /// <param name="sid">The sid to search with.</param>
+        /// <param name="sid">The sid to search in ldap with.</param>
+        /// <param name="loginInIdentity">The loginInIdentity to check in ldap.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetCreateUserInfoAsync(string sid);
+        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string loginInIdentity);
 
         /// <summary>
-        /// Gets user info with its sid.
+        /// Gets user info with its login.
         /// </summary>
-        /// <param name="sid">The sid to search with.</param>
+        /// <param name="login">The login to search with.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetUserInfoAsync(string sid);
-
-        /// <summary>
-        /// Gets user info with its guid.
-        /// </summary>
-        /// <param name="guid">The guid to search with.</param>
-        /// <returns>The user.</returns>
-        Task<UserInfoDto> GetUserInfoAsync(Guid guid);
+        Task<UserInfoDto> GetUserInfoAsync(string login);
 
         /// <summary>
         /// Gets all AD user corresponding to a filter.
@@ -96,13 +90,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <returns>List of dommain keys.</returns>
         Task<List<string>> GetAllLdapUsersDomains();
-
-        /// <summary>
-        /// Adds an UserAD in the in database.
-        /// </summary>
-        /// <param name="users">The users.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
         /// Selects the default language.
