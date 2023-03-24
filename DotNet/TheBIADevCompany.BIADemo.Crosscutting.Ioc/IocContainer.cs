@@ -95,6 +95,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain Layer
+            collection.AddTransient<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
             collection.AddTransient<IUserPermissionDomainService, UserPermissionDomainService>();
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
             collection.AddTransient<INotificationDomainService, NotificationDomainService>();

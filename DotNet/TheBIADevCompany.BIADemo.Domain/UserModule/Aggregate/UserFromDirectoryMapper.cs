@@ -20,24 +20,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return dto => new UserFromDirectory
             {
-                Company = dto.Company,
-                Country = dto.Country,
-                Department = dto.Department,
-                DistinguishedName = dto.DistinguishedName,
-                Domain = dto.Domain,
-                Email = dto.Email,
-                ExternalCompany = dto.ExternalCompany,
-                FirstName = dto.FirstName,
-                Guid = dto.Guid,
-                IsEmployee = dto.IsEmployee,
-                IsExternal = dto.IsExternal,
                 LastName = dto.LastName,
+                FirstName = dto.FirstName,
                 Login = dto.Login,
-                Manager = dto.Manager,
-                Office = dto.Office,
+                Domain = dto.Domain,
+                Guid = dto.Guid,
                 Sid = dto.Sid,
-                Site = dto.Site,
-                SubDepartment = dto.SubDepartment,
             };
         }
 
@@ -49,24 +37,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return entity => new UserFromDirectoryDto
             {
-                Company = entity.Company,
-                Country = entity.Country,
-                Department = entity.Department,
-                DistinguishedName = entity.DistinguishedName,
-                Domain = entity.Domain,
-                Email = entity.Email,
-                ExternalCompany = entity.ExternalCompany,
-                FirstName = entity.FirstName,
-                Guid = entity.Guid,
-                IsEmployee = entity.IsEmployee,
-                IsExternal = entity.IsExternal,
                 LastName = entity.LastName,
+                FirstName = entity.FirstName,
                 Login = entity.Login,
-                Manager = entity.Manager,
-                Office = entity.Office,
+                Domain = entity.Domain,
+                Guid = entity.Guid,
                 Sid = entity.Sid,
-                Site = entity.Site,
-                SubDepartment = entity.SubDepartment,
             };
         }
     }

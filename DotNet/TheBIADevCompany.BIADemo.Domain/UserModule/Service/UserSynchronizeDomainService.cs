@@ -4,9 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
+    using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -26,15 +30,22 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
 
         /// <summary>
+        /// The user IdentityKey Domain Service.
+        /// </summary>
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserSynchronizeDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="adHelper">The AD helper.</param>
-        public UserSynchronizeDomainService(ITGenericRepository<User, int> repository, IUserDirectoryRepository<UserFromDirectory> adHelper)
+        /// <param name="userIdentityKeyDomainService">The user IdentityKey Domain Service.</param>
+        public UserSynchronizeDomainService(ITGenericRepository<User, int> repository, IUserDirectoryRepository<UserFromDirectory> adHelper, IUserIdentityKeyDomainService userIdentityKeyDomainService)
         {
             this.repository = repository;
             this.userDirectoryHelper = adHelper;
+            this.userIdentityKeyDomainService = userIdentityKeyDomainService;
         }
 
         /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
@@ -45,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
             if (usersSidInDirectory?.Count > 0)
             {
-                List<UserFromDirectory> usersFromDirectory = new List<UserFromDirectory>();
+                ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
                 foreach (string sid in usersSidInDirectory)
                 {
                     // 4s for 40 users
@@ -56,11 +67,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                 }
 
+                List<UserFromDirectoryDto> usersFromDirectoryDto = usersFromDirectory.Select(UserFromDirectoryMapper.EntityToDto()).ToList();
+
                 var resynchronizeTasks = new List<Task>();
                 foreach (User user in users)
                 {
-                    //TODO : use the key in setting.
-                    if (!usersFromDirectory.Any(u => u.Login == user.Login))
+                    if (!usersFromDirectoryDto.Any(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile()))
                     {
                         if (user.IsActive)
                         {
@@ -78,12 +90,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                 await Task.WhenAll(resynchronizeTasks);
 
-                foreach (UserFromDirectory user in usersFromDirectory)
+                foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
-                    //TODO : use the key in setting.
-                    var foundUser = users.FirstOrDefault(a => a.Login == user.Login);
+                    var foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
 
-                    this.AddOrActiveUserFromDirectory(user, foundUser);
+                    this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
 
                 await this.repository.UnitOfWork.CommitAsync();

@@ -58,6 +58,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService" /> class.
         /// </summary>
@@ -68,6 +70,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="logger">The logger.</param>
         /// <param name="userContext">The user context.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
+        /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
             IUserSynchronizeDomainService userSynchronizeDomainService,
@@ -75,7 +78,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger,
             UserContext userContext,
-            IIdentityProviderRepository identityProviderRepository)
+            IIdentityProviderRepository identityProviderRepository,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService)
             : base(repository)
         {
             this.userSynchronizeDomainService = userSynchronizeDomainService;
@@ -84,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.logger = logger;
             this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
-
+            this.userIdentityKeyDomainService = userIdentityKeyDomainService;
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
@@ -101,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
-        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string loginInIdentity)
+        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string identityKey)
         {
             // if user is not found in DB, try to synchronize from AD.
             UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserBySid(sid);
@@ -111,10 +115,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 User user = new User();
                 UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
 
-                //TODO : use the key in setting.
-                if (!user.Login.Equals(loginInIdentity))
+                var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
+                if (!func(user))
                 {
-                    throw new ForbiddenException("The login in ldap do not correspond to login in identity.");
+                    throw new ForbiddenException("The identityKey in ldap do not correspond to identityKey in identity.");
                 }
 
                 this.Repository.Add(user);
@@ -134,10 +138,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(string login)
+        public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
         {
-            //TODO : use the key in setting.
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
         }
 
         /// <inheritdoc/>
@@ -173,7 +176,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             result.Errors = new List<string>();
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users, "User");
                 try
                 {
                     await this.SynchronizeWithADAsync();
@@ -198,10 +201,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     try
                     {
-                        //TODO : use the key in setting.
-                        Expression<Func<User, bool>> filter = x => x.Login == userFormDirectoryDto.Login;
-
-                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: filter)).FirstOrDefault();
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
                         UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(userFormDirectoryDto.Sid);
 
                         var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
@@ -231,7 +231,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return result;
         }
 
-
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
@@ -244,7 +243,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     return "User not found in database";
                 }
 
-                List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
+                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { Guid = user.Guid, Login = user.Login } }, "User");
 
                 try
                 {
