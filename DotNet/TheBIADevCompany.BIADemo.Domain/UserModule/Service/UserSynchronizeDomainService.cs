@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The service used for synchronization between AD and DB.
@@ -56,23 +57,32 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
             if (usersSidInDirectory?.Count > 0)
             {
+                //List<UserFromDirectory> usersFromDirectory = new List<UserFromDirectory>();
+                //foreach (string sid in usersSidInDirectory)
+                //{
+                //    var userFromDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid, fullSynchro);
+                //    if (userFromDirectory != null)
+                //    {
+                //        usersFromDirectory.Add(userFromDirectory);
+                //    }
+                //}
+
                 ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
-                foreach (string sid in usersSidInDirectory)
+
+                Parallel.ForEach(usersSidInDirectory, sid =>
                 {
-                    // 4s for 40 users
-                    var userFromDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
+                    var userFromDirectory = this.userDirectoryHelper.ResolveUserBySid(sid, fullSynchro).Result;
                     if (userFromDirectory != null)
                     {
                         usersFromDirectory.Add(userFromDirectory);
                     }
-                }
-
-                List<UserFromDirectoryDto> usersFromDirectoryDto = usersFromDirectory.Select(UserFromDirectoryMapper.EntityToDto()).ToList();
+                });
 
                 var resynchronizeTasks = new List<Task>();
                 foreach (User user in users)
                 {
-                    if (!usersFromDirectoryDto.Any(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile()))
+                    var userFromDirectory = usersFromDirectory.FirstOrDefault(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile());
+                    if (userFromDirectory == null)
                     {
                         if (user.IsActive)
                         {
@@ -83,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     {
                         if (fullSynchro)
                         {
-                            resynchronizeTasks.Add(this.ResynchronizeUser(user));
+                            resynchronizeTasks.Add(this.ResynchronizeUser(user, userFromDirectory));
                         }
                     }
                 }
@@ -97,7 +107,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
 
-                await this.repository.UnitOfWork.CommitAsync();
+                try
+                {
+                    await this.repository.UnitOfWork.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
@@ -120,7 +137,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         {
             if (foundUser == null)
             {
-                if (userFormDirectory != null)
+                if (this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectory) != this.userIdentityKeyDomainService.GetDirectoryIdentityKey(new UserFromDirectory()))
                 {
                     // Create the missing user
                     User user = new User();
@@ -137,15 +154,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             return foundUser;
         }
 
-        private async Task ResynchronizeUser(User user)
+        private async Task ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
         {
-            if (user.Sid != "--")
+            if (userFromDirectory != null)
             {
-                var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(user.Sid);
-                if (userFormDirectory != null)
-                {
-                    UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                }
+                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
             }
         }
     }

@@ -60,8 +60,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Resolves the user by sid.
         /// </summary>
         /// <param name="sid">The sid.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
         /// <returns>The user.</returns>
-        Task<TUserFromDirectory> ResolveUserBySid(string sid);
+        Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
         /// <summary>
         /// Determines whether [is sid in groups] [the specified LDAP groups].
