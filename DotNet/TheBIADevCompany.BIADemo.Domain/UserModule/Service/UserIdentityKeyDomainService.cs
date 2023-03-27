@@ -44,7 +44,7 @@
         /// </summary>
         /// <param name="identityKey">the identityKey.</param>
         /// <returns>Expression to compare.</returns>
-        public Expression<Func<UserFromDirectoryDto, bool>> CheckDirectoryIdentityKey(string identityKey)
+        public Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey)
         {
             return userFromDirectory => userFromDirectory.Login == identityKey;
         }

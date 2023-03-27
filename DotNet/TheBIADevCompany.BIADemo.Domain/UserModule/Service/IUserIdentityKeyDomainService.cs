@@ -9,7 +9,7 @@
     {
         Expression<Func<User, bool>> CheckDatabaseIdentityKey(string identityKey);
 
-        Expression<Func<UserFromDirectoryDto, bool>> CheckDirectoryIdentityKey(string identityKey);
+        Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey);
 
         string GetDatabaseIdentityKey(User user);
 
