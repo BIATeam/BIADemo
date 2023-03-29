@@ -57,16 +57,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
             if (usersSidInDirectory?.Count > 0)
             {
-                //List<UserFromDirectory> usersFromDirectory = new List<UserFromDirectory>();
-                //foreach (string sid in usersSidInDirectory)
-                //{
-                //    var userFromDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid, fullSynchro);
-                //    if (userFromDirectory != null)
-                //    {
-                //        usersFromDirectory.Add(userFromDirectory);
-                //    }
-                //}
-
                 ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
 
                 Parallel.ForEach(usersSidInDirectory, sid =>
@@ -78,7 +68,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                 });
 
-                var resynchronizeTasks = new List<Task>();
                 foreach (User user in users)
                 {
                     var userFromDirectory = usersFromDirectory.FirstOrDefault(this.userIdentityKeyDomainService.CheckDirectoryIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user)).Compile());
@@ -93,12 +82,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     {
                         if (fullSynchro)
                         {
-                            resynchronizeTasks.Add(this.ResynchronizeUser(user, userFromDirectory));
+                            this.ResynchronizeUser(user, userFromDirectory);
                         }
                     }
                 }
-
-                await Task.WhenAll(resynchronizeTasks);
 
                 foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
@@ -154,7 +141,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             return foundUser;
         }
 
-        private async Task ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
+        private void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {

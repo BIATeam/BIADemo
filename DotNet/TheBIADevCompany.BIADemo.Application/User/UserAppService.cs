@@ -180,8 +180,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 try
                 {
                     await this.SynchronizeWithADAsync();
-                    List<string> usersSid = users.Select(u => u.Sid).ToList();
-                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: x => usersSid.Contains(x.Sid))).Select(entity => new OptionDto
+                    List<string> usersIdentityKey = users.Select(u => this.userIdentityKeyDomainService.GetDirectoryIdentityKey(u)).ToList();
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
                         Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",

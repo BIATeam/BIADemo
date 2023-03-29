@@ -25,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the security id.
         /// </summary>
-        public string Sid { get; set; }
+        // public string Sid { get; set; }
 
         /// <summary>
         /// Gets or sets the email.
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Gets or sets the domain.
         /// </summary>
-        public string Domain { get; set; }
+        // public string Domain { get; set; }
 
         /// <summary>
         /// Gets or sets the distinguished name.

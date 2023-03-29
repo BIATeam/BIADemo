@@ -1,6 +1,7 @@
 ﻿namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -16,11 +17,22 @@
         /// Check the Identity Key from the User in database.
         /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
         /// </summary>
-        /// <param name="identityKey">the identityKey.</param>
+        /// <param name="identityKey">the identity Key.</param>
         /// <returns>Expression to compare.</returns>
         public Expression<Func<User, bool>> CheckDatabaseIdentityKey(string identityKey)
         {
             return user => user.Login == identityKey;
+        }
+
+        /// <summary>
+        /// Check the Identity Key from the User in database.
+        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database => Directory, Idp & WindowsIdentity).
+        /// </summary>
+        /// <param name="identityKeys">the list of identity Keys.</param>
+        /// <returns>Expression to compare.</returns>
+        public Expression<Func<User, bool>> CheckDatabaseIdentityKey(List<string> identityKeys)
+        {
+            return user => identityKeys.Contains(user.Login);
         }
 
         /// <summary>
