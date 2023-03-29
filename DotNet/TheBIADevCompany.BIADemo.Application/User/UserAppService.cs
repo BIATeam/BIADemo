@@ -243,7 +243,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     return "User not found in database";
                 }
 
-                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { Guid = user.Guid, Login = user.Login } }, "User");
+                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { /* Add display name for log */ Login = user.Login } }, "User");
 
                 try
                 {

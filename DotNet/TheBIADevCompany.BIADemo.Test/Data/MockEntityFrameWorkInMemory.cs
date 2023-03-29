@@ -107,7 +107,6 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 Email = $"{firstName}{lastName}@fake.com",
                 ExternalCompany = string.Empty,
                 FirstName = firstName,
-                Guid = Guid.Empty,
                 IsActive = true,
                 IsEmployee = true,
                 IsExternal = false,

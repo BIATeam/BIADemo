@@ -119,11 +119,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public virtual ICollection<Member> Members { get; set; }
 
         /// <summary>
-        /// Gets or sets the GUID.
-        /// </summary>
-        public Guid Guid { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating where the user is active.
         /// </summary>
         public bool IsActive { get; set; }
