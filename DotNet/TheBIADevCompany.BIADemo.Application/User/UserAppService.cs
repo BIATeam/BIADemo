@@ -202,7 +202,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     try
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
-                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(userFormDirectoryDto.Sid);
+                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
 
                         var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 
@@ -215,7 +215,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     }
                     catch (Exception ex)
                     {
-                        string msg = userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login;
+                        string msg = userFormDirectoryDto.DisplayName;
                         this.logger.LogError(msg, ex);
                         result.Errors.Add(msg);
                     }
@@ -243,7 +243,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     return "User not found in database";
                 }
 
-                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { /* Add display name for log */ Login = user.Login } }, "User");
+                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { DisplayName = user.FirstName + " " + user.LastName + "(" + user.Login + ")", IdentityKey = this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user) } }, "User");
 
                 try
                 {

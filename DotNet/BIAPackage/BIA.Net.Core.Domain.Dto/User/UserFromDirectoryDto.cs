@@ -12,34 +12,18 @@ namespace BIA.Net.Core.Domain.Dto.User
     public class UserFromDirectoryDto
     {
         /// <summary>
-        /// Gets or sets the last name.
+        /// Gets or sets the Display Name.
         /// </summary>
-        public string LastName { get; set; }
+        public string DisplayName { get; set; }
 
         /// <summary>
-        /// Gets or sets the first name.
+        /// Gets or sets the Identity Key.
         /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        public string Login { get; set; }
+        public string IdentityKey { get; set; }
 
         /// <summary>
         /// Gets or sets the login.
         /// </summary>
         public string Domain { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GUID.
-        /// </summary>
-        public Guid Guid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Security Id.
-        /// </summary>
-        public string Sid { get; set; }
-
     }
 }

@@ -255,7 +255,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 {
                     if (!AddUserInGroup(user, roleLabel, listGroupCacheSidToRemove))
                     {
-                        errors.Add(user.Domain + "\\" + user.Login);
+                        errors.Add(user.DisplayName);
                     }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
@@ -265,7 +265,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "An error occured while adding the users with GUID : " + string.Join(',', usersFromDirectory.Select(u => u.Domain + "\\" + u.Login + " (" + u.Sid + ")")));
+                this.logger.LogError(exception, "An error occured while adding the users with GUID : " + string.Join(',', usersFromDirectory.Select(u => u.DisplayName )));
             }
             return errors;
         }
@@ -275,49 +275,63 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             try
             {
-                PrincipalContext contextUser = PrepareDomainContext(user.Domain).Result;
+                UserPrincipal userToAdd = ResolveUserPrincipal(user.Domain, this.GetIdentityKey(user)).Result;
 
-                if (contextUser != null)
+                if (userToAdd != null)
                 {
-                    UserPrincipal userToAdd = UserPrincipal.FindByIdentity(contextUser, this.GetIdentityKeyType(), this.GetIdentityKey(user));
+                    this.logger.LogInformation("User Identity " + user.IdentityKey + " found  in domain " + user.Domain);
+                    string domainWhereUserFound = user.Domain;
 
-                    if (userToAdd != null)
+                    GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
+                    if (group == null)
                     {
-                        this.logger.LogInformation("User Sid " + user.Sid + " found  in domain " + user.Domain);
-                        string domainWhereUserFound = user.Domain;
+                        // TODO : just add in db IF mode fake
+                        return false;
+                    }
+                    try
+                    {
+                        group.Members.Add(userToAdd);
+                        group.Save();
 
-                        GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
-                        if (group == null)
+                        if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
                         {
-                            // TODO : just add in db IF mode fake
-                            return false;
+                            listGroupCacheSidToRemove.Add(group.Sid.Value);
                         }
-                        try
-                        {
-                            group.Members.Add(userToAdd);
-                            group.Save();
 
-                            if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
-                            {
-                                listGroupCacheSidToRemove.Add(group.Sid.Value);
-                            }
-
-                            return true;
-                        }
-                        catch (Exception e)
-                        {
-                            this.logger.LogError(e, "[AddUserInGroup] Error when adding user " + userToAdd.UserPrincipalName + " in group " + group.UserPrincipalName);
-                            return false;
-                        }
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        this.logger.LogError(e, "[AddUserInGroup] Error when adding user " + userToAdd.UserPrincipalName + " in group " + group.UserPrincipalName);
+                        return false;
                     }
                 }
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "[AddUserInGroup] user Sid " + user.Sid.ToString() + " problem with domain " + user.Domain);
+                this.logger.LogError(exception, "[AddUserInGroup] user IdentityKey " + user.IdentityKey + " problem with domain " + user.Domain);
             }
 
             return false;
+        }
+
+        private async Task<UserPrincipal> ResolveUserPrincipal(string domain, string identityKey)
+        {
+            PrincipalContext contextUser = await PrepareDomainContext(domain);
+            UserPrincipal userToAdd = null;
+
+            if (contextUser != null)
+            {
+                userToAdd = UserPrincipal.FindByIdentity(contextUser, this.GetIdentityKeyType(), identityKey);
+            }
+
+            return userToAdd;
+        }
+
+        public async Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto)
+        {
+            UserPrincipal userPrincipal = await ResolveUserPrincipal(userFromDirectoryDto.Domain, this.GetIdentityKey(userFromDirectoryDto));
+            return GetUser(userPrincipal, userFromDirectoryDto.Domain);
         }
 
         private GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
@@ -432,15 +446,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             try
             {
-
                 foreach (var userToRemove in usersFromRepositoryToRemove)
                 {
                     foreach (var domain in ldapDomainsUsers)
                     {
-                        PrincipalContext contextUser = await PrepareDomainContext(domain);
-                        if (contextUser != null)
+                        // If the domain is not contains in user database all domain should be parsed to clean the group.
+                        if (userToRemove.Domain == null || userToRemove.Domain.Equals(domain.Name))
                         {
-                            UserPrincipal userPrincipalToRemove = UserPrincipal.FindByIdentity(contextUser, GetIdentityKeyType(), this.GetIdentityKey(userToRemove));
+                            UserPrincipal userPrincipalToRemove = await ResolveUserPrincipal(domain.Name, this.GetIdentityKey(userToRemove));
 
                             if (userPrincipalToRemove != null)
                             {
@@ -458,7 +471,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 {
                                     listGroupCacheSidToRemove.Add(group.Sid.Value);
                                 }
-                                break;
                             }
                         }
                     }
@@ -474,7 +486,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "An error occured while adding the user with Sid : " + string.Join(',', usersFromRepositoryToRemove.Select(u => u.Domain + "\\" + u.Login + " (" + u.Sid + ")")));
+                this.logger.LogError(exception, "An error occured while adding the user with Identity Key : " + string.Join(',', usersFromRepositoryToRemove.Select(u => u.DisplayName + "(" + u.IdentityKey + ")")));
                 throw;
             }
 

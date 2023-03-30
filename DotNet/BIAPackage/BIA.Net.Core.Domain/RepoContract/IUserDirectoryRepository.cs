@@ -65,6 +65,13 @@ namespace BIA.Net.Core.Domain.RepoContract
         Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
         /// <summary>
+        /// Resolves the user by sid.
+        /// </summary>
+        /// <param name="userFromDirectoryDto">The user from directory dto.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto);
+
+        /// <summary>
         /// Determines whether [is sid in groups] [the specified LDAP groups].
         /// </summary>
         /// <param name="ldapGroups">The LDAP groups.</param>

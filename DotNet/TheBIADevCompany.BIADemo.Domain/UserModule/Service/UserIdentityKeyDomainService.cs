@@ -82,7 +82,7 @@
         /// <returns>Return the Identity Key.</returns>
         public string GetDirectoryIdentityKey(UserFromDirectoryDto userFromDirectory)
         {
-            return userFromDirectory.Login;
+            return userFromDirectory.IdentityKey;
         }
 
         // -------------------------------- Identity Provider --------------------------------------

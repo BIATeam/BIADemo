@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public static class UserFromDirectoryMapper
     {
-        /// <summary>
+  /*      /// <summary>
         /// Create a member entity from a DTO.
         /// </summary>
         /// <returns>The user Entity.</returns>
@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 Guid = dto.Guid,
                 Sid = dto.Sid,
             };
-        }
+        }*/
 
         /// <summary>
         /// Create a user DTO from an entity.
@@ -37,12 +37,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return entity => new UserFromDirectoryDto
             {
-                LastName = entity.LastName,
-                FirstName = entity.FirstName,
-                Login = entity.Login,
+                // #IdentityKey
+                IdentityKey = entity.Login,
+                DisplayName = entity.FirstName + " " + entity.LastName + "(" + entity.Domain + "\\" + entity.Login + ")",
                 Domain = entity.Domain,
-                Guid = entity.Guid,
-                Sid = entity.Sid,
             };
         }
     }

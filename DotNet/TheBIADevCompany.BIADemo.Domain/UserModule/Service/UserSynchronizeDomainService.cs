@@ -94,14 +94,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
 
-                try
-                {
-                    await this.repository.UnitOfWork.CommitAsync();
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                await this.repository.UnitOfWork.CommitAsync();
+
             }
         }
 
