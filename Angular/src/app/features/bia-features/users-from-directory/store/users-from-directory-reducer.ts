@@ -5,7 +5,7 @@ import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions
 
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const usersFromDirectoryAdapter = createEntityAdapter<UserFromDirectory>({
-  selectId: (user: UserFromDirectory) => user.domain + '\\' + user.IdentityKey,
+  selectId: (user: UserFromDirectory) => user.domain + '\\' + user.identityKey,
   sortComparer: false
 });
 

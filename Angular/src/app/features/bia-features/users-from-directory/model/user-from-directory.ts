@@ -1,5 +1,5 @@
 export interface UserFromDirectory {
   displayName: string;
-  IdentityKey: string;
+  identityKey: string;
   domain: string;
 }
