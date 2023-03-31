@@ -46,8 +46,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Return all users recursively in a role. To use only for synchronisation.
         /// </summary>
         /// <param name="roleLabel">The role label.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
         /// <returns>The list of users.</returns>
-        Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel);
+        Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel, bool forceRefresh = false);
 
         /// <summary>
         /// Return the list of Ldap Groups corresponding to the role.
@@ -63,6 +64,14 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="forceRefresh">To force to refresh cache.</param>
         /// <returns>The user.</returns>
         Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
+
+        /// <summary>
+        /// Resolves the user by identity key.
+        /// </summary>
+        /// <param name="identityKey">The identity key.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false);
 
         /// <summary>
         /// Resolves the user by sid.

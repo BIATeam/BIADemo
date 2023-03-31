@@ -9,7 +9,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Collections.Generic;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Security.Principal;
     using System.Threading;
     using System.Threading.Tasks;
@@ -33,7 +35,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private const string KeyPrefixCacheGroup = "BIAGroupSid:";
 
-        private const string KeyPrefixCacheUser = "BIAUsersid:";
+        private const string KeyPrefixCacheUserSid = "BIAUserSid:";
+
+        private const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
 
         /// <summary>
         /// Groups cached.
@@ -513,7 +517,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
-        public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
+        public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role, bool forceRefresh = false)
         {
             List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
             if (userLdapGroups.Count == 0)
@@ -531,7 +535,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             var resolveTasks = new List<Task>();
             foreach (var ldapGroup in userLdapGroups)
             {
-                resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup));
+                resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup, forceRefresh));
             }
             await Task.WhenAll(resolveTasks);
             return listUsersSid;
@@ -545,7 +549,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
         object syncLocalCacheGroupSid = new Object();
-        private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)
+        private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup, bool forceRefresh = false)
         {
             string sid = "";
             lock (syncLocalCacheGroupSid)
@@ -579,6 +583,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             if (!string.IsNullOrEmpty(sid))
             {
+                if (forceRefresh)
+                {
+                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + sid);
+                }
+
                 await this.GetAllUsersSidFromGroupRecursivelyAsync(sid, ldapGroup, listUsersSid, listTreatedGroupSid);
             }
         }
@@ -743,7 +752,19 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         public async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
         {
-            string KeyCache = KeyPrefixCacheUser + sid;
+            string KeyCache = KeyPrefixCacheUserSid + sid;
+            return await ResolveUser(KeyCache, IdentityType.Sid, sid, forceRefresh);
+        }
+
+        public async Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false)
+        {
+            string KeyCache = KeyPrefixCacheUserIdentityKey + identityKey;
+            return await ResolveUser(KeyCache, GetIdentityKeyType(), identityKey, forceRefresh);
+        }
+
+        private async Task<TUserFromDirectory> ResolveUser(string KeyCache, IdentityType identityType, string key, bool forceRefresh = false)
+        {
+            
             TUserFromDirectory itemResolve;
             itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.distributedCache.Get<TUserFromDirectory>(KeyCache);
             if (itemResolve != null)
@@ -751,6 +772,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (forceRefresh)
                 {
                     await this.ldapRepositoryHelper.distributedCache.Remove(KeyCache);
+                    itemResolve = null;
                 }
                 else
                 {
@@ -762,18 +784,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 PrincipalContext searchContext = await PrepareDomainContext(userDomain);
                 if (searchContext != null)
                 {
-                    var userPrincipal = await Task.Run(() => UserPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid));
+                    var userPrincipal = await Task.Run(() => UserPrincipal.FindByIdentity(searchContext, identityType, key));
                     if (userPrincipal != null)
                     {
-                        itemResolve = GetUser(userPrincipal, userDomain.Name); ;
-                        await this.ldapRepositoryHelper.distributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
-                        return itemResolve;
+                        itemResolve = GetUser(userPrincipal, userDomain.Name);
+                        break;
                     }
                 }
             }
-            itemResolve = new TUserFromDirectory();
+            if (itemResolve == null)
+            {
+                itemResolve = new TUserFromDirectory();
+            }
             await this.ldapRepositoryHelper.distributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
-            return null;
+            return itemResolve;
         }
     }
 }

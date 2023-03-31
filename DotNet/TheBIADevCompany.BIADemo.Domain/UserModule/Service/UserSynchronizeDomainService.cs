@@ -53,9 +53,24 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
             List<User> users = (await this.repository.GetAllEntityAsync()).ToList();
-            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User"))?.ToList();
+            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User", fullSynchro))?.ToList();
 
-            if (usersSidInDirectory?.Count > 0)
+            if (usersSidInDirectory == null)
+            {
+                // If user in DB just synchronize the field of the active user.
+                foreach (User user in users)
+                {
+                    if (user.IsActive)
+                    {
+                        var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
+                        if (userFromDirectory != null)
+                        {
+                            this.ResynchronizeUser(user, userFromDirectory);
+                        }
+                    }
+                }
+            }
+            else if (usersSidInDirectory?.Count > 0)
             {
                 ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
 
@@ -80,10 +95,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                     else
                     {
-                        if (fullSynchro)
-                        {
-                            this.ResynchronizeUser(user, userFromDirectory);
-                        }
+                        this.ResynchronizeUser(user, userFromDirectory);
                     }
                 }
 
