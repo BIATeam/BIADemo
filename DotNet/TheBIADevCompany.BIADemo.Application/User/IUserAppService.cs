@@ -33,13 +33,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// Get all rights for a user with its sid.
         /// </summary>
         /// <param name="userDirectoryRoles">The user roles in user directory.</param>
-        /// <param name="sid">The user sid.</param>
+        /// <param name="userId">The user id.</param>
         /// <param name="siteId">The site identifier.</param>
         /// <param name="roleId">The role identifier.</param>
         /// <returns>
         /// The list of right.
         /// </returns>
-        Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
+        Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0);
 
         /// <summary>
         /// Translate the roles in rights.
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="sid">The sid to search with.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetCreateUserInfoAsync(string sid);
+        Task<UserInfoDto> GetCreateUserInfoAsync(string login, string sid);
 
         /// <summary>
         /// Gets the profile of the given user.
@@ -110,12 +110,5 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <returns>List of dommain keys.</returns>
         Task<List<string>> GetAllLdapUsersDomains();
-
-        /// <summary>
-        /// Adds an UserAD in the in database.
-        /// </summary>
-        /// <param name="users">The users.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
     }
 }

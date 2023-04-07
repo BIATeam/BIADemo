@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2020</Copyright>
+    <Copyright>Copyright ï¿½ TheBIADevCompany 2020</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Data" Version="3.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
@@ -28,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

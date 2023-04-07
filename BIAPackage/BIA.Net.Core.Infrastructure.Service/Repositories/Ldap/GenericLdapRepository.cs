@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Security.Principal;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.RepoContract;
@@ -30,7 +31,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
     {
 
-        private const string CacheBeginKey = "BIAsid:";
+        private const string KeyPrefixCacheGroup = "BIAGroupSid:";
+
+        private const string KeyPrefixCacheUser = "BIAUsersid:";
 
         /// <summary>
         /// Groups cached.
@@ -248,7 +251,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(CacheBeginKey + cacheSidToRemove);
+                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
                 }
             }
             catch (Exception exception)
@@ -264,8 +267,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             try
             {
                 PrincipalContext contextUser = PrepareDomainContext(user.Domain).Result;
-                    
-                    ;
                 if (contextUser!= null)
                 {
                     UserPrincipal userToAdd = UserPrincipal.FindByIdentity(contextUser, IdentityType.Guid, user.Guid.ToString());
@@ -312,15 +313,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private GroupPrincipal PrepareGroupOfRoleForUser(string domainWhereUserFound, string roleLabel)
         {
-            Role role = this.configuration.Roles.Where(w => w.Type == "Ldap" && w.Label == roleLabel).FirstOrDefault();
-            if (role != null)
+            var userLdapGroups = this.GetLdapGroupsForRole(roleLabel);
+            if (userLdapGroups != null && userLdapGroups.Count() > 0)
             {
                 LdapGroup ldapGroup;
                 PrincipalContext context;
-                ldapGroup = role.LdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
+                ldapGroup = userLdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
                 if (ldapGroup == null)
                 {
-                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + role.Label);
+                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + roleLabel);
                     return null;
                 }
                 context = PrepareDomainContext(ldapGroup.Domain).Result;
@@ -338,10 +339,18 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return null;
         }
 
-        Dictionary<string, PrincipalContext> PrincipalContextCache = new Dictionary<string, PrincipalContext>();
+        Dictionary<LdapDomain, PrincipalContext> PrincipalContextCache = new Dictionary<LdapDomain, PrincipalContext>();
         SemaphoreSlim mutex = new SemaphoreSlim(1);
 
         internal async Task<PrincipalContext> PrepareDomainContext(string domain)
+        {
+
+            LdapDomain adDomain = ldapDomains.Where(d => d.Name == domain).FirstOrDefault();
+            PrincipalContext pc = await PrepareDomainContext(adDomain);
+            return pc;
+        }
+
+        private async Task<PrincipalContext> PrepareDomainContext(LdapDomain domain)
         {
             await mutex.WaitAsync().ConfigureAwait(false);
             try
@@ -350,34 +359,24 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 {
                     return PrincipalContextCache[domain];
                 }
-                LdapDomain adDomain = ldapDomains.Where(d => d.Name == domain).FirstOrDefault();
-                PrincipalContext pc = PrepareDomainContext(adDomain);
-                PrincipalContextCache.Add(domain, pc);
-                return pc;
-            }
-            finally
-            {
-                mutex.Release();
-            }
-        }
-
-        private PrincipalContext PrepareDomainContext(LdapDomain domain)
-        {
-            try
-            {
                 if (PrepareCredential(domain))
                 {
                     if (!string.IsNullOrEmpty(domain.LdapServiceAccount))
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-
-                    return new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContextCache.Add(domain, pc);
+                    return pc;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.LogError(e, "Error when PrepareDomainContext for domain :" + domain.LdapName);
+            }
+            finally
+            {
+                mutex.Release();
             }
             return null;
         }
@@ -426,12 +425,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 foreach (var userToRemove in usersFromRepositoryToRemove)
                 {
+                    bool userRemoved = false;
                     foreach (var domain in ldapDomainsUsers)
                     {
-                        PrincipalContext contextUser = PrepareDomainContext(domain);
+                        PrincipalContext contextUser = await PrepareDomainContext(domain);
                         if (contextUser != null)
                         {
-                            UserPrincipal userPrincipalToRemove = UserPrincipal.FindByIdentity(contextUser, IdentityType.Guid, userToRemove.Guid.ToString());
+                            UserPrincipal userPrincipalToRemove = UserPrincipal.FindByIdentity(contextUser, IdentityType.SamAccountName, userToRemove.Login);
 
                             if (userPrincipalToRemove != null)
                             {
@@ -439,25 +439,29 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
                                 if (group == null || !group.Members.Remove(userPrincipalToRemove/*context, IdentityType.Guid, userToRemove.Guid.ToString()*/))
                                 {
-                                    notRemovedUser.Add(userToRemove);
                                 }
                                 else
                                 {
                                     group.Save();
+                                    userRemoved = true;
                                 }
                                 if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
                                 {
                                     listGroupCacheSidToRemove.Add(group.Sid.Value);
                                 }
-                                break;
                             }
                             this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : ");
                         }
                     }
+                    if (!userRemoved)
+                    {
+                        notRemovedUser.Add(userToRemove);
+                        this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : ");
+                    }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(CacheBeginKey + cacheSidToRemove);
+                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
                 }
             }
             catch (Exception exception)
@@ -483,21 +487,32 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
         public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
         {
-            var roleUser = this.configuration.Roles.Where(w =>( w.Type == "Ldap" || w.Type == "Synchro") && w.Label == role).FirstOrDefault();
+            List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
+            if (userLdapGroups.Count == 0)
+            {
+                // no ldap group defined
+                return null;
+            }
             List<string> listUsersSid = new List<string>();
-            if (roleUser.LdapGroups == null || roleUser.LdapGroups.Count() == 0)
+            if (userLdapGroups == null || userLdapGroups.Count() == 0)
             {
                 return listUsersSid;
             }
 
             List<string> listTreatedGroupSid = new List<string>();
             var resolveTasks = new List<Task>();
-            foreach (var ldapGroup in roleUser.LdapGroups)
+            foreach (var ldapGroup in userLdapGroups)
             {
                 resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup));
             }
             await Task.WhenAll(resolveTasks);
             return listUsersSid;
+        }
+
+        /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
+        public List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
+        {
+            return this.configuration.Roles.Where(w => (w.Type == BIAConstants.RoleType.Ldap || w.Type == BIAConstants.RoleType.Synchro) && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
         }
 
         private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup)
@@ -605,7 +620,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
-            itemResolve = (SidResolvedGroup)await this.ldapRepositoryHelper.distributedCache.Get(CacheBeginKey + sid);
+            itemResolve = (SidResolvedGroup)await this.ldapRepositoryHelper.distributedCache.Get(KeyPrefixCacheGroup + sid);
             if (itemResolve != null)
             {
                 return itemResolve;
@@ -696,7 +711,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                            });
 
                             itemResolve = new SidResolvedGroup() { domainKey = groupDomain, MembersGroupSid = MembersGroupSid, MembersUserSid = MembersUserSid, type = SidResolvedItemType.Group };
-                            await this.ldapRepositoryHelper.distributedCache.Add(CacheBeginKey + sid, itemResolve, this.LdapCacheGroupDuration);
+                            await this.ldapRepositoryHelper.distributedCache.Add(KeyPrefixCacheGroup + sid, itemResolve, this.LdapCacheGroupDuration);
                             return itemResolve;
                         }
                     }
@@ -712,28 +727,38 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return null;
         }
 
-        public async Task<TUserFromDirectory> ResolveUserBySid(string sid)
+        public async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
         {
+            string KeyCache = KeyPrefixCacheUser + sid;
             TUserFromDirectory itemResolve;
-            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.localCache.Get(CacheBeginKey + sid);
+            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.distributedCache.Get(KeyCache);
             if (itemResolve != null)
             {
-                return itemResolve;
+                if (forceRefresh)
+                {
+                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyCache);
+                }
+                else
+                {
+                    return itemResolve;
+                }
             }
             foreach (var userDomain in ldapDomainsUsers)
             {
-                PrincipalContext searchContext = PrepareDomainContext(userDomain);
+                PrincipalContext searchContext = await PrepareDomainContext(userDomain);
                 if (searchContext != null)
                 {
                     var userPrincipal = await Task.Run(() => UserPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid));
                     if (userPrincipal != null)
                     {
                         itemResolve = GetUser(userPrincipal, userDomain.Name); ;
-                        await this.ldapRepositoryHelper.localCache.Add(CacheBeginKey + sid, itemResolve, this.LdapCacheUserDuration);
+                        await this.ldapRepositoryHelper.distributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
                         return itemResolve;
                     }
                 }
             }
+            itemResolve = new TUserFromDirectory();
+            await this.ldapRepositoryHelper.distributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
             return null;
         }
 
@@ -742,7 +767,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             var userDomain = ldapDomainsUsers.Where(d => d.Name == domain).FirstOrDefault();
             if (userDomain != null)
             {
-                PrincipalContext searchContext = PrepareDomainContext(userDomain);
+                PrincipalContext searchContext = await PrepareDomainContext(userDomain);
                 if (searchContext != null)
                 {
                     var userPrincipal = await Task.Run(() => UserPrincipal.FindByIdentity(searchContext, IdentityType.SamAccountName, login));
@@ -758,7 +783,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             foreach (var userDomain in ldapDomainsUsers)
             {
-                PrincipalContext searchContext = PrepareDomainContext(userDomain);
+                PrincipalContext searchContext = await PrepareDomainContext(userDomain);
                 if (searchContext != null)
                 {
                     var userPrincipal = await Task.Run(() => UserPrincipal.FindByIdentity(searchContext, IdentityType.SamAccountName, login));

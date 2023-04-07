@@ -115,9 +115,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
+        public async Task<List<string>> GetRightsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0)
         {
-            return await this.userRightDomainService.GetRightsForUserAsync(userDirectoryRoles, sid, siteId, roleId);
+            return await this.userRightDomainService.GetRightsForUserAsync(userDirectoryRoles, userId, siteId, roleId);
         }
 
         /// <inheritdoc cref="IUserAppService.TranslateRolesInRights"/>
@@ -127,10 +127,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
-        public async Task<UserInfoDto> GetCreateUserInfoAsync(string sid)
+        public async Task<UserInfoDto> GetCreateUserInfoAsync(string login, string sid)
         {
             var userInfo =
-                await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
+                await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
 
             if (userInfo != null)
             {
@@ -230,7 +230,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 return "User not found in database";
             }
 
-            List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
+            List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Login = user.Login } }, "User");
 
             await this.SynchronizeWithADAsync();
             if (notRemovedUser.Count != 0)
@@ -257,15 +257,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 entity.IsActive = true;
                 this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
-            }
-        }
-
-        /// <inheritdoc cref="IUserAppService.AddInDBAsync"/>
-        public async Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users)
-        {
-            foreach (var user in users)
-            {
-                await this.GetCreateUserInfoAsync(user.Login);
             }
         }
 

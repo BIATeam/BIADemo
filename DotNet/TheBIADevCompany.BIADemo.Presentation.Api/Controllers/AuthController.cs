@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <param name="singleRoleMode">Whether the front is configured to use a single role at a time.</param>
         /// <returns>The JWT if authenticated.</returns>
-        [HttpGet("login/{singleRoleMode}")]
+        [HttpGet("login/{singleRoleMode?}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <returns>
         /// The JWT if authenticated.
         /// </returns>
-        [HttpGet("login/site/{siteId}/{singleRoleMode}/{roleId?}")]
+        [HttpGet("login/site/{siteId}/{singleRoleMode?}/{roleId?}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -141,7 +141,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             UserInfoDto userInfo = null;
             if (userRolesFromUserDirectory.Contains(Constants.Role.User))
             {
-                userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                userInfo = await this.userAppService.GetCreateUserInfoAsync(login, sid);
                 try
                 {
                     await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
@@ -186,7 +186,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
                 if (siteId > 0)
                 {
-                    userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, siteId, roleId);
+                    userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, userInfo.Id, siteId, roleId);
                     if (userRights == null || !userRights.Any())
                     {
                         this.logger.LogInformation("Unauthorized because no user rights for site : " + siteId);
@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             // For admin and non user
             if (userRights == null)
             {
-                userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, sid, 0, 0);
+                userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, userInfo.Id, 0, 0);
             }
 
             if (userRights == null || !userRights.Any())

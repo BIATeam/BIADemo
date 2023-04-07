@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <returns>list of roles</returns>
         Task<List<string>> GetUserRolesBySid(string sid);
 
-        Task<TUserFromDirectory> ResolveUserBySid(string sid);
+        Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
         Task<string> ResolveUserSidByLogin(string domain, string login);
         Task<string> ResolveUserDomainByLogin(string login);
