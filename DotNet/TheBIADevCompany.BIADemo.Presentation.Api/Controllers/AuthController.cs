@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Authentication;
@@ -128,41 +129,64 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             // parallel launch the get user profile
             var userProfileTask = this.userAppService.GetUserProfileAsync(login);
 
-            // get roles
-            var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
+            // Get userInfo
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
-            if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
+            // get roles
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid);
+
+            if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
                 return this.Forbid("No roles found");
             }
 
-            // get user info
-            UserInfoDto userInfo = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
             {
-                userInfo = await this.userAppService.GetCreateUserInfoAsync(login, sid);
+                // automatic creation from ldap, only use if user do not need fine Role on team.
                 try
                 {
+                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(sid, login);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                }
+            }
+
+            if (userInfo != null)
+            {
+                try
+                {
+                    // The date of the last connection is updated in the database
                     await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
+                    this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
                 }
             }
-            else
+
+            // If the user does not exist in the database
+            if (userInfo == null)
             {
-                userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
+                // We create a UserInfoDto object from principal
+                userInfo = new UserInfoDto
+                {
+                    Login = login,
+                    Language = Constants.DefaultValues.Language,
+                };
             }
+
+            this.userAppService.SelectDefaultLanguage(userInfo);
 
             // get user rights
             List<string> userRights = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userRoles.Contains(Constants.Role.User))
             {
                 if (siteId < 1)
                 {
-                    var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
+                    var userMainRights = this.userAppService.TranslateRolesInRights(userRoles);
                     var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
                     var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
@@ -186,7 +210,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
 
                 if (siteId > 0)
                 {
-                    userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, userInfo.Id, siteId, roleId);
+                    userRights = await this.userAppService.GetRightsForUserAsync(userRoles, userInfo.Id, siteId, roleId);
                     if (userRights == null || !userRights.Any())
                     {
                         this.logger.LogInformation("Unauthorized because no user rights for site : " + siteId);
@@ -198,7 +222,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             // For admin and non user
             if (userRights == null)
             {
-                userRights = await this.userAppService.GetRightsForUserAsync(userRolesFromUserDirectory, userInfo.Id, 0, 0);
+                userRights = await this.userAppService.GetRightsForUserAsync(userRoles, userInfo.Id, 0, 0);
             }
 
             if (userRights == null || !userRights.Any())

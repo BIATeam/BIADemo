@@ -13,15 +13,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -109,9 +112,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserRightDomainService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetUserDirectoryRolesAsync(string sid)
+        public async Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid)
         {
-            return await this.userDirectoryHelper.GetUserRolesBySid(sid);
+            return await this.userDirectoryHelper.GetUserRolesBySid(isUserInDB, sid);
         }
 
         /// <inheritdoc cref="IUserAppService.GetRightsForUserAsync"/>
@@ -126,20 +129,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.userRightDomainService.TranslateRolesInRights(roles);
         }
 
-        /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
-        public async Task<UserInfoDto> GetCreateUserInfoAsync(string login, string sid)
+        /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
+        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string login)
         {
-            var userInfo =
-                await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
-
-            if (userInfo != null)
-            {
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
-                return userInfo;
-            }
-
             // if user is not found in DB, try to synchronize from AD.
             UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserBySid(sid);
 
@@ -148,22 +140,31 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 User user = new User();
                 UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
 
+                if (user.Login != login)
+                {
+                    throw new Exception("The Login in ldap do not correspond to Login in identity.");
+                }
+
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
-                userInfo = new UserInfoDto
+                UserInfoDto userInfo = new UserInfoDto
                 {
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
                 };
-                userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
+                return userInfo;
             }
 
-            return userInfo;
+            return null;
+        }
+
+        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
+        public async Task<UserInfoDto> GetUserInfoAsync(string login)
+        {
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login && user.IsActive) ;
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
@@ -211,31 +212,108 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 .Select(UserFromDirectoryMapper.EntityToDto())
                 .ToList());
         }
-
-        /// <inheritdoc cref="IUserAppService.AddInGroupAsync"/>
-        public async Task<string> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users)
+        /*
+        /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
+        public async Task<string> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
-            string errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
-            await this.SynchronizeWithADAsync();
-            return errors;
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
+            if (ldapGroups != null && ldapGroups.Count > 0)
+            {
+                string errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                await this.SynchronizeWithADAsync();
+                return errors;
+            }
+            
+        }*/
+        /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
+        public async Task<string> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
+        {
+            ResultAddUsersFromDirectoryDto result = new ResultAddUsersFromDirectoryDto();
+            result.UsersAddedDtos = new List<OptionDto>();
+            result.Errors = new List<string>();
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
+            result.Errors = new List<string>();
+            if (ldapGroups != null && ldapGroups.Count > 0)
+            {
+                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                try
+                {
+                    await this.SynchronizeWithADAsync();
+                    List<string> usersIdentityKey = users.Select(u => u.Login).ToList();
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: user => usersIdentityKey.Contains(user.Login))).Select(entity => new OptionDto
+                    {
+                        Id = entity.Id,
+                        Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                    }).ToList();
+                }
+                catch (Exception ex)
+                {
+                    string msg = "Error during synchronize. Retry Synchronize.";
+                    this.logger.LogError(msg, ex);
+                    result.Errors.Add(msg);
+                }
+            }
+            else
+            {
+                List<User> usersAdded = new List<User>();
+                foreach (var userFormDirectoryDto in users)
+                {
+                    try
+                    {
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: user => user.Login == userFormDirectoryDto.Login)).FirstOrDefault();
+                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto.Domain, userFormDirectoryDto.Login);
+
+                        var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
+
+                        if (addedUser != null)
+                        {
+                            usersAdded.Add(addedUser);
+                        }
+
+                        await this.Repository.UnitOfWork.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        string msg = userFormDirectoryDto.Domain + " \\" + userFormDirectoryDto.Login;
+                        this.logger.LogError(msg, ex);
+                        result.Errors.Add(msg);
+                    }
+                }
+
+                result.UsersAddedDtos = usersAdded.Select(entity => new OptionDto
+                {
+                    Id = entity.Id,
+                    Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                }).ToList();
+            }
+
+            return string.Join(" ", result.Errors);
         }
 
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
+            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
             var user = await this.Repository.GetEntityAsync(id: id);
-
-            if (user == null)
+            if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                return "User not found in database";
+                if (user == null)
+                {
+                    return "User not found in database";
+                }
+
+                List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Login = user.Login } }, "User");
+
+                await this.SynchronizeWithADAsync();
+                if (notRemovedUser.Count != 0)
+                {
+                    return "Not able to remove user. (Probably define in sub group)";
+                }
             }
-
-            List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Login = user.Login } }, "User");
-
-            await this.SynchronizeWithADAsync();
-            if (notRemovedUser.Count != 0)
+            else
             {
-                return "Not able to remove user. (Probably define in sub group)";
+                user.IsActive = false;
+                await this.Repository.UnitOfWork.CommitAsync();
             }
 
             return string.Empty;
@@ -257,6 +335,23 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 entity.IsActive = true;
                 this.Repository.Update(entity);
                 await this.Repository.UnitOfWork.CommitAsync();
+            }
+        }
+
+        /// <summary>
+        /// Selects the default language.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        public void SelectDefaultLanguage(UserInfoDto userInfo)
+        {
+            userInfo.Language = this.configuration.Languages.Where(w => w.Country == userInfo.Country)
+                .Select(s => s.Code)
+                .FirstOrDefault();
+
+            if (userInfo.Language == null)
+            {
+                // Select the default culture
+                userInfo.Language = Constants.DefaultValues.Language;
             }
         }
 
