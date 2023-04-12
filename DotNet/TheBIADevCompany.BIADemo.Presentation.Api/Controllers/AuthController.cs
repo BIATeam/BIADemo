@@ -9,12 +9,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -51,6 +53,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly ILogger<AuthController> logger;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
@@ -58,13 +65,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="siteAppService">The site application service.</param>
         /// <param name="roleAppService">The role application service.</param>
         /// <param name="logger">The logger.</param>
-        public AuthController(IJwtFactory jwtFactory, IUserAppService userAppService, ISiteAppService siteAppService, IRoleAppService roleAppService, ILogger<AuthController> logger)
+        /// <param name="configuration">The configuration.</param>
+        public AuthController(IJwtFactory jwtFactory, IUserAppService userAppService, ISiteAppService siteAppService, IRoleAppService roleAppService, ILogger<AuthController> logger, IOptions<BiaNetSection> configuration)
         {
             this.jwtFactory = jwtFactory;
             this.userAppService = userAppService;
             this.siteAppService = siteAppService;
             this.roleAppService = roleAppService;
             this.logger = logger;
+            this.ldapDomains = configuration.Value.Authentication.LdapDomains;
         }
 
         /// <summary>
@@ -112,18 +121,26 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             var login = identity.Name.Split('\\').LastOrDefault();
+
             var sid = ((System.Security.Principal.WindowsIdentity)identity).User.Value;
 
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
-                return this.BadRequest("Incorrect login");
+                return this.Unauthorized("Incorrect login");
             }
 
             if (string.IsNullOrEmpty(sid))
             {
                 this.logger.LogWarning("Unauthorized because bad sid");
-                return this.BadRequest("Incorrect sid");
+                return this.Unauthorized("Incorrect sid");
+            }
+
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+            {
+                this.logger.LogWarning("Unauthorized because bad domain");
+                return this.Unauthorized("Incorrect domain");
             }
 
             // parallel launch the get user profile
