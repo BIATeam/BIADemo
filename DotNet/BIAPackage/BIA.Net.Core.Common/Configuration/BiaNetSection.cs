@@ -63,6 +63,11 @@ namespace BIA.Net.Core.Common.Configuration
         /// <summary>
         /// Gets or sets the permissions configuration.
         /// </summary>
+        public IEnumerable<Permission> PermissionsByEnv { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permissions configuration.
+        /// </summary>
         public IEnumerable<Permission> Permissions { get; set; }
 
         /// <summary>

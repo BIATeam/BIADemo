@@ -121,6 +121,27 @@
         "LanguageId": "2"
       }
     ],
+    "PermissionsByEnv": [
+      {
+        "Names": [ "User_ListAD", "User_Add", "User_Delete" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_ListAD", "User_Add" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      // Begin BIADemo
+      {
+        "Names": [ "User_ListAD", "User_Add" ],
+        "Roles": [ "Supervisor" ]
+      },
+      {
+        "Names": [ "User_ListAD", "User_Add" ],
+        "Roles": [ "Team_Leader" ]
+      }
+      // End BIADemo
+
+    ],
     "Permissions": [
       {
         "Names": [ "Admin" ],
@@ -167,10 +188,6 @@
         "Roles": [ "Admin", "Supervisor" ]
       },
       {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Supervisor" ]
-      },
-      {
         "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
         "Roles": [ "Admin", "Supervisor" ]
       },
@@ -194,10 +211,6 @@
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
         "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Team_Leader" ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
@@ -279,10 +292,6 @@
         "Roles": [ "Admin", "Site_Admin" ]
       },
       {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      {
         "Names": [ "Site_View_Add_TeamView", "Site_View_Update_TeamView", "Site_View_Set_Default_TeamView", "Site_View_Assign_To_Team" ],
         "Roles": [ "Admin", "Site_Admin" ]
       },
@@ -309,13 +318,10 @@
         "Roles": [ "Admin", "User" ]
       },
       {
-        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Delete", "User_Sync", "User_UpdateRoles" ],
+        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
         "Roles": [ "Admin" ]
       },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Admin" ]
-      },
+
       // View
       {
         "Name": "View_List",

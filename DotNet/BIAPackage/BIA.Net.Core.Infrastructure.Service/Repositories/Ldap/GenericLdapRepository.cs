@@ -452,6 +452,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 foreach (var userToRemove in usersFromRepositoryToRemove)
                 {
+                    bool userRemoved = false;
                     foreach (var domain in ldapDomainsUsers)
                     {
                         // If the domain is not contains in user database all domain should be parsed to clean the group.
@@ -465,11 +466,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
                                 if (group == null || !group.Members.Remove(userPrincipalToRemove/*context, IdentityType.Guid, userToRemove.Guid.ToString()*/))
                                 {
-                                    notRemovedUser.Add(userToRemove);
+                                    
                                 }
                                 else
                                 {
                                     group.Save();
+                                    userRemoved = true;
                                 }
                                 if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
                                 {
@@ -478,10 +480,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             }
                         }
                     }
-                }
-                if (listGroupCacheSidToRemove.Count() == 0)
-                {
-                    this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : ");
+                    if (!userRemoved)
+                    {
+                        notRemovedUser.Add(userToRemove);
+                        this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : " + userToRemove.DisplayName + "(" + userToRemove.Domain + "\\" + this.GetIdentityKey(userToRemove)+ ")");
+                    }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
                 {
