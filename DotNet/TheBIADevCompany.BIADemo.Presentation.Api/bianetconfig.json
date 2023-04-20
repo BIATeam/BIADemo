@@ -151,10 +151,10 @@
       // User
       {
         "Names": [ "User_List_Access", "User_List", "User_Sync" ],
-        "Roles": [ "Admin" ]
+        "Roles": [ "Admin", "UserManager" ]
       },
       {
-        "Names": [ "User_List_Access", "User_List", "User_ListAD", "User_Add", "User_Delete", "User_Sync" ],
+        "Names": [ "User_ListAD", "User_Add", "User_Delete" ],
         "Roles": [ "UserManager" ]
       },
       // View
