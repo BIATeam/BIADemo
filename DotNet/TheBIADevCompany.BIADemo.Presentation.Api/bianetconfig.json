@@ -1,6 +1,11 @@
 {
   "BiaNet": {
     "ApiFeatures": {
+      "HangfireDashboard": {
+        "IsActive": true,
+        "ServerName": "BIADemo",
+        "ConnectionStringName": "BIADemoDatabase"
+      },
       "DistributedCache": {
         "IsActive": true,
         "ConnectionStringName": "BIADemoDatabase"
@@ -172,6 +177,10 @@
       },
       {
         "Name": "View_Delete_SiteView",
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Name": "Hangfire_Dashboard",
         "Roles": [ "Admin" ]
       }
     ]

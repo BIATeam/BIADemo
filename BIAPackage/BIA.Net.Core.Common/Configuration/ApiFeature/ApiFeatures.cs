@@ -21,6 +21,12 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Gets or sets the HubForClients feature configuration.
         /// </summary>
         public HubForClientsConfiguration HubForClients { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Hangfire dashboard feature configuration
+        /// </summary>
+        public HangfireDashboardConfiguration HangfireDashboard { get; set; }
+
         /// <summary>
         /// Gets or sets the DelegateJobToWorker feature configuration.
         /// </summary>

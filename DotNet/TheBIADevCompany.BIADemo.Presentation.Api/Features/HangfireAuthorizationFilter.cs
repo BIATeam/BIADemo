@@ -2,7 +2,7 @@
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.WorkerService.Features
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Features
 {
     using Hangfire.Dashboard;
     using TheBIADevCompany.BIADemo.Application.User;

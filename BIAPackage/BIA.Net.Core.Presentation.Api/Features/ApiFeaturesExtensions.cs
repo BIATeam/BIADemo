@@ -1,12 +1,15 @@
 ﻿namespace BIA.Net.Core.WorkerService.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
+    using Hangfire.Dashboard;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
@@ -123,12 +126,21 @@
                 JobStorage.Current = sqlStorage;
             }
 
+            if (biaNetSection?.ApiFeatures?.HangfireDashboard?.IsActive == true)
+            {
+                services.AddHangfire(config =>
+                {
+                        config.UseSimpleAssemblyNameTypeSerializer()
+                        .UseRecommendedSerializerSettings()
+                              .UseSqlServerStorage(options.Configuration.GetConnectionString(biaNetSection.ApiFeatures.HangfireDashboard.ConnectionStringName));
+                });
+            }
             return services;
         }
 
 
         public static IApplicationBuilder UseBiaApiFeatures([NotNull] this IApplicationBuilder app,
-            Action<ApiFeaturesApplicationBuilderOptions> optionsAction)
+            Action<ApiFeaturesApplicationBuilderOptions> optionsAction, IEnumerable<IDashboardAuthorizationFilter> hangfireServerAuthorization)
         {
             var options = new ApiFeaturesApplicationBuilderOptions();
             optionsAction(options);
@@ -154,6 +166,19 @@
                     c.InjectJavascript("./jquery.min.js");
                     c.InjectJavascript("./AutoLogin.js");
                     c.InjectStylesheet("./AutoLogin.css");
+                });
+            }
+
+            // Hangfire Server
+            if (options.BiaNetSection?.ApiFeatures?.HangfireDashboard?.IsActive == true)
+            {
+                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
+                {
+                    DashboardTitle = () => options.BiaNetSection?.ApiFeatures?.HangfireDashboard.ServerName,
+                });
+                app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
+                {
+                    Authorization = hangfireServerAuthorization
                 });
             }
 

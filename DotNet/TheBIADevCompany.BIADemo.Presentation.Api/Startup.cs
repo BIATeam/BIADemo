@@ -9,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features;
+    using Hangfire.Dashboard;
+    using Hangfire;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -16,6 +18,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Application.User;
+    using Microsoft.Extensions.Options;
+    using static Org.BouncyCastle.Math.EC.ECCurve;
+    using TheBIADevCompany.BIADemo.Presentation.Api.Features;
 
     /// <summary>
     /// The startup class.
@@ -82,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="env">The environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IUserAppService userAppService)
         {
             if (env.IsDevelopment())
             {
@@ -110,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseBiaApiFeatures(x => x.BiaNetSection = this.biaNetSection);
+            app.UseBiaApiFeatures(x => x.BiaNetSection = this.biaNetSection, new[] { new HangfireAuthorizationFilter(userAppService) });
         }
     }
 }
