@@ -260,6 +260,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 throw new UnauthorizedException();
             }
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.configuration.Authentication.LdapDomains.Any(ld => ld.Name.Equals(domain)))
+            {
+                this.logger.LogInformation("Unauthorized because bad domain");
+                throw new UnauthorizedException();
+            }
         }
 
         /// <summary>
