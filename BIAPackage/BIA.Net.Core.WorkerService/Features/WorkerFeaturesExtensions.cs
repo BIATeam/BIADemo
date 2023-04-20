@@ -130,15 +130,15 @@
                 //    })
                 //    /*.RequireAuthorization(HangfirePolicyName)*/;
                 //});
-                //app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
-                //{
-                //    DashboardTitle = () => options.HangfireServer.ServerName,
-                //});
+                app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
+                {
+                    DashboardTitle = () => options.HangfireServer.ServerName,
+                });
 
-                //app.UseHangfireDashboard("/hangfire", new DashboardOptions
-                //{
-                //    Authorization = options.HangfireServer.Authorization
-                //});
+                app.UseHangfireDashboard("/hangfire", new DashboardOptions
+                {
+                    Authorization = options.HangfireServer.Authorization
+                });
             }
             return app;
         }

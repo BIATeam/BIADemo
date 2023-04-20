@@ -21,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     // End BIADemo
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
-    using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.WorkerService.Job;
 
     /// <summary>
