@@ -124,7 +124,7 @@
     "PermissionsByEnv": [
       {
         "Names": [ "User_ListAD", "User_Add", "User_Delete" ],
-        "Roles": [ "Admin" ]
+        "Roles": [ "UserManager" ]
       },
       {
         "Names": [ "User_ListAD", "User_Add" ],
@@ -276,7 +276,7 @@
       // Ldap Domain
       {
         "Name": "LdapDomains_List",
-        "Roles": [ "Admin", "Site_Admin" ]
+        "Roles": [ "Admin", "UserManager", "Site_Admin" ]
       },
       // Site
       {
@@ -319,7 +319,7 @@
       },
       {
         "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
-        "Roles": [ "Admin" ]
+        "Roles": [ "Admin", "UserManager" ]
       },
 
       // View
