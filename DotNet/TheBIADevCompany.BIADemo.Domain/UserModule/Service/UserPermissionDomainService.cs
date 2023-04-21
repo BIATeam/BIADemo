@@ -46,9 +46,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
-        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0)
+        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0)
         {
-            var specification = siteId > 0 ? MemberSpecification.SearchForSidAndSite(sid, siteId) : MemberSpecification.SearchForSid(sid);
+            var specification = siteId > 0 ? MemberSpecification.SearchByIdAndSite(userId, siteId) : MemberSpecification.SearchById(userId);
 
             var sitesMemberRoles = (await this.repository
                 .GetAllResultAsync(

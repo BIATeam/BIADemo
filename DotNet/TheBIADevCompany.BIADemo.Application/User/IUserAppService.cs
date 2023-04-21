@@ -50,16 +50,31 @@ namespace TheBIADevCompany.BIADemo.Application.User
             string mapperMode = null);
 
         /// <summary>
+        /// Gets user info with its sid and create if not exist.
+        /// </summary>
+        /// <param name="sid">The sid to search in ldap with.</param>
+        /// <param name="login">The login to check in ldap.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string login);
+
+        /// <summary>
+        /// Gets user info with its login.
+        /// </summary>
+        /// <param name="login">The login to search with.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> GetUserInfoAsync(string login);
+
+        /// <summary>
         /// Get all rights for a user with its sid.
         /// </summary>
         /// <param name="userDirectoryRoles">The user roles in user directory.</param>
-        /// <param name="sid">The user sid.</param>
+        /// <param name="userId">The user id.</param>
         /// <param name="siteId">The site identifier.</param>
         /// <param name="roleId">The role identifier.</param>
         /// <returns>
         /// The list of right.
         /// </returns>
-        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, string sid, int siteId = 0, int roleId = 0);
+        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0);
 
         /// <summary>
         /// Translate the roles in rights.
@@ -71,16 +86,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Get all roles for a user with its sid.
         /// </summary>
+        /// <param name="isUserInDB">true if user is in database.</param>
         /// <param name="sid">The user sid.</param>
         /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserDirectoryRolesAsync(string sid);
-
-        /// <summary>
-        /// Gets user info with its login.
-        /// </summary>
-        /// <param name="sid">The sid to search with.</param>
-        /// <returns>The user.</returns>
-        Task<UserInfoDto> GetCreateUserInfoAsync(string sid);
+        Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid);
 
         /// <summary>
         /// Gets the profile of the given user.
@@ -102,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<List<string>> AddInGroupAsync(IEnumerable<UserFromDirectoryDto> users);
+        Task<List<string>> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
         /// Remove a user in a group in AD.
@@ -126,16 +135,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task UpdateLastLoginDateAndActivate(int userId);
 
         /// <summary>
+        /// Selects the default language.
+        /// </summary>
+        /// <param name="userInfo">The user information.</param>
+        void SelectDefaultLanguage(UserInfoDto userInfo);
+
+        /// <summary>
         /// Return all domain with conatinning users.
         /// </summary>
         /// <returns>List of dommain keys.</returns>
         Task<List<string>> GetAllLdapUsersDomains();
-
-        /// <summary>
-        /// Adds an UserAD in the in database.
-        /// </summary>
-        /// <param name="users">The users.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
     }
 }

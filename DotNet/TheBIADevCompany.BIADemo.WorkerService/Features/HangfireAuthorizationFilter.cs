@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 #pragma warning disable CA1416 // Validate platform compatibility
                 var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
 #pragma warning restore CA1416 // Validate platform compatibility
-                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(sid).Result;
+                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(false, sid).Result;
                 var userMainPermissions = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
                 return userMainPermissions.Contains(this.userPermission);
             }

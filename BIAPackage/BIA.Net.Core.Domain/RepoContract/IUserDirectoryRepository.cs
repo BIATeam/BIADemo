@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using BIA.Net.Core.Common.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -43,15 +44,36 @@ namespace BIA.Net.Core.Domain.RepoContract
         Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel);
 
         /// <summary>
+        /// Return the list of Ldap Groups corresponding to the role.
+        /// </summary>
+        /// <param name="roleLabel">the role.</param>
+        /// <returns>The list of Ldap Groups.</returns>
+        List<LdapGroup> GetLdapGroupsForRole(string roleLabel);
+
+        /// <summary>
         /// Return the roles from Ad and fake
         /// </summary>
-        /// <param name="login">le login of the user</param>
+        /// <param name="isUserInDB">true is use exist in db</param>
+        /// <param name="sid">the sid of the user</param>
         /// <returns>list of roles</returns>
-        Task<List<string>> GetUserRolesBySid(string sid);
+        Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid);
 
-        Task<TUserFromDirectory> ResolveUserBySid(string sid);
+        Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
-        Task<string> ResolveUserSidByLogin(string domain, string login);
-        Task<string> ResolveUserDomainByLogin(string login);
+        /// <summary>
+        /// Resolves the user by identity key.
+        /// </summary>
+        /// <param name="login">The login key.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUserByLogin(string login, bool forceRefresh = false);
+
+        /// <summary>
+        /// Resolves the user by sid.
+        /// </summary>
+        /// <param name="domain">The user domain.</param>
+        /// <param name="login">The user login.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUser(string domain, string login);
     }
 }

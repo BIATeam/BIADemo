@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -41,69 +42,63 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
             List<User> users = (await this.repository.GetAllEntityAsync()).ToList();
-            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User")).ToList();
+            List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User"))?.ToList();
 
-            if (usersSidInDirectory != null)
+            if (usersSidInDirectory == null)
             {
-                var resynchronizeTasks = new List<Task>();
+                // If user in DB just synchronize the field of the active user.
                 foreach (User user in users)
                 {
-                    if (user.Domain == "--")
+                    if (user.IsActive)
                     {
-                        // remap the Domain with the login (use only for migration at V3.2.0)
-                        string domain = await this.userDirectoryHelper.ResolveUserDomainByLogin(user.Login);
-                        if (domain != null)
+                        var userFromDirectory = await this.userDirectoryHelper.ResolveUserByLogin(user.Login, fullSynchro);
+                        if (userFromDirectory != null)
                         {
-                            user.Domain = domain;
-                            this.repository.Update(user);
+                            this.ResynchronizeUser(user, userFromDirectory);
                         }
                     }
+                }
+            }
+            else
+            {
+                ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
 
-                    if (user.Sid == "--")
+                Parallel.ForEach(usersSidInDirectory, sid =>
+                {
+                    var userFromDirectory = this.userDirectoryHelper.ResolveUserBySid(sid, fullSynchro).Result;
+                    if (userFromDirectory != null)
                     {
-                        // remap the Sid with the login (use only for migration at V3.2.0)
-                        string sid = await this.userDirectoryHelper.ResolveUserSidByLogin(user.Domain, user.Login);
-                        if (sid != null)
+                        usersFromDirectory.Add(userFromDirectory);
+                    }
+                });
+
+                foreach (User user in users)
+                {
+                    var userFromDirectory = usersFromDirectory.FirstOrDefault(u => u.Login == user.Login);
+
+                    if (userFromDirectory == null)
+                    {
+                        if (user.IsActive)
                         {
-                            user.Sid = sid;
-                            this.repository.Update(user);
+                            this.DeactivateUser(user);
                         }
                     }
-
-                    if (!usersSidInDirectory.Contains(user.Sid) && user.IsActive)
+                    else
                     {
-                        user.IsActive = false;
-                        this.repository.Update(user);
-                    }
-
-                    if (fullSynchro && usersSidInDirectory.Contains(user.Sid))
-                    {
-                        resynchronizeTasks.Add(this.ResynchronizeUser(user));
+                        if (fullSynchro)
+                        {
+                            this.ResynchronizeUser(user, userFromDirectory);
+                        }
                     }
                 }
 
-                await Task.WhenAll(resynchronizeTasks);
-
                 var usersToAdd = new List<User>();
 
-                foreach (string sid in usersSidInDirectory)
+                foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
-                    var foundUser = users.FirstOrDefault(a => a.Sid == sid);
+                    var foundUser = users.FirstOrDefault(a => a.Login == userFromDirectory.Login);
 
-                    if (foundUser == null)
-                    {
-                        var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(sid);
-
-                        // Create the missing user
-                        User user = new User();
-                        UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                        usersToAdd.Add(user);
-                    }
-                    else if (!foundUser.IsActive)
-                    {
-                        foundUser.IsActive = true;
-                        this.repository.Update(foundUser);
-                    }
+                    this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
 
                 this.repository.AddRange(usersToAdd);
@@ -112,16 +107,48 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             }
         }
 
-        private async Task ResynchronizeUser(User user)
+        /// <summary>
+        /// Deactivaye a user.
+        /// </summary>
+        /// <param name="user">The user to deactivate.</param>
+        public void DeactivateUser(User user)
         {
-            if (user.Sid != "--")
+            user.IsActive = false;
+        }
+
+        /// <summary>
+        /// Add or active User from AD.
+        /// </summary>
+        /// <param name="userFormDirectory">the user in Directory.</param>
+        /// <param name="foundUser">the User if exist in repository.</param>
+        /// <returns>The async task.</returns>
+        public User AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, User foundUser)
+        {
+            if (foundUser == null)
             {
-                var userFormDirectory = await this.userDirectoryHelper.ResolveUserBySid(user.Sid);
-                if (userFormDirectory != null)
+                if (userFormDirectory.Login != null)
                 {
+                    // Create the missing user
+                    User user = new User();
                     UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
-                    this.repository.Update(user);
+                    this.repository.Add(user);
+                    return user;
                 }
+            }
+            else if (!foundUser.IsActive)
+            {
+                foundUser.IsActive = true;
+            }
+
+            return foundUser;
+        }
+
+        private void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
+        {
+            if (userFromDirectory != null)
+            {
+                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
+                this.repository.Update(user);
             }
         }
     }

@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<User>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
             modelBuilder.Entity<User>().Property(u => u.Sid).IsRequired().HasDefaultValue("--");
 
-            modelBuilder.Entity<User>().HasIndex(u => new { u.Login, u.Domain }).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => new { u.Login }).IsUnique();
         }
 
         /// <summary>
