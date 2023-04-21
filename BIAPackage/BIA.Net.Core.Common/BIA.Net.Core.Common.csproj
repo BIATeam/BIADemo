@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.3.3</Version>
+    <Version>3.3.4</Version>
     <Description>Common classes for BIA.Net Core Framework</Description>
     <Copyright>Copyright © BIA 2020</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
