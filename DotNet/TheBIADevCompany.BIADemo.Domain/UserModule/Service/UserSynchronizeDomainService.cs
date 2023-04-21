@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                 }
             }
-            else if (usersSidInDirectory != null)
+            else
             {
                 ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
 

@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             if (httpContext.User.Identity.IsAuthenticated)
             {
                 var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
-                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(false,sid).Result;
+                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(false, sid).Result;
                 var userMainRights = this.userAppService.TranslateRolesInRights(userRolesFromUserDirectory);
                 return userMainRights.Contains("Hangfire_Dashboard");
             }

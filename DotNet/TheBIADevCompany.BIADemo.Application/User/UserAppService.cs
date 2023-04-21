@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Application;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -142,7 +143,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 if (user.Login != login)
                 {
-                    throw new Exception("The Login in ldap do not correspond to Login in identity.");
+                    throw new BusinessException("The Login in ldap do not correspond to Login in identity.");
                 }
 
                 this.Repository.Add(user);
@@ -164,7 +165,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string login)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login && user.IsActive) ;
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login && user.IsActive);
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
@@ -212,19 +213,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 .Select(UserFromDirectoryMapper.EntityToDto())
                 .ToList());
         }
-        /*
-        /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
-        public async Task<string> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
-        {
-            var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            if (ldapGroups != null && ldapGroups.Count > 0)
-            {
-                string errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
-                await this.SynchronizeWithADAsync();
-                return errors;
-            }
-            
-        }*/
+
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
         public async Task<string> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
