@@ -92,8 +92,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                 }
 
-                var usersToAdd = new List<User>();
-
                 foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
                     var foundUser = users.FirstOrDefault(a => a.Login == userFromDirectory.Login);

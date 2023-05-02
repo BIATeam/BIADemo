@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <summary>
         /// Synchronize the users in DB from the AD User group.
         /// </summary>
-        /// <param name="fullSynchro">If true resynchronize existing user</param>
+        /// <param name="fullSynchro">If true resynchronize existing user.</param>
         /// <returns>The result of the task.</returns>
         Task SynchronizeFromADGroupAsync(bool fullSynchro = false);
 
