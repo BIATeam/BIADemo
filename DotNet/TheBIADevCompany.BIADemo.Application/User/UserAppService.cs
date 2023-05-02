@@ -303,7 +303,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userInfo.Language == null)
             {
                 // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == "default"))
+                userInfo.Language = this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }
