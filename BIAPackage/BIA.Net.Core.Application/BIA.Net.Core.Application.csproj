@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>3.4.2</Version>
+    <Version>3.4.3</Version>
     <Company>BIA</Company>
     <Description>Application layer classes for BIA.Net Core Framework</Description>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
