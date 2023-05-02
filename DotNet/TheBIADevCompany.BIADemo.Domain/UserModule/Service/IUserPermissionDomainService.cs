@@ -13,6 +13,18 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     public interface IUserPermissionDomainService
     {
         /// <summary>
+        /// Get all rights for a user login.
+        /// </summary>
+        /// <param name="userDirectoryRoles">The user directory role.</param>
+        /// <param name="userId">The user id.</param>
+        /// <param name="siteId">The site identifier.</param>
+        /// <param name="roleId">The role identifier.</param>
+        /// <returns>
+        /// The DTO containing the right list.
+        /// </returns>
+        Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0);
+
+        /// <summary>
         /// Translate the roles in rights.
         /// </summary>
         /// <param name="roles">The liste of roles.</param>

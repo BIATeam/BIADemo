@@ -45,6 +45,40 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             this.userDirectoryHelper = adHelper;
         }
 
+        /// <inheritdoc cref="IUserPermissionDomainService.GetPermissionsForUserAsync"/>
+        public async Task<List<string>> GetPermissionsForUserAsync(List<string> userDirectoryRoles, int userId, int siteId = 0, int roleId = 0)
+        {
+            var specification = siteId > 0 ? MemberSpecification.SearchByIdAndSite(userId, siteId) : MemberSpecification.SearchById(userId);
+
+            var sitesMemberRoles = (await this.repository
+                .GetAllResultAsync(
+                    s => new UserRoleSelectResult
+                    {
+                        Roles = s.MemberRoles.Select(mr => new KeyValuePair<int, string>(mr.Role.Id, mr.Role.Code)),
+                        UserId = s.UserId,
+                    },
+                    specification: specification)).Distinct().FirstOrDefault();
+
+            var roles = userDirectoryRoles;
+            if (sitesMemberRoles != null)
+            {
+                if (roleId > 0)
+                {
+                    var siteMemberRole = sitesMemberRoles.Roles.FirstOrDefault(kvp => kvp.Key == roleId);
+                    if (siteMemberRole.Key > 0)
+                    {
+                        roles.Add(siteMemberRole.Value);
+                    }
+                }
+                else
+                {
+                    roles.AddRange(sitesMemberRoles.Roles.Select(kvp => kvp.Value));
+                }
+            }
+
+            return this.TranslateRolesInPermissions(roles);
+        }
+
         /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
         public List<string> TranslateRolesInPermissions(List<string> roles)
         {

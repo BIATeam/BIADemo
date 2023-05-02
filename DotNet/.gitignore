@@ -3,13 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# Begin BIATemplate only
+# Begin BIADemo only
 # Specific config files
 appsettings.*.json
 !appsettings.Example*.json
 bianetconfig.*.json
 !bianetconfig.Example*.json
-# End BIATemplate only
+# End BIADemo only
 
 # User-specific files
 *.suo

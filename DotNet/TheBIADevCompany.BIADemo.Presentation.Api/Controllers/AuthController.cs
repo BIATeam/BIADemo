@@ -7,13 +7,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Presentation.Api.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -61,6 +64,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         private readonly ILogger<AuthController> logger;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
@@ -70,6 +78,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="userPermissionDomainService">The User Right domain service.</param>
         /// <param name="permissionAppService">The Permission service.</param>
         /// <param name="logger">The logger.</param>
+        /// <param name="configuration">The configuration.</param>        
         public AuthController(
             IJwtFactory jwtFactory,
             IUserAppService userAppService,
@@ -77,7 +86,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             IRoleAppService roleAppService,
             IUserPermissionDomainService userPermissionDomainService,
             IPermissionAppService permissionAppService,
-            ILogger<AuthController> logger)
+            ILogger<AuthController> logger,
+            IOptions<BiaNetSection> configuration)
         {
             this.jwtFactory = jwtFactory;
             this.userAppService = userAppService;
@@ -86,6 +96,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.logger = logger;
             this.userPermissionDomainService = userPermissionDomainService;
             this.permissionAppService = permissionAppService;
+            this.ldapDomains = configuration.Value.Authentication.LdapDomains;            
         }
 
         /// <summary>
@@ -136,71 +147,89 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             }
 
             var login = identity.Name.Split('\\').LastOrDefault();
+
             var sid = ((System.Security.Principal.WindowsIdentity)identity).User.Value;
 
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
-                return this.BadRequest("Incorrect login");
+                return this.Unauthorized("Incorrect login");
             }
 
             if (string.IsNullOrEmpty(sid))
             {
                 this.logger.LogWarning("Unauthorized because bad sid");
-                return this.BadRequest("Incorrect sid");
+                return this.Unauthorized("Incorrect sid");
+            }
+
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+            {
+                this.logger.LogWarning("Unauthorized because bad domain");
+                return this.Unauthorized("Incorrect domain");
             }
 
             // parallel launch the get user profile
             var userProfileTask = this.userAppService.GetUserProfileAsync(login);
 
+            // Get userInfo
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
+
             // get roles
-            var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid);
 
             // the main roles
-            var allRoles = userRolesFromUserDirectory;
+            var allRoles = userRoles;
 
-            if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
+            if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
                 return this.Forbid("No roles found");
             }
 
-            // get user info
-            UserInfoDto userInfo = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
+            {
+                // automatic creation from ldap, only use if user do not need fine Role on team.
+                try
+                {
+                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(sid, login);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                }
+            }
+
+            if (userInfo != null)
             {
                 try
                 {
-                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                    // The date of the last connection is updated in the database
+                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    this.logger.LogWarning("Cannot create user... Probably database is read only...");
-                }
-
-                if (userInfo != null)
-                {
-                    try
-                    {
-                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
-                    }
-                    catch (Exception)
-                    {
-                        this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
-                    }
+                    this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
                 }
             }
 
+            // If the user does not exist in the database
             if (userInfo == null)
             {
-                userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
+                // We create a UserInfoDto object from principal
+                userInfo = new UserInfoDto
+                {
+                    Login = login,
+                    Language = Constants.DefaultValues.Language,
+                };
             }
 
-            // get user rights
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
-            {
-                var userMainRights = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
+            this.userAppService.SelectDefaultLanguage(userInfo);
 
+            // get user rights
+            if (userRoles.Contains(Constants.Role.User))
+            {
+                var userMainRights = this.userAppService.TranslateRolesInPermissions(userRoles);
                 var sites = await this.siteAppService.GetAllAsync(userInfo.Id, userMainRights);
                 var site = sites?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
@@ -273,10 +302,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 return this.Unauthorized("No role found");
             }
 
-            List<string> userPermissions = null;
-
             // translate roles in permission
-            userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles);
 
             // add the same permission in the id form.
             userPermissions.AddRange(this.permissionAppService.GetPermissionsIds(userPermissions).Select(id => id.ToString()));

@@ -20,12 +20,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         Task SynchronizeFromADGroupAsync(bool fullSynchro = false);
 
         /// <summary>
-        /// Add or active User from AD
+        /// Add or active User from AD.
         /// </summary>
-        /// <param name="sid">the sid in Directory.</param>
+        /// <param name="userFormDirectory">the user in Directory.</param>
         /// <param name="foundUser">the User if exist in repository.</param>
         /// <returns>The async task.</returns>
-        Task AddOrActiveUserFromAD(string sid, User foundUser);
+        User AddOrActiveUserFromDirectory(UserFromDirectory userFormDirectory, User foundUser);
 
         /// <summary>
         /// Deactivaye a user.
