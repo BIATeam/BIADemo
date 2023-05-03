@@ -7,6 +7,9 @@ namespace BIA.Net.Core.Domain.Dto.User
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Option;
 
+    /// <summary>
+    /// Result Add Users From Directory Dto.
+    /// </summary>
     public class ResultAddUsersFromDirectoryDto
     {
         /// <summary>

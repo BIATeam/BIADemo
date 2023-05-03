@@ -78,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// <param name="userPermissionDomainService">The User Right domain service.</param>
         /// <param name="permissionAppService">The Permission service.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="configuration">The configuration.</param>        
+        /// <param name="configuration">The configuration.</param>
         public AuthController(
             IJwtFactory jwtFactory,
             IUserAppService userAppService,
@@ -96,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             this.logger = logger;
             this.userPermissionDomainService = userPermissionDomainService;
             this.permissionAppService = permissionAppService;
-            this.ldapDomains = configuration.Value.Authentication.LdapDomains;            
+            this.ldapDomains = configuration.Value.Authentication.LdapDomains;
         }
 
         /// <summary>
