@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractUnitTest"/> class.
         /// </summary>
-        /// <param name="isInitDB">Shall we initialize the database with some default values?</param>
+        /// <param name="isInitDB">Shall we initialize the database with some default values?.</param>
         protected AbstractUnitTest(bool isInitDB)
             : base(isInitDB)
         {

@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Job
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        public ExampleTask(IConfiguration configuration, ILogger<SynchronizeUserTask> logger)
+        public ExampleTask(IConfiguration configuration, ILogger<ExampleTask> logger)
             : base(configuration, logger)
         {
         }
