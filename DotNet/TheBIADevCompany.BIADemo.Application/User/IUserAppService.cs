@@ -73,13 +73,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>The list of roles.</returns>
         Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid);
 
-        ///// <summary>
-        ///// Gets user info with its sid.
-        ///// </summary>
-        ///// <param name="sid">The sid to search with.</param>
-        ///// <returns>The user.</returns>
-        //Task<UserInfoDto> GetUserInfoAsync(string sid);
-
         /// <summary>
         /// Gets the profile of the given user.
         /// </summary>

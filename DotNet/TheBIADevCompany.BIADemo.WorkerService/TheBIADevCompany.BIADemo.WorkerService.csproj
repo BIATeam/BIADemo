@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.WorkerService" Version="3.6.*" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
@@ -26,7 +27,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

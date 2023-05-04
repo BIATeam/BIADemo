@@ -4,6 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.User;
@@ -13,10 +17,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -70,7 +70,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="teamAppService">The team application service.</param>
         /// <param name="roleAppService">The role application service.</param>
         /// <param name="userPermissionDomainService">The User Right domain service.</param>
-        /// <param name="permissionAppService">The Permission service.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="configuration">The configuration.</param>
         public AuthController(
@@ -79,7 +78,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             ITeamAppService teamAppService,
             IRoleAppService roleAppService,
             IUserPermissionDomainService userPermissionDomainService,
-            // IPermissionAppService permissionAppService,
             ILogger<AuthController> logger,
             IOptions<BiaNetSection> configuration)
         {
@@ -89,7 +87,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             this.roleAppService = roleAppService;
             this.logger = logger;
             this.userPermissionDomainService = userPermissionDomainService;
-            // this.permissionAppService = permissionAppService;
             this.ldapDomains = configuration.Value.Authentication.LdapDomains;
         }
 
