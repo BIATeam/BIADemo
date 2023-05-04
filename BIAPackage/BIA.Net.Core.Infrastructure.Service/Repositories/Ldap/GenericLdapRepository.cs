@@ -87,8 +87,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             this.logger = logger;
             this.configuration = configuration.Value;
-            this.ldapRepositoryHelper = (LdapRepositoryHelper) ldapRepositoryHelper;
-            
+            this.ldapRepositoryHelper = (LdapRepositoryHelper)ldapRepositoryHelper;
+
             this.ldapDomains = this.configuration.Authentication.LdapDomains;
             this.ldapDomainsUsers = this.ldapDomains?.Where(l => l.ContainsUser == true);
             this.LdapCacheGroupDuration = configuration.Value.Authentication.LdapCacheGroupDuration;
@@ -265,7 +265,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             try
             {
                 PrincipalContext contextUser = PrepareDomainContext(user.Domain).Result;
-                if (contextUser!= null)
+                if (contextUser != null)
                 {
                     UserPrincipal userToAdd = UserPrincipal.FindByIdentity(contextUser, IdentityType.Guid, user.Guid.ToString());
 
@@ -566,7 +566,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
 
             if (!string.IsNullOrEmpty(sid))
-            { 
+            {
                 await this.GetAllUsersSidFromGroupRecursivelyAsync(sid, ldapGroup, listUsersSid, listTreatedGroupSid);
             }
         }
@@ -590,7 +590,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         listUsersSid.Add(sid);
                     }
                 }
-                
+
                 var resolveTasks = new List<Task>();
                 foreach (string sid in resolvedGroup.MembersGroupSid)
                 {
@@ -632,10 +632,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 switch (role.Type)
                 {
-                    case "Fake":
+                    case BIAConstants.RoleType.Fake:
                         return role.Label;
-
-                    case "Ldap":
+                    case BIAConstants.RoleType.UserInDB:
+                        if (isUserInDB)
+                        {
+                            adRoles.Add(role.Label);
+                        }
+                        break;
+                    case BIAConstants.RoleType.Ldap:
                         var result = await IsSidInGroups(role.LdapGroups, sid);
                         if (result)
                         {
@@ -648,36 +653,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             var roles = await Task.WhenAll(roleTasks);
             foreach (var role in roles)
             {
-                if (role!= null)
+                if (role != null)
                 {
                     adRoles.Add(role);
                 }
             }
-
-            Parallel.ForEach(rolesSection, async role =>
-            {
-                switch (role.Type)
-                {
-                    case "Fake":
-                        adRoles.Add(role.Label);
-                        break;
-                    case BIAConstants.RoleType.UserInDB:
-                        if (isUserInDB)
-                        {
-                            adRoles.Add(role.Label);
-                        }
-
-                        break;
-                    case "Ldap":
-                        var result = await IsSidInGroups(role.LdapGroups, sid);
-                        if (result)
-                        {
-                            adRoles.Add(role.Label);
-                        }
-                        break;
-                }
-            });
-
             return adRoles.ToList();
         }
 
@@ -701,7 +681,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 try
                 {
                     PrincipalContext searchContext = PrepareDomainContext(groupDomain).Result;
-                    if (searchContext!= null)
+                    if (searchContext != null)
                     {
                         var subGroupPrincipal = GroupPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid);
                         if (subGroupPrincipal != null)
@@ -718,61 +698,61 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                             Parallel.ForEach(listSDN, sDN =>
                                 {
-                                DirectoryEntry deMember = new DirectoryEntry("LDAP://" + sDN);
-                                if (deMember != null)
-                                {
-                                    var itemSid = new SecurityIdentifier((byte[])deMember.Properties["objectSid"].Value, 0);
-                                    bool isUser = true;
-                                    bool isGroup = false;
-                                    if (!rootLdapGroup.ContainsOnlyUsers)
+                                    DirectoryEntry deMember = new DirectoryEntry("LDAP://" + sDN);
+                                    if (deMember != null)
                                     {
-                                        var objectClass = deMember.Properties["objectClass"];
-                                        // For group check
-                                        isGroup = objectClass?.Contains("group") == true;
-                                        // For user check
-                                        isUser = objectClass?.Contains("user") == true;
-                                        if ((!isGroup && !isUser) || (isGroup && isUser))
+                                        var itemSid = new SecurityIdentifier((byte[])deMember.Properties["objectSid"].Value, 0);
+                                        bool isUser = true;
+                                        bool isGroup = false;
+                                        if (!rootLdapGroup.ContainsOnlyUsers)
                                         {
-                                            // Method for indeterminate group or user slower but work always.
-
-                                            foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)
+                                            var objectClass = deMember.Properties["objectClass"];
+                                            // For group check
+                                            isGroup = objectClass?.Contains("group") == true;
+                                            // For user check
+                                            isUser = objectClass?.Contains("user") == true;
+                                            if ((!isGroup && !isUser) || (isGroup && isUser))
                                             {
-                                                try
+                                                // Method for indeterminate group or user slower but work always.
+
+                                                foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)
                                                 {
-                                                    PrincipalContext searchTestContext = PrepareDomainContext(groupTestDomain).Result;
-                                                    if (searchTestContext != null)
+                                                    try
                                                     {
-                                                        var testIsGroup = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, itemSid.Value);
-                                                        if (testIsGroup != null)
+                                                        PrincipalContext searchTestContext = PrepareDomainContext(groupTestDomain).Result;
+                                                        if (searchTestContext != null)
                                                         {
-                                                            isGroup = true;
-                                                            break;
+                                                            var testIsGroup = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, itemSid.Value);
+                                                            if (testIsGroup != null)
+                                                            {
+                                                                isGroup = true;
+                                                                break;
+                                                            }
                                                         }
                                                     }
+                                                    catch (Exception)
+                                                    { }
                                                 }
-                                                catch (Exception)
-                                                { }
+                                                isUser = !isGroup;
                                             }
-                                            isUser = !isGroup;
                                         }
-                                    }
 
-                                    if (isUser)
-                                    {
-                                        if (!MembersUserSid.Contains(itemSid.Value))
+                                        if (isUser)
                                         {
-                                            MembersUserSid.Add(itemSid.Value);
+                                            if (!MembersUserSid.Contains(itemSid.Value))
+                                            {
+                                                MembersUserSid.Add(itemSid.Value);
+                                            }
+                                        }
+                                        else if (isGroup)
+                                        {
+                                            if (!MembersGroupSid.Contains(itemSid.Value))
+                                            {
+                                                MembersGroupSid.Add(itemSid.Value);
+                                            }
                                         }
                                     }
-                                    else if (isGroup)
-                                    {
-                                        if (!MembersGroupSid.Contains(itemSid.Value))
-                                        {
-                                            MembersGroupSid.Add(itemSid.Value);
-                                        }
-                                    }
-                                }
-                           });
+                                });
 
                             itemResolve = new SidResolvedGroup() { domainKey = groupDomain, MembersGroupSid = MembersGroupSid, MembersUserSid = MembersUserSid, type = SidResolvedItemType.Group };
                             await this.ldapRepositoryHelper.distributedCache.Add(KeyPrefixCacheGroup + sid, itemResolve, this.LdapCacheGroupDuration);
@@ -781,7 +761,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
 
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     logger.LogError(ex, "Error when resolve on domain:" + groupDomain);
                 }
