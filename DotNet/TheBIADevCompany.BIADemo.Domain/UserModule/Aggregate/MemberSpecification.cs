@@ -34,35 +34,35 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Search member for login.
         /// </summary>
-        /// <param name="sid">The sid.</param>
+        /// <param name="userId">The userid.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchForSid(string sid)
+        public static Specification<Member> SearchById(int userId)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 
-            if (!string.IsNullOrWhiteSpace(sid))
+            if (userId > 0)
             {
                 specification &= new DirectSpecification<Member>(s =>
-                    s.User.Sid == sid);
+                    s.User.Id == userId);
             }
 
             return specification;
         }
 
         /// <summary>
-        /// Searches for login and site.
+        /// Searches for login and team.
         /// </summary>
-        /// <param name="sid">The sid.</param>
-        /// <param name="teamId">The site identifier.</param>
+        /// <param name="userId">The userid.</param>
+        /// <param name="teamId">The team identifier.</param>
         /// <returns>The specification.</returns>
-        public static Specification<Member> SearchForSidAndTeam(string sid, int teamId)
+        public static Specification<Member> SearchByIdAndTeam(int userId, int teamId)
         {
             Specification<Member> specification = new TrueSpecification<Member>();
 
-            if (!string.IsNullOrWhiteSpace(sid))
+            if (userId > 0)
             {
                 specification &= new DirectSpecification<Member>(s =>
-                    s.User.Sid == sid && s.Team.Id == teamId);
+                    s.User.Id == userId && s.Team.Id == teamId);
             }
 
             return specification;

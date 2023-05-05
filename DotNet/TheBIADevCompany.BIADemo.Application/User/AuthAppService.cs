@@ -74,6 +74,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly BiaNetSection configuration;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthAppService"/> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
@@ -105,6 +110,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.roleAppService = roleAppService;
             this.userProfileRepository = userProfileRepository;
             this.configuration = configuration.Value;
+            this.ldapDomains = configuration.Value.Authentication.LdapDomains;
         }
 
         /// <summary>
@@ -141,13 +147,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
-                throw new BadRequestException("Incorrect login");
+                throw new UnauthorizedException("Incorrect login");
             }
 
             if (string.IsNullOrEmpty(sid))
             {
                 this.logger.LogWarning("Unauthorized because bad sid");
-                throw new BadRequestException("Incorrect sid");
+                throw new UnauthorizedException("Incorrect sid");
+            }
+
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+            {
+                this.logger.LogWarning("Unauthorized because bad domain");
+                throw new UnauthorizedException("Incorrect domain");
             }
 
             // parallel launch the get user profile
@@ -157,53 +170,65 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 userProfileTask = this.userProfileRepository.GetAsync(login);
             }
 
-            // get roles
-            var userRolesFromUserDirectory = await this.userAppService.GetUserDirectoryRolesAsync(sid);
+            // Get userInfo
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
-            if (userRolesFromUserDirectory == null || !userRolesFromUserDirectory.Any())
+            // get roles
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid);
+
+            // If the user has no role
+            if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
                 throw new ForbiddenException("No roles found");
             }
 
-            // get user info
-            UserInfoDto userInfo = null;
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User))
+            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles?.Contains(Constants.Role.User) == true)
+            {
+                // automatic creation from ldap, only use if user do not need fine Role on team.
+                try
+                {
+                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(sid, login);
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                }
+            }
+
+            if (userInfo != null)
             {
                 try
                 {
-                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                    // The date of the last connection is updated in the database
+                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    this.logger.LogWarning("Cannot create user... Probably database is read only...");
-                }
-
-                if (userInfo != null)
-                {
-                    try
-                    {
-                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
-                    }
-                    catch (Exception)
-                    {
-                        this.logger.LogWarning("Cannot update last login date... Probably database is read only...");
-                    }
+                    this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
                 }
             }
 
+            // If the user does not exist in the database
             if (userInfo == null)
             {
-                userInfo = new UserInfoDto { Login = login, Language = Constants.DefaultValues.Language };
+                // We create a UserInfoDto object from principal
+                userInfo = new UserInfoDto
+                {
+                    Login = login,
+                    Language = Constants.DefaultValues.Language,
+                };
             }
 
-            if (userRolesFromUserDirectory.Contains(Constants.Role.User) || userRolesFromUserDirectory.Contains(Constants.Role.Admin))
+            this.userAppService.SelectDefaultLanguage(userInfo);
+
+            if (userRoles != null && (userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin)))
             {
                 var userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
-                userRolesFromUserDirectory.AddRange(userAppRootRoles);
+                userRoles.AddRange(userAppRootRoles);
             }
 
-            var userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRolesFromUserDirectory, loginParam.LightToken);
+            var userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRoles, loginParam.LightToken);
 
             IEnumerable<TeamDto> allTeams = new List<TeamDto>();
             if (!loginParam.LightToken)
@@ -211,7 +236,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
             }
 
-            List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRolesFromUserDirectory, userInfo, allTeams);
+            List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
 
             if (allRoles == null || !allRoles.Any())
             {
@@ -233,8 +258,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             UserProfileDto userProfile = null;
             if (userProfileTask != null)
             {
-                userProfile = await userProfileTask;
-                userProfile = userProfile ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
+                userProfile = userProfileTask.Result ?? new UserProfileDto { Theme = Constants.DefaultValues.Theme };
             }
 
             AdditionalInfoDto additionnalInfo = null;

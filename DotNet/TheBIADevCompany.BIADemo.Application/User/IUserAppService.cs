@@ -26,25 +26,27 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null);
 
         /// <summary>
-        /// Get all roles for a user with its sid.
-        /// </summary>
-        /// <param name="sid">The user sid.</param>
-        /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserDirectoryRolesAsync(string sid);
-
-        /// <summary>
         /// Gets user info with its sid and create if not exist.
         /// </summary>
-        /// <param name="sid">The sid to search with.</param>
+        /// <param name="sid">The sid to search in ldap with.</param>
+        /// <param name="login">The login to check in ldap.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetCreateUserInfoAsync(string sid);
+        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string login);
 
         /// <summary>
-        /// Gets user info with its sid.
+        /// Gets user info with its login.
         /// </summary>
-        /// <param name="sid">The sid to search with.</param>
+        /// <param name="login">The login to search with.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> GetUserInfoAsync(string sid);
+        Task<UserInfoDto> GetUserInfoAsync(string login);
+
+        /// <summary>
+        /// Get all roles for a user with its sid.
+        /// </summary>
+        /// <param name="isUserInDB">true if user is in database.</param>
+        /// <param name="sid">The user sid.</param>
+        /// <returns>The list of roles.</returns>
+        Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid);
 
         /// <summary>
         /// Gets user info with its guid.
@@ -117,13 +119,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <returns>List of dommain keys.</returns>
         Task<List<string>> GetAllLdapUsersDomains();
-
-        /// <summary>
-        /// Adds an UserAD in the in database.
-        /// </summary>
-        /// <param name="users">The users.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
         /// Selects the default language.
