@@ -41,19 +41,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<UserInfoDto> GetUserInfoAsync(string login);
 
         /// <summary>
+        /// Gets user info with its guid.
+        /// </summary>
+        /// <param name="guid">The guid to search with.</param>
+        /// <returns>The user.</returns>
+        Task<UserInfoDto> GetUserInfoAsync(Guid guid);
+
+        /// <summary>
         /// Get all roles for a user with its sid.
         /// </summary>
         /// <param name="isUserInDB">true if user is in database.</param>
         /// <param name="sid">The user sid.</param>
         /// <returns>The list of roles.</returns>
         Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid);
-
-        /// <summary>
-        /// Gets user info with its guid.
-        /// </summary>
-        /// <param name="guid">The guid to search with.</param>
-        /// <returns>The user.</returns>
-        Task<UserInfoDto> GetUserInfoAsync(Guid guid);
 
         /// <summary>
         /// Gets all AD user corresponding to a filter.

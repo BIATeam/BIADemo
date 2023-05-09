@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Ioc" Version="3.7.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
@@ -15,6 +16,5 @@
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Service\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj" />
   </ItemGroup>
 </Project>

@@ -301,12 +301,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 await this.Repository.UnitOfWork.CommitAsync();
 
                 // Fill userIdAddeds
-                if (userToUpdates != null && userToUpdates?.Any() == true)
+                if (userToUpdates?.Any() == true)
                 {
                     userIdAddeds.AddRange(userToUpdates.Select(x => x.Id).ToList());
                 }
 
-                if (userToAdds != null && userToAdds?.Any() == true)
+                if (userToAdds?.Any() == true)
                 {
                     userIdAddeds.AddRange(userToAdds.Select(x => x.Id).ToList());
                 }
