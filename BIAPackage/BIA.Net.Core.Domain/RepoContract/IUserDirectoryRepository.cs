@@ -55,8 +55,9 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// </summary>
         /// <param name="isUserInDB">true is use exist in db</param>
         /// <param name="sid">the sid of the user</param>
+        /// <param name="domain">domain of the user</param>
         /// <returns>list of roles</returns>
-        Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid);
+        Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid, string domain);
 
         Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
