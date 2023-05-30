@@ -212,9 +212,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    using var entry = new DirectoryEntry($"LDAP://{domain.LdapName}", domain.LdapServiceAccount, domain.LdapServicePass);
+                    string ldapPath = $"LDAP://{domain.LdapName}";
+                    if (!string.IsNullOrEmpty(domain.Filter))
+                    {
+                        ldapPath = $"LDAP://{domain.Filter}";
+                    }
+
+                    using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
                     using var searcher = new DirectorySearcher(entry)
                     {
+                        SearchScope = SearchScope.Subtree,
                         Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)))",
                         SizeLimit = 10
                     };
@@ -379,7 +386,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContext pc;
+                    //if (string.IsNullOrEmpty(domain.Filter))
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    }
+                    /*else
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName, domain.Filter);
+                    }*/
                     PrincipalContextCache.Add(domain, pc);
                     return pc;
                 }
