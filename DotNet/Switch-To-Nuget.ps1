@@ -17,7 +17,7 @@ function AddBIAPackageToSolution
 		# Remove the library reference
 		dotnet remove $ProjectFile reference $BIAProjectFile
 		# Restore the NuGet package reference
-		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 3.3.*
+		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 3.3.5
 	}
 }
 
