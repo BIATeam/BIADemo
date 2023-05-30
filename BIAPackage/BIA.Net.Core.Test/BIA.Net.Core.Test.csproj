@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<Version>3.3.4</Version>
+		<Version>3.3.5</Version>
 		<Authors>BIA Team</Authors>
 		<Company>BIA</Company>
 		<Description>Unit test classes for BIA.Net Core Framework</Description>
