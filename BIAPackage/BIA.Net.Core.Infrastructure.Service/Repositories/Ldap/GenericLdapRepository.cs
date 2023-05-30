@@ -6,8 +6,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
@@ -16,6 +18,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
     using Meziantou.Framework.Win32;
@@ -33,12 +36,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private const string KeyPrefixCacheUserSid = "BIAUsersid:";
 
-        private const string KeyPrefixCacheUserLogin = "BIAUserLogin:";
+        private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
-        /// <summary>
-        /// Groups cached.
-        /// </summary>
-        private static readonly Dictionary<string, string> CacheGroupName = new Dictionary<string, string>();
+        private const string KeyPrefixCacheUserLogin = "BIAUserLogin:";
 
         /// <summary>
         /// The logger.
@@ -162,7 +162,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 getListTasks.Remove(finishedTask);
             }
             return false;
-
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.SearchUsers"/>
@@ -213,9 +212,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    using var entry = new DirectoryEntry($"LDAP://{domain.LdapName}", domain.LdapServiceAccount, domain.LdapServicePass);
+                    string ldapPath = $"LDAP://{domain.LdapName}";
+                    if (!string.IsNullOrEmpty(domain.Filter))
+                    {
+                        ldapPath = $"LDAP://{domain.Filter}";
+                    }
+
+                    using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
                     using var searcher = new DirectorySearcher(entry)
                     {
+                        SearchScope = SearchScope.Subtree,
                         Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)))",
                         SizeLimit = 10
                     };
@@ -380,7 +386,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    PrincipalContext pc;
+                    //if (string.IsNullOrEmpty(domain.Filter))
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
+                    }
+                    /*else
+                    {
+                        pc = new PrincipalContext(ContextType.Domain, domain.LdapName, domain.Filter);
+                    }*/
                     PrincipalContextCache.Add(domain, pc);
                     return pc;
                 }
@@ -603,9 +617,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Return the role from Ad and fake
         /// </summary>
         /// <param name="login">le login of the user</param>
+        /// <param name="sid">the sid of the user</param>
+        /// <param name="domain">domain of the user</param>
         /// <returns>list of roles</returns>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid)
+        public async Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid, string domain)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var rolesSection = this.configuration.Roles;
@@ -627,15 +643,53 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                         break;
                     case "Ldap":
+                    case "LdapWithSidHistory":
                         if (IsSidInGroups(role.LdapGroups, sid).Result)
                         {
                             adRoles.Add(role.Label);
+                        }
+                        else if (role.Type.Equals("LdapWithSidHistory"))
+                        {
+                            string sidHistory = GetSidHistory(sid, domain).Result;
+                            if (!string.IsNullOrEmpty(sidHistory))
+                            {
+                                if (IsSidInGroups(role.LdapGroups, sidHistory).Result)
+                                {
+                                    adRoles.Add(role.Label);
+                                }
+                            }
                         }
                         break;
                 }
             });
 
             return adRoles;
+        }
+
+
+
+        private async Task<string> GetSidHistory(string sid, string userDomain)
+        {
+            string sidHistory = (string) await this.ldapRepositoryHelper.localCache.Get(KeyPrefixCacheUserSidHistory + sid);
+            if (sidHistory != null)
+            {
+                return sidHistory;
+            }
+            PrincipalContext searchContext = PrepareDomainContext(userDomain).Result;
+            UserPrincipal user = UserPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid);
+            DirectoryEntry up_de = (DirectoryEntry)user?.GetUnderlyingObject();
+            if (up_de != null)
+            {
+                up_de.RefreshCache(new[] { "sIDHistory" });
+                byte[] sIDHistory = up_de.Properties["sIDHistory"]?.Value as byte[];
+                if (sIDHistory!= null)
+                {
+                    var securityIdentifier = new System.Security.Principal.SecurityIdentifier((byte[])sIDHistory, 0);
+                    sidHistory = securityIdentifier.ToString();
+                }
+            }
+            await this.ldapRepositoryHelper.localCache.Add(KeyPrefixCacheUserSidHistory + sid, sidHistory, this.LdapCacheUserDuration);
+            return sidHistory;
         }
 
         private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)
@@ -684,33 +738,38 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                     if (!rootLdapGroup.ContainsOnlyUsers)
                                     {
                                         var objectClass = deMember.Properties["objectClass"];
-                                        // For group check
-                                        isGroup = objectClass?.Contains("group") == true;
-                                        // For user check
-                                        isUser = objectClass?.Contains("user") == true;
-                                        if ((!isGroup && !isUser) || (isGroup && isUser))
+                                        // foreignSecurityPrincipal are considered as users if groups are use code should be change. 
+                                        if (!objectClass.Contains("foreignSecurityPrincipal"))
                                         {
-                                            // Method for indeterminate group or user slower but work always.
+                                            // For group check
+                                            isGroup = objectClass?.Contains("group") == true;
+                                            // For user check
+                                            isUser = objectClass?.Contains("user") == true;
 
-                                            foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)
+                                            if ((!isGroup && !isUser) || (isGroup && isUser))
                                             {
-                                                try
+                                                // Method for indeterminate group or user slower but work always.
+
+                                                foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)
                                                 {
-                                                    PrincipalContext searchTestContext = PrepareDomainContext(groupTestDomain).Result;
-                                                    if (searchTestContext != null)
+                                                    try
                                                     {
-                                                        var testIsGroup = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, itemSid.Value);
-                                                        if (testIsGroup != null)
+                                                        PrincipalContext searchTestContext = PrepareDomainContext(groupTestDomain).Result;
+                                                        if (searchTestContext != null)
                                                         {
-                                                            isGroup = true;
-                                                            break;
+                                                            var testIsGroup = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, itemSid.Value);
+                                                            if (testIsGroup != null)
+                                                            {
+                                                                isGroup = true;
+                                                                break;
+                                                            }
                                                         }
                                                     }
+                                                    catch (Exception)
+                                                    { }
                                                 }
-                                                catch (Exception)
-                                                { }
+                                                isUser = !isGroup;
                                             }
-                                            isUser = !isGroup;
                                         }
                                     }
 

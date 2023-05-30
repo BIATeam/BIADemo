@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.3.4</Version>
+    <Version>3.3.5</Version>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
     <Description>Dto for BIA.Net Core Framework</Description>
