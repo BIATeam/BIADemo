@@ -701,11 +701,19 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 return itemResolve;
             }
 
+            bool ContainsOnlyUsers = false;
+            bool IgnoreForeignSecurityPrincipal = false;
             if (rootLdapGroup.RecursiveGroupsOfDomains == null || rootLdapGroup.RecursiveGroupsOfDomains.Count() ==0)
             {
                 rootLdapGroup.RecursiveGroupsOfDomains = new string[] { rootLdapGroup.Domain };
-                rootLdapGroup.ContainsOnlyUsers = true;
+                ContainsOnlyUsers = true;
+                IgnoreForeignSecurityPrincipal = true;
             }
+            else if (rootLdapGroup.RecursiveGroupsOfDomains.Count() == 1 && rootLdapGroup.RecursiveGroupsOfDomains[0] == rootLdapGroup.Domain)
+            {
+                IgnoreForeignSecurityPrincipal = true;
+            }
+
 
             foreach (var groupDomain in rootLdapGroup.RecursiveGroupsOfDomains)
             {
@@ -735,11 +743,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                     var itemSid = new SecurityIdentifier((byte[])deMember.Properties["objectSid"].Value, 0);
                                     bool isUser = true;
                                     bool isGroup = false;
-                                    if (!rootLdapGroup.ContainsOnlyUsers)
+                                    if (!ContainsOnlyUsers)
                                     {
                                         var objectClass = deMember.Properties["objectClass"];
-                                        // foreignSecurityPrincipal are considered as users if groups are use code should be change. 
-                                        if (!objectClass.Contains("foreignSecurityPrincipal"))
+
+                                        if (!IgnoreForeignSecurityPrincipal || !objectClass.Contains("foreignSecurityPrincipal"))
                                         {
                                             // For group check
                                             isGroup = objectClass?.Contains("group") == true;
