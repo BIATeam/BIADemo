@@ -781,23 +781,17 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             }
                             if (memberSid != null)
                             {
-                                this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
-                                // Method for indeterminate group or user slower but work always.
-                                DomainGroupPrincipal testIsGroup = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
-                                if (isForeignSecurity)
+                                if (!ContainsOnlyUsers)
                                 {
-                                    testIsGroup = ResolveGroupPrincipal(rootLdapGroup.RecursiveGroupsOfDomains.Where((val, idx) => val != subGroupPrincipal.domain).ToArray(), memberSid).Result;
+                                    this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
+                                    // Method for indeterminate group or user slower but work always.
+                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, subGroupPrincipal.domain, isForeignSecurity );
+                                    if (memberGroupSid != null)
+                                    {
+                                        isGroup = true;
+                                    }
+                                    isUser = !isGroup;
                                 }
-                                else
-                                {
-                                    testIsGroup = ResolveGroupPrincipal(new string[] { subGroupPrincipal.domain }, memberSid).Result;
-                                }
-                                if (testIsGroup.groupPrincipal != null)
-                                {
-                                    isGroup = true;
-                                    memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = testIsGroup.domain };
-                                }
-                                isUser = !isGroup;
                             }
                         }
                     }
@@ -806,36 +800,31 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         DomainDirectoryEntry domainDirectoryEntry = GetDirectoryEntry(sDN);
                         if (domainDirectoryEntry.de != null)
                         {
-                            var pcSid = domainDirectoryEntry.de.Properties["objectSid"];
-                            if (pcSid == null)
+
+                            memberSid = new SecurityIdentifier((byte[])domainDirectoryEntry.de.Properties["objectSid"].Value, 0).Value;
+
+                            if (!ContainsOnlyUsers)
                             {
-                                this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} pcSid IS NULL for {3}", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, sDN);
-                            }
-                            else
-                            {
-                                var bSid = (byte[])pcSid.Value;
-                                if (bSid == null)
+                                var objectClass = domainDirectoryEntry.de.Properties["objectClass"];
+
+                                // For group check
+                                isGroup = objectClass?.Contains("group") == true;
+                                // For user check
+                                isUser = objectClass?.Contains("user") == true;
+                                if (isGroup)
                                 {
-                                    this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} bSid IS NULL for {3}", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, sDN);
+                                    memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = domainDirectoryEntry.domain.Name };
                                 }
-                                else
+                                else if ((!isGroup && !isUser) || (isGroup && isUser))
                                 {
-                                    memberSid = new SecurityIdentifier(bSid, 0).Value;
-
-                                    if (!ContainsOnlyUsers)
+                                    this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
+                                    // Method for indeterminate group or user slower but work always.
+                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, subGroupPrincipal.domain, isForeignSecurity);
+                                    if (memberGroupSid != null)
                                     {
-                                        var objectClass = domainDirectoryEntry.de.Properties["objectClass"];
-
-                                        // For group check
-                                        isGroup = objectClass?.Contains("group") == true;
-                                        // For user check
-                                        isUser = objectClass?.Contains("user") == true;
-
-                                        if (isGroup)
-                                        {
-                                            memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = domainDirectoryEntry.domain.Name };
-                                        }
+                                        isGroup = true;
                                     }
+                                    isUser = !isGroup;
                                 }
                             }
                         }
@@ -882,6 +871,26 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.logger.LogDebug("ResolveGroupMember {0} : {1} ms", groupName, (DateTime.Now - start).TotalMilliseconds);
 
             return null;
+        }
+
+        private GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
+        {
+            GroupDomainSid memberGroupSid = null;
+            DomainGroupPrincipal testIsGroup = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
+            if (isForeignSecurity)
+            {
+                testIsGroup = ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid).Result;
+            }
+            else
+            {
+                testIsGroup = ResolveGroupPrincipal(new string[] { currentDomain }, memberSid).Result;
+            }
+            if (testIsGroup.groupPrincipal != null)
+            {
+                memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = testIsGroup.domain };
+            }
+
+            return memberGroupSid;
         }
 
         struct DomainDirectoryEntry
