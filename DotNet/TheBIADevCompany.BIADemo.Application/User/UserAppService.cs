@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (!string.IsNullOrEmpty(filter))
             {
                 specification = UserSpecification.Search(filter);
-            }
+        }
 
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
@@ -112,9 +112,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserRightDomainService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid)
+        public async Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid, string domain)
         {
-            return await this.userDirectoryHelper.GetUserRolesBySid(isUserInDB, sid);
+            return await this.userDirectoryHelper.GetUserRolesBySid(isUserInDB, sid, domain);
         }
 
         /// <inheritdoc cref="IUserAppService.GetPermissionsForUserAsync"/>

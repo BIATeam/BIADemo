@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
+    using System.Linq;
     using System.Net;
     using Hangfire.Dashboard;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -52,10 +53,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 
             if (httpContext.User.Identity.IsAuthenticated)
             {
-#pragma warning disable CA1416 // Validate platform compatibility
-                var sid = ((System.Security.Principal.WindowsIdentity)httpContext.User.Identity).User.Value;
-#pragma warning restore CA1416 // Validate platform compatibility
-                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(false, sid).Result;
+                var identity = (System.Security.Principal.WindowsIdentity)httpContext.User.Identity;
+                var sid = identity.User.Value;
+                var domain = identity.Name.Split('\\').FirstOrDefault();
+                var userRolesFromUserDirectory = this.userAppService.GetUserDirectoryRolesAsync(false, sid, domain).Result;
                 var userMainPermissions = this.userAppService.TranslateRolesInPermissions(userRolesFromUserDirectory);
                 return userMainPermissions.Contains(this.userPermission);
             }

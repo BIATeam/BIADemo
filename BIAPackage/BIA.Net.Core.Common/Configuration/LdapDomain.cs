@@ -15,6 +15,11 @@ namespace BIA.Net.Core.Common.Configuration
         /// </summary>
         public string LdapName { get; set; }
         /// <summary>
+        /// Filter to accelerate search. (ex: OU=Ingegneria,DC=xxx,DC=xxx)
+        /// </summary>
+        public string Filter { get; set; }
+
+        /// <summary>
         /// User service account name.
         /// </summary>
         public string LdapServiceAccount { get; set; }
