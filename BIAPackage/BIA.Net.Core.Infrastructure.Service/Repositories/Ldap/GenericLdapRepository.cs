@@ -392,15 +392,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     {
                         return new PrincipalContext(ContextType.Domain, domain.LdapName, domain.LdapServiceAccount, domain.LdapServicePass);
                     }
-                    PrincipalContext pc;
-                    //if (string.IsNullOrEmpty(domain.Filter))
-                    //{
-                    pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
-                    //}
-                    //else
-                    //{
-                    //    pc = new PrincipalContext(ContextType.Domain, domain.LdapName, domain.Filter);
-                    //}
+                    PrincipalContext pc = new PrincipalContext(ContextType.Domain, domain.LdapName);
                     PrincipalContextCache.Add(domain, pc);
                     return pc;
                 }
