@@ -798,7 +798,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 isGroup = objectClass?.Contains("group") == true;
                                 // For user check
                                 isUser = objectClass?.Contains("user") == true;
-                                if (isGroup)
+                                if (isGroup && !isUser)
                                 {
                                     memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = domainDirectoryEntry.domain.Name };
                                 }
@@ -806,7 +806,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 {
                                     this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
                                     // Method for indeterminate group or user slower but work always.
-                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, subGroupPrincipal.domain, isForeignSecurity);
+                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, domainDirectoryEntry.domain.Name, isForeignSecurity);
                                     if (memberGroupSid != null)
                                     {
                                         isGroup = true;
