@@ -97,6 +97,11 @@ namespace BIA.Net.Core.Common
             public const string Ldap = "Ldap";
 
             /// <summary>
+            /// From an LDAP group provided by the sid history provider.
+            /// </summary>
+            public const string LdapWithSidHistory = "LdapWithSidHistory";
+
+            /// <summary>
             /// Synchro.
             /// </summary>
             public const string Synchro = "Synchro";

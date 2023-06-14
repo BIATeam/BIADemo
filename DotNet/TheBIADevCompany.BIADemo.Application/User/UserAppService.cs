@@ -115,9 +115,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserRightDomainService.GetRightsForUserAsync"/>
-        public async Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid)
+        public async Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid, string domain)
         {
-            return await this.userDirectoryHelper.GetUserRolesBySid(isUserInDB, sid);
+            return await this.userDirectoryHelper.GetUserRolesBySid(isUserInDB, sid, domain);
         }
 
         /// <inheritdoc cref="IUserAppService.GetPermissionsForUserAsync"/>

@@ -176,7 +176,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
             // get roles
-            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid);
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid, domain);
 
             // the main roles
             var allRoles = userRoles;
@@ -184,7 +184,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
-                return this.Forbid("No roles found");
+                return this.Unauthorized("No roles found");
             }
 
             if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))

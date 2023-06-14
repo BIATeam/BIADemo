@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Common.Configuration
         /// </summary>
         public string[] RecursiveGroupsOfDomains { get; set; }
 
-       /// <summary>
+        /// <summary>
         /// Name of the group as find in the Ldap.
         /// </summary>
         public string LdapName { get; set; }
@@ -25,10 +25,5 @@ namespace BIA.Net.Core.Common.Configuration
         /// Name of the Domain (reference to Authentication > LdapDomains > Name).
         /// </summary>
         public string Domain { get; set; }
-
-        /// <summary>
-        /// Name of the Domain (reference to Authentication > LdapDomains > Name).
-        /// </summary>
-        public bool ContainsOnlyUsers { get; set; }
     }
 }
