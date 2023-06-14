@@ -34,7 +34,7 @@
       },
       {
         "Name": "Hangfire_Dashboard_ReadOnly",
-        "Roles": [ "User" ]
+        "Roles": [ "User", "Admin" ]
       }
     ]
   }
