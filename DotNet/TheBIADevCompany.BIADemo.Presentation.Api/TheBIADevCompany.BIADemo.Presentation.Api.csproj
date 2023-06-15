@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Presentation.Api" Version="3.6.*" />
+    <PackageReference Include="Hangfire" Version="1.7.28" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.16" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.16">
@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
+    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,4 +46,10 @@
     <None Include="wwwroot\swagger\AutoLogin.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="8.25.0.33663">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>

@@ -25,10 +25,5 @@ namespace BIA.Net.Core.Common.Configuration
         /// Name of the Domain (reference to Authentication > LdapDomains > Name).
         /// </summary>
         public string Domain { get; set; }
-
-        /// <summary>
-        /// Name of the Domain (reference to Authentication > LdapDomains > Name).
-        /// </summary>
-        public bool ContainsOnlyUsers { get; set; }
     }
 }

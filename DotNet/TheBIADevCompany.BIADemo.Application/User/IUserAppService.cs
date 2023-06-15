@@ -70,8 +70,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="isUserInDB">true if user is in database.</param>
         /// <param name="sid">The user sid.</param>
+        /// <param name="domain">The user domain.</param>
         /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid);
+        Task<List<string>> GetUserDirectoryRolesAsync(bool isUserInDB, string sid, string domain);
 
         /// <summary>
         /// Gets the profile of the given user.
