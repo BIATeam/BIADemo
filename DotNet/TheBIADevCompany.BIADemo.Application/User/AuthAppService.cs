@@ -174,13 +174,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
             // get roles
-            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid);
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid, domain);
 
             // If the user has no role
             if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
-                throw new ForbiddenException("No roles found");
+                throw new UnauthorizedException("No roles found");
             }
 
             if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles?.Contains(Constants.Role.User) == true)
