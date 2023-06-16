@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Application" Version="3.7.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 
@@ -15,6 +16,5 @@
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain.Dto\TheBIADevCompany.BIADemo.Domain.Dto.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
-    <ProjectReference Include="..\..\BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
   </ItemGroup>
 </Project>
