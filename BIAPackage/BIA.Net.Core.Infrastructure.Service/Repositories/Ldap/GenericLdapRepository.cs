@@ -649,15 +649,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     case BIAConstants.RoleType.UserInDB:
                         if (isUserInDB)
                         {
-                            adRoles.Add(role.Label);
+                            return role.Label;
                         }
                         break;
 
                     case BIAConstants.RoleType.Ldap:
                     case BIAConstants.RoleType.LdapWithSidHistory:
-                        if (IsSidInGroups(role.LdapGroups, sid).Result)
+                        var result = await IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
                         {
-                            adRoles.Add(role.Label);
+                            return role.Label;
                         }
                         else if (role.Type.Equals(BIAConstants.RoleType.LdapWithSidHistory))
                         {
@@ -666,7 +667,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             {
                                 if (IsSidInGroups(role.LdapGroups, sidHistory).Result)
                                 {
-                                    adRoles.Add(role.Label);
+                                    return role.Label;
                                 }
                             }
                         }
@@ -718,7 +719,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 return itemResolve;
             }
 
-                        DateTime start = DateTime.Now;
+            DateTime start = DateTime.Now;
             string groupName = "Name not found : " + groupDomainSid.Sid;
 
             bool ContainsOnlyUsers = false;
