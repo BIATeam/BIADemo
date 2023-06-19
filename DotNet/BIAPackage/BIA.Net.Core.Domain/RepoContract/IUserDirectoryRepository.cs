@@ -8,6 +8,8 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The interface defining the User directory repository.
@@ -54,6 +56,16 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="roleLabel">the role.</param>
         /// <returns>The list of Ldap Groups.</returns>
         List<LdapGroup> GetLdapGroupsForRole(string roleLabel);
+
+        /// <summary>
+        /// Gets the user roles asynchronous.
+        /// </summary>
+        /// <param name="principal">The user claims.</param>
+        /// <param name="userInfoDto">The user information dto.</param>
+        /// <param name="sid">The sid.</param>
+        /// <param name="domain">The domain.</param>
+        /// <returns>The list of roles.</returns>
+        Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal principal, UserInfoDto userInfoDto, string sid, string domain);
 
         /// <summary>
         /// Resolves the user by sid.
