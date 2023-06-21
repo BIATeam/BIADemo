@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherDto"></typeparam>
         /// <typeparam name="TOtherMapper"></typeparam>
         /// <returns></returns>
-        protected TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
+        protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
         {
