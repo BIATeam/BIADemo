@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         {
             /// <summary>
             /// The back end version.
-            /// </summary>
+            /// </summary> 
             public const string BackEndVersion = "0.0.0";
 
             /// <summary>
