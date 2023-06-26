@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
         public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken)
         {
-            var rights = this.configuration.Permissions.ToList();
+            var rights = this.configuration.Permissions.Concat(this.configuration.PermissionsByEnv).ToList();
             var userPermissions1 = rights.Where(w => (!lightToken || w.LightToken) && w.Name != null && w.Roles.Any(a => roles.Contains(a))).Select(s => s.Name);
             var userPermissions2 = rights.Where(w => (!lightToken || w.LightToken) && w.Names != null && w.Roles.Any(a => roles.Contains(a))).SelectMany(s => s.Names);
             return userPermissions1.Concat(userPermissions2).Distinct().ToList();

@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public static class UserFromDirectoryMapper
     {
-        /// <summary>
+  /*      /// <summary>
         /// Create a member entity from a DTO.
         /// </summary>
         /// <returns>The user Entity.</returns>
@@ -20,26 +20,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return dto => new UserFromDirectory
             {
-                Company = dto.Company,
-                Country = dto.Country,
-                Department = dto.Department,
-                DistinguishedName = dto.DistinguishedName,
-                Domain = dto.Domain,
-                Email = dto.Email,
-                ExternalCompany = dto.ExternalCompany,
-                FirstName = dto.FirstName,
-                Guid = dto.Guid,
-                IsEmployee = dto.IsEmployee,
-                IsExternal = dto.IsExternal,
                 LastName = dto.LastName,
+                FirstName = dto.FirstName,
                 Login = dto.Login,
-                Manager = dto.Manager,
-                Office = dto.Office,
+                Domain = dto.Domain,
+                Guid = dto.Guid,
                 Sid = dto.Sid,
-                Site = dto.Site,
-                SubDepartment = dto.SubDepartment,
             };
-        }
+        }*/
 
         /// <summary>
         /// Create a user DTO from an entity.
@@ -49,24 +37,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return entity => new UserFromDirectoryDto
             {
-                Company = entity.Company,
-                Country = entity.Country,
-                Department = entity.Department,
-                DistinguishedName = entity.DistinguishedName,
+                // #IdentityKey
+                IdentityKey = entity.Login,
+                DisplayName = entity.FirstName + " " + entity.LastName + "(" + entity.Domain + "\\" + entity.Login + ")",
                 Domain = entity.Domain,
-                Email = entity.Email,
-                ExternalCompany = entity.ExternalCompany,
-                FirstName = entity.FirstName,
-                Guid = entity.Guid,
-                IsEmployee = entity.IsEmployee,
-                IsExternal = entity.IsExternal,
-                LastName = entity.LastName,
-                Login = entity.Login,
-                Manager = entity.Manager,
-                Office = entity.Office,
-                Sid = entity.Sid,
-                Site = entity.Site,
-                SubDepartment = entity.SubDepartment,
             };
         }
     }

@@ -68,12 +68,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<User>().Property(u => u.Office).HasMaxLength(20);
             modelBuilder.Entity<User>().Property(u => u.Country).HasMaxLength(10);
             modelBuilder.Entity<User>().Property(u => u.DaiDate).IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Guid).IsRequired();
             modelBuilder.Entity<User>().Property(u => u.IsActive).IsRequired();
-            modelBuilder.Entity<User>().Property(u => u.Domain).IsRequired().HasDefaultValue("--");
-            modelBuilder.Entity<User>().Property(u => u.Sid).IsRequired().HasDefaultValue("--");
 
-            modelBuilder.Entity<User>().HasIndex(u => new { u.Login, u.Domain }).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => new { u.Login }).IsUnique();
         }
 
         /// <summary>

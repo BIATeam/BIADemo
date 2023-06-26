@@ -23,8 +23,8 @@
         {
             this.appSettings = new AppSettingsDto {
                 Keycloak = configuration.Value.Authentication.Keycloak,
-                Environment = configuration.Value.Environment, 
-                Cultures = configuration.Value.Cultures, 
+                Environment = configuration.Value.Environment,
+                Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl 
             };
         }

@@ -30,42 +30,5 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
             return specification;
         }
-
-        /// <summary>
-        /// Search member for login.
-        /// </summary>
-        /// <param name="sid">The sid.</param>
-        /// <returns>The specification.</returns>
-        public static Specification<Member> SearchForSid(string sid)
-        {
-            Specification<Member> specification = new TrueSpecification<Member>();
-
-            if (!string.IsNullOrWhiteSpace(sid))
-            {
-                specification &= new DirectSpecification<Member>(s =>
-                    s.User.Sid == sid);
-            }
-
-            return specification;
-        }
-
-        /// <summary>
-        /// Searches for login and site.
-        /// </summary>
-        /// <param name="sid">The sid.</param>
-        /// <param name="teamId">The site identifier.</param>
-        /// <returns>The specification.</returns>
-        public static Specification<Member> SearchForSidAndTeam(string sid, int teamId)
-        {
-            Specification<Member> specification = new TrueSpecification<Member>();
-
-            if (!string.IsNullOrWhiteSpace(sid))
-            {
-                specification &= new DirectSpecification<Member>(s =>
-                    s.User.Sid == sid && s.Team.Id == teamId);
-            }
-
-            return specification;
-        }
     }
 }

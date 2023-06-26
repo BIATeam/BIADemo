@@ -32,7 +32,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     { HeaderName.LastName, user => user.LastName },
                     { HeaderName.FirstName, user => user.FirstName },
                     { HeaderName.Login, user => user.Login },
-                    { HeaderName.Guid, user => user.Guid },
                 };
             }
         }
@@ -50,7 +49,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 LastName = entity.LastName,
                 FirstName = entity.FirstName,
                 Login = entity.Login,
-                Guid = entity.Guid,
                 Roles = entity.Roles.Select(ca => new OptionDto
                 {
                     Id = ca.Id,

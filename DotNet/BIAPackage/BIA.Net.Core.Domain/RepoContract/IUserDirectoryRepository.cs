@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The interface defining the User directory repository.
@@ -31,7 +32,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="usersFromDirectory">The users list.</param>
         /// <param name="roleLabel">List of error message.</param>
         /// <returns>List of of error message.</returns>
-        Task<List<string>> AddUsersInGroup(IEnumerable<IUserFromDirectory> usersFromDirectory, string roleLabel);
+        Task<List<string>> AddUsersInGroup(IEnumerable<UserFromDirectoryDto> usersFromDirectory, string roleLabel);
 
         /// <summary>
         /// Remove a user in a group of the Ldap.
@@ -39,14 +40,15 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="usersFromRepositoryToRemove">The users from repository to remove.</param>
         /// <param name="roleLabel">Label of the role.</param>
         /// <returns>List of not removed user.</returns>
-        Task<List<IUserFromDirectory>> RemoveUsersInGroup(List<IUserFromDirectory> usersFromRepositoryToRemove, string roleLabel);
+        Task<List<UserFromDirectoryDto>> RemoveUsersInGroup(List<UserFromDirectoryDto> usersFromRepositoryToRemove, string roleLabel);
 
         /// <summary>
         /// Return all users recursively in a role. To use only for synchronisation.
         /// </summary>
         /// <param name="roleLabel">The role label.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
         /// <returns>The list of users.</returns>
-        Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel);
+        Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string roleLabel, bool forceRefresh = false);
 
         /// <summary>
         /// Return the list of Ldap Groups corresponding to the role.
@@ -59,23 +61,24 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Resolves the user by sid.
         /// </summary>
         /// <param name="sid">The sid.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
         /// <returns>The user.</returns>
-        Task<TUserFromDirectory> ResolveUserBySid(string sid);
+        Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false);
 
         /// <summary>
-        /// Resolves the user sid by login.
+        /// Resolves the user by identity key.
         /// </summary>
-        /// <param name="domain">The domain.</param>
-        /// <param name="login">The login.</param>
-        /// <returns>The user sid.</returns>
-        Task<string> ResolveUserSidByLogin(string domain, string login);
+        /// <param name="identityKey">The identity key.</param>
+        /// <param name="forceRefresh">To force to refresh cache.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false);
 
         /// <summary>
-        /// Resolves the user domain by login.
+        /// Resolves the user by sid.
         /// </summary>
-        /// <param name="login">The login.</param>
-        /// <returns>The user domain.</returns>
-        Task<string> ResolveUserDomainByLogin(string login);
+        /// <param name="userFromDirectoryDto">The user from directory dto.</param>
+        /// <returns>The user.</returns>
+        Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto);
 
         /// <summary>
         /// Determines whether [is sid in groups] [the specified LDAP groups].
