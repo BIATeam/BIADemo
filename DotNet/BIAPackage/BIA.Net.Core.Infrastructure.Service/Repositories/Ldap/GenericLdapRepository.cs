@@ -6,17 +6,21 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
     using System.DirectoryServices.ActiveDirectory;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Security.Principal;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
@@ -29,8 +33,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// </summary>
     abstract public class GenericLdapRepository<TUserFromDirectory> : IUserDirectoryRepository<TUserFromDirectory>
         where TUserFromDirectory : class, IUserFromDirectory, new()
-
-
     {
 
         private const string KeyPrefixCacheGroup = "BIAGroupSid:";
@@ -38,6 +40,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private const string KeyPrefixCacheUserSid = "BIAUserSid:";
 
         private const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
+
+        private const string KeyPrefixCacheGroup = "BIAGroupSid:";
+
+        private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
         /// <summary>
         /// Groups cached.
@@ -230,9 +236,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (PrepareCredential(domain))
                 {
-                    using var entry = new DirectoryEntry($"LDAP://{domain.LdapName}", domain.LdapServiceAccount, domain.LdapServicePass);
+                    string ldapPath = $"LDAP://{domain.LdapName}";
+                    if (!string.IsNullOrEmpty(domain.Filter))
+                    {
+                        ldapPath = $"LDAP://{domain.Filter}";
+                    }
+
+                    using var entry = new DirectoryEntry(ldapPath, domain.LdapServiceAccount, domain.LdapServicePass);
                     using var searcher = new DirectorySearcher(entry)
                     {
+                        SearchScope = SearchScope.Subtree,
                         Filter = $"(&(objectCategory=person)(objectClass=user)(|(givenname=*{search}*)(sn=*{search}*)(SAMAccountName=*{search}*)(cn=*{search}*)))",
                         SizeLimit = max
                     };
@@ -409,6 +422,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return null;
         }
 
+        object syncPrepareCredential = new Object();
         /// <summary>
         /// Extract credential from vault if requiered
         /// </summary>
@@ -416,29 +430,32 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>true if ok</returns>
         private bool PrepareCredential(LdapDomain domain)
         {
-            if (string.IsNullOrEmpty(domain.LdapServiceAccount) && !string.IsNullOrEmpty(domain.CredentialKeyInWindowsVault))
+            lock (syncPrepareCredential)
             {
-
-                try
+                if (string.IsNullOrEmpty(domain.LdapServiceAccount) && !string.IsNullOrEmpty(domain.CredentialKeyInWindowsVault))
                 {
-                    var cred = CredentialManager.ReadCredential(applicationName: domain.CredentialKeyInWindowsVault);
-                    if (cred != null)
+
+                    try
                     {
-                        domain.LdapServiceAccount = cred.UserName;
-                        domain.LdapServicePass = cred.Password;
-                        return true;
+                        var cred = CredentialManager.ReadCredential(applicationName: domain.CredentialKeyInWindowsVault);
+                        if (cred != null)
+                        {
+                            domain.LdapServiceAccount = cred.UserName;
+                            domain.LdapServicePass = cred.Password;
+                            return true;
+                        }
+                        this.logger.LogError("[PrepareCredential] Credential " + domain.CredentialKeyInWindowsVault + " not found in Vault");
+                        return false;
                     }
-                    this.logger.LogError("[PrepareCredential] Credential " + domain.CredentialKeyInWindowsVault + " not found in Vault");
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogError(ex, "[PrepareCredential] Error when search credential " + domain.CredentialKeyInWindowsVault);
-                    return false;
-                }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, "[PrepareCredential] Error when search credential " + domain.CredentialKeyInWindowsVault);
+                        return false;
+                    }
 
+                }
+                return true;
             }
-            return true;
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.RemoveUsersInGroup"/>
@@ -591,7 +608,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + sid);
                 }
 
-                await this.GetAllUsersSidFromGroupRecursivelyAsync(sid, ldapGroup, listUsersSid, listTreatedGroupSid);
+                await this.GetAllUsersSidFromGroupRecursivelyAsync(new GroupDomainSid() { Sid = sid, Domain = ldapGroup.Domain }, ldapGroup, listUsersSid, listTreatedGroupSid);
             }
         }
 
@@ -602,9 +619,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="rootLdapGroup">the root ldapGroup to limite the scope of the search (ldap users and ldap for groups).</param>
         /// <param name="listUsers">The users found.</param>
         /// <param name="listTreatedGroups">The group already treated.</param>
-        private async Task GetAllUsersSidFromGroupRecursivelyAsync(string groupPrincipalSid, LdapGroup rootLdapGroup, List<string> listUsersSid, List<string> listTreatedGroupSid)
+        private async Task GetAllUsersSidFromGroupRecursivelyAsync(GroupDomainSid groupSid, LdapGroup rootLdapGroup, List<string> listUsersSid, List<string> listTreatedGroupSid)
         {
-            SidResolvedGroup resolvedGroup = await ResolveGroupMember(groupPrincipalSid, rootLdapGroup);
+            SidResolvedGroup resolvedGroup = await ResolveGroupMember(groupSid, rootLdapGroup);
             if (resolvedGroup != null)
             {
                 foreach (string sid in resolvedGroup.MembersUserSid)
@@ -616,15 +633,15 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
 
                 var resolveTasks = new List<Task>();
-                foreach (string sid in resolvedGroup.MembersGroupSid)
+                foreach (GroupDomainSid memberGroupSid in resolvedGroup.MembersGroupSid)
                 {
-                    if (listTreatedGroupSid.Contains(sid))
+                    if (listTreatedGroupSid.Contains(memberGroupSid.Sid))
                     {
                         continue;
                     }
-                    listTreatedGroupSid.Add(sid);
+                    listTreatedGroupSid.Add(memberGroupSid.Sid);
 
-                    resolveTasks.Add(GetAllUsersSidFromGroupRecursivelyAsync(sid, rootLdapGroup, listUsersSid, listTreatedGroupSid));
+                    resolveTasks.Add(GetAllUsersSidFromGroupRecursivelyAsync(memberGroupSid, rootLdapGroup, listUsersSid, listTreatedGroupSid));
                 }
                 await Task.WhenAll(resolveTasks);
             }
@@ -641,118 +658,398 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return !(userPrincipal.GetUnderlyingObject() is DirectoryEntry entry) ? null : ConvertToUserDirectory(entry, domainKey);
         }
 
-        private async Task<SidResolvedGroup> ResolveGroupMember(string sid, LdapGroup rootLdapGroup)
+        /// <summary>
+        /// Gets the user roles asynchronous.
+        /// </summary>
+        /// <param name="userInfoDto">The user information dto.</param>
+        /// <param name="sid">The sid.</param>
+        /// <param name="domain">The domain.</param>
+        /// <returns>The list of roles.</returns>
+        public async Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal principal, UserInfoDto userInfoDto, string sid, string domain)
+        {
+            IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
+
+            List<string> memberOfs = principal?.GetGroups()?.OrderBy(x => x)?.ToList() ?? new List<string>();
+            List<string> claimRoles = principal?.GetRoles()?.ToList() ?? new List<string>();
+
+            var adRoles = new ConcurrentBag<string>();
+
+            var roleTasks = rolesSection.Select(async role =>
+            {
+                switch (role.Type)
+                {
+                    case BIAConstants.RoleType.Fake:
+                        return role.Label;
+
+                    case BIAConstants.RoleType.UserInDB:
+                        if (userInfoDto?.Id > 0)
+                        {
+                            return role.Label;
+                        }
+                        break;
+
+                    case BIAConstants.RoleType.IdP:
+                        if (claimRoles.Intersect(role.IdpRoles, StringComparer.OrdinalIgnoreCase).Any())
+                        {
+                            return role.Label;
+                        }
+                        break;
+
+                    case BIAConstants.RoleType.LdapFromIdP:
+                        bool isMember = role.LdapGroups?
+                                                .Any(ldapGroup => memberOfs
+                                                    .Any(memberOf => memberOf.Contains(ldapGroup.LdapName, StringComparison.OrdinalIgnoreCase))) == true;
+                        if (isMember)
+                        {
+                            return role.Label;
+                        }
+                        break;
+
+                    case BIAConstants.RoleType.Ldap:
+                    case BIAConstants.RoleType.LdapWithSidHistory:
+                        bool result = await this.IsSidInGroups(role.LdapGroups, sid);
+                        if (result)
+                        {
+                            return role.Label;
+                        }
+                        else if (role.Type.Equals(BIAConstants.RoleType.LdapWithSidHistory))
+                        {
+                            string sidHistory = GetSidHistory(sid, domain).Result;
+                            if (!string.IsNullOrEmpty(sidHistory))
+                            {
+                                if (IsSidInGroups(role.LdapGroups, sidHistory).Result)
+                                {
+                                    return role.Label;
+                                }
+                            }
+                        }
+                        break;
+
+                    default:
+                        string msg = $"This type of role is not managed or is missing : {role.Type}";
+                        this.logger.LogError(msg);
+                        throw new ConfigurationErrorsException(msg);
+                }
+
+                return null;
+            });
+
+            string[] roles = await Task.WhenAll(roleTasks);
+            foreach (var role in roles)
+            {
+                if (role != null)
+                {
+                    adRoles.Add(role);
+                }
+            }
+
+            return adRoles.ToList();
+        }
+
+        private async Task<string> GetSidHistory(string sid, string userDomain)
+        {
+            string sidHistory = (string)await this.ldapRepositoryHelper.localCache.Get<string>(KeyPrefixCacheUserSidHistory + sid);
+            if (sidHistory != null)
+            {
+                return sidHistory;
+            }
+            PrincipalContext searchContext = PrepareDomainContext(userDomain).Result;
+            UserPrincipal user = UserPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid);
+            DirectoryEntry up_de = (DirectoryEntry)user?.GetUnderlyingObject();
+            if (up_de != null)
+            {
+                up_de.RefreshCache(new[] { "sIDHistory" });
+                byte[] sIDHistory = up_de.Properties["sIDHistory"]?.Value as byte[];
+                if (sIDHistory != null)
+                {
+                    var securityIdentifier = new System.Security.Principal.SecurityIdentifier((byte[])sIDHistory, 0);
+                    sidHistory = securityIdentifier.ToString();
+                }
+            }
+            await this.ldapRepositoryHelper.localCache.Add(KeyPrefixCacheUserSidHistory + sid, sidHistory, this.LdapCacheUserDuration);
+            return sidHistory;
+        }
+
+        private async Task<SidResolvedGroup> ResolveGroupMember(GroupDomainSid groupDomainSid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
-            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + sid);
+            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.sid);
             if (itemResolve != null)
             {
                 return itemResolve;
             }
 
+            DateTime start = DateTime.Now;
+            string groupName = "Name not found : " + groupDomainSid.Sid;
+
+            bool ContainsOnlyUsers = false;
+            bool IgnoreForeignSecurityPrincipal = false;
             if (rootLdapGroup.RecursiveGroupsOfDomains == null || rootLdapGroup.RecursiveGroupsOfDomains.Length == 0)
             {
                 rootLdapGroup.RecursiveGroupsOfDomains = new string[] { rootLdapGroup.Domain };
-                rootLdapGroup.ContainsOnlyUsers = true;
+                ContainsOnlyUsers = true;
+                IgnoreForeignSecurityPrincipal = true;
+            }
+            else if (rootLdapGroup.RecursiveGroupsOfDomains.Count() == 1 && rootLdapGroup.RecursiveGroupsOfDomains[0] == rootLdapGroup.Domain)
+            {
+                IgnoreForeignSecurityPrincipal = true;
             }
 
-            foreach (var groupDomain in rootLdapGroup.RecursiveGroupsOfDomains)
-            {
-                try
-                {
-                    PrincipalContext searchContext = PrepareDomainContext(groupDomain).Result;
-                    if (searchContext != null)
-                    {
-                        var subGroupPrincipal = GroupPrincipal.FindByIdentity(searchContext, IdentityType.Sid, sid);
-                        if (subGroupPrincipal != null)
-                        {
-                            List<string> MembersGroupSid = new List<string>();
-                            List<string> MembersUserSid = new List<string>();
-                            DirectoryEntry de = (DirectoryEntry)subGroupPrincipal.GetUnderlyingObject();
+            DomainGroupPrincipal subGroupPrincipal = await ResolveGroupPrincipal(new string[] { groupDomainSid.Domain }, groupDomainSid.Sid);
 
-                            List<string> listSDN = new List<string>();
-                            foreach (string sDN in de.Properties["member"])
+            if (subGroupPrincipal.groupPrincipal != null)
+            {
+                groupName = subGroupPrincipal.groupPrincipal.Name;
+
+                this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} Member to solve : {3} ms", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, (DateTime.Now - start).TotalMilliseconds);
+                start = DateTime.Now;
+
+                ConcurrentBag<GroupDomainSid> MembersGroupSid = new ConcurrentBag<GroupDomainSid>();
+                ConcurrentBag<string> MembersUserSid = new ConcurrentBag<string>();
+
+                DirectoryEntry de = (DirectoryEntry)subGroupPrincipal.groupPrincipal.GetUnderlyingObject();
+
+                List<string> listSDN = new List<string>();
+                foreach (string sDN in de.Properties["member"])
+                {
+                    listSDN.Add(sDN);
+                }
+
+                this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} Member resolve : {3} ms", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, (DateTime.Now - start).TotalMilliseconds);
+                start = DateTime.Now;
+
+                // do not parrallelize else to much ldap request and risque of reject by ad.
+                foreach (var sDN in listSDN)
+                //Parallel.ForEach(listSDN, sDN =>
+                {
+                    bool isForeignSecurity = sDN.Contains("ForeignSecurityPrincipals");
+                    bool isUser = true;
+                    bool isGroup = false;
+
+                    string memberSid = null;
+                    GroupDomainSid memberGroupSid = null;
+
+                    if (isForeignSecurity)
+                    {
+                        if (!IgnoreForeignSecurityPrincipal)
+                        {
+
+                            string pattern = @"S-\d-\d-\d+-\d+-\d+-\d+-\w+";
+                            foreach (Match match in Regex.Matches(sDN, pattern))
                             {
-                                listSDN.Add(sDN);
+                                if (match.Success && match.Groups.Count > 0)
+                                {
+                                    memberSid = match.Groups[0].Value;
+                                    break;
+                                }
+                            }
+                            if (memberSid != null)
+                            {
+                                if (!ContainsOnlyUsers)
+                                {
+                                    this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
+                                    // Method for indeterminate group or user slower but work always.
+                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, subGroupPrincipal.domain, isForeignSecurity);
+                                    if (memberGroupSid != null)
+                                    {
+                                        isGroup = true;
+                                    }
+                                    isUser = !isGroup;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        DomainDirectoryEntry domainDirectoryEntry = GetDirectoryEntry(sDN);
+                        if (domainDirectoryEntry.de != null)
+                        {
+
+                            memberSid = new SecurityIdentifier((byte[])domainDirectoryEntry.de.Properties["objectSid"].Value, 0).Value;
+
+                            if (!ContainsOnlyUsers)
+                            {
+                                var objectClass = domainDirectoryEntry.de.Properties["objectClass"];
+
+                                // For group check
+                                isGroup = objectClass?.Contains("group") == true;
+                                // For user check
+                                isUser = objectClass?.Contains("user") == true;
+                                if (isGroup && !isUser)
+                                {
+                                    memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = domainDirectoryEntry.domain.Name };
+                                }
+                                else if ((!isGroup && !isUser) || (isGroup && isUser))
+                                {
+                                    this.logger.LogDebug("ResolveGroupMember test : {0}", memberSid);
+                                    // Method for indeterminate group or user slower but work always.
+                                    memberGroupSid = TestIfIsGroup(memberSid, rootLdapGroup.RecursiveGroupsOfDomains, domainDirectoryEntry.domain.Name, isForeignSecurity);
+                                    if (memberGroupSid != null)
+                                    {
+                                        isGroup = true;
+                                    }
+                                    isUser = !isGroup;
+                                }
+                            }
+                        }
+                    }
+
+                    if (memberSid != null)
+                    {
+                        if (isUser)
+                        {
+                            if (!MembersUserSid.Contains(memberSid))
+                            {
+                                MembersUserSid.Add(memberSid);
+                            }
+                        }
+                        else if (isGroup)
+                        {
+                            if (!MembersGroupSid.Any(m => m.Sid == memberGroupSid.Sid))
+                            {
+                                MembersGroupSid.Add(memberGroupSid);
                             }
 
-                            Parallel.ForEach(listSDN, sDN =>
-                                {
-                                    DirectoryEntry deMember = new DirectoryEntry("LDAP://" + sDN);
-                                    if (deMember != null)
-                                    {
-                                        var itemSid = new SecurityIdentifier((byte[])deMember.Properties["objectSid"].Value, 0);
-                                        bool isUser = true;
-                                        bool isGroup = false;
-                                        if (!rootLdapGroup.ContainsOnlyUsers)
-                                        {
-                                            var objectClass = deMember.Properties["objectClass"];
-                                            // For group check
-                                            isGroup = objectClass?.Contains("group") == true;
-                                            // For user check
-                                            isUser = objectClass?.Contains("user") == true;
-                                            if ((!isGroup && !isUser) || (isGroup && isUser))
-                                            {
-                                                // Method for indeterminate group or user slower but work always.
-
-                                                foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)
-                                                {
-                                                    try
-                                                    {
-                                                        PrincipalContext searchTestContext = PrepareDomainContext(groupTestDomain).Result;
-                                                        if (searchTestContext != null)
-                                                        {
-                                                            var testIsGroup = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, itemSid.Value);
-                                                            if (testIsGroup != null)
-                                                            {
-                                                                isGroup = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    catch (Exception ex)
-                                                    {
-                                                        this.logger.LogError("foreach (var groupTestDomain in rootLdapGroup.RecursiveGroupsOfDomains)", ex);
-                                                    }
-                                                }
-                                                isUser = !isGroup;
-                                            }
-                                        }
-
-                                        if (isUser)
-                                        {
-                                            if (!MembersUserSid.Contains(itemSid.Value))
-                                            {
-                                                MembersUserSid.Add(itemSid.Value);
-                                            }
-                                        }
-                                        else if (isGroup)
-                                        {
-                                            if (!MembersGroupSid.Contains(itemSid.Value))
-                                            {
-                                                MembersGroupSid.Add(itemSid.Value);
-                                            }
-                                        }
-                                    }
-                                });
-
-                            itemResolve = new SidResolvedGroup() { domainKey = groupDomain, MembersGroupSid = MembersGroupSid, MembersUserSid = MembersUserSid, type = SidResolvedItemType.Group };
-                            await this.ldapRepositoryHelper.distributedCache.Add(KeyPrefixCacheGroup + sid, itemResolve, this.LdapCacheGroupDuration);
-                            return itemResolve;
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    logger.LogError(ex, "Error when resolve on domain:" + groupDomain);
-                    throw ex;
-                }
+                //);
+
+                itemResolve = new SidResolvedGroup() { domainKey = subGroupPrincipal.domain, MembersGroupSid = MembersGroupSid.ToList(), MembersUserSid = MembersUserSid.ToList(), type = SidResolvedItemType.Group };
+                await this.ldapRepositoryHelper.distributedCache.Add(KeyPrefixCacheGroup + groupDomainSid.Sid, itemResolve, this.LdapCacheGroupDuration);
+
+                this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} Decripted with DirectoryEntry ({3} groups + {4} users) : {5} ms", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, MembersGroupSid.Count, MembersUserSid.Count, (DateTime.Now - start).TotalMilliseconds);
+
+                return itemResolve;
             }
+            else
+            {
+                DateTime end = DateTime.Now;
+
+                TimeSpan ts = (end - start);
+                this.logger.LogDebug("ResolveGroupMember {0} not found in {1} : {2} ms", groupDomainSid.Sid, subGroupPrincipal.domain, ts.TotalMilliseconds);
+                start = DateTime.Now;
+            }
+
             // TODO ad cache unresolve item to reduce try
+
+            this.logger.LogDebug("ResolveGroupMember {0} : {1} ms", groupName, (DateTime.Now - start).TotalMilliseconds);
 
             return null;
         }
 
+// patchOneAD
+        private GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
+        {
+            GroupDomainSid memberGroupSid = null;
+            DomainGroupPrincipal testIsGroup = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
+            if (isForeignSecurity)
+            {
+                testIsGroup = ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid).Result;
+            }
+            else
+            {
+                testIsGroup = ResolveGroupPrincipal(new string[] { currentDomain }, memberSid).Result;
+            }
+            if (testIsGroup.groupPrincipal != null)
+            {
+                memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = testIsGroup.domain };
+            }
+
+            return memberGroupSid;
+        }
+
+        struct DomainDirectoryEntry
+        {
+            public LdapDomain domain;
+            public DirectoryEntry de;
+        }
+
+        private DomainDirectoryEntry GetDirectoryEntry(string sDN)
+        {
+            DomainDirectoryEntry domainDirectoryEntry = new DomainDirectoryEntry() { domain = null, de = null };
+            LdapDomain adDomain = ldapDomains.Where(d => d.LdapName.Split('.').All(subD => sDN.Contains("DC=" + subD))).FirstOrDefault();
+            if (adDomain == null)
+            {
+                return domainDirectoryEntry;
+            }
+
+            domainDirectoryEntry.domain = adDomain;
+            if (PrepareCredential(adDomain))
+            {
+                string ldapPath = $"LDAP://{adDomain.LdapName}/" + sDN;
+
+                if (!string.IsNullOrEmpty(adDomain.LdapServiceAccount))
+                {
+                    domainDirectoryEntry.de = new DirectoryEntry(ldapPath, adDomain.LdapServiceAccount, adDomain.LdapServicePass);
+                }
+                else
+                {
+                    domainDirectoryEntry.de = new DirectoryEntry(ldapPath);
+                }
+            }
+
+            return domainDirectoryEntry;
+        }
+
+        struct DomainGroupPrincipal
+        {
+            public string domain;
+            public GroupPrincipal groupPrincipal;
+        }
+
+        Dictionary<string, DomainGroupPrincipal> cacheGroupPrincipal = new Dictionary<string, DomainGroupPrincipal>();
+        object syncLocalGroupPrincipal = new Object();
+        private async Task<DomainGroupPrincipal> ResolveGroupPrincipal(string[] groupDomains, string sid)
+        {
+            DomainGroupPrincipal domainGroupPrincipal = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
+            lock (syncLocalGroupPrincipal)
+            {
+                if (cacheGroupPrincipal.TryGetValue(sid, out domainGroupPrincipal))
+                {
+                    this.logger.LogDebug("ResolveGroupPrincipal {0} => trouvé dans le cache", sid);
+                }
+                else
+                {
+                    foreach (var groupDomain in groupDomains)
+                    {
+
+                        DateTime start = DateTime.Now;
+                        try
+                        {
+                            PrincipalContext searchTestContext = PrepareDomainContext(groupDomain).Result;
+                            if (searchTestContext != null)
+                            {
+                                domainGroupPrincipal.groupPrincipal = GroupPrincipal.FindByIdentity(searchTestContext, IdentityType.Sid, sid);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogWarning(ex, "Could not join Domain :" + groupDomain);
+                            throw ex;
+                        }
+
+                        if (domainGroupPrincipal.groupPrincipal != null)
+                        {
+                            domainGroupPrincipal.domain = groupDomain;
+                            cacheGroupPrincipal.Add(sid, domainGroupPrincipal);
+                            this.logger.LogDebug("ResolveGroupPrincipal {0}\\{1} => resolu : {2} ms", groupDomain, sid, (DateTime.Now - start).TotalMilliseconds);
+                            return domainGroupPrincipal;
+
+                        }
+                        else
+                        {
+                            this.logger.LogDebug("ResolveGroupPrincipal {0}\\{1} => NON resolu : {2} ms", groupDomain, sid, (DateTime.Now - start).TotalMilliseconds);
+                        }
+                    }
+                }
+            }
+
+            return domainGroupPrincipal;
+        }
+
+        public async Task<TUserFromDirectory> ResolveUserBySid(string sid)
+/*=======
         public async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
         {
             string KeyCache = KeyPrefixCacheUserSid + sid;
@@ -760,6 +1057,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         public async Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false)
+ master*/
         {
             string KeyCache = KeyPrefixCacheUserIdentityKey + identityKey;
             return await ResolveUser(KeyCache, GetIdentityKeyType(), identityKey, forceRefresh);

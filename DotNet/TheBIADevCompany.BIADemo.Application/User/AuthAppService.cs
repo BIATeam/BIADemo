@@ -82,6 +82,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
 
         /// <summary>
+        /// The configuration of the BiaNet section.
+        /// </summary>
+        private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthAppService"/> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
@@ -114,6 +119,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userProfileRepository = userProfileRepository;
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
+            this.ldapDomains = configuration.Value.Authentication.LdapDomains;
         }
 
         /// <summary>
@@ -136,10 +142,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
             Task<UserProfileDto> userProfileTask = this.GetUserProfileTask(loginParam, identityKey);
 
             // Get userInfo
+// patchOneAD
+            UserInfoDto userInfo = await (!string.IsNullOrWhiteSpace(sid) ? this.userAppService.GetUserInfoAsync(sid) : this.userAppService.GetUserInfoAsync(guid));
+
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+            {
+                this.logger.LogWarning("Unauthorized because bad domain");
+                throw new UnauthorizedException("Incorrect domain");
+            }
+
+            // Get roles
+            List<string> userRoles = await this.userDirectoryHelper.GetUserRolesAsync(principal: this.principal, userInfoDto: userInfo, sid: sid, domain: domain);
+/*=======
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
 
             // Get roles
             List<string> userRoles = await this.GetUserRolesAsync(userInfoDto: userInfo, claims: claims, sid: sid);
+master*/
 
             // If the user has no role
             if (userRoles?.Any() != true)
@@ -463,80 +483,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             return allRoles;
-        }
-
-        /// <summary>
-        /// Gets the user roles asynchronous.
-        /// </summary>
-        /// <param name="userInfoDto">The user information dto.</param>
-        /// <param name="sid">The sid.</param>
-        /// <returns>The list of roles.</returns>
-        private async Task<List<string>> GetUserRolesAsync(UserInfoDto userInfoDto, ClaimsPrincipal claims, string sid)
-        {
-            IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
-
-            List<string> memberOfs = claims.GetClaimValues(CustomClaimTypes.Group)?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            List<string> claimRoles = claims.GetClaimValues(ClaimTypes.Role)?.ToList() ?? new List<string>();
-
-            var adRoles = new ConcurrentBag<string>();
-
-            var roleTasks = rolesSection.Select(async role =>
-            {
-                switch (role.Type)
-                {
-                    case BIAConstants.RoleType.Fake:
-                        return role.Label;
-                    case BIAConstants.RoleType.UserInDB:
-                        if (userInfoDto?.Id > 0)
-                        {
-                            return role.Label;
-                        }
-
-                        break;
-                    case BIAConstants.RoleType.IdP:
-                        if (claimRoles.Intersect(role.IdpRoles, StringComparer.OrdinalIgnoreCase).Any())
-                        {
-                            return role.Label;
-                        }
-
-                        break;
-                    case BIAConstants.RoleType.LdapFromIdP:
-                        bool isMember = role.LdapGroups?
-                                                .Any(ldapGroup => memberOfs
-                                                    .Any(memberOf => memberOf.Contains(ldapGroup.LdapName, StringComparison.OrdinalIgnoreCase))) == true;
-                        if (isMember)
-                        {
-                            return role.Label;
-                        }
-
-                        break;
-                    case BIAConstants.RoleType.Ldap:
-                        bool result = await this.userDirectoryHelper.IsSidInGroups(role.LdapGroups, sid);
-                        if (result)
-                        {
-                            return role.Label;
-                        }
-
-                        break;
-                    default:
-                        string msg = $"This type of role is not managed or is missing : {role.Type}";
-                        this.logger.LogError(msg);
-                        throw new ConfigurationErrorsException(msg);
-                }
-
-                return null;
-            });
-
-            string[] roles = await Task.WhenAll(roleTasks);
-            foreach (var role in roles)
-            {
-                if (role != null)
-                {
-                    adRoles.Add(role);
-                }
-            }
-
-            return adRoles.ToList();
         }
     }
 }
