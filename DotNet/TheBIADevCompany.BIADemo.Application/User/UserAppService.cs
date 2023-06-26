@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -28,6 +29,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -56,6 +58,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         private readonly IIdentityProviderRepository identityProviderRepository;
 
+        private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService" /> class.
         /// </summary>
@@ -66,6 +70,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="logger">The logger.</param>
         /// <param name="userContext">The user context.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
+        /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
             IUserSynchronizeDomainService userSynchronizeDomainService,
@@ -73,7 +78,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger,
             UserContext userContext,
-            IIdentityProviderRepository identityProviderRepository)
+            IIdentityProviderRepository identityProviderRepository,
+            IUserIdentityKeyDomainService userIdentityKeyDomainService)
             : base(repository)
         {
             this.userSynchronizeDomainService = userSynchronizeDomainService;
@@ -82,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.logger = logger;
             this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
-
+            this.userIdentityKeyDomainService = userIdentityKeyDomainService;
             this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
@@ -98,18 +104,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.GetCreateUserInfoAsync"/>
-        public async Task<UserInfoDto> GetCreateUserInfoAsync(string sid)
+        /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
+        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string identityKey)
         {
-            UserInfoDto userInfo = await this.GetUserInfoAsync(sid);
-
-            if (userInfo != null)
-            {
-                this.SelectDefaultLanguage(userInfo);
-
-                return userInfo;
-            }
-
             // if user is not found in DB, try to synchronize from AD.
             UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserBySid(sid);
 
@@ -118,32 +115,32 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 User user = new User();
                 UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
 
+                var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
+                if (!func(user))
+                {
+                    throw new ForbiddenException("The identityKey in ldap do not correspond to identityKey in identity.");
+                }
+
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
-                userInfo = new UserInfoDto
+                UserInfoDto userInfo = new UserInfoDto
                 {
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
                 };
-                this.SelectDefaultLanguage(userInfo);
+                return userInfo;
             }
 
-            return userInfo;
+            return null;
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(string sid)
+        public async Task<UserInfoDto> GetUserInfoAsync(string identityKey)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Sid == sid);
-        }
-
-        /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
-        public async Task<UserInfoDto> GetUserInfoAsync(Guid guid)
-        {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Guid == guid);
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey));
         }
 
         /// <inheritdoc/>
@@ -179,12 +176,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
             result.Errors = new List<string>();
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
-                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users.Select(UserFromDirectoryMapper.DtoToEntity()).ToList(), "User");
+                result.Errors = await this.userDirectoryHelper.AddUsersInGroup(users, "User");
                 try
                 {
                     await this.SynchronizeWithADAsync();
-                    List<string> usersSid = users.Select(u => u.Sid).ToList();
-                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: x => usersSid.Contains(x.Sid))).Select(entity => new OptionDto
+                    List<string> usersIdentityKey = users.Select(u => this.userIdentityKeyDomainService.GetDirectoryIdentityKey(u)).ToList();
+                    result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
                         Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
@@ -204,11 +201,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     try
                     {
-                        Expression<Func<User, bool>> filter = !string.IsNullOrWhiteSpace(userFormDirectoryDto.Sid) ? x => x.Sid == userFormDirectoryDto.Sid : x => x.Guid == userFormDirectoryDto.Guid;
+                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
+                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
 
-                        var foundUser = (await this.Repository.GetAllEntityAsync(filter: filter)).FirstOrDefault();
-
-                        var addedUser = await this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectoryDto.Sid, foundUser);
+                        var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 
                         if (addedUser != null)
                         {
@@ -219,7 +215,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     }
                     catch (Exception ex)
                     {
-                        string msg = userFormDirectoryDto.Domain + "\\" + userFormDirectoryDto.Login;
+                        string msg = userFormDirectoryDto.DisplayName;
                         this.logger.LogError(msg, ex);
                         result.Errors.Add(msg);
                     }
@@ -235,7 +231,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return result;
         }
 
-
         /// <inheritdoc cref="IUserAppService.RemoveInGroupAsync"/>
         public async Task<string> RemoveInGroupAsync(int id)
         {
@@ -248,7 +243,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     return "User not found in database";
                 }
 
-                List<IUserFromDirectory> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<IUserFromDirectory>() { new UserFromDirectory() { Guid = user.Guid, Login = user.Login } }, "User");
+                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { DisplayName = user.FirstName + " " + user.LastName + "(" + user.Login + ")", IdentityKey = this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user) } }, "User");
 
                 try
                 {
@@ -295,15 +290,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        /// <inheritdoc cref="IUserAppService.AddInDBAsync"/>
-        public async Task AddInDBAsync(IEnumerable<UserFromDirectoryDto> users)
-        {
-            foreach (var user in users)
-            {
-                await this.GetCreateUserInfoAsync(user.Sid);
-            }
-        }
-
         /// <summary>
         /// Selects the default language.
         /// </summary>
@@ -317,7 +303,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userInfo.Language == null)
             {
                 // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == "default"))
+                userInfo.Language = this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }

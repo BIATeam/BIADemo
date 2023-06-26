@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Configuration;
     using System.Linq;
+    using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
@@ -16,6 +17,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
@@ -37,11 +40,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The logger.
         /// </summary>
         private readonly ILogger<AuthAppService> logger;
-
-        /// <summary>
-        /// The principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
 
         /// <summary>
         /// The JWT factory.
@@ -103,7 +101,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         public AuthAppService(
             IJwtFactory jwtFactory,
-            IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
             IUserAppService userAppService,
             ITeamAppService teamAppService,
@@ -114,7 +111,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
         {
             this.jwtFactory = jwtFactory;
-            this.principal = principal as BIAClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
             this.userAppService = userAppService;
             this.teamAppService = teamAppService;
@@ -137,14 +133,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(IIdentity identity, LoginParamDto loginParam)
         {
             // Check inputs parameter
-            string login, sid;
-            Guid guid;
-            this.CheckInputParameters(identity, out login, out sid, out guid);
+            string identityKey, sid, login;
+            ClaimsPrincipal claims = new ClaimsPrincipal(identity);
+            this.CheckIsAuthenticated(identity);
+            this.GetIdentityKey(identity, claims, out identityKey, out sid, out login);
 
             // Get user profil async
-            Task<UserProfileDto> userProfileTask = this.GetUserProfileTask(loginParam, login);
+            Task<UserProfileDto> userProfileTask = this.GetUserProfileTask(loginParam, identityKey);
 
             // Get userInfo
+// patchOneAD
             UserInfoDto userInfo = await (!string.IsNullOrWhiteSpace(sid) ? this.userAppService.GetUserInfoAsync(sid) : this.userAppService.GetUserInfoAsync(guid));
 
             var domain = identity.Name.Split('\\').FirstOrDefault();
@@ -156,19 +154,26 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get roles
             List<string> userRoles = await this.userDirectoryHelper.GetUserRolesAsync(principal: this.principal, userInfoDto: userInfo, sid: sid, domain: domain);
+/*=======
+            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+
+            // Get roles
+            List<string> userRoles = await this.GetUserRolesAsync(userInfoDto: userInfo, claims: claims, sid: sid);
+master*/
 
             // If the user has no role
             if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
-                throw new ForbiddenException("No roles found");
+                throw new UnauthorizedException("No roles found");
             }
 
-            if (!string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
+            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
             {
+                // automatic creation from ldap, only use if user do not need fine Role on team.
                 try
                 {
-                    userInfo = await this.userAppService.GetCreateUserInfoAsync(sid);
+                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(sid, identityKey);
                 }
                 catch (Exception ex)
                 {
@@ -196,13 +201,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 userInfo = new UserInfoDto
                 {
                     Login = login,
-                    FirstName = this.principal.GetUserFirstName(),
-                    LastName = this.principal.GetUserLastName(),
-                    Country = this.principal.GetUserCountry(),
+                    FirstName = ((ClaimsPrincipal)identity).GetClaimValue(ClaimTypes.GivenName),
+                    LastName = ((ClaimsPrincipal)identity).GetClaimValue(ClaimTypes.Surname),
+                    Country = ((ClaimsPrincipal)identity).GetClaimValue(ClaimTypes.Country),
                 };
-
-                this.userAppService.SelectDefaultLanguage(userInfo);
             }
+
+            this.userAppService.SelectDefaultLanguage(userInfo);
 
             if (userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin))
             {
@@ -257,13 +262,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <summary>
-        /// Checks the input parameters.
+        /// Checks if user is Authenticated.
         /// </summary>
         /// <param name="identity">The identity.</param>
-        /// <param name="login">The login.</param>
-        /// <param name="sid">The sid.</param>
-        /// <param name="guid">The unique identifier.</param>
-        private void CheckInputParameters(IIdentity identity, out string login, out string sid, out Guid guid)
+        private void CheckIsAuthenticated(IIdentity identity)
         {
             if (identity?.IsAuthenticated != true)
             {
@@ -278,22 +280,58 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 throw new UnauthorizedException();
             }
-
-            login = identity.Name?.Split('\\')?.LastOrDefault()?.ToUpper();
-            if (string.IsNullOrEmpty(login))
+            var domain = identity.Name.Split('\\').FirstOrDefault();
+            if (!this.configuration.Authentication.LdapDomains.Any(ld => ld.Name.Equals(domain)))
             {
-                this.logger.LogWarning("Unauthorized because bad login");
-                throw new BadRequestException("Incorrect login");
+                this.logger.LogInformation("Unauthorized because bad domain");
+                throw new UnauthorizedException();
             }
+        }
 
-            sid = this.principal.GetPrimarySid();
-            Guid.TryParse(this.principal.GetSid(), out guid);
+        /// <summary>
+        /// Checks the input parameters.
+        /// </summary>
+        /// <param name="identity">The identity.</param>
+        /// <param name="sid">The sid.</param>
+        /// <param name="login">The login.</param>
+        private void GetIdentityKey(IIdentity identity, ClaimsPrincipal claims, out string identityKey, out string sid, out string login)
+        { 
+            sid = this.GetSid(claims);
+
+            Guid guid = this.GetGuid(claims);
 
             if (string.IsNullOrWhiteSpace(sid) && guid == Guid.Empty)
             {
                 this.logger.LogWarning("Unauthorized because bad Sid");
                 throw new BadRequestException("Incorrect Sid");
             }
+
+            login = this.GetLogin(identity);
+            identityKey = login;
+        }
+
+        private string GetSid(ClaimsPrincipal claims)
+        {
+            return claims.GetClaimValue(ClaimTypes.PrimarySid);
+        }
+
+        private Guid GetGuid(ClaimsPrincipal claims)
+        {
+            Guid guid;
+            Guid.TryParse(claims.GetClaimValue(ClaimTypes.Sid), out guid);
+            return guid;
+        }
+
+        private string GetLogin(IIdentity identity)
+        {
+            var login = identity.Name?.Split('\\')?.LastOrDefault()?.ToUpper();
+            if (string.IsNullOrEmpty(login))
+            {
+                this.logger.LogWarning("Unauthorized because bad login");
+                throw new BadRequestException("Incorrect login");
+            }
+
+            return login;
         }
 
         /// <summary>

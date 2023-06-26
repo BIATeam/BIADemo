@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Authentication
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using BIA.Net.Core.Common.Helpers;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -60,6 +61,7 @@ namespace BIA.Net.Core.Domain.Authentication
             return this.GetClaimValue(ClaimTypes.Name);
         }
 
+   /*
         /// <summary>
         /// Gets the first name of the user.
         /// </summary>
@@ -123,15 +125,7 @@ namespace BIA.Net.Core.Domain.Authentication
             return this.GetClaimValues(CustomClaimTypes.Group);
         }
 
-        /// <summary>
-        /// Get the user rights in the claims.
-        /// This method is called GetUserPermissions while we retrieve the roles. Because we use this claim to store the permissions in the application token.
-        /// </summary>
-        /// <returns>The user rights.</returns>
-        public virtual IEnumerable<string> GetUserPermissions()
-        {
-            return this.GetClaimValues(ClaimTypes.Role);
-        }
+
 
         /// <summary>
         /// Get the user roles in the claims.
@@ -139,6 +133,16 @@ namespace BIA.Net.Core.Domain.Authentication
         /// </summary>
         /// <returns>The user roles.</returns>
         public virtual IEnumerable<string> GetRoles()
+        {
+            return this.GetClaimValues(ClaimTypes.Role);
+        }*/
+
+        /// <summary>
+        /// Get the user rights in the claims.
+        /// This method is called GetUserPermissions while we retrieve the roles. Because we use this claim to store the permissions in the application token.
+        /// </summary>
+        /// <returns>The user rights.</returns>
+        public virtual IEnumerable<string> GetUserPermissions()
         {
             return this.GetClaimValues(ClaimTypes.Role);
         }
@@ -163,36 +167,6 @@ namespace BIA.Net.Core.Domain.Authentication
             }
 
             return JsonConvert.DeserializeObject<T>(json);
-        }
-
-        /// <summary>
-        /// Gets the claim value.
-        /// </summary>
-        /// <param name="claimType">Type of the claim.</param>
-        /// <returns>The claim value.</returns>
-        protected virtual string GetClaimValue(string claimType)
-        {
-            if (!this.HasClaim(x => x.Type == claimType))
-            {
-                return string.Empty;
-            }
-
-            return this.FindFirst(x => x.Type == claimType).Value;
-        }
-
-        /// <summary>
-        /// Gets the claim values.
-        /// </summary>
-        /// <param name="claimType">Type of the claim.</param>
-        /// <returns>The claim values.</returns>
-        protected virtual IEnumerable<string> GetClaimValues(string claimType)
-        {
-            if (!this.HasClaim(x => x.Type == claimType))
-            {
-                return new List<string>();
-            }
-
-            return this.FindAll(x => x.Type == claimType).Select(s => s.Value).ToList();
         }
     }
 }

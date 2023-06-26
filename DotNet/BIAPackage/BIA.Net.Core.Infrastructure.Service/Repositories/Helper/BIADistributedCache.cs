@@ -26,26 +26,31 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// </summary>
         private readonly ILogger<BIADistributedCache> logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BIADistributedCache"/> class.
+        /// </summary>
+        /// <param name="cache">The distributed cache.</param>
+        /// <param name="logger">The logger</param>
         public BIADistributedCache(IDistributedCache cache, ILogger<BIADistributedCache> logger)
         {
-            distibutedCache = cache;
+            this.distibutedCache = cache;
             this.logger = logger;
         }
 
         public async Task Add<T>(string key, T item, double cacheDurationInMinute)
         {
-            byte[] encodedItemResolve = ObjectToByteArray(item);
+            byte[] encodedItemResolve = this.ObjectToByteArray(item);
             var options = new DistributedCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromMinutes(cacheDurationInMinute));
-            await distibutedCache.SetAsync(key, encodedItemResolve, options);
+            await this.distibutedCache.SetAsync(key, encodedItemResolve, options);
         }
 
         public async Task<T> Get<T>(string key)
         {
-            byte[] encodedItemResolve = await distibutedCache.GetAsync(key);
+            byte[] encodedItemResolve = await this.distibutedCache.GetAsync(key);
             if (encodedItemResolve != null)
             {
-                return ByteArrayToObject<T>(encodedItemResolve);
+                return this.ByteArrayToObject<T>(encodedItemResolve);
             }
 
             return default(T);
@@ -55,12 +60,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         {
             try
             {
-                await distibutedCache.RemoveAsync(key);
+                await this.distibutedCache.RemoveAsync(key);
             }
             catch (Exception ex)
             {
-                this.logger.LogError("BIADistributedCache.Remove Not in cache", ex);
                 // Not in cache
+                this.logger.LogError("BIADistributedCache.Remove Not in cache", ex);
             }
         }
 

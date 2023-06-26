@@ -15,8 +15,8 @@
         public string Domain { get; set; }
 
         /// <summary>
-        /// Gets or sets the GUID.
+        /// Gets or sets the sid.
         /// </summary>
-        public Guid Guid { get; set; }
+        public string Sid { get; set; }
     }
 }
