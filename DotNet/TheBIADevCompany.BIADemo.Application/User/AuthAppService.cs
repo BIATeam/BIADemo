@@ -145,7 +145,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
-                throw new ForbiddenException("No roles found");
+                throw new UnauthorizedException("No roles found");
             }
 
             if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
