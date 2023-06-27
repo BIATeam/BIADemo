@@ -41,8 +41,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private const string KeyPrefixCacheUserIdentityKey = "BIAUserIdentityKey:";
 
-        private const string KeyPrefixCacheGroup = "BIAGroupSid:";
-
         private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
         /// <summary>
@@ -665,12 +663,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        public async Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal principal, UserInfoDto userInfoDto, string sid, string domain)
+        public async Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain)
         {
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
 
-            List<string> memberOfs = principal?.GetGroups()?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            List<string> claimRoles = principal?.GetRoles()?.ToList() ?? new List<string>();
+            List<string> memberOfs = claimsPrincipal?.GetGroups()?.OrderBy(x => x)?.ToList() ?? new List<string>();
+            List<string> claimRoles = claimsPrincipal?.GetRoles()?.ToList() ?? new List<string>();
 
             var adRoles = new ConcurrentBag<string>();
 
@@ -773,7 +771,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<SidResolvedGroup> ResolveGroupMember(GroupDomainSid groupDomainSid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
-            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.sid);
+            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.Sid);
             if (itemResolve != null)
             {
                 return itemResolve;
@@ -795,7 +793,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 IgnoreForeignSecurityPrincipal = true;
             }
 
-            DomainGroupPrincipal subGroupPrincipal = await ResolveGroupPrincipal(new string[] { groupDomainSid.Domain }, groupDomainSid.Sid);
+            DomainGroupPrincipal subGroupPrincipal = ResolveGroupPrincipal(new string[] { groupDomainSid.Domain }, groupDomainSid.Sid);
 
             if (subGroupPrincipal.groupPrincipal != null)
             {
@@ -938,19 +936,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return null;
         }
 
-// patchOneAD
         private GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
         {
             GroupDomainSid memberGroupSid = null;
-            DomainGroupPrincipal testIsGroup = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
-            if (isForeignSecurity)
-            {
-                testIsGroup = ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid).Result;
-            }
-            else
-            {
-                testIsGroup = ResolveGroupPrincipal(new string[] { currentDomain }, memberSid).Result;
-            }
+            DomainGroupPrincipal testIsGroup = isForeignSecurity?
+                ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid): 
+                ResolveGroupPrincipal(new string[] { currentDomain }, memberSid);
+
             if (testIsGroup.groupPrincipal != null)
             {
                 memberGroupSid = new GroupDomainSid() { Sid = memberSid, Domain = testIsGroup.domain };
@@ -1000,7 +992,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         Dictionary<string, DomainGroupPrincipal> cacheGroupPrincipal = new Dictionary<string, DomainGroupPrincipal>();
         object syncLocalGroupPrincipal = new Object();
-        private async Task<DomainGroupPrincipal> ResolveGroupPrincipal(string[] groupDomains, string sid)
+        private DomainGroupPrincipal ResolveGroupPrincipal(string[] groupDomains, string sid)
         {
             DomainGroupPrincipal domainGroupPrincipal = new DomainGroupPrincipal() { domain = null, groupPrincipal = null };
             lock (syncLocalGroupPrincipal)
@@ -1048,8 +1040,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return domainGroupPrincipal;
         }
 
-        public async Task<TUserFromDirectory> ResolveUserBySid(string sid)
-/*=======
         public async Task<TUserFromDirectory> ResolveUserBySid(string sid, bool forceRefresh = false)
         {
             string KeyCache = KeyPrefixCacheUserSid + sid;
@@ -1057,7 +1047,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         public async Task<TUserFromDirectory> ResolveUserByIdentityKey(string identityKey, bool forceRefresh = false)
- master*/
         {
             string KeyCache = KeyPrefixCacheUserIdentityKey + identityKey;
             return await ResolveUser(KeyCache, GetIdentityKeyType(), identityKey, forceRefresh);

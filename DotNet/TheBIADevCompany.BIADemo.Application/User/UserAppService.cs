@@ -105,10 +105,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
-        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string identityKey)
+        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string identityKey)
         {
             // if user is not found in DB, try to synchronize from AD.
-            UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserBySid(sid);
+            UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
 
             if (userAD != null)
             {

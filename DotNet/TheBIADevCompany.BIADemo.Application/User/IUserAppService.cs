@@ -28,10 +28,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Gets user info with its sid and create if not exist.
         /// </summary>
-        /// <param name="sid">The sid to search in ldap with.</param>
         /// <param name="identityKey">The loginInIdentity to check in ldap.</param>
         /// <returns>The user.</returns>
-        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string sid, string identityKey);
+        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string identityKey);
 
         /// <summary>
         /// Gets user info with its login.

@@ -16,9 +16,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Logins the on teams asynchronous.
         /// </summary>
-        /// <param name="identity">The identity.</param>
         /// <param name="loginParam">The login parameter.</param>
         /// <returns>AuthInfo.</returns>
-        Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(IIdentity identity, LoginParamDto loginParam);
+        Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
     }
 }

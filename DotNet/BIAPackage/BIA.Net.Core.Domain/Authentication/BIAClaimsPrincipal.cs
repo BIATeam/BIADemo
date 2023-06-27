@@ -61,61 +61,6 @@ namespace BIA.Net.Core.Domain.Authentication
             return this.GetClaimValue(ClaimTypes.Name);
         }
 
-   /*
-        /// <summary>
-        /// Gets the first name of the user.
-        /// </summary>
-        /// <returns>The first name.</returns>
-        public virtual string GetUserFirstName()
-        {
-            return this.GetClaimValue(ClaimTypes.GivenName);
-        }
-
-        /// <summary>
-        /// Gets the last name of the user.
-        /// </summary>
-        /// <returns>The last name.</returns>
-        public virtual string GetUserLastName()
-        {
-            return this.GetClaimValue(ClaimTypes.Surname);
-        }
-
-        /// <summary>
-        /// Gets the user country.
-        /// </summary>
-        /// <returns>The user country.</returns>
-        public virtual string GetUserCountry()
-        {
-            return this.GetClaimValue(ClaimTypes.Country);
-        }
-
-        /// <summary>
-        /// Gets the user email.
-        /// </summary>
-        /// <returns>The user email.</returns>
-        public virtual string GetUserEmail()
-        {
-            return this.GetClaimValue(ClaimTypes.Email);
-        }
-
-        /// <summary>
-        /// Gets the sid.
-        /// </summary>
-        /// <returns>The sid.</returns>
-        public virtual string GetSid()
-        {
-            return this.GetClaimValue(ClaimTypes.Sid);
-        }
-
-        /// <summary>
-        /// Gets the primary sid.
-        /// </summary>
-        /// <returns>The primary sid.</returns>
-        public virtual string GetPrimarySid()
-        {
-            return this.GetClaimValue(ClaimTypes.PrimarySid);
-        }
-
         /// <summary>
         /// Gets list of groups where the user is a member.
         /// </summary>
@@ -125,8 +70,6 @@ namespace BIA.Net.Core.Domain.Authentication
             return this.GetClaimValues(CustomClaimTypes.Group);
         }
 
-
-
         /// <summary>
         /// Get the user roles in the claims.
         /// This method is used to retrieve the roles contained in the token provided by the IdP.
@@ -135,7 +78,7 @@ namespace BIA.Net.Core.Domain.Authentication
         public virtual IEnumerable<string> GetRoles()
         {
             return this.GetClaimValues(ClaimTypes.Role);
-        }*/
+        }
 
         /// <summary>
         /// Get the user rights in the claims.
