@@ -63,10 +63,16 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// </summary>
         public int SiteId { get; set; }
 
+
         /// <summary>
-        /// Gets or sets the list of connecting airports.
+        /// Gets or sets the list of connecting airports. Direct access.
         /// </summary>
-        public ICollection<PlaneAirport> ConnectingAirports { get; set; }
+        public ICollection<Airport> ConnectingAirports { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of connecting airports. Via the jointure table.
+        /// </summary>
+        public ICollection<PlaneAirport> ConnectingPlaneAirports { get; set; }
 
         /// <summary>
         /// Gets or sets the  plane type.

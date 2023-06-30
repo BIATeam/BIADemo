@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.SyncTime, plane => plane.SyncTime },
                     { HeaderName.Capacity, plane => plane.Capacity },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
-                    { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Airport.Name).OrderBy(x => x) },
+                    { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                 };
             }
         }
@@ -70,17 +70,17 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.AirportId == airportDto.Id && x.PlaneId == dto.Id);
+                    var connectingAirport = entity.ConnectingPlaneAirports.FirstOrDefault(x => x.AirportId == airportDto.Id && x.PlaneId == dto.Id);
                     if (connectingAirport != null)
                     {
-                        entity.ConnectingAirports.Remove(connectingAirport);
+                        entity.ConnectingPlaneAirports.Remove(connectingAirport);
                     }
                 }
 
-                entity.ConnectingAirports = entity.ConnectingAirports ?? new List<PlaneAirport>();
+                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
                 foreach (var airportDto in dto.ConnectingAirports.Where(w => w.DtoState == DtoState.Added))
                 {
-                    entity.ConnectingAirports.Add(new PlaneAirport
+                    entity.ConnectingPlaneAirports.Add(new PlaneAirport
                     { AirportId = airportDto.Id, PlaneId = dto.Id });
                 }
             }
@@ -111,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 : null,
 
                 // Mapping relationship *-* : ICollection<Airports>
-                ConnectingAirports = entity.ConnectingAirports.Select(ca => new OptionDto
+                ConnectingAirports = entity.ConnectingPlaneAirports.Select(ca => new OptionDto
                 {
                     Id = ca.Airport.Id,
                     Display = ca.Airport.Name,

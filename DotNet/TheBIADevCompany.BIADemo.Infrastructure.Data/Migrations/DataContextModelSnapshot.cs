@@ -521,10 +521,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneAirport", b =>
                 {
-                    b.Property<int>("PlaneId")
+                    b.Property<int>("AirportId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AirportId")
+                    b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -532,9 +532,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("PlaneId", "AirportId");
+                    b.HasKey("AirportId", "PlaneId");
 
-                    b.HasIndex("AirportId");
+                    b.HasIndex("PlaneId");
 
                     b.ToTable("PlaneAirport");
                 });
@@ -1593,13 +1593,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneAirport", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "Airport")
-                        .WithMany("ClientPlanes")
+                        .WithMany("ClientPlaneAirports")
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
-                        .WithMany("ConnectingAirports")
+                        .WithMany("ConnectingPlaneAirports")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1809,12 +1809,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", b =>
                 {
-                    b.Navigation("ClientPlanes");
+                    b.Navigation("ClientPlaneAirports");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
                 {
-                    b.Navigation("ConnectingAirports");
+                    b.Navigation("ConnectingPlaneAirports");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>

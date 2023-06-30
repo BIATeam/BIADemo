@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
@@ -22,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreatePlaneModel(modelBuilder);
             CreatePlaneTypeModel(modelBuilder);
             CreateAirportModel(modelBuilder);
-            CreatePlanesAirportsModel(modelBuilder);
         }
 
         /// <summary>
@@ -40,6 +40,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().Property(p => p.DeliveryDate).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.SyncTime).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.Capacity).IsRequired();
+            modelBuilder.Entity<Plane>()
+                .HasMany(p => p.ConnectingAirports)
+                .WithMany(a => a.ClientPlanes)
+                .UsingEntity<PlaneAirport>();
         }
 
         /// <summary>
@@ -62,18 +66,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Airport>().HasKey(p => p.Id);
             modelBuilder.Entity<Airport>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<Airport>().Property(p => p.City).IsRequired().HasMaxLength(64);
-        }
-
-        /// <summary>
-        /// Create the model link many to many beetween Planes and Airports.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        private static void CreatePlanesAirportsModel(ModelBuilder modelBuilder)
-        {
-            // relationship *-*
-            modelBuilder.Entity<PlaneAirport>().HasKey(x => new { x.PlaneId, x.AirportId });
-            modelBuilder.Entity<PlaneAirport>().HasOne(x => x.Plane).WithMany(y => y.ConnectingAirports).HasForeignKey(x => x.PlaneId);
-            modelBuilder.Entity<PlaneAirport>().HasOne(x => x.Airport).WithMany(y => y.ClientPlanes).HasForeignKey(x => x.AirportId);
         }
     }
 }

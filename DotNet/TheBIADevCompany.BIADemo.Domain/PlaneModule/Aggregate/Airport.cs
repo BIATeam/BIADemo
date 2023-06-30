@@ -33,8 +33,13 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public string City { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of planes using the airport.
+        /// Gets or sets the list of planes using the airport. Direct access.
         /// </summary>
-        public ICollection<PlaneAirport> ClientPlanes { get; set; }
+        public ICollection<Plane> ClientPlanes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of planes using the airport. Via the jointure table.
+        /// </summary>
+        public ICollection<PlaneAirport> ClientPlaneAirports { get; set; }
     }
 }
