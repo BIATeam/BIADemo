@@ -70,10 +70,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.ConnectingPlaneAirports.FirstOrDefault(x => x.AirportId == airportDto.Id && x.PlaneId == dto.Id);
+                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id );
                     if (connectingAirport != null)
                     {
-                        entity.ConnectingPlaneAirports.Remove(connectingAirport);
+                        entity.ConnectingAirports.Remove(connectingAirport);
                     }
                 }
 
@@ -111,10 +111,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 : null,
 
                 // Mapping relationship *-* : ICollection<Airports>
-                ConnectingAirports = entity.ConnectingPlaneAirports.Select(ca => new OptionDto
+                ConnectingAirports = entity.ConnectingAirports.Select(ca => new OptionDto
                 {
-                    Id = ca.Airport.Id,
-                    Display = ca.Airport.Name,
+                    Id = ca.Id,
+                    Display = ca.Name,
                 }).OrderBy(x => x.Display).ToList(),
             };
         }
