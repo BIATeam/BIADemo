@@ -321,11 +321,10 @@
         "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
         "Roles": [ "Admin", "UserManager" ]
       },
-
       // View
       {
         "Name": "View_List",
-        "Roles": [ "User" ]
+        "Roles": [ "Admin", "User" ]
       },
       {
         "Names": [ "View_Add_UserView", "View_Update_UserView", "View_Delete_UserView", "View_Set_Default_UserView" ],
