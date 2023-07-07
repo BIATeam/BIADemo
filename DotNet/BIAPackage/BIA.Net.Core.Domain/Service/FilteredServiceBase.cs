@@ -146,7 +146,6 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
-        /// <typeparam name="TKey">The type of key to sort.</typeparam>
         /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
         /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="id">The id.</param>
@@ -191,6 +190,21 @@ namespace BIA.Net.Core.Domain.Service
                 isReadOnlyMode: isReadOnlyMode);
         }
 
+        /// <summary>
+        /// Get a csv encoding file.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <typeparam name="TOtherFilterDto">Other Filters type.</typeparam>
+        /// <param name="filters">Other Filters Query.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used for Filtering Query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
@@ -374,6 +388,16 @@ namespace BIA.Net.Core.Domain.Service
             return dto;
         }
 
+        /// <summary>
+        /// Remove several entity with its identifier.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="ids">List of the identifiers.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The deleted DTOs.</returns>
         public virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
@@ -391,6 +415,16 @@ namespace BIA.Net.Core.Domain.Service
             return dtos;
         }
 
+        /// <summary>
+        /// Save several entity with its identifier.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtos">List of the dtos to save.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The saved DTOs.</returns>
         public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             string accessMode = null,
@@ -420,7 +454,12 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Save a DTO in DB regarding to its state.
         /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dto">The dto to save.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
@@ -463,6 +502,107 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// Add quickly hudge number of element.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">The list of element to add.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                await this.Repository.UnitOfWork.AddBulkAsync(entity);
+            }
+        }
+
+        /// <summary>
+        /// Update quickly hudge number of element.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">The list of element to update.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                await this.Repository.UnitOfWork.UpdateBulkAsync(entity);
+            }
+        }
+
+        /// <summary>
+        /// Remove quickly hudge number of element.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="dtoList">The list of element to remove.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            if (dtoList != null)
+            {
+                var entity = new List<TEntity>();
+
+                foreach (var item in dtoList)
+                {
+                    var converted = new TEntity();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                    mapper.DtoToEntity(item, converted);
+                    entity.Add(converted);
+                }
+
+                await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
+            }
+        }
+
+        /// <summary>
+        /// Delete quickly hudge number of element by id.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <param name="idList">The list of id of element to delete.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        {
+            var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
+            if (entity == null)
+            {
+                throw new ElementNotFoundException();
+            }
+
+            await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
+        }
+
+        /// <summary>
         /// Get the paging order.
         /// </summary>
         /// <param name="collection">The expression collection of entity.</param>
@@ -485,6 +625,7 @@ namespace BIA.Net.Core.Domain.Service
         /// Returns the filter to apply to the context for specify acces mode.
         /// </summary>
         /// <param name="mode">Precise the usage (All/Read/Write).</param>
+        /// <param name="filtersContext">The filter for context.</param>
         /// <returns>The result mapped to the specified type.</returns>
         protected virtual Specification<TEntity> GetFilterSpecification(string mode, Dictionary<string, Specification<TEntity>> filtersContext)
         {
@@ -513,77 +654,6 @@ namespace BIA.Net.Core.Domain.Service
             }
 
             return null;
-        }
-
-        public virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
-            where TOtherDto : BaseDto<TKey>, new()
-        {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.AddBulkAsync(entity);
-            }
-        }
-
-        public virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
-            where TOtherDto : BaseDto<TKey>, new()
-        {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.UpdateBulkAsync(entity);
-            }
-        }
-
-        public virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
-            where TOtherDto : BaseDto<TKey>, new()
-        {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
-            }
-        }
-
-        public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
-        {
-            var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
-            await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
         }
     }
 }
