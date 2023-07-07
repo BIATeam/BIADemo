@@ -4,10 +4,10 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using System.Collections.Generic;
 
     /// <summary>
     /// The BIA Net section.
@@ -53,7 +53,6 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the authentication configuration.
         /// </summary>
         public Jwt Jwt { get; set; }
-
 
         /// <summary>
         /// Gets or sets the Roles configuration.

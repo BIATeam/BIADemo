@@ -8,9 +8,9 @@ namespace BIA.Net.Core.Domain.Specification
     using System.Linq.Expressions;
 
     /// <summary>
-    /// True specification
+    /// True specification.
     /// </summary>
-    /// <typeparam name="TEntity">Type of entity in this specification</typeparam>
+    /// <typeparam name="TEntity">Type of entity in this specification.</typeparam>
     public sealed class TrueSpecification<TEntity> : Specification<TEntity>
         where TEntity : class
     {

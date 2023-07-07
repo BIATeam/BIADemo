@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     /// <summary>
     /// The API controller used to manage AircraftMaintenanceCompanies.
     /// </summary>
- #if !UseHubForClientInAircraftMaintenanceCompany
+#if !UseHubForClientInAircraftMaintenanceCompany
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "UseHubForClientInAircraftMaintenanceCompany not set")]
 #endif
     public class AircraftMaintenanceCompaniesController : BiaControllerBase

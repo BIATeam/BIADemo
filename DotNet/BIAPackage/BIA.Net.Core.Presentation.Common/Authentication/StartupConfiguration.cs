@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         public const string JwtBearerDefault = "Default";
 
         /// <summary>
-        /// The JWT bearer keycloak
+        /// The JWT bearer keycloak.
         /// </summary>
         public const string JwtBearerIdentityProvider = "IdentityProvider";
 
@@ -41,6 +41,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
+
             // Configure JwtIssuerOptions
             services.Configure<Jwt>(options =>
             {
@@ -99,49 +100,51 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
 
                 authenticationBuilder.AddJwtBearer(JwtBearerIdentityProvider, o =>
                 {
-                    if (configuration?.Security?.DisableTlsVerify == true)
+                    if (configuration != null)
                     {
+                        if (configuration.Security?.DisableTlsVerify == true)
+                        {
 #pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
-                        o.BackchannelHttpHandler = new System.Net.Http.HttpClientHandler { ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true };
+                            o.BackchannelHttpHandler = new System.Net.Http.HttpClientHandler { ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, certChain, policyErrors) => true };
 #pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
-                    }
+                        }
 
-                    if (configuration.Authentication.Keycloak.Configuration?.Authority?.StartsWith("http", StringComparison.InvariantCultureIgnoreCase) == true)
-                    {
-                        o.Authority = configuration.Authentication.Keycloak.Configuration.Authority;
-                    }
-                    else
-                    {
-                        o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
-                    }
+                        if (configuration.Authentication.Keycloak.Configuration?.Authority?.StartsWith("http", StringComparison.InvariantCultureIgnoreCase) == true)
+                        {
+                            o.Authority = configuration.Authentication.Keycloak.Configuration.Authority;
+                        }
+                        else
+                        {
+                            o.Authority = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority;
+                        }
 
-                    o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+                        o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+
+                        o.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html
+                            // JWT signature is validated without providing any key or certification in our service’s source code.
+                            // JWT signing key is retrieved from the well-known URL, based on Authority property. (MetadataAddress = Authority + '/.well-known/openid-configuration')
+                            // The signing key is cached in the singleton instance, and so our ASP.NET Core service only needs to retrieve it once throughout its lifecycle.JwtBearerHandler
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                            ValidateIssuerSigningKey = true,
+                            ValidateLifetime = true,
+                            RequireExpirationTime = true,
+                            RequireSignedTokens = true,
+                            RequireAudience = true,
+                        };
+                    }
 
                     o.IncludeErrorDetails = true;
-
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html
-                        // JWT signature is validated without providing any key or certification in our service’s source code.
-                        // JWT signing key is retrieved from the well-known URL, based on Authority property. (MetadataAddress = Authority + '/.well-known/openid-configuration')
-                        // The signing key is cached in the singleton instance, and so our ASP.NET Core service only needs to retrieve it once throughout its lifecycle.JwtBearerHandler
-
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        RequireExpirationTime = true,
-                        RequireSignedTokens = true,
-                        RequireAudience = true,
-                    };
 
                     o.Events = jwtBearerEvents;
                 });
             }
             else
             {
-                authenticationBuilder.AddNegotiate(); // force user to be authenticated if no jwt 
+                authenticationBuilder.AddNegotiate(); // force user to be authenticated if no jwt
             }
 
             // api user claim policy

@@ -41,7 +41,7 @@ namespace BIA.Net.Core.Application.Authentication
         {
             this.jwt = jwtOptions.Value;
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwt.SecretKey));
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.jwt.SecretKey));
             this.signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             ThrowIfInvalidOptions(this.jwt);
@@ -52,19 +52,20 @@ namespace BIA.Net.Core.Application.Authentication
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateAudience = false, // you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = this.signingCredentials.Key,
-                ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
+                ValidateLifetime = false, // here we are saying that we don't care about the token's expiration date
             };
             try
             {
                 var principal = tokenHandler.ValidateToken(Token, tokenValidationParameters, out var validatedToken);
-                if (!ValidateSecurityAlgorithm(validatedToken))
+                if (!this.ValidateSecurityAlgorithm(validatedToken))
                 {
                     return null;
-                };
+                }
+;
                 return principal;
             }
             catch (Exception)
@@ -88,6 +89,7 @@ namespace BIA.Net.Core.Application.Authentication
             {
                 claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));
             }
+
             return new ClaimsIdentity(new GenericIdentity(tokenDto.Login, "Token"), claims);
         }
 
@@ -117,7 +119,7 @@ namespace BIA.Net.Core.Application.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
-        public async Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool lightToken) 
+        public async Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool lightToken)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto
         {
@@ -127,11 +129,11 @@ namespace BIA.Net.Core.Application.Authentication
                 throw new Exception("Unauthorized because claimsIdentity is null");
             }
 
-            var response = new AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>
+            var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
                 UncryptedToken = lightToken ? null : tokenDto,
-                AdditionalInfos = lightToken? null : additionalInfos,
+                AdditionalInfos = lightToken ? null : additionalInfos,
             };
 
             return response;

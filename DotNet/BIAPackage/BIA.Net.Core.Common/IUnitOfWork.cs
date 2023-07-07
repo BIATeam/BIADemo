@@ -41,18 +41,27 @@ namespace BIA.Net.Core.Common
         /// Bulk method to add a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class;
 
         /// <summary>
         /// Bulk method to update a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class;
 
         /// <summary>
         /// Bulk method to remove a list of item.
         /// </summary>
         /// <param name="items">The items.</param>
-        Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class;
+        /// <typeparam name="TEntity">The entity type.</typeparam>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class;
     }
 }

@@ -18,6 +18,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <returns>AuthInfo.</returns>
-        Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
+        Task<AuthInfoDto<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
     }
 }

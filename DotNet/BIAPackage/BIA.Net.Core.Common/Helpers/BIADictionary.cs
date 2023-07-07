@@ -19,17 +19,7 @@ namespace BIA.Net.Core.Common
         /// The internal dictionary.
         /// </summary>
         protected readonly Dictionary<string, TElem> internalDictionary
-            = new(StringComparer.InvariantCultureIgnoreCase);
-
-        /// <summary>
-        /// Adds the specified key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="expression">The expression.</param>
-        public void Add(string key, TElem elem)
-        {
-            this.internalDictionary.Add(key, elem);
-        }
+            = new (StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets or sets the <see cref="TElem"/> with the specified key.
@@ -48,6 +38,16 @@ namespace BIA.Net.Core.Common
             {
                 this.internalDictionary[key] = value;
             }
+        }
+
+        /// <summary>
+        /// Adds the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="expression">The expression.</param>
+        public void Add(string key, TElem elem)
+        {
+            this.internalDictionary.Add(key, elem);
         }
 
         /// <summary>

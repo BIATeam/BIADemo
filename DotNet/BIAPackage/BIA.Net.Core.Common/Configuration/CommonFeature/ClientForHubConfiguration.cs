@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// <copyright file="ClientForHubConfiguration.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
 namespace BIA.Net.Core.Common.Configuration.CommonFeature
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class ClientForHubConfiguration
     {
         /// <summary>
@@ -15,6 +18,5 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Url to join the SignalR Hub.
         /// </summary>
         public string SignalRUrl { get; set; }
-
     }
 }

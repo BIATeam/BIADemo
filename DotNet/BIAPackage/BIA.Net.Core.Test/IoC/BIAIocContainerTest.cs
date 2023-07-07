@@ -3,6 +3,8 @@
 // </copyright>
 namespace BIA.Net.Core.Test.IoC
 {
+    using System;
+    using System.Security.Principal;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
@@ -12,8 +14,6 @@ namespace BIA.Net.Core.Test.IoC
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
-    using System;
-    using System.Security.Principal;
 
     /// <summary>
     /// IoC container used for unit tests.
@@ -23,7 +23,6 @@ namespace BIA.Net.Core.Test.IoC
         static Mock<IHubClients> mockClients;
         static Mock<IClientProxy> mockClientProxy;
         static Mock<IHubContext<HubForClients>> hubContext;
-
 
         /// <summary>
         /// The method used to register all instances for unit test purposes.
@@ -37,8 +36,6 @@ namespace BIA.Net.Core.Test.IoC
 
             ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(services);
             ConfigureInfrastructureServiceContainerTest(services);
-
-
         }
 
         /// <summary>

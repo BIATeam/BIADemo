@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
-            this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
         /// <inheritdoc/>

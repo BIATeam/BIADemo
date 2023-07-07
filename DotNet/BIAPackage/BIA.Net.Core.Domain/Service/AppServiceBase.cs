@@ -11,6 +11,8 @@ namespace BIA.Net.Core.Domain.Service
     /// <summary>
     /// The base class for all application service.
     /// </summary>
+    /// <typeparam name="TEntity">Entity type.</typeparam>
+    /// <typeparam name="TKey">Primary key type for the entity.</typeparam>
     public abstract class AppServiceBase<TEntity, TKey>
                 where TEntity : class, IEntity<TKey>
     {
@@ -20,7 +22,7 @@ namespace BIA.Net.Core.Domain.Service
         protected UserContext userContext = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBase"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         protected AppServiceBase(ITGenericRepository<TEntity, TKey> repository)
@@ -34,11 +36,11 @@ namespace BIA.Net.Core.Domain.Service
         protected ITGenericRepository<TEntity, TKey> Repository { get; }
 
         /// <summary>
-        /// Init the mapper and the user context
+        /// Init the mapper and the user context.
         /// </summary>
-        /// <typeparam name="TOtherDto"></typeparam>
-        /// <typeparam name="TOtherMapper"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="TOtherDto">Dto type.</typeparam>
+        /// <typeparam name="TOtherMapper">Dto to entity mapper type.</typeparam>
+        /// <returns>The mapper.</returns>
         protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
@@ -48,6 +50,7 @@ namespace BIA.Net.Core.Domain.Service
             {
                 mapper.UserContext = this.userContext;
             }
+
             return mapper;
         }
     }

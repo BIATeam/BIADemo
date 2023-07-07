@@ -9,7 +9,6 @@ namespace BIA.Net.Core.Common.Helpers
 
     public static class ClaimsPrincipalExtensions
     {
-
         /// <summary>
         /// Gets the claim value.
         /// </summary>

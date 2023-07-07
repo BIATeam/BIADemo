@@ -1,4 +1,4 @@
-﻿// <copyright file="Authentication.cs" company="BIA">
+﻿// <copyright file="Security.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 

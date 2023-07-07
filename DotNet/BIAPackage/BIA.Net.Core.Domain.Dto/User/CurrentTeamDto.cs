@@ -4,8 +4,8 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using BIA.Net.Core.Domain.Dto.Option;
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// UserData Dto.
@@ -14,11 +14,12 @@ namespace BIA.Net.Core.Domain.Dto.User
     {
         public CurrentTeamDto()
         {
-            TeamTypeId = 0;
-            TeamId = 0;
-            TeamTitle = "";
-            CurrentRoleIds = new List<int>();
+            this.TeamTypeId = 0;
+            this.TeamId = 0;
+            this.TeamTitle = string.Empty;
+            this.CurrentRoleIds = new List<int>();
         }
+
         /// <summary>
         /// Gets or sets the current site identifier.
         /// </summary>

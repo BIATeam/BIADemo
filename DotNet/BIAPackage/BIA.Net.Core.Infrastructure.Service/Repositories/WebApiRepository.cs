@@ -127,8 +127,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Post the T asynchronous.
         /// </summary>
-        /// <typeparam name="T">Type of result.</typeparam>
-        /// <typeparam name="U">Type of body.</typeparam>
+        /// <typeparam name="TResult">Type of result.</typeparam>
+        /// <typeparam name="TBody">Type of body.</typeparam>
         /// <param name="url">The URL.</param>
         /// <param name="body">The body.</param>
         /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
@@ -136,7 +136,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>
         /// Result, IsSuccessStatusCode, ReasonPhrase.
         /// </returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<T, U>(string url, U body, bool useBearerToken = false, bool isFormUrlEncoded = false)
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult, TBody>(string url, TBody body, bool useBearerToken = false, bool isFormUrlEncoded = false)
         {
             if (!string.IsNullOrWhiteSpace(url) && body != null)
             {
@@ -167,17 +167,17 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    T result = this.DeserializeIfRequired<T>(res);
+                    TResult result = this.DeserializeIfRequired<TResult>(res);
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else
                 {
                     this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
-                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
+                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }
             }
 
-            return (default(T), default(bool), default(string));
+            return (default(TResult), default(bool), default(string));
         }
 
         /// <summary>

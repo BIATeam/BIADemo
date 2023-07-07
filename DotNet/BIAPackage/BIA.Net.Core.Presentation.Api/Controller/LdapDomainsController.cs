@@ -39,7 +39,7 @@ namespace BIA.Net.Presentation.Api.Controllers
         /// <returns>The list of LDAP domains.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = BIARights.LdapDomains.List)]
+        [Authorize(Roles = BiaRights.LdapDomains.List)]
         public IActionResult GetAll()
         {
             IEnumerable<LdapDomain> ldapDomains = this.configuration?.Authentication?.LdapDomains?.Where(o => o.ContainsUser);

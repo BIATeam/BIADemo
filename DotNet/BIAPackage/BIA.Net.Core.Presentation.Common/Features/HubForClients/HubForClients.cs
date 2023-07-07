@@ -1,11 +1,12 @@
-﻿
-
+﻿// <copyright file="HubForClients.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
 namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
 {
+    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using Microsoft.AspNetCore.SignalR;
     using Newtonsoft.Json;
-    using System.Threading.Tasks;
 
     public class HubForClients : Hub
     {
@@ -27,24 +28,24 @@ namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
             TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
             if (string.IsNullOrEmpty(targetedFeature.ParentKey))
             {
-                return Groups.AddToGroupAsync(Context.ConnectionId, targetedFeature.FeatureName);
+                return this.Groups.AddToGroupAsync(this.Context.ConnectionId, targetedFeature.FeatureName);
             }
             else
             {
-                return Groups.AddToGroupAsync(Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
+                return this.Groups.AddToGroupAsync(this.Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
             }
         }
+
         public Task LeaveGroup(string sTargetedFeature)
         {
             TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
             if (string.IsNullOrEmpty(targetedFeature.ParentKey))
             {
-                return Groups.RemoveFromGroupAsync(Context.ConnectionId, targetedFeature.FeatureName);
+                return this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, targetedFeature.FeatureName);
             }
             else
             {
-                return Groups.RemoveFromGroupAsync(Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
-
+                return this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, targetedFeature.ParentKey.ToString() + ">" + targetedFeature.FeatureName);
             }
         }
     }

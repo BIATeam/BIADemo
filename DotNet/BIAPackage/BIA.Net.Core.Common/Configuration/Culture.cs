@@ -1,4 +1,4 @@
-﻿// <copyright file="Language.cs" company="BIA">
+﻿// <copyright file="Culture.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 

@@ -1,4 +1,4 @@
-﻿// <copyright file="Rights.cs" company="BIA">
+﻿// <copyright file="BIARights.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Common
     /// <summary>
     /// The list of all rights.
     /// </summary>
-    public static class BIARights
+    public static class BiaRights
     {
         /// <summary>
         /// The LDAP domains rights.

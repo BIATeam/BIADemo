@@ -3,34 +3,40 @@
 // </copyright>
 namespace BIA.Net.Core.Domain.Service
 {
-    using Microsoft.Extensions.Primitives;
-    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using Microsoft.Extensions.Primitives;
+    using Newtonsoft.Json;
 
     /// <summary>
-    /// A <see cref="ClaimsPrincipal"/> implementation with additional utility methods.
+    /// A <see cref="UserContext"/> implementation with additional utility methods.
     /// </summary>
-    /// <seealso cref="ClaimsPrincipal" />
     public class UserContext
     {
-        public string Culture { get; private set; }
-        public string Language { get; private set; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
+        /// Initializes a new instance of the <see cref="UserContext"/> class.
         /// </summary>
-        /// <param name="principal">The base principal.</param>
-        public UserContext(string acceptedLanguage)
+        /// <param name="culture">The default culture.</param>
+        public UserContext(string culture)
         {
-            Culture = acceptedLanguage;
-            Language = Culture.Split(",")[0].Split("-")[0];
-            if (String.IsNullOrEmpty(Language) || Language.Count() != 2)
+            this.Culture = culture;
+            this.Language = this.Culture.Split(",")[0].Split("-")[0];
+            if (string.IsNullOrEmpty(this.Language) || this.Language.Count() != 2)
             {
-                Language = "en";
+                this.Language = "en";
             }
         }
+
+        /// <summary>
+        /// Culture.
+        /// </summary>
+        public string Culture { get; private set; }
+
+        /// <summary>
+        /// Language.
+        /// </summary>
+        public string Language { get; private set; }
     }
 }

@@ -1,4 +1,4 @@
-// <copyright file="PermissionOptionMapper.cs" company="TheBIADevCompany">
+// <copyright file="LanguageOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Domain.RepoContract
+﻿// <copyright file="IUserFromDirectory.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Domain.RepoContract
 {
     using System;
 

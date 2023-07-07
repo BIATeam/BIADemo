@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Common.Configuration.ApiFeature
+﻿// <copyright file="ApiFeatures.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
     public class ApiFeatures
     {
@@ -13,7 +17,7 @@
         public HubForClientsConfiguration HubForClients { get; set; }
 
         /// <summary>
-        /// Gets or sets the Hangfire dashboard feature configuration
+        /// Gets or sets the Hangfire dashboard feature configuration.
         /// </summary>
         public HangfireDashboardConfiguration HangfireDashboard { get; set; }
 

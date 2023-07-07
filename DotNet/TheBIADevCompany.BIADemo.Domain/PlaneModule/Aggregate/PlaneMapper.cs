@@ -70,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id );
+                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id);
                     if (connectingAirport != null)
                     {
                         entity.ConnectingAirports.Remove(connectingAirport);

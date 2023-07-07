@@ -1,4 +1,4 @@
-﻿// <copyright file="BiaControllerBase.cs" company="BIA">
+﻿// <copyright file="BiaControllerBaseNoToken.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 

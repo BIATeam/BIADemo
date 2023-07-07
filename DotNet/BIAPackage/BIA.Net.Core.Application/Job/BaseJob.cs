@@ -13,11 +13,10 @@ namespace BIA.Net.Core.Application.Job
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
-
     /// <summary>
     /// The base Job Service.
     /// </summary>
-    public abstract class BaseJob 
+    public abstract class BaseJob
     {
         /// <summary>
         /// The project name.
@@ -46,7 +45,6 @@ namespace BIA.Net.Core.Application.Job
             this.projectName = this.Configuration["Project:Name"];
         }
 
-
         /// <summary>
         /// Execute the purpose of this job.
         /// </summary>
@@ -57,7 +55,7 @@ namespace BIA.Net.Core.Application.Job
             this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Begin " + taskName);
             try
             {
-                Task t = Task.Run(() => RunMonitoredTask());
+                Task t = Task.Run(() => this.RunMonitoredTask());
                 t.Wait();
                 this.Logger.LogInformation("Task {0} Status: {1}", t.Id, t.Status);
                 this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": End " + taskName + " with Success.");

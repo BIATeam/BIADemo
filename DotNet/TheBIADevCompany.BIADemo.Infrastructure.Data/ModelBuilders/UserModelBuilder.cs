@@ -135,10 +135,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             if (false)
             {
 #pragma warning disable CS0162 // Unreachable code detected
-            // End BIADemo
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
+                // End BIADemo
+                modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
 
-            // Begin BIADemo
+                // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
             }
 

@@ -69,7 +69,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Views.UpdateUserView)]
-        public async Task<IActionResult> UpdateUserView(int id, [FromBody]ViewDto dto)
+        public async Task<IActionResult> UpdateUserView(int id, [FromBody] ViewDto dto)
         {
             return await this.UpdateView(id, dto);
         }
@@ -84,7 +84,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Views.AddUserView)]
-        public async Task<IActionResult> AddUserView([FromBody]ViewDto dto)
+        public async Task<IActionResult> AddUserView([FromBody] ViewDto dto)
         {
             try
             {
@@ -152,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Views.SetDefaultUserView)]
-        public async Task<IActionResult> SetDefaultUserView(int id, [FromBody]DefaultViewDto dto)
+        public async Task<IActionResult> SetDefaultUserView(int id, [FromBody] DefaultViewDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateTeamView(int id, [FromBody]TeamViewDto dto)
+        public async Task<IActionResult> UpdateTeamView(int id, [FromBody] TeamViewDto dto)
         {
             if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.UpdateTeamViewSuffix).Result)
             {
@@ -208,7 +208,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AddTeamView([FromBody]TeamViewDto dto)
+        public async Task<IActionResult> AddTeamView([FromBody] TeamViewDto dto)
         {
             if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AddTeamViewSuffix).Result)
             {
@@ -281,7 +281,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody]DefaultTeamViewDto dto)
+        public async Task<IActionResult> SetDefaultTeamView(int id, [FromBody] DefaultTeamViewDto dto)
         {
             if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.SetDefaultTeamViewSuffix).Result)
             {
@@ -322,7 +322,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> AssignViewToTeam(int id, [FromBody]AssignViewToTeamDto dto)
+        public async Task<IActionResult> AssignViewToTeam(int id, [FromBody] AssignViewToTeamDto dto)
         {
             if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Views.AssignToTeamSuffix).Result)
             {

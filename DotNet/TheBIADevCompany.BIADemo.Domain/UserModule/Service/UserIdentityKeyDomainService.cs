@@ -1,4 +1,8 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+﻿// <copyright file="UserIdentityKeyDomainService.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
     using System;
     using System.Collections.Generic;

@@ -130,7 +130,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
-        public async Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        public async Task<AuthInfoDto<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
             // Check inputs parameter
             this.CheckIsAuthenticated();
@@ -190,9 +190,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             userInfo ??= new UserInfoDto
             {
                 Login = login,
-                FirstName = ((ClaimsPrincipal)this.claimsPrincipal).GetClaimValue(ClaimTypes.GivenName),
-                LastName = ((ClaimsPrincipal)this.claimsPrincipal).GetClaimValue(ClaimTypes.Surname),
-                Country = ((ClaimsPrincipal)this.claimsPrincipal).GetClaimValue(ClaimTypes.Country),
+                FirstName = this.claimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
+                LastName = this.claimsPrincipal.GetClaimValue(ClaimTypes.Surname),
+                Country = this.claimsPrincipal.GetClaimValue(ClaimTypes.Country),
             };
 
             this.userAppService.SelectDefaultLanguage(userInfo);
@@ -244,7 +244,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
             }
 
-            AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam.LightToken);
+            AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam.LightToken);
 
             return authInfo;
         }

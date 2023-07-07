@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Presentation.Api.Controller
+﻿// <copyright file="AppSettingsController.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Presentation.Api.Controller
 {
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -21,11 +24,12 @@
         /// <param name="configuration">The configuration.</param>
         public AppSettingsController(IOptions<BiaNetSection> configuration)
         {
-            this.appSettings = new AppSettingsDto {
+            this.appSettings = new AppSettingsDto
+            {
                 Keycloak = configuration.Value.Authentication.Keycloak,
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
-                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl 
+                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl
             };
         }
 
@@ -38,7 +42,7 @@
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
-            return this.Ok(appSettings);
+            return this.Ok(this.appSettings);
         }
     }
 }

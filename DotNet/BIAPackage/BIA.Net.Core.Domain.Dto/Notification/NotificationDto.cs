@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the teams to be notified, if any.
         /// The users amongst one of these teams will be notified if
-        /// the have, for these teams, one of the given roles (NotifiedTeams.Roles)
+        /// the have, for these teams, one of the given roles (NotifiedTeams.Roles).
         /// </summary>
         public ICollection<NotificationTeamDto> NotifiedTeams { get; set; }
 
@@ -72,7 +72,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         public string JData { get; set; }
 
         /// <summary>
-        /// Gets ot sets the notification translations
+        /// Gets ot sets the notification translations.
         /// </summary>
         public ICollection<NotificationTranslationDto> NotificationTranslations { get; set; }
     }

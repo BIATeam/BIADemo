@@ -4,10 +4,10 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using BIA.Net.Core.Domain.Dto.Option;
-    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.Linq;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// UserData Dto.
@@ -16,8 +16,9 @@ namespace BIA.Net.Core.Domain.Dto.User
     {
         public UserDataDto()
         {
-            CurrentTeams = new List<CurrentTeamDto>();
+            this.CurrentTeams = new List<CurrentTeamDto>();
         }
+
         /// <summary>
         /// Gets or sets the current team.
         /// </summary>
@@ -25,23 +26,24 @@ namespace BIA.Net.Core.Domain.Dto.User
 
         public int GetCurrentTeamId(int teamTypeId)
         {
-            var CurrentSite = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
+            var CurrentSite = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
             if (CurrentSite != null)
             {
                 return CurrentSite.TeamId;
             }
+
             return 0;
         }
 
         public CurrentTeamDto GetCurrentTeam(int teamTypeId)
         {
-            var CurrentTeam = CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
+            var CurrentTeam = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
             if (CurrentTeam != null)
             {
                 return CurrentTeam;
             }
+
             return null;
         }
-
     }
 }

@@ -38,8 +38,8 @@ namespace BIA.Net.Core.Test.Mock
 
         /// <summary>
         /// Build and apply the currently configured mock to the given collection of services.
-        /// 
-        /// Note: Contrary to <see cref="Build"/>, this method does not only return the mocked object, but also applies it to the 
+        ///
+        /// Note: Contrary to <see cref="Build"/>, this method does not only return the mocked object, but also applies it to the
         /// dependency injection system.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>

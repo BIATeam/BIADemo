@@ -7,8 +7,8 @@ namespace BIA.Net.Core.Test.Data
 
     /// <summary>
     /// Abstract class managing mock of the DB context.
-    /// 
-    /// Note: <see cref="InitDefaultData"/> has to be overridden in children classes in order to implement logic that is strongly coupled to the DbContext 
+    ///
+    /// Note: <see cref="InitDefaultData"/> has to be overridden in children classes in order to implement logic that is strongly coupled to the DbContext
     /// (and thus specific to the project).
     /// It can be empty if you want to always add data manually in your tests, rather than do it automatically before each test through AbstractUnitTest.InitTestBase().
     /// </summary>
@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Test.Data
         private readonly TDbContextReadOnly dbContextReadOnly;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AbstractMockEntityFramework{TDbContext}"/> class.
+        /// Initializes a new instance of the <see cref="AbstractMockEntityFramework{TDbContext, TDbContextReadOnly}"/> class.
         /// </summary>
         /// <param name="dbContext">The DB context.</param>
         /// <param name="dbContextReadOnly">The DB context ReadOnly.</param>

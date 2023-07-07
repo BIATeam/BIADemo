@@ -107,7 +107,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 }
 
                 await this.repository.UnitOfWork.CommitAsync();
-
             }
         }
 

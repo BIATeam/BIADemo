@@ -7,26 +7,24 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     using System.Collections.Generic;
     using System.Data.SqlClient;
 
-    public class DatabaseHandlerRepository 
+    public class DatabaseHandlerRepository
     {
         private readonly string connectionString;
 
         private readonly string sqlOnChangeEventHandlerRequest;
         private readonly string sqlReadChangeRequest;
         private readonly List<SqlNotificationInfo> filterNotifictionInfos;
+
         public delegate void ChangeHandler(SqlDataReader reader);
-
-
 
         public event ChangeHandler OnChange;
 
         public DatabaseHandlerRepository(
-            string connectionString, 
-            string sqlOnChangeEventHandlerRequest, 
-            string sqlReadChangeRequest, 
+            string connectionString,
+            string sqlOnChangeEventHandlerRequest,
+            string sqlReadChangeRequest,
             ChangeHandler OnChange,
-            List<SqlNotificationInfo> filterNotifictionInfos = null
-            )
+            List<SqlNotificationInfo> filterNotifictionInfos = null)
         {
             this.connectionString = connectionString;
             this.sqlOnChangeEventHandlerRequest = sqlOnChangeEventHandlerRequest;
@@ -46,30 +44,30 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             if (this.isFirst)
             {
-                SqlDependency.Start(connectionString);
+                SqlDependency.Start(this.connectionString);
             }
 
-            using (SqlConnection connection = new(connectionString))
-            using (SqlCommand command = new(sqlOnChangeEventHandlerRequest, connection))
+            using (SqlConnection connection = new (this.connectionString))
+            using (SqlCommand command = new (this.sqlOnChangeEventHandlerRequest, connection))
             {
                 connection.Open();
 
-                SqlDependency dependency = new(command);
+                SqlDependency dependency = new (command);
                 dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange);
                 command.ExecuteNonQuery();
 
                 if (!this.isFirst)
                 {
-                    if (string.IsNullOrEmpty(sqlReadChangeRequest))
+                    if (string.IsNullOrEmpty(this.sqlReadChangeRequest))
                     {
-                        if (IsValidEvent(e) && this.OnChange != null)
+                        if (this.IsValidEvent(e) && this.OnChange != null)
                         {
                             this.OnChange(null);
                         }
                     }
                     else
                     {
-                        using (SqlCommand selectCommand = new(sqlReadChangeRequest, connection))
+                        using (SqlCommand selectCommand = new (this.sqlReadChangeRequest, connection))
                         using (SqlDataReader reader = selectCommand.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -78,7 +76,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
                                 //int id = reader.GetInt32(0);
 
-                                if (IsValidEvent(e) && this.OnChange != null)
+                                if (this.IsValidEvent(e) && this.OnChange != null)
                                 {
                                     this.OnChange(reader);
                                 }
@@ -96,8 +94,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                     (
                         this.filterNotifictionInfos == null
                         ||
-                        this.filterNotifictionInfos.Contains(e.Info)
-                    );
+                        this.filterNotifictionInfos.Contains(e.Info));
         }
 
         private void OnDependencyChange(object sender, SqlNotificationEventArgs e)

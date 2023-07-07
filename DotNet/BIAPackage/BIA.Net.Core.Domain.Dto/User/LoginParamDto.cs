@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// <copyright file="LoginParamDto.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     public class LoginParamDto
     {
         /// <summary>

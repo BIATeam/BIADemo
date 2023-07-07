@@ -4,23 +4,22 @@
 
 namespace BIA.Net.Core.Domain.Service
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
-    using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using System.Linq.Expressions;
-    using System;
-
+    using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
     /// The base class for all CRUD application service.
@@ -58,7 +57,6 @@ namespace BIA.Net.Core.Domain.Service
         {
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
-
 
         public async Task<IEnumerable<TDto>> GetAllAsync(
             TKey id = default,
@@ -99,8 +97,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
-            bool isReadOnlyMode = false
-            )
+            bool isReadOnlyMode = false)
         {
             return await this.GetCsvAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
@@ -113,15 +110,15 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
-            bool isReadOnlyMode = false
-            )
+            bool isReadOnlyMode = false)
             where TOtherFilter : LazyLoadDto, new()
         {
             return await this.GetCsvAsync<TDto, TMapper, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.GetAsync"/>
-        public virtual async Task<TDto> GetAsync(TKey id = default,
+        public virtual async Task<TDto> GetAsync(
+            TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
             Expression<Func<TEntity, object>>[] includes = null,
@@ -132,7 +129,6 @@ namespace BIA.Net.Core.Domain.Service
         {
             return await this.GetAsync<TDto, TMapper>(id: id, specification: specification, filter: filter, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
-
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.AddAsync"/>
         public virtual async Task<TDto> AddAsync(TDto dto, string mapperMode = null)
@@ -194,7 +190,8 @@ namespace BIA.Net.Core.Domain.Service
             await this.RemoveBulkAsync<TDto, TMapper>(dtos);
         }
 
-        public virtual async Task<TDto> SaveAsync(TDto dto,
+        public virtual async Task<TDto> SaveAsync(
+            TDto dto,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
@@ -203,7 +200,8 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TFilterDto}.SaveAsync"/>
-        public virtual async Task<IEnumerable<TDto>> SaveAsync(IEnumerable<TDto> dtos,
+        public virtual async Task<IEnumerable<TDto>> SaveAsync(
+            IEnumerable<TDto> dtos,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)

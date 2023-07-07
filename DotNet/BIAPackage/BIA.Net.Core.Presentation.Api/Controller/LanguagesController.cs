@@ -25,19 +25,12 @@ namespace BIA.Net.Core.Presentation.Api.Controller
         private readonly ILanguageAppService languageService;
 
         /// <summary>
-        /// The claims principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="LanguagesController"/> class.
         /// </summary>
         /// <param name="languageService">The language service.</param>
-        /// <param name="principal">The claims principal.</param>
-        public LanguagesController(ILanguageAppService languageService, IPrincipal principal)
+        public LanguagesController(ILanguageAppService languageService)
         {
             this.languageService = languageService;
-            this.principal = principal as BIAClaimsPrincipal;
         }
 
         /// <summary>
@@ -49,7 +42,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BIARights.Languages.Options)]
+        [Authorize(Roles = BiaRights.Languages.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.languageService.GetAllOptionsAsync();

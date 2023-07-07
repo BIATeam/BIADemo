@@ -275,7 +275,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
+                    await this.ldapRepositoryHelper.DistributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
                 }
             }
             catch (Exception exception)
@@ -503,7 +503,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
+                    await this.ldapRepositoryHelper.DistributedCache.Remove(KeyPrefixCacheGroup + cacheSidToRemove);
                 }
             }
             catch (Exception exception)
@@ -603,7 +603,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 if (forceRefresh)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyPrefixCacheGroup + sid);
+                    await this.ldapRepositoryHelper.DistributedCache.Remove(KeyPrefixCacheGroup + sid);
                 }
 
                 await this.GetAllUsersSidFromGroupRecursivelyAsync(new GroupDomainSid() { Sid = sid, Domain = ldapGroup.Domain }, ldapGroup, listUsersSid, listTreatedGroupSid);
@@ -746,7 +746,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private async Task<string> GetSidHistory(string sid, string userDomain)
         {
-            string sidHistory = (string)await this.ldapRepositoryHelper.localCache.Get<string>(KeyPrefixCacheUserSidHistory + sid);
+            string sidHistory = (string)await this.ldapRepositoryHelper.LocalCache.Get<string>(KeyPrefixCacheUserSidHistory + sid);
             if (sidHistory != null)
             {
                 return sidHistory;
@@ -764,14 +764,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     sidHistory = securityIdentifier.ToString();
                 }
             }
-            await this.ldapRepositoryHelper.localCache.Add(KeyPrefixCacheUserSidHistory + sid, sidHistory, this.LdapCacheUserDuration);
+            await this.ldapRepositoryHelper.LocalCache.Add(KeyPrefixCacheUserSidHistory + sid, sidHistory, this.LdapCacheUserDuration);
             return sidHistory;
         }
 
         private async Task<SidResolvedGroup> ResolveGroupMember(GroupDomainSid groupDomainSid, LdapGroup rootLdapGroup)
         {
             SidResolvedGroup itemResolve;
-            itemResolve = await this.ldapRepositoryHelper.distributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.Sid);
+            itemResolve = await this.ldapRepositoryHelper.DistributedCache.Get<SidResolvedGroup>(KeyPrefixCacheGroup + groupDomainSid.Sid);
             if (itemResolve != null)
             {
                 return itemResolve;
@@ -914,7 +914,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 //);
 
                 itemResolve = new SidResolvedGroup() { domainKey = subGroupPrincipal.domain, MembersGroupSid = MembersGroupSid.ToList(), MembersUserSid = MembersUserSid.ToList(), type = SidResolvedItemType.Group };
-                await this.ldapRepositoryHelper.distributedCache.Add(KeyPrefixCacheGroup + groupDomainSid.Sid, itemResolve, this.LdapCacheGroupDuration);
+                await this.ldapRepositoryHelper.DistributedCache.Add(KeyPrefixCacheGroup + groupDomainSid.Sid, itemResolve, this.LdapCacheGroupDuration);
 
                 this.logger.LogDebug("ResolveGroupMember {0} => {1}\\{2} Decripted with DirectoryEntry ({3} groups + {4} users) : {5} ms", groupDomainSid.Sid, subGroupPrincipal.domain, groupName, MembersGroupSid.Count, MembersUserSid.Count, (DateTime.Now - start).TotalMilliseconds);
 
@@ -1056,12 +1056,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             
             TUserFromDirectory itemResolve;
-            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.distributedCache.Get<TUserFromDirectory>(KeyCache);
+            itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.DistributedCache.Get<TUserFromDirectory>(KeyCache);
             if (itemResolve != null)
             {
                 if (forceRefresh)
                 {
-                    await this.ldapRepositoryHelper.distributedCache.Remove(KeyCache);
+                    await this.ldapRepositoryHelper.DistributedCache.Remove(KeyCache);
                     itemResolve = null;
                 }
                 else
@@ -1086,7 +1086,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 itemResolve = new TUserFromDirectory();
             }
-            await this.ldapRepositoryHelper.distributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
+            await this.ldapRepositoryHelper.DistributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
             return itemResolve;
         }
     }

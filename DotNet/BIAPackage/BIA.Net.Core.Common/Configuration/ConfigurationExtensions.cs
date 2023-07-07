@@ -4,7 +4,6 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
-
     using Microsoft.Extensions.Configuration;
 
     public static class ConfigurationExtensions

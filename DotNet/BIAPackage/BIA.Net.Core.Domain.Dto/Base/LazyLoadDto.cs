@@ -13,7 +13,6 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// </summary>
     public class LazyLoadDto
     {
-
         /// <summary>
         /// Gets or sets the number of the first element to return.
         /// </summary>
@@ -57,6 +56,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
             return trace.ToString();
         }
-
     }
 }

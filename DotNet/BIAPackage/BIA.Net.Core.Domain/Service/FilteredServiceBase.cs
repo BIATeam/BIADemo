@@ -1,62 +1,63 @@
-// <copyright file="MapperServiceBase.cs" company="BIA">
+// <copyright file="FilteredServiceBase.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Service
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
     using System.Transactions;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
-    using BIA.Net.Core.Domain.Specification;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using System.Linq.Expressions;
-    using System;
-
+    using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
     /// The base class for all CRUD application service.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The primary key of the entity type.</typeparam>
     public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>, IFilteredServiceBase<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
-        /// The filters
-        /// </summary>
-        protected Dictionary<string, Specification<TEntity>> filtersContext;
-
-        /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="FilteredServiceBase{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="FilteredServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         protected FilteredServiceBase(ITGenericRepository<TEntity, TKey> repository)
             : base(repository)
         {
-            this.filtersContext = new Dictionary<string, Specification<TEntity>>();
+            this.FiltersContext = new Dictionary<string, Specification<TEntity>>();
         }
+
+        /// <summary>
+        /// The filters.
+        /// </summary>
+        protected Dictionary<string, Specification<TEntity>> FiltersContext { get; set; }
 
         /// <summary>
         /// Get the DTO list with paging and sorting.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
+        /// <typeparam name="TOtherFilterDto">The type of the filter.</typeparam>
         /// <param name="filters">The filters.</param>
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The list of DTO.</returns>
         public virtual async Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
@@ -71,10 +72,10 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
             var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
-                GetFilterSpecification(accessMode, filtersContext) & specification,
+                this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                 mapper,
                 filters);
 
@@ -88,13 +89,14 @@ namespace BIA.Net.Core.Domain.Service
                 queryOrder: queryOrder,
                 firstElement: filters?.First ?? 0,
                 pageCount: filters?.Rows ?? 0,
-                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode);
+                queryMode: queryMode,
+                isReadOnlyMode: isReadOnlyMode);
 
             return (results.Item1.ToList(), results.Item2);
         }
 
         /// <summary>
-        /// Get the DTO list. (with a queryOrder)
+        /// Get the DTO list. (with a queryOrder).
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
@@ -106,8 +108,10 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -123,22 +127,22 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
                 selectResult: mapper.EntityToDto(mapperMode),
                 id: id,
-                specification: GetFilterSpecification(accessMode, filtersContext) & specification,
+                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                 filter: filter,
                 queryOrder: queryOrder,
                 firstElement: firstElement,
                 pageCount: pageCount,
                 includes: includes,
-                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode
-                );
+                queryMode: queryMode,
+                isReadOnlyMode: isReadOnlyMode);
         }
 
         /// <summary>
-        /// Get the DTO list. (with an order By Expression and direction)
+        /// Get the DTO list. (with an order By Expression and direction).
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
@@ -151,11 +155,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="firstElement">First element to take.</param>
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
-        /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+            Expression<Func<TEntity, TKey>> orderByExpression,
+            bool ascending,
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -169,19 +176,19 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             return await this.Repository.GetAllResultAsync(
                 mapper.EntityToDto(mapperMode),
                 orderByExpression,
                 ascending,
                 id: id,
-                specification: GetFilterSpecification(accessMode, filtersContext) & specification,
+                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                 filter: filter,
                 firstElement: firstElement,
                 pageCount: pageCount,
                 includes: includes,
-                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode
-                );
+                queryMode: queryMode,
+                isReadOnlyMode: isReadOnlyMode);
         }
 
         public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
@@ -192,8 +199,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = "Csv",
-            bool isReadOnlyMode = false
-            )
+            bool isReadOnlyMode = false)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
@@ -212,10 +218,10 @@ namespace BIA.Net.Core.Domain.Service
 
             IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
 
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-            StringBuilder csv = new();
+            StringBuilder csv = new ();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
@@ -235,8 +241,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="filter">Filter Query.</param>
         /// <param name="includes">The list of includes.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The DTO.</returns>
         public virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
@@ -251,13 +258,15 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
-            var result = await this.Repository.GetResultAsync(mapper.EntityToDto(mapperMode),
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+            var result = await this.Repository.GetResultAsync(
+                mapper.EntityToDto(mapperMode),
                 id: id,
-                specification: GetFilterSpecification(accessMode, filtersContext) & specification,
+                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
                 filter: filter,
                 includes: includes,
-                queryMode: queryMode, isReadOnlyMode: isReadOnlyMode);
+                queryMode: queryMode,
+                isReadOnlyMode: isReadOnlyMode);
             if (result == null)
             {
                 throw new ElementNotFoundException();
@@ -274,14 +283,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO with id updated.</returns>
-        public virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto,
+        public virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
+            TOtherDto dto,
             string mapperMode = null)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dto != null)
             {
-                TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 var entity = new TEntity();
                 mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
                 this.Repository.Add(entity);
@@ -299,7 +309,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dto">The DTO.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
         public virtual async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
@@ -312,16 +322,16 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dto != null)
             {
-                TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
+                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
                 }
 
                 mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
-                // this.Repository.Update(entity);
+
                 await this.Repository.UnitOfWork.CommitAsync();
                 dto.DtoState = DtoState.Unchanged;
                 mapper.MapEntityKeysInDto(entity, dto);
@@ -337,9 +347,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="id">The identifier.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
-        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter)</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <returns>The deleted DTO</returns>
+        /// <returns>The deleted DTO.</returns>
         public virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
@@ -348,9 +358,9 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-            var entity = await this.Repository.GetEntityAsync(id: id, specification: GetFilterSpecification(accessMode, filtersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
+            var entity = await this.Repository.GetEntityAsync(id: id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
             if (entity == null)
             {
                 throw new ElementNotFoundException();
@@ -377,10 +387,12 @@ namespace BIA.Net.Core.Domain.Service
             {
                 dtos.Add(await this.RemoveAsync<TOtherDto, TOtherMapper>(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode));
             }
+
             return dtos;
         }
 
-        public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtos,
+        public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
+            IEnumerable<TOtherDto> dtos,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
@@ -401,6 +413,7 @@ namespace BIA.Net.Core.Domain.Service
                     transaction.Complete();
                 }
             }
+
             return returnDto;
         }
 
@@ -409,7 +422,8 @@ namespace BIA.Net.Core.Domain.Service
         /// </summary>
         /// <param name="dto">The dto to save.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(TOtherDto dto,
+        public virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
+            TOtherDto dto,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
@@ -420,19 +434,22 @@ namespace BIA.Net.Core.Domain.Service
             switch (dto.DtoState)
             {
                 case DtoState.Added:
-                    returnDto = await this.AddAsync<TOtherDto, TOtherMapper>(dto,
+                    returnDto = await this.AddAsync<TOtherDto, TOtherMapper>(
+                        dto,
                         mapperMode: mapperMode);
                     break;
 
                 case DtoState.Modified:
-                    returnDto = await this.UpdateAsync<TOtherDto, TOtherMapper>(dto,
+                    returnDto = await this.UpdateAsync<TOtherDto, TOtherMapper>(
+                        dto,
                         accessMode: accessMode ?? AccessMode.Update,
                         queryMode: queryMode ?? QueryMode.Update,
                         mapperMode: mapperMode);
                     break;
 
                 case DtoState.Deleted:
-                    returnDto = await this.RemoveAsync<TOtherDto, TOtherMapper>(dto.Id,
+                    returnDto = await this.RemoveAsync<TOtherDto, TOtherMapper>(
+                        dto.Id,
                         accessMode: accessMode ?? AccessMode.Delete,
                         queryMode: queryMode ?? QueryMode.Delete,
                         mapperMode: mapperMode);
@@ -441,6 +458,7 @@ namespace BIA.Net.Core.Domain.Service
                 default:
                     return returnDto;
             }
+
             return returnDto;
         }
 
@@ -464,10 +482,10 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
-        /// Returns the filter to apply to the context for specify acces mode
+        /// Returns the filter to apply to the context for specify acces mode.
         /// </summary>
-        /// <param name="mode">Precise the usage (All/Read/Write)</param>
-        /// <returns>The result mapped to the specified type</returns>
+        /// <param name="mode">Precise the usage (All/Read/Write).</param>
+        /// <returns>The result mapped to the specified type.</returns>
         protected virtual Specification<TEntity> GetFilterSpecification(string mode, Dictionary<string, Specification<TEntity>> filtersContext)
         {
             if (filtersContext.ContainsKey(mode))
@@ -487,11 +505,13 @@ namespace BIA.Net.Core.Domain.Service
                 {
                     return filtersContext[AccessMode.Update];
                 }
+
                 if (filtersContext.ContainsKey(AccessMode.Read))
                 {
                     return filtersContext[AccessMode.Read];
                 }
             }
+
             return null;
         }
 
@@ -506,7 +526,7 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                     mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
@@ -526,7 +546,7 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                     mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
@@ -546,7 +566,7 @@ namespace BIA.Net.Core.Domain.Service
                 foreach (var item in dtoList)
                 {
                     var converted = new TEntity();
-                    TOtherMapper mapper = InitMapper<TOtherDto, TOtherMapper>();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                     mapper.DtoToEntity(item, converted);
                     entity.Add(converted);
                 }
@@ -557,7 +577,7 @@ namespace BIA.Net.Core.Domain.Service
 
         public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
         {
-            var entity = await this.Repository.GetAllEntityAsync(specification: GetFilterSpecification(accessMode, filtersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
+            var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
             if (entity == null)
             {
                 throw new ElementNotFoundException();

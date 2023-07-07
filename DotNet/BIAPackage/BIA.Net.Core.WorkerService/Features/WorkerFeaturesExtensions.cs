@@ -1,22 +1,25 @@
-﻿namespace BIA.Net.Core.WorkerService.Features
+﻿// <copyright file="WorkerFeaturesExtensions.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.WorkerService.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
+    using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
+    using Community.Microsoft.Extensions.Caching.PostgreSql;
+    using Hangfire;
+    using Hangfire.Dashboard;
+    using Hangfire.PostgreSql;
+    using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Hangfire;
-    using Microsoft.AspNetCore.Builder;
-    using Community.Microsoft.Extensions.Caching.PostgreSql;
-    using Hangfire.PostgreSql;
-    using Hangfire.Dashboard;
-    using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using System.Collections.Generic;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Presentation.Common.Authentication;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
 
     /// <summary>
     /// Add the standard service.
@@ -51,7 +54,7 @@
                 });
             }
 
-            // Client for hub            
+            // Client for hub
             /*if (ClientForHubOptions.IsActive)
             {
                 services.AddTransient<IHostedService, ClientForHubService>(provider =>
@@ -60,7 +63,7 @@
                 });
             }*/
 
-            // Hangfire Server            
+            // Hangfire Server
             if (workerFeatures.HangfireServer.IsActive)
             {
                 services.AddHangfireServer(hfOptions =>

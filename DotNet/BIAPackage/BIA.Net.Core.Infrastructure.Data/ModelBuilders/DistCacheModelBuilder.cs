@@ -18,7 +18,6 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         public static void CreateDistCacheModel(ModelBuilder modelBuilder)
         {
-
             modelBuilder.Entity<DistCache>(entity =>
             {
                 entity.HasIndex(e => e.ExpiresAtTime)

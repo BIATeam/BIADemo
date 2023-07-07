@@ -1,4 +1,8 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+﻿// <copyright file="IUserIdentityKeyDomainService.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
     using System;
     using System.Collections.Generic;
@@ -19,6 +23,5 @@
         string GetDirectoryIdentityKey(UserFromDirectory userFromDirectory);
 
         string GetDirectoryIdentityKey(UserFromDirectoryDto userFromDirectory);
-
     }
 }

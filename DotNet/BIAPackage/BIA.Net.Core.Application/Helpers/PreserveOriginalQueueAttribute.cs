@@ -1,12 +1,15 @@
-﻿using Hangfire.Common;
-using Hangfire.States;
-using Hangfire.Storage;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="PreserveOriginalQueueAttribute.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.Application.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using Hangfire.Common;
+    using Hangfire.States;
+    using Hangfire.Storage;
     //public class PreserveOriginalQueueAttribute : JobFilterAttribute, IApplyStateFilter, IElectStateFilter
     //{
     //    public void OnStateApplied(ApplyStateContext context, IWriteOnlyTransaction transaction)

@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Presentation.Common.Features
+﻿// <copyright file="CommonFeaturesExtensions.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Presentation.Common.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -61,7 +64,7 @@
                 services.AddMemoryCache();
             }
 
-            // Client for hub            
+            // Client for hub
             /*if (ClientForHubOptions.IsActive)
             {
                 services.AddTransient<IHostedService, ClientForHubService>(provider =>

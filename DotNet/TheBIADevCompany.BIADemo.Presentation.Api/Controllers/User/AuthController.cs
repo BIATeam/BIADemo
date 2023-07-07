@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                AuthInfoDTO<UserDataDto, AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
+                AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
 
                 return this.Ok(authInfo);
             }
@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.Forbid(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return this.StatusCode(500, "Internal server error");
             }

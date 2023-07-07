@@ -1,4 +1,4 @@
-// <copyright file="NotificationRepository.cs" company="BIA.Net">
+// <copyright file="MailRepository.cs" company="BIA.Net">
 //  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -36,7 +36,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc/>
         public async Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null)
         {
-            MimeMessage messageToSend = new()
+            MimeMessage messageToSend = new ()
             {
                 Subject = subject?.Trim()
             };
@@ -63,7 +63,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             messageToSend.Body = new TextPart(TextFormat.Html) { Text = bodyText?.Trim() };
 
-            using (SmtpClient client = new())
+            using (SmtpClient client = new ())
             {
                 await client.ConnectAsync(this.configuration.EmailConfiguration.SmtpHost, this.configuration.EmailConfiguration.SmtpPort, false);
                 await client.SendAsync(messageToSend);

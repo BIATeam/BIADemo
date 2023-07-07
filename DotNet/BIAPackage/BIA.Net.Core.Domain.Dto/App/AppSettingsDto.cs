@@ -1,13 +1,13 @@
-﻿// <copyright file="OptionDto.cs" company="BIA">
+﻿// <copyright file="AppSettingsDto.cs" company="BIA">
 //     BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Domain.Dto.Option
 {
+    using System.Collections.Generic;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.Keycloak;
     using BIA.Net.Core.Domain.Dto.Base;
-    using System.Collections.Generic;
 
     /// <summary>
     /// The DTO used to represent a AppSettings.

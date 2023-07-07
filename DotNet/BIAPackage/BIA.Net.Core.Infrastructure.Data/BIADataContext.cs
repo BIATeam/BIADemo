@@ -1,18 +1,21 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data
+﻿// <copyright file="BIADataContext.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Infrastructure.Data
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
-    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.Logging;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using EFCore.BulkExtensions;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Storage;
+    using Microsoft.Extensions.Logging;
 
     public class BIADataContext : DbContext, IQueryableUnitOfWork
     {
@@ -107,6 +110,7 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
             await this.BulkInsertAsync(items?.ToList());
@@ -117,6 +121,7 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
             using (IDbContextTransaction transaction = this.Database.BeginTransaction())
@@ -131,6 +136,7 @@
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
             using (IDbContextTransaction transaction = this.Database.BeginTransaction())
@@ -182,6 +188,5 @@
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);
         }
-
     }
 }

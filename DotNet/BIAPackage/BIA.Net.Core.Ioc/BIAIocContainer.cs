@@ -57,6 +57,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
         {
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
+
             // Infrastructure Data
         }
 
@@ -64,9 +65,9 @@ namespace BIA.Net.Core.IocContainer
         {
             // Infrastructure Service
             collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
-            collection.AddTransient<IBIALocalCache, BIALocalCache>();
-            collection.AddTransient<IBIADistributedCache, BIADistributedCache>();
-            collection.AddTransient<IBIAHybridCache, BIAHybridCache>();
+            collection.AddTransient<IBiaLocalCache, BiaLocalCache>();
+            collection.AddTransient<IBiaDistributedCache, BiaDistributedCache>();
+            collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
         }
     }
 }

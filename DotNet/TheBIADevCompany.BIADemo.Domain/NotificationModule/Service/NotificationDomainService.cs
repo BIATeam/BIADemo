@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
             bool isTeamAccesAll = (principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
 
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                  AccessMode.Read,
                  new DirectSpecification<Notification>(n =>
                     (n.NotifiedTeams.Count == 0 || n.NotifiedTeams.Any(nt =>
@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             {
                 NotificationMapper mapper = this.InitMapper<NotificationDto, NotificationMapper>();
 
-                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.filtersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
+                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
                 if (entity == null)
                 {
                     throw new ElementNotFoundException();
@@ -179,7 +179,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             var results = await this.Repository.GetAllResultAsync<int>(
                 selectResult: x => x.Id,
-                specification: this.filtersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
+                specification: this.FiltersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
 
             return results.ToList();
         }

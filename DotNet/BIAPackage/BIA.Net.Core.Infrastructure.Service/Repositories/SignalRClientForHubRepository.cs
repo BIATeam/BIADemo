@@ -1,3 +1,6 @@
+// <copyright file="SignalRClientForHubRepository.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
 namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System;
@@ -21,12 +24,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         public SignalRClientForHubRepository(IOptions<CommonFeatures> options)
         {
-            _ClientForHubConfiguration = options.Value.ClientForHub;
+            this._ClientForHubConfiguration = options.Value.ClientForHub;
         }
 
         public Task StartAsync()
         {
-            if (!_ClientForHubConfiguration.IsActive)
+            if (!this._ClientForHubConfiguration.IsActive)
             {
                 throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
             }
@@ -35,7 +38,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 starting = true;
                 connection = new HubConnectionBuilder()
-                    .WithUrl(_ClientForHubConfiguration.SignalRUrl)
+                    .WithUrl(this._ClientForHubConfiguration.SignalRUrl)
                     .WithAutomaticReconnect()
                     .Build();
                 connection.Closed += async (error) =>
@@ -48,6 +51,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 started = true;
             }
+
             return Task.CompletedTask;
         }
 
@@ -67,31 +71,33 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Send Message.
         /// </summary>
-        /// <param name="targetedFeature">target feature</param>
-        /// <param name="action">action to send</param>
-        /// <param name="jsonContext">context at json format</param>
-        /// <returns>Send message on an action</returns>
+        /// <param name="targetedFeature">target feature.</param>
+        /// <param name="action">action to send.</param>
+        /// <param name="jsonContext">context at json format.</param>
+        /// <returns>Send message on an action.</returns>
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null)
         {
             if (!starting && !started)
             {
-                _ = StartAsync();
+                _ = this.StartAsync();
             }
+
             while (!started)
             {
                 await Task.Delay(200);
             }
+
             await connection.InvokeAsync("SendMessage", JsonConvert.SerializeObject(targetedFeature), action, jsonContext);
         }
 
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, object objectToSerialize)
         {
-            await SendMessage(targetedFeature, action, objectToSerialize == null ? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await this.SendMessage(targetedFeature, action, objectToSerialize == null ? null : JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
 
         public async Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null)
         {
-            await SendMessage(new TargetedFeatureDto { ParentKey = parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
+            await this.SendMessage(new TargetedFeatureDto { ParentKey = parentKey, FeatureName = featureName }, action, JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
         }
     }
 }

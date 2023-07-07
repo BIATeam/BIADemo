@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
 {
     using System.Collections.Generic;
     using System.Text;
+
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
@@ -16,7 +17,10 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// <summary>
     /// The DTO used for lazy loading with filters, sort and paging.
     /// </summary>
+    /// <typeparam name="TAdvancedFilter">The type for advanced filter.</typeparam>
+#pragma warning disable SA1402 // File may only contain a single type
     public class PagingFilterFormatDto<TAdvancedFilter> : LazyLoadDto
+#pragma warning restore SA1402 // File may only contain a single type
     {
         /// <summary>
         /// Gets or sets the parent ids.
@@ -46,6 +50,5 @@ namespace BIA.Net.Core.Domain.Dto.Base
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);
             return trace.ToString();
         }
-
     }
 }

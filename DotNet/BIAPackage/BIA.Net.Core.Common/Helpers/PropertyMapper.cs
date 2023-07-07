@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Common.Helpers
+﻿// <copyright file="PropertyMapper.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Common.Helpers
 {
     using System;
     using System.Collections.Generic;

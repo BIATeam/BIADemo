@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// Set the notification as unread.
         /// </summary>
         /// <param name="dto">The notification dto.</param>
-        /// <returns>A task</returns>
+        /// <returns>A task.</returns>
         Task SetUnread(NotificationDto dto);
 
         /// <summary>

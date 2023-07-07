@@ -118,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         }
 
         /// <summary>
-        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto<SiteAdvancedFilterDto>)"/> method when user:
+        /// Test <see cref="ISiteAppService.GetAllWithMembersAsync(PagingFilterFormatDto.<SiteAdvancedFilterDto>)"/> method when user:
         /// - has <see cref="Rights.Sites.ListAccess"/> rights
         /// - is member of one site.
         /// </summary>
@@ -133,8 +133,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
                 })
                 .MockPrincipalUserId(1)
                 .MockPrincipalUserData(new UserDataDto()
-                 {
-                     CurrentTeams =
+                {
+                    CurrentTeams =
                     {
                         new CurrentTeamDto()
                         {
@@ -142,7 +142,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
                             TeamId = 1,
                         },
                     },
-                 });
+                });
 
             // Insert additional data in the DB.
             this.DbMock.AddUser(1, "John", "DOE", 1, 1, null);
