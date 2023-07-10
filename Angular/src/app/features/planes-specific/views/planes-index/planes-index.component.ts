@@ -23,7 +23,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     protected authService: AuthService,
   ) {
     super(injector, planeService);
-    this.crudConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = PlaneCRUDConfiguration; 
   }
 
   protected setPermissions() {
