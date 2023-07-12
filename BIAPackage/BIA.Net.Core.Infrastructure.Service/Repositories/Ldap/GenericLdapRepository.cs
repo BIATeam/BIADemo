@@ -471,10 +471,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 {
                                     group.Save();
                                     userRemoved = true;
-                                }
-                                if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
-                                {
-                                    listGroupCacheSidToRemove.Add(group.Sid.Value);
+                                    if (!listGroupCacheSidToRemove.Contains(group.Sid.Value))
+                                    {
+                                        listGroupCacheSidToRemove.Add(group.Sid.Value);
+                                    }
                                 }
                             }
                             this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : ");
@@ -514,6 +514,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetAllUsersInGroup"/>
         public async Task<IEnumerable<string>> GetAllUsersSidInRoleToSync(string role)
         {
+            this.cacheGroupPrincipal.Clear();
             List<LdapGroup> userLdapGroups = this.GetLdapGroupsForRole(role);
             if (userLdapGroups.Count == 0)
             {
@@ -635,6 +636,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>list of roles</returns>
         public async Task<List<string>> GetUserRolesBySid(bool isUserInDB, string sid, string domain)
         {
+            this.cacheGroupPrincipal.Clear();
+
             var rolesSection = this.configuration.Roles;
 
             var adRoles = new ConcurrentBag<string>();
@@ -723,16 +726,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             string groupName = "Name not found : " + groupDomainSid.Sid;
 
             bool ContainsOnlyUsers = false;
-            bool IgnoreForeignSecurityPrincipal = false;
+            bool IgnoreForeignSecurityPrincipalForGroup = false;
             if (rootLdapGroup.RecursiveGroupsOfDomains == null || rootLdapGroup.RecursiveGroupsOfDomains.Length == 0)
             {
                 rootLdapGroup.RecursiveGroupsOfDomains = new string[] { rootLdapGroup.Domain };
                 ContainsOnlyUsers = true;
-                IgnoreForeignSecurityPrincipal = true;
+                IgnoreForeignSecurityPrincipalForGroup = true;
             }
             else if (rootLdapGroup.RecursiveGroupsOfDomains.Count() == 1 && rootLdapGroup.RecursiveGroupsOfDomains[0] == rootLdapGroup.Domain)
             {
-                IgnoreForeignSecurityPrincipal = true;
+                IgnoreForeignSecurityPrincipalForGroup = true;
             }
 
             DomainGroupPrincipal subGroupPrincipal = await ResolveGroupPrincipal(new string[] { groupDomainSid.Domain }, groupDomainSid.Sid);
@@ -770,19 +773,19 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     GroupDomainSid memberGroupSid = null;
 
                     if (isForeignSecurity)
-                    {
-                        if (!IgnoreForeignSecurityPrincipal)
+                    {       
+                        string pattern = @"S-\d-\d-\d+-\d+-\d+-\d+-\w+";
+                        foreach (Match match in Regex.Matches(sDN, pattern))
+                        {
+                            if (match.Success && match.Groups.Count > 0)
+                            {
+                                memberSid = match.Groups[0].Value;
+                                break;
+                            }
+                        }
+                        if (!IgnoreForeignSecurityPrincipalForGroup)
                         {
 
-                            string pattern = @"S-\d-\d-\d+-\d+-\d+-\d+-\w+";
-                            foreach (Match match in Regex.Matches(sDN, pattern))
-                            {
-                                if (match.Success && match.Groups.Count > 0)
-                                {
-                                    memberSid = match.Groups[0].Value;
-                                    break;
-                                }
-                            }
                             if (memberSid != null)
                             {
                                 if (!ContainsOnlyUsers)
