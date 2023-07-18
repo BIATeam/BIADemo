@@ -172,7 +172,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 }
             }
 
-            if (userInfo != null)
+            if (userInfo != null && userRoles.Contains(Constants.Role.User))
             {
                 try
                 {
