@@ -67,7 +67,7 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   reset() {
     this.selectedDomain = '';
-    this.form.reset();
+    this.form.reset({returnSize:this.returnSizeOptions[0]});
   }
 
   onSearchUsers(event: any) {
