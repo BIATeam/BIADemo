@@ -170,8 +170,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 return false;
             }
-            List<string> listUsersSid = new List<string>();
-            List<string> listTreatedGroupSid = new List<string>();
+            ConcurrentBag<string> listUsersSid = new ConcurrentBag<string>();
+            ConcurrentBag<string> listTreatedGroupSid = new ConcurrentBag<string>();
             var getListTasks = new List<Task>();
             foreach (var ldapGroup in ldapGroups)
             {
@@ -544,20 +544,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 // no ldap group defined
                 return null;
             }
-            List<string> listUsersSid = new List<string>();
+            ConcurrentBag<string> listUsersSid = new ConcurrentBag<string>();
             if (userLdapGroups == null || userLdapGroups.Count() == 0)
             {
-                return listUsersSid;
+                return listUsersSid.ToList();
             }
 
-            List<string> listTreatedGroupSid = new List<string>();
+            ConcurrentBag<string> listTreatedGroupSid = new ConcurrentBag<string>();
             var resolveTasks = new List<Task>();
             foreach (var ldapGroup in userLdapGroups)
             {
                 resolveTasks.Add(GetAllUsersSidInLdapGroup(listUsersSid, listTreatedGroupSid, ldapGroup, forceRefresh));
             }
             await Task.WhenAll(resolveTasks);
-            return listUsersSid;
+            return listUsersSid.ToList();
         }
 
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
@@ -568,7 +568,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
         object syncLocalCacheGroupSid = new Object();
-        private async Task GetAllUsersSidInLdapGroup(List<string> listUsersSid, List<string> listTreatedGroupSid, LdapGroup ldapGroup, bool forceRefresh = false)
+        private async Task GetAllUsersSidInLdapGroup(ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid, LdapGroup ldapGroup, bool forceRefresh = false)
         {
             string sid = "";
             lock (syncLocalCacheGroupSid)
@@ -618,7 +618,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="rootLdapGroup">the root ldapGroup to limite the scope of the search (ldap users and ldap for groups).</param>
         /// <param name="listUsers">The users found.</param>
         /// <param name="listTreatedGroups">The group already treated.</param>
-        private async Task GetAllUsersSidFromGroupRecursivelyAsync(GroupDomainSid groupSid, LdapGroup rootLdapGroup, List<string> listUsersSid, List<string> listTreatedGroupSid)
+        private async Task GetAllUsersSidFromGroupRecursivelyAsync(GroupDomainSid groupSid, LdapGroup rootLdapGroup, ConcurrentBag<string> listUsersSid, ConcurrentBag<string> listTreatedGroupSid)
         {
             SidResolvedGroup resolvedGroup = await ResolveGroupMember(groupSid, rootLdapGroup);
             if (resolvedGroup != null)
