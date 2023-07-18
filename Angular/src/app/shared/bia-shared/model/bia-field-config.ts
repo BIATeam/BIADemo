@@ -1,3 +1,5 @@
+import { Validator } from "@angular/forms";
+
 export enum PrimeNGFiltering {
   StartsWith = 'startsWith',
   Contains = 'contains',
@@ -39,6 +41,7 @@ export class BiaFieldConfig {
   translateKey: string;
   searchPlaceholder: string;
   isRequired: boolean;
+  validators: Validator[];
   specificOutput: boolean;
   specificInput: boolean;
   get isDate() {
@@ -66,6 +69,7 @@ export class BiaFieldConfig {
     this.isRequired = false;
     this.specificOutput = false;
     this.specificInput = false;
+    this.validators = [];
   }
   
   public clone() : BiaFieldConfig
@@ -84,6 +88,7 @@ export class BiaFieldConfig {
       isRequired: this.isRequired,
       specificOutput: this.specificOutput,
       specificInput: this.specificInput,
+      validators: this.validators,
     })
   }
 }

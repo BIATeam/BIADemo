@@ -84,8 +84,9 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
       for (let col of this.fields) {
-        if (col.isRequired)
-        {
+        if (col.validators && col.validators.length > 0) {
+          fields[col.field] = [this.element[col.field], col.validators];
+        } else if (col.isRequired) {
           fields[col.field] = [this.element[col.field], Validators.required];
         }
         else

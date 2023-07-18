@@ -32,7 +32,7 @@ export class PlaneTableComponent extends BiaCalcTableComponent implements OnChan
       lastFlightDate: [this.element.lastFlightDate],
       deliveryDate: [this.element.deliveryDate],
       syncTime: [this.element.syncTime],
-      capacity: [this.element.capacity, Validators.required],
+      capacity: [this.element.capacity, [Validators.required, Validators.min(1)]],
       connectingAirports: [this.element.connectingAirports],
       planeType: [this.element.planeType?.id],
     });

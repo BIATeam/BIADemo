@@ -1,6 +1,7 @@
 import { PrimeNGFiltering, BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { Validators } from '@angular/forms';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto {
@@ -44,6 +45,7 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
       specificOutput: true,
       specificInput:true,
       isRequired: true,
+      validators: [Validators.required, Validators.min(1)],
     }),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,

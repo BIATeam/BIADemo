@@ -29,12 +29,11 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
       for (let col of this.configuration.columns) {
-        if (col.isRequired)
-        {
+        if (col.validators && col.validators.length > 0) {
+          fields[col.field] = [this.element[col.field as keyof CrudItem], col.validators];
+        } else if (col.isRequired) {
           fields[col.field] = [this.element[col.field as keyof CrudItem], Validators.required];
-        }
-        else
-        {
+        } else {
           fields[col.field] = [this.element[col.field as keyof CrudItem]];
         }
       }
