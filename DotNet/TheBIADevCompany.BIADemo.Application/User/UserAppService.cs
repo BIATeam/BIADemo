@@ -7,15 +7,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Common.Helpers;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -29,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -190,7 +183,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 catch (Exception ex)
                 {
                     string msg = "Error during synchronize. Retry Synchronize.";
-                    this.logger.LogError(msg, ex);
+                    this.logger.LogError(ex, msg);
                     result.Errors.Add(msg);
                 }
             }
@@ -216,7 +209,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     catch (Exception ex)
                     {
                         string msg = userFormDirectoryDto.DisplayName;
-                        this.logger.LogError(msg, ex);
+                        this.logger.LogError(ex, msg);
                         result.Errors.Add(msg);
                     }
                 }
@@ -252,7 +245,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 catch (Exception ex)
                 {
                     string msg = "Error during synchronize. Retry Synchronize.";
-                    this.logger.LogError(msg, ex);
+                    this.logger.LogError(ex, msg);
                     return msg;
                 }
 

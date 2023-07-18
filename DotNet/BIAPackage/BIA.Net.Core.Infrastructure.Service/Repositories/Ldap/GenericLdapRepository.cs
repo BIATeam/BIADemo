@@ -253,7 +253,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception e)
             {
-                this.logger.LogError("Could not join Domain :" + domain, e);
+                this.logger.LogError(e, "Could not join Domain :{domain}", domain);
             }
 
             return usersMatches.Select((um) => ConvertToUserDirectory(um, domain.Name));
@@ -280,7 +280,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "An error occured while adding the users with GUID : " + string.Join(',', usersFromDirectory.Select(u => u.DisplayName )));
+                this.logger.LogError(exception, "An error occured while adding the users with GUID : {userIds}", string.Join(',', usersFromDirectory.Select(u => u.DisplayName)));
             }
             return errors;
         }
@@ -294,7 +294,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 if (userToAdd != null)
                 {
-                    this.logger.LogInformation("User Identity " + user.IdentityKey + " found  in domain " + user.Domain);
+                    this.logger.LogInformation("User Identity {identityKey} found  in domain {domain}", user.IdentityKey, user.Domain);
                     string domainWhereUserFound = user.Domain;
 
                     GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
@@ -317,14 +317,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
                     catch (Exception e)
                     {
-                        this.logger.LogError(e, "[AddUserInGroup] Error when adding user " + userToAdd.UserPrincipalName + " in group " + group.UserPrincipalName);
+                        this.logger.LogError(e, "[AddUserInGroup] Error when adding user {userName} in group {groupName}", userToAdd.UserPrincipalName, group.UserPrincipalName);
                         return false;
                     }
                 }
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "[AddUserInGroup] user IdentityKey " + user.IdentityKey + " problem with domain " + user.Domain);
+                this.logger.LogError(exception, "[AddUserInGroup] user IdentityKey {identityKey} problem with domain {domain}", user.IdentityKey, user.Domain);
             }
 
             return false;
@@ -360,7 +360,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 ldapGroup = userLdapGroups.Where(g => g.AddUsersOfDomains.Any(d => d == domainWhereUserFound)).FirstOrDefault();
                 if (ldapGroup == null)
                 {
-                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain " + domainWhereUserFound + " of role " + roleLabel);
+                    this.logger.LogError("[AddUserInGroup] LdapGroup not found for domain {domainWhereUserFound} of role {roleLabel}", domainWhereUserFound, roleLabel);
                     return null;
                 }
                 context = PrepareDomainContext(ldapGroup.Domain).Result;
@@ -369,7 +369,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     var group = GroupPrincipal.FindByIdentity(context, ldapGroup.LdapName);
                     if (group == null)
                     {
-                        this.logger.LogError("[AddUserInGroup] Cannot find group " + ldapGroup.LdapName + " in domain " + ldapGroup.Domain);
+                        this.logger.LogError("[AddUserInGroup] Cannot find group {groupName} in domain {domain}", ldapGroup.LdapName, ldapGroup.Domain);
                     }
                     return group;
                 }
@@ -411,7 +411,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Error when PrepareDomainContext for domain :" + domain.LdapName);
+                logger.LogError(e, "Error when PrepareDomainContext for domain: {domain}", domain.LdapName);
             }
             finally
             {
@@ -442,12 +442,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             domain.LdapServicePass = cred.Password;
                             return true;
                         }
-                        this.logger.LogError("[PrepareCredential] Credential " + domain.CredentialKeyInWindowsVault + " not found in Vault");
+                        this.logger.LogError("[PrepareCredential] Credential {credentialKeyInWindowsVault} not found in Vault", domain.CredentialKeyInWindowsVault);
                         return false;
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogError(ex, "[PrepareCredential] Error when search credential " + domain.CredentialKeyInWindowsVault);
+                        this.logger.LogError(ex, "[PrepareCredential] Error when search credential {credentialKeyInWindowsVault}", domain.CredentialKeyInWindowsVault);
                         return false;
                     }
 
@@ -481,7 +481,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 GroupPrincipal group = PrepareGroupOfRoleForUser(domainWhereUserFound, roleLabel);
                                 if (group == null || !group.Members.Remove(userPrincipalToRemove/*context, IdentityType.Guid, userToRemove.Guid.ToString()*/))
                                 {
-                                    
+
                                 }
                                 else
                                 {
@@ -498,7 +498,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     if (!userRemoved)
                     {
                         notRemovedUser.Add(userToRemove);
-                        this.logger.LogError("[RemoveUsersInGroup] user not find in all adDomains : " + userToRemove.DisplayName + "(" + userToRemove.Domain + "\\" + this.GetIdentityKey(userToRemove)+ ")");
+                        this.logger.LogError("[RemoveUsersInGroup] user not found in all adDomains : {userToRemove}({domain}\\{identityKey})", userToRemove.DisplayName, userToRemove.Domain, this.GetIdentityKey(userToRemove));
                     }
                 }
                 foreach (var cacheSidToRemove in listGroupCacheSidToRemove)
@@ -508,7 +508,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             catch (Exception exception)
             {
-                this.logger.LogError(exception, "An error occured while adding the user with Identity Key : " + string.Join(',', usersFromRepositoryToRemove.Select(u => u.DisplayName + "(" + u.IdentityKey + ")")));
+                this.logger.LogError(exception, "An error occured while adding the user with Identity Key : {identityKey}", string.Join(',', usersFromRepositoryToRemove.Select(u => $"{u.DisplayName}({u.IdentityKey})")));
                 throw;
             }
 
@@ -940,8 +940,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private GroupDomainSid TestIfIsGroup(string memberSid, string[] recursiveGroupsOfDomains, string currentDomain, bool isForeignSecurity)
         {
             GroupDomainSid memberGroupSid = null;
-            DomainGroupPrincipal testIsGroup = isForeignSecurity?
-                ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid): 
+            DomainGroupPrincipal testIsGroup = isForeignSecurity ?
+                ResolveGroupPrincipal(recursiveGroupsOfDomains.Where((val, idx) => val != currentDomain).ToArray(), memberSid) :
                 ResolveGroupPrincipal(new string[] { currentDomain }, memberSid);
 
             if (testIsGroup.groupPrincipal != null)
@@ -1055,7 +1055,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private async Task<TUserFromDirectory> ResolveUser(string KeyCache, IdentityType identityType, string key, bool forceRefresh = false)
         {
-            
+
             TUserFromDirectory itemResolve;
             itemResolve = (TUserFromDirectory)await this.ldapRepositoryHelper.DistributedCache.Get<TUserFromDirectory>(KeyCache);
             if (itemResolve != null)

@@ -52,17 +52,17 @@ namespace BIA.Net.Core.Application.Job
         public void Run()
         {
             string taskName = this.GetType().Name;
-            this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Begin " + taskName);
+            this.Logger.LogInformation("{time}: Begin {taskName}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
             try
             {
                 Task t = Task.Run(() => this.RunMonitoredTask());
                 t.Wait();
-                this.Logger.LogInformation("Task {0} Status: {1}", t.Id, t.Status);
-                this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": End " + taskName + " with Success.");
+                this.Logger.LogInformation("Task {id} Status: {status}", t.Id, t.Status);
+                this.Logger.LogInformation("{time}: End {taskName} with Success.", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": End " + taskName + " with Fail.");
+                this.Logger.LogError(ex, "{time}: End {taskName} with Fail.", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
                 throw;
             }
             finally
@@ -78,7 +78,7 @@ namespace BIA.Net.Core.Application.Job
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RunMonitoredTask()
         {
-            throw new Exception("Method RunMonitoredTask should be define in " + this.GetType().Name + ".");
+            throw new Exception($"Method RunMonitoredTask should be define in {this.GetType().Name}.");
         }
 
         /// <summary>

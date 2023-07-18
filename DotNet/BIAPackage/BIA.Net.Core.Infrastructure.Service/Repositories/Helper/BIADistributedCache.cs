@@ -65,7 +65,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             catch (Exception ex)
             {
                 // Not in cache
-                this.logger.LogError("BIADistributedCache.Remove Not in cache", ex);
+                this.logger.LogError(ex, "BIADistributedCache.Remove Not in cache");
             }
         }
 

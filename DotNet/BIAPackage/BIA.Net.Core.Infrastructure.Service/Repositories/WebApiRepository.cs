@@ -78,7 +78,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             if (!string.IsNullOrWhiteSpace(url))
             {
-                this.logger.LogInformation($"Call WebApi Get: {url}");
+                this.logger.LogInformation("Call WebApi Get: {url}", url);
 
                 if (useBearerToken)
                 {
@@ -95,7 +95,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 else
                 {
-                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    this.logger.LogError("Url:{url} ReasonPhrase:{reasonPhrase}", url, response.ReasonPhrase);
                     return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }
             }
@@ -172,7 +172,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 else
                 {
-                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    this.logger.LogError("Url:{url} ReasonPhrase:{reasonPhrase}", url, response.ReasonPhrase);
                     return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }
             }
