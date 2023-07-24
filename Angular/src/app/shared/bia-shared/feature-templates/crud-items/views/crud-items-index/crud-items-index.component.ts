@@ -187,7 +187,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.OnDisplay();
-
+    
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
@@ -217,6 +217,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   OnDisplay() {
+    this.checkHaveAdvancedFilter();
     this.useViewConfig(false);
     this.useCalcModeConfig(false);
     this.useSignalRConfig(false);
