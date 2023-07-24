@@ -15,6 +15,7 @@
         icon="pi pi-filter"
         *ngIf="showFilter === false && haveFilter === true"
         pButton
+        pBadge severity="warning" style="overflow: visible"
         (click)="toggleFilter()"
         pTooltip="{{ 'msg.showFilters' | translate }}"
       ></button>
