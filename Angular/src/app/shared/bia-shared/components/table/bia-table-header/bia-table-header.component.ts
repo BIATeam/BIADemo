@@ -12,7 +12,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
-  @Input() haveFilter = false;
+  @Input() hasFilter = false;
   @Input() showFilter = false;
   @Input() showBtnFilter = false;
   @Input() canAdd = true;

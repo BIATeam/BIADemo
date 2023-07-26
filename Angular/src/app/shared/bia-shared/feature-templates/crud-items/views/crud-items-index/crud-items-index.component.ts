@@ -1,7 +1,7 @@
 import { Component, HostBinding, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { FilterMetadata, LazyLoadEvent } from 'primeng/api';
+import { LazyLoadEvent } from 'primeng/api';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import {
   BiaFieldConfig,
@@ -23,6 +23,7 @@ import { CrudConfig } from '../../model/crud-config';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -65,7 +66,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   sortFieldValue = '';
   useViewTeamWithTypeId: TeamTypeId | null;
   defaultViewPref: BiaTableState;
-  haveColumnFilter = false;
+  hasColumnFilter = false;
 
 
   protected store: Store<AppState>;
@@ -74,6 +75,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
+  private tableHelperService: TableHelperService;
 
   constructor(
     protected injector: Injector,
@@ -85,6 +87,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.translateService = this.injector.get<TranslateService>(TranslateService);
     this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
     this.authService = this.injector.get<AuthService>(AuthService);
+    this.tableHelperService = this.injector.get<TableHelperService>(TableHelperService);
 
   }
 
@@ -219,7 +222,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   OnDisplay() {
-    this.checkHaveAdvancedFilter();
+    this.checkhasAdvancedFilter();
     this.useViewConfig(false);
     this.useCalcModeConfig(false);
     this.useSignalRConfig(false);
@@ -293,76 +296,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.crudItemService.getParentIds().map((id => id.toString())), ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
-
-    if (this.biaTableComponent.table.hasFilter())
-    {
-      if (this.isNullUndefEmptyFilters(this.biaTableComponent.table.filters))
-      {
-        this.haveColumnFilter=false;
-      }
-      else 
-      {
-        this.haveColumnFilter=true;
-      }
-      
-    }
-    else
-    {
-      this.haveColumnFilter=false;
-    }
-    
+    this.hasColumnFilter= this.tableHelperService.hasFilter(this.biaTableComponent, true) || this.tableHelperService.hasFilter(this.crudItemTableComponent, true);
   }
-
-
-  private isNullUndefEmptyFilters(filters : {[s: string]: FilterMetadata | FilterMetadata[];}) : boolean
-  {
-    if (this.isValueNullUndefEmptyStr(filters )) 
-    {
-      return true;
-    }
-    if (JSON.stringify(filters) === "{}")
-    {
-      return true;
-    }
-    for (const [key, filter] of Object.entries(filters)) {
-      if (key.startsWith("global|"))
-      {
-        continue;
-      }
-      if (this.isValueNullUndefEmptyStr(filter)) 
-      {
-        continue;
-      }
-      if ((<FilterMetadata>filter).value === null || (<FilterMetadata>filter).value === '' )
-      {
-        continue;
-      }
-      if ((<FilterMetadata>filter).value === undefined) 
-      {
-        // filter is probably a FilterMetadata[]
-        for (const filter2 of (filter as FilterMetadata[])) {
-          if (this.isValueNullUndefEmptyStr(filter2)) 
-          {
-            continue;
-          }
-          if (this.isValueNullUndefEmptyStr(filter2.value)) 
-          {
-            continue;
-          }
-          return false;
-        }
-        continue;
-      }
-      return false;
-    }
-    return true;
-  }
-  
-  private isValueNullUndefEmptyStr(obj : any) : boolean
-  {
-    return (obj === null || obj === undefined || obj === '') 
-  }
-  
 
   searchGlobalChanged(value: string) {
     this.globalSearchValue = value;
@@ -422,19 +357,19 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   // Advanced Filter;
   showAdvancedFilter = false;
-  haveAdvancedFilter = false;
+  hasAdvancedFilter = false;
 
 
   onFilter(advancedFilter: any) {
     this.crudConfiguration.fieldsConfig.advancedFilter = advancedFilter;
     this.crudItemListComponent.table.saveState();
-    this.checkHaveAdvancedFilter();
+    this.checkhasAdvancedFilter();
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }
 
-  checkHaveAdvancedFilter()
+  checkhasAdvancedFilter()
   {
-    this.haveAdvancedFilter =  false;
+    this.hasAdvancedFilter =  false;
   }
 
   private updateAdvancedFilterByView(viewPreference: string) {
@@ -442,13 +377,13 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       const state = JSON.parse(viewPreference);
       if (state) {
         this.crudConfiguration.fieldsConfig.advancedFilter = state.advancedFilter;
-        this.checkHaveAdvancedFilter();
+        this.checkhasAdvancedFilter();
       }
     }
     else
     {
       this.crudConfiguration.fieldsConfig.advancedFilter = {};
-      this.checkHaveAdvancedFilter();
+      this.checkhasAdvancedFilter();
     }
   }
 

@@ -1,7 +1,7 @@
 export class SiteAdvancedFilter {
   userId: number;
 
-  static haveFilter(filter: SiteAdvancedFilter) : boolean{
+  static hasFilter(filter: SiteAdvancedFilter) : boolean{
     return filter?.userId != null
   }
 }

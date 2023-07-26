@@ -18,7 +18,7 @@
 
       [showBtnFilter]="true"
       [showFilter]="showAdvancedFilter"
-      [haveFilter]="haveAdvancedFilter"
+      [hasFilter]="hasAdvancedFilter"
       (openFilter)="onOpenFilter()"
     >
     <!-- // Custo for teams -->
@@ -45,7 +45,7 @@
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [haveColumnFilter]="haveColumnFilter"
+      [hasColumnFilter]="hasColumnFilter"
     >
       <ng-template pTemplate="customControl">
         <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">

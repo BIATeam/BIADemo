@@ -5,7 +5,7 @@
         type="button"
         icon="pi pi-filter"
         class="p-button-outlined flat"
-        *ngIf="showFilter === false && haveFilter === false"
+        *ngIf="showFilter === false && hasFilter === false"
         pButton
         (click)="toggleFilter()"
         pTooltip="{{ 'msg.showFilters' | translate }}"
@@ -13,7 +13,7 @@
       <button
         type="button"
         icon="pi pi-filter"
-        *ngIf="showFilter === false && haveFilter === true"
+        *ngIf="showFilter === false && hasFilter === true"
         pButton
         pBadge severity="warning" style="overflow: visible"
         (click)="toggleFilter()"
