@@ -5,7 +5,7 @@
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
   ></app-site-filter>
-  <div fxFlex="100">
+  <div fxFlex="{{showAdvancedFilter?75:100}}">
     <bia-table-header
       [headerTitle]="'site.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
