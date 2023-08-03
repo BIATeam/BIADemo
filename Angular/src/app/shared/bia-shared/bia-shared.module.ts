@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { PortalModule } from '@angular/cdk/portal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
@@ -181,7 +180,6 @@ const MODULES = [
   TranslateModule,
   FormsModule,
   ReactiveFormsModule,
-  FlexLayoutModule,
   HttpClientModule,
   TeamModule,
 ];

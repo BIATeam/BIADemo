@@ -1,9 +1,9 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <input formControlName="teamId" type="hidden">
   <div class="flex flex-row justify-content-center align-items-center align-content-center">
-    <div class="app-field-container flex flex-1" style="max-width:90%;">
+    <div class="app-field-container flex-1" style="max-width:90%;">
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
               [options]="userOptions"
@@ -18,7 +18,7 @@
             <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
           </span>
         </div>
-        <div class="app-field-container flex flex-1" style="max-width:10%;"  *ngIf="canAddFromDirectory">
+        <div class="app-field-container flex-1" style="max-width:10%;"  *ngIf="canAddFromDirectory">
           <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-sm p-button-rounded p-button-text align-right"
             (click)="addUserFromDirectory()"></button>
         </div>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="flex flex-row justify-content-center align-items-center align-content-center">
-    <div class="app-field-container flex flex-1" style="max-width:90%;">
+    <div class="app-field-container flex-1" style="max-width:90%;">
       <label>{{ 'member.roles' | translate }}:</label>
       <p-listbox
         [options]="roleOptions"

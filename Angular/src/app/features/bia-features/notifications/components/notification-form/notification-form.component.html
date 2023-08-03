@@ -5,7 +5,7 @@
         <p-tabView>
           <p-tabPanel header="{{ 'translation.defaultLanguage' | translate }}">
             <div class="flex flex-row justify-content-center align-items-center align-content-center">
-              <div class="app-field-container flex flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
                   <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
@@ -13,7 +13,7 @@
               </div>
             </div>
             <div class="flex flex-row justify-content-center align-items-center align-content-center">
-              <div class="app-field-container flex flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
                   <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
@@ -29,7 +29,7 @@
               <div [formGroupName]="i">
                 <input formControlName="languageId" type="hidden" />
                 <div class="flex flex-row justify-content-center align-items-center align-content-center">
-                  <div class="app-field-container flex flex-1" style="max-width:90%;">
+                  <div class="app-field-container flex-1" style="max-width:90%;">
                     <span class="p-float-label">
                       <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%" (change)="changeTranslation(i)"/>
                       <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
@@ -37,7 +37,7 @@
                   </div>
                 </div>
                 <div class="flex flex-row justify-content-center align-items-center align-content-center">
-                  <div class="app-field-container flex flex-1" style="max-width:90%;">
+                  <div class="app-field-container flex-1" style="max-width:90%;">
                     <span class="p-float-label">
                       <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%" (change)="changeTranslation(i)"/>
                       <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
@@ -55,7 +55,7 @@
               <i class="pi pi-plus"></i>
             </ng-template>
             <div class="flex flex-row justify-content-center align-items-center align-content-center">
-              <div class="app-field-container flex flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <p-dropdown
                       [options]="missingLanguageOptions"
@@ -81,7 +81,7 @@
       </p-fieldset>
 
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
               [options]="notificationTypeOptions"
@@ -97,12 +97,12 @@
         </div>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <p-checkbox binary="true" formControlName="read" label="{{ 'notification.read' | translate }}"></p-checkbox>
         </div>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-calendar
               biaLocale
@@ -119,7 +119,7 @@
     </div>
     <div class="flex flex-column flex-1" style="max-width:50%;">
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="flex flex-1" style="max-width:100%;">
+        <div class="flex-1" style="max-width:100%;">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
             <p-table [value]="notifiedTeams.controls" [responsive]="true" styleClass="p-datatable-striped">
               <ng-template pTemplate="header">
@@ -174,7 +174,7 @@
         </div>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
               [options]="userOptions"
@@ -190,7 +190,7 @@
         </div>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-field-container flex flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-multiSelect
               defaultLabel="&nbsp;"
@@ -206,7 +206,7 @@
         </div>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="flex flex-1" style="max-width:90%;">
+        <div class="flex-1" style="max-width:90%;">
           <!-- <span class="p-float-label">
             <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
             </textarea>

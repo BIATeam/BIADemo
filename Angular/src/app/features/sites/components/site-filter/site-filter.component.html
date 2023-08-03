@@ -14,7 +14,7 @@
         <h1>{{ 'bia.filters' | translate }}</h1>
       </div>
       <div class="flex flex-row justify-content-center align-items-center align-content-center">
-        <div class="app-filter-container flex flex-1" style="max-width:90%;">
+        <div class="app-filter-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
             [options]="userOptions$ | async"
@@ -37,11 +37,11 @@
         <button
           pButton
           label="{{ 'bia.reset' | translate }}"
-          class="flex flex-1 p-button-outlined" style="max-width:33%;"
+          class="flex-1 p-button-outlined" style="max-width:33%;"
           
           (click)="onReset()"
         ></button>
-        <button type="submit" pButton label="{{ 'bia.filter' | translate }}" class="flex flex-1" style="max-width:33%;"></button>
+        <button type="submit" pButton label="{{ 'bia.filter' | translate }}" class="flex-1" style="max-width:33%;"></button>
         </div>
     </form>
   </div>
