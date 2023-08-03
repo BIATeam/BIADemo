@@ -4,15 +4,15 @@
   <div class="topbar flex justify-content-between align-content-between">
     <div class="logos flex justify-content-center align-items-center align-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
-        <span *ngIf="!first" fxFlexAlign="center" class="separator"></span>
-        <img fxFlexAlign="center" src="{{ logo }}" />
+        <span *ngIf="!first" class="flex align-self-center separator"></span>
+        <img class="flex align-self-center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls flex flex-row">
       <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors">
         <bia-classic-team-selector [teamTypeId]="teamTypeSelector"></bia-classic-team-selector>
-        <span fxFlexAlign="center" class="separator"></span>
+        <span class="flex align-self-center separator"></span>
       </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <bia-online-offline-icon></bia-online-offline-icon>
@@ -94,7 +94,7 @@
           <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
         </div>
       </div>
-      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions flex flex-row flex justify-content-between align-content-between"
+      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions flex flex-row justify-content-between align-content-between"
         >
         <button pButton [label]="message.data?.notification?.data.display | translate"
           (click)="onNotificationClick(message)" class="p-button-primary"></button>
