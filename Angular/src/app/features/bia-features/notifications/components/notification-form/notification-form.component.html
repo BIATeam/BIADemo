@@ -1,6 +1,6 @@
 <form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
   <div fxLayout="row" fxLayoutAlign="center" fxFlex="100">
-    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+    <div fxLayout="column" fxFlex="50">
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabView>
           <p-tabPanel header="{{ 'translation.defaultLanguage' | translate }}">
@@ -117,7 +117,7 @@
         </div>
       </div>
     </div>
-    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+    <div fxLayout="column" fxFlex="50">
       <div fxLayout="row" fxLayoutAlign="center">
         <div fxFlex="100">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
