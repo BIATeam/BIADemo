@@ -27,7 +27,7 @@
       [hasColumnFilter]="hasColumnFilter"
     >
       <ng-template pTemplate="customControl">
-        <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
+        <div class="flex flex-row gap-3 bia-table-controller-container" >
           <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
           (click)="useCalcModeChange(!crudConfiguration.useCalcMode)" 
           pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
