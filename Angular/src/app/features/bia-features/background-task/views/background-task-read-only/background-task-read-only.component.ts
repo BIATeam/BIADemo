@@ -8,7 +8,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
   styleUrls: ['./background-task-read-only.component.scss']
 })
 export class BackgroundTaskReadOnlyComponent implements OnInit, OnDestroy {
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
 
   private sub = new Subscription();
   public url : string;

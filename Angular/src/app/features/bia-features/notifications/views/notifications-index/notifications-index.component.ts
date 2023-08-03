@@ -39,7 +39,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useView = true;
   useRefreshAtLanguageChange = true;
 
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
   private sub = new Subscription();
   showColSearch = false;

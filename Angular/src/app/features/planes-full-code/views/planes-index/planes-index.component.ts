@@ -43,7 +43,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   useRefreshAtLanguageChange = false;
   hasColumnFilter = false;
 
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(PlaneTableComponent, { static: false }) planeTableComponent: PlaneTableComponent;
   private get planeListComponent() {
