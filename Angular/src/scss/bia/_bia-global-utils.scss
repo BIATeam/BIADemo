@@ -3,6 +3,50 @@
   flex: 1;
 }
 
+.bia-page-margin
+{
+  padding-left: 35px;
+  padding-right: 35px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  min-width: 10px;
+}
+
+.bia-page-remove-margin
+{
+  margin-left: -35px;
+  margin-right: -35px;
+  margin-top: -15px;
+  margin-bottom: -15px;
+}
+
+.bia-advanced-filter {
+  padding-bottom: 15px;
+  >button {
+    position: absolute;
+  }
+  .pi pi-clear {
+    margin-left: 12px;
+    margin-right: 9px;
+  }
+  .header {
+    position: relative;
+    top: 30px;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    h1 {
+      font-family: 'raleway-thin', serif;
+      font-size: 36px;
+      font-weight: 200;
+      margin: 0px;
+    }
+  }
+  .app-filter-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
 .bia-relative {
   position: relative;
 }

@@ -15,6 +15,7 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 })
 
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
+
   // Custo for teams
   canManageMembers = false;
 

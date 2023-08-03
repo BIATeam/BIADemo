@@ -9,5 +9,5 @@ import { Component, HostBinding } from '@angular/core';
   `
 })
 export class PageLayoutComponent {
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
 }

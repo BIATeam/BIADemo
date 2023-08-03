@@ -26,7 +26,6 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 })
 export class SiteFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
-  @Input() fxFlexValue: string;
   @Input() hidden = false;
   @Input() advancedFilter: SiteAdvancedFilter;
   @Output() closeFilter = new EventEmitter();

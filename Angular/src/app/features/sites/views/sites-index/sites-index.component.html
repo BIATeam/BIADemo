@@ -1,110 +1,111 @@
-<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
+<div class="flex flex-row flex-wrap bia-page-remove-margin">
   <app-site-filter *ngIf="showAdvancedFilter"
-    [fxFlexValue]="25"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
   ></app-site-filter>
-  <div fxFlex="{{showAdvancedFilter?75:100}}">
-    <bia-table-header
-      [headerTitle]="'site.listOf' | translate"
-      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-      [canDelete]="canDelete"
-      [canExportCSV]="true"
-      (create)="onCreate()"
-      (exportCSV)="onExportCSV()"
-      (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"
+  <div class="flex-grow-1 bia-page-margin">
+    <div>
+      <bia-table-header
+        [headerTitle]="'site.listOf' | translate"
+        [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+        [canDelete]="canDelete"
+        [canExportCSV]="true"
+        (create)="onCreate()"
+        (exportCSV)="onExportCSV()"
+        (delete)="onDelete()"
+        [selectedElements]="selectedCrudItems"
 
-      [showBtnFilter]="true"
-      [showFilter]="showAdvancedFilter"
-      [hasFilter]="hasAdvancedFilter"
-      (openFilter)="onOpenFilter()"
-    >
-    <!-- // Custo for teams -->
-      <ng-template pTemplate="actionOnSelected">
-        <button
-        pButton
-        [disabled]="selectedCrudItems?.length !== 1"
-        *ngIf="canEdit"
-        class="p-button-outlined"
-        label="{{ 'site.edit' | translate }}"
-        (click)="onEdit(this.selectedCrudItems[0].id)"></button>
-      </ng-template>
-    </bia-table-header>
-    <bia-table-controller
-      [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
-      [columns]="columns"
-      [columnToDisplays]="displayedColumns"
-      (displayedColumnsChange)="displayedColumnsChanged($event)"
-      (filter)="searchGlobalChanged($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
-      (toggleSearch)="onToggleSearch()"
-      (viewChange)="onViewChange($event)"
-      [tableStateKey]="tableStateKey"
-      [tableState]="tableState"
-      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [hasColumnFilter]="hasColumnFilter"
-    >
-      <ng-template pTemplate="customControl">
-        <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
-          <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
-          (click)="useCalcModeChange(!crudConfiguration.useCalcMode)" 
-          pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
-          (click)="useViewChange(!crudConfiguration.useView)"
-          pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
-          (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
-          (click)="usePopupChange(!crudConfiguration.usePopup)"
-          pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
-        </div>
-      </ng-template>
-    </bia-table-controller>
-    <bia-table
-      *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [totalRecord]="totalCount$ | async"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canManageMembers"
-      [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
-      (clickRowId)="onClickRow($event)"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-    ></bia-table>
-    <app-site-table
-      *ngIf="crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [dictOptionDtos]="siteService.optionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canEdit]="canEdit"
-      [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-    ></app-site-table>
+        [showBtnFilter]="true"
+        [showFilter]="showAdvancedFilter"
+        [hasFilter]="hasAdvancedFilter"
+        (openFilter)="onOpenFilter()"
+      >
+      <!-- // Custo for teams -->
+        <ng-template pTemplate="actionOnSelected">
+          <button
+          pButton
+          [disabled]="selectedCrudItems?.length !== 1"
+          *ngIf="canEdit"
+          class="p-button-outlined"
+          label="{{ 'site.edit' | translate }}"
+          (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+        </ng-template>
+      </bia-table-header>
+      <bia-table-controller
+        [defaultPageSize]="defaultPageSize"
+        [length]="totalCount$ | async"
+        [columns]="columns"
+        [columnToDisplays]="displayedColumns"
+        (displayedColumnsChange)="displayedColumnsChanged($event)"
+        (filter)="searchGlobalChanged($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+        (toggleSearch)="onToggleSearch()"
+        (viewChange)="onViewChange($event)"
+        [tableStateKey]="tableStateKey"
+        [tableState]="tableState"
+        [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+        [hasColumnFilter]="hasColumnFilter"
+      >
+        <ng-template pTemplate="customControl">
+          <div fxLayout="row" fxLayoutGap="20px" class="bia-table-controller-container">
+            <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
+            (click)="useCalcModeChange(!crudConfiguration.useCalcMode)" 
+            pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
+            (click)="useViewChange(!crudConfiguration.useView)"
+            pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
+            (click)="useSignalRChange(!crudConfiguration.useSignalR)"
+            pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
+            (click)="usePopupChange(!crudConfiguration.usePopup)"
+            pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
+          </div>
+        </ng-template>
+      </bia-table-controller>
+      <bia-table
+        *ngIf="!crudConfiguration.useCalcMode"
+        [elements]="crudItems$ | async"
+        [totalRecord]="totalCount$ | async"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [showColSearch]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canClickRow]="canManageMembers"
+        [canSelectElement]="canDelete"
+        [loading]="loading$ | async"
+        (clickRowId)="onClickRow($event)"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+      ></bia-table>
+      <app-site-table
+        *ngIf="crudConfiguration.useCalcMode"
+        [elements]="crudItems$ | async"
+        [dictOptionDtos]="siteService.optionsService.dictOptionDtos$ | async"
+        [totalRecord]="totalCount$ | async"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [showColSearch]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canEdit]="canEdit"
+        [canAdd]="canAdd"
+        [canSelectElement]="canDelete"
+        [loading]="loading$ | async"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        (save)="onSave($event)"
+      ></app-site-table>
+    </div>
   </div>
 </div>

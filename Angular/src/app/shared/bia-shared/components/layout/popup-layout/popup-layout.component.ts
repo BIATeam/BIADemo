@@ -27,7 +27,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   popupTitle: string;
   style: any;
   maximizable: boolean;
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
 
   ngOnInit() {
     const snapshot = this.activatedRoute.snapshot;
