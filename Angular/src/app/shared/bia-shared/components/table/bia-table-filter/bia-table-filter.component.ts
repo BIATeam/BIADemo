@@ -64,7 +64,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   {
     if (this.table)
     {
-      if (this.table.filters && this.table.filters[col.field] && 'value' in this.table.filters[col.field])
+      if (this.table.filters && (this.table.filters[col.field] as FilterMetadata) && 'value' in (this.table.filters[col.field] as FilterMetadata))
       {
         return (this.table.filters[col.field] as FilterMetadata)['value'] != undefined
       }

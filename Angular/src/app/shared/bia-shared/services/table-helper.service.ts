@@ -36,8 +36,12 @@ export class TableHelperService  {
     }
 
   
-    public isNullUndefEmptyFilters(filters : {[s: string]: FilterMetadata | FilterMetadata[];}, ignoreGlobalFilter : boolean) : boolean
+    public isNullUndefEmptyFilters(filters : {[s: string]: FilterMetadata | FilterMetadata[]| undefined;}, ignoreGlobalFilter : boolean) : boolean
     {
+      if (!filters) 
+      {
+        return true;
+      }
       if (this.isNullUndefEmptyStr(filters )) 
       {
         return true;
