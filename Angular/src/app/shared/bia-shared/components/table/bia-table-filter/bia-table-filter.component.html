@@ -1,5 +1,5 @@
 <span *ngIf="col.isSearchable === true" class="p-float-label">
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:18px;">
       <ng-container *ngIf="!isArraySimple(col)">
         <p-columnFilter [type]="['Date', 'DateTime'].includes(col.type)?'date':'text'" 

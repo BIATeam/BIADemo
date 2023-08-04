@@ -1,6 +1,6 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
-  <div class="p-fluid app-field-container flex flex-column justify-content-start align-items-start align-content-start" >
-    <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="p-fluid app-field-container flex flex-column justify-content-start" >
+    <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width:50%;">
         <div *ngIf="useKeycloak !== true" class="p-float-label">
           <p-dropdown
@@ -30,7 +30,7 @@
         </div>
       </div>
     </div>
-    <div class="flex flex-row justify-content-center align-items-center align-content-center">
+    <div class="flex flex-row justify-content-center">
       <div class="app-field-container flex-1" style="max-width:90%;">
         <div class="p-float-label">
           <p-autoComplete
@@ -51,7 +51,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-row gap-1 justify-content-end align-items-end align-content-end" >
+  <div class="flex flex-row gap-1 justify-content-end" >
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button
       pButton

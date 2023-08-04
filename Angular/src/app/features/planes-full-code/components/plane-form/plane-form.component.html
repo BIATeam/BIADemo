@@ -1,5 +1,5 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <input formControlName="msn" type="text" pInputText maxlength="64" style ="width:100%"/>
@@ -7,12 +7,12 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <p-checkbox binary="true" formControlName="isActive" label="{{ 'plane.isActive' | translate }}"></p-checkbox>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <p-calendar
@@ -29,7 +29,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <p-calendar
@@ -45,7 +45,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <p-calendar
@@ -62,7 +62,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <input formControlName="capacity" type="number" pInputText style="width: 100%;" />
@@ -70,7 +70,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <p-dropdown
@@ -87,7 +87,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row justify-content-center align-items-center align-content-center">
+  <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:90%;">
       <span class="p-float-label">
         <p-multiSelect
@@ -104,7 +104,7 @@
       </span>
     </div>
   </div>
-  <div class="flex flex-row gap-1 justify-content-end align-items-end align-content-end" >
+  <div class="flex flex-row gap-1 justify-content-end" >
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button
       pButton

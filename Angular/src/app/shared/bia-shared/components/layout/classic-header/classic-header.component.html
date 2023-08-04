@@ -2,7 +2,7 @@
   <!-- topbar -->
 
   <div class="topbar flex justify-content-between align-content-between">
-    <div class="logos flex justify-content-center align-items-center align-content-center">
+    <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" class="flex align-self-center separator"></span>
         <img class="flex align-self-center" src="{{ logo }}" />

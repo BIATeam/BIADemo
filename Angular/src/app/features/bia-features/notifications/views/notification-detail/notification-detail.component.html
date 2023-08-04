@@ -10,7 +10,7 @@
     <button pButton label="{{'notification.setUnread' | translate}}" type="button"
     class="p-button-secondary" (click)="onSetUnread(notification.id)" *ngIf="notification.read"></button>
     <span></span>
-    <div class="flex flex-row gap-1 justify-content-end align-items-end align-content-end" >
+    <div class="flex flex-row gap-1 justify-content-end" >
       <bia-notification-team-warning [notification]="notification"></bia-notification-team-warning>
       <button pButton [label]="notification.data?.display ?? 'notification.action' | translate" type="button"
         class="p-button-primary" (click)="onAction(notification)" *ngIf="canAction(notification)"></button>
