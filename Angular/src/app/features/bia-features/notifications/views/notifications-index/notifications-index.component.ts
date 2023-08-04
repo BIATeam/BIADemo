@@ -187,7 +187,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.notificationListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.notificationListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
     };

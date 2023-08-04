@@ -211,7 +211,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.planeListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
     };

@@ -133,7 +133,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   private removeMessage(message: Message, setRead = false) {
-    this.toast.messages.splice(this.toast.messages.indexOf(message), 1);
+    this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
       this.store.dispatch(DomainNotificationsActions.setAsRead({ id: message.data.notification.id }))

@@ -52,7 +52,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
             break;
           case PropType.ManyToMany:
             Reflect.set(crudItem, col.field, BiaOptionService.Differential(
-              Reflect.get(crudItem, col.field), 
+              Reflect.get(crudItem, col.field) as BaseDto [], 
               this.element?Reflect.get(this.element, col.field):undefined));
             break;
           case PropType.OneToMany:
