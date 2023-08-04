@@ -70,6 +70,7 @@ export let ROUTES: Routes = [
           },
           {
             path: '',
+            pathMatch: 'full',
             redirectTo: 'edit'
           },
         ]

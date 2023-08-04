@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit, TemplateRef, AfterContentInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -19,7 +19,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   @Input() dictOptionDtos: DictOptionDto[];
 
   public formId: string;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public element: any = {};
   public hasChanged = false;
   protected currentRow: HTMLElement;
@@ -29,7 +29,7 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   specificInputTemplate: TemplateRef<any>;
   
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService

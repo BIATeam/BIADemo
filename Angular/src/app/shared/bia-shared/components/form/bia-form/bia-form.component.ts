@@ -13,7 +13,7 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
@@ -37,11 +37,11 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
-  form: FormGroup;
+  form: UntypedFormGroup;
   protected sub = new Subscription();
 
   constructor(
-      public formBuilder: FormBuilder,
+      public formBuilder: UntypedFormBuilder,
       // protected authService: AuthService
     ) {
     

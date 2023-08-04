@@ -68,6 +68,7 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //           },
 //           {
 //             path: '',
+//             pathMatch: 'full',
 //             redirectTo: 'edit'
 //           },
 //         ]

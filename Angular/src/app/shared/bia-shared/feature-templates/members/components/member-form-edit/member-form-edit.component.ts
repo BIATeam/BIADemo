@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -29,11 +29,11 @@ export class MemberFormEditComponent implements OnChanges {
   @Output() save = new EventEmitter<Member>();
   @Output() cancel = new EventEmitter();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public translateService: TranslateService) {
     this.initForm();
   }

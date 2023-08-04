@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { View } from '../../model/view';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'bia-view-form',
@@ -12,10 +12,10 @@ export class ViewFormComponent implements OnChanges {
 
   @Output() save = new EventEmitter<View>();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   isAdd = true;
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 

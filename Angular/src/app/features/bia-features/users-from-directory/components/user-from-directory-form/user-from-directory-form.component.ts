@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFromDirectory } from '../../model/user-from-directory';
 import { UserFilter } from '../../model/user-filter';
@@ -29,10 +29,10 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   selectedUsers: UserFromDirectory[];
   selectedDomain: string;
-  form: FormGroup;
+  form: UntypedFormGroup;
   useKeycloak = false;
 
-  constructor(public formBuilder: FormBuilder, appSettingsService: AppSettingsService) {
+  constructor(public formBuilder: UntypedFormBuilder, appSettingsService: AppSettingsService) {
     this.initForm();
     this.useKeycloak = appSettingsService.appSettings?.keycloak?.isActive;
   }

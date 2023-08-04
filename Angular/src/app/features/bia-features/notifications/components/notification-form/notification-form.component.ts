@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -33,13 +33,13 @@ export class NotificationFormComponent implements OnChanges {
   @Output() save = new EventEmitter<Notification>();
   @Output() cancel = new EventEmitter();
 
-  form: FormGroup;
-  notificationTranslations: FormArray;
+  form: UntypedFormGroup;
+  notificationTranslations: UntypedFormArray;
   missingLanguageOptions: OptionDto[];
   public missingTranslation = false;
   protected selectionLanguage = false;
 
-  constructor(public formBuilder: FormBuilder) {
+  constructor(public formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 
@@ -49,7 +49,7 @@ export class NotificationFormComponent implements OnChanges {
       if (this.notification) {
         this.form.patchValue({ ...this.notification });
 
-        const formArray = new FormArray([]);
+        const formArray = new UntypedFormArray([]);
         this.notification.notifiedTeams.forEach(team => {
           formArray.push(this.formBuilder.group({
             team: [team.team, Validators.required],
@@ -87,13 +87,13 @@ export class NotificationFormComponent implements OnChanges {
     };
 
     this.form = this.formBuilder.group(group);
-    this.notificationTranslations = this.form.get('notificationTranslations') as FormArray;
+    this.notificationTranslations = this.form.get('notificationTranslations') as UntypedFormArray;
   }
 
   /** 
    * Returns the FormGroup as a Table Row 
    */  
-  private createNotifiedTeams(): FormGroup {  
+  private createNotifiedTeams(): UntypedFormGroup {  
     return this.formBuilder.group({   
         team: [null, Validators.required]  , 
         roles:  [  ],
@@ -101,8 +101,8 @@ export class NotificationFormComponent implements OnChanges {
     });  
   }
 
-  get notifiedTeams(): FormArray {  
-    return this.form.get('notifiedTeams') as FormArray;  
+  get notifiedTeams(): UntypedFormArray {  
+    return this.form.get('notifiedTeams') as UntypedFormArray;  
   }
 
   addNewRow(): void {  
@@ -121,7 +121,7 @@ export class NotificationFormComponent implements OnChanges {
     }
   }
 
-  createTranslation(notificationTranslation: NotificationTranslation): FormGroup {
+  createTranslation(notificationTranslation: NotificationTranslation): UntypedFormGroup {
     return this.formBuilder.group({
       id: notificationTranslation.id,
       dtoState : notificationTranslation.dtoState,
