@@ -1,5 +1,5 @@
 <div class="header flex flex-row justify-content-between align-content-between" >
-  <div class="flex flex-row gap-2 align-items-center align-content-center" style="max-width: 100%;" >
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <ng-container *ngIf="showBtnFilter">
       <button
         type="button"
@@ -29,11 +29,11 @@
     ></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center" style="max-width: 100%;" >
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <h1>{{ headerTitle }}</h1>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center" style="max-width: 100%;" >
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <button
       pButton
       class="p-button-outlined"
