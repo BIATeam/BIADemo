@@ -72,7 +72,6 @@
     "@typescript-eslint/parser": "5.27.1",
     "angular-cli-ghpages": "^1.0.3",
     "eslint": "^8.17.0",
-    "ngrx-store-logger": "^0.2.4",
     "prettier": "1.18.1",
     "ts-node": "~7.0.0",
     "tslib": "^2.4.0",
