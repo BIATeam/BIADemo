@@ -22,7 +22,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto>  {
   @Input() dictOptionDtos: DictOptionDto[];
 
   @Output() save = new EventEmitter<CrudItem>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   constructor() {
   }

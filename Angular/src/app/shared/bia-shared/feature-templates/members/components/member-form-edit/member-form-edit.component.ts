@@ -27,7 +27,7 @@ export class MemberFormEditComponent implements OnChanges {
   @Input() canAddFromDirectory = false;
 
   @Output() save = new EventEmitter<Member>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;

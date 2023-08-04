@@ -30,7 +30,7 @@ export class BiaTableInputComponent implements OnInit, OnDestroy, AfterContentIn
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 
-  @Output() valueChange = new EventEmitter();
+  @Output() valueChange = new EventEmitter<void>();
   @Output() complexInput = new EventEmitter<boolean>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;

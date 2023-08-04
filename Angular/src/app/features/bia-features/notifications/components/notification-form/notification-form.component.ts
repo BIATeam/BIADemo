@@ -31,7 +31,7 @@ export class NotificationFormComponent implements OnChanges {
   @Input() languageOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Notification>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   notificationTranslations: UntypedFormArray;

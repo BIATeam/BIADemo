@@ -21,10 +21,10 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() canExportCSV = false;
   @Input() headerTitle: string;
   @Input() selectedElements: any[];
-  @Output() create = new EventEmitter();
-  @Output() delete = new EventEmitter();
-  @Output() openFilter = new EventEmitter();
-  @Output() exportCSV = new EventEmitter();
+  @Output() create = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();
+  @Output() openFilter = new EventEmitter<void>();
+  @Output() exportCSV = new EventEmitter<void>();
 
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;

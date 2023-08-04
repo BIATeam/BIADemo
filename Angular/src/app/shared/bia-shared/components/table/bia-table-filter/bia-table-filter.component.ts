@@ -24,7 +24,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   @Input() col: BiaFieldConfig;
   @Input() table: Table;
 
-  // @Output() valueChange = new EventEmitter();
+  // @Output() valueChange = new EventEmitter<void>();
   // @Output() complexInput = new EventEmitter<boolean>();
 
   protected sub = new Subscription();

@@ -22,7 +22,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();
   @Output() save = new EventEmitter<UserFromDirectory[]>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
   @Input() returnSizeOptions: number[] = [10, 25, 50, 100];

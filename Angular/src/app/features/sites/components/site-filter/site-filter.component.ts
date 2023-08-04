@@ -28,7 +28,7 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() hidden = false;
   @Input() advancedFilter: SiteAdvancedFilter;
-  @Output() closeFilter = new EventEmitter();
+  @Output() closeFilter = new EventEmitter<void>();
   @Output() searchUsers = new EventEmitter<string>();
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 

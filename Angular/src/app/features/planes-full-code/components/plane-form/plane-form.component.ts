@@ -27,7 +27,7 @@ export class PlaneFormComponent implements OnChanges {
   @Input() planeTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Plane>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   form: UntypedFormGroup;
 

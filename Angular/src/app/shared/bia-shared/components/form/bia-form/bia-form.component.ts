@@ -32,7 +32,7 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
