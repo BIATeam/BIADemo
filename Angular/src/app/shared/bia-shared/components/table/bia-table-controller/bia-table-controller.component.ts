@@ -34,7 +34,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();
   @Output() pageSizeChange = new EventEmitter<number>();
-  @Output() toggleSearch = new EventEmitter();
+  @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
 
 

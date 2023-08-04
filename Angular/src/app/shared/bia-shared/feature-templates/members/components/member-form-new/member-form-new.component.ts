@@ -28,7 +28,7 @@ export class MemberFormNewComponent implements OnChanges {
 
 
   @Output() save = new EventEmitter<Members>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   form: UntypedFormGroup;
   displayUserAddFromDirectoryDialog = false;
