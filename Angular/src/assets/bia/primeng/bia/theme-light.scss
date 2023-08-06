@@ -20,4 +20,9 @@ $biaBgRowSelected:#E5F2F5;
 $biaBorderRowSelected: #7CBFCC;
 $biaTabColor: #1B998B;
 
-@import '../../sass/theme/theme_light';
+@import '../sass/theme/theme-light/_variables';
+@import '../sass/theme/_compact';
+@import '../sass/overrides/_theme_variables';
+@import '../sass/theme/theme-base/_components';
+@import '../sass/theme//extensions/_vendor_extensions';
+@import '../sass/overrides/_theme_styles';

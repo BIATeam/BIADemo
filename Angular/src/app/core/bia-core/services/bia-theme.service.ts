@@ -60,15 +60,15 @@ export class BiaThemeService {
 
   private applyPrimeNgTheme(theme: string) {
     const themeLightLink: HTMLLinkElement = document.getElementById('theme-light-css') as HTMLLinkElement;
-    const layoutLightLink: HTMLLinkElement = document.getElementById('layout-light-css') as HTMLLinkElement;
+    //const layoutLightLink: HTMLLinkElement = document.getElementById('layout-light-css') as HTMLLinkElement;
 
     const themeDarkLink: HTMLLinkElement = document.getElementById('theme-dark-css') as HTMLLinkElement;
-    const layoutDarkLink: HTMLLinkElement = document.getElementById('layout-dark-css') as HTMLLinkElement;
+    //const layoutDarkLink: HTMLLinkElement = document.getElementById('layout-dark-css') as HTMLLinkElement;
 
     themeLightLink.disabled = theme === THEME_DARK;
-    layoutLightLink.disabled = theme === THEME_DARK;
+    //layoutLightLink.disabled = theme === THEME_DARK;
 
     themeDarkLink.disabled = theme === THEME_LIGHT;
-    layoutDarkLink.disabled = theme === THEME_LIGHT;
+    //layoutDarkLink.disabled = theme === THEME_LIGHT;
   }
 }
