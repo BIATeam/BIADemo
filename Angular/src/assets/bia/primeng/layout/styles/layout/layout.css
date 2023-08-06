@@ -1809,6 +1809,10 @@ body {
   line-height: 1.5em !important;
 }
 
+html {
+  font-size: 16px;
+}
+
 .p-toast.p-toast-top-right {
   top: 10px;
   right: 10px;

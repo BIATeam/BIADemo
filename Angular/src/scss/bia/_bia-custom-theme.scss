@@ -14,15 +14,18 @@ bia-classic-header {
   .topbar {
     background-color: $biaAccentColor;
     color: white;
-    @if ($is-dark) {
-      border-bottom-style: solid;
-      border-bottom-width: thin;
-    }
   }
 
   .mainbar {
     background-color: $biaMainBarColor;
-    color: $biaAccentColor;
+    .project-title {
+      @if ($is-dark)
+      {
+        color: white;
+      } @else {
+        color: $biaAccentColor;
+      }
+    }
 
     .p-menubar-root-list .p-state-active {
       text-decoration: underline;
@@ -38,7 +41,7 @@ bia-classic-header {
 // classic-layout-theme
 bia-classic-layout {
   .content {
-    background-image: linear-gradient(rgba(var(--surface-ground), 0.6), rgba(var(--surface-ground), 0.6)),
+    background-image: linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
       url('~/assets/bia/bg-default.jpg');
   }
 

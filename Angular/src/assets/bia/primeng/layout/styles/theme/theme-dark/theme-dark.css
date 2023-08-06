@@ -7955,11 +7955,14 @@ p-tabview .p-tabview-panels {
   background-color: #0f1c28 !important;
 }
 
+.p-menubar {
+  background-color: transparent;
+}
 .p-menubar .p-state-active {
   background-color: transparent;
 }
 
-.p-menubar-root-list > li > a > .p-menuitem-text {
+.p-menubar-root-list > li > .p-menuitem-content > a > .p-menuitem-text {
   font-family: "oswald-regular";
   font-weight: 400 !important;
   font-size: 18px !important;
@@ -7992,22 +7995,6 @@ p-tabview .p-tabview-panels {
 }
 .p-megamenu .p-menuitem-text {
   line-height: 1.5em !important;
-}
-
-.topbar .p-megamenu .p-menuitem-link .p-menuitem-text {
-  color: #fff;
-}
-
-.p-megamenu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
-  color: rgba(255, 255, 255, 0.87);
-}
-
-.topbar .p-megamenu .p-megamenu-submenu .p-menuitem-link .p-menuitem-text {
-  color: #000;
-}
-
-.p-megamenu .p-megamenu-submenu .p-menuitem-link:not(.p-disabled):hover .p-menuitem-text {
-  color: rgba(0, 0, 0, 0.87);
 }
 
 p-breadcrumb .p-breadcrumb-chevron {
