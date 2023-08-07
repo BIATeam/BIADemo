@@ -22,7 +22,7 @@ $biaTabColor: #1B998B;
 
 @import '../sass/theme/theme-dark/_variables';
 @import '../sass/theme/_compact';
-@import '../sass/overrides/_theme_variables';
+@import './overrides/_theme_variables';
 @import '../sass/theme/theme-base/_components';
 @import '../sass/theme//extensions/_vendor_extensions';
-@import '../sass/overrides/_theme_styles';
+@import './overrides/_theme_styles';
