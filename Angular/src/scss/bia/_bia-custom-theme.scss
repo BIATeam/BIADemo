@@ -14,18 +14,17 @@ bia-classic-header {
   .topbar {
     background-color: $biaAccentColor;
     color: white;
-    @if ($is-dark) {
-      border-bottom-style: solid;
-      border-bottom-width: thin;
-    }
   }
 
   .mainbar {
     background-color: $biaMainBarColor;
-    @if ($is-dark) {
-      color: $biaFgTextColor;
-    } @else {
-      color: $biaAccentColor;
+    .project-title {
+      @if ($is-dark)
+      {
+        color: white;
+      } @else {
+        color: $biaAccentColor;
+      }
     }
 
     .p-menubar-root-list .p-state-active {
@@ -66,7 +65,7 @@ bia-classic-layout {
 // classic-page-layout-theme
 bia-classic-page-layout {
   > div {
-    background-color: $biaBgColor;
+    background-color: var(--surface-ground);
   }
 }
 

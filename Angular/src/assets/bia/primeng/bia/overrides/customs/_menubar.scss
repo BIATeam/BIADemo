@@ -1,10 +1,11 @@
 
 .p-menubar {
+  background-color: transparent;
    .p-state-active {
     background-color: transparent;
   }
 }
-.p-menubar-root-list > li > a > .p-menuitem-text {
+.p-menubar-root-list > li > .p-menuitem-content > a > .p-menuitem-text {
   font-family: 'oswald-regular';
   font-weight: 400 !important;
   font-size: 18px !important;

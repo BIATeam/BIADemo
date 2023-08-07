@@ -323,7 +323,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.crudItemListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map((id => id.toString())), columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
