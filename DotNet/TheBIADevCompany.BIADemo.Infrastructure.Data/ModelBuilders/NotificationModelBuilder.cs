@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         private static void CreateNotificationUserModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<NotificationUser>().HasKey(nu => new { UserId = nu.UserId, NotificationId = nu.NotificationId });
+            modelBuilder.Entity<NotificationUser>().HasKey(nu => new { nu.UserId, nu.NotificationId });
             modelBuilder.Entity<NotificationUser>().HasOne(nu => nu.User).WithMany(u => u.NotificationUsers).HasForeignKey(nu => nu.UserId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<NotificationUser>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedUsers).HasForeignKey(nu => nu.NotificationId);
         }

@@ -71,7 +71,8 @@ namespace BIA.Net.Core.Domain
             return specification;
         }
 
-        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value) where TEntity : class, IEntity<TKey>, new()
+        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value)
+            where TEntity : class, IEntity<TKey>, new()
         {
             if (value["value"] == null)
             {

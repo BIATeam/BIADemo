@@ -63,10 +63,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <inheritdoc/>
         public override void DtoToEntity(MemberDto dto, Member entity)
         {
-            if (entity == null)
-            {
-                entity = new Member();
-            }
+            entity ??= new Member();
 
             entity.Id = dto.Id;
             entity.TeamId = dto.TeamId;
@@ -82,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 entity.MemberRoles.Remove(memberRole);
             }
 
-            entity.MemberRoles = entity.MemberRoles ?? new List<MemberRole>();
+            entity.MemberRoles ??= new List<MemberRole>();
             foreach (var roleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
             {
                 entity.MemberRoles.Add(new MemberRole { RoleId = roleDto.Id, MemberId = dto.Id });

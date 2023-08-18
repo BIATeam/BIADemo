@@ -422,7 +422,7 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <inheritdoc/>
-        public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        public virtual async Task RemoveBulkByIdsAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
         {
             var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode) ?? throw new ElementNotFoundException();
             await this.Repository.UnitOfWork.RemoveBulkAsync(entity);

@@ -133,7 +133,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             int nbSites = this.DbMock.CountSites();
 
             string newTitle = "New title";
-            SiteDto newSite = new SiteDto()
+            SiteDto newSite = new()
             {
                 Id = siteId,
                 Title = newTitle,
@@ -161,7 +161,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             this.DbMock.InitDefaultSites();
             int nbSites = this.DbMock.CountSites();
 
-            SiteDto newSite = new SiteDto()
+            SiteDto newSite = new()
             {
                 Id = 2,
                 Title = "Site with not matching ID",
@@ -195,7 +195,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
+            PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new()
             {
                 Filters = null,
                 AdvancedFilter = new SiteAdvancedFilterDto() { UserId = 1 },
@@ -220,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
 
             // Check Update behavior (used when validating the "Edit" popup).
             string newTitle = "New site 1";
-            SiteDto newSite = new SiteDto()
+            SiteDto newSite = new()
             {
                 Id = 1,
                 Title = newTitle,
@@ -258,7 +258,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             int nbSites = this.DbMock.CountSites();
 
             string siteTitle = "New title";
-            SiteDto newSite = new SiteDto()
+            SiteDto newSite = new()
             {
                 Id = siteId,
                 Title = siteTitle,
@@ -295,7 +295,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.AreEqual(0, this.DbMock.CountSites());
 
             // Add site.
-            SiteDto siteDto = new SiteDto()
+            SiteDto siteDto = new()
             {
                 Title = "PST",
             };
@@ -327,7 +327,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         public void UpdateCreatedSiteByController()
         {
             // Create new site.
-            SiteDto siteDto = new SiteDto
+            SiteDto siteDto = new()
             {
                 Title = "TLS",
             };

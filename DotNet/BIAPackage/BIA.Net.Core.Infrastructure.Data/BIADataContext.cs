@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         private readonly ILogger<BIADataContext> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContext"/> class.
+        /// Initializes a new instance of the <see cref="BIADataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
@@ -111,7 +111,8 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
         {
             await this.BulkInsertAsync(items?.ToList());
         }
@@ -122,13 +123,12 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            using IDbContextTransaction transaction = this.Database.BeginTransaction();
+            await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+            await transaction.CommitAsync();
         }
 
         /// <summary>
@@ -137,13 +137,12 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            using IDbContextTransaction transaction = this.Database.BeginTransaction();
+            await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+            await transaction.CommitAsync();
         }
 
         /// <summary>

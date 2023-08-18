@@ -6,14 +6,12 @@ namespace BIA.Net.Core.Presentation.Common.Features
     using System;
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Community.Microsoft.Extensions.Caching.PostgreSql;
-    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.RepoContract;
-    using Microsoft.AspNetCore.Builder;
+    using BIA.Net.Core.Presentation.Common.Authentication;
+    using Community.Microsoft.Extensions.Caching.PostgreSql;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Add the standard service.
@@ -76,7 +74,8 @@ namespace BIA.Net.Core.Presentation.Common.Features
             return services;
         }
 
-        public static void UseBiaCommonFeatures<AuditFeature>(IServiceProvider services) where AuditFeature : IAuditFeature
+        public static void UseBiaCommonFeatures<TAuditFeature>(IServiceProvider services)
+            where TAuditFeature : IAuditFeature
         {
             //services = app.ApplicationServices for Api
             // for worker
@@ -85,7 +84,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
             //    var services = scope.ServiceProvider;
             //}
 
-            services.GetRequiredService<AuditFeature>().UseAuditFeatures(services);
+            services.GetRequiredService<TAuditFeature>().UseAuditFeatures(services);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 
             foreach (string title in DataConstants.DefaultSitesTitles)
             {
-                Site site = new Site
+                Site site = new()
                 {
                     Id = id++,
                     Title = title,
@@ -78,7 +78,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataUsers.AddMember(int, int, int, ICollection{MemberRole})"/>
         public void AddMember(int id, int teamId, int userId, ICollection<MemberRole> roles)
         {
-            Member member = new Member()
+            Member member = new()
             {
                 Id = id,
                 TeamId = teamId,
@@ -96,7 +96,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataUsers.AddUser(int, string, string, int?, int?, ICollection{MemberRole})"/>
         public void AddUser(int id, string firstName, string lastName, int? memberId = null, int? memberSiteId = null, ICollection<MemberRole> memberRoles = null)
         {
-            User user = new User()
+            User user = new()
             {
                 Id = id,
                 Company = "TheBIADevCompany",

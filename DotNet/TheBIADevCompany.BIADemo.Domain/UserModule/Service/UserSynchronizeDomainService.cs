@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             }
             else if (usersSidInDirectory?.Count > 0)
             {
-                ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
+                ConcurrentBag<UserFromDirectory> usersFromDirectory = new();
 
                 Parallel.ForEach(usersSidInDirectory, sid =>
                 {
@@ -132,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 if (this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectory) != this.userIdentityKeyDomainService.GetDirectoryIdentityKey(new UserFromDirectory()))
                 {
                     // Create the missing user
-                    User user = new User();
+                    User user = new();
                     UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
                     this.repository.Add(user);
                     return user;

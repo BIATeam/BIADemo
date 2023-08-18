@@ -36,13 +36,13 @@ try
     })
     .UseNLog();
 
-    Startup startup = new Startup(builder.Configuration);
+    Startup startup = new(builder.Configuration);
 
     startup.ConfigureServices(builder.Services);
 
     WebApplication app = builder.Build();
 
-    BiaNetSection biaNetSection = new BiaNetSection();
+    BiaNetSection biaNetSection = new();
     builder.Configuration.GetSection("BiaNet").Bind(biaNetSection);
     startup.Configure(app, app.Environment, new JwtFactory(Options.Create<Jwt>(biaNetSection.Jwt)));
 

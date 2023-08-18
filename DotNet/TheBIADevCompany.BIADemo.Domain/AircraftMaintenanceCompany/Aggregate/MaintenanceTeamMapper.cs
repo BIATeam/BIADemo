@@ -38,10 +38,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
         {
-            if (entity == null)
-            {
-                entity = new MaintenanceTeam();
-            }
+            entity ??= new MaintenanceTeam();
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;

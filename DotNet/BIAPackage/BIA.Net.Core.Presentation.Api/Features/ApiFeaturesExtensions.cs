@@ -87,7 +87,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     {
                         services.AddSignalR().AddRedis(
                             apiFeatures.HubForClients.RedisConnectionString,
-                        redisOptions =>
+                            redisOptions =>
                         {
                             redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
                         });
@@ -143,9 +143,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
             return services;
         }
 
-        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>(
+        public static IApplicationBuilder UseBiaApiFeatures(
             [NotNull] this IApplicationBuilder app,
-            ApiFeatures apiFeatures, HangfireDashboardAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
+            ApiFeatures apiFeatures,
+            HangfireDashboardAuthorizations hangfireServerAuthorizations)
         {
             app.UseEndpoints(endpoints =>
             {

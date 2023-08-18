@@ -193,10 +193,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
-                List<MemberDto> dtoList = new List<MemberDto>();
+                List<MemberDto> dtoList = new();
                 foreach (var user in dtos.Users)
                 {
-                    MemberDto dto = new MemberDto
+                    MemberDto dto = new()
                     {
                         User = user,
                         Roles = dtos.Roles,

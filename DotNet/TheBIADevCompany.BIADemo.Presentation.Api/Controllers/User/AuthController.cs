@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public async Task<IActionResult> Login()
         {
             // used only by swagger.
-            LoginParamDto loginParam = new LoginParamDto
+            LoginParamDto loginParam = new()
             {
                 TeamsConfig = new TeamConfigDto[]
                 {

@@ -23,13 +23,13 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string connectionString,
             string sqlOnChangeEventHandlerRequest,
             string sqlReadChangeRequest,
-            ChangeHandler OnChange,
+            ChangeHandler onChange,
             List<SqlNotificationInfo> filterNotifictionInfos = null)
         {
             this.connectionString = connectionString;
             this.sqlOnChangeEventHandlerRequest = sqlOnChangeEventHandlerRequest;
             this.sqlReadChangeRequest = sqlReadChangeRequest;
-            this.OnChange = OnChange;
+            this.OnChange = onChange;
             this.filterNotifictionInfos = filterNotifictionInfos;
         }
 
@@ -47,40 +47,36 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 SqlDependency.Start(this.connectionString);
             }
 
-            using (SqlConnection connection = new(this.connectionString))
-            using (SqlCommand command = new(this.sqlOnChangeEventHandlerRequest, connection))
+            using SqlConnection connection = new(this.connectionString);
+            using SqlCommand command = new(this.sqlOnChangeEventHandlerRequest, connection);
+            connection.Open();
+
+            SqlDependency dependency = new(command);
+            dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange);
+            command.ExecuteNonQuery();
+
+            if (!this.isFirst)
             {
-                connection.Open();
-
-                SqlDependency dependency = new(command);
-                dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange);
-                command.ExecuteNonQuery();
-
-                if (!this.isFirst)
+                if (string.IsNullOrEmpty(this.sqlReadChangeRequest))
                 {
-                    if (string.IsNullOrEmpty(this.sqlReadChangeRequest))
+                    if (this.IsValidEvent(e) && this.OnChange != null)
                     {
+                        this.OnChange(null);
+                    }
+                }
+                else
+                {
+                    using SqlCommand selectCommand = new(this.sqlReadChangeRequest, connection);
+                    using SqlDataReader reader = selectCommand.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+
+                        //int id = reader.GetInt32(0);
+
                         if (this.IsValidEvent(e) && this.OnChange != null)
                         {
-                            this.OnChange(null);
-                        }
-                    }
-                    else
-                    {
-                        using (SqlCommand selectCommand = new(this.sqlReadChangeRequest, connection))
-                        using (SqlDataReader reader = selectCommand.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                reader.Read();
-
-                                //int id = reader.GetInt32(0);
-
-                                if (this.IsValidEvent(e) && this.OnChange != null)
-                                {
-                                    this.OnChange(reader);
-                                }
-                            }
+                            this.OnChange(reader);
                         }
                     }
                 }

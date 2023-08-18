@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
-            BiaNetSection biaNetSection = new BiaNetSection();
+            BiaNetSection biaNetSection = new();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
             BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
@@ -155,7 +155,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// <returns>HttpClientHandler object.</returns>
         private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection)
         {
-            HttpClientHandler httpClientHandler = new HttpClientHandler
+            HttpClientHandler httpClientHandler = new()
             {
                 UseDefaultCredentials = true,
                 AllowAutoRedirect = false,

@@ -111,22 +111,22 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public static void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory)
         {
             user.Login = userDirectory.Login;
-            user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?.Substring(0, 50) : userDirectory.FirstName ?? string.Empty;
-            user.LastName = userDirectory.LastName?.Length > 50 ? userDirectory.LastName?.Substring(0, 50) : userDirectory.LastName ?? string.Empty;
+            user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?[..50] : userDirectory.FirstName ?? string.Empty;
+            user.LastName = userDirectory.LastName?.Length > 50 ? userDirectory.LastName?[..50] : userDirectory.LastName ?? string.Empty;
             user.IsActive = true;
-            user.Country = userDirectory.Country?.Length > 10 ? userDirectory.Country?.Substring(0, 10) : userDirectory.Country ?? string.Empty;
-            user.Department = userDirectory.Department?.Length > 50 ? userDirectory.Department?.Substring(0, 50) : userDirectory.Department ?? string.Empty;
-            user.DistinguishedName = userDirectory.DistinguishedName?.Length > 250 ? userDirectory.DistinguishedName?.Substring(0, 250) : userDirectory.DistinguishedName ?? string.Empty;
-            user.Manager = userDirectory.Manager?.Length > 250 ? userDirectory.Manager?.Substring(0, 250) : userDirectory.Manager;
-            user.Email = userDirectory.Email?.Length > 256 ? userDirectory.Email?.Substring(0, 256) : userDirectory.Email ?? string.Empty;
-            user.ExternalCompany = userDirectory.ExternalCompany?.Length > 50 ? userDirectory.ExternalCompany?.Substring(0, 50) : userDirectory.ExternalCompany;
+            user.Country = userDirectory.Country?.Length > 10 ? userDirectory.Country?[..10] : userDirectory.Country ?? string.Empty;
+            user.Department = userDirectory.Department?.Length > 50 ? userDirectory.Department?[..50] : userDirectory.Department ?? string.Empty;
+            user.DistinguishedName = userDirectory.DistinguishedName?.Length > 250 ? userDirectory.DistinguishedName?[..250] : userDirectory.DistinguishedName ?? string.Empty;
+            user.Manager = userDirectory.Manager?.Length > 250 ? userDirectory.Manager?[..250] : userDirectory.Manager;
+            user.Email = userDirectory.Email?.Length > 256 ? userDirectory.Email?[..256] : userDirectory.Email ?? string.Empty;
+            user.ExternalCompany = userDirectory.ExternalCompany?.Length > 50 ? userDirectory.ExternalCompany?[..50] : userDirectory.ExternalCompany;
             user.IsEmployee = userDirectory.IsEmployee;
             user.IsExternal = userDirectory.IsExternal;
-            user.Company = userDirectory.Company?.Length > 50 ? userDirectory.Company?.Substring(0, 50) : userDirectory.Company ?? string.Empty;
+            user.Company = userDirectory.Company?.Length > 50 ? userDirectory.Company?[..50] : userDirectory.Company ?? string.Empty;
             user.DaiDate = DateTime.Now;
-            user.Office = userDirectory.Office?.Length > 20 ? userDirectory.Office?.Substring(0, 20) : userDirectory.Office ?? string.Empty;
-            user.Site = userDirectory.Site?.Length > 50 ? userDirectory.Site?.Substring(0, 50) : userDirectory.Site ?? string.Empty;
-            user.SubDepartment = userDirectory.SubDepartment?.Length > 50 ? userDirectory.SubDepartment?.Substring(0, 50) : userDirectory.SubDepartment;
+            user.Office = userDirectory.Office?.Length > 20 ? userDirectory.Office?[..20] : userDirectory.Office ?? string.Empty;
+            user.Site = userDirectory.Site?.Length > 50 ? userDirectory.Site?[..50] : userDirectory.Site ?? string.Empty;
+            user.SubDepartment = userDirectory.SubDepartment?.Length > 50 ? userDirectory.SubDepartment?[..50] : userDirectory.SubDepartment;
         }
     }
 }

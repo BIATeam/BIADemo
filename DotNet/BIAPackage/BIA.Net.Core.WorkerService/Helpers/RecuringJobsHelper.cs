@@ -38,9 +38,9 @@ namespace BIA.Net.Core.WorkerService
             }
 
             var mon = JobStorage.Current.GetMonitoringApi();
-            List<string> jobsToCheck = new ();
+            List<string> jobsToCheck = new();
 
-            mon.ProcessingJobs(0, int.MaxValue).ToList().ToList().ForEach(x => jobsToCheck.Add(x.Key));
+            mon.ProcessingJobs(0, int.MaxValue).ToList().ForEach(x => jobsToCheck.Add(x.Key));
 
             List<QueueWithTopEnqueuedJobsDto> queues;
             if (string.IsNullOrEmpty(queueName))

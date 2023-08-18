@@ -4,7 +4,6 @@
 
 namespace BIA.Net.Core.Application.Authentication
 {
-    using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
@@ -27,7 +26,8 @@ namespace BIA.Net.Core.Application.Authentication
         /// </summary>
         /// <param name="tokenDto">The token data.</param>
         /// <returns></returns>
-        ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto;
+        ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : UserDataDto;
 
         /// <summary>
         /// Generate an encoded JWT.
@@ -41,12 +41,11 @@ namespace BIA.Net.Core.Application.Authentication
         /// </summary>
         /// <param name="tokenDto">The token not uncrypted.</param>
         /// <param name="additionalInfos">Additionnal Info for front.</param>
-        /// <param name="fullToken">Additionnal Info for front.</param>
+        /// <param name="lightToken">The light token.</param>
         /// The additional information we want to let visible in the token.
-        /// 
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns></param>
         /// <returns>The JWT as string.</returns>
-        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool fullToken)
+        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool lightToken)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto;
     }

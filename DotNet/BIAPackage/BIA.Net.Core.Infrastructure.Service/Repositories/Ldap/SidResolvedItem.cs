@@ -5,8 +5,6 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
     public enum SidResolvedItemType
     {
@@ -17,7 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
     [Serializable]
     public class SidResolvedItem
     {
-        public string domainKey;
-        public SidResolvedItemType type;
+        public string DomainKey;
+        public SidResolvedItemType Type;
     }
 }

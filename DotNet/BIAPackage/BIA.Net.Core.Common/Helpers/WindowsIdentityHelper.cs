@@ -112,12 +112,10 @@ namespace BIA.Net.Core.Common.Helpers
             LogonType logonType = LogonType.LOGON32_LOGON_NEW_CREDENTIALS,
             LogonProvider logonProvider = LogonProvider.LOGON32_PROVIDER_DEFAULT)
         {
-            using (SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider))
-            {
-                WindowsIdentity.RunImpersonated(
-                    safeAccessTokenHandle,
-                    action);
-            }
+            using SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider);
+            WindowsIdentity.RunImpersonated(
+                safeAccessTokenHandle,
+                action);
         }
 
         /// <summary>
@@ -139,12 +137,10 @@ namespace BIA.Net.Core.Common.Helpers
             LogonType logonType = LogonType.LOGON32_LOGON_NEW_CREDENTIALS,
             LogonProvider logonProvider = LogonProvider.LOGON32_PROVIDER_DEFAULT)
         {
-            using (SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider))
-            {
-                return WindowsIdentity.RunImpersonated(
-                    safeAccessTokenHandle,
-                    func);
-            }
+            using SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider);
+            return WindowsIdentity.RunImpersonated(
+                safeAccessTokenHandle,
+                func);
         }
 
         /// <summary>
@@ -165,12 +161,10 @@ namespace BIA.Net.Core.Common.Helpers
             LogonType logonType = LogonType.LOGON32_LOGON_NEW_CREDENTIALS,
             LogonProvider logonProvider = LogonProvider.LOGON32_PROVIDER_DEFAULT)
         {
-            using (SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider))
-            {
-                return WindowsIdentity.RunImpersonatedAsync(
-                    safeAccessTokenHandle,
-                    func);
-            }
+            using SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider);
+            return WindowsIdentity.RunImpersonatedAsync(
+                safeAccessTokenHandle,
+                func);
         }
 
         /// <summary>
@@ -192,12 +186,10 @@ namespace BIA.Net.Core.Common.Helpers
             LogonType logonType = LogonType.LOGON32_LOGON_NEW_CREDENTIALS,
             LogonProvider logonProvider = LogonProvider.LOGON32_PROVIDER_DEFAULT)
         {
-            using (SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider))
-            {
-                return WindowsIdentity.RunImpersonatedAsync(
-                    safeAccessTokenHandle,
-                    func);
-            }
+            using SafeAccessTokenHandle safeAccessTokenHandle = GetSafeAccessTokenHandle(domainName, userName, password, logonType, logonProvider);
+            return WindowsIdentity.RunImpersonatedAsync(
+                safeAccessTokenHandle,
+                func);
         }
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]

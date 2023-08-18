@@ -218,7 +218,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             if (!string.IsNullOrWhiteSpace(token))
             {
-                JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+                JwtSecurityTokenHandler tokenHandler = new();
                 JwtSecurityToken jwtSecurityToken = tokenHandler.ReadJwtToken(token);
                 expirationDate = new DateTimeOffset(jwtSecurityToken.ValidTo);
             }
@@ -272,7 +272,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
                 DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
-                DistributedCacheEntryOptions option = new DistributedCacheEntryOptions() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
+                DistributedCacheEntryOptions option = new() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
                 await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), bearerToken, options: option);
             }
             else

@@ -71,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             {
                 string url = $"{this.configuration.Authentication.Keycloak.BaseUrl}{this.configuration.Authentication.Keycloak.Api.TokenConf.RelativeUrl}";
 
-                TokenRequestDto tokenRequestDto = new TokenRequestDto()
+                TokenRequestDto tokenRequestDto = new()
                 {
                     ClientId = this.configuration.Authentication.Keycloak.Api.TokenConf.ClientId,
                     GrantType = this.configuration.Authentication.Keycloak.Api.TokenConf.GrantType,
@@ -104,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <returns>List of <see cref="UserFromDirectory"/>.</returns>
         private List<UserFromDirectory> ConvertToUserDirectory(List<SearchUserResponseDto> searchUserResponseDtos)
         {
-            List<UserFromDirectory> userFromDirectories = new List<UserFromDirectory>();
+            List<UserFromDirectory> userFromDirectories = new();
 
             if (searchUserResponseDtos != null && searchUserResponseDtos?.Any() == true)
             {
@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                         sid = new System.Security.Principal.SecurityIdentifier(Convert.FromBase64String(searchUserResponseDto.Attribute.ObjectSid), 0).ToString();
                     }
 
-                    UserFromDirectory userFromDirectory = new UserFromDirectory
+                    UserFromDirectory userFromDirectory = new()
                     {
                         FirstName = searchUserResponseDto.FirstName,
                         LastName = searchUserResponseDto.LastName,

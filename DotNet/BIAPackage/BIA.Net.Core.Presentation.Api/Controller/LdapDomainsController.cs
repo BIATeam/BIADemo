@@ -43,7 +43,7 @@ namespace BIA.Net.Presentation.Api.Controllers
         public IActionResult GetAll()
         {
             IEnumerable<LdapDomain> ldapDomains = this.configuration?.Authentication?.LdapDomains?.Where(o => o.ContainsUser);
-            ldapDomains = ldapDomains ?? new List<LdapDomain>();
+            ldapDomains ??= new List<LdapDomain>();
 
             return this.Ok(ldapDomains);
         }

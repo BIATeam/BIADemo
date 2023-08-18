@@ -85,10 +85,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             // Add new plane.
             int id = 3;
             int capacity = 333;
-            DateTime deliveryDate = new DateTime(1990, 10, 10);
+            DateTime deliveryDate = new(1990, 10, 10);
             string syncTime = "12:00:00";
             bool isActive = false;
-            DateTime lastFlightDate = new DateTime(2013, 4, 4);
+            DateTime lastFlightDate = new(2013, 4, 4);
             string msn = "AB-0001";
 
             PlaneDto dto = this.service.AddAsync(new PlaneDto()

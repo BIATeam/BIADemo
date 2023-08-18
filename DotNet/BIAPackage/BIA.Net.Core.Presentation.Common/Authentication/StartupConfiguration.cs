@@ -40,7 +40,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         {
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
+            SymmetricSecurityKey signingKey = new(Encoding.ASCII.GetBytes(configuration.Jwt.SecretKey));
 
             // Configure JwtIssuerOptions
             services.Configure<Jwt>(options =>

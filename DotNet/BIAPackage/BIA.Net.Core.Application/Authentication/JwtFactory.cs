@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// The signing key to use when generating tokens.
         /// </summary>
-        public SigningCredentials signingCredentials { get; set; }
+        public SigningCredentials SigningCredentials { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JwtFactory"/> class.
@@ -41,13 +41,13 @@ namespace BIA.Net.Core.Application.Authentication
         {
             this.jwt = jwtOptions.Value;
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.jwt.SecretKey));
-            this.signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey signingKey = new(Encoding.ASCII.GetBytes(this.jwt.SecretKey));
+            this.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             ThrowIfInvalidOptions(this.jwt);
         }
 
-        public ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey)
+        public ClaimsPrincipal GetPrincipalFromToken(string token, string secretKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationParameters = new TokenValidationParameters
@@ -55,12 +55,12 @@ namespace BIA.Net.Core.Application.Authentication
                 ValidateAudience = false, // you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = this.signingCredentials.Key,
+                IssuerSigningKey = this.SigningCredentials.Key,
                 ValidateLifetime = false, // here we are saying that we don't care about the token's expiration date
             };
             try
             {
-                var principal = tokenHandler.ValidateToken(Token, tokenValidationParameters, out var validatedToken);
+                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validatedToken);
                 if (!this.ValidateSecurityAlgorithm(validatedToken))
                 {
                     return null;
@@ -74,14 +74,15 @@ namespace BIA.Net.Core.Application.Authentication
             }
         }
 
-        private bool ValidateSecurityAlgorithm(SecurityToken SecurityToken)
+        private bool ValidateSecurityAlgorithm(SecurityToken securityToken)
         {
-            var res = (SecurityToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+            var res = (securityToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
             return res;
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
-        public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto
+        public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : UserDataDto
         {
             var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
             claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
@@ -111,7 +112,7 @@ namespace BIA.Net.Core.Application.Authentication
                 claims: claims,
                 notBefore: this.jwt.NotBefore,
                 expires: this.jwt.Expiration,
-                signingCredentials: this.signingCredentials);
+                signingCredentials: this.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -123,12 +124,7 @@ namespace BIA.Net.Core.Application.Authentication
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto
         {
-            var claimsIdentity = await Task.FromResult(this.GenerateClaimsIdentity(tokenDto));
-            if (claimsIdentity == null)
-            {
-                throw new Exception("Unauthorized because claimsIdentity is null");
-            }
-
+            var claimsIdentity = await Task.FromResult(this.GenerateClaimsIdentity(tokenDto)) ?? throw new Exception("Unauthorized because claimsIdentity is null");
             var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),

@@ -63,12 +63,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             messageToSend.Body = new TextPart(TextFormat.Html) { Text = bodyText?.Trim() };
 
-            using (SmtpClient client = new ())
-            {
-                await client.ConnectAsync(this.configuration.EmailConfiguration.SmtpHost, this.configuration.EmailConfiguration.SmtpPort, false);
-                await client.SendAsync(messageToSend);
-                await client.DisconnectAsync(true);
-            }
+            using SmtpClient client = new();
+            await client.ConnectAsync(this.configuration.EmailConfiguration.SmtpHost, this.configuration.EmailConfiguration.SmtpPort, false);
+            await client.SendAsync(messageToSend);
+            await client.DisconnectAsync(true);
         }
     }
 }

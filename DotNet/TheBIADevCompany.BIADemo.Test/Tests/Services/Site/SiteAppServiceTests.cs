@@ -151,7 +151,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            PagingFilterFormatDto<SiteAdvancedFilterDto> filters = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
+            PagingFilterFormatDto<SiteAdvancedFilterDto> filters = new()
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };
@@ -198,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             // Initialize the service to test.
             ISiteAppService service = this.GetService<ISiteAppService>();
 
-            SiteDto siteDto = new SiteDto()
+            SiteDto siteDto = new()
             {
                 Title = "TLS",
             };
@@ -253,7 +253,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            SiteDto siteDto = new SiteDto()
+            SiteDto siteDto = new()
             {
                 Id = 2,
                 Title = "TLS",

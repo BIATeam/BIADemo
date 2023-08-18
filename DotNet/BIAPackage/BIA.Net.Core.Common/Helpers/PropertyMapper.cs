@@ -72,12 +72,12 @@ namespace BIA.Net.Core.Common.Helpers
             where TSource : class, new()
             where TDest : class, new()
         {
-            List<TDest> list = new List<TDest>();
+            List<TDest> list = new();
             if (sources != null)
             {
                 foreach (TSource source in sources)
                 {
-                    TDest dest = new TDest();
+                    TDest dest = new();
                     Map(source, dest, excludeProperties);
                     list.Add(dest);
                 }

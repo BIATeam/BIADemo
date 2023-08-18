@@ -20,16 +20,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private static HubConnection connection = null;
         private static bool starting = false;
         private static bool started = false;
-        private readonly ClientForHubConfiguration _ClientForHubConfiguration;
+        private readonly ClientForHubConfiguration clientForHubConfiguration;
 
         public SignalRClientForHubRepository(IOptions<CommonFeatures> options)
         {
-            this._ClientForHubConfiguration = options.Value.ClientForHub;
+            this.clientForHubConfiguration = options.Value.ClientForHub;
         }
 
         public Task StartAsync()
         {
-            if (!this._ClientForHubConfiguration.IsActive)
+            if (!this.clientForHubConfiguration.IsActive)
             {
                 throw new Exception("The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.");
             }
@@ -38,7 +38,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 starting = true;
                 connection = new HubConnectionBuilder()
-                    .WithUrl(this._ClientForHubConfiguration.SignalRUrl)
+                    .WithUrl(this.clientForHubConfiguration.SignalRUrl)
                     .WithAutomaticReconnect()
                     .Build();
                 connection.Closed += async (error) =>
@@ -62,10 +62,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         public virtual void Dispose()
         {
-            if (connection != null)
-            {
-                connection.StopAsync();
-            }
+            connection?.StopAsync();
         }
 
         /// <summary>

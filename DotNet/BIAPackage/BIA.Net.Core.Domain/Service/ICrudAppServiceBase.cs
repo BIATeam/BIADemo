@@ -10,6 +10,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
+    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
@@ -201,7 +202,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode, string queryMode);
+        Task RemoveBulkByIdsAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
 
         /// <summary>
         /// Update quickly hudge number of element.

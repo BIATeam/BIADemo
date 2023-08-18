@@ -56,8 +56,7 @@ namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
                 return false;
             }
 
-            var jwtToken = string.Empty;
-
+            string jwtToken;
             if (httpContext.Request.Query.ContainsKey("jwt_token"))
             {
                 jwtToken = httpContext.Request.Query["jwt_token"].FirstOrDefault();

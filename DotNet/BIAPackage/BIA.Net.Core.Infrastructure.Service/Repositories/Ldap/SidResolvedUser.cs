@@ -11,6 +11,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
     [Serializable]
     public class SidResolvedUser<TUserFromDirectory> : SidResolvedItem
     {
-        public TUserFromDirectory user;
+        public TUserFromDirectory User;
     }
 }

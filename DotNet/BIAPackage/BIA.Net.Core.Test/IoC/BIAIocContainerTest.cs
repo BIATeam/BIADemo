@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Test.IoC
         /// <param name="services">The collection of services to update.</param>
         public static void ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
-              where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
+            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
         {
             services.AddDbContext<IQueryableUnitOfWork, TDbContext>(
                 options =>

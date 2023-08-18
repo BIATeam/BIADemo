@@ -59,10 +59,7 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         /// <param name="entity">The entity to update.</param>
         public override void DtoToEntity(SiteDto dto, Site entity)
         {
-            if (entity == null)
-            {
-                entity = new Site();
-            }
+            entity ??= new Site();
 
             entity.Id = dto.Id;
             entity.Title = dto.Title;

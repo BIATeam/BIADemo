@@ -43,10 +43,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(PlaneDto dto, Plane entity)
         {
-            if (entity == null)
-            {
-                entity = new Plane();
-            }
+            entity ??= new Plane();
 
             entity.Id = dto.Id;
             entity.Msn = dto.Msn;
@@ -77,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     }
                 }
 
-                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
+                entity.ConnectingPlaneAirports ??= new List<PlaneAirport>();
                 foreach (var airportDto in dto.ConnectingAirports.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.ConnectingPlaneAirports.Add(new PlaneAirport
@@ -124,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = new();
 
                 if (headerNames != null && headerNames?.Any() == true)
                 {

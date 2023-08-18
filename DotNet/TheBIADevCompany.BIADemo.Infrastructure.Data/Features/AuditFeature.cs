@@ -110,13 +110,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 
         private static Type AuditTypeMapper(Type type)
         {
-            switch (type.Name)
+            return type.Name switch
             {
-                case "User":
-                    return typeof(UserAudit);
-                default:
-                    return typeof(AuditLog);
-            }
+                "User" => typeof(UserAudit),
+                _ => typeof(AuditLog),
+            };
         }
 
         private static Task<bool> GeneralAudit(AuditEvent evt, EventEntry entry, AuditLog auditEntity)

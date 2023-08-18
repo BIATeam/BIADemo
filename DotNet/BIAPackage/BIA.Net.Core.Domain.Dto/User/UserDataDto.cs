@@ -26,10 +26,10 @@ namespace BIA.Net.Core.Domain.Dto.User
 
         public int GetCurrentTeamId(int teamTypeId)
         {
-            var CurrentSite = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
-            if (CurrentSite != null)
+            var currentSite = this.CurrentTeams?.FirstOrDefault(t => t.TeamTypeId == teamTypeId);
+            if (currentSite != null)
             {
-                return CurrentSite.TeamId;
+                return currentSite.TeamId;
             }
 
             return 0;
@@ -37,13 +37,7 @@ namespace BIA.Net.Core.Domain.Dto.User
 
         public CurrentTeamDto GetCurrentTeam(int teamTypeId)
         {
-            var CurrentTeam = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
-            if (CurrentTeam != null)
-            {
-                return CurrentTeam;
-            }
-
-            return null;
+            return this.CurrentTeams?.FirstOrDefault(t => t.TeamTypeId == teamTypeId);
         }
     }
 }

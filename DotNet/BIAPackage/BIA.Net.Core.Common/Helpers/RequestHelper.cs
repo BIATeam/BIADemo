@@ -28,14 +28,10 @@ namespace BIA.Net.Core.Common.Helpers
         {
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
-                {
-                    using (var response = await httpClient.GetAsync(CreateUrl(url, urlParameters)))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        return apiResponse;
-                    }
-                }
+                using var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) };
+                using var response = await httpClient.GetAsync(CreateUrl(url, urlParameters));
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                return apiResponse;
             }
             catch (Exception ex)
             {
@@ -52,14 +48,10 @@ namespace BIA.Net.Core.Common.Helpers
         /// <returns>The result of the API call.</returns>
         public static async Task<T> GetAsync<T>(string url, Dictionary<string, string> urlParameters)
         {
-            using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
-            {
-                using (var response = await httpClient.GetAsync(CreateUrl(url, urlParameters)))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<T>(apiResponse);
-                }
-            }
+            using var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) };
+            using var response = await httpClient.GetAsync(CreateUrl(url, urlParameters));
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(apiResponse);
         }
 
         /// <summary>
@@ -71,15 +63,11 @@ namespace BIA.Net.Core.Common.Helpers
         /// <returns>The result of the API call.</returns>
         public static async Task<string> PostAsync(string url, Dictionary<string, string> urlParameters, object data)
         {
-            using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
-            {
-                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    return apiResponse;
-                }
-            }
+            using var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) };
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            using var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content);
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            return apiResponse;
         }
 
         /// <summary>
@@ -92,15 +80,11 @@ namespace BIA.Net.Core.Common.Helpers
         /// <returns>The result of the API call.</returns>
         public static async Task<T> PostAsync<T>(string url, Dictionary<string, string> urlParameters, object data)
         {
-            using (var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) })
-            {
-                var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    return JsonSerializer.Deserialize<T>(apiResponse);
-                }
-            }
+            using var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true, UseProxy = false }) { Timeout = TimeSpan.FromMilliseconds(200000) };
+            var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
+            using var response = await httpClient.PostAsync(CreateUrl(url, urlParameters), content);
+            string apiResponse = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(apiResponse);
         }
 
         /// <summary>

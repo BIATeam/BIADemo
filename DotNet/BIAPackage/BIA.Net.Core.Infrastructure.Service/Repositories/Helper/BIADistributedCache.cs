@@ -53,7 +53,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
                 return this.ByteArrayToObject<T>(encodedItemResolve);
             }
 
-            return default(T);
+            return default;
         }
 
         public async Task Remove(string key)
@@ -80,7 +80,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             }
 
             using var stream = new MemoryStream();
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            XmlSerializer xmlSerializer = new(typeof(T));
             xmlSerializer.Serialize(stream, obj);
 
             return stream.ToArray();
@@ -96,7 +96,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             // Ensure that our stream is at the beginning.
             stream.Write(arrBytes, 0, arrBytes.Length);
             stream.Seek(0, SeekOrigin.Begin);
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
+            XmlSerializer xmlSerializer = new(typeof(T));
             return (T)xmlSerializer.Deserialize(stream);
         }
     }

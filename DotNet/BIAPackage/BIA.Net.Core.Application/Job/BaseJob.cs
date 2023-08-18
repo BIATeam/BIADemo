@@ -48,7 +48,6 @@ namespace BIA.Net.Core.Application.Job
         /// <summary>
         /// Execute the purpose of this job.
         /// </summary>
-        /// <returns>The <see cref="Task"/> representing the operation to perform.</returns>
         public void Run()
         {
             string taskName = this.GetType().Name;
@@ -86,20 +85,18 @@ namespace BIA.Net.Core.Application.Job
         /// </summary>
         private void LogAllJobsDetails()
         {
-            using (var connection = JobStorage.Current.GetConnection())
-            {
-                var recurringJobs = connection.GetRecurringJobs();
+            using var connection = JobStorage.Current.GetConnection();
+            var recurringJobs = connection.GetRecurringJobs();
 
-                if (recurringJobs == null || recurringJobs.Count == 0)
+            if (recurringJobs == null || recurringJobs.Count == 0)
+            {
+                this.Logger.LogInformation("No recurring jobs.");
+            }
+            else
+            {
+                foreach (var job in recurringJobs)
                 {
-                    this.Logger.LogInformation("No recurring jobs.");
-                }
-                else
-                {
-                    foreach (var job in recurringJobs)
-                    {
-                        this.LogJobDetails(job);
-                    }
+                    this.LogJobDetails(job);
                 }
             }
         }
@@ -110,18 +107,16 @@ namespace BIA.Net.Core.Application.Job
         /// <param name="id">The job identifier.</param>
         private void LogJobDetails(string id)
         {
-            using (var connection = JobStorage.Current.GetConnection())
-            {
-                var job = connection.GetRecurringJobs().FirstOrDefault(j => j.Id.Equals(id));
+            using var connection = JobStorage.Current.GetConnection();
+            var job = connection.GetRecurringJobs().FirstOrDefault(j => j.Id.Equals(id));
 
-                if (job == null)
-                {
-                    this.Logger.LogInformation($"No recurring job '{id}'.");
-                }
-                else
-                {
-                    this.LogJobDetails(job);
-                }
+            if (job == null)
+            {
+                this.Logger.LogInformation($"No recurring job '{id}'.");
+            }
+            else
+            {
+                this.LogJobDetails(job);
             }
         }
 

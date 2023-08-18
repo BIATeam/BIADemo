@@ -47,10 +47,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(NotificationDto dto, Notification entity)
         {
-            if (entity == null)
-            {
-                entity = new Notification();
-            }
+            entity ??= new Notification();
 
             entity.Id = dto.Id;
             entity.Read = dto.Read;
@@ -73,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     }
                 }
 
-                entity.NotifiedUsers = entity.NotifiedUsers ?? new List<NotificationUser>();
+                entity.NotifiedUsers ??= new List<NotificationUser>();
                 foreach (var userDto in dto.NotifiedUsers.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.NotifiedUsers.Add(new NotificationUser
@@ -93,18 +90,18 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     }
                 }
 
-                entity.NotifiedTeams = entity.NotifiedTeams ?? new List<NotificationTeam>();
+                entity.NotifiedTeams ??= new List<NotificationTeam>();
                 foreach (var teamDto in dto.NotifiedTeams.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.NotifiedTeams.Add(new NotificationTeam
                     {
                         TeamId = teamDto.Team.Id,
                         NotificationId = dto.Id,
-                        Roles = teamDto.Roles != null ? teamDto.Roles.Select(role => new NotificationTeamRole
+                        Roles = teamDto.Roles?.Select(role => new NotificationTeamRole
                         {
                             NotificationTeamId = teamDto.Id,
                             RoleId = role.Id,
-                        }).ToList() : null,
+                        }).ToList(),
                     });
                 }
 
@@ -122,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                             }
                         }
 
-                        notifiedTeam.Roles = notifiedTeam.Roles ?? new List<NotificationTeamRole>();
+                        notifiedTeam.Roles ??= new List<NotificationTeamRole>();
                         foreach (var roleDto in teamDto.Roles.Where(w => w.DtoState == DtoState.Added))
                         {
                             notifiedTeam.Roles.Add(new NotificationTeamRole
@@ -157,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     }
                 }
 
-                entity.NotificationTranslations = entity.NotificationTranslations ?? new List<NotificationTranslation>();
+                entity.NotificationTranslations ??= new List<NotificationTranslation>();
                 foreach (var notificationTranslationDto in dto.NotificationTranslations.Where(w => w.DtoState == DtoState.Added))
                 {
                     entity.NotificationTranslations.Add(new NotificationTranslation
