@@ -33,12 +33,12 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         public AircraftMaintenanceCompanyAppService(ITGenericRepository<AircraftMaintenanceCompany, int> repository, IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             var currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
             // You can see evrey team if your are member
             // For AircraftMaintenanceCompany we add

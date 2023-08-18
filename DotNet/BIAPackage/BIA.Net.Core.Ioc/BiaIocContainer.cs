@@ -1,4 +1,4 @@
-// <copyright file="IocContainer.cs" company="BIA">
+// <copyright file="BiaIocContainer.cs" company="BIA">
 //  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -16,7 +16,7 @@ namespace BIA.Net.Core.IocContainer
     /// <summary>
     /// The IoC Container.
     /// </summary>
-    public static class BIAIocContainer
+    public static class BiaIocContainer
     {
         /// <summary>
         /// The method used to register all instances.
@@ -24,7 +24,7 @@ namespace BIA.Net.Core.IocContainer
         /// <param name="collection">The collection of services.</param>
         /// <param name="configuration">The application configuration.</param>
         /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
-        /// specific ones in BIAIocContainerTest.</param>
+        /// specific ones in BiaIocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
             ConfigureInfrastructureServiceContainer(collection);

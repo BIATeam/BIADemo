@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-            BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
+            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
             ConfigureDomainContainer(collection);
@@ -139,9 +139,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
-            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IBiaDemoWebApiRepository, BiaDemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
-            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IBiaDemoAppRepository, BiaDemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 

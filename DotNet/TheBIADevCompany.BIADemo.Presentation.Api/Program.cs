@@ -6,7 +6,6 @@
 using System;
 using BIA.Net.Core.Application.Authentication;
 using BIA.Net.Core.Common.Configuration;
-using BIA.Net.Core.Presentation.Common.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

@@ -79,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
             services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString()));
 
             // Begin BIA Standard service
@@ -119,7 +119,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithExposedHeaders(BIAConstants.HttpHeaders.TotalCount));
+                    .WithExposedHeaders(BiaConstants.HttpHeaders.TotalCount));
             }
 
             app.UseResponseCompression();

@@ -1,4 +1,4 @@
-﻿// <copyright file="IBIADemoAppRepository.cs" company="TheBIADevCompany">
+﻿// <copyright file="IBiaDemoWebApiRepository.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -7,10 +7,10 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
     using System.Threading.Tasks;
 
     /// <summary>
-    /// Interface BIADemoWebApiRepository.
+    /// Interface BiaDemoWebApiRepository.
     /// </summary>
 #pragma warning disable S101 // Types should be named in PascalCase
-    public interface IBIADemoAppRepository
+    public interface IBiaDemoWebApiRepository
 #pragma warning restore S101 // Types should be named in PascalCase
     {
         /// <summary>

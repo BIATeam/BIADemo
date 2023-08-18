@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             INotificationDomainService notificationAppService,
             IPrincipal principal)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
         }
 
         /// <summary>

@@ -80,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             {
                 (IEnumerable<NotificationListItemDto> results, int total) = await this.notificationService.
                     GetRangeAsync<NotificationListItemDto, NotificationListItemMapper, LazyLoadDto>(filters);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+                this.HttpContext.Response.Headers.Add(BiaConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
             catch (Exception e)
@@ -105,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             {
                 (IEnumerable<NotificationListItemDto> results, int total) = await this.notificationService.
                     GetRangeAsync<NotificationListItemDto, NotificationListItemMapper, LazyLoadDto>(filters, accessMode: AccessMode.All);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+                this.HttpContext.Response.Headers.Add(BiaConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
             catch (Exception e)
@@ -384,7 +384,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetUnreadIds()
         {
-            int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (this.principal as BiaClaimsPrincipal).GetUserId();
             try
             {
                 List<int> dto = await this.notificationService.GetUnreadIds(userId);
@@ -409,7 +409,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.notificationService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BiaConstants.Csv.Extension}");
         }
     }
 }

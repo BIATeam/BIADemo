@@ -10,28 +10,28 @@ namespace BIA.Net.Core.Test.Mock
     using Moq;
 
     /// <summary>
-    /// Builder class used to create a mock of <see cref="BIAClaimsPrincipal"/>.
+    /// Builder class used to create a mock of <see cref="BiaClaimsPrincipal"/>.
     /// </summary>
     public class PrincipalMockBuilder
     {
         /// <summary>
         /// The mock to build.
         /// </summary>
-        private readonly Mock<BIAClaimsPrincipal> mock;
+        private readonly Mock<BiaClaimsPrincipal> mock;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrincipalMockBuilder"/> class.
         /// </summary>
         public PrincipalMockBuilder()
         {
-            this.mock = new Mock<BIAClaimsPrincipal>();
+            this.mock = new Mock<BiaClaimsPrincipal>();
         }
 
         /// <summary>
         /// Get the mocked object.
         /// </summary>
         /// <returns>The mocked principal.</returns>
-        public BIAClaimsPrincipal Build()
+        public BiaClaimsPrincipal Build()
         {
             return this.mock.Object;
         }
@@ -44,16 +44,16 @@ namespace BIA.Net.Core.Test.Mock
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
         /// <returns>The mocked principal.</returns>
-        public BIAClaimsPrincipal BuildAndApply(IServiceCollection services)
+        public BiaClaimsPrincipal BuildAndApply(IServiceCollection services)
         {
-            BIAClaimsPrincipal mock = this.Build();
-            BIAIocContainerTest.ApplyPrincipalMock(services, mock);
+            BiaClaimsPrincipal mock = this.Build();
+            BiaIocContainerTest.ApplyPrincipalMock(services, mock);
 
             return mock;
         }
 
         /// <summary>
-        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserId"/> method.
+        /// Mock the value returned by the <see cref="BiaClaimsPrincipal.GetUserId"/> method.
         /// </summary>
         /// <param name="userId">The user ID to return.</param>
         /// <returns>The updated mock builder.</returns>
@@ -66,7 +66,7 @@ namespace BIA.Net.Core.Test.Mock
         }
 
         /// <summary>
-        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserData{T}"/> method.
+        /// Mock the value returned by the <see cref="BiaClaimsPrincipal.GetUserData{T}"/> method.
         /// </summary>
         /// <param name="userData">The user data to return.</param>
         /// <returns>The updated mock builder.</returns>
@@ -79,7 +79,7 @@ namespace BIA.Net.Core.Test.Mock
         }
 
         /// <summary>
-        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserPermissions"/> method.
+        /// Mock the value returned by the <see cref="BiaClaimsPrincipal.GetUserPermissions"/> method.
         /// </summary>
         /// <param name="rights">The list of rights to return.</param>
         /// <returns>The updated mock builder.</returns>
@@ -92,7 +92,7 @@ namespace BIA.Net.Core.Test.Mock
         }
 
         /// <summary>
-        /// Mock the value returned by the <see cref="BIAClaimsPrincipal.GetUserLogin"/> method.
+        /// Mock the value returned by the <see cref="BiaClaimsPrincipal.GetUserLogin"/> method.
         /// </summary>
         /// <param name="login">The user login to return.</param>
         /// <returns>The updated mock builder.</returns>

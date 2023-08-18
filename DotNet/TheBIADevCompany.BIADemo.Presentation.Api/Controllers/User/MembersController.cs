@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             try
             {
                 var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+                this.HttpContext.Response.Headers.Add(BiaConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
             catch (Exception)
@@ -433,7 +433,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
 
             var buffer = await this.memberService.ExportCSV(filters);
-            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
+            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BiaConstants.Csv.Extension}";
             return this.File(buffer, "text/csv;charset=utf-8", fileName);
         }
     }

@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal claimsPrincipal;
+        private readonly BiaClaimsPrincipal claimsPrincipal;
 
         /// <summary>
         /// The JWT factory.
@@ -112,7 +112,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
         {
             this.jwtFactory = jwtFactory;
-            this.claimsPrincipal = principal as BIAClaimsPrincipal;
+            this.claimsPrincipal = principal as BiaClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
             this.userAppService = userAppService;
             this.teamAppService = teamAppService;

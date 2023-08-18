@@ -1,4 +1,4 @@
-﻿// <copyright file="BIAClaimsPrincipal.cs" company="BIA">
+﻿// <copyright file="BiaClaimsPrincipal.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Domain.Authentication
@@ -14,22 +14,22 @@ namespace BIA.Net.Core.Domain.Authentication
     /// </summary>
     /// <seealso cref="ClaimsPrincipal" />
 #pragma warning disable S101 // Types should be named in PascalCase
-    public class BIAClaimsPrincipal : ClaimsPrincipal
+    public class BiaClaimsPrincipal : ClaimsPrincipal
 #pragma warning restore S101 // Types should be named in PascalCase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class.
+        /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.
         /// </summary>
-        public BIAClaimsPrincipal()
+        public BiaClaimsPrincipal()
         {
             // Do nothing.
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
+        /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
         /// </summary>
         /// <param name="principal">The base principal.</param>
-        public BIAClaimsPrincipal(ClaimsPrincipal principal)
+        public BiaClaimsPrincipal(ClaimsPrincipal principal)
             : base(principal)
         {
             // Do nothing.

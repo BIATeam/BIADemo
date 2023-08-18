@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public PlaneAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
         }

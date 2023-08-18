@@ -30,14 +30,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-    public class DataContext : BIADataContext
+    public class DataContext : BiaDataContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataContext(DbContextOptions<DataContext> options, ILogger<BIADataContext> logger)
+        public DataContext(DbContextOptions<DataContext> options, ILogger<BiaDataContext> logger)
             : base(options, logger)
         {
         }

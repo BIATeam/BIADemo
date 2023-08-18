@@ -63,7 +63,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         {
             var (results, total) = await this.siteService.GetRangeWithMembersAsync(filters);
 
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Add(BiaConstants.HttpHeaders.TotalCount, total.ToString());
 
             return this.Ok(results);
         }

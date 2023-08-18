@@ -563,7 +563,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <inheritdoc cref="IUserDirectoryRepository<TUserDirectory>.GetLdapGroupsForRole"/>
         public List<LdapGroup> GetLdapGroupsForRole(string roleLabel)
         {
-            return this.configuration.Roles.Where(w => (w.Type == BIAConstants.RoleType.Ldap || w.Type == BIAConstants.RoleType.Synchro) && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
+            return this.configuration.Roles.Where(w => (w.Type == BiaConstants.RoleType.Ldap || w.Type == BiaConstants.RoleType.Synchro) && w.Label == roleLabel).Select(r => r.LdapGroups).SelectMany(x => x).ToList();
         }
 
         static Dictionary<string, string> localCacheGroupSid = new Dictionary<string, string>();
@@ -664,7 +664,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        public async Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain)
+        public async Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain)
         {
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
@@ -678,24 +678,24 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             {
                 switch (role.Type)
                 {
-                    case BIAConstants.RoleType.Fake:
+                    case BiaConstants.RoleType.Fake:
                         return role.Label;
 
-                    case BIAConstants.RoleType.UserInDB:
+                    case BiaConstants.RoleType.UserInDB:
                         if (userInfoDto?.Id > 0)
                         {
                             return role.Label;
                         }
                         break;
 
-                    case BIAConstants.RoleType.IdP:
+                    case BiaConstants.RoleType.IdP:
                         if (claimRoles.Intersect(role.IdpRoles, StringComparer.OrdinalIgnoreCase).Any())
                         {
                             return role.Label;
                         }
                         break;
 
-                    case BIAConstants.RoleType.LdapFromIdP:
+                    case BiaConstants.RoleType.LdapFromIdP:
                         bool isMember = role.LdapGroups?
                                                 .Any(ldapGroup => memberOfs
                                                     .Any(memberOf => memberOf.Contains(ldapGroup.LdapName, StringComparison.OrdinalIgnoreCase))) == true;
@@ -705,14 +705,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         }
                         break;
 
-                    case BIAConstants.RoleType.Ldap:
-                    case BIAConstants.RoleType.LdapWithSidHistory:
+                    case BiaConstants.RoleType.Ldap:
+                    case BiaConstants.RoleType.LdapWithSidHistory:
                         bool result = await this.IsSidInGroups(role.LdapGroups, sid);
                         if (result)
                         {
                             return role.Label;
                         }
-                        else if (role.Type.Equals(BIAConstants.RoleType.LdapWithSidHistory))
+                        else if (role.Type.Equals(BiaConstants.RoleType.LdapWithSidHistory))
                         {
                             string sidHistory = GetSidHistory(sid, domain).Result;
                             if (!string.IsNullOrEmpty(sidHistory))

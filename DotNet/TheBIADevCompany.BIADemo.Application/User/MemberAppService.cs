@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberAppService"/> class.
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal, UserContext userContext)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
             this.userContext = userContext;
 
             // Include already add with the mapper MemberMapper
@@ -123,11 +123,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             StringBuilder csv = new();
             records.ForEach(line =>
                     {
-                        csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                        csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                     });
 
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
         }
     }

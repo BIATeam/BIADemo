@@ -1,4 +1,4 @@
-﻿// <copyright file="BIAIocContainerTest.cs" company="BIA">
+﻿// <copyright file="BiaIocContainerTest.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Test.IoC
@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Test.IoC
     /// <summary>
     /// IoC container used for unit tests.
     /// </summary>
-    public static class BIAIocContainerTest
+    public static class BiaIocContainerTest
     {
         static Mock<IHubClients> mockClients;
         static Mock<IClientProxy> mockClientProxy;
@@ -83,7 +83,7 @@ namespace BIA.Net.Core.Test.IoC
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
         /// <param name="principal">The principal mock to apply.</param>
-        public static void ApplyPrincipalMock(IServiceCollection services, BIAClaimsPrincipal principal)
+        public static void ApplyPrincipalMock(IServiceCollection services, BiaClaimsPrincipal principal)
         {
             services.AddTransient<IPrincipal>(p => principal);
         }

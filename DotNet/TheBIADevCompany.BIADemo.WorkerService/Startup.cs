@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 {
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
-                    return new BIAClaimsPrincipal(new ClaimsPrincipal(userIdentity));
+                    return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });
             services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
 

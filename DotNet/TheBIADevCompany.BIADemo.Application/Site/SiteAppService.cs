@@ -32,12 +32,12 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         public SiteAppService(ITGenericRepository<Site, int> repository, IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             int currentId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
             this.FiltersContext.Add(
                 AccessMode.Read,

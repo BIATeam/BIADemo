@@ -1,4 +1,4 @@
-﻿// <copyright file="BIADataContext.cs" company="BIA">
+﻿// <copyright file="BiaDataContext.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
@@ -17,19 +17,19 @@ namespace BIA.Net.Core.Infrastructure.Data
     using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.Logging;
 
-    public class BIADataContext : DbContext, IQueryableUnitOfWork
+    public class BiaDataContext : DbContext, IQueryableUnitOfWork
     {
         /// <summary>
         /// The current logger.
         /// </summary>
-        private readonly ILogger<BIADataContext> logger;
+        private readonly ILogger<BiaDataContext> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BIADataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public BIADataContext(DbContextOptions options, ILogger<BIADataContext> logger)
+        public BiaDataContext(DbContextOptions options, ILogger<BiaDataContext> logger)
             : base(options)
         {
             this.logger = logger;

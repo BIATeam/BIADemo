@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
     ///
     /// Note: Add IoC for components specific to your project in <see cref="ConfigureContainerTest(IServiceCollection)"/> method.
     /// </summary>
-    /// <seealso cref="BIAIocContainerTest"/>
+    /// <seealso cref="BiaIocContainerTest"/>
     /// <seealso cref="IocContainer"/>
     public static class IocContainerTest
     {
@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
         public static void ConfigureContainerTest(IServiceCollection services)
         {
             IocContainer.ConfigureContainer(services, null, true);
-            BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextReadOnly>(services);
+            BiaIocContainerTest.ConfigureContainerTest<DataContext, DataContextReadOnly>(services);
 
             services.AddTransient<IMockEntityFramework<DataContext, DataContextReadOnly>, MockEntityFrameworkInMemory>();
 

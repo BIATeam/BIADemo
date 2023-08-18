@@ -1,4 +1,4 @@
-﻿// <copyright file="ExpressionCollection.cs" company="BIA">
+﻿// <copyright file="BiaDictionary.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -7,19 +7,18 @@ namespace BIA.Net.Core.Common
     using System;
     using System.Collections;
     using System.Collections.Generic;
-    using System.Linq.Expressions;
 
     /// <summary>
     /// Expression Collection.
     /// </summary>
     /// <typeparam name="TElem">The type of the entity.</typeparam>
-    public class BIADictionary<TElem> : IEnumerable<KeyValuePair<string, TElem>>
+    public class BiaDictionary<TElem> : IEnumerable<KeyValuePair<string, TElem>>
     {
         /// <summary>
         /// The internal dictionary.
         /// </summary>
         protected readonly Dictionary<string, TElem> internalDictionary
-            = new (StringComparer.InvariantCultureIgnoreCase);
+            = new(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Gets or sets the <see cref="TElem"/> with the specified key.

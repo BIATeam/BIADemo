@@ -1,4 +1,4 @@
-﻿// <copyright file="BIAAbstractUnitTest.cs" company="BIA">
+﻿// <copyright file="BiaAbstractUnitTest.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Test
@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Test
     /// </summary>
     /// <typeparam name="TMockEF">The type of the Entity Framework mock.</typeparam>
     /// <typeparam name="TDbContext">The type of the database context.</typeparam>
-    public abstract class BIAAbstractUnitTest<TMockEF, TDbContext, TDbContextReadOnly>
+    public abstract class BiaAbstractUnitTest<TMockEF, TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
         where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly
         where TMockEF : class, IMockEntityFramework<TDbContext, TDbContextReadOnly>
@@ -46,10 +46,10 @@ namespace BIA.Net.Core.Test
         private ServiceProvider serviceProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAAbstractUnitTest{TMockEF, TDbContext, TDbContextReadOnly}"/> class.
+        /// Initializes a new instance of the <see cref="BiaAbstractUnitTest{TMockEF, TDbContext, TDbContextReadOnly}"/> class.
         /// </summary>
         /// <param name="isInitDB">Shall we initialize the database with some default values.</param>
-        protected BIAAbstractUnitTest(bool isInitDB)
+        protected BiaAbstractUnitTest(bool isInitDB)
         {
             this.isInitDB = isInitDB;
             this.principalBuilder = new PrincipalMockBuilder();
