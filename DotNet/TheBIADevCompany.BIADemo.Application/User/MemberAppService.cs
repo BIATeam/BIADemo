@@ -106,9 +106,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             filters.First = 0;
             filters.Rows = 0;
 
-            var query = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
+            var (results, _) = await this.GetRangeAsync(filters: filters, specification: MemberSpecification.SearchGetAll(filters));
 
-            List<object[]> records = query.Results.Select(member => new object[]
+            List<object[]> records = results.Select(member => new object[]
             {
                 member.User.Display,
                 string.Join("; ", member.Roles.Select(r => r.Display)),
@@ -120,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 columnHeaders = filters.Columns.Select(x => x.Value).ToList();
             }
 
-            StringBuilder csv = new StringBuilder();
+            StringBuilder csv = new();
             records.ForEach(line =>
                     {
                         csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));

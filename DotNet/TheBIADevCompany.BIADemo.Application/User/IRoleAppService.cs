@@ -6,13 +6,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The interface defining the application service for role.
     /// </summary>
-    public interface IRoleAppService
+    public interface IRoleAppService : ICrudAppServiceBase<RoleDto, Role, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.

@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.NotificationTypes.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.notificationTypeService.GetAllOptionsAsync();
+            var results = await this.notificationTypeService.GetAllAsync();
             return this.Ok(results);
         }
     }

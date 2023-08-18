@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// <returns>true if authorized.</returns>
         protected async Task<bool> IsAuthorizeForTeam(int teamId, string roleSuffix)
         {
-            TeamDto teamDto = await this.teamAppService.GetAsync<TeamDto, TeamMapper>(id: teamId);
+            TeamDto teamDto = await this.teamAppService.GetAsync(id: teamId);
             if (teamDto == null)
             {
                 return false;

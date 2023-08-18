@@ -8,12 +8,13 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
 
     /// <summary>
-    /// The mapper used for user.
+    /// The mapper used for view.
     /// </summary>
-    public static class ViewMapper
+    public class ViewMapper : BaseMapper<ViewDto, View, int>
     {
         /// <summary>
         /// Create a view DTO from an entity.
@@ -47,10 +48,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         {
             if (dto != null)
             {
-                if (entity == null)
-                {
-                    entity = new View();
-                }
+                entity ??= new View();
 
                 entity.Id = dto.Id;
                 entity.TableId = dto.TableId;
@@ -58,8 +56,10 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
                 entity.Description = dto.Description;
                 entity.Preference = dto.Preference;
                 entity.ViewType = ViewType.User;
-                entity.ViewUsers = new List<ViewUser>();
-                entity.ViewUsers.Add(new ViewUser { IsDefault = false, ViewId = entity.Id, UserId = userId });
+                entity.ViewUsers = new List<ViewUser>
+                {
+                    new ViewUser { IsDefault = false, ViewId = entity.Id, UserId = userId },
+                };
             }
         }
 
@@ -72,10 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         {
             if (dto != null && dto.TeamId > 0)
             {
-                if (entity == null)
-                {
-                    entity = new View();
-                }
+                entity ??= new View();
 
                 entity.Id = dto.Id;
                 entity.TableId = dto.TableId;
@@ -83,8 +80,10 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
                 entity.Description = dto.Description;
                 entity.Preference = dto.Preference;
                 entity.ViewType = ViewType.Team;
-                entity.ViewTeams = new List<ViewTeam>();
-                entity.ViewTeams.Add(new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = dto.TeamId });
+                entity.ViewTeams = new List<ViewTeam>
+                {
+                    new ViewTeam { IsDefault = false, ViewId = entity.Id, TeamId = dto.TeamId },
+                };
             }
         }
 
@@ -97,10 +96,7 @@ namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
         {
             if (dto != null)
             {
-                if (entity == null)
-                {
-                    entity = new View();
-                }
+                entity ??= new View();
 
                 entity.Name = dto.Name;
                 entity.Description = dto.Description;

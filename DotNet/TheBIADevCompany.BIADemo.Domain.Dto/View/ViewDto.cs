@@ -5,17 +5,13 @@
 namespace TheBIADevCompany.BIADemo.Domain.Dto.View
 {
     using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// The DTO used for views.
     /// </summary>
-    public class ViewDto
+    public class ViewDto : BaseDto<int>
     {
-        /// <summary>
-        /// Gets or sets the identifier.
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Gets or sets the table Id.
         /// </summary>

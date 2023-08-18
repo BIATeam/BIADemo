@@ -13,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
 #if UseHubForClientInNotification
@@ -28,6 +27,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using Microsoft.AspNetCore.SignalR;
 #endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
@@ -78,7 +78,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         {
             try
             {
-                var (results, total) = await this.notificationService.GetRangeAsync(filters);
+                (IEnumerable<NotificationListItemDto> results, int total) = await this.notificationService.
+                    GetRangeAsync<NotificationListItemDto, NotificationListItemMapper, LazyLoadDto>(filters);
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
@@ -102,7 +103,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         {
             try
             {
-                var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
+                (IEnumerable<NotificationListItemDto> results, int total) = await this.notificationService.
+                    GetRangeAsync<NotificationListItemDto, NotificationListItemMapper, LazyLoadDto>(filters, accessMode: AccessMode.All);
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
@@ -126,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         {
             try
             {
-                var createdDto = await this.notificationService.AddAsync(dto);
+                NotificationDto createdDto = await this.notificationService.AddAsync(dto);
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
@@ -160,7 +162,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 
             try
             {
-                var updatedDto = await this.notificationService.UpdateAsync(dto);
+                NotificationDto updatedDto = await this.notificationService.UpdateAsync(dto);
                 return this.Ok(updatedDto);
             }
             catch (ArgumentNullException)
@@ -197,7 +199,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 
             try
             {
-                var dto = await this.notificationService.GetAsync(id);
+                NotificationDto dto = await this.notificationService.GetAsync(id);
 
                 // If it's the first time this notification is read
                 if (!dto.Read)
@@ -308,7 +310,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 
             try
             {
-                var dto = await this.notificationService.GetAsync(id);
+                NotificationDto dto = await this.notificationService.GetAsync(id);
 
                 // If it's the first time this notification is read
                 if (!dto.Read)
@@ -349,7 +351,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 
             try
             {
-                var dto = await this.notificationService.GetAsync(id);
+                NotificationDto dto = await this.notificationService.GetAsync(id);
 
                 // If it's the first time this notification is read
                 if (dto.Read)
@@ -385,7 +387,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
             try
             {
-                var dto = await this.notificationService.GetUnreadIds(userId);
+                List<int> dto = await this.notificationService.GetUnreadIds(userId);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

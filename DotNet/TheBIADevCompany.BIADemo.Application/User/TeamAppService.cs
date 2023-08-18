@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
@@ -18,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -25,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for team.
     /// </summary>
-    public class TeamAppService : FilteredServiceBase<Team, int>, ITeamAppService
+    public class TeamAppService : CrudAppServiceBase<TeamDto, Team, int, PagingFilterFormatDto, TeamMapper>, ITeamAppService
     {
         /// <summary>
         /// The claims principal.
@@ -52,16 +54,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="teamTypeId">The team type id.</param>
         public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.GetAllAsync<OptionDto, TeamOptionMapper>();
+            return this.Repository.GetAllResultAsync(selectResult: this.InitMapper<OptionDto, TeamOptionMapper>().EntityToDto());
         }
 
         /// <inheritdoc cref="ITeamAppService.GetAllAsync"/>
         public async Task<IEnumerable<TeamDto>> GetAllAsync(int userId = 0, IEnumerable<string> userPermissions = null)
         {
-            userPermissions = userPermissions != null ? userPermissions : this.principal.GetUserPermissions();
+            userPermissions ??= this.principal.GetUserPermissions();
             userId = userId > 0 ? userId : this.principal.GetUserId();
 
-            TeamMapper mapper = this.InitMapper<TeamDto, TeamMapper>();
+            TeamMapper mapper = this.InitMapper();
             if (userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true)
             {
                 return await this.Repository.GetAllResultAsync(mapper.EntityToDto(userId));

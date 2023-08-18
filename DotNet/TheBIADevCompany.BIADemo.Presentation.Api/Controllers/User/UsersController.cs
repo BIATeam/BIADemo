@@ -100,8 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            IEnumerable<UserFromDirectoryDto> results = default;
-
+            IEnumerable<UserFromDirectoryDto> results;
             if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
                 results = await this.userService.GetAllIdpUserAsync(filter, returnSize);
@@ -138,7 +137,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var dto = await this.userService.GetAsync<UserDto, UserMapper>(id);
+                var dto = await this.userService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -192,7 +191,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var updatedDto = await this.userService.UpdateAsync<UserDto, UserMapper>(dto, mapperMode: "Roles");
+                var updatedDto = await this.userService.UpdateAsync(dto, mapperMode: "Roles");
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "users", "refresh-users");
 #endif
@@ -272,7 +271,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.BadRequest();
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             foreach (int id in ids)
             {

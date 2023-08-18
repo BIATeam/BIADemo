@@ -299,8 +299,8 @@ namespace BIA.Net.Core.Domain
 
         public static bool IsCollectionType(Type valueType)
         {
-            return (valueType.Name.Length > 11 && valueType.Name.Substring(0, 11) == "IEnumerable")
-                || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
+            return (valueType.Name.Length > 11 && valueType.Name[..11] == "IEnumerable")
+                || (valueType.Name.Length > 18 && valueType.Name[..18] == "IOrderedEnumerable");
         }
 
         /// <summary>

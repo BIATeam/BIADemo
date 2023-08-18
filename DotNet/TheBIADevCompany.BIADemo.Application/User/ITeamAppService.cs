@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
@@ -14,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The interface defining the application service for team.
     /// </summary>
-    public interface ITeamAppService : IFilteredServiceBase<Team, int>
+    public interface ITeamAppService : ICrudAppServiceBase<TeamDto, Team, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.

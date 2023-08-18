@@ -65,7 +65,7 @@ namespace BIA.Net.Core.Application.Authentication
                 {
                     return null;
                 }
-;
+
                 return principal;
             }
             catch (Exception)

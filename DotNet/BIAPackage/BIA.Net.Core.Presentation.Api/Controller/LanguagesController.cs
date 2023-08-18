@@ -45,7 +45,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
         [Authorize(Roles = BiaRights.Languages.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.languageService.GetAllOptionsAsync();
+            var results = await this.languageService.GetAllAsync();
             return this.Ok(results);
         }
     }

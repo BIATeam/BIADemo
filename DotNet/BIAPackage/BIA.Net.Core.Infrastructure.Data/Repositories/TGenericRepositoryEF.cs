@@ -1,4 +1,4 @@
-﻿// <copyright file="GenericRepository.cs" company="BIA">
+﻿// <copyright file="TGenericRepositoryEF.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -12,9 +12,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +22,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// <summary>
     /// The class representing a GenericRepository.
     /// </summary>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The key type.</typeparam>
     public class TGenericRepositoryEF<TEntity, TKey> : ITGenericRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
     {
@@ -41,7 +43,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         public IQueryCustomizer<TEntity> QueryCustomizer { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericRepositoryEF" /> class.
+        /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
         public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
@@ -324,7 +326,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Elements with selected Columns of Entity Object and count.</returns>
-        public async Task<Tuple<IEnumerable<TResult>, int>> GetRangeResultAsync<TResult>(
+        public async Task<(IEnumerable<TResult>, int)> GetRangeResultAsync<TResult>(
             Expression<Func<TEntity, TResult>> selectResult,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -361,7 +363,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
+        private async Task<(IEnumerable<TResult>, int)> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
         {
             IQueryable<TEntity> objectSet = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
 
@@ -374,7 +376,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             var list = await listTask;
 
             // Return List of Entity Object and count
-            return Tuple.Create(list.AsEnumerable(), count);
+            return (list.AsEnumerable(), count);
         }
 
         /// <summary>

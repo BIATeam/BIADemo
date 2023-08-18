@@ -57,7 +57,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         /// <inheritdoc cref="ISiteAppService.GetWithMembersAsync"/>
         public async Task<SiteInfoDto> GetWithMembersAsync(int id)
         {
-            return await this.GetAsync<SiteInfoDto, SiteInfoMapper>(id: id);
+            return await this.Repository.GetResultAsync(this.InitMapper<SiteInfoDto, SiteInfoMapper>().EntityToDto(), id: id);
         }
     }
 }

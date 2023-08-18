@@ -32,9 +32,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// Return options.
         /// </summary>
         /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return this.GetAllAsync<OptionDto, PlaneTypeOptionMapper>();
+            return await this.Repository.GetAllResultAsync(selectResult: this.InitMapper<OptionDto, PlaneTypeOptionMapper>().EntityToDto());
         }
     }
 }

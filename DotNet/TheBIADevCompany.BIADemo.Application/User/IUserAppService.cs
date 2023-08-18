@@ -11,12 +11,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService : IFilteredServiceBase<User, int>
+    public interface IUserAppService : ICrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.
@@ -95,12 +96,5 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="userInfo">The user information.</param>
         void SelectDefaultLanguage(UserInfoDto userInfo);
-
-        /// <summary>
-        /// Get Csv.
-        /// </summary>
-        /// <param name="filters">The filters.</param>
-        /// <returns>binary csv.</returns>
-        Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters);
     }
 }

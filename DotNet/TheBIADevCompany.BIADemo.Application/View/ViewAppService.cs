@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class ViewAppService : AppServiceBase<View, int>, IViewAppService
+    public class ViewAppService : AppServiceBase<ViewDto, View, int, ViewMapper>, IViewAppService
     {
         /// <summary>
         /// The claims principal.
@@ -82,12 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <inheritdoc cref="IViewAppService.RemoveTeamViewAsync"/>
         public async Task RemoveTeamViewAsync(int id)
         {
-            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
+            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewTeams) ?? throw new ElementNotFoundException();
             if (entity.ViewType != ViewType.Team)
             {
                 this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
@@ -107,12 +102,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <inheritdoc cref="IViewAppService.RemoveUserViewAsync"/>
         public async Task RemoveUserViewAsync(int id)
         {
-            var entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
+            View entity = await this.Repository.GetEntityAsync(id: id, queryMode: QueryCustomMode.ModeUpdateViewUsers) ?? throw new ElementNotFoundException();
             if (entity.ViewType != ViewType.User)
             {
                 this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
@@ -257,7 +247,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 }
                 else
                 {
-                    entity.ViewTeams = entity.ViewTeams ?? new List<ViewTeam>();
+                    entity.ViewTeams ??= new List<ViewTeam>();
                     entity.ViewTeams.Add(new ViewTeam { IsDefault = true, ViewId = entity.Id, TeamId = currentTeamId });
                 }
 
@@ -304,13 +294,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
         {
             if (dto != null)
             {
-                var entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeamsAndUsers);
-                if (entity == null)
-                {
-                    throw new ElementNotFoundException();
-                }
-
-                var currentUserId = this.principal.GetUserId();
+                View entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeamsAndUsers) ?? throw new ElementNotFoundException();
+                int currentUserId = this.principal.GetUserId();
                 if (entity.ViewType == ViewType.User && entity.ViewUsers.All(a => a.UserId != currentUserId))
                 {
                     this.logger.LogWarning($"The user {currentUserId} is trying to update the view {dto.Id} of an other user.");
@@ -331,29 +316,24 @@ namespace TheBIADevCompany.BIADemo.Application.View
         {
             if (dto != null)
             {
-                View entity = await this.Repository.GetEntityAsync(dto.ViewId, queryMode: QueryCustomMode.ModeUpdateViewTeams);
-                if (entity == null)
-                {
-                    throw new ElementNotFoundException();
-                }
-
+                View entity = await this.Repository.GetEntityAsync(dto.ViewId, queryMode: QueryCustomMode.ModeUpdateViewTeams) ?? throw new ElementNotFoundException();
                 if (entity.ViewType != ViewType.Team)
                 {
                     this.logger.LogWarning("Wrong view type: " + entity.ViewType);
                     throw new BusinessException("Wrong view type: " + entity.ViewType);
                 }
 
-                Func<ViewTeam, bool> keysPredicate = x => x.ViewId == dto.ViewId && x.TeamId == dto.TeamId;
+                bool KeysPredicate(ViewTeam x) => x.ViewId == dto.ViewId && x.TeamId == dto.TeamId;
                 bool hasChange = false;
-                if (dto.IsAssign && entity.ViewTeams?.Any(keysPredicate) != true)
+                if (dto.IsAssign && entity.ViewTeams?.Any(KeysPredicate) != true)
                 {
-                    entity.ViewTeams = entity.ViewTeams ?? new List<ViewTeam>();
+                    entity.ViewTeams ??= new List<ViewTeam>();
                     entity.ViewTeams.Add(new ViewTeam() { ViewId = dto.ViewId, TeamId = dto.TeamId });
                     hasChange = true;
                 }
-                else if (!dto.IsAssign && entity.ViewTeams?.Any(keysPredicate) == true)
+                else if (!dto.IsAssign && entity.ViewTeams?.Any(KeysPredicate) == true)
                 {
-                    entity.ViewTeams.Remove(entity.ViewTeams?.First(keysPredicate));
+                    entity.ViewTeams.Remove(entity.ViewTeams?.First(KeysPredicate));
                     if (entity.ViewTeams.Count == 0)
                     {
                         this.Repository.Remove(entity);

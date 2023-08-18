@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = new();
 
                 if (headerNames != null && headerNames?.Any() == true)
                 {

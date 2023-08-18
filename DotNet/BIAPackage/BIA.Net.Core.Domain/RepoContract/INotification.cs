@@ -1,4 +1,4 @@
-// <copyright file="INotificationRepository.cs" company="BIA">
+// <copyright file="INotification.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

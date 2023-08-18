@@ -38,7 +38,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             MimeMessage messageToSend = new ()
             {
-                Subject = subject?.Trim()
+                Subject = subject?.Trim(),
             };
 
             messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration.From, this.configuration.EmailConfiguration.From));

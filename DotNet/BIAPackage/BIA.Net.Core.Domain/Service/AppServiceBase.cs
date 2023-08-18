@@ -11,10 +11,14 @@ namespace BIA.Net.Core.Domain.Service
     /// <summary>
     /// The base class for all application service.
     /// </summary>
-    /// <typeparam name="TEntity">Entity type.</typeparam>
-    /// <typeparam name="TKey">Primary key type for the entity.</typeparam>
-    public abstract class AppServiceBase<TEntity, TKey>
-                where TEntity : class, IEntity<TKey>
+    /// <typeparam name="TDto">The DTO type.</typeparam>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The key type.</typeparam>
+    /// <typeparam name="TMapper">The mapper used between entity and DTO.</typeparam>
+    public abstract class AppServiceBase<TDto, TEntity, TKey, TMapper>
+        where TDto : BaseDto<TKey>, new()
+        where TEntity : class, IEntity<TKey>, new()
+        where TMapper : BaseMapper<TDto, TEntity, TKey>, new()
     {
         /// <summary>
         /// The unit of work.
@@ -22,7 +26,7 @@ namespace BIA.Net.Core.Domain.Service
         protected UserContext userContext = null;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="AppServiceBase{TDto, TEntity, TKey, TMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         protected AppServiceBase(ITGenericRepository<TEntity, TKey> repository)
@@ -45,13 +49,22 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
         {
-            TOtherMapper mapper = new TOtherMapper();
+            TOtherMapper mapper = new();
             if (this.userContext != null)
             {
                 mapper.UserContext = this.userContext;
             }
 
             return mapper;
+        }
+
+        /// <summary>
+        /// Init the mapper and the user context.
+        /// </summary>
+        /// <returns>The mapper.</returns>
+        protected virtual TMapper InitMapper()
+        {
+            return this.InitMapper<TDto, TMapper>();
         }
     }
 }

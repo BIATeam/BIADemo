@@ -34,10 +34,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(AirportDto dto, Airport entity)
         {
-            if (entity == null)
-            {
-                entity = new Airport();
-            }
+            entity ??= new Airport();
 
             entity.Id = dto.Id;
             entity.Name = dto.Name;
@@ -60,7 +57,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = new();
 
                 if (headerNames != null && headerNames?.Any() == true)
                 {

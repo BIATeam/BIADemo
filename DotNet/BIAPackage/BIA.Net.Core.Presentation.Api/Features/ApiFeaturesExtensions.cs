@@ -59,7 +59,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     };
                     var securityRequirement = new OpenApiSecurityRequirement
                     {
-                        { apiScheme, new[] { "Bearer" } }
+                        { apiScheme, new[] { "Bearer" } },
                     };
 
                     a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
@@ -170,7 +170,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             }
 
             // Hangfire Server
-            if (apiFeatures.HangfireDashboard.IsActive == true)
+            if (apiFeatures.HangfireDashboard.IsActive)
             {
                 app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
                 {
@@ -178,12 +178,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
-                    Authorization = hangfireServerAuthorizations.Authorization
+                    Authorization = hangfireServerAuthorizations.Authorization,
                 });
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions
                 {
                     IsReadOnlyFunc = (DashboardContext context) => true,
-                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
+                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly,
                 });
             }
 

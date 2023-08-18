@@ -29,7 +29,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
                 Keycloak = configuration.Value.Authentication.Keycloak,
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
-                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl
+                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
             };
         }
 

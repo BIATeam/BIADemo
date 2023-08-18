@@ -4,19 +4,15 @@
 
 namespace BIA.Net.Core.Application.Translation
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
 
     /// <summary>
     /// The interface defining the application service for language.
     /// </summary>
-    public interface ILanguageAppService
+    public interface ILanguageAppService : ICrudAppServiceBase<OptionDto, Language, int, LazyLoadDto>
     {
-        /// <summary>
-        /// Gets all option that I can see.
-        /// </summary>
-        /// /// <returns>The list of production sites.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
     }
 }

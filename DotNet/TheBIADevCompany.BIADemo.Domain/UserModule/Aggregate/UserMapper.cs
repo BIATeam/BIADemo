@@ -71,10 +71,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     }
                 }
 
-                entity.Roles = entity.Roles ?? new List<Role>();
+                entity.Roles ??= new List<Role>();
                 foreach (var userRoleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
                 {
-                    Role role = new Role { Id = userRoleDto.Id };
+                    Role role = new() { Id = userRoleDto.Id };
                     context.Attach(role); // requiered to map on Id (without get element before)
                     entity.Roles.Add(role);
                 }
@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             return x =>
             {
-                List<object> records = new List<object>();
+                List<object> records = new();
 
                 if (headerNames != null && headerNames?.Any() == true)
                 {

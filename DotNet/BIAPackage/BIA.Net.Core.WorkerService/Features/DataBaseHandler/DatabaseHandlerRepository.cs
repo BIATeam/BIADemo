@@ -47,12 +47,12 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 SqlDependency.Start(this.connectionString);
             }
 
-            using (SqlConnection connection = new (this.connectionString))
-            using (SqlCommand command = new (this.sqlOnChangeEventHandlerRequest, connection))
+            using (SqlConnection connection = new(this.connectionString))
+            using (SqlCommand command = new(this.sqlOnChangeEventHandlerRequest, connection))
             {
                 connection.Open();
 
-                SqlDependency dependency = new (command);
+                SqlDependency dependency = new(command);
                 dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange);
                 command.ExecuteNonQuery();
 
@@ -67,7 +67,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                     }
                     else
                     {
-                        using (SqlCommand selectCommand = new (this.sqlReadChangeRequest, connection))
+                        using (SqlCommand selectCommand = new(this.sqlReadChangeRequest, connection))
                         using (SqlDataReader reader = selectCommand.ExecuteReader())
                         {
                             if (reader.HasRows)
@@ -102,7 +102,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.isFirst = false;
 
             if (e.Info != SqlNotificationInfo.Invalid)
-
             {
                 this.NotifyNewItem(e);
             }

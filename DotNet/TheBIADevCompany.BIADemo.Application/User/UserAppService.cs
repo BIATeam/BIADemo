@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : FilteredServiceBase<User, int>, IUserAppService
+    public class UserAppService : CrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto, UserMapper>, IUserAppService
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
             Specification<User> specification = null;
             if (!string.IsNullOrEmpty(filter))
@@ -94,7 +94,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 specification = UserSpecification.Search(filter);
             }
 
-            return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            return await this.Repository.GetAllResultAsync(
+                selectResult: this.InitMapper<OptionDto, UserOptionMapper>().EntityToDto(),
+                specification: specification,
+                queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
@@ -105,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             if (userAD != null)
             {
-                User user = new User();
+                User user = new();
                 UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
@@ -117,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
-                UserInfoDto userInfo = new UserInfoDto
+                UserInfoDto userInfo = new()
                 {
                     Login = user.Login,
                     FirstName = user.FirstName,
@@ -162,9 +165,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
         public async Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
-            ResultAddUsersFromDirectoryDto result = new ResultAddUsersFromDirectoryDto();
-            result.UsersAddedDtos = new List<OptionDto>();
-            result.Errors = new List<string>();
+            ResultAddUsersFromDirectoryDto result = new()
+            {
+                UsersAddedDtos = new List<OptionDto>(),
+                Errors = new List<string>(),
+            };
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
             result.Errors = new List<string>();
             if (ldapGroups != null && ldapGroups.Count > 0)
@@ -189,7 +194,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
             else
             {
-                List<User> usersAdded = new List<User>();
+                List<User> usersAdded = new();
                 foreach (var userFormDirectoryDto in users)
                 {
                     try
@@ -293,19 +298,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 .Select(s => s.Code)
                 .FirstOrDefault();
 
-            if (userInfo.Language == null)
-            {
-                // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
-                    .Select(s => s.Code)
-                    .FirstOrDefault();
-            }
-        }
-
-        /// <inheritdoc cref="IUserAppService.GetCsvAsync"/>
-        public virtual async Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters)
-        {
-            return await this.GetCsvAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters: filters);
+            // Select the default culture
+            userInfo.Language ??= this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
+                .Select(s => s.Code)
+                .FirstOrDefault();
         }
     }
 }

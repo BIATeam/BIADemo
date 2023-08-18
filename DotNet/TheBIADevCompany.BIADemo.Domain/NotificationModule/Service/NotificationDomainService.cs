@@ -4,11 +4,14 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
@@ -24,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class NotificationDomainService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationDomainService
+    public class NotificationDomainService : CrudAppServiceBase<NotificationDto, Notification, int, LazyLoadDto, NotificationMapper>, INotificationDomainService
     {
         /// <summary>
         /// The claims principal.
@@ -103,14 +106,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         {
             if (dto != null)
             {
-                NotificationMapper mapper = this.InitMapper<NotificationDto, NotificationMapper>();
+                NotificationMapper mapper = this.InitMapper();
 
-                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                if (entity == null)
-                {
-                    throw new ElementNotFoundException();
-                }
-
+                Notification entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode) ?? throw new ElementNotFoundException();
                 if (entity.Read && !dto.Read)
                 {
                     _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
