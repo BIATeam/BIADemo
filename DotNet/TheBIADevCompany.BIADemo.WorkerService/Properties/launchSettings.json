@@ -12,16 +12,16 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "IIS": {
+      "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "hangfire",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS": {
-      "commandName": "IIS",
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "hangfire",
       "environmentVariables": {
