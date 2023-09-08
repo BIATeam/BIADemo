@@ -7,22 +7,23 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:54452/",
-      "sslPort": 44393
+      "applicationUrl": "http://localhost:54320/BIADemo/WorkerService",
+      "sslPort": 0
     }
   },
   "profiles": {
-    "IIS": {
-      "commandName": "IIS",
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "hangfire",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "IIS": {
+      "commandName": "IIS",
       "launchBrowser": true,
+      "launchUrl": "hangfire",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

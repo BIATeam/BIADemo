@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="3.6.4.1" />
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="3.6.5" />
     <PackageReference Include="MailKit" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="System.DirectoryServices" Version="5.0.0" />

@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
             // get roles
-            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid, domain);
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.IsActive == true, sid, domain);
 
             // If the user has no role
             if (userRoles?.Any() != true)
