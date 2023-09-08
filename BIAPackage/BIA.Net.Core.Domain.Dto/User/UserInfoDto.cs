@@ -38,5 +38,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the default language.
         /// </summary>
         public string Language { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where the user is active.
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }
