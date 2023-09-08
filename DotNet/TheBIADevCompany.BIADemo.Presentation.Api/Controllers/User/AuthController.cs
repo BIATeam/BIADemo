@@ -324,7 +324,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                             var teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                             var team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                            CurrentTeamDto currentTeam = new();
+                            CurrentTeamDto currentTeam = new ();
                             currentTeam.TeamTypeId = teamLogin.TeamTypeId;
 
                             if (team != null)
