@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Ioc" Version="3.7.4" />
+    <PackageReference Include="BIA.Net.Core.Ioc" Version="3.7.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 

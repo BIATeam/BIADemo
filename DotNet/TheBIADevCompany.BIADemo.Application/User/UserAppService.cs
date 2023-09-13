@@ -144,6 +144,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
+                    IsActive = user.IsActive,
                 };
                 return userInfo;
             }
@@ -154,7 +155,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string login)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login && user.IsActive);
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
