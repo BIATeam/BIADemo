@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-08-01T15:41:23.418Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="YaZ6HwTPngfvtDSbkdKM" version="21.6.1" type="device">
+<mxfile host="Electron" modified="2023-09-06T13:22:39.685Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="kZ-hgbJO2y-g5LK0LaZi" version="21.6.1" type="device">
   <diagram id="KjcNm9ldoSU3aYmTTvRY" name="Page-1">
-    <mxGraphModel dx="2049" dy="1206" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+    <mxGraphModel dx="1418" dy="828" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1018,9 +1018,7 @@
           <mxGeometry width="100" height="100" relative="1" as="geometry">
             <mxPoint x="683" y="377" as="sourcePoint" />
             <mxPoint x="609" y="377" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="340" y="310" />
-            </Array>
+            <Array as="points" />
           </mxGeometry>
         </mxCell>
         <mxCell id="353" value="NotificationTeam" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;fillColor=#d5e8d4;gradientColor=#97d077;strokeColor=#82b366;" parent="1" vertex="1" collapsed="1">
