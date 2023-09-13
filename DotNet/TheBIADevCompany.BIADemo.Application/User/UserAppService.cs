@@ -123,6 +123,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
+                    IsActive = user.IsActive,
                 };
                 return userInfo;
             }

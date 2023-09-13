@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using System;
     using System.Net.Http;
     using Audit.Core;
     using Audit.EntityFramework;
@@ -19,10 +20,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Application.Plane;
+
     // End BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -50,6 +53,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
+            if (configuration == null)
+            {
+                throw Exception("Configuration cannot be null");
+            }
+
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
@@ -67,6 +75,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
+        }
+
+        private static Exception Exception(string v)
+        {
+            throw new NotImplementedException();
         }
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
