@@ -133,7 +133,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
+                _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }

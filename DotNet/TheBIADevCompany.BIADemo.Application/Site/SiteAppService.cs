@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<Site>(p => accessAll || p.Id == currentId));
+                new DirectSpecification<Site>(p => p.Id == currentId));
         }
 
         /// <inheritdoc cref="ISiteAppService.GetRangeWithMembersAsync"/>

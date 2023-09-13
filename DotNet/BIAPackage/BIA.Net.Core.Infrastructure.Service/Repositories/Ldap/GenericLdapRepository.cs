@@ -682,7 +682,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         return role.Label;
 
                     case BIAConstants.RoleType.UserInDB:
-                        if (userInfoDto?.Id > 0)
+                        if (userInfoDto?.IsActive == true)
                         {
                             return role.Label;
                         }
