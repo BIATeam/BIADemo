@@ -27,19 +27,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IRoleAppService roleService;
 
         /// <summary>
-        /// The claims principal.
-        /// </summary>
-        private readonly BIAClaimsPrincipal principal;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RolesController"/> class.
         /// </summary>
         /// <param name="roleService">The role service.</param>
         /// <param name="principal">The claims principal.</param>
-        public RolesController(IRoleAppService roleService, IPrincipal principal)
+        public RolesController(IRoleAppService roleService)
         {
             this.roleService = roleService;
-            this.principal = principal as BIAClaimsPrincipal;
         }
 
         /// <summary>
