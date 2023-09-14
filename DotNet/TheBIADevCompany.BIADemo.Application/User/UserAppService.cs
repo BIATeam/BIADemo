@@ -311,13 +311,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.UpdateLastLoginDateAndActivate"/>
-        public async Task UpdateLastLoginDateAndActivate(int userId)
+        public async Task UpdateLastLoginDateAndActivate(int userId, bool activate)
         {
             if (userId > 0)
             {
                 User entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
                 entity.LastLoginDate = DateTime.Now;
-                entity.IsActive = true;
+                entity.IsActive = activate;
 
                 // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();

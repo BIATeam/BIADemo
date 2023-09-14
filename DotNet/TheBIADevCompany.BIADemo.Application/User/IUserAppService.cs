@@ -115,8 +115,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// Updates the last login date.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
+        /// <param name="activate">activate the user.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task UpdateLastLoginDateAndActivate(int userId);
+        Task UpdateLastLoginDateAndActivate(int userId, bool activate);
 
         /// <summary>
         /// Selects the default language.
