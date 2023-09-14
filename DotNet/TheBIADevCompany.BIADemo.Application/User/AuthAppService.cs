@@ -201,7 +201,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 try
                 {
                     // The date of the last connection is updated in the database
-                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles.Contains(Constants.Role.User));
+                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles?.Contains(Constants.Role.User) == true);
                 }
                 catch (Exception ex)
                 {
@@ -333,7 +333,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 try
                 {
-                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles.Contains(Constants.Role.User));
+                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles?.Contains(Constants.Role.User) == true);
                 }
                 catch (Exception)
                 {
