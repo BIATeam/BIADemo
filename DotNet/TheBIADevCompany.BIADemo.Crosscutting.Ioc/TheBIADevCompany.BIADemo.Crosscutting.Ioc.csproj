@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Ioc" Version="3.3.5" />
+    <PackageReference Include="BIA.Net.Core.Ioc" Version="3.3.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.8" />
   </ItemGroup>

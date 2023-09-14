@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.WorkerService" Version="3.3.5" />
+    <PackageReference Include="BIA.Net.Core.WorkerService" Version="3.3.6" />
     <PackageReference Include="Hangfire" Version="1.7.18" />
     <PackageReference Include="Hangfire.Core" Version="1.7.18" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.18" />
@@ -33,12 +33,5 @@
     <Content Update="web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="8.13.1.21947">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 </Project>

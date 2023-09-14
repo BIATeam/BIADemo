@@ -155,6 +155,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
+                    IsActive = user.IsActive,
                 };
                 return userInfo;
             }
@@ -165,7 +166,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <inheritdoc cref="IUserAppService.GetUserInfoAsync"/>
         public async Task<UserInfoDto> GetUserInfoAsync(string login)
         {
-            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login && user.IsActive);
+            return await this.Repository.GetResultAsync(UserSelectBuilder.SelectUserInfo(), filter: user => user.Login == login);
         }
 
         /// <inheritdoc cref="IUserAppService.GetUserProfileAsync"/>
@@ -315,14 +316,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.UpdateLastLoginDateAndActivate"/>
-        public async Task UpdateLastLoginDateAndActivate(int userId)
+        public async Task UpdateLastLoginDateAndActivate(int userId, bool activate)
         {
             if (userId > 0)
             {
                 User entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
                 entity.LastLoginDate = DateTime.Now;
-                entity.IsActive = true;
-                this.Repository.Update(entity);
+                entity.IsActive = activate;
+
+                // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
             }
         }

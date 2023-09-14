@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Copyright>Copyright © BIA 2020</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.3.5.1</Version>
+    <Version>3.3.6</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageIconUrl />
     <Authors>BIA Team</Authors>

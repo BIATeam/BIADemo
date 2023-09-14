@@ -150,7 +150,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(login);
 
             // get roles
-            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.Id > 0, sid, domain);
+            var userRoles = await this.userAppService.GetUserDirectoryRolesAsync(userInfo?.IsActive == true, sid, domain);
 
             if (userRoles?.Any() != true)
             {
@@ -176,7 +176,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
                 try
                 {
                     // The date of the last connection is updated in the database
-                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id);
+                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles?.Contains(Constants.Role.User) == true);
                 }
                 catch (Exception ex)
                 {
