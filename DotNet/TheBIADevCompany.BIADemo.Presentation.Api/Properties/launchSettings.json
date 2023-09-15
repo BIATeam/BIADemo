@@ -7,7 +7,7 @@
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://localhost:54321/",
+      "applicationUrl": "http://localhost:54321/BIADemo/WebApi",
       "sslPort": 0
     }
   },

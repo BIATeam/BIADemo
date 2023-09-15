@@ -102,9 +102,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 }
 
                 this.repository.AddRange(usersToAdd);
-
-                await this.repository.UnitOfWork.CommitAsync();
             }
+
+            await this.repository.UnitOfWork.CommitAsync();
         }
 
         /// <summary>

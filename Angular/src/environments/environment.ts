@@ -2,10 +2,9 @@ import {NgxLoggerLevel} from 'ngx-logger';
 
 export const environment = {
   helpUrl: '',
-  reportUrl: 'toto',
-  enableNotifications: true,
-  apiUrl: 'http://localhost/BIADemo/WebApi/api',
-  hubUrl: 'http://localhost/BIADemo/WebApi/HubForClients',
+  reportUrl: '',
+  apiUrl: 'http://localhost:54321/BIADemo/WebApi/api',
+  hubUrl: 'http://localhost:54321/BIADemo/WebApi/HubForClients',
   urlAuth: '/api/Auth',
   urlLog: '/api/logs',
   urlEnv: '/api/Environment',
@@ -19,7 +18,7 @@ export const environment = {
   version: '0.0.0',
   logging: {
     conf: {
-      serverLoggingUrl: 'http://localhost/BIADemo/WebApi/api/logs',
+      serverLoggingUrl: 'http://localhost:54321/BIADemo/WebApi/api/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR
     }
