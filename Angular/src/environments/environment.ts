@@ -3,6 +3,7 @@ import {NgxLoggerLevel} from 'ngx-logger';
 export const environment = {
   helpUrl: '',
   reportUrl: '',
+  enableNotifications: true,
   apiUrl: 'http://localhost:54321/BIADemo/WebApi/api',
   hubUrl: 'http://localhost:54321/BIADemo/WebApi/HubForClients',
   urlAuth: '/api/Auth',
