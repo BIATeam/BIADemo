@@ -220,7 +220,7 @@
         "Names": [ "User_Options" ],
         "Roles": [ "Admin", "User" ]
       },
-      {
+	  {
         "Names": [ "User_List_Access", "User_List", "User_Sync" ],
         "Roles": [ "Admin", "UserManager" ]
       },

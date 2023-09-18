@@ -98,9 +98,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
-
-                await this.repository.UnitOfWork.CommitAsync();
             }
+
+            await this.repository.UnitOfWork.CommitAsync();
         }
 
         /// <summary>

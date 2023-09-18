@@ -37,11 +37,6 @@ namespace TheBIADevCompany.BIADemo.Application.View
         private readonly ILogger<ViewAppService> logger;
 
         /// <summary>
-        /// The logger.
-        /// </summary>
-        private readonly IViewQueryCustomizer queryCustomizer;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ViewAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -53,7 +48,6 @@ namespace TheBIADevCompany.BIADemo.Application.View
         {
             this.principal = principal as BIAClaimsPrincipal;
             this.logger = logger;
-            this.queryCustomizer = queryCustomizer;
             this.Repository.QueryCustomizer = queryCustomizer;
         }
 
