@@ -347,7 +347,7 @@
       {
         "Name": "Background_Task_Admin",
         "LightToken": true,
-        "Roles": [ "Back_Admin" ]
+        "Roles": [ "Admin", "Back_Admin" ]
       },
       {
         "Name": "Background_Task_Read_Only",
