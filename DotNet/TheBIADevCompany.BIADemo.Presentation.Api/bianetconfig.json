@@ -121,27 +121,6 @@
         "LanguageId": "2"
       }
     ],
-    "PermissionsByEnv": [
-      {
-        "Names": [ "User_ListAD", "User_Add", "User_Delete" ],
-        "Roles": [ "UserManager" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Site_Admin" ]
-      },
-      // Begin BIADemo
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Supervisor" ]
-      },
-      {
-        "Names": [ "User_ListAD", "User_Add" ],
-        "Roles": [ "Team_Leader" ]
-      }
-      // End BIADemo
-
-    ],
     "Permissions": [
       {
         "Names": [ "Admin" ],
@@ -258,7 +237,7 @@
       // Role
       {
         "Names": [ "Roles_Options" ],
-        "Roles": [ "Admin", "User" ]
+        "Roles": [ "Admin", "UserManager", "User" ]
       },
       {
         "Names": [ "Roles_List" ],
@@ -316,10 +295,6 @@
       {
         "Names": [ "User_Options" ],
         "Roles": [ "Admin", "User" ]
-      },
-      {
-        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
-        "Roles": [ "Admin", "UserManager" ]
       },
       // View
       {
