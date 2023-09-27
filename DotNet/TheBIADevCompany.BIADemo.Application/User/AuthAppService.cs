@@ -87,7 +87,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IEnumerable<LdapDomain> ldapDomains;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService"/> class.
+        /// The identity provider repository.
+        /// </summary>
+        private readonly IIdentityProviderRepository identityProviderRepository;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthAppService" /> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
         /// <param name="principal">The principal.</param>
@@ -99,6 +104,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userProfileRepository">The user profile repository.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
+        /// <param name="identityProviderRepository">The identity provider repository.</param>
         public AuthAppService(
             IJwtFactory jwtFactory,
             IPrincipal principal,
@@ -109,7 +115,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IRoleAppService roleAppService,
             IUserProfileRepository userProfileRepository,
             IOptions<BiaNetSection> configuration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
+            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
+            IIdentityProviderRepository identityProviderRepository)
         {
             this.jwtFactory = jwtFactory;
             this.claimsPrincipal = principal as BIAClaimsPrincipal;
@@ -121,6 +128,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = configuration.Value.Authentication.LdapDomains;
+            this.identityProviderRepository = identityProviderRepository;
         }
 
         /// <summary>
@@ -142,11 +150,16 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // Get userInfo
             UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
 
-            var domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
-            if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+            // Get domain
+            string domain = null;
+            if (this.claimsPrincipal.Identity.Name?.Contains('\\') == true)
             {
-                this.logger.LogInformation("Unauthorized because bad domain");
-                throw new UnauthorizedException();
+                domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
+                if (!this.ldapDomains.Any(ld => ld.Name.Equals(domain)))
+                {
+                    this.logger.LogInformation("Unauthorized because bad domain");
+                    throw new UnauthorizedException();
+                }
             }
 
             // Get roles
@@ -159,12 +172,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new UnauthorizedException("No roles found");
             }
 
-            if (userInfo == null && !string.IsNullOrWhiteSpace(sid) && userRoles.Contains(Constants.Role.User))
+            if (userInfo == null && userRoles.Contains(Constants.Role.User))
             {
                 // automatic creation from ldap, only use if user do not need fine Role on team.
                 try
                 {
-                    userInfo = await this.userAppService.CreateUserInfoFromLdapAsync(identityKey);
+                    UserFromDirectory userFromDirectory = null;
+
+                    if (!string.IsNullOrWhiteSpace(sid))
+                    {
+                        userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
+                    }
+                    else
+                    {
+                        userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
+                    }
+
+                    User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                    userInfo = this.userAppService.CreateUserInfo(user);
                 }
                 catch (Exception ex)
                 {
@@ -211,7 +236,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
             }
 
-            UserDataDto userData = new ();
+            UserDataDto userData = new();
             List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
 
             if (allRoles == null || !allRoles.Any())
@@ -229,7 +254,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new UnauthorizedException("No permission found");
             }
 
-            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+            TokenDto<UserDataDto> tokenDto = new() { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
 
             UserProfileDto userProfile = null;
             if (userProfileTask != null)
@@ -279,15 +304,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private void GetIdentityKey(out string identityKey, out string sid, out string login)
         {
             sid = this.GetSid();
-
-            Guid guid = this.GetGuid();
-
-            if (string.IsNullOrWhiteSpace(sid) && guid == Guid.Empty)
-            {
-                this.logger.LogWarning("Unauthorized because bad Sid");
-                throw new BadRequestException("Incorrect Sid");
-            }
-
             login = this.GetLogin();
 
             // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
@@ -299,15 +315,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.claimsPrincipal.GetClaimValue(ClaimTypes.PrimarySid);
         }
 
-        private Guid GetGuid()
-        {
-            _ = Guid.TryParse(this.claimsPrincipal.GetClaimValue(ClaimTypes.Sid), out Guid guid);
-            return guid;
-        }
-
         private string GetLogin()
         {
-            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\')?.LastOrDefault()?.ToUpper();
+            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\')?.LastOrDefault();
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
@@ -372,7 +382,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         IEnumerable<TeamDto> teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                         TeamDto team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                        CurrentTeamDto currentTeam = new ()
+                        CurrentTeamDto currentTeam = new()
                         {
                             TeamTypeId = teamLogin.TeamTypeId,
                         };

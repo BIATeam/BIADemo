@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     /// <summary>
     /// Auth Controller Base.
     /// </summary>
-    public abstract class AuthControllerBase : BiaControllerBaseNoToken
+    public abstract class AuthControllerBase : BiaControllerBaseIdP
     {
     }
 }
