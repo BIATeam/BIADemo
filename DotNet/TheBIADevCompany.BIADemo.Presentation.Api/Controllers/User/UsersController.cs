@@ -104,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
-                results = await this.userService.GetAllIdpUserAsync(filter, returnSize);
+                results = await this.userService.GetAllIdpUserAsync(filter: filter, first: 0, max: returnSize);
             }
             else
             {

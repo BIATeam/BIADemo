@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -26,11 +25,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null);
 
         /// <summary>
-        /// Gets user info with its sid and create if not exist.
+        /// Adds the user in DB from UserFromDirectory.
         /// </summary>
-        /// <param name="identityKey">The loginInIdentity to check in ldap.</param>
-        /// <returns>The user.</returns>
-        Task<UserInfoDto> CreateUserInfoFromLdapAsync(string identityKey);
+        /// <param name="identityKey">The identity key.</param>
+        /// <param name="userFromDirectory">The user from directory.</param>
+        /// <returns>The user in DB.</returns>
+        Task<User> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory);
+
+        /// <summary>
+        /// Creates the user information from user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>A UserInfoDto.</returns>
+        UserInfoDto CreateUserInfo(User user);
 
         /// <summary>
         /// Gets user info with its login.
@@ -52,9 +59,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// Gets all IdP user corresponding to a filter.
         /// </summary>
         /// <param name="filter">The filter.</param>
+        /// <param name="first">Index start.</param>
         /// <param name="max">The max number of items to return.</param>
         /// <returns>The top 10 users found.</returns>
-        Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int max = 10);
+        Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10);
 
         /// <summary>
         /// Add a list of users in a group in AD.

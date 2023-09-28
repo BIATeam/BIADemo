@@ -97,16 +97,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
-        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string identityKey)
+        /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
+        public async Task<User> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
         {
-            // if user is not found in DB, try to synchronize from AD.
-            UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
-
-            if (userAD != null)
+            if (userFromDirectory != null)
             {
                 User user = new User();
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
+                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
                 if (!func(user))
@@ -117,8 +114,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
+                return user;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc cref="IUserAppService.CreateUserInfo"/>
+        public UserInfoDto CreateUserInfo(User user)
+        {
+            if (user != null)
+            {
                 UserInfoDto userInfo = new UserInfoDto
                 {
+                    Id = user.Id,
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
@@ -154,9 +163,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.GetAllIdpUserAsync"/>
-        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int max = 10)
+        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10)
         {
-            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchAsync(filter, max);
+            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(filter, first, max);
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
