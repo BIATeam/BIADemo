@@ -12,23 +12,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public static class UserFromDirectoryMapper
     {
-        /*      /// <summary>
-              /// Create a member entity from a DTO.
-              /// </summary>
-              /// <returns>The user Entity.</returns>
-              public static Func<UserFromDirectoryDto, UserFromDirectory> DtoToEntity()
-              {
-                  return dto => new UserFromDirectory
-                  {
-                      LastName = dto.LastName,
-                      FirstName = dto.FirstName,
-                      Login = dto.Login,
-                      Domain = dto.Domain,
-                      Guid = dto.Guid,
-                      Sid = dto.Sid,
-                  };
-              }*/
-
         /// <summary>
         /// Create a user DTO from an entity.
         /// </summary>

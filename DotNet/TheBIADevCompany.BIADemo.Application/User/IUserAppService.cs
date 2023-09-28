@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;

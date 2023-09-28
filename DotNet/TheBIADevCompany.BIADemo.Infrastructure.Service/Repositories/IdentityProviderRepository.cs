@@ -8,14 +8,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Runtime.InteropServices;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Meziantou.Framework.Win32;
-    using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;

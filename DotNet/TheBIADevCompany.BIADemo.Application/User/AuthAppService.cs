@@ -5,20 +5,16 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
-    using System.Configuration;
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
@@ -236,7 +232,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
             }
 
-            UserDataDto userData = new();
+            UserDataDto userData = new ();
             List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
 
             if (allRoles == null || !allRoles.Any())
@@ -254,7 +250,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 throw new UnauthorizedException("No permission found");
             }
 
-            TokenDto<UserDataDto> tokenDto = new() { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
 
             UserProfileDto userProfile = null;
             if (userProfileTask != null)
@@ -317,7 +313,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         private string GetLogin()
         {
-            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\')?.LastOrDefault();
+            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\')?.LastOrDefault()?.ToUpper();
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
@@ -382,7 +378,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         IEnumerable<TeamDto> teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                         TeamDto team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                        CurrentTeamDto currentTeam = new()
+                        CurrentTeamDto currentTeam = new ()
                         {
                             TeamTypeId = teamLogin.TeamTypeId,
                         };
