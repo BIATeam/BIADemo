@@ -41,12 +41,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// The login action.
         /// </summary>
+        /// <param name="lightToken">If true return a token without team permission.</param>
         /// <returns>The JWT if authenticated.</returns>
         [HttpGet("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(bool lightToken = true)
         {
             // used only by swagger.
             LoginParamDto loginParam = new LoginParamDto
@@ -64,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     // End BIADemo
                 },
                 CurrentTeamLogins = null,
-                LightToken = false,
+                LightToken = lightToken,
             };
 
             return await this.LoginOnTeams(loginParam);
