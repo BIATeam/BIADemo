@@ -31,7 +31,7 @@ function logIn() {
         $(".btn.authorize").click();
     }
     var xhr = new XMLHttpRequest()
-    xhr.open('GET', '../api/Auth/login', true)
+    xhr.open('GET', '../api/Auth/login?lightToken=false', true)
     xhr.setRequestHeader('Content-type', 'application/json')
 
     xhr.onreadystatechange = function () {
