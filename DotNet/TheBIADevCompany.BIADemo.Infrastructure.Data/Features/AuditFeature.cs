@@ -28,10 +28,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         private readonly bool isActive;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuditFeature"/> class.
+        /// Initializes a new instance of the <see cref="AuditFeature" /> class.
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
-        /// <param name="auditConfigurationOptions">the audit configuration.</param>
+        /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
         public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions)
         {
             Audit.Core.Configuration.AuditDisabled = true;

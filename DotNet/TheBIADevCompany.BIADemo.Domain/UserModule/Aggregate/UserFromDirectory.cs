@@ -110,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <param name="userDirectory">the user from directory object containing values.</param>
         public static void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory)
         {
-            user.Login = userDirectory.Login;
+            user.Login = userDirectory.Login?.ToUpper();
             user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?.Substring(0, 50) : userDirectory.FirstName ?? string.Empty;
             user.LastName = userDirectory.LastName?.Length > 50 ? userDirectory.LastName?.Substring(0, 50) : userDirectory.LastName ?? string.Empty;
             user.IsActive = true;

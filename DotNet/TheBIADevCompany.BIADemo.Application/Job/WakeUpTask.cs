@@ -4,12 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
-    using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Common.Helpers;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -32,12 +29,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         private readonly IBIADemoAppRepository appRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WakeUpTask"/> class.
+        /// Initializes a new instance of the <see cref="WakeUpTask" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="roleAppService">The role app service.</param>
         /// <param name="logger">logger.</param>
         /// <param name="webApiRepository">the front webiApi repository.</param>
+        /// <param name="appRepository">The application repository.</param>
         public WakeUpTask(IConfiguration configuration, ILogger<WakeUpTask> logger, IBIADemoWebApiRepository webApiRepository, IBIADemoAppRepository appRepository)
             : base(configuration, logger)
         {
