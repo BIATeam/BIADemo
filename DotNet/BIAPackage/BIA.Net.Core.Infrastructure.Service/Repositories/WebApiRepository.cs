@@ -66,41 +66,120 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Gets the T asynchronous.
+        /// Send an HTTP request as an asynchronous operation.
         /// </summary>
-        /// <typeparam name="T">Type of result.</typeparam>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="request">The request.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(HttpRequestMessage request, bool useBearerToken = false)
+        {
+            return await this.SendAsync<T>(request: request, useBearerToken: useBearerToken, retry: false);
+        }
+
+        /// <summary>
+        /// Send a GET request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
         /// <param name="url">The URL.</param>
         /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
-        /// <returns>
-        /// Result, IsSuccessStatusCode, ReasonPhrase.
-        /// </returns>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
         protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> GetAsync<T>(string url, bool useBearerToken = false)
         {
-            if (!string.IsNullOrWhiteSpace(url))
-            {
-                this.logger.LogInformation("Call WebApi Get: {url}", url);
+            return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Get, useBearerToken: useBearerToken, retry: false);
+        }
 
-                if (useBearerToken)
-                {
-                    await this.AddAuthorizationBearerAsync();
-                }
+        /// <summary>
+        /// Send a DELETE request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> DeleteAsync<T>(string url, bool useBearerToken = false)
+        {
+            return await this.SendAsync<T>(url: url, httpMethod: HttpMethod.Delete, useBearerToken: useBearerToken, retry: false);
+        }
 
-                HttpResponseMessage response = await this.httpClient.GetAsync(url);
+        /// <summary>
+        /// Send a PUT request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <typeparam name="TBody">The type of the body.</typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="body">The body.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult, TBody>(string url, TBody body, bool useBearerToken = false, bool isFormUrlEncoded = false)
+        {
+            return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Put, isFormUrlEncoded: isFormUrlEncoded, useBearerToken: useBearerToken, retry: false);
+        }
 
-                if (response.IsSuccessStatusCode)
-                {
-                    string res = await response.Content.ReadAsStringAsync();
-                    T content = this.DeserializeIfRequired<T>(res);
-                    return (content, response.IsSuccessStatusCode, default(string));
-                }
-                else
-                {
-                    this.logger.LogError("Url:{url} ReasonPhrase:{reasonPhrase}", url, response.ReasonPhrase);
-                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
-                }
-            }
+        /// <summary>
+        /// Send a PUT request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="httpContent">Content of the HTTP.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PutAsync<TResult>(string url, HttpContent httpContent, bool useBearerToken = false, bool isFormUrlEncoded = false)
+        {
+            return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Put, useBearerToken: useBearerToken, retry: false);
+        }
 
-            return (default(T), default(bool), default(string));
+        /// <summary>
+        /// Send a POST request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <typeparam name="TBody">The type of the body.</typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="body">The body.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult, TBody>(string url, TBody body, bool useBearerToken = false, bool isFormUrlEncoded = false)
+        {
+            return await this.SendAsync<TResult, TBody>(url: url, body: body, httpMethod: HttpMethod.Post, isFormUrlEncoded: isFormUrlEncoded, useBearerToken: useBearerToken, retry: false);
+        }
+
+        /// <summary>
+        /// Send a POST request to the specified Uri as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="url">The URL.</param>
+        /// <param name="httpContent">Content of the HTTP.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult>(string url, HttpContent httpContent, bool useBearerToken = false, bool isFormUrlEncoded = false)
+        {
+            return await this.SendAsync<TResult, object>(url: url, httpContent: httpContent, httpMethod: HttpMethod.Post, useBearerToken: useBearerToken, retry: false);
+        }
+
+        /// <summary>
+        /// Checks the condition retry.
+        /// </summary>
+        /// <param name="response">The response.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <returns>Return true if the retry condition is Ok.</returns>
+        protected virtual bool CheckConditionRetry(HttpResponseMessage response, bool useBearerToken)
+        {
+            return useBearerToken &&
+                (response.StatusCode == System.Net.HttpStatusCode.Forbidden ||
+                response.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                (int)response.StatusCode == 498); // Token expired/invalid
+        }
+
+        /// <summary>
+        /// Retrieve a token from the provider.
+        /// </summary>
+        /// <returns>The token.</returns>
+        protected virtual Task<string> GetBearerTokenAsync()
+        {
+            throw new NotImplementedException("For authentication with bearer token, you must implement the GetBearerTokenAsync() method");
         }
 
         /// <summary>
@@ -109,7 +188,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">Type of return.</typeparam>
         /// <param name="res">The resource.</param>
         /// <returns>object T.</returns>
-        protected virtual T DeserializeIfRequired<T>(string res)
+        private T DeserializeIfRequired<T>(string res)
         {
             T content;
             if (typeof(T) == typeof(string))
@@ -125,86 +204,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Post the T asynchronous.
-        /// </summary>
-        /// <typeparam name="TResult">Type of result.</typeparam>
-        /// <typeparam name="TBody">Type of body.</typeparam>
-        /// <param name="url">The URL.</param>
-        /// <param name="body">The body.</param>
-        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
-        /// <param name="isFormUrlEncoded">if set to <c>true</c> [is form URL encoded].</param>
-        /// <returns>
-        /// Result, IsSuccessStatusCode, ReasonPhrase.
-        /// </returns>
-        protected virtual async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> PostAsync<TResult, TBody>(string url, TBody body, bool useBearerToken = false, bool isFormUrlEncoded = false)
-        {
-            if (!string.IsNullOrWhiteSpace(url) && body != null)
-            {
-                this.logger.LogInformation($"Call WebApi Post: {url}");
-
-                if (useBearerToken)
-                {
-                    await this.AddAuthorizationBearerAsync();
-                }
-
-                string json = JsonConvert.SerializeObject(body);
-
-                HttpContent httpContent = default;
-
-                if (isFormUrlEncoded)
-                {
-                    Dictionary<string, string> dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                    httpContent = new FormUrlEncodedContent(dictionary);
-                }
-                else
-                {
-                    httpContent = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
-                }
-
-                HttpResponseMessage response = await this.httpClient.PostAsync(url, httpContent);
-                httpContent?.Dispose();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    string res = await response.Content.ReadAsStringAsync();
-                    TResult result = this.DeserializeIfRequired<TResult>(res);
-                    return (result, response.IsSuccessStatusCode, default(string));
-                }
-                else
-                {
-                    this.logger.LogError("Url:{url} ReasonPhrase:{reasonPhrase}", url, response.ReasonPhrase);
-                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
-                }
-            }
-
-            return (default(TResult), default(bool), default(string));
-        }
-
-        /// <summary>
         /// Add bearer in http request authorization.
         /// </summary>
         /// <returns>A async task.</returns>
-        protected virtual async Task AddAuthorizationBearerAsync()
+        private async Task AddAuthorizationBearerAsync()
         {
-            if (this.httpClient.DefaultRequestHeaders.Authorization?.Scheme != Bearer)
+            string bearerToken = await this.GetBearerTokenInCacheAsync();
+
+            if (string.IsNullOrWhiteSpace(bearerToken) || !this.CheckTokenValid(bearerToken))
             {
-                string bearerToken = await this.GetBearerTokenInCacheAsync();
-
-                if (string.IsNullOrWhiteSpace(bearerToken) || !this.CheckTokenValid(bearerToken))
-                {
-                    bearerToken = await this.GetBearerTokenAsync();
-                }
-
-                if (!string.IsNullOrWhiteSpace(bearerToken))
-                {
-                    _ = this.SetBearerTokenInCacheAsync(bearerToken);
-                    this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, bearerToken);
-                }
-                else
-                {
-                    _ = this.SetBearerTokenInCacheAsync(null);
-                }
+                bearerToken = await this.GetBearerTokenAsync();
+                await this.SetBearerTokenInCacheAsync(bearerToken);
             }
+
+            this.httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(Bearer, bearerToken);
         }
 
         /// <summary>
@@ -212,7 +225,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The token.</param>
         /// <returns>The DateTimeOffset.</returns>
-        protected virtual DateTimeOffset GetJwtTokenExpirationDate(string token)
+        private DateTimeOffset GetJwtTokenExpirationDate(string token)
         {
             DateTimeOffset expirationDate = default;
 
@@ -231,7 +244,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The bearerToken.</param>
         /// <returns>Return true if the token is valid.</returns>
-        protected virtual bool CheckTokenValid(string token)
+        private bool CheckTokenValid(string token)
         {
             bool isValid = false;
 
@@ -248,7 +261,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the storage key of the token in the cache.
         /// </summary>
         /// <returns>The storage key.</returns>
-        protected virtual string GetBearerCacheKey()
+        private string GetBearerCacheKey()
         {
             return $"{this.className}|{Bearer}";
         }
@@ -257,7 +270,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the bearer token in the cache.
         /// </summary>
         /// <returns>The bearer token.</returns>
-        protected virtual async Task<string> GetBearerTokenInCacheAsync()
+        private async Task<string> GetBearerTokenInCacheAsync()
         {
             return await this.distributedCache.GetStringAsync(this.GetBearerCacheKey());
         }
@@ -267,7 +280,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="bearerToken">The bearer token.</param>
         /// <returns>A async task.</returns>
-        protected virtual async Task SetBearerTokenInCacheAsync(string bearerToken)
+        private async Task SetBearerTokenInCacheAsync(string bearerToken)
         {
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
@@ -277,17 +290,122 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
             else
             {
-                await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), null);
+                await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), string.Empty);
             }
         }
 
-        /// <summary>
-        /// Retrieve a token from the provider.
-        /// </summary>
-        /// <returns>The token.</returns>
-        protected virtual Task<string> GetBearerTokenAsync()
+        private async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(string url = default, HttpMethod httpMethod = default, HttpRequestMessage request = default, bool useBearerToken = false, bool retry = false)
         {
-            throw new NotImplementedException("For authentication with bearer token, you must implement the GetBearerTokenAsync() method");
+            if (!string.IsNullOrWhiteSpace(url) || request != default)
+            {
+                if (!string.IsNullOrWhiteSpace(url))
+                {
+                    this.logger.LogInformation($"Call WebApi {httpMethod?.Method}: {url}");
+                }
+                else
+                {
+                    this.logger.LogInformation($"Call WebApi {request?.Method?.Method}: {request?.RequestUri?.AbsoluteUri}");
+                }
+
+                if (useBearerToken)
+                {
+                    await this.AddAuthorizationBearerAsync();
+                }
+
+                HttpResponseMessage response = default;
+
+                if (request != default)
+                {
+                    response = await this.httpClient.SendAsync(request);
+                }
+                else if (httpMethod?.Method == HttpMethod.Delete.Method)
+                {
+                    response = await this.httpClient.DeleteAsync(url);
+                }
+                else
+                {
+                    response = await this.httpClient.GetAsync(url);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string res = await response.Content.ReadAsStringAsync();
+                    T result = this.DeserializeIfRequired<T>(res);
+                    return (result, response.IsSuccessStatusCode, default(string));
+                }
+                else
+                {
+                    if (!retry && this.CheckConditionRetry(response, useBearerToken))
+                    {
+                        await this.SetBearerTokenInCacheAsync(null);
+                        return await this.SendAsync<T>(url: url, httpMethod: httpMethod, request: request, useBearerToken: useBearerToken, retry: true);
+                    }
+
+                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
+                }
+            }
+
+            return (default(T), default(bool), default(string));
+        }
+
+        private async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(string url, HttpMethod httpMethod, TBody body = default, HttpContent httpContent = default, bool isFormUrlEncoded = false, bool useBearerToken = false, bool retry = false)
+        {
+            if (!string.IsNullOrWhiteSpace(url) && (body != null || httpContent != null))
+            {
+                this.logger.LogInformation($"Call WebApi {httpMethod.Method}: {url}");
+                if (useBearerToken)
+                {
+                    await this.AddAuthorizationBearerAsync();
+                }
+
+                HttpResponseMessage response = default;
+
+                if (httpContent == default)
+                {
+                    string json = JsonConvert.SerializeObject(body);
+                    if (isFormUrlEncoded)
+                    {
+                        Dictionary<string, string> dictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                        httpContent = new FormUrlEncodedContent(dictionary);
+                    }
+                    else
+                    {
+                        httpContent = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+                    }
+                }
+
+                if (httpMethod.Method == HttpMethod.Put.Method)
+                {
+                    response = await this.httpClient.PutAsync(url, httpContent);
+                }
+                else
+                {
+                    response = await this.httpClient.PostAsync(url, httpContent);
+                }
+
+                httpContent?.Dispose();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string res = await response.Content.ReadAsStringAsync();
+                    TResult result = this.DeserializeIfRequired<TResult>(res);
+                    return (result, response.IsSuccessStatusCode, default(string));
+                }
+                else
+                {
+                    if (!retry && this.CheckConditionRetry(response, useBearerToken))
+                    {
+                        await this.SetBearerTokenInCacheAsync(null);
+                        return await this.SendAsync<TResult, TBody>(url: url, httpMethod: httpMethod, body: body, httpContent: httpContent, isFormUrlEncoded: isFormUrlEncoded, useBearerToken: useBearerToken, retry: true);
+                    }
+
+                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
+                }
+            }
+
+            return (default(TResult), default(bool), default(string));
         }
     }
 }
