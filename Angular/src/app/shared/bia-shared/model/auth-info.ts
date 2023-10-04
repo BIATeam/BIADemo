@@ -5,6 +5,8 @@ export class LoginParamDto {
   currentTeamLogins: CurrentTeamDto[];
   teamsConfig: TeamConfigDto[];
   lightToken: boolean;
+  fineGrainedPermission: boolean;
+  additionalInfos: boolean;
 }
 
 export class TeamConfigDto {

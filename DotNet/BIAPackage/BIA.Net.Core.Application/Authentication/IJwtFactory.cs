@@ -39,14 +39,15 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Generate a JWT.
         /// </summary>
+        /// <typeparam name="TUserDataDto">Type of the user data </typeparam>
+        /// <typeparam name="TAdditionalInfoDto">Type of the additionnal infos.</typeparam>
         /// <param name="tokenDto">The token not uncrypted.</param>
         /// <param name="additionalInfos">Additionnal Info for front.</param>
-        /// <param name="fullToken">Additionnal Info for front.</param>
+        /// <param name="loginParam">login parameter.</param>
         /// The additional information we want to let visible in the token.
-        /// 
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns></param>
         /// <returns>The JWT as string.</returns>
-        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool fullToken)
+        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto;
     }

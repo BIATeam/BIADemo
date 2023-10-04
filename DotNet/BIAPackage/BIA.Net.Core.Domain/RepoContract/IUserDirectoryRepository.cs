@@ -59,6 +59,12 @@ namespace BIA.Net.Core.Domain.RepoContract
         List<LdapGroup> GetLdapGroupsForRole(string roleLabel);
 
         /// <summary>
+        /// Check if UserInDb is requiered.
+        /// </summary>
+        /// <returns>True if user in db is in configuration file.</returns>
+        bool UseUserRoleInDB();
+
+        /// <summary>
         /// Gets the user roles asynchronous.
         /// </summary>
         /// <param name="claimsPrincipal">The user claims.</param>

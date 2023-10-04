@@ -141,10 +141,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.GetIdentityKey(out string identityKey, out string sid, out string login);
 
             // Get user profil async
-            Task<UserProfileDto> userProfileTask = this.GetUserProfileTask(loginParam, identityKey);
+            Task<UserProfileDto> userProfileTask = null;
+            if (loginParam.AdditionalInfos)
+            {
+                userProfileTask = this.userProfileRepository.GetAsync(identityKey);
+            }
 
-            // Get userInfo
-            UserInfoDto userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+            // Get userInfo if needed (it requires an user in database)
+            UserInfoDto userInfo = null;
+            if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.userDirectoryHelper.UseUserRoleInDB())
+            {
+                userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+            }
 
             // Get domain
             string domain = null;
@@ -158,52 +166,87 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 }
             }
 
-            // Get roles
-            List<string> userRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
+            // Get global roles
+            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
 
             // If the user has no role
-            if (userRoles == null || userRoles?.Any() != true)
+            if (globalRoles == null || globalRoles?.Any() != true)
             {
                 this.logger.LogInformation("Unauthorized because No roles found");
                 throw new UnauthorizedException("No roles found");
             }
 
-            if (userInfo == null && userRoles.Contains(Constants.Role.User))
+            if (globalRoles.Contains(Constants.Role.User))
             {
-                // automatic creation from ldap, only use if user do not need fine Role on team.
-                try
+                if (userInfo == null)
                 {
-                    UserFromDirectory userFromDirectory = null;
-
-                    if (!string.IsNullOrWhiteSpace(sid))
+                    // automatic creation from ldap, only use if user do not need fine Role on team.
+                    try
                     {
-                        userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
-                    }
-                    else
-                    {
-                        userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
-                    }
+                        UserFromDirectory userFromDirectory = null;
 
-                    User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
-                    userInfo = this.userAppService.CreateUserInfo(user);
+                        if (!string.IsNullOrWhiteSpace(sid))
+                        {
+                            userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
+                        }
+                        else
+                        {
+                            userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
+                        }
+
+                        User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                        userInfo = this.userAppService.CreateUserInfo(user);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    this.logger.LogError(ex, "Cannot create user... Probably database is read only...");
+                    try
+                    {
+                        // The date of the last connection is updated in the database
+                        await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
+                    }
                 }
             }
 
-            if (userInfo != null && userRoles.Contains(Constants.Role.User))
+            if (userInfo != null && globalRoles.Contains(Constants.Role.User))
             {
-                try
-                {
-                    // The date of the last connection is updated in the database
-                    await this.userAppService.UpdateLastLoginDateAndActivate(userInfo.Id, userRoles.Contains(Constants.Role.User));
-                }
-                catch (Exception ex)
-                {
-                    this.logger.LogError(ex, "Cannot update last login date... Probably database is read only...");
-                }
+                IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                globalRoles.AddRange(userAppRootRoles);
+            }
+
+            if (globalRoles == null || !globalRoles.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no role found");
+                throw new UnauthorizedException("No role found");
+            }
+
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
+            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
+            UserDataDto userData = new ();
+
+            // Compute fine grained user permissions if needed (it requires an user in database)
+            if (loginParam.FineGrainedPermission && userInfo != null)
+            {
+                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
+                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
+
+                // translate roles in permission
+                List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
+                userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
+            }
+
+            if (!userPermissions.Any())
+            {
+                this.logger.LogInformation("Unauthorized because no permission found");
+                throw new UnauthorizedException("No permission found");
             }
 
             // If the user does not exist in the database
@@ -218,38 +261,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             this.userAppService.SelectDefaultLanguage(userInfo);
 
-            if (userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin))
-            {
-                IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
-                userRoles.AddRange(userAppRootRoles);
-            }
-
-            List<string> userMainRights = this.userPermissionDomainService.TranslateRolesInPermissions(userRoles, loginParam.LightToken);
-
-            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
-            if (!loginParam.LightToken)
-            {
-                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userMainRights);
-            }
-
-            UserDataDto userData = new ();
-            List<string> allRoles = await this.GetFineRolesAsync(loginParam, userData, userRoles, userInfo, allTeams);
-
-            if (allRoles == null || !allRoles.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no role found");
-                throw new UnauthorizedException("No role found");
-            }
-
-            // translate roles in permission
-            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(allRoles, loginParam.LightToken);
-
-            if (!userPermissions.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no permission found");
-                throw new UnauthorizedException("No permission found");
-            }
-
             TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
 
             UserProfileDto userProfile = null;
@@ -260,12 +271,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
 
             AdditionalInfoDto additionnalInfo = null;
-            if (!loginParam.LightToken)
+            if (loginParam.AdditionalInfos)
             {
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
             }
 
-            AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam.LightToken);
+            AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
 
             return authInfo;
         }
@@ -324,39 +335,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <summary>
-        /// Gets the user profile task.
-        /// </summary>
-        /// <param name="loginParam">The login parameter.</param>
-        /// <param name="login">The login.</param>
-        /// <returns>The user profile task.</returns>
-        private Task<UserProfileDto> GetUserProfileTask(LoginParamDto loginParam, string login)
-        {
-            // parallel launch the get user profile
-            Task<UserProfileDto> userProfileTask = null;
-            if (!loginParam.LightToken)
-            {
-                userProfileTask = this.userProfileRepository.GetAsync(login);
-            }
-
-            return userProfileTask;
-        }
-
-        /// <summary>
         /// Gets the roles asynchronous.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <param name="userData">The user data.</param>
-        /// <param name="userRoles">The user roles from user directory.</param>
         /// <param name="userInfo">The user information.</param>
         /// <param name="allTeams">All teams.</param>
         /// <returns>List of role.</returns>
-        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, List<string> userRoles, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
+        private async Task<List<string>> GetFineRolesAsync(LoginParamDto loginParam, UserDataDto userData, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams)
         {
             // the main roles
-            List<string> allRoles = userRoles;
+            List<string> allRoles = new List<string>();
 
             // get user rights
-            if ((userRoles.Contains(Constants.Role.User) || userRoles.Contains(Constants.Role.Admin)) && (loginParam.TeamsConfig != null))
+            if (loginParam.TeamsConfig != null)
             {
                 foreach (TeamConfigDto teamConfig in loginParam.TeamsConfig)
                 {

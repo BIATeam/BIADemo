@@ -128,10 +128,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       const loginParam: LoginParamDto = <LoginParamDto>JSON.parse(value);
       loginParam.currentTeamLogins.forEach(tl => { tl.teamId = +tl.teamId; tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId) })
       loginParam.teamsConfig = allEnvironments.teams;
+      loginParam.lightToken = false;
+      loginParam.fineGrainedPermission = true;
+      loginParam.additionalInfos = true;
       return loginParam;
     }
 
-    return { currentTeamLogins: [], lightToken: false, teamsConfig: allEnvironments.teams };
+    return { currentTeamLogins: [], lightToken: false, fineGrainedPermission: true, additionalInfos: true, teamsConfig: allEnvironments.teams };
   }
 
   public setLoginParameters(loginParam: LoginParamDto) {
