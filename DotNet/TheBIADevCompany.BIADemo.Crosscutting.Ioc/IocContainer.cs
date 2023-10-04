@@ -158,7 +158,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
         }
 
         /// <summary>
@@ -166,11 +166,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
         /// <returns>HttpClientHandler object.</returns>
-        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection)
+        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler
             {
-                UseDefaultCredentials = true,
+                UseDefaultCredentials = useDefaultCredentials,
                 AllowAutoRedirect = false,
                 UseProxy = false,
             };
