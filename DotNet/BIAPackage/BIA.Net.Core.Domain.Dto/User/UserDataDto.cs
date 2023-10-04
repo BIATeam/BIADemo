@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Domain.Dto.User
             this.CurrentTeams = new List<CurrentTeamDto>();
         }
 
+        [JsonProperty("currentTeams")]
         /// <summary>
         /// Gets or sets the current team.
         /// </summary>

@@ -21,11 +21,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         public string Token { get; set; }
 
         /// <summary>
-        /// Gets or sets the token.
-        /// </summary>
-        public TokenDto<TUserDataDto> UncryptedToken { get; set; }
-
-        /// <summary>
         /// Gets or sets the additionalInfos.
         /// </summary>
         public TAdditionalInfoDto AdditionalInfos { get; set; }

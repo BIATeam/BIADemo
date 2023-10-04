@@ -132,7 +132,6 @@ namespace BIA.Net.Core.Application.Authentication
             var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
-                UncryptedToken = loginParam.LightToken ? null : tokenDto,
                 AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,
             };
 
