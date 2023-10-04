@@ -164,8 +164,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 {
                     c.SwaggerEndpoint("BIAApi/swagger.json", "v1.0");
                     c.InjectJavascript("./jquery.min.js");
-                    c.InjectJavascript("./AutoLogin.js");
-                    c.InjectStylesheet("./AutoLogin.css");
+                    c.InjectJavascript("./AutoLoginV3.8.0.js");
+                    c.InjectStylesheet("./AutoLoginV3.8.0.css");
                 });
             }
 
