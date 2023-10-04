@@ -431,7 +431,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
                 Specification<TEntity> spec = null;
                 if (!this.Compare(id, default))
                 {
-                    // Specific cast requiered for unitary test with Mock data
+                    // Specific cast required for unitary test with Mock data
                     if (id is int)
                     {
                         spec = new DirectSpecification<TEntity>(x => (int)(object)x.Id == (int)(object)id);

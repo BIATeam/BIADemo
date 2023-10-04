@@ -422,7 +422,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         object syncPrepareCredential = new Object();
         /// <summary>
-        /// Extract credential from vault if requiered
+        /// Extract credential from vault if required
         /// </summary>
         /// <param name="domain"></param>
         /// <returns>true if ok</returns>
@@ -656,6 +656,17 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         {
             return !(userPrincipal.GetUnderlyingObject() is DirectoryEntry entry) ? null : ConvertToUserDirectory(entry, domainKey);
         }
+
+        /// <summary>
+        /// Check if UserInDb is requiered.
+        /// </summary>
+        /// <returns>True if user in db is in configuration file.</returns>
+        public bool UseUserRoleInDB()
+        {
+            IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
+            return rolesSection != null && rolesSection.Any(r => r.Type == BIAConstants.RoleType.UserInDB);
+        }
+
 
         /// <summary>
         /// Gets the user roles asynchronous.

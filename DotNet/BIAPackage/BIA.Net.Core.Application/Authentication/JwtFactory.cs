@@ -119,7 +119,7 @@ namespace BIA.Net.Core.Application.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
-        public async Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool lightToken)
+        public async Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto
         {
@@ -132,8 +132,8 @@ namespace BIA.Net.Core.Application.Authentication
             var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
-                UncryptedToken = lightToken ? null : tokenDto,
-                AdditionalInfos = lightToken ? null : additionalInfos,
+                UncryptedToken = loginParam.LightToken ? null : tokenDto,
+                AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,
             };
 
             return response;

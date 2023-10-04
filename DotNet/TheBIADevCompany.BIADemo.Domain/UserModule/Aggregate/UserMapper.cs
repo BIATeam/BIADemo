@@ -75,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 foreach (var userRoleDto in dto.Roles.Where(w => w.DtoState == DtoState.Added))
                 {
                     Role role = new Role { Id = userRoleDto.Id };
-                    context.Attach(role); // requiered to map on Id (without get element before)
+                    context.Attach(role); // required to map on Id (without get element before)
                     entity.Roles.Add(role);
                 }
             }
