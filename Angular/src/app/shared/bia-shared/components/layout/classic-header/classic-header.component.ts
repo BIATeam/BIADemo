@@ -184,27 +184,39 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
       translationKeys.push(menu.labelKey);
     });
 
-    this.sub.add(
-      this.translateService.stream(translationKeys).subscribe((translations) => {
-        this.navMenuItems = [];
-        this.navigations.forEach((menu) => {
-          const childrenMenuItem: MenuItem[] = [];
-          if (menu.children) {
-            menu.children.forEach((child) => {
-              childrenMenuItem.push({
-                label: translations[child.labelKey],
-                routerLink: child.path
-              });
-            });
-          }
-          this.navMenuItems.push({
-            label: translations[menu.labelKey],
-            routerLink: menu.path,
-            items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined
+    this.navMenuItems = [];
+    this.navigations.forEach((menu) => {
+      const childrenMenuItem: MenuItem[] = [];
+      if (menu.children) {
+        menu.children.forEach((child) => {
+          childrenMenuItem.push({
+            id:child.labelKey,
+            routerLink: child.path
           });
         });
+      }
+      this.navMenuItems.push({
+        id: menu.labelKey,
+        routerLink: menu.path,
+        items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined
+      });
+    });
+
+    this.sub.add(
+      this.translateService.stream(translationKeys).subscribe((translations) => {
+        this.processMenuTranslation(this.navMenuItems, translations);
       })
     );
+  }
+  processMenuTranslation( children:MenuItem[], translations:any){
+    for (let item of children){
+        if(item.separator)
+          continue;
+      item.label = item.id == undefined? item.id : translations[item.id];
+      if(item.items){
+        this.processMenuTranslation(item.items, translations);
+      }
+    }
   }
 
   buildTopBarMenu() {
