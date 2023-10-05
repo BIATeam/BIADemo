@@ -212,7 +212,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     for (let item of children){
         if(item.separator)
           continue;
-      item.label = item.id == undefined? item.id : translations[item.id];
+      item.label = item.id == undefined? '---' :translations[item.id];
       if(item.items){
         this.processMenuTranslation(item.items, translations);
       }
