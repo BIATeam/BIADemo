@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -19,23 +20,26 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     {
         private readonly ILogger logger;
         private readonly IHostApplicationLifetime appLifetime;
-
+        private readonly IConfiguration configuration;
         private readonly DataContext dataContext;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeployDBService"/> class.
+        /// Initializes a new instance of the <see cref="DeployDBService" /> class.
         /// </summary>
         /// <param name="logger">the logger.</param>
         /// <param name="appLifetime">the app life time.</param>
         /// <param name="dataContext">the data context.</param>
+        /// <param name="configuration">The configuration.</param>
         public DeployDBService(
             ILogger<DeployDBService> logger,
             IHostApplicationLifetime appLifetime,
-            DataContext dataContext)
+            DataContext dataContext,
+            IConfiguration configuration)
         {
             this.logger = logger;
             this.appLifetime = appLifetime;
             this.dataContext = dataContext;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -54,6 +58,14 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     try
                     {
                         this.logger.LogInformation("Start Migration!");
+
+                        this.logger.LogInformation($"ConnectionString: {this.dataContext.Database.GetDbConnection().ConnectionString}");
+
+                        // Database Migrate CommandTimeout
+                        string confCommandTimeout = "DatabaseMigrate:CommandTimeout";
+                        int timeout = int.Parse(this.configuration["DatabaseMigrate:CommandTimeout"]);
+                        this.logger.LogInformation($"{confCommandTimeout}: {timeout} minutes");
+                        this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
                         this.dataContext.Database.Migrate();
                     }
