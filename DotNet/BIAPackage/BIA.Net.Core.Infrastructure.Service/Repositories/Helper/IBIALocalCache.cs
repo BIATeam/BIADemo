@@ -8,7 +8,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 
     public interface IBiaLocalCache
     {
-        Task Add(string key, object item, double cacheDurationInMinute);
+        Task Add<T>(string key, T item, double cacheDurationInMinute);
 
         Task<T> Get<T>(string key);
 

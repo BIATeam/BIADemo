@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
@@ -32,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public UserProfileRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<UserProfileRepository> logger, IDistributedCache distributedCache)
+        public UserProfileRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<UserProfileRepository> logger, IBiaDistributedCache distributedCache)
             : base(httpClient, logger, distributedCache)
         {
             this.configuration = configuration.Value;

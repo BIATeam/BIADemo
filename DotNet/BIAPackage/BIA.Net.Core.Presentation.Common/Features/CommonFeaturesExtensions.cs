@@ -60,18 +60,9 @@ namespace BIA.Net.Core.Presentation.Common.Features
                         config.SchemaName = "dbo";
                     });
                 }
-
-                services.AddMemoryCache();
             }
 
-            // Client for hub
-            /*if (ClientForHubOptions.IsActive)
-            {
-                services.AddTransient<IHostedService, ClientForHubService>(provider =>
-                {
-                    return new ClientForHubService(options.ClientForHub);
-                });
-            }*/
+            services.AddMemoryCache();
 
             return services;
         }

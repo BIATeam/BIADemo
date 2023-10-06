@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     /// <summary>
     /// Store object in application instance or distributed with the IDistributedCache service.
     /// </summary>
-    public class BiaLocalCache : IBiaLocalCache
+    public class BiaLocalCache : IBiaLocalCache, IBiaDistributedCache
     {
         private readonly IMemoryCache localCache;
 
@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             this.logger = logger;
         }
 
-        public async Task Add(string key, object item, double cacheDurationInMinute)
+        public async Task Add<T>(string key, T item, double cacheDurationInMinute)
         {
             var cacheEntry = await
                 this.localCache.GetOrCreateAsync(key, entry =>

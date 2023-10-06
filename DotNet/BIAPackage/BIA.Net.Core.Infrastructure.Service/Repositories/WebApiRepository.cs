@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.Caching.Distributed;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
 
@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The distributed cache.
         /// </summary>
-        protected readonly IDistributedCache distributedCache;
+        protected readonly IBiaDistributedCache distributedCache;
 
         /// <summary>
         /// Gets the HTTP client.
@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        protected WebApiRepository(HttpClient httpClient, ILogger<WebApiRepository> logger, IDistributedCache distributedCache)
+        protected WebApiRepository(HttpClient httpClient, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
         {
             this.httpClient = httpClient;
             this.logger = logger;
@@ -272,7 +272,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <returns>The bearer token.</returns>
         private async Task<string> GetBearerTokenInCacheAsync()
         {
-            return await this.distributedCache.GetStringAsync(this.GetBearerCacheKey());
+            return await this.distributedCache.Get<string>(this.GetBearerCacheKey());
+            // TO test
+            // old code return await this.distributedCache.GetStringAsync(this.GetBearerCacheKey());
         }
 
         /// <summary>
@@ -285,12 +287,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
                 DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
-                DistributedCacheEntryOptions option = new DistributedCacheEntryOptions() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
-                await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), bearerToken, options: option);
+                // To test
+                // old code :
+
+                // DistributedCacheEntryOptions option = new DistributedCacheEntryOptions() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
+
+                // await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), bearerToken, options: option);
+
+                TimeSpan expirationFromNow = expirationDate - DateTimeOffset.UtcNow.Add(new TimeSpan(0, 0, 10));
+                await this.distributedCache.Add(this.GetBearerCacheKey(), bearerToken, expirationFromNow.TotalMinutes);
             }
             else
             {
-                await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), string.Empty);
+                await this.distributedCache.Remove(this.GetBearerCacheKey());
+
+                // To test
+                // old code :
+                // await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), string.Empty);
             }
         }
 

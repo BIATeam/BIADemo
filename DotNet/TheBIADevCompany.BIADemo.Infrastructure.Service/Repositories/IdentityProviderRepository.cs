@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Meziantou.Framework.Win32;
     using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
@@ -39,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IDistributedCache distributedCache)
+        public IdentityProviderRepository(HttpClient httpClient, IOptions<BiaNetSection> configuration, ILogger<IdentityProviderRepository> logger, IBiaDistributedCache distributedCache)
             : base(httpClient, logger, distributedCache)
         {
             this.configuration = configuration.Value;
