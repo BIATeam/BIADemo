@@ -5,7 +5,10 @@ namespace BIA.Net.Core.Domain.Authentication
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Runtime.InteropServices;
     using System.Security.Claims;
+    using System.Security.Principal;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using Newtonsoft.Json;
 
@@ -64,10 +67,30 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <summary>
         /// Gets list of groups where the user is a member.
         /// </summary>
+        /// <param name="biaNetSection">The bia net section.</param>
         /// <returns>List of groups.</returns>
-        public virtual IEnumerable<string> GetGroups()
+        public virtual IEnumerable<string> GetGroups(BiaNetSection biaNetSection = null)
         {
-            return this.GetClaimValues(CustomClaimTypes.Group);
+            IEnumerable<string> groupNames = default;
+
+            if (biaNetSection?.Authentication?.Keycloak?.IsActive == true)
+            {
+                groupNames = this.GetClaimValues(CustomClaimTypes.Group);
+            }
+            else
+            {
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    WindowsIdentity identity = this.Identity as WindowsIdentity;
+
+                    if (identity?.Groups?.Any() == true)
+                    {
+                        groupNames = identity?.Groups.AsParallel().Select(id => id.Translate(typeof(NTAccount)).Value).ToList();
+                    }
+                }
+            }
+
+            return groupNames;
         }
 
         /// <summary>

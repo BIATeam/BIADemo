@@ -680,8 +680,18 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
 
-            List<string> memberOfs = claimsPrincipal?.GetGroups()?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            List<string> claimRoles = claimsPrincipal?.GetRoles()?.ToList() ?? new List<string>();
+            List<string> memberOfs = null;
+            List<string> claimRoles = null;
+
+            if (rolesSection?.Any(x => x.Type == BIAConstants.RoleType.LdapFromWinIdentity || x.Type == BIAConstants.RoleType.LdapFromIdP) == true)
+            {
+                memberOfs = claimsPrincipal?.GetGroups(this.configuration)?.OrderBy(x => x)?.ToList() ?? new List<string>();
+            }
+
+            if (rolesSection?.Any(x => x.Type == BIAConstants.RoleType.IdP) == true)
+            {
+                claimRoles = claimsPrincipal?.GetRoles()?.ToList() ?? new List<string>();
+            }
 
             var adRoles = new ConcurrentBag<string>();
 
@@ -706,11 +716,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         }
                         break;
 
+                    case BIAConstants.RoleType.LdapFromWinIdentity:
                     case BIAConstants.RoleType.LdapFromIdP:
-                        bool isMember = role.LdapGroups?
-                                                .Any(ldapGroup => memberOfs
-                                                    .Any(memberOf => memberOf.Contains(ldapGroup.LdapName, StringComparison.OrdinalIgnoreCase))) == true;
-                        if (isMember)
+                        if (CheckIfMember(role, memberOfs))
                         {
                             return role.Label;
                         }
@@ -757,6 +765,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return adRoles.ToList();
         }
 
+        private static bool CheckIfMember(Role role, List<string> memberOfs)
+        {
+            return role.LdapGroups?
+                                .Any(ldapGroup => memberOfs
+                                    .Any(memberOf => System.IO.Path.GetFileName(memberOf).Contains(System.IO.Path.GetFileName(ldapGroup.LdapName), StringComparison.OrdinalIgnoreCase))) == true;
+        }
+
         private async Task<string> GetSidHistory(string sid, string userDomain)
         {
             string sidHistory = (string)await this.ldapRepositoryHelper.LocalCache.Get<string>(KeyPrefixCacheUserSidHistory + sid);
@@ -794,16 +809,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             string groupName = "Name not found : " + groupDomainSid.Sid;
 
             bool ContainsOnlyUsers = false;
-            bool IgnoreForeignSecurityPrincipalForGroup  = false;
+            bool IgnoreForeignSecurityPrincipalForGroup = false;
             if (rootLdapGroup.RecursiveGroupsOfDomains == null || rootLdapGroup.RecursiveGroupsOfDomains.Length == 0)
             {
                 rootLdapGroup.RecursiveGroupsOfDomains = new string[] { rootLdapGroup.Domain };
                 ContainsOnlyUsers = true;
-                IgnoreForeignSecurityPrincipalForGroup  = true;
+                IgnoreForeignSecurityPrincipalForGroup = true;
             }
             else if (rootLdapGroup.RecursiveGroupsOfDomains.Count() == 1 && rootLdapGroup.RecursiveGroupsOfDomains[0] == rootLdapGroup.Domain)
             {
-                IgnoreForeignSecurityPrincipalForGroup  = true;
+                IgnoreForeignSecurityPrincipalForGroup = true;
             }
 
             DomainGroupPrincipal subGroupPrincipal = ResolveGroupPrincipal(new string[] { groupDomainSid.Domain }, groupDomainSid.Sid);
@@ -851,7 +866,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                                 break;
                             }
                         }
-                        if (!IgnoreForeignSecurityPrincipalForGroup )
+                        if (!IgnoreForeignSecurityPrincipalForGroup)
                         {
                             if (memberSid != null)
                             {
