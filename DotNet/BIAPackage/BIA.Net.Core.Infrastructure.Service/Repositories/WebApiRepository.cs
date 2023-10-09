@@ -273,8 +273,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         private async Task<string> GetBearerTokenInCacheAsync()
         {
             return await this.distributedCache.Get<string>(this.GetBearerCacheKey());
-            // TO test
-            // old code return await this.distributedCache.GetStringAsync(this.GetBearerCacheKey());
         }
 
         /// <summary>
@@ -287,23 +285,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
                 DateTimeOffset expirationDate = this.GetJwtTokenExpirationDate(bearerToken);
-                // To test
-                // old code :
-
-                // DistributedCacheEntryOptions option = new DistributedCacheEntryOptions() { AbsoluteExpiration = expirationDate.AddSeconds(-10) };
-
-                // await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), bearerToken, options: option);
-
                 TimeSpan expirationFromNow = expirationDate - DateTimeOffset.UtcNow.Add(new TimeSpan(0, 0, 10));
                 await this.distributedCache.Add(this.GetBearerCacheKey(), bearerToken, expirationFromNow.TotalMinutes);
             }
             else
             {
                 await this.distributedCache.Remove(this.GetBearerCacheKey());
-
-                // To test
-                // old code :
-                // await this.distributedCache.SetStringAsync(this.GetBearerCacheKey(), string.Empty);
             }
         }
 
@@ -364,7 +351,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(string url, HttpMethod httpMethod, TBody body = default, HttpContent httpContent = default, bool isFormUrlEncoded = false, bool useBearerToken = false, bool retry = false)
         {
-            if (!string.IsNullOrWhiteSpace(url) && (body != null || httpContent != null))
+            if (!string.IsNullOrWhiteSpace(url) && (body != null || httpContent != default))
             {
                 this.logger.LogInformation($"Call WebApi {httpMethod.Method}: {url}");
                 if (useBearerToken)
@@ -374,7 +361,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
                 HttpResponseMessage response = default;
 
-                if (httpContent == default)
+                if (!retry && httpContent == default)
                 {
                     string json = JsonConvert.SerializeObject(body);
                     if (isFormUrlEncoded)
@@ -397,12 +384,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     response = await this.httpClient.PostAsync(url, httpContent);
                 }
 
-                httpContent?.Dispose();
-
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
                     TResult result = this.DeserializeIfRequired<TResult>(res);
+                    httpContent?.Dispose();
                     return (result, response.IsSuccessStatusCode, default(string));
                 }
                 else
@@ -414,6 +400,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
 
                     this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    httpContent?.Dispose();
                     return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }
             }
