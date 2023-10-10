@@ -56,7 +56,7 @@ namespace BIA.Net.Core.Domain
 
                     specification &= ruleSpecification;
                 }
-                else
+                else if (json.ValueKind == System.Text.Json.JsonValueKind.Object)
                 {
                     var value = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
                     AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
