@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         private readonly IHostApplicationLifetime appLifetime;
         private readonly IConfiguration configuration;
         private readonly DataContext dataContext;
+        private Exception exception;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DeployDBService" /> class.
@@ -73,7 +74,9 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     }
                     catch (Exception ex)
                     {
+                        this.exception = ex;
                         this.logger.LogError(ex, "Unhandled exception!");
+                        throw;
                     }
                     finally
                     {
@@ -94,6 +97,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         public Task StopAsync(CancellationToken cancellationToken)
         {
             this.dataContext.Dispose();
+
+            if (this.exception != default)
+            {
+                return Task.FromException(this.exception);
+            }
+
             return Task.CompletedTask;
         }
     }
