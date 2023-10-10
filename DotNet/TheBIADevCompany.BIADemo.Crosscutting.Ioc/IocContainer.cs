@@ -127,14 +127,22 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Infrastructure Data Layer
             collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                if (connectionString != null)
+                {
+                    options.UseSqlServer(connectionString);
+                }
+
                 options.EnableSensitiveDataLogging();
                 options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
             collection.AddDbContext<IQueryableUnitOfWorkReadOnly, DataContextReadOnly>(
                 options =>
                 {
-                    options.UseSqlServer(connectionString);
+                    if (connectionString != null)
+                    {
+                        options.UseSqlServer(connectionString);
+                    }
+
                     options.EnableSensitiveDataLogging();
                 },
                 contextLifetime: ServiceLifetime.Transient);

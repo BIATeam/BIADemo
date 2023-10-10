@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -93,6 +94,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IIdentityProviderRepository identityProviderRepository;
 
         /// <summary>
+        /// The connectionString.
+        /// </summary>
+        private readonly string connectionString;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AuthAppService" /> class.
         /// </summary>
         /// <param name="jwtFactory">The JWT factory.</param>
@@ -103,7 +109,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="logger">The logger.</param>
         /// <param name="roleAppService">The role application service.</param>
         /// <param name="userProfileRepository">The user profile repository.</param>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="configuration">The configuration.</param>        
+        /// <param name="BiaNetconfiguration">The BiaNetSection configuration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public AuthAppService(
@@ -115,7 +122,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             ILogger<AuthAppService> logger,
             IRoleAppService roleAppService,
             IUserProfileRepository userProfileRepository,
-            IOptions<BiaNetSection> configuration,
+            IConfiguration configuration,
+            IOptions<BiaNetSection> BiaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             IIdentityProviderRepository identityProviderRepository)
         {
@@ -128,9 +136,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.roleAppService = roleAppService;
             this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
-            this.ldapDomains = configuration.Value.Authentication.LdapDomains;
-            this.roles = configuration.Value.Roles;
+            this.ldapDomains = BiaNetconfiguration.Value.Authentication.LdapDomains;
+            this.roles = BiaNetconfiguration.Value.Roles;
             this.identityProviderRepository = identityProviderRepository;
+            this.connectionString = configuration.GetConnectionString("BIADemoDatabase");
         }
 
         /// <summary>
@@ -155,7 +164,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get userInfo if needed (it requires an user in database)
             UserInfoDto userInfo = null;
-            if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole())
+            if (this.connectionString != null && (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole()))
             {
                 userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
             }
