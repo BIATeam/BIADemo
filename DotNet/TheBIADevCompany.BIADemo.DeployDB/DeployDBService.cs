@@ -67,6 +67,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         this.logger.LogInformation($"{confCommandTimeout}: {timeout} minutes");
                         this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
+                        throw new Exception("Test error Database Migrate");
+
                         this.dataContext.Database.Migrate();
                     }
                     catch (Exception ex)
