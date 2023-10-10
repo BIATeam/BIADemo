@@ -658,17 +658,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Check if UserInDb is requiered.
-        /// </summary>
-        /// <returns>True if user in db is in configuration file.</returns>
-        public bool UseUserRoleInDB()
-        {
-            IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
-            return rolesSection != null && rolesSection.Any(r => r.Type == BIAConstants.RoleType.UserInDB);
-        }
-
-
-        /// <summary>
         /// Gets the user roles asynchronous.
         /// </summary>
         /// <param name="userInfoDto">The user information dto.</param>

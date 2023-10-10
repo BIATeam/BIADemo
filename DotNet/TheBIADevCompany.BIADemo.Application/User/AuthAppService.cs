@@ -78,9 +78,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
 
         /// <summary>
-        /// The configuration of the BiaNet section.
+        /// The domain section in the BiaNet configuration.
         /// </summary>
         private readonly IEnumerable<LdapDomain> ldapDomains;
+
+        /// <summary>
+        /// The role section in the BiaNet configuration.
+        /// </summary>
+        private readonly  IEnumerable<BIA.Net.Core.Common.Configuration.Role> roles;
 
         /// <summary>
         /// The identity provider repository.
@@ -124,6 +129,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = configuration.Value.Authentication.LdapDomains;
+            this.roles = configuration.Value.Roles;
             this.identityProviderRepository = identityProviderRepository;
         }
 
@@ -149,7 +155,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get userInfo if needed (it requires an user in database)
             UserInfoDto userInfo = null;
-            if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.userDirectoryHelper.UseUserRoleInDB())
+            if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole())
             {
                 userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
             }
@@ -279,6 +285,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
 
             return authInfo;
+        }
+
+        /// <summary>
+        /// Check if UserInDb is requiered.
+        /// </summary>
+        /// <returns>True if user in db is in configuration file.</returns>
+        public bool UseUserRole()
+        {
+            return this.roles != null && this.roles.Any(r =>
+                r.Label == Constants.Role.User
+            );
         }
 
         /// <summary>
