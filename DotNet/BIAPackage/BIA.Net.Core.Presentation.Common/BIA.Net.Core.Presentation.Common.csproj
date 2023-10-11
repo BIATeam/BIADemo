@@ -21,13 +21,13 @@
 
   <ItemGroup>
     <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="3.1.2" />
-    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.8" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.20.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.23" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.23" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.23" />
   </ItemGroup>
 
   <ItemGroup>
