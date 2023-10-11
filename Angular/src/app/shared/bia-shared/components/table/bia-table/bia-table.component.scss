@@ -24,3 +24,10 @@ table {
 .bia-table-select-col {
   width: 60px;
 }
+
+.p-sortable-column[aria-sort="none"] {
+    p-sorticon {
+      display: none;
+  }
+}
+
