@@ -50,29 +50,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBIADevCompany.BIADemo.De
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BIAPackage", "BIAPackage", "{6EF13E85-A882-4935-9E5D-92D94D84D935}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Common", "BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj", "{29EFB176-B007-44A2-9C34-E28393CE40A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Common", "BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj", "{29EFB176-B007-44A2-9C34-E28393CE40A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Domain.Dto", "BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj", "{400A05A1-2FCD-4D2B-9D67-D280B3391F9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Domain.Dto", "BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj", "{400A05A1-2FCD-4D2B-9D67-D280B3391F9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Domain", "BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj", "{D455E579-D291-4698-863C-B864032CF8DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Domain", "BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj", "{D455E579-D291-4698-863C-B864032CF8DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Application", "BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj", "{814D97F5-CA2B-4794-BF19-582BF61EFD33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Application", "BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj", "{814D97F5-CA2B-4794-BF19-582BF61EFD33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Infrastructure.Data", "BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj", "{E1E7A558-B34B-4196-83BD-D155531D9F1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Infrastructure.Data", "BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj", "{E1E7A558-B34B-4196-83BD-D155531D9F1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Infrastructure.Service", "BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj", "{7C528F98-1148-4DD8-A550-2457416BD30A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Infrastructure.Service", "BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj", "{7C528F98-1148-4DD8-A550-2457416BD30A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Ioc", "BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj", "{7F75A499-79E0-4807-9914-A7893736D71D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Ioc", "BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj", "{7F75A499-79E0-4807-9914-A7893736D71D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Presentation.Common", "BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj", "{C9EF1B08-DCDC-4C54-99A3-5250D36A6A00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Presentation.Common", "BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj", "{C9EF1B08-DCDC-4C54-99A3-5250D36A6A00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Presentation.Api", "BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj", "{93C0C7B0-831A-42D8-906B-5BB97E81053C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Presentation.Api", "BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj", "{93C0C7B0-831A-42D8-906B-5BB97E81053C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Test", "BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj", "{73B6019B-593C-491E-99E6-5BF05C13CF02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Test", "BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj", "{73B6019B-593C-491E-99E6-5BF05C13CF02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.WorkerService", "BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj", "{9D818E7F-FE57-4E93-A7B1-EFBE209FC5DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.WorkerService", "BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj", "{9D818E7F-FE57-4E93-A7B1-EFBE209FC5DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackage", "BIAPackage\NuGetPackage\NuGetPackage.csproj", "{15CC91EE-17E3-42E0-9738-118E02312D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuGetPackage", "BIAPackage\NuGetPackage\NuGetPackage.csproj", "{15CC91EE-17E3-42E0-9738-118E02312D64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
