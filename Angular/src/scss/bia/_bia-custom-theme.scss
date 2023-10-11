@@ -91,8 +91,16 @@ bia-table-controller {
 
 // For table calc mode
 .bia-calc-form {
-  p-celleditor input {
-    width: 100%;
+  p-celleditor, t-foot {
+    input {
+      width: 100%;
+    }
+    .p-inputtext {
+      padding:0;
+    }
+    .p-multiselect-label {
+      padding:0!important;
+    }
   }
   .p-datatable-tbody td {
     position: relative;

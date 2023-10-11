@@ -25,6 +25,9 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   protected currentRow: HTMLElement;
   protected sub = new Subscription();
   protected isInComplexInput = false;
+  public footerRowData: any;
+  public editFooter: boolean = false;
+
 
   specificInputTemplate: TemplateRef<any>;
   
@@ -70,9 +73,9 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   }
 
   public addFooterEmptyObject() {
-    if (this.elements && this.canAdd === true && this.elements.filter(el => el.id === 0).length === 0) {
-      this.elements = [...this.elements, { id: 0 }];
-    }
+    if (this.canAdd === true) {
+      this.footerRowData = { id: 0 };
+   }
   }
 
   public initForm() {
@@ -88,7 +91,13 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   }
 
   public initEditableRow(rowData: any) {
-    if (this.canEdit === true && (!rowData || (rowData && this.table.editingRowKeys[rowData.id] !== true))) {
+    if (this.canEdit === true && (!rowData || (rowData && 
+        (
+          (rowData.id !== 0 && this.table.editingRowKeys[rowData.id] !== true)
+          ||
+          (rowData.id === 0 && this.editFooter !== true))
+        )
+       )) {
       if (this.hasChanged === true) {
         if (this.form.valid) {
           this.onSave();
@@ -106,7 +115,15 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   public initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;
-      this.table.initRowEdit(rowData);
+      if (rowData.id == 0)
+      {
+        this.editFooter = true;
+      }
+      else
+      {
+        this.editFooter = false;
+        this.table.initRowEdit(rowData);
+      }
       this.form.reset();
       this.form.patchValue({ ...rowData });
     }
