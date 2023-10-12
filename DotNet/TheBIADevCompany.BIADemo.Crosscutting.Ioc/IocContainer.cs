@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
-            if (configuration == null)
+            if (configuration == null && !isUnitTest)
             {
                 throw Exception("Configuration cannot be null");
             }

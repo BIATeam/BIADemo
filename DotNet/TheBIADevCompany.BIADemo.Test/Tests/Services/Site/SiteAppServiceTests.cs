@@ -217,21 +217,34 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         [TestMethod("SiteAppServiceTests.RemoveAsyncTest")]
         public async Task RemoveAsyncTest()
         {
+            int teamId = 2;
+
             #region Setup context
             // Mock authentication data (IPrincipal).
             this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
+                })
+                .MockPrincipalUserData(new UserDataDto()
+                {
+                    CurrentTeams =
+                    {
+                        new CurrentTeamDto()
+                        {
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            TeamId = teamId,
+                        },
+                    },
                 });
 
             // Initialize the service to test.
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            await service.RemoveAsync(2);
+            await service.RemoveAsync(teamId);
 
-            Assert.AreEqual(2, this.DbMock.CountSites());
-            Assert.IsNull(this.DbMock.GetSite(2));
+            Assert.AreEqual(teamId, this.DbMock.CountSites());
+            Assert.IsNull(this.DbMock.GetSite(teamId));
             Assert.AreEqual(DataConstants.DefaultSitesTitles[0], this.DbMock.GetSite(1).Title);
             Assert.AreEqual(DataConstants.DefaultSitesTitles[2], this.DbMock.GetSite(3).Title);
         }
@@ -242,11 +255,24 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         [TestMethod("SiteAppServiceTests.UpdateAsyncTest")]
         public void UpdateAsyncTest()
         {
+            int teamId = 2;
+
             #region Setup context
             // Mock authentication data (IPrincipal).
             this.principalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
+                })
+                .MockPrincipalUserData(new UserDataDto()
+                {
+                    CurrentTeams =
+                    {
+                        new CurrentTeamDto()
+                        {
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            TeamId = teamId,
+                        },
+                    },
                 });
 
             // Initialize the service to test.
@@ -255,7 +281,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
 
             SiteDto siteDto = new SiteDto()
             {
-                Id = 2,
+                Id = teamId,
                 Title = "TLS",
             };
             SiteDto site = service.UpdateAsync(siteDto).Result;
@@ -263,7 +289,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             Assert.IsNotNull(site);
 
             Assert.AreEqual(3, this.DbMock.CountSites());
-            Assert.AreEqual("TLS", this.DbMock.GetSite(2).Title);
+            Assert.AreEqual("TLS", this.DbMock.GetSite(teamId).Title);
         }
     }
 }
