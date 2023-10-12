@@ -91,23 +91,25 @@ bia-table-controller {
 
 // For table calc mode
 .bia-calc-form {
-  p-celleditor, t-foot {
+  p-celleditor, tfoot {
     input {
       width: 100%;
     }
     .p-inputtext {
-      padding:0;
+      padding:0!important;
     }
     .p-multiselect-label {
       padding:0!important;
     }
   }
-  .p-datatable-tbody td {
-    position: relative;
-    .bia-star-mandatory {
-      position: absolute;
+  .p-datatable-tbody,.p-datatable-tfoot{
+    td {
+      position: relative;
+      .bia-star-mandatory {
+        position: absolute;
+      }
     }
-  }
+  } 
 }
 
 // For view
