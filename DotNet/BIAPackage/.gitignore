@@ -178,7 +178,9 @@ PublishScripts/
 
 # NuGet Packages
 *.nupkg
+NuGetPackage/*/*
 !NuGetPackage/*/*.nupkg
+
 # The packages folder can be ignored because of Package Restore
 **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
