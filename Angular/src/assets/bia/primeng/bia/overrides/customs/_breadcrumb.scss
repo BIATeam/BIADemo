@@ -1,10 +1,40 @@
 p-breadcrumb {
-    .p-breadcrumb-chevron {
-      font-size: 9px;
-    }
-    .p-menuitem-text {
-      font-size: 0.9em!important;
-      font-weight: 100!important;
-      line-height: 24px!important;
-    }
+  .p-breadcrumb {
+    padding: 0.25rem;
+  }
+
+  // .p-breadcrumb-chevron {
+  //   font-size: 9px;
+  // }
+  .p-menuitem-text {
+    font-size: 0.9em !important;
+    font-weight: 100 !important;
+    line-height: 24px !important;
+  }
+
+  .p-menuitem-separator .p-icon {
+    width: 0.6rem;
+    height: 0.6rem;
+    color: $biaTitleColor;
+  }
+}
+
+.p-breadcrumb li .p-menuitem-link .p-menuitem-icon {
+  color: $biaTitleColor;
+}
+
+.p-breadcrumb li .p-menuitem-link .p-menuitem-text {
+  color: $biaTitleColor;
+}
+
+.p-breadcrumb li .p-menuitem-link .p-menuitem-icon {
+  color: $biaTitleColor;
+}
+
+.p-breadcrumb li:last-child .p-menuitem-text {
+  color: $primaryColor;
+}
+
+.p-breadcrumb li:last-child .p-menuitem-icon {
+  color: $primaryColor;
 }
