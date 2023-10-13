@@ -195,6 +195,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             this.DbMock.InitDefaultSites();
             this.InitCurrentTeam(1);
             this.InitController();
+
             // Add member: required for the GetAll() method.
             this.DbMock.AddUser(1, "John", "DOE", 1, 1);
 
