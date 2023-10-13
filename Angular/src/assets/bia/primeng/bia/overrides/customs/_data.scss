@@ -1,11 +1,25 @@
 body .p-datatable .p-datatable-tbody > tr {
   background: $biaBgHoverColor;
-  border: 1px solid #d7d7d7;
 }
 
 body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
   background-color: $biaBgColor;
-  border: 1px solid #d7d7d7;
+}
+
+body .p-datatable .p-datatable-tbody > tr > td {
+  border-top-width: 1px;
+  border-top-color: #d7d7d7;
+  border-top-style: solid;
+}
+
+body .p-datatable .p-datatable-tbody > tr:last-child > td {
+  border-bottom-width: 1px;
+  border-bottom-color: #d7d7d7;
+  border-bottom-style: solid;
+}
+
+tr.p-selectable-row.p-highlight td {
+  color: $primaryColor !important;
 }
 
 p-celleditor {
