@@ -29,14 +29,14 @@
       <ng-container *ngFor="let col of columns">
         <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
           <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
-            <i class="{{ col?.icon }}"></i>
+            <i class="{{ col?.icon }} bia-column-icon"></i>
           </ng-container>
           <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
         <th *ngIf="col?.isSortable !== true" pReorderableColumn>
           <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
-            <i class="{{ col?.icon }}"></i>
+            <i class="{{ col?.icon }} bia-column-icon"></i>
           </ng-container>
           <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
         </th>
