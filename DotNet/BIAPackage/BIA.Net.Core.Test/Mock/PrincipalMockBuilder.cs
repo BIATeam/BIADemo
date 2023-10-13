@@ -46,10 +46,10 @@ namespace BIA.Net.Core.Test.Mock
         /// <returns>The mocked principal.</returns>
         public BIAClaimsPrincipal BuildAndApply(IServiceCollection services)
         {
-            BIAClaimsPrincipal mock = this.Build();
-            BIAIocContainerTest.ApplyPrincipalMock(services, mock);
+            BIAClaimsPrincipal claimsPrincipal = this.Build();
+            BIAIocContainerTest.ApplyPrincipalMock(services, claimsPrincipal);
 
-            return mock;
+            return claimsPrincipal;
         }
 
         /// <summary>

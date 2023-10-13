@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
                 });
@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserId(1)
+            this.PrincipalBuilder.MockPrincipalUserId(1)
                 .MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
@@ -93,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserId(1)
+            this.PrincipalBuilder.MockPrincipalUserId(1)
                 .MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
@@ -127,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Sites.ListAccess,
                 })
@@ -174,7 +174,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
         {
             #region Setup context
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
                 });
@@ -220,8 +220,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             int teamId = 2;
 
             #region Setup context
+
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
                 })
@@ -258,8 +259,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             int teamId = 2;
 
             #region Setup context
+
             // Mock authentication data (IPrincipal).
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                     Rights.Teams.AccessAll,
                 })

@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         [TestInitialize]
         public void InitTest()
         {
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Teams.AccessAll,
                 });
@@ -369,7 +369,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         /// <param name="teamId">The team identifier.</param>
         private void InitCurrentTeam(int teamId)
         {
-            this.principalBuilder.MockPrincipalUserData(new UserDataDto()
+            this.PrincipalBuilder.MockPrincipalUserData(new UserDataDto()
                 {
                     CurrentTeams =
                     {

@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         public void InitTest()
         {
             // Mock authentication data (IPrincipal).
-            this.principalBuilder
+            this.PrincipalBuilder
                 .MockPrincipalUserData(new UserDataDto()
                 {
                     CurrentTeams =
