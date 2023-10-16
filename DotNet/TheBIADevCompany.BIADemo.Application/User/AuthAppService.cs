@@ -209,8 +209,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
                         }
 
-                        User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
-                        userInfo = this.userAppService.CreateUserInfo(user);
+                        if (userFromDirectory != null)
+                        {
+                            User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            userInfo = this.userAppService.CreateUserInfo(user);
+                        }
                     }
                     catch (Exception ex)
                     {

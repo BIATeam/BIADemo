@@ -1082,6 +1082,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
                 else
                 {
+                    // Return null in case of empty element.
+                    if (itemResolve.Login == null) return null;
                     return itemResolve;
                 }
             }
@@ -1098,11 +1100,17 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     }
                 }
             }
+
+            // Add element empty in cache to not retrieve it several time. 
             if (itemResolve == null)
             {
                 itemResolve = new TUserFromDirectory();
+                itemResolve.Login = null;
             }
             await this.ldapRepositoryHelper.DistributedCache.Add(KeyCache, itemResolve, this.LdapCacheUserDuration);
+
+            // Return null in case of empty element.
+            if (itemResolve.Login == null) return null;
             return itemResolve;
         }
     }
