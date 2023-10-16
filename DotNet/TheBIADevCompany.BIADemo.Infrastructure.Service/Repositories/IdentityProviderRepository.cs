@@ -124,7 +124,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         {
             List<UserFromDirectory> userFromDirectories = new List<UserFromDirectory>();
 
-            if (searchUserResponseDtos != null && searchUserResponseDtos?.Any() == true)
+            if (searchUserResponseDtos?.Any() == true)
             {
                 foreach (SearchUserResponseDto searchUserResponseDto in searchUserResponseDtos)
                 {
@@ -156,7 +156,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     FirstName = searchUserResponseDto.FirstName,
                     LastName = searchUserResponseDto.LastName,
                     Login = searchUserResponseDto.Username,
-                    Domain = !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.LdapEntryDn) ? searchUserResponseDto.Attribute.LdapEntryDn?.Split(',')?.FirstOrDefault(x => x.StartsWith("DC="))?.Split('=')?.LastOrDefault()?.ToUpper() : default,
+                    Domain = !string.IsNullOrWhiteSpace(searchUserResponseDto.Attribute.LdapEntryDn) ? Array.Find(searchUserResponseDto.Attribute.LdapEntryDn.Split(','), x => x.StartsWith("DC="))?.Split('=').LastOrDefault()?.ToUpper() : default,
                     Sid = sid,
                     Country = searchUserResponseDto.Attribute.Country,
                     Company = searchUserResponseDto.Attribute.Company,

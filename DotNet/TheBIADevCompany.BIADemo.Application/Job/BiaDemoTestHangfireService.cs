@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             int selectPlaneOnSiteId = 0;
             string selectPlaneOnSiteTitle = string.Empty;
             int targetRoleId = -1;
-            if (targetedTeam != null && targetedTeam?.TeamTypeId == (int)TeamTypeId.Site)
+            if (targetedTeam != null && targetedTeam.TeamTypeId == (int)TeamTypeId.Site)
             {
                 // if the task is launch for a team site use this site. (demonstarte the swith of site)
                 selectPlaneOnSiteId = targetedTeam.Id;
