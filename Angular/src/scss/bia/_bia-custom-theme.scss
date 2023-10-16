@@ -65,7 +65,7 @@ bia-classic-layout {
 // classic-page-layout-theme
 bia-classic-page-layout {
   > div {
-    background-color: var(--surface-ground);
+    background-color: $biaBgColor;
   }
 }
 
