@@ -377,7 +377,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 foreach (TeamConfigDto teamConfig in loginParam.TeamsConfig)
                 {
-                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId): null;
+                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId) : null;
                     if (teamLogin == null && teamConfig.InHeader)
                     {
                         // if it is in header we select the default one with default roles.
