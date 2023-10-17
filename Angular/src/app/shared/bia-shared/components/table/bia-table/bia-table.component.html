@@ -28,8 +28,10 @@
       </th>
       <ng-container *ngFor="let col of columns">
         <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
-          {{ col?.header | translate }}
-          <p-sortIcon [field]="col.field"></p-sortIcon>
+          <span class="nowrap">
+            {{ col?.header | translate }}
+            <p-sortIcon [field]="col.field"></p-sortIcon>
+          </span>
         </th>
         <th *ngIf="col?.isSortable !== true" pReorderableColumn>
           {{ col?.header | translate }}
@@ -39,8 +41,7 @@
     <tr *ngIf="showColSearch" class="searchTR">
       <th *ngIf="canSelectElement"></th>
       <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
-        <bia-table-filter [col]="col" [table]="dt">
-        </bia-table-filter>
+        <bia-table-filter [col]="col" [table]="dt"> </bia-table-filter>
       </th>
     </tr>
   </ng-template>
@@ -50,12 +51,14 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td (click)="clickElementData(rowData)" *ngFor="let col of columns">
-        <bia-table-output
-        [field]="col"
-        [data]="getCellData(rowData, col)"
-        >
+        <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
           <ng-template pTemplate="specificOutput">
-            <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
+            <ng-container
+              *ngTemplateOutlet="
+                specificOutputTemplate;
+                context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
+              "
+            ></ng-container>
           </ng-template>
         </bia-table-output>
       </td>
