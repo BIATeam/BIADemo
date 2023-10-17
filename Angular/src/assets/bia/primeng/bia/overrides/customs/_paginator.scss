@@ -1,0 +1,32 @@
+p-paginator .p-paginator {
+  border-left-width: 0px !important;
+  border-right-width: 0px !important;
+  border-top-width: 0px !important;
+  border-bottom-width: 0px !important;
+  background-color: $biaBgColor !important;
+
+  .p-paginator-prev:before,
+  .p-paginator-next:before,
+  .p-paginator-last:before,
+  .p-paginator-first:before,
+  .p-paginator-element {
+    color: $biaFgTextColor !important;
+  }
+
+  .p-paginator-pages {
+    a {
+      border-radius: 0 !important;
+      -webkit-border-radius: 0 !important;
+    }
+
+    a.p-state-active {
+      background-color: $primaryColor !important;
+      // color: $biaBgColor !important;
+      color: $accentTextColor !important;
+    }
+  }
+}
+
+.p-paginator {
+  justify-content: center;
+}

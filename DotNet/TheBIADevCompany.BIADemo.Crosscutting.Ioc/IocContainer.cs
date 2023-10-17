@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
-            if (configuration == null)
+            if (configuration == null && !isUnitTest)
             {
                 throw Exception("Configuration cannot be null");
             }
@@ -101,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
+            collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
 
             // End BIADemo
         }
@@ -167,6 +168,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+
+            // Begin BIADemo
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            // End BIADemo
         }
 
         /// <summary>

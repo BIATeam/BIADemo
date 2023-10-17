@@ -65,7 +65,7 @@ bia-classic-layout {
 // classic-page-layout-theme
 bia-classic-page-layout {
   > div {
-    background-color: var(--surface-ground);
+    background-color: $biaBgColor;
   }
 }
 
@@ -91,15 +91,25 @@ bia-table-controller {
 
 // For table calc mode
 .bia-calc-form {
-  p-celleditor input {
-    width: 100%;
-  }
-  .p-datatable-tbody td {
-    position: relative;
-    .bia-star-mandatory {
-      position: absolute;
+  p-celleditor, tfoot {
+    input {
+      width: 100%;
+    }
+    .p-inputtext {
+      padding:0!important;
+    }
+    .p-multiselect-label {
+      padding:0!important;
     }
   }
+  .p-datatable-tbody,.p-datatable-tfoot{
+    td {
+      position: relative;
+      .bia-star-mandatory {
+        position: absolute;
+      }
+    }
+  } 
 }
 
 // For view

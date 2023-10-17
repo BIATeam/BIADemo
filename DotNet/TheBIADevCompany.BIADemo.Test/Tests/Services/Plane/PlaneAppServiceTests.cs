@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
@@ -44,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
         public void InitTest()
         {
             // Mock authentication data (IPrincipal).
-            this.principalBuilder
+            this.PrincipalBuilder
                 .MockPrincipalUserData(new UserDataDto()
                 {
                     CurrentTeams =
@@ -85,10 +86,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             // Add new plane.
             int id = 3;
             int capacity = 333;
-            DateTime deliveryDate = new DateTime(1990, 10, 10);
+            DateTime deliveryDate = new DateTime(1990, 10, 10, 0, 0, 0, DateTimeKind.Utc);
             string syncTime = "12:00:00";
             bool isActive = false;
-            DateTime lastFlightDate = new DateTime(2013, 4, 4);
+            DateTime lastFlightDate = new DateTime(2013, 4, 4, 0, 0, 0, DateTimeKind.Utc);
             string msn = "AB-0001";
 
             PlaneDto dto = this.service.AddAsync(new PlaneDto()
@@ -111,7 +112,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             Plane plane = this.DbMock.GetPlane(id);
             Assert.AreEqual(capacity, plane.Capacity);
             Assert.AreEqual(deliveryDate, plane.DeliveryDate);
-            Assert.AreEqual(TimeSpan.Parse(syncTime), plane.SyncTime);
+            Assert.AreEqual(TimeSpan.Parse(syncTime, new CultureInfo("en-US")), plane.SyncTime);
             Assert.AreEqual(id, plane.Id);
             Assert.AreEqual(isActive, plane.IsActive);
             Assert.AreEqual(lastFlightDate, plane.LastFlightDate);

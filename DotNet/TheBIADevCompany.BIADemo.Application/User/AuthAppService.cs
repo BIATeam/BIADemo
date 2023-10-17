@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The role section in the BiaNet configuration.
         /// </summary>
-        private readonly  IEnumerable<BIA.Net.Core.Common.Configuration.Role> roles;
+        private readonly IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesConfiguration;
 
         /// <summary>
         /// The identity provider repository.
@@ -109,8 +109,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="logger">The logger.</param>
         /// <param name="roleAppService">The role application service.</param>
         /// <param name="userProfileRepository">The user profile repository.</param>
-        /// <param name="configuration">The configuration.</param>        
-        /// <param name="BiaNetconfiguration">The BiaNetSection configuration.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="biaNetconfiguration">The BiaNetSection configuration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         public AuthAppService(
@@ -123,7 +123,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IRoleAppService roleAppService,
             IUserProfileRepository userProfileRepository,
             IConfiguration configuration,
-            IOptions<BiaNetSection> BiaNetconfiguration,
+            IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             IIdentityProviderRepository identityProviderRepository)
         {
@@ -136,8 +136,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.roleAppService = roleAppService;
             this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
-            this.ldapDomains = BiaNetconfiguration.Value.Authentication.LdapDomains;
-            this.roles = BiaNetconfiguration.Value.Roles;
+            this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
+            this.rolesConfiguration = biaNetconfiguration.Value.Roles;
             this.identityProviderRepository = identityProviderRepository;
             this.connectionString = configuration.GetConnectionString("BIADemoDatabase");
         }
@@ -209,8 +209,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             userFromDirectory = await this.identityProviderRepository.FindUserAsync(identityKey);
                         }
 
-                        User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
-                        userInfo = this.userAppService.CreateUserInfo(user);
+                        if (userFromDirectory != null)
+                        {
+                            User user = await this.userAppService.AddUserFromUserDirectoryAsync(identityKey, userFromDirectory);
+                            userInfo = this.userAppService.CreateUserInfo(user);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -302,9 +305,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>True if user in db is in configuration file.</returns>
         public bool UseUserRole()
         {
-            return this.roles != null && this.roles.Any(r =>
-                r.Label == Constants.Role.User
-            );
+            return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
+                r.Label == Constants.Role.User);
         }
 
         /// <summary>
@@ -350,7 +352,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
         private string GetLogin()
         {
-            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\')?.LastOrDefault()?.ToUpper();
+            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\').LastOrDefault()?.ToUpper();
             if (string.IsNullOrEmpty(login))
             {
                 this.logger.LogWarning("Unauthorized because bad login");
@@ -378,7 +380,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 foreach (TeamConfigDto teamConfig in loginParam.TeamsConfig)
                 {
-                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins?.FirstOrDefault(ct => ct.TeamTypeId == teamConfig.TeamTypeId);
+                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId) : null;
                     if (teamLogin == null && teamConfig.InHeader)
                     {
                         // if it is in header we select the default one with default roles.
@@ -394,7 +396,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     if (teamLogin != null)
                     {
                         IEnumerable<TeamDto> teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
-                        TeamDto team = teams?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                        TeamDto team = teams.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
                         CurrentTeamDto currentTeam = new ()
                         {
@@ -418,7 +420,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         if (currentTeam.TeamId > 0)
                         {
                             IEnumerable<RoleDto> roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
-                            RoleMode roleMode = loginParam.TeamsConfig?.FirstOrDefault(r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
+                            RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
 
                             if (roleMode == RoleMode.AllRoles)
                             {
@@ -429,9 +431,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                                 RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
                                 if (role != null)
                                 {
-                                    if (teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Count == 1 && roles.Any(s => s.Id == teamLogin.CurrentRoleIds.First()))
+                                    if (teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Count == 1 && roles.Any(s => s.Id == teamLogin.CurrentRoleIds[0]))
                                     {
-                                        currentTeam.CurrentRoleIds = new List<int> { teamLogin.CurrentRoleIds.First() };
+                                        currentTeam.CurrentRoleIds = new List<int> { teamLogin.CurrentRoleIds[0] };
                                     }
                                     else
                                     {
@@ -449,7 +451,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                                 {
                                     if (!teamLogin.UseDefaultRoles)
                                     {
-                                        List<int> roleIdsToSet = roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Any(tr => tr == r.Id)).Select(r => r.Id).ToList();
+                                        List<int> roleIdsToSet = roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Exists(tr => tr == r.Id)).Select(r => r.Id).ToList();
                                         currentTeam.CurrentRoleIds = roleIdsToSet;
                                     }
                                     else
@@ -466,7 +468,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             userData.CurrentTeams.Add(currentTeam);
 
                             // add the sites roles (filter if singleRole mode is used)
-                            allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Any(id => id == r.Id)).Select(r => r.Code).ToList());
+                            allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
 
                             // add computed roles (can be customized)
                             if (currentTeam.TeamTypeId == (int)TeamTypeId.Site)

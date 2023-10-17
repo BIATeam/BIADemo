@@ -48,7 +48,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         public async Task<T> Get<T>(string key)
         {
             byte[] encodedItemResolve = await this.distibutedCache.GetAsync(key);
-            if (encodedItemResolve != null)
+            if (encodedItemResolve != null && encodedItemResolve.Length > 0)
             {
                 return this.ByteArrayToObject<T>(encodedItemResolve);
             }
@@ -76,7 +76,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         {
             if (obj == null)
             {
-                return null;
+                return new byte[0];
             }
 
             using var stream = new MemoryStream();

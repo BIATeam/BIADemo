@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.TeamTypeId == teamTypeId)).ToList();
 
-                if (members != null && members?.Any() == true)
+                if (members.Any())
                 {
                     foreach (Member member in members)
                     {
@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 IList<Member> members = (await this.Repository.GetAllEntityAsync(filter: x => x.UserId == userId && x.Team.Id == teamId, includes: new Expression<Func<Member, object>>[] { member => member.MemberRoles })).ToList();
 
-                if (members != null && members?.Any() == true)
+                if (members.Any())
                 {
                     foreach (Member member in members)
                     {
