@@ -33,12 +33,18 @@
         <ng-container *ngFor="let col of columns">
           <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
             <span class="nowrap">
-              {{ col?.header | translate }}
+              <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
+                <i class="{{ col?.icon }} bia-column-icon"></i>
+              </ng-container>
+              <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
               <p-sortIcon [field]="col.field"></p-sortIcon>
             </span>
           </th>
           <th *ngIf="col?.isSortable !== true" pReorderableColumn>
-            {{ col?.header | translate }}
+            <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
+              <i class="{{ col?.icon }} bia-column-icon"></i>
+            </ng-container>
+            <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
           </th>
         </ng-container>
       </tr>
