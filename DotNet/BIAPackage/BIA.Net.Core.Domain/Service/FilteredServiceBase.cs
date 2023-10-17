@@ -633,24 +633,17 @@ namespace BIA.Net.Core.Domain.Service
             {
                 return filtersContext[mode];
             }
+            else if (mode == AccessMode.Read)
+            {
+                return this.GetFilterSpecification(AccessMode.All, filtersContext);
+            }
             else if (mode == AccessMode.Update)
             {
-                if (filtersContext.ContainsKey(AccessMode.Read))
-                {
-                    return filtersContext[AccessMode.Read];
-                }
+                return this.GetFilterSpecification(AccessMode.Read, filtersContext);
             }
             else if (mode == AccessMode.Delete)
             {
-                if (filtersContext.ContainsKey(AccessMode.Update))
-                {
-                    return filtersContext[AccessMode.Update];
-                }
-
-                if (filtersContext.ContainsKey(AccessMode.Read))
-                {
-                    return filtersContext[AccessMode.Read];
-                }
+                return this.GetFilterSpecification(AccessMode.Update, filtersContext);
             }
 
             return null;
