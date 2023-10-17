@@ -63,8 +63,14 @@ namespace BIA.Net.Core.IocContainer
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, IConfiguration configuration)
         {
-            BiaNetSection biaNetSection = new BiaNetSection();
-            configuration.GetSection("BiaNet").Bind(biaNetSection);
+            BiaNetSection biaNetSection = null;
+
+            if (configuration != null)
+            {
+                biaNetSection = new BiaNetSection();
+                configuration.GetSection("BiaNet").Bind(biaNetSection);
+            }
+
             // Infrastructure Service
             collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
             collection.AddTransient<IBiaLocalCache, BiaLocalCache>();

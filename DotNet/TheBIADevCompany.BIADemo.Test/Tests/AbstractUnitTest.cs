@@ -30,10 +30,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
         /// <inheritdoc cref="BIAAbstractUnitTest{TMockEF, TDbContext}.InitServiceCollection"/>
         protected override void InitServiceCollection()
         {
-            this.servicesCollection = new ServiceCollection();
+            this.ServicesCollection = new ServiceCollection();
 
             // Add IoC for components specific to your project in this method.
-            IocContainerTest.ConfigureContainerTest(this.servicesCollection);
+            IocContainerTest.ConfigureContainerTest(this.ServicesCollection);
         }
     }
 }

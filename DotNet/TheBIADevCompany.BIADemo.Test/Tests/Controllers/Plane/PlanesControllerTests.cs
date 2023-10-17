@@ -42,7 +42,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Plane
         [TestInitialize]
         public void InitTest()
         {
-            this.principalBuilder
+            this.PrincipalBuilder
                 .MockPrincipalUserData(new UserDataDto()
                 {
                     CurrentTeams =

@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             {
                 List<object> records = new List<object>();
 
-                if (headerNames != null && headerNames?.Any() == true)
+                if (headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {

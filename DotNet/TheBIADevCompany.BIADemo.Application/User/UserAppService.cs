@@ -299,14 +299,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userInfo">The user information.</param>
         public void SelectDefaultLanguage(UserInfoDto userInfo)
         {
-            userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == userInfo.Country))
+            userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.IsDefaultForCountryCodes, cc => cc == userInfo.Country))
                 .Select(s => s.Code)
                 .FirstOrDefault();
 
             if (userInfo.Language == null)
             {
                 // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
+                userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.AcceptedCodes, cc => cc == "default"))
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }

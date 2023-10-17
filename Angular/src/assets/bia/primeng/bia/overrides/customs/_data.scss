@@ -1,26 +1,42 @@
 body .p-datatable .p-datatable-tbody > tr {
   background: $biaBgHoverColor;
-  border: 1px solid #d7d7d7;
-}
-body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
-  background-color: $biaBgColor;
-  border: 1px solid #d7d7d7;
 }
 
+body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background-color: $biaBgColor;
+}
+
+body .p-datatable .p-datatable-tbody > tr > td {
+  border-top-width: 1px;
+  border-top-color: #d7d7d7;
+  border-top-style: solid;
+}
+
+body .p-datatable .p-datatable-tbody > tr:last-child > td {
+  border-bottom-width: 1px;
+  border-bottom-color: #d7d7d7;
+  border-bottom-style: solid;
+}
+
+tr.p-selectable-row.p-highlight td {
+  color: $primaryColor !important;
+}
 
 p-celleditor {
   .p-inputtext {
-    padding:0;
+    padding: 0;
   }
+
   .p-multiselect-label {
-    padding:0!important;
+    padding: 0 !important;
   }
-  
 }
+
 p-table {
   .p-widget-overlay {
     background-color: $biaBgColor !important;
   }
+
   table {
     thead {
       tr:first-child th {
@@ -34,35 +50,6 @@ p-table {
     td {
       border-left-width: 0px !important;
       border-right-width: 0px !important;
-    }
-
-  }
-}
-
-p-paginator .p-paginator {
-  border-left-width: 0px !important;
-  border-right-width: 0px !important;
-  border-top-width: 0px !important;
-  border-bottom-width: 0px !important;
-  background-color: $biaBgColor !important;
-
-  .p-paginator-prev:before,
-  .p-paginator-next:before,
-  .p-paginator-last:before,
-  .p-paginator-first:before,
-  .p-paginator-element {
-    color: $biaFgTextColor !important;
-  }
-
-  .p-paginator-pages {
-    a {
-      border-radius: 0 !important;
-      -webkit-border-radius: 0 !important;
-    }
-    a.p-state-active {
-      background-color: $primaryColor !important;
-      // color: $biaBgColor !important;
-      color: $accentTextColor !important;
     }
   }
 }

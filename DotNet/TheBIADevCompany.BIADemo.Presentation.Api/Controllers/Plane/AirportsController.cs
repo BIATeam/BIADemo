@@ -245,7 +245,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.PlanesTypes.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids == null || ids?.Any() != true)
+            if (ids?.Any() != true)
             {
                 return this.BadRequest();
             }

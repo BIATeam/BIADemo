@@ -288,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            if (id == 0 || dto == null || dto.Id != id)
+            if (id == 0 || dto.Id != id)
             {
                 return this.BadRequest();
             }
@@ -329,7 +329,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            if (id < 1 || dto == null || dto.ViewId != id || dto.TeamId < 1)
+            if (id < 1 || dto.ViewId != id || dto.TeamId < 1)
             {
                 return this.BadRequest();
             }

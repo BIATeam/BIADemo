@@ -7,13 +7,13 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using System.Linq;
     using System.Net;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Presentation.Api.Controllers;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
@@ -44,13 +44,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         [TestInitialize]
         public void InitTest()
         {
-            this.principalBuilder.MockPrincipalUserPermissions(new List<string>
+            this.PrincipalBuilder.MockPrincipalUserPermissions(new List<string>
                 {
                         Rights.Teams.AccessAll,
                 });
-
-            // Create a new instance of the controller to test and set its HttpContext.
-            this.controller = this.GetControllerWithHttpContext<SitesController>();
         }
 
         /// <summary>
@@ -61,6 +58,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(2);
+            this.InitController();
             int nbSites = this.DbMock.CountSites();
 
             // Remove existing site.
@@ -97,6 +96,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(siteId);
+            this.InitController();
             int nbSites = this.DbMock.CountSites();
 
             IStatusCodeActionResult response = this.controller.Remove(siteId).Result as IStatusCodeActionResult;
@@ -130,6 +131,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(siteId);
+            this.InitController();
             int nbSites = this.DbMock.CountSites();
 
             string newTitle = "New title";
@@ -159,6 +162,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(3);
+            this.InitController();
             int nbSites = this.DbMock.CountSites();
 
             SiteDto newSite = new SiteDto()
@@ -188,6 +193,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
 
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(1);
+            this.InitController();
 
             // Add member: required for the GetAll() method.
             this.DbMock.AddUser(1, "John", "DOE", 1, 1);
@@ -255,6 +262,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         {
             // Add default data in DB.
             this.DbMock.InitDefaultSites();
+            this.InitCurrentTeam(siteId);
+            this.InitController();
             int nbSites = this.DbMock.CountSites();
 
             string siteTitle = "New title";
@@ -288,6 +297,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         [TestMethod("SitesControllerTests.InsertSiteByController")]
         public void InsertSiteByController()
         {
+            this.InitCurrentTeam(1);
+            this.InitController();
+
             // Try to add null site: it shall fail.
             IStatusCodeActionResult response = this.controller.Add(null).Result as IStatusCodeActionResult;
             Assert.IsNotNull(response);
@@ -326,6 +338,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
         [TestMethod("SitesControllerTests.UpdateCreatedSiteByController")]
         public void UpdateCreatedSiteByController()
         {
+            this.InitCurrentTeam(1);
+            this.InitController();
+
             // Create new site.
             SiteDto siteDto = new SiteDto
             {
@@ -346,6 +361,31 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
 
             site = this.DbMock.GetSite(1);
             Assert.AreEqual("BLC", site.Title);
+        }
+
+        /// <summary>
+        /// Initializes the current team.
+        /// </summary>
+        /// <param name="teamId">The team identifier.</param>
+        private void InitCurrentTeam(int teamId)
+        {
+            this.PrincipalBuilder.MockPrincipalUserData(new UserDataDto()
+                {
+                    CurrentTeams =
+                    {
+                        new CurrentTeamDto()
+                        {
+                            TeamTypeId = (int)TeamTypeId.Site,
+                            TeamId = teamId,
+                        },
+                    },
+                });
+        }
+
+        private void InitController()
+        {
+            // Create a new instance of the controller to test and set its HttpContext.
+            this.controller = this.GetControllerWithHttpContext<SitesController>();
         }
     }
 }
