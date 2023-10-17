@@ -24,7 +24,7 @@
     dataKey="id"
     styleClass="p-datatable-striped"
   >
-  <!-- HEADER -->
+    <!-- HEADER -->
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th class="bia-table-select-col" *ngIf="canSelectElement">
@@ -32,19 +32,26 @@
         </th>
         <ng-container *ngFor="let col of columns">
           <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
-            {{ col?.header | translate }}
-            <p-sortIcon [field]="col.field"></p-sortIcon>
+            <span class="nowrap">
+              <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
+                <i class="{{ col?.icon }} bia-column-icon"></i>
+              </ng-container>
+              <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </span>
           </th>
           <th *ngIf="col?.isSortable !== true" pReorderableColumn>
-            {{ col?.header | translate }}
+            <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
+              <i class="{{ col?.icon }} bia-column-icon"></i>
+            </ng-container>
+            <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
           </th>
         </ng-container>
       </tr>
       <tr *ngIf="showColSearch" class="searchTR">
         <th *ngIf="canSelectElement"></th>
         <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
-          <bia-table-filter [col]="col" [table]="dt">
-          </bia-table-filter>
+          <bia-table-filter [col]="col" [table]="dt"> </bia-table-filter>
         </th>
       </tr>
     </ng-template>
@@ -68,25 +75,29 @@
             <ng-template pTemplate="input">
               <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
                 <bia-table-input
-                [field]="col"
-                [form]="form"
-                [dictOptionDtos]="dictOptionDtos"
-                (valueChange)="onChange()"
-                (complexInput)="onComplexInput($event)"
+                  [field]="col"
+                  [form]="form"
+                  [dictOptionDtos]="dictOptionDtos"
+                  (valueChange)="onChange()"
+                  (complexInput)="onComplexInput($event)"
                 >
-                <ng-template pTemplate="specificInput">
-                  <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: col, form: form }" ></ng-container>
-                </ng-template>
+                  <ng-template pTemplate="specificInput">
+                    <ng-container
+                      *ngTemplateOutlet="specificInputTemplate; context: { field: col, form: form }"
+                    ></ng-container>
+                  </ng-template>
                 </bia-table-input>
               </ng-template>
               <ng-template #isNotEditable>
                 <ng-container *ngIf="isFooter(rowData) !== true">
-                  <bia-table-output
-                  [field]="col"
-                  [data]="getCellData(rowData, col)"
-                  >
+                  <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
                     <ng-template pTemplate="specificOutput">
-                      <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
+                      <ng-container
+                        *ngTemplateOutlet="
+                          specificOutputTemplate;
+                          context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
+                        "
+                      ></ng-container>
                     </ng-template>
                   </bia-table-output>
                 </ng-container>
@@ -98,12 +109,14 @@
                 <label *ngIf="col.isEditable === true">-</label>
               </ng-template>
               <ng-template #editRow>
-                <bia-table-output
-                [field]="col"
-                [data]="getCellData(rowData, col)"
-                >
+                <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
                   <ng-template pTemplate="specificOutput">
-                    <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { rowData : rowData, field: col, data: getCellData(rowData, col) }" ></ng-container>
+                    <ng-container
+                      *ngTemplateOutlet="
+                        specificOutputTemplate;
+                        context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
+                      "
+                    ></ng-container>
                   </ng-template>
                 </bia-table-output>
               </ng-template>
