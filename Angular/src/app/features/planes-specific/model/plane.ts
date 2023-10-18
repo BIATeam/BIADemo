@@ -2,6 +2,7 @@ import { PrimeNGFiltering, BiaFieldConfig, PropType, BiaFieldsConfig } from 'src
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Validators } from '@angular/forms';
+import { PrimeIcons } from 'primeng/api';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto {
@@ -29,6 +30,7 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
       specificOutput: true,
       specificInput:true,
       type: PropType.Boolean,
+      icon: PrimeIcons.POWER_OFF,
     }),
     Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
       type: PropType.DateTime,
