@@ -9,7 +9,7 @@
     [paginator]="paginator"
     [rows]="pageSize"
     (onFilter)="onFilter()"
-    [totalRecords]="totalRecord + 1"
+    [totalRecords]="totalRecord"
     [lazy]="true"
     [loading]="loading && (showLoading$ | async) !== null"
     (onLazyLoad)="onLoadLazy($event)"
