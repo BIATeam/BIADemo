@@ -30,17 +30,27 @@
         <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
-              <i class="{{ col?.icon }} bia-column-icon"></i>
+              <i
+                class="{{ col?.icon }} bia-column-icon"
+                pTooltip="{{ col?.header | translate }}"
+                tooltipPosition="top"
+              ></i>
             </ng-container>
             <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </span>
         </th>
         <th *ngIf="col?.isSortable !== true" pReorderableColumn>
-          <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
-            <i class="{{ col?.icon }} bia-column-icon"></i>
-          </ng-container>
-          <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+          <span class="nowrap">
+            <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
+              <i
+                class="{{ col?.icon }} bia-column-icon"
+                pTooltip="{{ col?.header | translate }}"
+                tooltipPosition="top"
+              ></i>
+            </ng-container>
+            <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+          </span>
         </th>
       </ng-container>
     </tr>
