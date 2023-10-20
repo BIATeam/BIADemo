@@ -27,7 +27,7 @@
     <!-- HEADER -->
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th class="bia-table-select-col" *ngIf="canSelectElement">
+        <th class="bia-table-select-col" *ngIf="canSelectElement === true">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
@@ -58,8 +58,8 @@
           </th>
         </ng-container>
       </tr>
-      <tr *ngIf="showColSearch" class="searchTR">
-        <th *ngIf="canSelectElement"></th>
+      <tr *ngIf="showColSearch === true" class="searchTR">
+        <th *ngIf="canSelectElement === true"></th>
         <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
           <bia-table-filter [col]="col" [table]="dt"> </bia-table-filter>
         </th>
@@ -68,6 +68,7 @@
     <!-- BODY -->
     <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-ri="rowIndex">
       <tr
+        class="bia-selectable-row"
         [pSelectableRow]="isFooter(rowData) !== true ? rowData : null"
         [pEditableRow]="rowData"
         (focusout)="onFocusout()"
@@ -75,15 +76,14 @@
         (keyup.escape)="cancel()"
       >
         <!-- FIRST COLUMN WITH CHECKBOX -->
-        <td *ngIf="canSelectElement">
-          <p-tableCheckbox *ngIf="isFooter(rowData) !== true && rowData.id > 0" [value]="rowData"></p-tableCheckbox>
-          <i *ngIf="isFooter(rowData) === true" class="pi pi-plus"></i>
+        <td *ngIf="canSelectElement === true">
+          <p-tableCheckbox *ngIf="rowData.id > 0" [value]="rowData"></p-tableCheckbox>
         </td>
         <!-- OTHER COLUMNS -->
         <td (click)="initEditableRow(rowData)" *ngFor="let col of columns">
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
+              <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable === true">
                 <bia-table-input
                   [field]="col"
                   [form]="form"
@@ -115,10 +115,7 @@
             </ng-template>
             <!-- OUTPUT -->
             <ng-template pTemplate="output">
-              <ng-template [ngIf]="isFooter(rowData) === true" [ngIfElse]="editRow">
-                <label *ngIf="col.isEditable === true">-</label>
-              </ng-template>
-              <ng-template #editRow>
+              <ng-template [ngIf]="isFooter(rowData) !== true">
                 <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
                   <ng-template pTemplate="specificOutput">
                     <ng-container
@@ -135,14 +132,19 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="footer" *ngIf="canAdd" let-columns>
-      <tr (focusout)="onFocusout()" (keyup.enter)="initEditableRow(null)" (keyup.escape)="cancel()">
-        <td (click)="initEditableRow(footerRowData)" *ngIf="canSelectElement">
+    <ng-template pTemplate="footer" *ngIf="canAdd === true" let-columns>
+      <tr
+        class="bia-selectable-row"
+        (focusout)="onFocusout()"
+        (keyup.enter)="initEditableRow(null)"
+        (keyup.escape)="cancel()"
+      >
+        <td (click)="initEditableRow(footerRowData)" *ngIf="canSelectElement === true">
           <i class="pi pi-plus"></i>
         </td>
         <td (click)="initEditableRow(footerRowData)" *ngFor="let col of columns">
           <!-- <p-cellEditor> -->
-          <ng-container *ngIf="editFooter">
+          <ng-container *ngIf="editFooter === true">
             <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
               <bia-table-input
                 [field]="col"
@@ -174,7 +176,7 @@
             </ng-template>
           </ng-container>
           <!-- OUTPUT -->
-          <ng-container *ngIf="!editFooter">
+          <ng-container *ngIf="editFooter !== true">
             <label *ngIf="col.isEditable === true">-</label>
           </ng-container>
           <!-- </p-cellEditor> -->
