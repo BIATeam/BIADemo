@@ -4,10 +4,10 @@
 
 namespace BIA.Net.Core.Application.Authentication
 {
-    using BIA.Net.Core.Domain.Dto.User;
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
     /// The interface defining the JWT factory.
@@ -15,17 +15,18 @@ namespace BIA.Net.Core.Application.Authentication
     public interface IJwtFactory
     {
         /// <summary>
-        /// Decrypt the token
+        /// Decrypt the token.
         /// </summary>
-        /// <param name="Token"></param>
-        /// <param name="SecretKey"></param>
+        /// <param name="token"></param>
+        /// <param name="secretKey"></param>
         /// <returns></returns>
-        ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey);
+        ClaimsPrincipal GetPrincipalFromToken(string token, string secretKey);
 
         /// <summary>
         /// Generate the identity for a user.
         /// </summary>
         /// <param name="tokenDto">The token data.</param>
+        /// <returns></returns>
         ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto;
 
         /// <summary>
@@ -38,13 +39,15 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Generate a JWT.
         /// </summary>
+        /// <typeparam name="TUserDataDto">Type of the user data </typeparam>
+        /// <typeparam name="TAdditionalInfoDto">Type of the additionnal infos.</typeparam>
         /// <param name="tokenDto">The token not uncrypted.</param>
-        /// <param name="additionalInfos">Additionnal Info for front</param>
-        /// <param name="fullToken">Additionnal Info for front</param>
+        /// <param name="additionalInfos">Additionnal Info for front.</param>
+        /// <param name="loginParam">login parameter.</param>
         /// The additional information we want to let visible in the token.
-        /// </param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns></param>
         /// <returns>The JWT as string.</returns>
-        Task<AuthInfoDTO<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, bool fullToken)
+        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto;
     }

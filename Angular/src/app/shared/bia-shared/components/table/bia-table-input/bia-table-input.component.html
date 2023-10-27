@@ -5,6 +5,7 @@
   <ng-container [ngSwitch]="field.type" *ngIf="field.specificInput !== true">
     <ng-container *ngSwitchCase="'OneToMany'">
       <p-dropdown
+        class="bia-simple-input"
         placeholder="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
@@ -18,6 +19,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
+        class="bia-simple-input"
         defaultLabel="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
@@ -31,10 +33,10 @@
       ></p-multiSelect>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox [binary]="true" [formControlName]="field.field" (onChange)="onChange()"></p-checkbox>
+      <p-checkbox class="bia-simple-input" [binary]="true" [formControlName]="field.field" (onChange)="onChange()"></p-checkbox>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
-      <input pInputText type="number" [formControlName]="field.field" (change)="onChange()" />
+      <input class="bia-simple-input" pInputText type="number" [formControlName]="field.field" (change)="onChange()" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-calendar
@@ -132,6 +134,7 @@
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input
+        class="bia-simple-input"
         pInputText
         type="text"
         [maxlength]="field.maxlength"

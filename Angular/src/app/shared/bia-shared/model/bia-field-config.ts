@@ -1,3 +1,5 @@
+import { Validator } from "@angular/forms";
+
 export enum PrimeNGFiltering {
   StartsWith = 'startsWith',
   Contains = 'contains',
@@ -34,11 +36,13 @@ export class BiaFieldConfig {
   hourFormat: number;
   isSearchable: boolean;
   isSortable: boolean;
+  icon: string;
   isEditable: boolean;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
   isRequired: boolean;
+  validators: Validator[];
   specificOutput: boolean;
   specificInput: boolean;
   get isDate() {
@@ -61,29 +65,32 @@ export class BiaFieldConfig {
     this.hourFormat = 12;
     this.isSearchable = true;
     this.isSortable = true;
+    this.icon = '';
     this.isEditable = true;
     this.maxlength = maxlength;
     this.isRequired = false;
     this.specificOutput = false;
     this.specificInput = false;
+    this.validators = [];
   }
-  
-  public clone() : BiaFieldConfig
-  {
-    return Object.assign(new BiaFieldConfig(this.field,this.header,this.maxlength), {
-      type : this.type,
-      filterMode : this.filterMode,
-      formatDate : this.formatDate,
-      primeDateFormat : this.primeDateFormat,
-      hourFormat : this.hourFormat,
-      isSearchable : this.isSearchable,
-      isSortable : this.isSortable,
-      isEditable : this.isEditable,
+
+  public clone(): BiaFieldConfig {
+    return Object.assign(new BiaFieldConfig(this.field, this.header, this.maxlength), {
+      type: this.type,
+      filterMode: this.filterMode,
+      formatDate: this.formatDate,
+      primeDateFormat: this.primeDateFormat,
+      hourFormat: this.hourFormat,
+      isSearchable: this.isSearchable,
+      isSortable: this.isSortable,
+      icon: this.icon,
+      isEditable: this.isEditable,
       translateKey: this.translateKey,
       searchPlaceholder: this.searchPlaceholder,
       isRequired: this.isRequired,
       specificOutput: this.specificOutput,
       specificInput: this.specificInput,
+      validators: this.validators,
     })
   }
 }

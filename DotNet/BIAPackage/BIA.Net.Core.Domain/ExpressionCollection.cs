@@ -4,11 +4,11 @@
 
 namespace BIA.Net.Core.Domain
 {
-    using BIA.Net.Core.Common;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq.Expressions;
+    using BIA.Net.Core.Common;
 
     /// <summary>
     /// Expression Collection.

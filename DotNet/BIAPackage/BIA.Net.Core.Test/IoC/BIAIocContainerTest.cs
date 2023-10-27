@@ -3,6 +3,8 @@
 // </copyright>
 namespace BIA.Net.Core.Test.IoC
 {
+    using System;
+    using System.Security.Principal;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
@@ -12,18 +14,15 @@ namespace BIA.Net.Core.Test.IoC
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Moq;
-    using System;
-    using System.Security.Principal;
 
     /// <summary>
     /// IoC container used for unit tests.
     /// </summary>
     public static class BIAIocContainerTest
     {
-        static Mock<IHubClients> mockClients;
-        static Mock<IClientProxy> mockClientProxy;
-        static Mock<IHubContext<HubForClients>> hubContext;
-
+        private static Mock<IHubClients> mockClients;
+        private static Mock<IClientProxy> mockClientProxy;
+        private static Mock<IHubContext<HubForClients>> hubContext;
 
         /// <summary>
         /// The method used to register all instances for unit test purposes.
@@ -37,8 +36,6 @@ namespace BIA.Net.Core.Test.IoC
 
             ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(services);
             ConfigureInfrastructureServiceContainerTest(services);
-
-
         }
 
         /// <summary>
@@ -47,7 +44,7 @@ namespace BIA.Net.Core.Test.IoC
         /// <param name="services">The collection of services to update.</param>
         public static void ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
-              where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
+            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
         {
             services.AddDbContext<IQueryableUnitOfWork, TDbContext>(
                 options =>

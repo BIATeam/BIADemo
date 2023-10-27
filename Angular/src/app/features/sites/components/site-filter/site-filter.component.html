@@ -1,5 +1,5 @@
 <ng-template #template>
-  <div [hidden]="hidden" class=" app-search-filter" fxFlex="{{ fxFlexValue }}">
+  <div [hidden]="hidden" class="bia-advanced-filter flex-grow-1" style="min-width: 300px">
     <button
     type="button"
     icon="pi pi-times"
@@ -8,13 +8,13 @@
     (click)="onClose()"
     pTooltip="{{ 'msg.showFilters' | translate }}"
     ></button>
-    <form (submit)="onFilter()" fxLayout="column" [formGroup]="form">
-      <div class="header" fxLayout="row" fxLayoutAlign="stretch center">
+    <form (submit)="onFilter()" class="flex flex-column" [formGroup]="form">
+      <div class="header flex flex-row align-items-center align-content-center align-self-stretch" >
         <!--  <i class="pi pi-times bia-pointer" (click)="onClose()" pTooltip="{{ 'msg.hideFilters' | translate }}"></i> -->
         <h1>{{ 'bia.filters' | translate }}</h1>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-filter-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-filter-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
             [options]="userOptions$ | async"
@@ -33,15 +33,15 @@
         </div>
       </div>
 
-      <div fxLayout="row" fxLayoutAlign="space-around">
+      <div class="flex flex-row justify-content-around align-content-around">
         <button
           pButton
           label="{{ 'bia.reset' | translate }}"
-          fxFlex="33"
-          class="p-button-outlined"
+          class="flex-1 p-button-outlined" style="max-width:33%;"
+          
           (click)="onReset()"
         ></button>
-        <button type="submit" pButton label="{{ 'bia.filter' | translate }}" fxFlex="33"></button>
+        <button type="submit" pButton label="{{ 'bia.filter' | translate }}" class="flex-1" style="max-width:33%;"></button>
         </div>
     </form>
   </div>

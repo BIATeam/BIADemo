@@ -23,11 +23,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the security id.
-        /// </summary>
-        // public string Sid { get; set; }
-
-        /// <summary>
         /// Gets or sets the email.
         /// </summary>
         public string Email { get; set; }
@@ -46,11 +41,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the login.
         /// </summary>
         public string Login { get; set; }
-
-        /// <summary>
-        /// Gets or sets the domain.
-        /// </summary>
-        // public string Domain { get; set; }
 
         /// <summary>
         /// Gets or sets the distinguished name.

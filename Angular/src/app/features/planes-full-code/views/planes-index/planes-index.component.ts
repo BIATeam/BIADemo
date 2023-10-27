@@ -29,6 +29,7 @@ import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-fi
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { useCalcMode, useSignalR, useView, useViewTeamWithTypeId } from '../../plane.constants';
 import { skip } from 'rxjs/operators';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 @Component({
   selector: 'app-planes-index',
@@ -40,8 +41,9 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   useSignalR = useSignalR;
   useView = useView;
   useRefreshAtLanguageChange = false;
+  hasColumnFilter = false;
 
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(PlaneTableComponent, { static: false }) planeTableComponent: PlaneTableComponent;
   private get planeListComponent() {
@@ -85,6 +87,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     private biaTranslationService: BiaTranslationService,
     private planesSignalRService: PlanesSignalRService,
     public planeOptionsService: PlaneOptionsService,
+    private tableHelperService: TableHelperService,
   ) {
   }
 
@@ -182,6 +185,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event: pagingAndFilter }));
+    this.hasColumnFilter= this.tableHelperService.hasFilter(this.biaTableComponent, true) || this.tableHelperService.hasFilter(this.planeTableComponent, true);
   }
 
   searchGlobalChanged(value: string) {
@@ -207,7 +211,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.planeListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.planeListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
     };

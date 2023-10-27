@@ -85,6 +85,7 @@ const ROUTES: Routes = [
           },
           {
             path: '',
+            pathMatch: 'full',
             redirectTo: 'edit'
           },
         ]

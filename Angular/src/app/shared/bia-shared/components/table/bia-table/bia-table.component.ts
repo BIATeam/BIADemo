@@ -218,11 +218,11 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   protected getColumns(): BiaFieldConfig[] {
     const tableState: BiaTableState | null = this.getTableState();
     let columns: BiaFieldConfig[] = [];
-    let columnOrder: string[] = [];
+    let columnOrder: string[] | undefined = [];
     if (tableState && tableState.columnOrder) {
       columnOrder = tableState.columnOrder;
     } else if (this.table) {
-      columnOrder = this.table.columns.map(x => x.field);
+      columnOrder = this.table.columns?.map(x => String(x.field));
     }
 
     if (columnOrder && columnOrder?.length > 0) {

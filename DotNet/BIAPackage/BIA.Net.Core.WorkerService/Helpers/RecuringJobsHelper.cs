@@ -1,15 +1,19 @@
-﻿using Hangfire;
-using Hangfire.Storage;
-using Hangfire.Storage.Monitoring;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright file="RecuringJobsHelper.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.WorkerService
 {
-    public static class RecuringJobsHelper 
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Hangfire;
+    using Hangfire.Storage;
+    using Hangfire.Storage.Monitoring;
+    using Microsoft.Extensions.Hosting;
+
+    public static class RecuringJobsHelper
     {
         /// <summary>
         /// Initialize the Background server.
@@ -34,7 +38,7 @@ namespace BIA.Net.Core.WorkerService
             }
 
             var mon = JobStorage.Current.GetMonitoringApi();
-            List<string> jobsToCheck = new();
+            List<string> jobsToCheck = new ();
 
             mon.ProcessingJobs(0, int.MaxValue).ToList().ToList().ForEach(x => jobsToCheck.Add(x.Key));
 
@@ -47,6 +51,7 @@ namespace BIA.Net.Core.WorkerService
             {
                 queues = mon.Queues().Where(x => x.Name == queueName).ToList();
             }
+
             foreach (var queue in queues)
             {
                 for (var i = 0; i < Math.Ceiling(queue.Length / 1000d); i++)
@@ -102,6 +107,7 @@ namespace BIA.Net.Core.WorkerService
                 monitor.EnqueuedJobs(queue.Name, 1000 * i, 1000)
                     .ForEach(x => toDelete.Add(x.Key));
             }
+
             foreach (var jobId in toDelete)
             {
                 BackgroundJob.Delete(jobId);

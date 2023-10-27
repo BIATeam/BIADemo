@@ -1,9 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// <copyright file="DelegateJobToWorker.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     /// <summary>
     /// Api Feature delegate job to worker using Hangfire, configuration.
     /// </summary>

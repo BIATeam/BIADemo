@@ -1,4 +1,4 @@
-﻿// <copyright file="BIADistributedCache.cs" company="BIA.Net">
+﻿// <copyright file="BiaDistributedCache.cs" company="BIA.Net">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -13,10 +13,10 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Store object in distributed with the IDistributedCache service
+    /// Store object in distributed with the IDistributedCache service.
     /// </summary>
 #pragma warning disable S101 // Types should be named in PascalCase
-    public class BIADistributedCache : IBIADistributedCache
+    public class BiaDistributedCache : IBiaDistributedCache
 #pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly IDistributedCache distibutedCache;
@@ -24,14 +24,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<BIADistributedCache> logger;
+        private readonly ILogger<BiaDistributedCache> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIADistributedCache"/> class.
+        /// Initializes a new instance of the <see cref="BiaDistributedCache"/> class.
         /// </summary>
         /// <param name="cache">The distributed cache.</param>
-        /// <param name="logger">The logger</param>
-        public BIADistributedCache(IDistributedCache cache, ILogger<BIADistributedCache> logger)
+        /// <param name="logger">The logger.</param>
+        public BiaDistributedCache(IDistributedCache cache, ILogger<BiaDistributedCache> logger)
         {
             this.distibutedCache = cache;
             this.logger = logger;
@@ -48,7 +48,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         public async Task<T> Get<T>(string key)
         {
             byte[] encodedItemResolve = await this.distibutedCache.GetAsync(key);
-            if (encodedItemResolve != null)
+            if (encodedItemResolve != null && encodedItemResolve.Length > 0)
             {
                 return this.ByteArrayToObject<T>(encodedItemResolve);
             }
@@ -65,7 +65,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             catch (Exception ex)
             {
                 // Not in cache
-                this.logger.LogError("BIADistributedCache.Remove Not in cache", ex);
+                this.logger.LogError(ex, "BIADistributedCache.Remove Not in cache");
             }
         }
 
@@ -75,7 +75,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         private byte[] ObjectToByteArray<T>(T obj)
         {
             if (obj == null)
-                return null;
+            {
+                return new byte[0];
+            }
 
             using var stream = new MemoryStream();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
@@ -97,6 +99,5 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
             return (T)xmlSerializer.Deserialize(stream);
         }
-
     }
 }

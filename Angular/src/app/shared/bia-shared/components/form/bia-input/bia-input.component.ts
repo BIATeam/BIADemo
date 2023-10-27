@@ -9,7 +9,7 @@ import {
   QueryList,
   TemplateRef
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -25,7 +25,7 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 
 export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() field: BiaFieldConfig;
-  @Input() form: FormGroup;
+  @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;

@@ -1,18 +1,18 @@
-<div fxFlex fxLayout="column" [style.display]="fullscreenMode ? 'none' : 'flex'">
+<div class="flex-1 flex-column" [style.display]="fullscreenMode ? 'none' : 'flex'">
   <!-- topbar -->
 
-  <div class="topbar" fxLayoutAlign="space-between">
-    <div class="logos" fxLayoutAlign="center">
+  <div class="topbar flex justify-content-between align-content-between">
+    <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
-        <span *ngIf="!first" fxFlexAlign="center" class="separator"></span>
-        <img fxFlexAlign="center" src="{{ logo }}" />
+        <span *ngIf="!first" class="flex align-self-center separator"></span>
+        <img class="flex align-self-center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
-    <div class="controls" fxLayout="row">
+    <div class="controls flex flex-row">
       <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors">
         <bia-classic-team-selector [teamTypeId]="teamTypeSelector"></bia-classic-team-selector>
-        <span fxFlexAlign="center" class="separator"></span>
+        <span class="flex align-self-center separator"></span>
       </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <bia-online-offline-icon></bia-online-offline-icon>
@@ -37,15 +37,15 @@
 <ng-template #classicMainBar>
   <p-menubar [model]="navMenuItems">
     <ng-template pTemplate="start">
-      <a class="mainbar project-title" routerLink="/">
-        <div fxLayout="row" fxLayoutAlign="stretch center">
+      <a class="project-title" routerLink="/">
+        <div class="flex flex-row align-items-center align-content-center align-self-stretch" >
           <img class="app-logo" src="{{ urlAppIcon }}" />
           <span>{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span>
         </div>
       </a>
     </ng-template>
     <ng-template pTemplate="end">
-      <div class="action" fxLayout="row inline" fxLayoutGap="20px">
+      <div class="action flex flex-row gap-3" style="display: inline-flex" >
         <ng-container *ngIf="enableNotifications">
           <span class="notifications">
             <i class="pi pi-bell bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}"
@@ -59,7 +59,7 @@
         </ng-container>
         <i *ngIf="reportUrl" class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
           pTooltip="{{ 'bia.report' | translate }}" tooltipPosition="left" (click)="openReport()"></i>
-        <i *ngIf="helpUrl" class="pi pi-help bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}"
+        <i *ngIf="helpUrl" class="pi pi-question-circle bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}"
           (click)="openHelp()"></i>
       </div>
     </ng-template>
@@ -68,24 +68,24 @@
 
 <p-toast key="bia" #toast>
   <ng-template let-message pTemplate="message">
-    <div fxLayout="column" fxFlex="100">
-      <div fxLayout="row">
+    <div class="flex flex-column flex-1" style="max-width:100%;">
+      <div class="flex flex-row">
         <ng-container [ngSwitch]="message.severity">
           <ng-container *ngSwitchCase="'success'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted"
-              ng-reflect-ng-class="[object Object]"></span>
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted [object Object]"
+              ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchCase="'warn'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted"
-              ng-reflect-ng-class="[object Object]"></span>
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted [object Object]"
+              ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchCase="'error'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted"
-              ng-reflect-ng-class="[object Object]"></span>
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted [object Object]"
+              ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchDefault>
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted"
-              ng-reflect-ng-class="[object Object]"></span>
+            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted [object Object]"
+              ng-reflect-ng-></span>
           </ng-container>
         </ng-container>
         <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
@@ -94,8 +94,8 @@
           <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
         </div>
       </div>
-      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions"
-        fxLayout="row" fxLayoutAlign="space-between">
+      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions flex flex-row justify-content-between align-content-between"
+        >
         <button pButton [label]="message.data?.notification?.data.display | translate"
           (click)="onNotificationClick(message)" class="p-button-primary"></button>
         <button pButton label="{{'bia.ignore' | translate}}" (click)="onIgnoreClick(message)"

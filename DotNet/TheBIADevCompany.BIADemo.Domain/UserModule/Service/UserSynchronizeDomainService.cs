@@ -70,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                 }
             }
-            else if (usersSidInDirectory?.Count > 0)
+            else if (usersSidInDirectory.Count > 0)
             {
                 ConcurrentBag<UserFromDirectory> usersFromDirectory = new ConcurrentBag<UserFromDirectory>();
 
@@ -105,10 +105,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
-
-                await this.repository.UnitOfWork.CommitAsync();
-
             }
+
+            await this.repository.UnitOfWork.CommitAsync();
         }
 
         /// <summary>

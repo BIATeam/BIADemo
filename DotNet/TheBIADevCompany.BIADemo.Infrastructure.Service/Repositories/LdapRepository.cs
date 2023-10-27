@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System;
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
+    using System.Runtime.InteropServices;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
@@ -106,7 +107,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <returns>Return the Identity Key.</returns>
         protected override IdentityType GetIdentityKeyType()
         {
-            return IdentityType.SamAccountName;
+            return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? IdentityType.SamAccountName : default;
         }
 
         /// <summary>

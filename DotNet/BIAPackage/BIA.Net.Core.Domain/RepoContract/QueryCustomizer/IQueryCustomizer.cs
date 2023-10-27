@@ -2,10 +2,10 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-using System.Linq;
-
 namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
 {
+    using System.Linq;
+
     public interface IQueryCustomizer<TEntity>
     {
         /// <summary>

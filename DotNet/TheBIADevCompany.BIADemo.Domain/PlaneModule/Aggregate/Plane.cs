@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the delivery date.
         /// </summary>
-        [Column(TypeName="date")]
+        [Column(TypeName = "date")]
         public DateTime? DeliveryDate { get; set; }
 
         /// <summary>
@@ -62,7 +62,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the site id.
         /// </summary>
         public int SiteId { get; set; }
-
 
         /// <summary>
         /// Gets or sets the list of connecting airports. Direct access.

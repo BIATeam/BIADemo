@@ -23,6 +23,7 @@ import { CrudConfig } from '../../model/crud-config';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -33,7 +34,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   public crudConfiguration : CrudConfig;
   useRefreshAtLanguageChange = false;
 
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
   @ViewChild(CrudItemTableComponent, { static: false }) crudItemTableComponent: CrudItemTableComponent<CrudItem>;
   public get crudItemListComponent() {
@@ -65,6 +66,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   sortFieldValue = '';
   useViewTeamWithTypeId: TeamTypeId | null;
   defaultViewPref: BiaTableState;
+  hasColumnFilter = false;
 
 
   protected store: Store<AppState>;
@@ -73,6 +75,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
+  private tableHelperService: TableHelperService;
 
   constructor(
     protected injector: Injector,
@@ -84,6 +87,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.translateService = this.injector.get<TranslateService>(TranslateService);
     this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
     this.authService = this.injector.get<AuthService>(AuthService);
+    this.tableHelperService = this.injector.get<TableHelperService>(TableHelperService);
+
   }
 
   useViewChange(e: boolean) {
@@ -182,12 +187,12 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
         }
       })
     );
-    
+
     this.crudItems$ = this.crudItemService.crudItems$;
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.OnDisplay();
-
+    
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
@@ -217,6 +222,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   OnDisplay() {
+    this.checkhasAdvancedFilter();
     this.useViewConfig(false);
     this.useCalcModeConfig(false);
     this.useSignalRConfig(false);
@@ -257,6 +263,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
+
+
   onSave(crudItem: CrudItem) {
     if (this.crudConfiguration.useCalcMode) {
       if (crudItem.id > 0) {
@@ -288,6 +296,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.crudItemService.getParentIds().map((id => id.toString())), ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
+    this.hasColumnFilter= this.tableHelperService.hasFilter(this.biaTableComponent, true) || this.tableHelperService.hasFilter(this.crudItemTableComponent, true);
   }
 
   searchGlobalChanged(value: string) {
@@ -314,7 +323,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.crudItemListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map((id => id.toString())), columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
@@ -348,19 +357,19 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   // Advanced Filter;
   showAdvancedFilter = false;
-  haveAdvancedFilter = false;
+  hasAdvancedFilter = false;
 
 
   onFilter(advancedFilter: any) {
     this.crudConfiguration.fieldsConfig.advancedFilter = advancedFilter;
     this.crudItemListComponent.table.saveState();
-    this.checkHaveAdvancedFilter();
+    this.checkhasAdvancedFilter();
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }
 
-  checkHaveAdvancedFilter()
+  checkhasAdvancedFilter()
   {
-    this.haveAdvancedFilter =  false;
+    this.hasAdvancedFilter =  false;
   }
 
   private updateAdvancedFilterByView(viewPreference: string) {
@@ -368,13 +377,13 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       const state = JSON.parse(viewPreference);
       if (state) {
         this.crudConfiguration.fieldsConfig.advancedFilter = state.advancedFilter;
-        this.checkHaveAdvancedFilter();
+        this.checkhasAdvancedFilter();
       }
     }
     else
     {
       this.crudConfiguration.fieldsConfig.advancedFilter = {};
-      this.checkHaveAdvancedFilter();
+      this.checkhasAdvancedFilter();
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -14,7 +14,7 @@ import { Member } from '../../model/member';
 export class MemberTableComponent extends CrudItemTableComponent<Member> {
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService

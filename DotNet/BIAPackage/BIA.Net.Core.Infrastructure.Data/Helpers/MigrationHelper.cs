@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Infrastructure.Data.Helpers
+﻿// <copyright file="MigrationHelper.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Infrastructure.Data.Helpers
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 

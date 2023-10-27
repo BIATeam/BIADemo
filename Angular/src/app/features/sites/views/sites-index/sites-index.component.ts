@@ -15,12 +15,13 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 })
 
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
+
   // Custo for teams
   canManageMembers = false;
 
-  checkHaveAdvancedFilter()
+  checkhasAdvancedFilter()
   {
-    this.haveAdvancedFilter =  SiteAdvancedFilter.haveFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+    this.hasAdvancedFilter =  SiteAdvancedFilter.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
   }
   
   @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;

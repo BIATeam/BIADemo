@@ -43,12 +43,12 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             // You can see evrey team if your are member
             // For AircraftMaintenanceCompany we add
             //          - right for privilate acces (AccessAll) = Admin
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Read,
                 new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
 
             // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Update,
                 new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == currentAircraftMaintenanceCompanyId));
         }

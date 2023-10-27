@@ -5,6 +5,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
@@ -101,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 Id = id,
                 Company = "TheBIADevCompany",
                 Country = "France",
-                DaiDate = new DateTime(2000, 1, 1),
+                DaiDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 Department = "DM",
                 DistinguishedName = "DistinguishedName",
                 Email = $"{firstName}{lastName}@fake.com",
@@ -149,8 +150,8 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 SiteId = 1,
                 Id = 1,
                 Capacity = 200,
-                SyncTime = TimeSpan.Parse("00:00"),
-                DeliveryDate = new DateTime(2000, 1, 1),
+                SyncTime = TimeSpan.Parse("00:00", new CultureInfo("en-US")),
+                DeliveryDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
                 Msn = DataConstants.DefaultPlanesMsn[0],
@@ -161,8 +162,8 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 SiteId = 1,
                 Id = 2,
                 Capacity = 300,
-                SyncTime = TimeSpan.Parse("12:00"),
-                DeliveryDate = new DateTime(2001, 2, 3),
+                SyncTime = TimeSpan.Parse("12:00", new CultureInfo("en-US")),
+                DeliveryDate = new DateTime(2001, 2, 3, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
                 Msn = DataConstants.DefaultPlanesMsn[1],

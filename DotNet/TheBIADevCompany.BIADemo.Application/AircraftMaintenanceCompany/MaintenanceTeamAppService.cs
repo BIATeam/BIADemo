@@ -51,12 +51,12 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             //          - filter on current AircraftMaintenanceCompany to see only MaintenanceTeam of the current AircraftMaintenanceCompany
             //          - right for privilate acces (ListViewAll) = Admin and Supervisor of the Parent team (AircraftMaintenanceCompany)
             //          - right for member of the current AircraftMaintenanceCompany
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Read,
                 new DirectSpecification<MaintenanceTeam>(p => p.AircraftMaintenanceCompanyId == this.currentAircraftMaintenanceCompanyId && (accessAll || p.Members.Any(m => m.UserId == userId || p.AircraftMaintenanceCompany.Members.Any(m => m.UserId == userId)))));
 
             // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Update,
                 new DirectSpecification<MaintenanceTeam>(p => p.Id == currentMaintenanceTeamyId));
         }

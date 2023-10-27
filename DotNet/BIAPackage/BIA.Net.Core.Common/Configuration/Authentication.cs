@@ -2,10 +2,10 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// The authentication configuration.
     /// </summary>

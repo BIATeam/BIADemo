@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
+﻿// <copyright file="QueryMode.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
 {
     public static class QueryMode
     {
@@ -20,6 +23,6 @@
         /// <summary>
         /// Mode Update the view of type site.
         /// </summary>
-        public const string Delete = "Delete"; 
+        public const string Delete = "Delete";
     }
 }

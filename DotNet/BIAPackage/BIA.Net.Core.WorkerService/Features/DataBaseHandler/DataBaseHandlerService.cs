@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+﻿// <copyright file="DataBaseHandlerService.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Hosting;
+
     public class DataBaseHandlerService : IHostedService, IDisposable
     {
         private readonly List<DatabaseHandlerRepository> DatabaseHandlerRepositories;
@@ -14,12 +18,14 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             this.DatabaseHandlerRepositories = DatabaseHandlerRepositories;
         }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            foreach (var handlerRepositorie in DatabaseHandlerRepositories)
+            foreach (var handlerRepositorie in this.DatabaseHandlerRepositories)
             {
                 handlerRepositorie.Start();
             }
+
             return Task.CompletedTask;
         }
 
@@ -27,7 +33,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public async Task StopAsync(CancellationToken cancellationToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            foreach (var handlerRepositorie in DatabaseHandlerRepositories)
+            foreach (var handlerRepositorie in this.DatabaseHandlerRepositories)
             {
                 handlerRepositorie.Stop();
             }
@@ -35,7 +41,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
         public virtual void Dispose()
         {
-
         }
     }
 }

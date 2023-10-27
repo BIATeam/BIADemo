@@ -67,6 +67,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 var client = new BackgroundJobClient();
                 client.Create<ExampleTask>(x => x.Run(), new EnqueuedState());
 
+                this.logger.LogInformation("Worker is alive");
                 await Task.Delay(600000);
             }
         }

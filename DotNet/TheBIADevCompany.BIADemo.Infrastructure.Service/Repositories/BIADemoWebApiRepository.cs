@@ -6,13 +6,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
-    using Microsoft.Extensions.Caching.Distributed;
+    using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
@@ -33,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public BIADemoWebApiRepository(HttpClient httpClient, IConfiguration configuration, ILogger<WebApiRepository> logger, IDistributedCache distributedCache)
+        public BIADemoWebApiRepository(HttpClient httpClient, IConfiguration configuration, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
              : base(httpClient, logger, distributedCache)
         {
             this.baseAddress = configuration["BIADemoWebApi:baseAddress"];

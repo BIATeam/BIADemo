@@ -1,4 +1,4 @@
-// <copyright file="NotificationDto.cs" company="TheBIADevCompany">
+// <copyright file="NotificationListItemDto.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -47,7 +47,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the teams to be notified, if any.
         /// The users amongst one of these teams will be notified if
-        /// the have, for these teams, one of the given roles (NotifiedTeams.Roles)
+        /// the have, for these teams, one of the given roles (NotifiedTeams.Roles).
         /// </summary>
         public ICollection<OptionDto> NotifiedTeams { get; set; }
 

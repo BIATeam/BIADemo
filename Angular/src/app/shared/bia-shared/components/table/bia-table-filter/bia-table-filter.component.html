@@ -1,12 +1,12 @@
 <span *ngIf="col.isSearchable === true" class="p-float-label">
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="18px">
+  <div class="flex flex-row justify-content-center">
+    <div class="app-field-container flex-1" style="max-width:18px;">
       <ng-container *ngIf="!isArraySimple(col)">
         <p-columnFilter [type]="['Date', 'DateTime'].includes(col.type)?'date':'text'" 
                         [field]="col.field" display="menu"></p-columnFilter>
       </ng-container>
     </div>
-    <div class="app-field-container" fxFlex="*" >
+    <div class="app-field-container flex-1" >
       <span *ngIf="isArrayFilter(col)" class="displayInline">
         <ng-container *ngFor="let filter of table.filters[col.field]; let last = last" >
           <ng-container *ngIf="filter.value !== null">

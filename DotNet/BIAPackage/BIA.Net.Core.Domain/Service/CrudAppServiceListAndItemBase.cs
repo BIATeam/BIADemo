@@ -4,16 +4,16 @@
 
 namespace BIA.Net.Core.Domain.Service
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Specification;
-    using System.Linq.Expressions;
-    using System;
 
     /// <summary>
     /// The base class for all CRUD application service.
@@ -54,7 +54,6 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetRangeAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
-
         public new virtual async Task<IEnumerable<TDtoListItem>> GetAllAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -86,20 +85,6 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetAllAsync<TDtoListItem, TMapperListItem>(orderByExpression, ascending, id: id, specification: specification, filter: filter, firstElement: firstElement, pageCount: pageCount, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
-        protected new virtual async Task<byte[]> GetCsvAsync(
-            TFilterDto filters = null,
-            TKey id = default,
-            Specification<TEntity> specification = null,
-            Expression<Func<TEntity, bool>> filter = null,
-            string accessMode = AccessMode.Read,
-            string queryMode = QueryMode.ReadList,
-            string mapperMode = null,
-            bool isReadOnlyMode = false
-            )
-        {
-            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
-        }
-
         public new virtual async Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             TKey id = default,
@@ -108,11 +93,23 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
-            bool isReadOnlyMode = false
-            )
+            bool isReadOnlyMode = false)
             where TOtherFilter : LazyLoadDto, new()
         {
             return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TOtherFilter>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
+        }
+
+        protected new virtual async Task<byte[]> GetCsvAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetCsvAsync<TDtoListItem, TMapperListItem, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
     }
 }

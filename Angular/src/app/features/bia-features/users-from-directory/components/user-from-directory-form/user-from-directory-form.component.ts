@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFromDirectory } from '../../model/user-from-directory';
 import { UserFilter } from '../../model/user-filter';
@@ -22,17 +22,17 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();
   @Output() save = new EventEmitter<UserFromDirectory[]>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
   @Input() users: UserFromDirectory[];
   @Input() domains: LdapDomain[];
   @Input() returnSizeOptions: number[] = [10, 25, 50, 100];
 
   selectedUsers: UserFromDirectory[];
   selectedDomain: string;
-  form: FormGroup;
+  form: UntypedFormGroup;
   useKeycloak = false;
 
-  constructor(public formBuilder: FormBuilder, appSettingsService: AppSettingsService) {
+  constructor(public formBuilder: UntypedFormBuilder, appSettingsService: AppSettingsService) {
     this.initForm();
     this.useKeycloak = appSettingsService.appSettings?.keycloak?.isActive;
   }
@@ -67,7 +67,7 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   reset() {
     this.selectedDomain = '';
-    this.form.reset();
+    this.form.reset({returnSize:this.returnSizeOptions[0]});
   }
 
   onSearchUsers(event: any) {

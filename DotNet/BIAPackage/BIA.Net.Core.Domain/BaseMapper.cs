@@ -22,7 +22,6 @@ namespace BIA.Net.Core.Domain
         where TDto : BaseDto<TKey>
         where TEntity : class, IEntity<TKey>
     {
-
         public UserContext UserContext { get; set; }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace BIA.Net.Core.Domain
         /// <param name="context">The context.</param>
         public virtual void DtoToEntity(TDto dto, TEntity entity, string mapperMode, IUnitOfWork context)
         {
-            DtoToEntity(dto, entity, mapperMode);
+            this.DtoToEntity(dto, entity, mapperMode);
         }
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace BIA.Net.Core.Domain
         /// <param name="mapperMode">The mode of mapping.</param>
         public virtual void DtoToEntity(TDto dto, TEntity entity, string mapperMode)
         {
-            DtoToEntity(dto, entity);
+            this.DtoToEntity(dto, entity);
         }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace BIA.Net.Core.Domain
         /// <param name="mapperMode">The mode of mapping.</param>
         public virtual Expression<Func<TEntity, TDto>> EntityToDto(string mapperMode)
         {
-            return EntityToDto();
+            return this.EntityToDto();
         }
 
         /// <summary>
@@ -78,18 +77,18 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
-        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.  
+        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.
         /// </summary>
         /// <param name="entity">The entity to update with the DTO values.</param>
         /// <param name="dto">The DTO to use.</param>
         /// <param name="mapperMode">The mode of mapping.</param>
         public virtual void MapEntityKeysInDto(TEntity entity, TDto dto, string mapperMode)
         {
-            MapEntityKeysInDto(entity, dto);
+            this.MapEntityKeysInDto(entity, dto);
         }
 
         /// <summary>
-        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.  
+        /// Map the entity essential keys after add, update and before delete to the dto return by the modifier function.
         /// </summary>
         /// <param name="entity">The entity to update with the DTO values.</param>
         /// <param name="dto">The DTO to use.</param>
@@ -105,7 +104,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>The array of includes.</returns>
         public virtual Expression<Func<TEntity, object>>[] IncludesBeforeDelete(string mapperMode)
         {
-            return IncludesBeforeDelete();
+            return this.IncludesBeforeDelete();
         }
 
         /// <summary>
@@ -123,7 +122,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>The array of includes.</returns>
         public virtual Expression<Func<TEntity, object>>[] IncludesForUpdate(string mapperMode)
         {
-            return IncludesForUpdate();
+            return this.IncludesForUpdate();
         }
 
         /// <summary>
@@ -143,7 +142,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>Func.</returns>
         public virtual Func<TDto, object[]> DtoToRecord(string mapperMode, List<string> headerNames = null)
         {
-            return DtoToRecord(headerNames);
+            return this.DtoToRecord(headerNames);
         }
 
         /// <summary>
@@ -160,35 +159,42 @@ namespace BIA.Net.Core.Domain
         {
             return "\"=\"\"" + x?.Replace("\"", "\"\"\"\"") + "\"\"\"";
         }
+
         public static string CSVList(ICollection<OptionDto> x)
         {
             return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
         }
-        
+
         public static string CSVDate(DateTime? x)
         {
             return x?.ToString("yyyy-MM-dd");
         }
+
         public static string CSVTime(DateTime? x)
         {
             return x?.ToString("hh:mm");
         }
+
         public static string CSVTime(TimeSpan? x)
         {
             return x?.ToString("hh:mm");
         }
+
         public static string CSVTime(string x)
         {
             return x;
         }
+
         public static string CSVDateTime(DateTime? x)
         {
             return x?.ToString("yyyy-MM-dd hh:mm");
         }
+
         public static string CSVBool(bool x)
         {
             return x ? "X" : string.Empty;
         }
+
         public static string CSVNumber(int x)
         {
             return x.ToString();

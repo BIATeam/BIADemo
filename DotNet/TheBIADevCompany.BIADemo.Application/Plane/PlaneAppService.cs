@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
-            this.filtersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
         }
     }
 }

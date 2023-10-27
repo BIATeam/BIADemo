@@ -1,4 +1,4 @@
-﻿// <copyright file="ICrudAppServiceBase.cs" company="BIA">
+﻿// <copyright file="ICrudAppServiceListAndItemBase.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -17,7 +17,10 @@ namespace BIA.Net.Core.Domain.Service
     /// <summary>
     /// The interface defining the CRUD methods.
     /// </summary>
-    /// <typeparam name="TDto">The DTO type.</typeparam>
+    /// <typeparam name="TDto">The DTO for simple item type.</typeparam>
+    /// <typeparam name="TListItemDto">The DTO for item in a list.</typeparam>
+    /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The primary key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
     public interface ICrudAppServiceListAndItemBase<TDto, TListItemDto, TEntity, TKey, TFilterDto> : ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
@@ -34,7 +37,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="filter">Filter Query.</param>
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<TListItemDto> Results, int Total)> GetRangeAsync(
             TFilterDto filters = null,
@@ -55,8 +59,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="filter">Filter Query.</param>
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
-        /// <returns></returns>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             int id = 0,
@@ -65,19 +70,21 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
-            bool isReadOnlyMode = false
-            );
+            bool isReadOnlyMode = false);
 
         /// <summary>
         /// Get the csv with other filter.
         /// </summary>
+        /// <typeparam name="TOtherFilter">The type for filter.</typeparam>
         /// <param name="filters">The filters.</param>
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
         /// <param name="filter">Filter Query.</param>
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             int id = 0,
@@ -86,8 +93,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Read,
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
-            bool isReadOnlyMode = false
-            )
+            bool isReadOnlyMode = false)
              where TOtherFilter : LazyLoadDto, new();
 
         /// <summary>
@@ -102,7 +108,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="includes">The list of includes.</param>
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>The list of DTO.</returns>
         Task<IEnumerable<TListItemDto>> GetAllAsync(
             int id = 0,
@@ -128,12 +135,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="firstElement">First element to take.</param>
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
-        /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
         /// <param name="queryMode">Mode of the query (optionnal).</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default)</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TListItemDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+        Task<IEnumerable<TListItemDto>> GetAllAsync(
+            Expression<Func<TEntity, TKey>> orderByExpression,
+            bool ascending,
             int id = 0,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,

@@ -99,6 +99,11 @@ namespace BIA.Net.Core.Common
             public const string LdapFromIdP = "LdapFromIdP";
 
             /// <summary>
+            /// From an LDAP group provided by Windows Identity.
+            /// </summary>
+            public const string LdapFromWinIdentity = "LdapFromWinIdentity";
+
+            /// <summary>
             /// From an LDAP group.
             /// </summary>
             public const string Ldap = "Ldap";

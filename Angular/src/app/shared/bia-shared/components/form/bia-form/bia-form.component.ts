@@ -13,7 +13,7 @@ import {
   SimpleChanges,
   TemplateRef
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
@@ -32,16 +32,16 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
   @Output() save = new EventEmitter<any>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
-  form: FormGroup;
+  form: UntypedFormGroup;
   protected sub = new Subscription();
 
   constructor(
-      public formBuilder: FormBuilder,
+      public formBuilder: UntypedFormBuilder,
       // protected authService: AuthService
     ) {
     
@@ -84,8 +84,9 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
       for (let col of this.fields) {
-        if (col.isRequired)
-        {
+        if (col.validators && col.validators.length > 0) {
+          fields[col.field] = [this.element[col.field], col.validators];
+        } else if (col.isRequired) {
           fields[col.field] = [this.element[col.field], Validators.required];
         }
         else

@@ -1,8 +1,11 @@
-﻿namespace BIA.Net.Core.Domain.Dto.User
+﻿// <copyright file="TokenDto.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
 
-    public class TokenDto<TUserDataDto> where TUserDataDto: UserDataDto
+    public class TokenDto<TUserDataDto> where TUserDataDto : UserDataDto
     {
         /// <summary>
         /// Gets or sets the login.

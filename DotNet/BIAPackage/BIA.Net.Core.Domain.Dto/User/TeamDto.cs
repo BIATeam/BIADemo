@@ -2,11 +2,11 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-using BIA.Net.Core.Domain.Dto.Base;
-using System.Collections.Generic;
-
 namespace BIA.Net.Core.Domain.Dto.User
-{ 
+{
+    using System.Collections.Generic;
+    using BIA.Net.Core.Domain.Dto.Base;
+
     /// <summary>
     /// The DTO used to manage site.
     /// </summary>

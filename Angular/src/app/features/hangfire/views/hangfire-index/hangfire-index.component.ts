@@ -13,7 +13,7 @@ import { randomReviewPlane } from '../../store/hangfire-actions';
   styleUrls: ['./hangfire-index.component.scss']
 })
 export class HangfireIndexComponent {
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   allTeams$: Observable<Team[]>;
   TeamTypeId: typeof TeamTypeId = TeamTypeId;
 

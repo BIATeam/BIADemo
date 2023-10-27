@@ -31,8 +31,6 @@ namespace BIA.Net.Core.Domain.QueryOrder
                 orderExpression = Expression.Lambda<Func<TEntity, string>>(orderExpressionCall, parameterExpression);
             }
 
-
-
             if (queryOrder.GetOrderByDescendingList.Count > 0 && queryOrder.GetOrderByList.Count > 0)
             {
                 if (ascending)

@@ -13,7 +13,7 @@
     },
     "ApiFeatures": {
       "HubForClients": {
-        // requiered only if you have several front server => you need a redis server
+        // required only if you have several front server => you need a redis server
         "RedisConnectionString": "the-bia-dev-team-redis-int.the-deploy-domain-name.bia",
         "RedisChannelPrefix": "TheBIADevCompany.BIADemo"
       }

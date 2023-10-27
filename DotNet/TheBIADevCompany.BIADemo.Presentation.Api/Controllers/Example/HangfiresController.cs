@@ -31,12 +31,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
-        /// <param name="demoTestHangfireService">The demo service.</param>
-        /// <param name="notificationAppService">The notification service.</param>
         /// <param name="principal">The principal.</param>
         public HangfiresController(
-            IBiaDemoTestHangfireService demoTestHangfireService,
-            INotificationDomainService notificationAppService,
             IPrincipal principal)
         {
             this.principal = principal as BIAClaimsPrincipal;

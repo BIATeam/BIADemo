@@ -27,7 +27,7 @@ namespace BIA.Net.Core.Common.Configuration
         public IEnumerable<string> Roles { get; set; }
 
         /// <summary>
-        /// Gets or sets if the role appear in light token
+        /// Gets or sets if the role appear in light token.
         /// </summary>
         public bool LightToken { get; set; }
     }

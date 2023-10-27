@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Domain.Dto.Base
+﻿// <copyright file="TargetedFeatureDto.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Domain.Dto.Base
 {
     public class TargetedFeatureDto
     {

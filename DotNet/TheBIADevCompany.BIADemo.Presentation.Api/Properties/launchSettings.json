@@ -2,33 +2,33 @@
   "iisSettings": {
     "windowsAuthentication": true,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/BIADemo/WebApi",
+    "iisExpress": {
+      "applicationUrl": "http://localhost:54321/BIADemo/WebApi",
       "sslPort": 0
     },
-    "iisExpress": {
-      "applicationUrl": "http://localhost:54321/",
+    "iis": {
+      "applicationUrl": "http://localhost/BIADemo/WebApi",
       "sslPort": 0
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "IIS": {
-      "commandName": "IIS",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "ancmHostingModel": "InProcess"
-    },
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "DevIISExpress"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development4iis"
+      },
+      "ancmHostingModel": "InProcess"
     },
     "Docker": {
       "commandName": "Docker",

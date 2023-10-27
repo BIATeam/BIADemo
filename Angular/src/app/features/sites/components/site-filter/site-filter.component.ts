@@ -10,7 +10,7 @@ import {
   SimpleChanges,
   OnChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
@@ -26,17 +26,16 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 })
 export class SiteFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
-  @Input() fxFlexValue: string;
   @Input() hidden = false;
   @Input() advancedFilter: SiteAdvancedFilter;
-  @Output() closeFilter = new EventEmitter();
+  @Output() closeFilter = new EventEmitter<void>();
   @Output() searchUsers = new EventEmitter<string>();
   @Output() filter = new EventEmitter<SiteAdvancedFilter>();
 
   userOptions$: Observable<OptionDto[]>;
-  form: FormGroup;
+  form: UntypedFormGroup;
   
-  constructor(public formBuilder: FormBuilder,
+  constructor(public formBuilder: UntypedFormBuilder,
     private viewContainerRef: ViewContainerRef,
     protected store: Store<AppState>) {
     this.initForm();

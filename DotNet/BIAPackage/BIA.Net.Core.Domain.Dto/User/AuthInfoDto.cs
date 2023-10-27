@@ -1,24 +1,24 @@
-﻿// <copyright file="AuthInfoDTO.cs" company="BIA">
+﻿// <copyright file="AuthInfoDto.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    public class AuthInfoDTO<TUserDataDto, TAdditionalInfoDto> 
-        where TUserDataDto : UserDataDto 
-        where TAdditionalInfoDto: AdditionalInfoDto
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// The authorization info contained in the JWT token.
+    /// </summary>
+    /// <typeparam name="TUserDataDto">The user data type.</typeparam>
+    /// <typeparam name="TAdditionalInfoDto">The additionnal Info type.</typeparam>
+    public class AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
+        where TUserDataDto : UserDataDto
+        where TAdditionalInfoDto : AdditionalInfoDto
     {
         /// <summary>
         /// Gets or sets the token.
         /// </summary>
         public string Token { get; set; }
-
-        /// <summary>
-        /// Gets or sets the token.
-        /// </summary>
-        public TokenDto<TUserDataDto> UncryptedToken { get; set; }
 
         /// <summary>
         /// Gets or sets the additionalInfos.

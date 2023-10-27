@@ -16,19 +16,22 @@ import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 
+const currentView = -1;
+const undefinedView = -2;
+
 @Component({
   selector: 'bia-view-list',
   templateUrl: './view-list.component.html',
   styleUrls: ['./view-list.component.scss']
 })
+
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   groupedViews: SelectItemGroup[];
   translateKeys: string[] = ['bia.views.current', 'bia.views.system', 'bia.views.default', 'bia.views.team', 'bia.views.user'];
   translations: any;
   views: View[];
-  selectedView: number;
+  selectedView: number = undefinedView; 
   defaultView: number;
-  currentView = -1;
   urlView: number | null = null;
   private sub = new Subscription();
   @Input() tableStateKey: string;
@@ -56,6 +59,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.sub.add(
       combineLatest([dataLoaded$, allView$, lastViewChanged$]).pipe(skip(1)).subscribe(([dataLoaded, views, view]) => {
         if (dataLoaded === true && views && view) {
+          if(this.views === undefined || this.views.length != views.length) {
+            // the list of view change, so we reset the view selection.
+            this.selectedView = undefinedView;
+          }
           this.views = views;
           if (view && view.id > 0) {
             this.selectedView = view.id;
@@ -134,7 +141,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         return correspondingView.id
       }
     }
-    return this.currentView;
+    return currentView;
   }
 
   private areViewsEgals(view1: BiaTableState, view2: BiaTableState)
@@ -322,7 +329,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
     this.defaultView = defaultView;
 
-    this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: this.currentView });
+    this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: currentView });
     
   }
   protected initViewByQueryParam(views: View[]) {
@@ -342,37 +349,34 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
   isFirstEmitDone = false;
   private updateFilterValues(preference: string | null, manualChange:boolean) {
-    setTimeout(() => {
-      if (!manualChange) this.initViewByQueryParam(this.views);
-      if (preference && !this.urlView) {
-        const correspondingViewId = this.GetCorrespondingViewId(preference);
-        if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId)
-        {
-          this.selectedView = correspondingViewId;
-          this.isFirstEmitDone = true;
-          this.viewChange.emit(preference);
-        }
-      } else {
-        if (this.selectedView == undefined)
-        {
-          this.selectedView =
-          this.selectedView !== 0 && this.views.some((x) => x.id === this.selectedView) === true
-            ? this.selectedView
-            : this.defaultView;
-        }
-        if (this.selectedView !== 0) {
-          const view = this.views.find((v) => v.id === this.selectedView);
-          if (view) {
-            //this.saveViewState(view.preference);
+    //setTimeout(() => {
+        if (!manualChange) this.initViewByQueryParam(this.views);
+        if (preference && !this.urlView) {
+          const correspondingViewId = this.GetCorrespondingViewId(preference);
+          if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId)
+          {
+            this.selectedView = correspondingViewId;
             this.isFirstEmitDone = true;
-            this.viewChange.emit(view.preference);
+            setTimeout(() => {this.viewChange.emit(preference);});
           }
         } else {
-          this.isFirstEmitDone = true;
-          this.viewChange.emit(JSON.stringify(this.defaultViewPref));
+          if (this.selectedView == undefinedView )
+          {
+            this.selectedView = this.defaultView;
+          }
+          if (this.selectedView !== 0) {
+            const view = this.views.find((v) => v.id === this.selectedView);
+            if (view) {
+              //this.saveViewState(view.preference);
+              this.isFirstEmitDone = true;
+              setTimeout(() => {this.viewChange.emit(view.preference);});
+            }
+          } else {
+            this.isFirstEmitDone = true;
+            setTimeout(() => {this.viewChange.emit(JSON.stringify(this.defaultViewPref));});
+          }
         }
-      }
-    });
+    //});
   }
 /*
   private saveViewState(stateString: string) {

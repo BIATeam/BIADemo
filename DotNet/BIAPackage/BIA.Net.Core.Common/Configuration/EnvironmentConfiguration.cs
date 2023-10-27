@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// <copyright file="EnvironmentConfiguration.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
 namespace BIA.Net.Core.Common.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public class EnvironmentConfiguration
     {
         /// <summary>

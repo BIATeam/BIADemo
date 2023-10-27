@@ -1,6 +1,6 @@
 {
-  "name": "eTimer",
-  "short_name": "eTimer",
+  "name": "BIADemo",
+  "short_name": "BIADemo",
   "theme_color": "#072948",
   "background_color": "#ffffff",
   "display": "standalone",

@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
+  // EventEmitter,
   Input,
   OnDestroy,
   OnInit,
-  Output,
+  // Output,
 } from '@angular/core';
 import { FilterMetadata } from 'primeng/api';
 import { Table } from 'primeng/table';
@@ -24,8 +24,8 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   @Input() col: BiaFieldConfig;
   @Input() table: Table;
 
-  @Output() valueChange = new EventEmitter();
-  @Output() complexInput = new EventEmitter<boolean>();
+  // @Output() valueChange = new EventEmitter<void>();
+  // @Output() complexInput = new EventEmitter<boolean>();
 
   protected sub = new Subscription();
   
@@ -64,7 +64,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   {
     if (this.table)
     {
-      if (this.table.filters && this.table.filters[col.field] && 'value' in this.table.filters[col.field])
+      if (this.table.filters && (this.table.filters[col.field] as FilterMetadata) && 'value' in (this.table.filters[col.field] as FilterMetadata))
       {
         return (this.table.filters[col.field] as FilterMetadata)['value'] != undefined
       }

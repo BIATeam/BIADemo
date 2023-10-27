@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, SimpleChanges, Input, OnInit, TemplateRef, AfterContentInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -19,17 +19,20 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   @Input() dictOptionDtos: DictOptionDto[];
 
   public formId: string;
-  public form: FormGroup;
+  public form: UntypedFormGroup;
   public element: any = {};
   public hasChanged = false;
   protected currentRow: HTMLElement;
+  protected currentInput: HTMLElement;
   protected sub = new Subscription();
   protected isInComplexInput = false;
+  public footerRowData: any;
+  public editFooter: boolean = false;
 
   specificInputTemplate: TemplateRef<any>;
-  
+
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService
@@ -39,14 +42,14 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
 
   ngAfterContentInit() {
     this.templates.forEach((item) => {
-        switch(item.getType()) {
-          case 'specificInput':
-            this.specificInputTemplate = item.template;
+      switch (item.getType()) {
+        case 'specificInput':
+          this.specificInputTemplate = item.template;
           break;
-          case 'specificOutput':
-            this.specificOutputTemplate = item.template;
+        case 'specificOutput':
+          this.specificOutputTemplate = item.template;
           break;
-        }
+      }
     });
   }
 
@@ -64,14 +67,14 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
     super.onElementsChange(changes);
     if (changes.elements && this.table) {
       //if (this.elements && this.canAdd === true) {
-        this.addFooterEmptyObject();
+      this.addFooterEmptyObject();
       //}
     }
   }
 
   public addFooterEmptyObject() {
-    if (this.elements && this.canAdd === true && this.elements.filter(el => el.id === 0).length === 0) {
-      this.elements = [...this.elements, { id: 0 }];
+    if (this.canAdd === true) {
+      this.footerRowData = { id: 0 };
     }
   }
 
@@ -88,7 +91,13 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   }
 
   public initEditableRow(rowData: any) {
-    if (this.canEdit === true && (!rowData || (rowData && this.table.editingRowKeys[rowData.id] !== true))) {
+    if (this.canEdit === true && (!rowData || (rowData &&
+      (
+        (rowData.id !== 0 && this.table.editingRowKeys[rowData.id] !== true)
+        ||
+        (rowData.id === 0 && this.editFooter !== true))
+    )
+    )) {
       if (this.hasChanged === true) {
         if (this.form.valid) {
           this.onSave();
@@ -106,7 +115,13 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   public initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;
-      this.table.initRowEdit(rowData);
+      if (rowData.id === 0) {
+        this.editFooter = true;
+      }
+      else {
+        this.editFooter = false;
+        this.table.initRowEdit(rowData);
+      }
       this.form.reset();
       this.form.patchValue({ ...rowData });
     }
@@ -130,27 +145,36 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   }
 
   public onFocusout() {
-    setTimeout(() => {
-      if (this.isInComplexInput !== true &&
-        this.getParentComponent(document.activeElement, 'bia-calc-form') === null /*&&
+    // stop the onFocusout after this code this.currentRow?.focus();
+    // because it is launched by the onfocusout of the tr
+    if (this.isInComplexInput === false) {
+      setTimeout(() => {
+        if (this.isInComplexInput !== true &&
+          this.getParentComponent(document.activeElement, 'bia-calc-form') === null /*&&
         this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
-      ) {
-        this.initEditableRow(null);
-      }
-    }, 200);
+        ) {
+          this.initEditableRow(null);
+        }
+      }, 200);
+    }
   }
 
-  public onComplexInput(isIn : boolean)
-  {
+  public onComplexInput(isIn: boolean) {
     if (isIn) {
       this.isInComplexInput = true;
-      this.currentRow = this.getParentComponent(document.activeElement, 'p-selectable-row') as HTMLElement;
+      this.currentRow = this.getParentComponent(document.activeElement, 'bia-selectable-row') as HTMLElement;
+      if (this.editFooter === true) {
+        this.currentInput = this.currentRow?.querySelectorAll('.bia-simple-input')[0] as HTMLElement;
+      }
     }
-    else
-    {
+    else {
+      if (this.editFooter === true) {
+        this.currentInput?.focus();
+      } else {
+        this.currentRow?.focus();
+      }
+
       this.isInComplexInput = false;
-      this.currentRow?.focus();
-      this.onFocusout();
     }
   }
 

@@ -1,5 +1,5 @@
-<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
-  <div fxFlex="100">
+<div>
+  <div>
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !useCalcMode"
@@ -23,6 +23,7 @@
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+      [hasColumnFilter]="hasColumnFilter"
     ></bia-table-controller>
     <bia-table
       *ngIf="!useCalcMode"

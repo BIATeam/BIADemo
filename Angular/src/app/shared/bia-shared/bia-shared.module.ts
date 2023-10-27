@@ -4,12 +4,12 @@ import { CommonModule } from '@angular/common';
 import { PortalModule } from '@angular/cdk/portal';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
 // import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
@@ -126,6 +126,7 @@ import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia
 const PRIMENG_MODULES = [
 //  AccordionModule,
   AutoCompleteModule,
+  BadgeModule,
   BreadcrumbModule,
   ButtonModule,
   CalendarModule,
@@ -179,7 +180,6 @@ const MODULES = [
   TranslateModule,
   FormsModule,
   ReactiveFormsModule,
-  FlexLayoutModule,
   HttpClientModule,
   TeamModule,
 ];

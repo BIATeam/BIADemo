@@ -41,7 +41,7 @@ namespace BIA.Net.Core.Common.Configuration
         public DateTime IssuedAt => DateTime.UtcNow;
 
         /// <summary>
-        /// "jti" (JWT ID) Claim (default ID is a GUID)
+        /// "jti" (JWT ID) Claim (default ID is a GUID).
         /// </summary>
         public Func<Task<string>> JtiGenerator =>
           () => Task.FromResult(Guid.NewGuid().ToString());
@@ -67,7 +67,5 @@ namespace BIA.Net.Core.Common.Configuration
         /// The time the token will be valid.
         /// </summary>
         public int ValidTime { get; set; }
-
-
     }
 }

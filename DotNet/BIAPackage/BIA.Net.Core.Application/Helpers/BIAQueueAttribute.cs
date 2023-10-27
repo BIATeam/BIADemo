@@ -1,12 +1,15 @@
-﻿using Hangfire.Common;
-using Hangfire.States;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// <copyright file="BIAQueueAttribute.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
 
 namespace BIA.Net.Core.Application.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using Hangfire.Common;
+    using Hangfire.States;
     //public sealed class BIAQueueAttribute : JobFilterAttribute, IElectStateFilter
     //{
     //    /// <summary>

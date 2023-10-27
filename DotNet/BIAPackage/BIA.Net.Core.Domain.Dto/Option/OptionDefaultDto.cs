@@ -1,4 +1,4 @@
-﻿// <copyright file="OptionDto.cs" company="BIA">
+﻿// <copyright file="OptionDefaultDto.cs" company="BIA">
 //     BIA. All rights reserved.
 // </copyright>
 

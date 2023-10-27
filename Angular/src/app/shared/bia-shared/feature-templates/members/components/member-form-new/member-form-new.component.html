@@ -1,8 +1,8 @@
-<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
+  <div class="flex flex-row justify-content-center">
+    <div class="app-field-container flex-1" style="max-width:90%;">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-multiSelect
               defaultLabel="&nbsp;"
@@ -17,15 +17,15 @@
             <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
           </span>
         </div>
-        <div class="app-field-container" fxFlex="10" *ngIf="canAddFromDirectory">
+        <div class="app-field-container flex-1" style="max-width:10%;" *ngIf="canAddFromDirectory">
           <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-sm p-button-rounded p-button-text align-right"
             (click)="addUserFromDirectory()"></button>
         </div>
       </div>
     </div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center">
-    <div class="app-field-container" fxFlex="90">
+  <div class="flex flex-row justify-content-center">
+    <div class="app-field-container flex-1" style="max-width:90%;">
       <label>{{ 'member.roles' | translate }}:</label>
       <p-listbox
         [options]="roleOptions"
@@ -39,7 +39,7 @@
       </p-listbox>
     </div>
   </div>
-  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+  <div class="flex flex-row gap-1 justify-content-end" >
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button
       pButton

@@ -32,7 +32,6 @@ namespace BIA.Net.Core.Common.Helpers
                 {
                     using (var response = await httpClient.GetAsync(CreateUrl(url, urlParameters)))
                     {
-
                         string apiResponse = await response.Content.ReadAsStringAsync();
                         return apiResponse;
                     }
@@ -43,6 +42,7 @@ namespace BIA.Net.Core.Common.Helpers
                 throw new Exception("Can't join url : " + url, ex);
             }
         }
+
         /// <summary>
         /// Call an API with GET verb.
         /// </summary>
@@ -61,7 +61,6 @@ namespace BIA.Net.Core.Common.Helpers
                 }
             }
         }
-
 
         /// <summary>
         /// Call an API with POST verb.

@@ -1,11 +1,11 @@
-<div class="header" fxLayout="row" fxLayoutAlign="space-between">
-  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+<div class="header flex flex-row justify-content-between align-content-between" >
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <ng-container *ngIf="showBtnFilter">
       <button
         type="button"
         icon="pi pi-filter"
         class="p-button-outlined flat"
-        *ngIf="showFilter === false && haveFilter === false"
+        *ngIf="showFilter === false && hasFilter === false"
         pButton
         (click)="toggleFilter()"
         pTooltip="{{ 'msg.showFilters' | translate }}"
@@ -13,8 +13,9 @@
       <button
         type="button"
         icon="pi pi-filter"
-        *ngIf="showFilter === false && haveFilter === true"
+        *ngIf="showFilter === false && hasFilter === true"
         pButton
+        pBadge severity="warning" style="overflow: visible"
         (click)="toggleFilter()"
         pTooltip="{{ 'msg.showFilters' | translate }}"
       ></button>
@@ -28,11 +29,11 @@
     ></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
-  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <h1>{{ headerTitle }}</h1>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
-  <div fxLayout="row" fxLayoutGap="8px" fxLayoutAlign="stretch center">
+  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
     <button
       pButton
       class="p-button-outlined"

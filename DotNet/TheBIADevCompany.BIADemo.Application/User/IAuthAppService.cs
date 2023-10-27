@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.User;
 
@@ -18,6 +17,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <returns>AuthInfo.</returns>
-        Task<AuthInfoDTO<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
+        Task<AuthInfoDto<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
     }
 }

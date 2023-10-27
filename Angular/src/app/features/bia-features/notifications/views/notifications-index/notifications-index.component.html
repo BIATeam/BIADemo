@@ -1,5 +1,5 @@
-<div fxLayout fxLayout.xs="column" fxLayoutWrap="wrap">
-  <div fxFlex="100">
+<div>
+  <div>
     <bia-table-header
       [headerTitle]="'notification.listOf' | translate"
       [canAdd]="canAdd"
@@ -21,6 +21,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
+      [hasColumnFilter]="hasColumnFilter"
     ></bia-table-controller>
     <bia-table
       [elements]="notifications$ | async"

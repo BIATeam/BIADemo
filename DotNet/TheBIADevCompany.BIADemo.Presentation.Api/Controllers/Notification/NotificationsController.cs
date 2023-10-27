@@ -1,7 +1,7 @@
 // <copyright file="NotificationsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInNotification
+// #define UseHubForClientInNotification
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 {
@@ -18,8 +18,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using BIA.Net.Core.Domain.Dto.Notification;
 #if UseHubForClientInNotification
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
 #endif
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -54,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
 #if UseHubForClientInNotification
         public NotificationsController(INotificationDomainService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
 #else
-        public NotificationsController(INotificationAppService notificationService)
+        public NotificationsController(INotificationDomainService notificationService, IPrincipal principal)
 #endif
         {
 #if UseHubForClientInNotification
@@ -267,7 +267,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids == null || ids?.Any() != true)
+            if (ids?.Any() != true)
             {
                 return this.BadRequest();
             }

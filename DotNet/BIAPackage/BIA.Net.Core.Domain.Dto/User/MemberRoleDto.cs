@@ -2,7 +2,6 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-
 namespace BIA.Net.Core.Domain.Dto.User
 {
     using BIA.Net.Core.Domain.Dto.Base;

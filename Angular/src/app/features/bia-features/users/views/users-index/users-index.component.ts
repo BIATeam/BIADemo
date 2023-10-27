@@ -30,6 +30,7 @@ export class UsersIndexComponent extends CrudItemsIndexComponent<User> implement
     protected appSettingsService: AppSettingsService
   ) {
     super(injector, userService);
+    this.useRefreshAtLanguageChange = true;
     this.crudConfiguration = UserCRUDConfiguration;
   }
 

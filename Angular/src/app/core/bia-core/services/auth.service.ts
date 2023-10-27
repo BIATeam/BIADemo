@@ -113,6 +113,20 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return <Token>{};
   }
 
+  public DecodeToken(token: string): Token {
+    const jsonDecodedToken: string = atob(token.split('.')[1]);
+    const objDecodedToken: any = JSON.parse(jsonDecodedToken);
+
+    const decodedToken = <Token>{
+      id: +objDecodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid"],
+      login: objDecodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+      userData: JSON.parse(objDecodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/userdata"]),
+      permissions: objDecodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+    };
+
+    return decodedToken;
+  }
+
   public getAdditionalInfos(): AdditionalInfos {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
@@ -128,10 +142,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       const loginParam: LoginParamDto = <LoginParamDto>JSON.parse(value);
       loginParam.currentTeamLogins.forEach(tl => { tl.teamId = +tl.teamId; tl.currentRoleIds = tl.currentRoleIds.map(roleId => +roleId) })
       loginParam.teamsConfig = allEnvironments.teams;
+      loginParam.lightToken = false;
+      loginParam.fineGrainedPermission = true;
+      loginParam.additionalInfos = true;
       return loginParam;
     }
 
-    return { currentTeamLogins: [], lightToken: false, teamsConfig: allEnvironments.teams };
+    return { currentTeamLogins: [], lightToken: false, fineGrainedPermission: true, additionalInfos: true, teamsConfig: allEnvironments.teams };
   }
 
   public setLoginParameters(loginParam: LoginParamDto) {
@@ -256,6 +273,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   protected getAuthInfo() {
     return this.http.post<AuthInfo>(`${this.route}LoginAndTeams`, this.getLoginParameters()).pipe(
       map((authInfo: AuthInfo) => {
+        if (authInfo) {
+          authInfo.uncryptedToken = this.DecodeToken(authInfo.token);
+        }
         this.shouldRefreshToken = false;
         this.authInfoSubject.next(authInfo);
         if (BiaOnlineOfflineService.isModeEnabled === true) {
@@ -290,6 +310,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     loginParam.lightToken = true;
     return this.http.post<AuthInfo>(`${this.route}LoginAndTeams`, loginParam).pipe(
       map((authInfo: AuthInfo) => {
+        if (authInfo) {
+          authInfo.uncryptedToken = this.DecodeToken(authInfo.token);
+        }
         return authInfo;
       }),
       catchError((err) => {

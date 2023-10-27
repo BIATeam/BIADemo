@@ -1,5 +1,5 @@
 import { Component, OnChanges } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -15,7 +15,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTableComponent implements OnChanges {
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
     public biaMessageService: BiaMessageService,
     public translateService: TranslateService
@@ -29,12 +29,11 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
   protected formFields() {
       let fields : {[key:string]: any} = {id: [this.element.id]};
       for (let col of this.configuration.columns) {
-        if (col.isRequired)
-        {
+        if (col.validators && col.validators.length > 0) {
+          fields[col.field] = [this.element[col.field as keyof CrudItem], col.validators];
+        } else if (col.isRequired) {
           fields[col.field] = [this.element[col.field as keyof CrudItem], Validators.required];
-        }
-        else
-        {
+        } else {
           fields[col.field] = [this.element[col.field as keyof CrudItem]];
         }
       }
@@ -53,7 +52,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
             break;
           case PropType.ManyToMany:
             Reflect.set(crudItem, col.field, BiaOptionService.Differential(
-              Reflect.get(crudItem, col.field), 
+              Reflect.get(crudItem, col.field) as BaseDto [], 
               this.element?Reflect.get(this.element, col.field):undefined));
             break;
           case PropType.OneToMany:

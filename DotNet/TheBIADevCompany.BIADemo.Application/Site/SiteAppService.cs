@@ -39,13 +39,13 @@ namespace TheBIADevCompany.BIADemo.Application.Site
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
             int userId = (principal as BIAClaimsPrincipal).GetUserId();
 
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Read,
                 new DirectSpecification<Site>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
 
-            this.filtersContext.Add(
+            this.FiltersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<Site>(p => accessAll || p.Id == currentId));
+                new DirectSpecification<Site>(p => p.Id == currentId));
         }
 
         /// <inheritdoc cref="ISiteAppService.GetRangeWithMembersAsync"/>

@@ -2,12 +2,8 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-
 namespace BIA.Net.Core.Domain
 {
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Specification;
-    using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -15,13 +11,15 @@ namespace BIA.Net.Core.Domain
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Text.Json;
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Specification;
+    using Microsoft.EntityFrameworkCore;
 
     /// <summary>
     /// The helpers for specifications.
     /// </summary>
     public static class SpecificationHelper
     {
-
         /// <summary>
         /// Add the specifications of the lazy load.
         /// </summary>
@@ -55,14 +53,14 @@ namespace BIA.Net.Core.Domain
                     {
                         AddSpecByValue<TEntity, TKey>(ref ruleSpecification, whereClauses, ref globalFilterSpecification, key, value);
                     }
+
                     specification &= ruleSpecification;
                 }
-                else
+                else if (json.ValueKind == System.Text.Json.JsonValueKind.Object)
                 {
                     var value = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
                     AddSpecByValue<TEntity, TKey>(ref specification, whereClauses, ref globalFilterSpecification, key, value);
                 }
-
             }
 
             if (globalFilterSpecification != null)
@@ -90,6 +88,7 @@ namespace BIA.Net.Core.Domain
                 {
                     return;
                 }
+
                 LambdaExpression expression = whereClauses[matchKey];
                 if (expression == null)
                 {
@@ -172,9 +171,8 @@ namespace BIA.Net.Core.Domain
                 case "dateisnot":
                 case "datebefore":
                 case "dateafter":
-                    try 
+                    try
                     {
-                        //object valueFormated = AsType(value, expressionBody.Type);
                         object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
                         switch (criteria.ToLower())
                         {
@@ -215,10 +213,11 @@ namespace BIA.Net.Core.Domain
                                 throw new ArgumentOutOfRangeException(nameof(criteria), criteria, null);
                         }
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         return new FalseSpecification<TEntity>().SatisfiedBy();
                     }
+
                     break;
 
                 case "contains":

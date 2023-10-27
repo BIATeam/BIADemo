@@ -1,26 +1,26 @@
-<form (submit)="onSubmit()" fxLayout="column" [formGroup]="form">
-  <div fxLayout="row" fxLayoutAlign="center" fxFlex="100">
-    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
+<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
+  <div class="flex flex-row justify-content-center flex-1"  style="max-width:100%;">
+    <div class="flex flex-column flex-1" style="max-width:50%;">
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabView>
           <p-tabPanel header="{{ 'translation.defaultLanguage' | translate }}">
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
+            <div class="flex flex-row justify-content-center">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
                   <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
                 </span>
               </div>
             </div>
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
+            <div class="flex flex-row justify-content-center">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
                   <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
                 </span>
               </div>
             </div>
-            <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+            <div class="flex flex-row gap-1 justify-content-end" >
               <button pButton type="button" label="{{ 'bia.translation.addAll' | translate }}" (click)="addAllTranslation()" [disabled]="!missingTranslation"></button>
             </div>
           </p-tabPanel>
@@ -28,16 +28,16 @@
             <p-tabPanel [header]="labelTranslation(item.value.languageId)">
               <div [formGroupName]="i">
                 <input formControlName="languageId" type="hidden" />
-                <div fxLayout="row" fxLayoutAlign="center">
-                  <div class="app-field-container" fxFlex="90">
+                <div class="flex flex-row justify-content-center">
+                  <div class="app-field-container flex-1" style="max-width:90%;">
                     <span class="p-float-label">
                       <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%" (change)="changeTranslation(i)"/>
                       <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
                     </span>
                   </div>
                 </div>
-                <div fxLayout="row" fxLayoutAlign="center">
-                  <div class="app-field-container" fxFlex="90">
+                <div class="flex flex-row justify-content-center">
+                  <div class="app-field-container flex-1" style="max-width:90%;">
                     <span class="p-float-label">
                       <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%" (change)="changeTranslation(i)"/>
                       <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
@@ -45,7 +45,7 @@
                   </div>
                 </div>
               </div>
-              <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+              <div class="flex flex-row gap-1 justify-content-end" >
                 <button pButton type="button" label="{{ 'bia.translation.delete' | translate }}" (click)="removeTranslation(i)"></button>
               </div>
             </p-tabPanel>
@@ -54,8 +54,8 @@
             <ng-template pTemplate = "header">
               <i class="pi pi-plus"></i>
             </ng-template>
-            <div fxLayout="row" fxLayoutAlign="center">
-              <div class="app-field-container" fxFlex="90">
+            <div class="flex flex-row justify-content-center">
+              <div class="app-field-container flex-1" style="max-width:90%;">
                 <span class="p-float-label">
                   <p-dropdown
                       [options]="missingLanguageOptions"
@@ -72,7 +72,7 @@
               </div>
             </div>
 
-            <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+            <div class="flex flex-row gap-1 justify-content-end" >
               <button class="ui-button-secondary" pButton type="button" label="{{ 'bia.translation.add' | translate }}" (click)="addTranslation()" [disabled]="!selectionLanguage"></button>
             </div>
             
@@ -80,8 +80,8 @@
         </p-tabView>
       </p-fieldset>
 
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
               [options]="notificationTypeOptions"
@@ -96,13 +96,13 @@
           </span>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <p-checkbox binary="true" formControlName="read" label="{{ 'notification.read' | translate }}"></p-checkbox>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-calendar
               biaLocale
@@ -117,9 +117,9 @@
         </div>
       </div>
     </div>
-    <div fxLayout="column" fxLayoutAlign="top" fxFlex="50">
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div fxFlex="100">
+    <div class="flex flex-column flex-1" style="max-width:50%;">
+      <div class="flex flex-row justify-content-center">
+        <div class="flex-1" style="max-width:100%;">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
             <p-table [value]="notifiedTeams.controls" [responsive]="true" styleClass="p-datatable-striped">
               <ng-template pTemplate="header">
@@ -173,8 +173,8 @@
           </p-fieldset>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-dropdown
               [options]="userOptions"
@@ -189,8 +189,8 @@
           </span>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div class="app-field-container" fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="app-field-container flex-1" style="max-width:90%;">
           <span class="p-float-label">
             <p-multiSelect
               defaultLabel="&nbsp;"
@@ -205,8 +205,8 @@
           </span>
         </div>
       </div>
-      <div fxLayout="row" fxLayoutAlign="center">
-        <div fxFlex="90">
+      <div class="flex flex-row justify-content-center">
+        <div class="flex-1" style="max-width:90%;">
           <!-- <span class="p-float-label">
             <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
             </textarea>
@@ -221,7 +221,7 @@
     </div>
   </div>
 
-  <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+  <div class="flex flex-row gap-1 justify-content-end" >
     <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
     <button
       pButton

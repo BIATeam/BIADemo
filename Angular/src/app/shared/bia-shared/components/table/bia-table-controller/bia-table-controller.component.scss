@@ -1,13 +1,12 @@
 :host {
-  display: flex;
-  flex-direction: column;
+  display: inline-block;
+  position: relative;
+  left: -35px;
+  width: calc(100% + 70px);
   padding-left: 35px;
   padding-right: 35px;
   padding-top: 8px;
   padding-bottom: 17px;
-  margin-bottom: 0px;
-  margin-left: -35px;
-  margin-right: -35px;
 }
 
 :host ::ng-deep {
@@ -27,12 +26,19 @@
 .bia-table-controller-container {
   padding-top: 10px;
   padding-right: 20px;
-  white-space: nowrap
+  display:flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
-.bia-table-controller-container.bia-table-controller-container-last {
-  padding-right: 0px;
+.bia-column-filter-icon {
+  margin-top: 5px;
 }
 
+.bia-table-controller-container > div {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 
 .bia-table-controller-container .p-float-label{
   margin-top: -10px;

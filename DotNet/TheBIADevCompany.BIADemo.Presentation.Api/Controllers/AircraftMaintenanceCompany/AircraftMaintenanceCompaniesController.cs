@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     /// <summary>
     /// The API controller used to manage AircraftMaintenanceCompanies.
     /// </summary>
- #if !UseHubForClientInAircraftMaintenanceCompany
+#if !UseHubForClientInAircraftMaintenanceCompany
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1481:Unused local variables should be removed", Justification = "UseHubForClientInAircraftMaintenanceCompany not set")]
 #endif
     public class AircraftMaintenanceCompaniesController : BiaControllerBase
@@ -238,7 +238,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.Delete)]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
-            if (ids == null || ids?.Any() != true)
+            if (ids?.Any() != true)
             {
                 return this.BadRequest();
             }

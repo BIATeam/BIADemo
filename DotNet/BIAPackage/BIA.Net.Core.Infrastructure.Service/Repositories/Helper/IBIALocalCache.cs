@@ -1,15 +1,17 @@
-﻿// <copyright file="BIALocalCache.cs" company="BIA.Net">
+﻿// <copyright file="IBiaLocalCache.cs" company="BIA.Net">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-using System.Threading.Tasks;
-
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
-    public interface IBIALocalCache
+    using System.Threading.Tasks;
+
+    public interface IBiaLocalCache
     {
-        Task Add(string key, object item, double cacheDurationInMinute);
+        Task Add<T>(string key, T item, double cacheDurationInMinute);
+
         Task<T> Get<T>(string key);
+
         Task Remove(string key);
     }
 }

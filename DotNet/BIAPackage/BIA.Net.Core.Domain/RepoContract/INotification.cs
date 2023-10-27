@@ -4,9 +4,9 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
-    using BIA.Net.Core.Domain.Dto.Notification;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Notification;
 
     /// <summary>
     /// The interface base for INotificationRepository.
@@ -24,6 +24,5 @@ namespace BIA.Net.Core.Domain.RepoContract
         Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null);
 
         Task CreateNotification(NotificationDto notification);
-
     }
 }

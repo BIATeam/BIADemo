@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Presentation.Api.Features
+﻿// <copyright file="ApiFeaturesExtensions.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -82,7 +85,8 @@
                     }
                     else
                     {
-                        services.AddSignalR().AddRedis(apiFeatures.HubForClients.RedisConnectionString,
+                        services.AddSignalR().AddRedis(
+                            apiFeatures.HubForClients.RedisConnectionString,
                         redisOptions =>
                         {
                             redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
@@ -139,8 +143,8 @@
             return services;
         }
 
-
-        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>([NotNull] this IApplicationBuilder app,
+        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>(
+            [NotNull] this IApplicationBuilder app,
             ApiFeatures apiFeatures, HangfireDashboardAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
         {
             app.UseEndpoints(endpoints =>
@@ -152,7 +156,6 @@
                 }
             });
 
-
             if (apiFeatures?.Swagger?.IsActive == true)
             {
                 app.UseStaticFiles();
@@ -161,8 +164,8 @@
                 {
                     c.SwaggerEndpoint("BIAApi/swagger.json", "v1.0");
                     c.InjectJavascript("./jquery.min.js");
-                    c.InjectJavascript("./AutoLogin.js");
-                    c.InjectStylesheet("./AutoLogin.css");
+                    c.InjectJavascript("./AutoLoginV3.8.0.js");
+                    c.InjectStylesheet("./AutoLoginV3.8.0.css");
                 });
             }
 

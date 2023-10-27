@@ -32,8 +32,16 @@ namespace BIA.Net.Core.Domain.Specification
         /// <returns>New specification.</returns>
         public static Specification<TEntity> operator &(Specification<TEntity> leftSideSpecification, Specification<TEntity> rightSideSpecification)
         {
-            if (leftSideSpecification == null) return rightSideSpecification;
-            if (rightSideSpecification == null) return leftSideSpecification;
+            if (leftSideSpecification == null)
+            {
+                return rightSideSpecification;
+            }
+
+            if (rightSideSpecification == null)
+            {
+                return leftSideSpecification;
+            }
+
             return new AndSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
 

@@ -23,37 +23,37 @@ namespace BIA.Net.Core.Test
         where TMockEF : class, IMockEntityFramework<TDbContext, TDbContextReadOnly>
     {
         /// <summary>
-        /// Shall we initialize the database with some default values?
-        /// </summary>
-        protected readonly bool isInitDB;
-
-        /// <summary>
-        /// The collection of services used for dependency injection.
-        /// 
-        /// Note: Call <see cref="RefreshContext"/> when all modifications have been done, otherwise your modifications will not be taken into account.
-        /// </summary>
-        protected IServiceCollection servicesCollection;
-
-        /// <summary>
-        /// The principal builder (used to mock authentication related data).
-        /// </summary>
-        protected PrincipalMockBuilder principalBuilder;
-
-        /// <summary>
         /// The service provider.
         /// Used to manage dependency injection of services, controllers, etc.
         /// </summary>
         private ServiceProvider serviceProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAAbstractUnitTest{TMockEF, TDbContext}"/> class.
+        /// Initializes a new instance of the <see cref="BIAAbstractUnitTest{TMockEF, TDbContext, TDbContextReadOnly}"/> class.
         /// </summary>
-        /// <param name="isInitDB">Shall we initialize the database with some default values?</param>
+        /// <param name="isInitDB">Shall we initialize the database with some default values.</param>
         protected BIAAbstractUnitTest(bool isInitDB)
         {
-            this.isInitDB = isInitDB;
-            this.principalBuilder = new PrincipalMockBuilder();
+            this.IsInitDB = isInitDB;
+            this.PrincipalBuilder = new PrincipalMockBuilder();
         }
+
+        /// <summary>
+        /// Shall we initialize the database with some default values.
+        /// </summary>
+        protected bool IsInitDB { get; }
+
+        /// <summary>
+        /// The collection of services used for dependency injection.
+        ///
+        /// Note: Call <see cref="RefreshContext"/> when all modifications have been done, otherwise your modifications will not be taken into account.
+        /// </summary>
+        protected IServiceCollection ServicesCollection { get; set; }
+
+        /// <summary>
+        /// The principal builder (used to mock authentication related data).
+        /// </summary>
+        protected PrincipalMockBuilder PrincipalBuilder { get; set; }
 
         /// <summary>
         /// The database mock.
@@ -65,30 +65,30 @@ namespace BIA.Net.Core.Test
         /// Method used to reinitialize the context before each test:
         /// - Principal mock
         /// - List of services available for dependency injection
-        /// - Database context
+        /// - Database context.
         /// </summary>
         [TestInitialize]
         public void InitTestBase()
         {
-            InitServiceCollection();
-            RefreshContext();
+            this.InitServiceCollection();
+            this.RefreshContext();
         }
 
         /// <summary>
         /// Refresh the context of the test.
-        /// 
-        /// WARNING! This method shall be called when <see cref="servicesCollection"/> has been modified. 
+        ///
+        /// WARNING! This method shall be called when <see cref="ServicesCollection"/> has been modified.
         /// It will:
         /// - Inject the principal mock (used to mock authentication related data)
         /// - Reinitialize the ServiceProvider based on the configured collection of services
         /// - Reinitialize the DbContext
-        /// 
+        ///
         /// WARNING! Since it resets the DbContext, any data added in DB before calling this method will be lost.
         /// </summary>
         protected void RefreshContext()
         {
-            this.principalBuilder.BuildAndApply(this.servicesCollection);
-            this.serviceProvider = this.servicesCollection.BuildServiceProvider();
+            this.PrincipalBuilder.BuildAndApply(this.ServicesCollection);
+            this.serviceProvider = this.ServicesCollection.BuildServiceProvider();
 
             this.InitDbMock();
         }
@@ -99,9 +99,9 @@ namespace BIA.Net.Core.Test
         protected void InitDbMock()
         {
             // Initialize database mock.
-            this.DbMock = GetService<IMockEntityFramework<TDbContext, TDbContextReadOnly>>() as TMockEF;
+            this.DbMock = this.GetService<IMockEntityFramework<TDbContext, TDbContextReadOnly>>() as TMockEF;
 
-            if (this.isInitDB)
+            if (this.IsInitDB)
             {
                 this.DbMock.InitDefaultData();
             }

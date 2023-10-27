@@ -1,16 +1,16 @@
 <ng-container *ngIf="(notification$ |async) as notification">
-  <div fxLayout="column" fxLayoutWrap fxLayoutAlign="space-evenly" *ngIf="notification && notification.id">
+  <div class="flex flex-column flex-wrap justify-content-evenly"  *ngIf="notification && notification.id">
     <div><b>{{ 'notification.title' | translate }}</b><br />{{ notification.titleTranslated | translate }}</div>
     <div><b>{{ 'notification.description' | translate }}</b><br />{{ notification.descriptionTranslated | translate }}
     </div>
     <div><b>{{ 'notification.createdDate' | translate }}</b><br />{{ notification.createdDate | date:'short' }}</div>
     <div><b>{{ 'notification.type.title' | translate }}</b><br />{{ notification.type.display }}</div>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center" >
+  <div class="flex flex-row justify-content-between align-items-center align-content-center"  >
     <button pButton label="{{'notification.setUnread' | translate}}" type="button"
     class="p-button-secondary" (click)="onSetUnread(notification.id)" *ngIf="notification.read"></button>
     <span></span>
-    <div fxLayout="row" fxLayoutGap="5px" fxLayoutAlign="end end">
+    <div class="flex flex-row gap-1 justify-content-end" >
       <bia-notification-team-warning [notification]="notification"></bia-notification-team-warning>
       <button pButton [label]="notification.data?.display ?? 'notification.action' | translate" type="button"
         class="p-button-primary" (click)="onAction(notification)" *ngIf="canAction(notification)"></button>

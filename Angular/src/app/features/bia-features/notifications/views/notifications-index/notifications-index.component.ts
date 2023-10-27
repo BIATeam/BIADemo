@@ -27,6 +27,7 @@ import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views
 import { NotificationOptionsService } from '../../services/notification-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { skip } from 'rxjs/operators';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 @Component({
   selector: 'bia-notifications-index',
@@ -38,7 +39,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useView = true;
   useRefreshAtLanguageChange = true;
 
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
   private sub = new Subscription();
   showColSearch = false;
@@ -60,7 +61,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   popupTitle: string;
   tableStateKey = this.useView ? 'notificationsGrid' : undefined;
   parentIds: string[];
-
+  hasColumnFilter = false;
 
   constructor(
     private store: Store<AppState>,
@@ -72,6 +73,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     private biaTranslationService: BiaTranslationService,
     private notificationsSignalRService: NotificationsSignalRService,
     public notificationOptionsService: NotificationOptionsService,
+    private tableHelperService: TableHelperService
   ) {
   }
 
@@ -164,6 +166,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
     this.store.dispatch(FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter }));
+    this.hasColumnFilter= this.tableHelperService.hasFilter(this.notificationListComponent, true);
   }
 
   searchGlobalChanged(value: string) {
@@ -184,7 +187,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.notificationListComponent.getPrimeNgTable().columns.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.notificationListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
     };

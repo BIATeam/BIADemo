@@ -1,5 +1,5 @@
 import { HttpBackend, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { NGXLoggerServerService } from 'ngx-logger';
 import { from, Observable } from 'rxjs';
@@ -13,9 +13,10 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
   constructor(
     protected keycloakService: KeycloakService,
     protected httpBackend: HttpBackend,
-    protected appSettingsService: AppSettingsService
+    protected appSettingsService: AppSettingsService,
+    protected ngZone: NgZone
   ) {
-    super(httpBackend);
+    super(httpBackend, ngZone);
   }
 
   protected override alterHttpRequest(httpRequest: HttpRequest<any>): HttpRequest<any> | Observable<HttpRequest<any>> {

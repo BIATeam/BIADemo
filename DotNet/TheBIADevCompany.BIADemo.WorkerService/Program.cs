@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             catch (Exception ex)
             {
                 // NLog: catch setup errors
-                var logger = NLogBuilder.ConfigureNLog(LogManager.Configuration).GetCurrentClassLogger();
+                var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
                 logger.Error(ex, "Stopped program because of exception");
                 throw;
             }

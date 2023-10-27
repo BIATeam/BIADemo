@@ -4,9 +4,9 @@
 
 namespace BIA.Net.Core.Domain.Dto.Notification
 {
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using System.Collections.Generic;
 
     /// <summary>
     /// The DTO used for notification team.
@@ -29,6 +29,5 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// on the current team.
         /// </summary>
         public List<OptionDto> Roles { get; set; }
-
     }
 }

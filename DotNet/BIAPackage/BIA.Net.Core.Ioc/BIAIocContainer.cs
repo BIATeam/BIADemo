@@ -27,13 +27,13 @@ namespace BIA.Net.Core.IocContainer
         /// specific ones in BIAIocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
-            ConfigureInfrastructureServiceContainer(collection);
+            ConfigureInfrastructureServiceContainer(collection, configuration);
             ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection);
 
             if (!isUnitTest)
             {
-                ConfigureInfrastructureDataContainer(collection, configuration);
+                ConfigureInfrastructureDataContainer(collection);
                 ConfigureCommonContainer(collection, configuration);
             }
         }
@@ -54,19 +54,37 @@ namespace BIA.Net.Core.IocContainer
             collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
         }
 
-        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration)
+        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)
         {
             collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
+
             // Infrastructure Data
         }
 
-        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection)
+        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, IConfiguration configuration)
         {
+            BiaNetSection biaNetSection = null;
+
+            if (configuration != null)
+            {
+                biaNetSection = new BiaNetSection();
+                configuration.GetSection("BiaNet").Bind(biaNetSection);
+            }
+
             // Infrastructure Service
             collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
-            collection.AddTransient<IBIALocalCache, BIALocalCache>();
-            collection.AddTransient<IBIADistributedCache, BIADistributedCache>();
-            collection.AddTransient<IBIAHybridCache, BIAHybridCache>();
+            collection.AddTransient<IBiaLocalCache, BiaLocalCache>();
+
+            if (biaNetSection?.CommonFeatures?.DistributedCache?.IsActive == true)
+            {
+                collection.AddTransient<IBiaDistributedCache, BiaDistributedCache>();
+            }
+            else
+            {
+                collection.AddTransient<IBiaDistributedCache, BiaLocalCache>();
+            }
+
+            collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
         }
     }
 }

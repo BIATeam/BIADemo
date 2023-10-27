@@ -7,15 +7,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-    using System.Security.Cryptography;
-    using System.Text;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Common.Helpers;
-    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -29,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
-    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>
     /// The application service used for user.
@@ -89,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
-            this.filtersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
         /// <inheritdoc/>
@@ -104,16 +97,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
-        /// <inheritdoc cref="IUserAppService.CreateUserInfoFromLdapAsync"/>
-        public async Task<UserInfoDto> CreateUserInfoFromLdapAsync(string identityKey)
+        /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
+        public async Task<User> AddUserFromUserDirectoryAsync(string identityKey, UserFromDirectory userFromDirectory)
         {
-            // if user is not found in DB, try to synchronize from AD.
-            UserFromDirectory userAD = await this.userDirectoryHelper.ResolveUserByIdentityKey(identityKey);
-
-            if (userAD != null)
+            if (userFromDirectory != null)
             {
                 User user = new User();
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userAD);
+                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
                 if (!func(user))
@@ -124,12 +114,25 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 this.Repository.Add(user);
                 await this.Repository.UnitOfWork.CommitAsync();
 
+                return user;
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc cref="IUserAppService.CreateUserInfo"/>
+        public UserInfoDto CreateUserInfo(User user)
+        {
+            if (user != null)
+            {
                 UserInfoDto userInfo = new UserInfoDto
                 {
+                    Id = user.Id,
                     Login = user.Login,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     Country = user.Country,
+                    IsActive = user.IsActive,
                 };
                 return userInfo;
             }
@@ -160,9 +163,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.GetAllIdpUserAsync"/>
-        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int max = 10)
+        public async Task<IEnumerable<UserFromDirectoryDto>> GetAllIdpUserAsync(string filter, int first = 0, int max = 10)
         {
-            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchAsync(filter, max);
+            List<UserFromDirectory> userFromDirectories = await this.identityProviderRepository.SearchUserAsync(filter, first, max);
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
@@ -190,7 +193,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 catch (Exception ex)
                 {
                     string msg = "Error during synchronize. Retry Synchronize.";
-                    this.logger.LogError(msg, ex);
+                    this.logger.LogError(ex, msg);
                     result.Errors.Add(msg);
                 }
             }
@@ -216,7 +219,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     catch (Exception ex)
                     {
                         string msg = userFormDirectoryDto.DisplayName;
-                        this.logger.LogError(msg, ex);
+                        this.logger.LogError(ex, msg);
                         result.Errors.Add(msg);
                     }
                 }
@@ -252,7 +255,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 catch (Exception ex)
                 {
                     string msg = "Error during synchronize. Retry Synchronize.";
-                    this.logger.LogError(msg, ex);
+                    this.logger.LogError(ex, msg);
                     return msg;
                 }
 
@@ -277,13 +280,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.UpdateLastLoginDateAndActivate"/>
-        public async Task UpdateLastLoginDateAndActivate(int userId)
+        public async Task UpdateLastLoginDateAndActivate(int userId, bool activate)
         {
             if (userId > 0)
             {
                 User entity = await this.Repository.GetEntityAsync(id: userId, queryMode: "NoInclude");
                 entity.LastLoginDate = DateTime.Now;
-                entity.IsActive = true;
+                entity.IsActive = activate;
 
                 // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
@@ -296,14 +299,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="userInfo">The user information.</param>
         public void SelectDefaultLanguage(UserInfoDto userInfo)
         {
-            userInfo.Language = this.configuration.Cultures.Where(w => w.IsDefaultForCountryCodes.Any(cc => cc == userInfo.Country))
+            userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.IsDefaultForCountryCodes, cc => cc == userInfo.Country))
                 .Select(s => s.Code)
                 .FirstOrDefault();
 
             if (userInfo.Language == null)
             {
                 // Select the default culture
-                userInfo.Language = this.configuration.Cultures.Where(w => w.AcceptedCodes.Any(cc => cc == "default"))
+                userInfo.Language = this.configuration.Cultures.Where(w => Array.Exists(w.AcceptedCodes, cc => cc == "default"))
                     .Select(s => s.Code)
                     .FirstOrDefault();
             }

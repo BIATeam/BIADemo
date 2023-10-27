@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
+    using System;
     using System.Net.Http;
     using Audit.Core;
     using Audit.EntityFramework;
@@ -19,10 +20,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Application.Plane;
+
     // End BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -50,6 +53,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// specific ones in IocContainerTest.</param>
         public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
         {
+            if (configuration == null && !isUnitTest)
+            {
+                throw Exception("Configuration cannot be null");
+            }
+
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
@@ -67,6 +75,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
                 collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
             }
+        }
+
+        private static Exception Exception(string v)
+        {
+            throw new NotImplementedException();
         }
 
         private static void ConfigureApplicationContainer(IServiceCollection collection)
@@ -88,6 +101,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
+            collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
 
             // End BIADemo
         }
@@ -114,14 +128,22 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Infrastructure Data Layer
             collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
             {
-                options.UseSqlServer(connectionString);
+                if (connectionString != null)
+                {
+                    options.UseSqlServer(connectionString);
+                }
+
                 options.EnableSensitiveDataLogging();
                 options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
             collection.AddDbContext<IQueryableUnitOfWorkReadOnly, DataContextReadOnly>(
                 options =>
                 {
-                    options.UseSqlServer(connectionString);
+                    if (connectionString != null)
+                    {
+                        options.UseSqlServer(connectionString);
+                    }
+
                     options.EnableSensitiveDataLogging();
                 },
                 contextLifetime: ServiceLifetime.Transient);
@@ -145,7 +167,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+
+            // Begin BIADemo
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+
+            // End BIADemo
         }
 
         /// <summary>
@@ -153,11 +180,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
         /// <returns>HttpClientHandler object.</returns>
-        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection)
+        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler
             {
-                UseDefaultCredentials = true,
+                UseDefaultCredentials = useDefaultCredentials,
                 AllowAutoRedirect = false,
                 UseProxy = false,
             };

@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Domain
+﻿// <copyright file="VersionedTable.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Domain
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +10,6 @@
     /// </summary>
     public class VersionedTable
     {
-
         /// <summary>
         /// Gets or sets the row version.
         /// </summary>

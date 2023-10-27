@@ -24,3 +24,14 @@ table {
 .bia-table-select-col {
   width: 60px;
 }
+
+.bia-column-icon {
+  position: relative;
+  top: 2px;
+}
+
+.p-sortable-column[aria-sort="none"] {
+    p-sorticon {
+      display: none;
+  }
+}

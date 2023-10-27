@@ -35,7 +35,7 @@ import { allEnvironments } from 'src/environments/all-environments';
   `
 })
 export class LayoutComponent implements OnInit {
-  @HostBinding('class.bia-flex') flex = true;
+  @HostBinding('class') classes = 'bia-flex';
   isLoadingUserInfo = false;
 
   menus = new Array<BiaNavigation>();

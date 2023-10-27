@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
@@ -29,11 +29,12 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Input() defaultViewPref: BiaTableState;
+  @Input() hasColumnFilter = false;
 
   @Output() displayedColumnsChange = new EventEmitter<KeyValuePair[]>();
   @Output() filter = new EventEmitter<string>();
   @Output() pageSizeChange = new EventEmitter<number>();
-  @Output() toggleSearch = new EventEmitter();
+  @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
 
 
@@ -48,7 +49,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
     other: 'bia.results'
   };
   listedColumns: SelectItem[];
-  filterCtrl = new FormControl();
+  filterCtrl = new UntypedFormControl();
   globalFilter = '';
   displayedColumns: string[];
   defaultDisplayedColumns: string[];

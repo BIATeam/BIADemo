@@ -1,11 +1,11 @@
-﻿// <copyright file="IQueryCustomizer.cs" company="BIA">
+﻿// <copyright file="TQueryCustomizer.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-using System.Linq;
-
 namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
 {
+    using System.Linq;
+
     public class TQueryCustomizer<TEntity> : IQueryCustomizer<TEntity>
     {
         /// <summary>

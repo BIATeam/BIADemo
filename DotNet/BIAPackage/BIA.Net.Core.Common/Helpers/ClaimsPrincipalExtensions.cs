@@ -7,9 +7,11 @@ namespace BIA.Net.Core.Common.Helpers
     using System.Linq;
     using System.Security.Claims;
 
+    /// <summary>
+    /// Extension class to extract value form claims.
+    /// </summary>
     public static class ClaimsPrincipalExtensions
     {
-
         /// <summary>
         /// Gets the claim value.
         /// </summary>

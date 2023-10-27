@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -27,11 +27,11 @@ export class PlaneFormComponent implements OnChanges {
   @Input() planeTypeOptions: OptionDto[];
 
   @Output() save = new EventEmitter<Plane>();
-  @Output() cancel = new EventEmitter();
+  @Output() cancel = new EventEmitter<void>();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
-  constructor(public formBuilder: FormBuilder,
+  constructor(public formBuilder: UntypedFormBuilder,
     private authService: AuthService) {
     this.initForm();
   }

@@ -1,10 +1,12 @@
-﻿
+﻿// <copyright file="CommonFeatures.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
 namespace BIA.Net.Core.Common.Configuration.CommonFeature
 {
     public class CommonFeatures
     {
         /// <summary>
-        /// Gets or sets the Distributed Cache feature configuration
+        /// Gets or sets the Distributed Cache feature configuration.
         /// </summary>
         public DistributedCacheConfiguration DistributedCache { get; set; }
 

@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
@@ -53,7 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.IsActive = dto.IsActive;
             entity.LastFlightDate = dto.LastFlightDate;
             entity.DeliveryDate = dto.DeliveryDate;
-            entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime);
+            entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
             entity.Capacity = dto.Capacity;
 
             // Mapping relationship 1-* : Site
@@ -70,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id );
+                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id);
                     if (connectingAirport != null)
                     {
                         entity.ConnectingAirports.Remove(connectingAirport);
@@ -126,7 +127,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 List<object> records = new List<object>();
 
-                if (headerNames != null && headerNames?.Any() == true)
+                if (headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {

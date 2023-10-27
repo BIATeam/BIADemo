@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.Presentation.Common.Features
+﻿// <copyright file="CommonFeaturesExtensions.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Presentation.Common.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
@@ -57,18 +60,9 @@
                         config.SchemaName = "dbo";
                     });
                 }
-
-                services.AddMemoryCache();
             }
 
-            // Client for hub            
-            /*if (ClientForHubOptions.IsActive)
-            {
-                services.AddTransient<IHostedService, ClientForHubService>(provider =>
-                {
-                    return new ClientForHubService(options.ClientForHub);
-                });
-            }*/
+            services.AddMemoryCache();
 
             return services;
         }
