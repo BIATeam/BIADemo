@@ -24,7 +24,7 @@ function DeleteLine($start, $end, $file) {
   $fileRel = Resolve-Path -Path "$file" -Relative
   Write-Verbose "Delete lines $start to $end in file $fileRel" -Verbose
   (Get-Content $file) | Where-Object {
-	(($i -ne $start -1 -or $_.Trim() -ne '') -and 
+	(($i -ne $start - 1 -or $_.Trim() -ne '') -and 
     ($i -lt $start -or $i -gt $end))
     $i++
   } | set-content $file
@@ -57,37 +57,36 @@ function RemoveCodeExample {
 
 # Deletes comment // Except BIADemo 
 function RemoveCommentExceptBIADemo {
-	ReplaceProjectName -oldName "// Except BIADemo " -newName ""
+  ReplaceProjectName -oldName "// Except BIADemo " -newName ""
 }
 
 function RemoveBIADemoOnlyFiles {
-	foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
-		$file = $childFile.FullName
-		$fileRel = Resolve-Path -Path "$file" -Relative
-		$searchWord = '// BIADemo only'
-		$starts = GetLineNumber -pattern $searchWord -file $file
-		if ($starts -eq 1)
-		{
-			Write-Verbose "Remove $fileRel" -Verbose
-			Remove-Item -Force -LiteralPath $file
-		}
-	}
+  foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
+    $file = $childFile.FullName
+    $fileRel = Resolve-Path -Path "$file" -Relative
+    $searchWord = '// BIADemo only'
+    $starts = GetLineNumber -pattern $searchWord -file $file
+    if ($starts -eq 1) {
+      Write-Verbose "Remove $fileRel" -Verbose
+      Remove-Item -Force -LiteralPath $file
+    }
+  }
 }
 
 function RemoveEmptyFolder {
-    param(
-        $Path
-    )
-    foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude PublishProfiles,RepoContract) {
-        RemoveEmptyFolder $childDirectory.FullName
-    }
-    $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-    $isEmpty = $currentChildren -eq $null
-    if ($isEmpty) {
-	 	$fileRel = Resolve-Path -Path "$Path" -Relative
-        Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
-        Remove-Item -Force -LiteralPath $Path
-    }
+  param(
+    $Path
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude PublishProfiles, RepoContract) {
+    RemoveEmptyFolder $childDirectory.FullName
+  }
+  $currentChildren = Get-ChildItem -Force -LiteralPath $Path
+  $isEmpty = $currentChildren -eq $null
+  if ($isEmpty) {
+    $fileRel = Resolve-Path -Path "$Path" -Relative
+    Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
+    Remove-Item -Force -LiteralPath $Path
+  }
 }
 
 function RenameFile {
@@ -111,12 +110,12 @@ function RemoveItemFolder {
     [string]$path
   )
   if (Test-Path $path) {
-	$fileRel = Resolve-Path -Path "$path" -Relative
+    $fileRel = Resolve-Path -Path "$path" -Relative
     Write-Verbose "Delete $fileRel" -Verbose
     Remove-Item $path -Recurse -Force -Confirm:$false
   }
   else {
-	Write-Host "Error $path not found"
+    Write-Host "Error $path not found"
   }
 }
 
@@ -127,11 +126,11 @@ function ReplaceProjectName {
   )
   Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
     $file = $_.FullName
-	$oldContent = [System.IO.File]::ReadAllText($file);
+    $oldContent = [System.IO.File]::ReadAllText($file);
     $newContent = $oldContent.Replace($oldName, $newName);
     if ($oldContent -ne $newContent) {
 	  
-	  $fileRel = Resolve-Path -Path "$file" -Relative
+      $fileRel = Resolve-Path -Path "$file" -Relative
       Write-Verbose "Replace in $fileRel" -Verbose
 	  
       [System.IO.File]::WriteAllText($file, $newContent)
@@ -146,11 +145,11 @@ function ReplaceInScript {
   )
   Get-ChildItem -File -Recurse -include *.ps1 | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
     $file = $_.FullName
-	$oldContent = [System.IO.File]::ReadAllText($file);
+    $oldContent = [System.IO.File]::ReadAllText($file);
     $newContent = $oldContent.Replace($oldName, $newName);
     if ($oldContent -ne $newContent) {
 	  
-	  $fileRel = Resolve-Path -Path "$file" -Relative
+      $fileRel = Resolve-Path -Path "$file" -Relative
       Write-Verbose "Replace in $fileRel" -Verbose
 	  
       [System.IO.File]::WriteAllText($file, $newContent)
@@ -174,18 +173,17 @@ function CopyModel {
     [string]$folderpath,
     [string]$fileName
   )
-	$destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
-	If (!(Test-Path -path $destinationFolder)) {New-Item -ItemType Directory -Path $destinationFolder}
-	$destinationFile = $destinationFolder + '\' + $fileName
-	$sourceFile = '.\' + $folderpath + '\' + $fileName
-	Copy-Item -path $sourceFile -Destination $destinationFile
+  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+  $destinationFile = $destinationFolder + '\' + $fileName
+  $sourceFile = '.\' + $folderpath + '\' + $fileName
+  Copy-Item -path $sourceFile -Destination $destinationFile
 
-	$searchWord = '// BIADemo only'
-	$starts = GetLineNumber -pattern $searchWord -file $destinationFile
-	if ($starts -eq 1)
-	{
-		DeleteLine -start 1 -end 1 -file $destinationFile
-	}
+  $searchWord = '// BIADemo only'
+  $starts = GetLineNumber -pattern $searchWord -file $destinationFile
+  if ($starts -eq 1) {
+    DeleteLine -start 1 -end 1 -file $destinationFile
+  }
 }
 
 
@@ -193,6 +191,9 @@ RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
 Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
+
+$biaPackage = $newPath + "\BIAPackage"
+RemoveFolder -path $biaPackage
 
 Set-Location -Path $newPath
 
@@ -265,25 +266,25 @@ Set-Location -Path $scriptPath
 
 # Write-Host "Copy form $sourceDir to $targetDir"
 # Get-ChildItem -File $sourceDir -filter $filter -recurse | ?{($_.fullname -match $filterInclude) -or ($_.fullname -notmatch $filterExclude)}|`
-    # foreach{
-        # $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
+# foreach{
+# $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
 
-		# #Write-Host "Copy file " $_.FullName " to $targetFile"
-		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        # Copy-Item $_.FullName -destination $targetFile
-    # }
+# #Write-Host "Copy file " $_.FullName " to $targetFile"
+# New-Item -ItemType File -Path $targetFile -Force | Out-Null
+# Copy-Item $_.FullName -destination $targetFile
+# }
 
 
 # Write-Host "Copy from .\BIATemplateFiles\"
 # $sourceDir = Resolve-Path -Path "$scriptPath\BIATemplateFiles"
 # Get-ChildItem -File $sourceDir -filter $filter -recurse |`
-    # foreach{
-        # $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
+# foreach{
+# $targetFile = $targetDir + $_.FullName.SubString($sourceDir.Path.Length);
 
-		# #Write-Host "Copy file " $_.FullName " to $targetFile"
-		# New-Item -ItemType File -Path $targetFile -Force | Out-Null
-        # Copy-Item $_.FullName -destination $targetFile
-    # }
+# #Write-Host "Copy file " $_.FullName " to $targetFile"
+# New-Item -ItemType File -Path $targetFile -Force | Out-Null
+# Copy-Item $_.FullName -destination $targetFile
+# }
 
 # Write-Host "   Zip files."
 # compress-archive -path $targetDir -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip' -compressionlevel optimal -Force

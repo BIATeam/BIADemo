@@ -101,7 +101,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 
                 foreach (UserFromDirectory userFromDirectory in usersFromDirectory)
                 {
+#pragma warning disable S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
                     var foundUser = users.FirstOrDefault(this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFromDirectory)).Compile());
+#pragma warning restore S6602 // "Find" method should be used instead of the "FirstOrDefault" extension
 
                     this.AddOrActiveUserFromDirectory(userFromDirectory, foundUser);
                 }
