@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Presentation.Api" Version="3.8.*" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Redis" Version="1.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.23">
@@ -34,7 +35,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -195,6 +195,9 @@ RemoveFolder -path 'src\app\domains\plane-type-option'
 #RemoveFolderContentss -path 'src\assets\bia\primeng\layout\css' -extension '*.scss'
 #RemoveFolderContentss -path 'src\assets\bia\primeng\theme' -extension '*.scss'
 
+RemoveFolder -path 'src\assets\bia\primeng\bia'
+RemoveFolder -path 'src\assets\bia\primeng\layout\images'
+
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular')
 

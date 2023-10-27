@@ -26,6 +26,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BIA.Net.Core.Test" Version="3.8.*" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
 		<PackageReference Include="Moq" Version="4.20.69" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.1.1" />
@@ -38,7 +39,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Presentation.Api\TheBIADevCompany.BIADemo.Presentation.Api.csproj" />
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj" />
 	</ItemGroup>
 
 </Project>
