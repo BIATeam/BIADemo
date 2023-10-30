@@ -6,10 +6,9 @@
 !/src/assets/bia/primeng/sass/overrides
 
 #Temp CSS generated
-/src/assets/bia/primeng/layout/css/layout-dark.css
-/src/assets/bia/primeng/layout/css/layout-light.css
-/src/assets/bia/primeng/theme/biaTheme/theme-dark.css
-/src/assets/bia/primeng/theme/biaTheme/theme-light.css
+/src/assets/bia/primeng/layout/styles/layout/layout.css
+/src/assets/bia/primeng/layout/styles/theme/theme-dark/theme-dark.css
+/src/assets/bia/primeng/layout/styles/theme/theme-light/theme-light.css
 
 # End BIATemplate only
 
