@@ -2,7 +2,7 @@
   "BiaNet": {
     "CommonFeatures": {
       "ClientForHub": {
-        "SignalRUrl": "http://localhost:54321/HubForClients"
+        "SignalRUrl": "http://localhost:32128/HubForClients"
       }
     },
     "Environment": {

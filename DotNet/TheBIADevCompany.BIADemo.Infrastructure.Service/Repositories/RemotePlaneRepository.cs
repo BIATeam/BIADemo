@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             // and retrieved via the configuration field.
 
             // this.baseAddress = configuration["RemoteBIADemoWebApi:baseAddress"];
-            this.baseAddress = "http://localhost:54321/BIADemo/WebApi";
+            this.baseAddress = "http://localhost:32128/BIADemo/WebApi";
 
             // this.urlPlane = configuration["RemoteBIADemoWebApi:urlPlane"];
             this.urlPlane = "/api/Planes/";
