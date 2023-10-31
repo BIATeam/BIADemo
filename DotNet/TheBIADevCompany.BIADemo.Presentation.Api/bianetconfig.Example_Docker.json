@@ -7,7 +7,7 @@
     },
     "CommonFeatures": {
       "ClientForHub": {
-        "SignalRUrl": "http://localhost:54321/HubForClients"
+        "SignalRUrl": "http://localhost:32128/HubForClients"
       }
     },
     "ApiFeatures": {
@@ -15,7 +15,7 @@
         "IsActive": true
       },
       "DelegateJobToWorker": {
-        "MonitoringUrl": "http://localhost:54321/hangfire"
+        "MonitoringUrl": "http://localhost:32128/hangfire"
       }
     },
     "Security": {

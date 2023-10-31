@@ -3,7 +3,7 @@
     "windowsAuthentication": true,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54321/BIADemo/WebApi",
+      "applicationUrl": "http://localhost:32128/BIADemo/WebApi",
       "sslPort": 0
     },
     "iis": {
@@ -33,9 +33,9 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:54321/swagger",
+      "launchUrl": "{Scheme}://{ServiceHost}:32128/swagger",
       "publishAllPorts": true,
-      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway -p 54321:8080",
+      "DockerfileRunArguments": "--add-host=host.docker.internal:host-gateway -p 32128:8080",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Docker",
         "KC_SA_USERNAME": "dmeu-int-keycloak-service-account",

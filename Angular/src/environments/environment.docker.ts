@@ -5,7 +5,7 @@ export const environment = {
   reportUrl: '',
   apiUrlDynamic: {
     oldValue: ':4200',
-    newValue: ':54321'
+    newValue: ':32128'
   },
   apiUrl: '/api',
   hubUrl: '/HubForClients',

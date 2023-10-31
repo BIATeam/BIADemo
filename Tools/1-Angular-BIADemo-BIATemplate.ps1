@@ -143,6 +143,24 @@ function ReplaceProjectName {
   
 }
 
+# Formats JSON in a nicer format than the built-in ConvertTo-Json does.
+function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
+  $indent = 0;
+  ($json -Split '\n' |
+    % {
+      if ($_ -match '[\}\]]') {
+        # This line contains  ] or }, decrement the indentation level
+        $indent--
+      }
+      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
+      if ($_ -match '[\{\[]') {
+        # This line contains [ or {, increment the indentation level
+        $indent++
+      }
+      $line
+  }) -Join "`n"
+}
+
 RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
 
 Write-Host "Copy from $oldPath to $newPath"
@@ -215,6 +233,11 @@ ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path
 # npm install
 # Write-Host "ng build --aot"
 # ng build --aot
+
+
+$a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
+$a.projects.BIATemplate.architect.build.options.serviceWorker=$false
+$a | ConvertTo-Json -depth 32 | Format-Json |set-content $newPath'\angular.json'
 
 
 Set-Location -Path $scriptPath
