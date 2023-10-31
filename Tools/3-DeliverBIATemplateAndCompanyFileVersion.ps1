@@ -24,17 +24,17 @@ Get-ChildItem $sourceDir -filter $filter -recurse | ? { ($_.fullname -match $fil
     Copy-Item $_.FullName -destination $targetFile
 }
 
-# $oldPath= "$sourceDir\Angular\src\assets\bia\primeng\sass"
-# $newPath= "$targetDir\Angular\src\assets\bia\primeng\sass"
-# Get-Item -Path "$oldPath\*" -Exclude ('overrides') |`
-#     foreach{
-#         $target = $newPath + $_.FullName.SubString($oldPath.Length);
-# 		if (Test-Path $target) {
-# 			Write-Host "delete " $target " folder"
-# 			Remove-Item $target -Recurse -Force -Confirm:$false
-# 		}
-#         Copy-Item $_.FullName -destination $target -Recurse -Force
-#     }
+$oldpath= "$sourcedir\angular\src\assets\bia\primeng\sass"
+$newpath= "$targetdir\angular\src\assets\bia\primeng\sass"
+get-item -path "$oldpath\*" -exclude ('overrides') |`
+    foreach{
+        $target = $newpath + $_.fullname.substring($oldpath.length);
+		if (test-path $target) {
+			write-host "delete " $target " folder"
+			remove-item $target -recurse -force -confirm:$false
+		}
+        copy-item $_.fullname -destination $target -recurse -force
+    }
 
 write-host "finish"
 pause
