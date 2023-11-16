@@ -294,8 +294,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
 
                 // Begin BIADemo
-                CurrentTeamDto currentAircraftMaintenanceCompany = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany) : null;
-                additionnalInfo = new AdditionalInfoDto {
+                CurrentTeamDto currentAircraftMaintenanceCompany = userData.CurrentTeams?.FirstOrDefault(ct => ct.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany);
+                additionnalInfo = new AdditionalInfoDto
+                {
                     UserInfo = userInfo, UserProfile = userProfile,
                     Teams = allTeams.Where(t => t.TeamTypeId != (int)TeamTypeId.MaintenanceTeam || t.ParentTeamId == currentAircraftMaintenanceCompany?.TeamId).ToList(),
                 };
