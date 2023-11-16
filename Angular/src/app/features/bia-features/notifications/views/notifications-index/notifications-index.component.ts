@@ -203,7 +203,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   private initTableConfiguration() {
-    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
       this.tableConfiguration = {
         columns: [
           new BiaFieldConfig('titleTranslated', 'notification.title'),
@@ -217,7 +216,6 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
           }),
           Object.assign(new BiaFieldConfig('createdDate', 'notification.createdDate'), {
             type: PropType.Date,
-            formatDate: dateFormat.dateFormat
           }),
           Object.assign(new BiaFieldConfig('createdBy', 'notification.createdBy'), {
             type: PropType.OneToMany
@@ -234,6 +232,5 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
       this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
       this.displayedColumns = [...this.columns];
-    }));
   }
 }
