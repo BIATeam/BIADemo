@@ -38,6 +38,7 @@
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",
     "edit": "Editar equipo de mantenimiento",
+    "headerLabel": "Equipo de mantenimiento",
     "listOf": "Lista de equipos de mantenimiento",
     "title": "Name"
   },

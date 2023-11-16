@@ -1,4 +1,5 @@
 <div class="controls flex flex-row">
+  <label *ngIf="teamType.label">{{teamType.label | translate }} : </label>
   <p-dropdown
     *ngIf="displayRoleList"
     [options]="roles"

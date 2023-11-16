@@ -38,6 +38,7 @@
   "maintenanceTeam": {
     "add": "Add maintenance team",
     "edit": "Edit maintenance team",
+    "headerLabel": "Maintenance team",
     "listOf": "List of maintenance teams",
     "title": "Name"
   },
