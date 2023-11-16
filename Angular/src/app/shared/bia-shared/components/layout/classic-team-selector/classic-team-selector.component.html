@@ -1,40 +1,6 @@
 <div class="controls flex flex-row">
   <label *ngIf="teamType.label">{{teamType.label | translate }} : </label>
   <p-dropdown
-    *ngIf="displayRoleList"
-    [options]="roles"
-    [(ngModel)]="currentRole"
-    optionLabel="display"
-    dataKey="id"
-    (onChange)="onRolesChange()"
-    placeholder="Select a role"
-  >
-  </p-dropdown>
-  <p-multiSelect
-    *ngIf="displayRoleMultiSelect"
-    defaultLabel="&nbsp;"
-    [options]="roles"
-    [(ngModel)]="currentRoles"
-    optionLabel="display"
-    datakey="id"
-    [virtualScroll]="true"
-    (onChange)="onRolesChange()"
-    placeholder="Select a role"
-  >
-  </p-multiSelect>
-  <i
-    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
-    class="pi pi-star  app-icon-header bia-pointer"
-    (click)="onSetDefaultRoles()"
-    pTooltip="{{ 'bia.defineDefault' | translate }}"
-    tooltipPosition="bottom"
-    placeholder="Top"
-  ></i>
-  <i
-    *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && isDefaultRoles()"
-    class="pi pi-star-fill app-icon-header"
-  ></i>
-  <p-dropdown
     *ngIf="displayTeamList === true"
     [options]="teams"
     [(ngModel)]="currentTeam"
@@ -54,4 +20,39 @@
     *ngIf="displayTeamList === true && currentTeam?.id === defaultTeamId"
     class="pi pi-star-fill app-icon-header"
   ></i>
+  <!-- Role selection -->
+  <p-dropdown
+  *ngIf="displayRoleList"
+  [options]="roles"
+  [(ngModel)]="currentRole"
+  optionLabel="display"
+  dataKey="id"
+  (onChange)="onRolesChange()"
+  placeholder="Select a role"
+>
+</p-dropdown>
+<p-multiSelect
+  *ngIf="displayRoleMultiSelect"
+  defaultLabel="&nbsp;"
+  [options]="roles"
+  [(ngModel)]="currentRoles"
+  optionLabel="display"
+  datakey="id"
+  [virtualScroll]="true"
+  (onChange)="onRolesChange()"
+  placeholder="Select a role"
+>
+</p-multiSelect>
+<i
+  *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && !isDefaultRoles()"
+  class="pi pi-star  app-icon-header bia-pointer"
+  (click)="onSetDefaultRoles()"
+  pTooltip="{{ 'bia.defineDefault' | translate }}"
+  tooltipPosition="bottom"
+  placeholder="Top"
+></i>
+<i
+  *ngIf="(displayRoleList === true || displayRoleMultiSelect === true) && isDefaultRoles()"
+  class="pi pi-star-fill app-icon-header"
+></i>
 </div>
