@@ -292,6 +292,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (loginParam.AdditionalInfos)
             {
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
+
+                // Begin BIADemo
+                CurrentTeamDto currentAircraftMaintenanceCompany = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany) : null;
+                additionnalInfo = new AdditionalInfoDto {
+                    UserInfo = userInfo, UserProfile = userProfile,
+                    Teams = allTeams.Where(t => t.TeamTypeId != (int)TeamTypeId.MaintenanceTeam || t.ParentTeamId == currentAircraftMaintenanceCompany?.TeamId).ToList(),
+                };
+
+                // End BIADemo
             }
 
             AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
