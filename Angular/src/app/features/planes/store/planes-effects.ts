@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { APP_BASE_HREF } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -46,6 +47,7 @@ export class PlanesEffects {
           map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
           catchError((err) => {
             this.biaMessageService.showError();
+            location.assign(this.baseHref);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
@@ -153,6 +155,7 @@ export class PlanesEffects {
     private actions$: Actions,
     private planeDas: PlaneDas,
     private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    @Inject(APP_BASE_HREF) public baseHref: string,
   ) {}
 }

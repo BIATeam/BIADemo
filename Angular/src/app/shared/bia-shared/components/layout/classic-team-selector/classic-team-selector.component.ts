@@ -84,7 +84,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
 
   onTeamChange() {
     this.authService.changeCurrentTeamId(this.teamType.teamTypeId, this.currentTeam.id);
-    location.assign(this.baseHref);
+    location.reload();
   }
 
   onSetDefaultTeam() {
@@ -112,7 +112,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     }
 
     this.authService.changeCurrentRoleIds(this.teamType.teamTypeId, this.currentTeam.id, this.currentRoles.map(r => r.id));
-    location.assign(this.baseHref);
+    location.reload();
   }
 
   onSetDefaultRoles() {
