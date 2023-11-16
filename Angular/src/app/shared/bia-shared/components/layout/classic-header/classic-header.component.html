@@ -11,7 +11,7 @@
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
     <div class="controls flex flex-row">
       <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors">
-        <bia-classic-team-selector [teamTypeId]="teamTypeSelector"></bia-classic-team-selector>
+        <bia-classic-team-selector [teamType]="teamTypeSelector"></bia-classic-team-selector>
         <span class="flex align-self-center separator"></span>
       </ng-template>
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>

@@ -65,7 +65,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   unreadNotificationCount$: Observable<number>;
 
-  teamTypeSelectors: number[];
+  teamTypeSelectors: any[];
 
   @ViewChild('toast', { static: true }) toast: Toast;
   NotificationType = NotificationType;
@@ -82,7 +82,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true).map(t => t.teamTypeId);
+    this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true);
 
     if (allEnvironments.enableNotifications === true) {
       this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
