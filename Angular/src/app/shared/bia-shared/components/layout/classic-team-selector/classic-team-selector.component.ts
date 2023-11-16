@@ -98,7 +98,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     if (currentTeamId && currentTeamId > 0) {
       this.currentTeam = this.teams.filter((x) => x.id === currentTeamId)[0];
     }
-    if (this.teams?.length > 1 || (this.teams?.length === 1 && this.teamType.displayNoChoice === true)) {
+    if (this.teams?.length > 1 || (this.teams?.length === 1 && this.teamType.displayOne === true)  || this.teamType.displayAlways) {
       this.displayTeamList = true;
     }
     if (defaultTeamId) {

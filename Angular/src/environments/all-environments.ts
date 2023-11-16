@@ -13,8 +13,8 @@ export const allEnvironments = {
     teams: [
         { teamTypeId: TeamTypeId.Site, roleMode: RoleMode.AllRoles, inHeader: true },
         // Begin BIADemo
-        { teamTypeId: TeamTypeId.AircraftMaintenanceCompany, roleMode: RoleMode.MultiRoles, inHeader: true },
-        { teamTypeId: TeamTypeId.MaintenanceTeam, roleMode: RoleMode.AllRoles, inHeader: true, displayNoChoice: true, label: "maintenanceTeam.headerLabel" },
+        { teamTypeId: TeamTypeId.AircraftMaintenanceCompany, roleMode: RoleMode.MultiRoles, inHeader: true, displayOne: true },
+        { teamTypeId: TeamTypeId.MaintenanceTeam, roleMode: RoleMode.AllRoles, inHeader: true, displayAlways: true, label: "maintenanceTeam.headerLabel" },
         // End BIADemo
     ],
 };
