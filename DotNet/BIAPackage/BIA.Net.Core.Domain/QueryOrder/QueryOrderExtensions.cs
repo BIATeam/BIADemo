@@ -31,28 +31,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
                 orderExpression = Expression.Lambda<Func<TEntity, string>>(orderExpressionCall, parameterExpression);
             }
 
-            if (queryOrder.GetOrderByDescendingList.Count > 0 && queryOrder.GetOrderByList.Count > 0)
-            {
-                if (ascending)
-                {
-                    queryOrder.ThenBy(orderExpression);
-                }
-                else
-                {
-                    queryOrder.ThenByDescending(orderExpression);
-                }
-            }
-            else
-            {
-                if (ascending)
-                {
-                    queryOrder.OrderBy(orderExpression);
-                }
-                else
-                {
-                    queryOrder.OrderByDescending(orderExpression);
-                }
-            }
+            queryOrder.OrderBy(orderExpression, ascending);
         }
     }
 }

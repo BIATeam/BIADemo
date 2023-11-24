@@ -79,7 +79,7 @@ namespace BIA.Net.Core.Domain.Service
                 mapper,
                 filters);
 
-            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1);
+            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 
             var results = await this.Repository.GetRangeResultAsync(
                 mapper.EntityToDto(mapperMode),
@@ -608,9 +608,29 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="collection">The expression collection of entity.</param>
         /// <param name="orderMember">The order member.</param>
         /// <param name="ascending">If set to <c>true</c> [ascending].</param>
+        /// <param name="multiSortMeta">multi Sort Meta.</param>
         /// <returns>The paging order.</returns>
-        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending)
+        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending, List<SortMeta> multiSortMeta = null)
         {
+            if (multiSortMeta?.Any() == true)
+            {
+                bool multiSort = false;
+                var multiOrder = new QueryOrder<TEntity>();
+                foreach (var sortMeta in multiSortMeta)
+                {
+                    if (!string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field))
+                    {
+                        multiSort = true;
+                        multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
+                    }
+                }
+
+                if (multiSort)
+                {
+                    return multiOrder;
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(orderMember) || !collection.ContainsKey(orderMember))
             {
                 return new QueryOrder<TEntity>().OrderBy(entity => entity.Id);

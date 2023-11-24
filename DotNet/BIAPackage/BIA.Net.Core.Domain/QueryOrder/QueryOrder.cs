@@ -18,70 +18,44 @@ namespace BIA.Net.Core.Domain.QueryOrder
         where TEntity : class
     {
         /// <summary>
-        /// The order by descending list.
-        /// </summary>
-        private readonly IList<LambdaExpression> orderByDescendingList;
-
-        /// <summary>
-        /// The order by list.
-        /// </summary>
-        private readonly IList<LambdaExpression> orderByList;
-
-        /// <summary>
-        /// The then by descending list.
-        /// </summary>
-        private readonly IList<LambdaExpression> thenByDescendingList;
-
-        /// <summary>
-        /// The then by list.
-        /// </summary>
-        private readonly IList<LambdaExpression> thenByList;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="QueryOrder{TEntity}"/> class.
         /// </summary>
         public QueryOrder()
         {
-            this.orderByList = new List<LambdaExpression>();
-            this.orderByDescendingList = new List<LambdaExpression>();
-            this.thenByList = new List<LambdaExpression>();
-            this.thenByDescendingList = new List<LambdaExpression>();
+            this.GetOrderByList = new List<ItemOrder>();
+            this.GetThenByList = new List<ItemOrder>();
         }
-
-        /// <summary>
-        /// Gets the order by descending list.
-        /// </summary>
-        /// <returns>List of order.</returns>
-        public IList<LambdaExpression> GetOrderByDescendingList => this.orderByDescendingList;
 
         /// <summary>
         /// Gets the order by list.
         /// </summary>
         /// <returns>List of order.</returns>
-        public IList<LambdaExpression> GetOrderByList => this.orderByList;
-
-        /// <summary>
-        /// Gets the then by descending list.
-        /// </summary>
-        /// <returns>List of order.</returns>
-        public IList<LambdaExpression> GetThenByDescendingList => this.thenByDescendingList;
+        public IList<ItemOrder> GetOrderByList { get; }
 
         /// <summary>
         /// Gets the then by list.
         /// </summary>
         /// <returns>List of order.</returns>
-        public IList<LambdaExpression> GetThenByList => this.thenByList;
+        public IList<ItemOrder> GetThenByList { get; }
+
 
         /// <summary>
         /// Set the order.
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="orderExpression">The order expression.</param>
+        /// <param name="ascending">The direction of the sort.</param>
         /// <returns>Current class object.</returns>
-        public QueryOrder<TEntity> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderExpression)
+        public QueryOrder<TEntity> OrderBy<TKey>(Expression<Func<TEntity, TKey>> orderExpression, bool ascending = true)
         {
-            // Aggregate
-            this.orderByList.Add(orderExpression);
+            if (this.GetOrderByList.Count == 0)
+            {
+                this.GetOrderByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
+            }
+            else
+            {
+                this.GetThenByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
+            }
 
             return this;
         }
@@ -90,11 +64,18 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// Set the order.
         /// </summary>
         /// <param name="orderExpression">The order expression.</param>
+        /// <param name="ascending">The direction of the sort.</param>
         /// <returns>Current class object.</returns>
-        public QueryOrder<TEntity> OrderBy(LambdaExpression orderExpression)
+        public QueryOrder<TEntity> OrderBy(LambdaExpression orderExpression, bool ascending = true)
         {
-            // Aggregate
-            this.orderByList.Add(orderExpression);
+            if (this.GetOrderByList.Count == 0)
+            {
+                this.GetOrderByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
+            }
+            else
+            {
+                this.GetThenByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
+            }
 
             return this;
         }
@@ -107,10 +88,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// <returns>Current class object.</returns>
         public QueryOrder<TEntity> OrderByDescending<TKey>(Expression<Func<TEntity, TKey>> orderExpression)
         {
-            // Aggregate
-            this.orderByDescendingList.Add(orderExpression);
-
-            return this;
+            return this.OrderBy(orderExpression, false);
         }
 
         /// <summary>
@@ -120,10 +98,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// <returns>Current class object.</returns>
         public QueryOrder<TEntity> OrderByDescending(LambdaExpression orderExpression)
         {
-            // Aggregate
-            this.orderByDescendingList.Add(orderExpression);
-
-            return this;
+            return this.OrderBy(orderExpression, false);
         }
 
         /// <summary>
@@ -131,12 +106,11 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// </summary>
         /// <typeparam name="TKey">The type of the key.</typeparam>
         /// <param name="orderExpression">The order expression.</param>
+        /// <param name="ascending">The direction of the sort.</param>
         /// <returns>Current class object.</returns>
-        public QueryOrder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> orderExpression)
+        public QueryOrder<TEntity> ThenBy<TKey>(Expression<Func<TEntity, TKey>> orderExpression, bool ascending = true)
         {
-            // Aggregate
-            this.thenByList.Add(orderExpression);
-
+            this.GetThenByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
             return this;
         }
 
@@ -144,12 +118,11 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// Set the secondary order.
         /// </summary>
         /// <param name="orderExpression">The order expression.</param>
+        /// <param name="ascending">The direction of the sort.</param>
         /// <returns>Current class object.</returns>
-        public QueryOrder<TEntity> ThenBy(LambdaExpression orderExpression)
+        public QueryOrder<TEntity> ThenBy(LambdaExpression orderExpression, bool ascending = true)
         {
-            // Aggregate
-            this.thenByList.Add(orderExpression);
-
+            this.GetThenByList.Add(new ItemOrder { Expression = orderExpression, Ascending = ascending });
             return this;
         }
 
@@ -161,10 +134,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// <returns>Current class object.</returns>
         public QueryOrder<TEntity> ThenByDescending<TKey>(Expression<Func<TEntity, TKey>> orderExpression)
         {
-            // Aggregate
-            this.thenByDescendingList.Add(orderExpression);
-
-            return this;
+            return this.ThenBy(orderExpression, false);
         }
 
         /// <summary>
@@ -174,10 +144,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// <returns>Current class object.</returns>
         public QueryOrder<TEntity> ThenByDescending(LambdaExpression orderExpression)
         {
-            // Aggregate
-            this.thenByDescendingList.Add(orderExpression);
-
-            return this;
+            return this.ThenBy(orderExpression, false);
         }
 
         /// <summary>
@@ -189,28 +156,33 @@ namespace BIA.Net.Core.Domain.QueryOrder
             var info = new StringBuilder();
 
             info.Append("OrderBy : ");
-            info.Append(string.Join(",", GetMember(this.orderByList)));
 
-            info.Append(" - OrderByDescending : ");
-            info.Append(string.Join(",", GetMember(this.orderByDescendingList)));
-
-            info.Append(" - ThenBy : ");
-            info.Append(string.Join(",", GetMember(this.thenByList)));
-
-            info.Append(" - ThenByDescending : ");
-            info.Append(string.Join(",", GetMember(this.thenByDescendingList)));
+            foreach (var item in this.GetOrderByList)
+            {
+                info.Append("," + ((MemberExpression)item.Expression.Body)?.Member.Name + ((!item.Ascending) ? " Desc" : string.Empty));
+            }
+            foreach (var item in this.GetThenByList)
+            {
+                info.Append("," + ((MemberExpression)item.Expression.Body)?.Member.Name + ((!item.Ascending) ? " Desc" : string.Empty));
+            }
 
             return info.ToString();
         }
 
         /// <summary>
-        /// Gets the member.
+        /// Item Order.
         /// </summary>
-        /// <param name="expressions">The expressions.</param>
-        /// <returns>List of member name.</returns>
-        private static IEnumerable<string> GetMember(IEnumerable<LambdaExpression> expressions)
+        public class ItemOrder
         {
-            return expressions.Select(item => item.Body).OfType<MemberExpression>().Select(memberEx => memberEx.ToString()).ToList();
+            /// <summary>
+            /// Lambda Expression.
+            /// </summary>
+            public LambdaExpression Expression { get; set; }
+
+            /// <summary>
+            /// Direction of the sort.
+            /// </summary>
+            public bool Ascending { get; set; }
         }
     }
 }
