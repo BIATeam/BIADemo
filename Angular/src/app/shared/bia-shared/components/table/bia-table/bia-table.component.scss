@@ -35,3 +35,7 @@ table {
       display: none;
   }
 }
+
+::ng-deep .p-datatable.singleSort .p-sortable-column .p-sortable-column-badge {
+    display: none;
+}

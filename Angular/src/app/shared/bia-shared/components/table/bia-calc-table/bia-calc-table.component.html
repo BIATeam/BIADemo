@@ -22,7 +22,7 @@
     (selectionChange)="onSelectionChange()"
     editMode="row"
     dataKey="id"
-    styleClass="p-datatable-striped"
+    [styleClass]="(table?.multiSortMeta?.length > 1)?'p-datatable-striped multiSort':'p-datatable-striped singleSort'"
     sortMode="multiple"
   >
     <!-- HEADER -->
