@@ -268,10 +268,30 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {
-      let viewPreference = changes.viewPreference.currentValue;
-      if (!this.firstViewPreferenceApply || sessionStorage.getItem(this.tableStateKey) !== viewPreference) {
+      let viewPreference : BiaTableState = JSON.parse(changes.viewPreference.currentValue);
+
+      // compatibility switch sort multiple to single
+      if (this.table.sortMode === "multiple" )
+      {
+        if (viewPreference.multiSortMeta === undefined && viewPreference.sortField != null && viewPreference.sortField != ""&& viewPreference.sortOrder != null)
+        {
+          viewPreference.multiSortMeta = [{field : viewPreference.sortField, order: viewPreference.sortOrder }]
+        }
+      }
+      else
+      {
+        if (viewPreference.multiSortMeta !== undefined && viewPreference.multiSortMeta.length > 0)
+        {
+          viewPreference.sortField = viewPreference.multiSortMeta[0].field;
+          viewPreference.sortOrder = viewPreference.multiSortMeta[0].order;
+        }
+      }
+
+    let sViewPreference = JSON.stringify(viewPreference);
+
+      if (!this.firstViewPreferenceApply || sessionStorage.getItem(this.tableStateKey) !== sViewPreference) {
         this.firstViewPreferenceApply = true;
-        sessionStorage.setItem(this.tableStateKey, viewPreference);
+        sessionStorage.setItem(this.tableStateKey, sViewPreference);
         this.restoreStateTable();
       }
     }
@@ -355,9 +375,16 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       if (tableState?.columnOrder) {
 
         this.updateDisplayedColumns(false);
-
         this.table.restoreState();
-        this.table.sortSingle();
+
+        if (this.table.sortMode === "multiple" )
+        {
+          this.table.sortMultiple();
+        }
+        else
+        {
+          this.table.sortSingle();
+        }
 
         this.showColSearch = false;
         if (this.table.hasFilter()) {

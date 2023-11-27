@@ -153,13 +153,45 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       ) &&
       JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
       view1.rows === view2.rows &&
-      view1.sortField === view2.sortField &&
-      view1.sortOrder === view2.sortOrder &&
       (
-        this.isNullUndefEmptyStr(view1.advancedFilter) && this.isNullUndefEmptyStr(view2.advancedFilter)
-        ||
-        JSON.stringify(view1.advancedFilter) === JSON.stringify(view2.advancedFilter)
+        (
+          view1.sortField === view2.sortField &&
+          view1.sortOrder === view2.sortOrder &&
+          (
+            (this.isNullUndefEmptyStr(view1.advancedFilter) && this.isNullUndefEmptyStr(view2.advancedFilter))
+            ||
+            JSON.stringify(view1.advancedFilter) === JSON.stringify(view2.advancedFilter)
+          ) &&
+          (
+            (this.isNullUndefEmptyStr(view1.multiSortMeta) && this.isNullUndefEmptyStr(view2.multiSortMeta))
+            ||
+            JSON.stringify(view1.multiSortMeta) === JSON.stringify(view2.multiSortMeta)
+          )
+        )
+        || 
+        (
+          !this.isNullUndefEmptyStr(view1.multiSortMeta) && this.isNullUndefEmptyStr(view2.multiSortMeta) &&
+          (
+            view1.multiSortMeta?.length === 1
+            &&
+            view2.sortField === view1.multiSortMeta[0].field
+            &&
+            view2.sortOrder === view1.multiSortMeta[0].order
+          )
+        )
+        || 
+        (
+          !this.isNullUndefEmptyStr(view2.multiSortMeta) && this.isNullUndefEmptyStr(view1.multiSortMeta) &&
+          (
+            view2.multiSortMeta?.length === 1
+            &&
+            view1.sortField === view2.multiSortMeta[0].field
+            &&
+            view1.sortOrder === view2.multiSortMeta[0].order
+          )
+        )
       )
+
     )
   }
 
