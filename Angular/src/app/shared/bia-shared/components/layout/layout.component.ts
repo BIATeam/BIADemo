@@ -5,10 +5,9 @@ import { AuthInfo } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaTranslationService, getCurrentLang } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
-import { getLocaleId } from 'src/app/app.module';
 import { APP_BASE_HREF } from '@angular/common';
 import { allEnvironments } from 'src/environments/all-environments';
 
@@ -106,16 +105,8 @@ export class LayoutComponent implements OnInit {
   }
 
   private setLanguage(authInfo: AuthInfo) {
-    const langSelected: string | null = this.biaTranslationService.getLangSelected();
-    if (langSelected) {
-      this.biaTranslationService.loadAndChangeLanguage(langSelected);
-    } else if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userInfo) {
-      const language: string =
-        authInfo.additionalInfos.userInfo.language && authInfo.additionalInfos.userInfo.language.length > 0
-          ? authInfo.additionalInfos.userInfo.language
-          : getLocaleId();
-      this.biaTranslationService.loadAndChangeLanguage(language);
-    }
+    const langSelected: string | null = getCurrentLang();
+    this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 
   private filterNavByRole(authInfo: AuthInfo) {

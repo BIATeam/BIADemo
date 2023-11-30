@@ -11,7 +11,7 @@ import { from, Observable, throwError } from 'rxjs';
 import { catchError, filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
-import { BiaTranslationService } from '../services/bia-translation.service';
+import { getCurrentLang } from '../services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakService } from 'keycloak-angular';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
@@ -20,7 +20,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 export class TokenInterceptor implements HttpInterceptor {
   protected isRefreshing = false;
 
-  constructor(protected biaTranslationService: BiaTranslationService,
+  constructor(
     public authService: AuthService,
     public keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService) { }
@@ -82,7 +82,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected addToken(request: HttpRequest<any>, token: string) {
-    const langSelected = this.biaTranslationService.getLangSelected();
+    const langSelected = getCurrentLang();
     return request.clone({
       withCredentials: false,
       setHeaders: {
@@ -93,7 +93,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected addLanguageOnly(request: HttpRequest<any>) {
-    const langSelected = this.biaTranslationService.getLangSelected();
+    const langSelected = getCurrentLang();
     return request.clone({
       setHeaders: {
         'Accept-Language': (langSelected !== null) ? langSelected : ''

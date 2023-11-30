@@ -11,9 +11,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
 import { HomeModule } from './features/home/home.module';
-import { APP_SUPPORTED_TRANSLATIONS } from './shared/constants';
 import { BiaErrorHandler } from './core/bia-core/shared/bia-error-handler';
-import { getInitialLang } from './core/bia-core/services/bia-translation.service';
+import { getCurrentLang } from './core/bia-core/services/bia-translation.service';
 import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-http-loader';
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service';
@@ -22,8 +21,6 @@ import { buildSpecificModules } from './build-specifics/bia-build-specifics';
 import { BiaEnvironmentService } from './core/bia-core/services/bia-environment.service';
 import { DatePipe } from '@angular/common';
 import { BiaNgxLoggerServerService } from './core/bia-core/services/bia-ngx-logger-server.service';
-
-export const getLocaleId = () => getInitialLang(APP_SUPPORTED_TRANSLATIONS);
 
 export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
   return new BiaTranslateHttpLoader(http, store, './assets/i18n/app/');
@@ -69,7 +66,7 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
   ],
   providers: [
     DatePipe,
-    { provide: LOCALE_ID, useFactory: getLocaleId },
+    { provide: LOCALE_ID, useFactory: getCurrentLang },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService
   ],

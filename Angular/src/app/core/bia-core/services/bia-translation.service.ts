@@ -8,6 +8,7 @@ import { forkJoin, Observable, of, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, map, distinctUntilChanged, skip } from 'rxjs/operators';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { APP_SUPPORTED_TRANSLATIONS } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 
 // export const BIA_DEFAULT_LOCALE_ID = new InjectionToken('biaDefaultLocaleId');
@@ -15,7 +16,7 @@ const TRANSLATION_LANG_KEY = '@@lang';
 export const STORAGE_LANG_KEY = 'lang';
 
 // Return last choosed lang or browser lang.
-export const getInitialLang = (supportedLangs: string[]) => {
+export const getCurrentLang = () => {
   let lang;
   try {
     lang = localStorage.getItem(STORAGE_LANG_KEY);
@@ -23,7 +24,7 @@ export const getInitialLang = (supportedLangs: string[]) => {
   if (!lang) {
     lang = navigator.language;
   }
-  if (supportedLangs.indexOf(lang) !== -1) {
+  if (APP_SUPPORTED_TRANSLATIONS.indexOf(lang) !== -1) {
     return lang;
   }
   return 'en-US';
@@ -48,7 +49,7 @@ export interface DateFormat {
 export class BiaTranslationService {
   private translationsLoaded: { [lang: string]: boolean } = {};
   private lazyTranslateServices: TranslateService[] = [];
-  private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this.getLangSelected());
+  private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(getCurrentLang());
   public currentCulture$: Observable<string | null> = this.cultureSubject.asObservable();
   public appSettings$: Observable<AppSettings | null> = this.store.select(getAppSettings);
   public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([this.currentCulture$, this.appSettings$])
@@ -65,10 +66,6 @@ export class BiaTranslationService {
     this.currentCultureDateFormat$.subscribe((dateFormat) => { 
       Calendar.prototype.getDateFormat = () => dateFormat.primeDateFormat;
     });
-  }
-
-  getLangSelected(): string | null {
-    return localStorage.getItem(STORAGE_LANG_KEY);
   }
 
   // Translation for bia are not loaded with http client (arguably unnecessary)
