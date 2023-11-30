@@ -11,12 +11,12 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
     <ng-template #picture>
       <ng-container *ngIf="(showSpinner$ | async) !== null" [ngSwitch]="themeService.isCurrentThemeDark$ | async">
         <picture *ngSwitchCase="true">
-          <source type="image/webp" srcset="assets/bia/spinner_light.webp" />
-          <img src="assets/bia/spinner_light.gif" />
+          <source type="image/webp" srcset="assets/bia/img/spinner_light.webp" />
+          <img src="assets/bia/img/spinner_light.gif" />
         </picture>
         <picture *ngSwitchCase="false">
-          <source type="image/webp" srcset="assets/bia/spinner.webp" />
-          <img src="assets/bia/spinner.gif" />
+          <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
+          <img src="assets/bia/img/spinner.gif" />
         </picture>
       </ng-container>
     </ng-template>

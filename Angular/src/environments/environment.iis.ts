@@ -9,7 +9,6 @@ export const environment = {
   },
   apiUrl: 'http://localhost/BIADemo/WebApi/api',
   hubUrl: 'http://localhost/BIADemo/WebApi/HubForClients',
-  urlErrorPage: 'http://localhost/static/error.htm',
   useXhrWithCred: true,
   production: false,
   logging: {

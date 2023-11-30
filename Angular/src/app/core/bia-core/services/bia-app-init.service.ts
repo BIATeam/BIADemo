@@ -6,7 +6,6 @@ import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakEvent, KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { environment } from 'src/environments/environment';
 import { AuthService } from './auth.service';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
@@ -74,7 +73,7 @@ export class BiaAppInitService implements OnDestroy {
         onLoad: 'check-sso',
         // checkLoginIframe: false,
         enableLogging: isDevMode(),
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        silentCheckSsoRedirectUri: window.location.origin + '/assets/bia/html/silent-check-sso.html',
         // token: token ?? undefined,
         // refreshToken: refreshToken ?? undefined,
         // idToken: idToken ?? undefined,
@@ -137,7 +136,7 @@ export class BiaAppInitService implements OnDestroy {
 
   protected catchError(error: any) {
     if (!isDevMode()) {
-      window.location.href = environment.urlErrorPage + '?num=' + error.status;
+      window.location.href = allEnvironments.urlErrorPage + '?num=' + error.status;
     }
     return throwError(error);
   }

@@ -26,7 +26,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() menus: BiaNavigation[];
   @Input() username?: string;
   @Input() headerLogos: string[];
-  @Input() footerLogo = 'assets/bia/Footer.png';
+  @Input() footerLogo = 'assets/bia/img/Footer.png';
   @Input() supportedLangs = APP_SUPPORTED_TRANSLATIONS;
   @Input() allowThemeChange = true;
   @Input() companyName = 'BIA';

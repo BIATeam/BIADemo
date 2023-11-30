@@ -46,7 +46,7 @@ export class LayoutComponent implements OnInit {
   enableNotifications = allEnvironments.enableNotifications;
   username = '';
   headerLogos: string[];
-  footerLogo = 'assets/bia/Footer.png';
+  footerLogo = 'assets/bia/img/Footer.png';
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
 
   constructor(
@@ -69,14 +69,14 @@ export class LayoutComponent implements OnInit {
 
   private initHeaderLogos() {
     this.headerLogos = [
-      'assets/bia/Company.png',
-      `assets/bia/Division.gif`
+      'assets/bia/img/Company.png',
+      `assets/bia/img/Division.gif`
     ];
     /* If image change with the theme :
     this.biaThemeService.isCurrentThemeDark$.subscribe((isThemeDark) => {
       this.headerLogos = [
-        'assets/bia/Company.png',
-        `assets/bia/themes/${isThemeDark !== true ? THEME_LIGHT : THEME_DARK}/img/Division.gif`
+        'assets/bia/img/Company.png',
+        `assets/bia/img/themes/${isThemeDark !== true ? THEME_LIGHT : THEME_DARK}/img/Division.gif`
       ];
     });*/
   }

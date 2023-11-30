@@ -2,9 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
+import { allEnvironments } from 'src/environments/all-environments';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class PermissionGuard  {
         if (hasPermission !== true) {
           if (window.location.href === this.baseHref)
           {
-            window.location.href = environment.urlErrorPage + '?num=403';
+            window.location.href = allEnvironments.urlErrorPage + '?num=403';
           }
           else
           {

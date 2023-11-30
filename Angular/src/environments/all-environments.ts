@@ -7,7 +7,8 @@ export const allEnvironments = {
     urlAuth: '/api/Auth',
     urlLog: '/api/logs',
     urlEnv: '/api/Environment',
-    urlAppIcon: 'assets/bia/AppIcon.svg',
+    urlAppIcon: 'assets/bia/img/AppIcon.svg',
+    urlErrorPage: './assets/bia/html/error.html',
     version: '0.0.0',
     
     teams: [

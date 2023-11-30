@@ -9,7 +9,6 @@ export const environment = {
   },
   apiUrl: '/api',
   hubUrl: '/HubForClients',
-  urlErrorPage: 'http://localhost/static/error.htm',
   useXhrWithCred: false,
   production: true,
   logging: {

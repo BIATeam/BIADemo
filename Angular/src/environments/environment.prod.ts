@@ -9,7 +9,6 @@ export const environment = {
   },
   apiUrl: '../WebApi/api',
   hubUrl: '../WebApi/HubForClients',
-  urlErrorPage: '/static/error.htm',
   useXhrWithCred: false,
   production: true,
   logging: {

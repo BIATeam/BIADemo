@@ -3,7 +3,6 @@ import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
 import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
 import { AuthInfo, AdditionalInfos, Token, LoginParamDto, CurrentTeamDto } from 'src/app/shared/bia-shared/model/auth-info';
-import { environment } from 'src/environments/environment';
 import { BiaMessageService } from './bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
@@ -286,6 +285,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         return authInfo;
       }),
       catchError((err) => {
+        if (err.status == 401) {
+          window.location.href = allEnvironments.urlErrorPage + '?num=' + err.status;
+        }
+        
         this.shouldRefreshToken = false;
         let authInfo: AuthInfo = <AuthInfo>{};
 
@@ -331,7 +334,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       if (isReloaded === String(true) && this.biaSwUpdateService.newVersionAvailable !== true) {
         sessionStorage.removeItem(STORAGE_RELOADED_KEY);
         const httpCodeUpgradeRequired = 426;
-        window.location.href = environment.urlErrorPage + '?num=' + httpCodeUpgradeRequired;
+        window.location.href = allEnvironments.urlErrorPage + '?num=' + httpCodeUpgradeRequired;
       } else {
         if (this.biaSwUpdateService.newVersionAvailable === true) {
           await this.biaSwUpdateService.activateUpdate();
