@@ -2,7 +2,7 @@
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:18px;">
       <ng-container *ngIf="!isArraySimple(col)">
-        <p-columnFilter [type]="['Date', 'DateTime'].includes(col.type)?'date':'text'" 
+        <p-columnFilter [type]="columnFilterType" 
                         [field]="col.field" display="menu"></p-columnFilter>
       </ng-container>
     </div>
@@ -15,7 +15,12 @@
                 [{{ filter.value }}*]
               </ng-container>
               <ng-container *ngSwitchCase="'contains'">
-                [*{{ filter.value }}*]
+                <ng-container *ngIf="columnFilterType === 'boolean'">
+                  [{{ "bia." + filter.value | translate }}]
+                </ng-container>
+                <ng-container *ngIf="columnFilterType !== 'boolean'">
+                  [*{{ filter.value }}*]
+                </ng-container>
               </ng-container>
               <ng-container *ngSwitchCase="'notContains'">
                 ![*{{ filter.value }}*]
@@ -27,13 +32,25 @@
                 [{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateIsNot'">
-                ![{{ filter.value | formatValue: col }}]
+                [!{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateBefore'">
-                <[{{ filter.value | formatValue: col }}]
+                [<{{ filter.value | formatValue: col }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateAfter'">
-                >[{{ filter.value | formatValue: col }}]
+                [>{{ filter.value | formatValue: col }}]
+              </ng-container>
+              <ng-container *ngSwitchCase="'lt'">
+                [<{{ filter.value }}]
+              </ng-container>
+              <ng-container *ngSwitchCase="'lte'">
+                [<={{ filter.value }}]
+              </ng-container>
+              <ng-container *ngSwitchCase="'gt'">
+                [>{{ filter.value }}]
+              </ng-container>
+              <ng-container *ngSwitchCase="'gte'">
+                [>={{ filter.value }}]
               </ng-container>
               <ng-container *ngSwitchDefault>{{ filter.matchMode + " " + filter.value }}</ng-container>
             </ng-container>
@@ -44,7 +61,7 @@
           </ng-container>
         </ng-container>
       </span>
-      <ng-container *ngIf="!isArrayFilter(col)">
+      <ng-container *ngIf="!isArrayFilter(col) && (columnFilterType !== 'boolean')">
         <input
           pInputText
           class="input-search"

@@ -20,6 +20,7 @@
     "display": "Afficher :",
     "edit": "Modifier",
     "error": "Erreur",
+    "false": "faux",
     "filter": "Filtrer",
     "filters": "Filtres",
     "fullscreen": "Plein écran",
@@ -65,6 +66,7 @@
       "language": "Langage",
       "translatedFields": "Champs traduits"
     },
+    "true": "vrai",
     "useCalcMode": "Edition en ligne",
     "usePopup": "Utiliser les popups",
     "useSignalR": "Toujours à jour",

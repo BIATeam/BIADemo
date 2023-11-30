@@ -27,6 +27,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   // @Output() valueChange = new EventEmitter<void>();
   // @Output() complexInput = new EventEmitter<boolean>();
 
+  public columnFilterType : string = 'text';
   protected sub = new Subscription();
   
   constructor(
@@ -78,7 +79,15 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   }
 
   private initFieldConfiguration() {
-    if (
+    if (this.col.type == PropType.Number)
+    {
+      this.columnFilterType = 'numeric';
+    }
+    else if (this.col.type == PropType.Boolean)
+    {
+      this.columnFilterType = 'boolean';
+    }
+    else if (
       this.col.type == PropType.DateTime
       ||
       this.col.type == PropType.Date
@@ -90,6 +99,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
       this.col.type == PropType.TimeSecOnly
     )
     {
+      this.columnFilterType = 'date';
       this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
         let field = this.col.clone();
         switch (field.type)

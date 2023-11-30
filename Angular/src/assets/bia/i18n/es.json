@@ -20,6 +20,7 @@
     "display": "Monitor:",
     "edit": "Editar",
     "error": "Error",
+    "false": "falso",
     "filter": "Filtro",
     "filters": "Filtros",
     "fullscreen": "Pantalla completa",
@@ -65,6 +66,7 @@
       "language": "Idioma",
       "translatedFields" : "Campos traducidos"
     },
+    "true": "verdadero",
     "useCalcMode": "Edición en línea",
     "usePopup": "Usar popups",
     "useSignalR": "Siempre actualizado",
