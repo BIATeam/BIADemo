@@ -113,10 +113,12 @@
     "userAlreadyAssociatedSite": "Cet utilisateur est déjà associé à ce site"
   },
   "primeng": {
-    "startsWith": "Commence avec",
+    "startsWith": "Commence par",
     "contains": "Contient",
     "notContains": "Ne contient pas",
-    "endsWith": "Termine avec",
+    "notEndsWith": "Ne termine pas par",
+    "notStartsWith": "Ne Commence pas par",
+    "endsWith": "Termine par",
     "equals": "Égal",
     "notEquals": "Différent",
     "noFilter": "Pas de filtre",

@@ -2,8 +2,8 @@
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width:18px;">
       <ng-container *ngIf="!isArraySimple(col)">
-        <p-columnFilter [type]="columnFilterType" 
-                        [field]="col.field" display="menu"></p-columnFilter>
+        <p-columnFilter [type]="columnFilterType" [matchModeOptions]="matchModeOptions"
+                        [field]="col.field" display="menu" *ngIf="showColumnFilter"></p-columnFilter>
       </ng-container>
     </div>
     <div class="app-field-container flex-1" >
@@ -13,6 +13,9 @@
             <ng-container [ngSwitch]="filter.matchMode">
               <ng-container *ngSwitchCase="'startsWith'">
                 [{{ filter.value }}*]
+              </ng-container>
+              <ng-container *ngSwitchCase="'notStartsWith'">
+                [!{{ filter.value }}*]
               </ng-container>
               <ng-container *ngSwitchCase="'contains'">
                 <ng-container *ngIf="columnFilterType === 'boolean'">
@@ -28,6 +31,9 @@
               <ng-container *ngSwitchCase="'endsWith'">
                 [*{{ filter.value }}]
               </ng-container>
+              <ng-container *ngSwitchCase="'notEndsWith'">
+                [!*{{ filter.value }}]
+              </ng-container>
               <ng-container *ngSwitchCase="'dateIs'">
                 [{{ filter.value | formatValue: col }}]
               </ng-container>
@@ -39,6 +45,9 @@
               </ng-container>
               <ng-container *ngSwitchCase="'dateAfter'">
                 [>{{ filter.value | formatValue: col }}]
+              </ng-container>
+              <ng-container *ngSwitchCase="'equals'">
+                [={{ filter.value }}]
               </ng-container>
               <ng-container *ngSwitchCase="'lt'">
                 [<{{ filter.value }}]

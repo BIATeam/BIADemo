@@ -232,8 +232,16 @@ namespace BIA.Net.Core.Domain
                     binaryExpression = ComputeExpression(expressionBody, "StartsWith", value);
                     break;
 
+                case "notstartswith":
+                    binaryExpression = Expression.Not(ComputeExpression(expressionBody, "StartsWith", value));
+                    break;
+
                 case "endswith":
                     binaryExpression = ComputeExpression(expressionBody, "EndsWith", value);
+                    break;
+
+                case "notendswith":
+                    binaryExpression = Expression.Not(ComputeExpression(expressionBody, "EndsWith", value));
                     break;
 
                 default:

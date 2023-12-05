@@ -116,6 +116,8 @@
     "startsWith": "Starts with",
     "contains": "Contains",
     "notContains": "Not contains",
+    "notEndsWith": "Not ends with",
+    "notStartsWith": "Not starts with",
     "endsWith": "Ends with",
     "equals": "Equals",
     "notEquals": "Not equals",
