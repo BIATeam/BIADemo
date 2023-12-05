@@ -120,6 +120,8 @@
     "notStartsWith": "No empieza con",
     "endsWith": "Termina con",
     "equals": "Igual",
+    "empty": "Vacío",
+    "notEmpty": "No Vacío",
     "notEquals": "No iguales",
     "noFilter": "Sin filtro",
     "lt": "Menor que",

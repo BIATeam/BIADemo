@@ -79,9 +79,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.Planes.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.planeService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-            return this.Ok(results);
+            try
+            {
+                var (results, total) = await this.planeService.GetRangeAsync(filters);
+                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+                return this.Ok(results);
+            }
+            catch (Exception)
+            {
+                return this.StatusCode(500, "Internal server error");
+            }
         }
 
         /// <summary>

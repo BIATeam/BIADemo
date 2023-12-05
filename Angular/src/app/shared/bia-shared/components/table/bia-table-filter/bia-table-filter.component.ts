@@ -57,7 +57,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     if (this.table && this.table.filters && Array.isArray(this.table.filters[col.field]))
     {
       (this.table.filters[col.field] as FilterMetadata[]).forEach(element => {
-        if (element.value != undefined)
+        if (element.value != undefined || element.matchMode === 'empty' || element.matchMode === 'notEmpty' )
         {
           valueInArray =true;
         }
@@ -70,9 +70,13 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
   {
     if (this.table)
     {
-      if (this.table.filters && (this.table.filters[col.field] as FilterMetadata) && 'value' in (this.table.filters[col.field] as FilterMetadata))
+      if (this.table.filters)
       {
-        return (this.table.filters[col.field] as FilterMetadata)['value'] != undefined
+        let filter : FilterMetadata = this.table.filters[col.field] as FilterMetadata;
+        if (filter)
+        {
+            return filter['value'] !== undefined || filter['matchMode'] === 'empty' || filter['matchMode'] === 'notEmpty';
+        }
       }
     }
     return false; 
@@ -136,9 +140,9 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     }
   }
   filterMatchModeOptions = {
-    text: [FilterMatchMode.STARTS_WITH, "notStartsWith", FilterMatchMode.CONTAINS, FilterMatchMode.NOT_CONTAINS, FilterMatchMode.ENDS_WITH, "notEndsWith", FilterMatchMode.EQUALS, FilterMatchMode.NOT_EQUALS],
-    numeric: [FilterMatchMode.EQUALS, FilterMatchMode.NOT_EQUALS, FilterMatchMode.LESS_THAN, FilterMatchMode.LESS_THAN_OR_EQUAL_TO, FilterMatchMode.GREATER_THAN, FilterMatchMode.GREATER_THAN_OR_EQUAL_TO],
-    date: [FilterMatchMode.DATE_IS, FilterMatchMode.DATE_IS_NOT, FilterMatchMode.DATE_BEFORE, FilterMatchMode.DATE_AFTER]
+    text: [FilterMatchMode.STARTS_WITH, "notStartsWith", FilterMatchMode.CONTAINS, FilterMatchMode.NOT_CONTAINS, FilterMatchMode.ENDS_WITH, "notEndsWith", FilterMatchMode.EQUALS, FilterMatchMode.NOT_EQUALS, "empty", "notEmpty"],
+    numeric: [FilterMatchMode.EQUALS, FilterMatchMode.NOT_EQUALS, FilterMatchMode.LESS_THAN, FilterMatchMode.LESS_THAN_OR_EQUAL_TO, FilterMatchMode.GREATER_THAN, FilterMatchMode.GREATER_THAN_OR_EQUAL_TO, "empty", "notEmpty"],
+    date: [FilterMatchMode.DATE_IS, FilterMatchMode.DATE_IS_NOT, FilterMatchMode.DATE_BEFORE, FilterMatchMode.DATE_AFTER, "empty", "notEmpty"]
   };
   generateMatchModeOptions(option: string[]) {
     this.sub.add(this.biaTranslationService.currentCulture$.subscribe(() => {

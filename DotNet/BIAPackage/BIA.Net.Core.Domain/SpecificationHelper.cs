@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Domain
 
         private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value) where TEntity : class, IEntity<TKey>, new()
         {
-            if (value["value"] == null)
+            if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty")
             {
                 return;
             }
@@ -98,7 +98,7 @@ namespace BIA.Net.Core.Domain
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                     expression,
                     value["matchMode"].ToString(),
-                    value["value"].ToString());
+                    value["value"]?.ToString());
 
                 if (isGlobal)
                 {
@@ -220,6 +220,14 @@ namespace BIA.Net.Core.Domain
 
                     break;
 
+                case "empty":
+                    binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+                    break;
+
+                case "notempty":
+                    binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+                    break;
+
                 case "contains":
                     binaryExpression = ComputeExpression(expressionBody, "Contains", value);
                     break;
@@ -256,7 +264,6 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             MethodInfo method;
             Expression binaryExpression;
-            var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
             if (IsCollectionType(expressionBody.Type))
             {
                 valueExpression = Expression.Constant(value);
@@ -273,6 +280,7 @@ namespace BIA.Net.Core.Domain
                 method = typeof(string).GetMethod(filterFonction, new[] { typeof(string) });
                 if (expressionBody.Type != typeof(string))
                 {
+                    var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
                     expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
                 }
 
