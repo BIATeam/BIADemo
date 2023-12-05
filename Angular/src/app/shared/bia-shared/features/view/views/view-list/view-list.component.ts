@@ -241,14 +241,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       (filterMetadata as FilterMetadata[]).forEach(element => {
         if (!this.tableHelperService.isEmptyFilter(element))
         {
-          standardized.push({...element});
+          standardized.push(this.tableHelperService.cleanFilter(element));
         }
       });
     }
 
     if (!this.tableHelperService.isEmptyFilter(filterMetadata as FilterMetadata))
     {
-      standardized.push({...filterMetadata as FilterMetadata})
+      standardized.push(this.tableHelperService.cleanFilter(filterMetadata as FilterMetadata))
     }
 
     if (standardized.length === 1)
@@ -257,6 +257,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
     return standardized;
   }
+
+
 
   private isNullUndefEmptyStr(obj : any) : boolean
   {

@@ -93,5 +93,14 @@ export class TableHelperService  {
     {
       return obj === null || obj === undefined || (this.isNullUndefEmptyStr(obj.value) && obj.matchMode != 'empty'  && obj.matchMode != 'notEmpty') 
     }
-    
+      
+    public cleanFilter(element : FilterMetadata)
+    {
+      let elemCopy = {...element as FilterMetadata};
+      if (element.matchMode === 'empty' || element.matchMode === 'notEmpty')
+      {
+        elemCopy.value = null;
+      }
+      return elemCopy
+    }
 }
