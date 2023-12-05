@@ -14,6 +14,7 @@ import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaFieldConfig, PropType} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { TableHelperService } from '../../../services/table-helper.service';
 
 @Component({
   selector: 'bia-table-filter',
@@ -36,7 +37,8 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
 
   constructor(
     public biaTranslationService: BiaTranslationService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private tableHelperService: TableHelperService
     ) {
     
   }
@@ -57,7 +59,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     if (this.table && this.table.filters && Array.isArray(this.table.filters[col.field]))
     {
       (this.table.filters[col.field] as FilterMetadata[]).forEach(element => {
-        if (element.value != undefined || element.matchMode === 'empty' || element.matchMode === 'notEmpty' )
+        if (!this.tableHelperService.isEmptyFilter(element))
         {
           valueInArray =true;
         }
@@ -75,7 +77,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
         let filter : FilterMetadata = this.table.filters[col.field] as FilterMetadata;
         if (filter)
         {
-            return filter['value'] !== undefined || filter['matchMode'] === 'empty' || filter['matchMode'] === 'notEmpty';
+            return !this.tableHelperService.isEmptyFilter(filter)
         }
       }
     }

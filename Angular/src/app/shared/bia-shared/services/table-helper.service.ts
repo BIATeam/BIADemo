@@ -55,23 +55,19 @@ export class TableHelperService  {
         {
           continue;
         }
-        if (this.isNullUndefEmptyStr(filter)) 
+        if (this.isSimpleFilter(filter)) 
         {
-          continue;
+          // simple filter
+          if (this.isEmptyFilter(<FilterMetadata>filter))
+          {
+            continue;
+          }
         }
-        if ((<FilterMetadata>filter).value === null || (<FilterMetadata>filter).value === '' )
+        else
         {
-          continue;
-        }
-        if ((<FilterMetadata>filter).value === undefined) 
-        {
-          // filter is probably a FilterMetadata[]
+          // array filter
           for (const filter2 of (filter as FilterMetadata[])) {
-            if (this.isNullUndefEmptyStr(filter2)) 
-            {
-              continue;
-            }
-            if (this.isNullUndefEmptyStr(filter2.value)) 
+            if (this.isEmptyFilter(filter2)) 
             {
               continue;
             }
@@ -84,9 +80,18 @@ export class TableHelperService  {
       return true;
     }
     
+    public isSimpleFilter(filter: FilterMetadata | FilterMetadata[] | undefined) {
+      return !Array.isArray(filter);
+    }
+
     private isNullUndefEmptyStr(obj : any) : boolean
     {
       return (obj === null || obj === undefined || obj === '') 
+    }
+
+    public isEmptyFilter(obj : FilterMetadata) : boolean
+    {
+      return obj === null || obj === undefined || (this.isNullUndefEmptyStr(obj.value) && obj.matchMode != 'empty'  && obj.matchMode != 'notEmpty') 
     }
     
 }

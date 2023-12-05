@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 const currentView = -1;
 const undefinedView = -2;
@@ -46,7 +47,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     private store: Store<AppState>,
     public translateService: TranslateService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private tableHelperService: TableHelperService
   ) { }
 
   ngOnInit() {
@@ -237,14 +239,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     if (Array.isArray(filterMetadata))
     {
       (filterMetadata as FilterMetadata[]).forEach(element => {
-        if (!this.isValueNullUndefEmptyStr(element.value))
+        if (!this.tableHelperService.isEmptyFilter(element))
         {
           standardized.push({...element});
         }
       });
     }
 
-    if (!this.isValueNullUndefEmptyStr((filterMetadata as FilterMetadata)['value']))
+    if (!this.tableHelperService.isEmptyFilter(filterMetadata as FilterMetadata))
     {
       standardized.push({...filterMetadata as FilterMetadata})
     }
