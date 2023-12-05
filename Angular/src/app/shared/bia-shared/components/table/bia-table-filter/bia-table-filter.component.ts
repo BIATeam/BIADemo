@@ -5,6 +5,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  ViewEncapsulation,
   // Output,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +19,8 @@ import { BiaFieldConfig, PropType} from 'src/app/shared/bia-shared/model/bia-fie
   selector: 'bia-table-filter',
   templateUrl: './bia-table-filter.component.html',
   styleUrls: ['./bia-table-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  encapsulation: ViewEncapsulation.None
 })
 
 export class BiaTableFilterComponent implements OnInit, OnDestroy {
