@@ -153,6 +153,19 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      // Engine
+      {
+        "Names": [ "Engine_List_Access", "Engine_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Engine_Update", "Engine_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Engine_Create", "Engine_Delete" ],
+        "Roles": [ "Site_Admin" ]
+      },
       // Aircraft Maintenance Company
       {
         "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],

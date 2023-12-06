@@ -100,6 +100,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
+            collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
 

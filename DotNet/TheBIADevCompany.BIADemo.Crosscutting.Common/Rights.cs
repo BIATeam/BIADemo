@@ -109,6 +109,42 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
+        /// The planes rights.
+        /// </summary>
+        public static class Engines
+        {
+            /// <summary>
+            /// The right to access to the list of planes.
+            /// </summary>
+            public const string ListAccess = "Engine_List_Access";
+
+            /// <summary>
+            /// The right to create planes.
+            /// </summary>
+            public const string Create = "Engine_Create";
+
+            /// <summary>
+            /// The right to read planes.
+            /// </summary>
+            public const string Read = "Engine_Read";
+
+            /// <summary>
+            /// The right to update planes.
+            /// </summary>
+            public const string Update = "Engine_Update";
+
+            /// <summary>
+            /// The right to delete planes.
+            /// </summary>
+            public const string Delete = "Engine_Delete";
+
+            /// <summary>
+            /// The right to save planes.
+            /// </summary>
+            public const string Save = "Engine_Save";
+        }
+
+        /// <summary>
         /// The maintenance team rights.
         /// </summary>
         public static class MaintenanceTeams

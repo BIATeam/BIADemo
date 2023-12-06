@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreatePlaneModel(modelBuilder);
             CreatePlaneTypeModel(modelBuilder);
             CreateAirportModel(modelBuilder);
+            CreateEngineModel(modelBuilder);
         }
 
         /// <summary>
@@ -66,6 +67,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Airport>().HasKey(p => p.Id);
             modelBuilder.Entity<Airport>().Property(p => p.Name).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<Airport>().Property(p => p.City).IsRequired().HasMaxLength(64);
+        }
+
+        /// <summary>
+        /// Create the model for engines.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateEngineModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Engine>().HasKey(p => p.Id);
+            modelBuilder.Entity<Engine>().Property(p => p.PlaneId).IsRequired(); // relationship 1-*
+            modelBuilder.Entity<Engine>().Property(p => p.Reference).HasMaxLength(64);
+            modelBuilder.Entity<Engine>().Property(p => p.LastMaintenanceDate).IsRequired();
+            modelBuilder.Entity<Engine>().Property(p => p.SyncTime).IsRequired();
+            modelBuilder.Entity<Engine>().Property(p => p.Power).IsRequired(false);
         }
     }
 }
