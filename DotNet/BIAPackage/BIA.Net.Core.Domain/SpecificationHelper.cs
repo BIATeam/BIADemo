@@ -221,11 +221,25 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "empty":
-                    binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody));
+                    }
+                    else
+                    {
+                        binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+                    }
                     break;
 
                 case "notempty":
-                    binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody);
+                    }
+                    else
+                    {
+                        binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+                    }
                     break;
 
                 case "contains":

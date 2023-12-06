@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return this.StatusCode(500, "Internal server error");
             }
