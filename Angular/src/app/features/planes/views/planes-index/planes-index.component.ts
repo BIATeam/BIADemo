@@ -16,7 +16,9 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   
   @ViewChild(PlaneTableComponent, { static: false }) crudItemTableComponent: PlaneTableComponent;
-
+    // Begin Child Engine
+    canViewEngines : boolean = false;
+    // End Child Engine
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
@@ -30,5 +32,16 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canEdit = this.authService.hasPermission(Permission.Plane_Update);
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
+    // Begin Child Engine
+    this.canViewEngines = this.authService.hasPermission(Permission.Engine_List_Access);
+    // End Child Engine
   }
+
+  // Begin Child Engine
+  onViewEngines(crudItemId: any) {
+    if (crudItemId && crudItemId > 0) {
+      this.router.navigate([crudItemId, 'engines'], { relativeTo: this.activatedRoute });
+    }
+  }
+  // End Child Engine
 }

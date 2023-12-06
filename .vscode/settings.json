@@ -14,5 +14,6 @@
   ],
   "i18n-ally.localesPaths": [
     "./Angular/src/assets/i18n/app"
-  ]
+  ],
+  "dotnet.defaultSolution": "DotNet/BIADemo.sln"
 }

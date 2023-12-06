@@ -73,6 +73,18 @@ export let ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit'
           },
+          // Begin Child Engine
+          {
+            path: 'engines',
+            data: {
+              breadcrumb: 'app.engines',
+              canNavigate: true,
+              permission: Permission.Engine_List_Access
+            },
+            loadChildren: () =>
+              import('./children/engines/engine.module').then((m) => m.EngineModule)
+          },
+          // End Child Engine
         ]
       },
     ]

@@ -35,6 +35,16 @@
     "listOf": "List of airports",
     "name" : "Name"
   },
+  "engine": {
+    "add": "Add engine",
+    "edit": "Edit engine",
+    "lastMaintenanceDate": "Last maintenance date",
+    "listOf": "List of engines",
+    "plane": "Plane",
+    "power": "Power",
+    "reference": "Reference",
+    "syncTime": "Synchronization time"
+  },
   "maintenanceTeam": {
     "add": "Add maintenance team",
     "edit": "Edit maintenance team",
@@ -48,6 +58,7 @@
     "connectingAirports": "Connecting Airports",
     "deliveryDate": "Delivery Date",
     "edit": "Edit plane",
+    "engines": "Engines",
     "isActive": "Active",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",

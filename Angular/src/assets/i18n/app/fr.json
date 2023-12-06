@@ -35,6 +35,16 @@
     "listOf": "Listes des aéroports",
     "name": "Nom"
   },
+  "engine": {
+    "add": "Ajouter moteur",
+    "edit": "Editer moteur",
+    "lastMaintenanceDate": "Date de la dernière maintenance",
+    "listOf": "Liste des moteurs",
+    "plane": "Avion",
+    "power": "Puissance",
+    "reference": "Reference",
+    "syncTime": "Heure de synchronisation"
+  },
   "maintenanceTeam": {
     "add": "Ajouter équipe de maintenance",
     "edit": "Editer équipe de maintenance",
@@ -48,6 +58,7 @@
     "connectingAirports": "Aéroports de connection",
     "deliveryDate": "Date de livraison",
     "edit": "Modifier avion",
+    "engines": "Moteurs",
     "isActive": "Actif",
     "lastFlightDate": "Date du dernier vol",
     "listOf": "Liste des avions",

@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInEngine
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Specification;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
@@ -30,6 +31,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage Engines.
@@ -81,7 +83,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         {
             try
             {
-                var (results, total) = await this.planeService.GetRangeAsync(filters);
+                var (results, total) = await this.planeService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
                 this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
                 return this.Ok(results);
             }
@@ -323,113 +325,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.planeService.GetCsvAsync(filters);
+            byte[] buffer = await this.planeService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BIAConstants.Csv.Extension}");
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPost("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Engines.Create)]
-        public async Task<IActionResult> AddBulkAsync([FromBody] IEnumerable<EngineDto> dtos)
-        {
-            // JSON test swagger.
-            // [{ "id":0,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":1,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":2,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":3,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":4,"siteId":1,"planeType":{ "id":1} },{ "id":0,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":5,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.AddBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Engines.Update)]
-        public async Task<IActionResult> UpdateBulkAsync([FromBody] IEnumerable<EngineDto> dtos)
-        {
-            // JSON test swagger. Adapt Id.
-            // [{ "id":50236,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":100,"siteId":1,"planeType":{ "id":1} },{ "id":50237,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":200,"siteId":1,"planeType":{ "id":1} },{ "id":50238,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":300,"siteId":1,"planeType":{ "id":1} },{ "id":50239,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":400,"siteId":1,"planeType":{ "id":1} },{ "id":50240,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":500,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.UpdateBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpDelete("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Engines.Delete)]
-        public async Task<IActionResult> RemoveBulkAsync([FromBody] IEnumerable<EngineDto> dtos)
-        {
-            // JSON test swagger. Adapt Id.
-            // [{ "id":50236,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":100,"siteId":1,"planeType":{ "id":1} },{ "id":50237,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":200,"siteId":1,"planeType":{ "id":1} },{ "id":50238,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":300,"siteId":1,"planeType":{ "id":1} },{ "id":50239,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":400,"siteId":1,"planeType":{ "id":1} },{ "id":50240,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":500,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.RemoveBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
     }
 }

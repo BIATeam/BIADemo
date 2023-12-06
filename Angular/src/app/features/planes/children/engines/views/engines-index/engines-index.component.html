@@ -1,7 +1,7 @@
 <div>
   <div>
     <bia-table-header
-      [headerTitle]="'plane.listOf' | translate"
+      [headerTitle]="'engine.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
       [canExportCSV]="true"
@@ -9,18 +9,7 @@
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
-    >
-      <!-- // Begin Child Engine -->
-      <ng-template pTemplate="actionOnSelected">
-        <button *ngIf="canViewEngines"
-        pButton
-        [disabled]="selectedCrudItems?.length !== 1"
-        class="p-button-outlined"
-        label="{{ 'plane.engines' | translate }}"
-        (click)="onViewEngines(this.selectedCrudItems[0].id)"></button>
-      </ng-template>
-      <!-- // End Child Engine -->
-    </bia-table-header>
+    ></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
@@ -74,10 +63,10 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
     ></bia-table>
-    <app-plane-table
+    <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
-      [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
+      [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
       [totalRecord]="totalCount$ | async"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -95,6 +84,6 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-    ></app-plane-table>
+    ></app-engine-table>
   </div>
 </div>
