@@ -157,7 +157,6 @@ namespace BIA.Net.Core.Domain
             var expressionBody = expression.Body;
 
             Expression binaryExpression;
-            var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 
             switch (criteria.ToLower())
             {
@@ -229,6 +228,7 @@ namespace BIA.Net.Core.Domain
                     {
                         binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
                     }
+
                     break;
 
                 case "notempty":
@@ -240,6 +240,7 @@ namespace BIA.Net.Core.Domain
                     {
                         binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
                     }
+
                     break;
 
                 case "contains":
