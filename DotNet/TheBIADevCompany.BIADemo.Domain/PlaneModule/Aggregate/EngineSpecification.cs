@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="MemberSpecification.cs" company="TheBIADevCompany">
+// <copyright file="EngineSpecification.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
