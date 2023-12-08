@@ -492,6 +492,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
                                 allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMember);
                             }
 
+                            if (allTeams.Any(t => t.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany))
+                            {
+                                allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMemberOfOne);
+                            }
+
                             if (currentTeam.TeamTypeId == (int)TeamTypeId.MaintenanceTeam)
                             {
                                 allRoles.Add(Constants.Role.MaintenanceTeamMember);

@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The base class for all application service.
@@ -17,11 +18,21 @@ namespace BIA.Net.Core.Domain.Service
                 where TEntity : class, IEntity<TKey>
     {
         /// <summary>
-        /// The unit of work.
+        /// The user context (culture and langue).
         /// </summary>
         protected UserContext userContext = null;
 
         /// <summary>
+        /// The user id.
+        /// </summary>
+        protected int userId;
+
+         /// <summary>
+        /// The user id.
+        /// </summary>
+        protected IEnumerable<string> userPermissions;
+
+       /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -50,6 +61,9 @@ namespace BIA.Net.Core.Domain.Service
             {
                 mapper.UserContext = this.userContext;
             }
+
+            mapper.UserId = this.userId;
+            mapper.UserPermissions = this.userPermissions;
 
             return mapper;
         }

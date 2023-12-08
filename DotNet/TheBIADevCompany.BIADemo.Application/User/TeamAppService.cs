@@ -71,13 +71,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 return await this.Repository.GetAllResultAsync(
                     mapper.EntityToDto(userId),
                     specification: new DirectSpecification<Team>(team =>
-                        team.Members.Any(member =>
 
                         // Begin BIADemo
+                        // Begin Child MaintenanceTeam
                         (team is AircraftMaintenanceCompany && (team as AircraftMaintenanceCompany).MaintenanceTeams.Any(a => a.Members.Any(b => b.UserId == userId))) ||
+                        (team is MaintenanceTeam && (team as MaintenanceTeam).AircraftMaintenanceCompany.Members.Any(b => b.UserId == userId)) ||
 
+                        // End Child MaintenanceTeam
                         // End BIADemo
-                        member.UserId == userId)));
+                        team.Members.Any(member => member.UserId == userId)
+                        )
+                    );
             }
         }
     }

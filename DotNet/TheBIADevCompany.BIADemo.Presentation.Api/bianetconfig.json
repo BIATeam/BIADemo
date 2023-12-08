@@ -172,7 +172,11 @@
         "Roles": [ "Admin" ]
       },
       {
-        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
+        "Names": [ "AircraftMaintenanceCompany_List_Access" ],
+        "Roles": [ "Admin", "AircraftMaintenanceCompany_MemberOfOne" ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
         "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
       },
       {

@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
@@ -55,6 +56,12 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             {
                 Id = entity.Id,
                 Title = entity.Title,
+
+                // Should correspond to AircraftMaintenanceCompany_Update permission (but without use the roles *_Member that is not determined at list display)
+                CanUpdate = this.UserPermissions.Contains(Rights.Permissions.Admin),
+
+                // Should correspond to AircraftMaintenanceCompany_Member_List_Access (but without use the roles *_Member that is not determined at list display)
+                CanMemberListAccess = this.UserPermissions.Contains(Rights.Permissions.Admin) || entity.Members.Any(m => m.UserId == this.UserId),
             };
         }
 

@@ -74,6 +74,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string AircraftMaintenanceCompanyMember = "AircraftMaintenanceCompany_Member";
 
             /// <summary>
+            /// The Aircraft Maintenance Company member role code.
+            /// </summary>
+            public const string AircraftMaintenanceCompanyMemberOfOne = "AircraftMaintenanceCompany_MemberOfOne";
+
+            /// <summary>
             /// The Maintenance Team member role code.
             /// </summary>
             public const string MaintenanceTeamMember = "MaintenanceTeam_Member";

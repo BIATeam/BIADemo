@@ -36,16 +36,26 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             var currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
-            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+            this.userPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            bool accessAll = this.userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
+            this.userId = (principal as BIAClaimsPrincipal).GetUserId();
 
             // You can see evrey team if your are member
             // For AircraftMaintenanceCompany we add
             //          - right for privilate acces (AccessAll) = Admin
+            //          - right for member of a child team
             this.FiltersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
+                new DirectSpecification<AircraftMaintenanceCompany>(
+                    p => accessAll
+                    || p.Members.Any(m => m.UserId == this.userId)
+
+                    // You should add here link relation to member of child teams if there is child teams. (ex : || p.ChildTeams.Any(child => child.Members.Any(m => m.UserId == this.userId))
+                    // Begin Child MaintenanceTeam
+                    || p.MaintenanceTeams.Any(child => child.Members.Any(m => m.UserId == this.userId))
+
+                    // End Child MaintenanceTeam
+                    ));
 
             // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.FiltersContext.Add(

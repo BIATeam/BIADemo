@@ -22,7 +22,20 @@ namespace BIA.Net.Core.Domain
         where TDto : BaseDto<TKey>
         where TEntity : class, IEntity<TKey>
     {
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
         public UserContext UserContext { get; set; }
+
+        /// <summary>
+        /// the user id.
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// the user permission.
+        /// </summary>
+        public IEnumerable<string> UserPermissions { get; set; }
 
         /// <summary>
         /// Create an entity from a DTO.
