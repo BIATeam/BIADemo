@@ -51,7 +51,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   selectedNotifications: NotificationListItem[];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
-  canEdit = false;
+  canRead = false;
   canDelete = false;
   canAdd = false;
   tableConfiguration: BiaFieldsConfig;
@@ -133,20 +133,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
 
-  onEdit(notificationId: number) {
-    this.router.navigate(['./' + notificationId + '/edit'], { relativeTo: this.activatedRoute });
-  }
-
   onDetail(notificationId: number) {
     this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
-
-    // this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe(notif => {
-    //   if (notif && !notif.read) {
-    //     // refresh the list to see readed
-    //     setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()), 500)
-    //   }
-    // }
-    // )
   }
 
   onDelete() {
@@ -197,7 +185,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   private setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Notification_Update);
+    this.canRead = this.authService.hasPermission(Permission.Notification_Read);
     this.canDelete = this.authService.hasPermission(Permission.Notification_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Notification_Create);
   }
