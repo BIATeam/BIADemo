@@ -22,6 +22,15 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// </summary>
     public class NotificationListItemMapper : BaseMapper<NotificationListItemDto, Notification, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationListItemMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context</param>
+        public NotificationListItemMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Notification> ExpressionCollection
         {
@@ -40,6 +49,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationListItemDto>> EntityToDto(string mapperMode)

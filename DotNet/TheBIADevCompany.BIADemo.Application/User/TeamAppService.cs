@@ -38,11 +38,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="userContext">The user context.</param>
-        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal, UserContext userContext)
+        public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
-            this.userContext = userContext;
         }
 
         /// <summary>
@@ -79,9 +78,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                         // End Child MaintenanceTeam
                         // End BIADemo
-                        team.Members.Any(member => member.UserId == userId)
-                        )
-                    );
+                        team.Members.Any(member => member.UserId == userId)));
             }
         }
     }

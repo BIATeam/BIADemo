@@ -25,11 +25,11 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The DTO with id updated.</returns>
         Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Get the DTO list. (with a queryOrder).
@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, QueryOrder<TEntity> queryOrder = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Get the DTO list. (with an order By Expression and direction).
@@ -72,7 +72,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, int firstElement = 0, int pageCount = 0, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = null, string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Return a DTO for a given identifier.
@@ -89,11 +89,11 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The DTO.</returns>
         Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, Expression<Func<TEntity, object>>[] includes = null, string accessMode = "Read", string queryMode = "Read", string mapperMode = "Item", bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = "Csv", bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherFilterDto : LazyLoadDto, new();
 
         /// <summary>
@@ -111,12 +111,12 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The list of DTO.</returns>
         Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(TOtherFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherFilterDto : LazyLoadDto, new();
 
         Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(List<TKey> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -130,17 +130,17 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The deleted DTO.</returns>
         Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(TKey id, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = "Delete", string queryMode = "Delete");
 
         Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtos, string accessMode = null, string queryMode = null, string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Save a DTO in DB regarding to its state.
@@ -149,11 +149,11 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string accessMode = null, string queryMode = null, string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(TOtherDto dto, string accessMode = "Update", string queryMode = "Update", string mapperMode = null)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
         /// <summary>
         /// Update an entity in DB with the DTO values.
@@ -167,6 +167,6 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The DTO updated.</returns>
         Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new();
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
     }
 }

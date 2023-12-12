@@ -36,9 +36,9 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             var currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
 
-            this.userPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
-            bool accessAll = this.userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            this.userId = (principal as BIAClaimsPrincipal).GetUserId();
+            var userPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            bool accessAll = userPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
+            var userId = (principal as BIAClaimsPrincipal).GetUserId();
 
             // You can see evrey team if your are member
             // For AircraftMaintenanceCompany we add
@@ -48,14 +48,13 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
                 AccessMode.Read,
                 new DirectSpecification<AircraftMaintenanceCompany>(
                     p => accessAll
-                    || p.Members.Any(m => m.UserId == this.userId)
 
                     // You should add here link relation to member of child teams if there is child teams. (ex : || p.ChildTeams.Any(child => child.Members.Any(m => m.UserId == this.userId))
                     // Begin Child MaintenanceTeam
-                    || p.MaintenanceTeams.Any(child => child.Members.Any(m => m.UserId == this.userId))
+                    || p.MaintenanceTeams.Any(child => child.Members.Any(m => m.UserId == userId))
 
                     // End Child MaintenanceTeam
-                    ));
+                    || p.Members.Any(m => m.UserId == userId)));
 
             // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.FiltersContext.Add(

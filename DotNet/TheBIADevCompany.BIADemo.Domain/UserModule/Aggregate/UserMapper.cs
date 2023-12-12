@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -19,6 +20,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class UserMapper : BaseMapper<UserDto, User, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context</param>
+        public UserMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
@@ -35,6 +45,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <summary>
         /// Create a user DTO from an entity.

@@ -8,7 +8,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Principal;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -23,6 +25,15 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     /// </summary>
     public class NotificationMapper : BaseMapper<NotificationDto, Notification, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context</param>
+        public NotificationMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Notification> ExpressionCollection
         {
@@ -43,6 +54,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(NotificationDto dto, Notification entity)

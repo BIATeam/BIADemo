@@ -33,7 +33,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <summary>
         /// The service provider.
         /// </summary>
-        protected IServiceProvider serviceProvider;
+        public IServiceProvider serviceProvider;
 
         /// <summary>
         /// Get or set the Query customizer.
@@ -54,6 +54,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Gets the unit of work.
         /// </summary>
         public IUnitOfWork UnitOfWork => this.unitOfWork;
+
+        /// <summary>
+        /// Gets service provider.
+        /// </summary>
+        public IServiceProvider ServiceProvider => this.serviceProvider;
 
         /// <summary>
         /// Add an item to the current context.

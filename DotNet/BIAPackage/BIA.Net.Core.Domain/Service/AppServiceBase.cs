@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.DependencyInjection;
     using System.Collections.Generic;
 
     /// <summary>
@@ -17,21 +18,6 @@ namespace BIA.Net.Core.Domain.Service
     public abstract class AppServiceBase<TEntity, TKey>
                 where TEntity : class, IEntity<TKey>
     {
-        /// <summary>
-        /// The user context (culture and langue).
-        /// </summary>
-        protected UserContext userContext = null;
-
-        /// <summary>
-        /// The user id.
-        /// </summary>
-        protected int userId;
-
-         /// <summary>
-        /// The user id.
-        /// </summary>
-        protected IEnumerable<string> userPermissions;
-
        /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
         /// </summary>
@@ -54,16 +40,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The mapper.</returns>
         protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
         {
-            TOtherMapper mapper = new TOtherMapper();
-            if (this.userContext != null)
-            {
-                mapper.UserContext = this.userContext;
-            }
-
-            mapper.UserId = this.userId;
-            mapper.UserPermissions = this.userPermissions;
+            TOtherMapper mapper = this.Repository.ServiceProvider.GetService<TOtherMapper>();
 
             return mapper;
         }

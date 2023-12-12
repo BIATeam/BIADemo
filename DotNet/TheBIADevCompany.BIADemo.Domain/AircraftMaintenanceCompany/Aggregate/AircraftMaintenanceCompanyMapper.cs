@@ -9,9 +9,12 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Principal;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
@@ -22,6 +25,12 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     /// </summary>
     public class AircraftMaintenanceCompanyMapper : BaseMapper<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int>
     {
+        public AircraftMaintenanceCompanyMapper(IPrincipal principal)
+        {
+            this.UserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            this.UserId = (principal as BIAClaimsPrincipal).GetUserId();
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<AircraftMaintenanceCompany> ExpressionCollection
         {
@@ -35,6 +44,16 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 };
             }
         }
+
+        /// <summary>
+        /// the user id.
+        /// </summary>
+        private int UserId { get; set; }
+
+        /// <summary>
+        /// the user permission.
+        /// </summary>
+        private IEnumerable<string> UserPermissions { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(AircraftMaintenanceCompanyDto dto, AircraftMaintenanceCompany entity)

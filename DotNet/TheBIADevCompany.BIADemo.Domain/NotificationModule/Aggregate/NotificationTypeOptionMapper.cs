@@ -9,12 +9,27 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The mapper used for notification type.
     /// </summary>
     public class NotificationTypeOptionMapper : BaseMapper<OptionDto, NotificationType, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationTypeOptionMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context.</param>
+        public NotificationTypeOptionMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<NotificationType, OptionDto>> EntityToDto()
         {

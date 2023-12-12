@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -20,6 +21,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class MemberMapper : BaseMapper<MemberDto, Member, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemberMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context</param>
+        public MemberMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <inheritdoc/>
         public override ExpressionCollection<Member> ExpressionCollection
         {
@@ -36,6 +46,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <inheritdoc/>
         public override Expression<Func<Member, MemberDto>> EntityToDto()

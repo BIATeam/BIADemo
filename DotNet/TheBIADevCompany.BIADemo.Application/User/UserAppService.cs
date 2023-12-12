@@ -70,7 +70,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger,
-            UserContext userContext,
             IIdentityProviderRepository identityProviderRepository,
             IUserIdentityKeyDomainService userIdentityKeyDomainService)
             : base(repository)
@@ -79,7 +78,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
-            this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));

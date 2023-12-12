@@ -48,11 +48,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,
-            INotificationQueryCustomizer queryCustomizer,
-            UserContext userContext)
+            INotificationQueryCustomizer queryCustomizer)
             : base(repository)
         {
-            this.userContext = userContext;
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
             this.userId = (principal as BIAClaimsPrincipal).GetUserId();
