@@ -1,4 +1,4 @@
-﻿// <copyright file="Constants.cs" company="BIA">
+﻿// <copyright file="BIAConstants.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
