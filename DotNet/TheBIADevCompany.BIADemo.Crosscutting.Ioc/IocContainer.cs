@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Reflection;
     using Audit.Core;
@@ -119,8 +120,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<INotificationDomainService, NotificationDomainService>();
             collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
 
-            var types = ReflectiveEnumerator.GetTypesNameEndWith(Assembly.GetAssembly(typeof(NotificationDomainService)), "Mapper");
-            foreach (var type in types)
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetTypesDerivedOfBaseGenericTypeFromAssembly(assembly, templateType);
+            foreach (var type in derivedTypes)
             {
                 collection.AddScoped(type);
             }
