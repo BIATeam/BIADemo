@@ -7,8 +7,8 @@
   scrollHeight="50vh"
 >
   <ng-template let-item pTemplate="selectedItem">
-    <span>{{ item.label }}</span>
-    <i *ngIf="defaultView === item.value" class="pi pi-star"></i>
+    <span>{{ item?.label }}</span>
+    <i *ngIf="defaultView === item?.value" class="pi pi-star"></i>
   </ng-template>
   <ng-template let-object pTemplate="item">
     <span>{{ object.label }}</span>
