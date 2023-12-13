@@ -42,13 +42,17 @@ export class AircraftMaintenanceCompaniesEffects {
       ofType(FeatureAircraftMaintenanceCompaniesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
-          map((aircraftMaintenanceCompany) => FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
+            map((aircraftMaintenanceCompany) => FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany: <AircraftMaintenanceCompany>{} }));
+        }
       })
     )
   );
@@ -154,5 +158,5 @@ export class AircraftMaintenanceCompaniesEffects {
     private aircraftMaintenanceCompanyDas: AircraftMaintenanceCompanyDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

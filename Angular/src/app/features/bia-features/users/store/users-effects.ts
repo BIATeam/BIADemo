@@ -42,13 +42,17 @@ export class UsersEffects {
       ofType(FeatureUsersActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.userDas.get({ id: id }).pipe(
-          map((user) => FeatureUsersActions.loadSuccess({ user })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureUsersActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.userDas.get({ id: id }).pipe(
+            map((user) => FeatureUsersActions.loadSuccess({ user })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureUsersActions.loadSuccess({ user: <User>{} }));
+        }
       })
     )
   );
@@ -150,28 +154,28 @@ export class UsersEffects {
   );
 
   synchronize$ = createEffect(() =>
-  this.actions$.pipe(
-    ofType(FeatureUsersActions.synchronize),
-    concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
-    switchMap(([x, event]) => {
-      return this.userDas.synchronize().pipe(
-        map(() => {
-          this.biaMessageService.showSyncSuccess();
-          return FeatureUsersActions.loadAllByPost({ event: event });
-        }),
-        catchError((err) => {
-          this.biaMessageService.showError();
-          return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
-        })
-      );
-    })
-  )
-);
+    this.actions$.pipe(
+      ofType(FeatureUsersActions.synchronize),
+      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      switchMap(([x, event]) => {
+        return this.userDas.synchronize().pipe(
+          map(() => {
+            this.biaMessageService.showSyncSuccess();
+            return FeatureUsersActions.loadAllByPost({ event: event });
+          }),
+          catchError((err) => {
+            this.biaMessageService.showError();
+            return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
+          })
+        );
+      })
+    )
+  );
 
   constructor(
     private actions$: Actions,
     private userDas: UserDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

@@ -15,7 +15,7 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
   constructor(
     protected injector: Injector,
     public crudItemService: CrudItemService<CrudItem>,
-  ) { 
+  ) {
     this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
   }
 
@@ -37,6 +37,7 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
   }
 
   ngOnDestroy() {
+    this.crudItemService.currentCrudItemId = null;
     if (this.sub) {
       this.sub.unsubscribe();
     }

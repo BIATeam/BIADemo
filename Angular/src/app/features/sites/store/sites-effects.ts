@@ -42,13 +42,17 @@ export class SitesEffects {
       ofType(FeatureSitesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.siteDas.get({ id: id }).pipe(
-          map((site) => FeatureSitesActions.loadSuccess({ site })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureSitesActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.siteDas.get({ id: id }).pipe(
+            map((site) => FeatureSitesActions.loadSuccess({ site })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureSitesActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureSitesActions.loadSuccess({ site: <Site>{} }));
+        }
       })
     )
   );
@@ -154,5 +158,5 @@ export class SitesEffects {
     private siteDas: SiteDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

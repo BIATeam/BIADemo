@@ -42,13 +42,17 @@ export class MaintenanceTeamsEffects {
       ofType(FeatureMaintenanceTeamsActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.maintenanceTeamDas.get({ id: id }).pipe(
-          map((maintenanceTeam) => FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.maintenanceTeamDas.get({ id: id }).pipe(
+            map((maintenanceTeam) => FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam: <MaintenanceTeam>{} }));
+        }
       })
     )
   );
@@ -154,5 +158,5 @@ export class MaintenanceTeamsEffects {
     private maintenanceTeamDas: MaintenanceTeamDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

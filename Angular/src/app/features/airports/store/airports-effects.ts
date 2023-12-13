@@ -42,13 +42,17 @@ export class AirportsEffects {
       ofType(FeatureAirportsActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.airportDas.get({ id: id }).pipe(
-          map((airport) => FeatureAirportsActions.loadSuccess({ airport })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAirportsActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.airportDas.get({ id: id }).pipe(
+            map((airport) => FeatureAirportsActions.loadSuccess({ airport })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureAirportsActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureAirportsActions.loadSuccess({ airport: <Airport>{} }));
+        }
       })
     )
   );
@@ -154,5 +158,5 @@ export class AirportsEffects {
     private airportDas: AirportDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

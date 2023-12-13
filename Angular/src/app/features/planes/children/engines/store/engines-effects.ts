@@ -43,14 +43,18 @@ export class EnginesEffects {
       ofType(FeatureEnginesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.engineDas.get({ id: id }).pipe(
-          map((engine) => FeatureEnginesActions.loadSuccess({ engine })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            location.assign(this.baseHref);
-            return of(FeatureEnginesActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.engineDas.get({ id: id }).pipe(
+            map((engine) => FeatureEnginesActions.loadSuccess({ engine })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              location.assign(this.baseHref);
+              return of(FeatureEnginesActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureEnginesActions.loadSuccess({ engine: <Engine>{} }));
+        }
       })
     )
   );
@@ -157,5 +161,5 @@ export class EnginesEffects {
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>,
     @Inject(APP_BASE_HREF) public baseHref: string,
-  ) {}
+  ) { }
 }

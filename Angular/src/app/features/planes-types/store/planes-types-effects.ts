@@ -42,13 +42,17 @@ export class PlanesTypesEffects {
       ofType(FeaturePlanesTypesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.planeTypeDas.get({ id: id }).pipe(
-          map((planeType) => FeaturePlanesTypesActions.loadSuccess({ planeType })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeaturePlanesTypesActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.planeTypeDas.get({ id: id }).pipe(
+            map((planeType) => FeaturePlanesTypesActions.loadSuccess({ planeType })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeaturePlanesTypesActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeaturePlanesTypesActions.loadSuccess({ planeType: <PlaneType>{} }));
+        }
       })
     )
   );
@@ -154,5 +158,5 @@ export class PlanesTypesEffects {
     private planeTypeDas: PlaneTypeDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }
