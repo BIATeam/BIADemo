@@ -46,15 +46,17 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             //          - right for member of a child team
             this.FiltersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<AircraftMaintenanceCompany>(
-                    p => accessAll
+                new DirectSpecification<AircraftMaintenanceCompany>(team =>
 
-                    // You should add here link relation to member of child teams if there is child teams. (ex : || p.ChildTeams.Any(child => child.Members.Any(m => m.UserId == this.userId))
-                    // Begin Child MaintenanceTeam
-                    || p.MaintenanceTeams.Any(child => child.Members.Any(m => m.UserId == userId))
+                    // You should add here check of current parent teams if there is parent a team. (ex : team.ParentTeamId == this.currentParentTeamId && ( )
+                        accessAll
 
-                    // End Child MaintenanceTeam
-                    || p.Members.Any(m => m.UserId == userId)));
+                        // You should add here link relation to member of child teams if there are child teams. (ex : || team.ChildTeams.Any(childTeam => childTeam.Members.Any(m => m.UserId == this.userId))
+                        // Begin Child MaintenanceTeam
+                        || team.MaintenanceTeams.Any(child => child.Members.Any(m => m.UserId == userId))
+
+                        // End Child MaintenanceTeam
+                        || team.Members.Any(m => m.UserId == userId)));
 
             // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.FiltersContext.Add(
