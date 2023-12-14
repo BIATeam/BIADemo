@@ -29,7 +29,12 @@
         /// </summary>
         public static readonly ImmutableDictionary<TeamTypeId, BIATeamConfig<TeamTypeId, Team>> Config = new ImmutableDictionaryBuilder<TeamTypeId, BIATeamConfig<TeamTypeId, Team>>()
         {
-            { TeamTypeId.Site, new BIATeamConfig<TeamTypeId, Team>() { RightPrefix = "Site" } },
+            {
+                TeamTypeId.Site, new BIATeamConfig<TeamTypeId, Team>()
+                {
+                    RightPrefix = "Site",
+                }
+            },
 
             // Begin BIADemo
             {
