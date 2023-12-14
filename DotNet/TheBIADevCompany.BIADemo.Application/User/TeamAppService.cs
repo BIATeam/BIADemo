@@ -4,22 +4,19 @@
 
 namespace TheBIADevCompany.BIADemo.Application.User
 {
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.Specification;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -96,18 +93,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
             }
         }
 
-        private static Expression<Func<Team, bool>> IsMemberOfTeam(Expression<Func<Team, Team>> GetTeam, int userId)
+        private static Expression<Func<Team, bool>> IsMemberOfTeam(Expression<Func<Team, Team>> getTeam, int userId)
         {
-            var IsMember = (Expression<Func<Team, bool>>)(team => team.Members.Any(b => b.UserId == userId));
+            var isMember = (Expression<Func<Team, bool>>)(team => team.Members.Any(b => b.UserId == userId));
 
-            return Combine(GetTeam, IsMember);
+            return Combine(getTeam, isMember);
         }
 
-        private static Expression<Func<Team, bool>> IsMemberOfATeam(Expression<Func<Team, IEnumerable<Team>>> GetTeams, int userId)
+        private static Expression<Func<Team, bool>> IsMemberOfATeam(Expression<Func<Team, IEnumerable<Team>>> getTeams, int userId)
         {
-            var IsMemberOfOne = (Expression<Func<IEnumerable<Team>, bool>>)(teams => teams.Any(a => a.Members.Any(b => b.UserId == userId)));
+            var isMemberOfOne = (Expression<Func<IEnumerable<Team>, bool>>)(teams => teams.Any(a => a.Members.Any(b => b.UserId == userId)));
 
-            return Combine(GetTeams, IsMemberOfOne);
+            return Combine(getTeams, isMemberOfOne);
         }
 
         private static Expression<Func<T1, T3>> Combine<T1, T2, T3>(
@@ -119,5 +116,4 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return Expression.Lambda<Func<T1, T3>>(body, param);
         }
     }
-
 }

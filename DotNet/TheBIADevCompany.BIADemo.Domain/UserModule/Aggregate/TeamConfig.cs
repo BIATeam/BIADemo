@@ -38,7 +38,7 @@
 
             // Begin BIADemo
             {
-                TeamTypeId.AircraftMaintenanceCompany, new BIATeamConfig<TeamTypeId,Team>()
+                TeamTypeId.AircraftMaintenanceCompany, new BIATeamConfig<TeamTypeId, Team>()
                 {
                     RightPrefix = "AircraftMaintenanceCompany",
                     Children = AircraftMaintenanceCompanyChildren,
