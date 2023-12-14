@@ -57,3 +57,11 @@ p-table {
 body .p-dataview .p-dataview-header {
   background-color: $contentBgColor;
 }
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) .p-frozen-column {
+  background: $biaBgRowOdd;
+}
+
+.p-datatable .p-datatable-tbody > tr.p-highlight .p-frozen-column {
+  background: $biaBgRowSelected !important;
+}

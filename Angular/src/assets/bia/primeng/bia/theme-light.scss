@@ -9,15 +9,13 @@ $primaryLightestColor: #ECEFF1;
 $primaryMenuTextColor: $primaryColor;
 $primaryTextColor:#ffffff;
 
-
-
 $biaBgColor: #fafafa;
 $biaBgHoverColor: rgba(0, 0, 0, 0.04);
 $biaFgTextColor: rgba(0,0,0,.87);
 $biaBorderColor: #d7d7d7;
 $biaTitleColor: #666666;
-$biaBgRowSelected:#E5F2F5;
-$biaBorderRowSelected: #7CBFCC;
+$biaBgRowOdd: #f0f0f0;
+$biaBgRowSelected:#dcecef;
 $biaTabColor: #1B998B;
 
 @import '../sass/theme/theme-light/_variables';

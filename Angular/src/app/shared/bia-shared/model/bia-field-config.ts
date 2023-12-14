@@ -45,6 +45,9 @@ export class BiaFieldConfig {
   validators: Validator[];
   specificOutput: boolean;
   specificInput: boolean;
+  minWidth: string;
+  isFrozen: boolean;
+  alignFrozen: string;
   get isDate() {
     return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
   }
@@ -72,6 +75,9 @@ export class BiaFieldConfig {
     this.specificOutput = false;
     this.specificInput = false;
     this.validators = [];
+    this.minWidth = '';
+    this.isFrozen = false;
+    this.alignFrozen = 'left';
   }
 
   public clone(): BiaFieldConfig {
