@@ -62,28 +62,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string User = "User";
 
             /// <summary>
-            /// The site member role code.
+            /// The right to access to the list of members.
             /// </summary>
-            public const string SiteMember = "Site_Member";
-
-            // Begin BIADemo
+            public const string TeamMemberSuffix = "_Member";
 
             /// <summary>
-            /// The Aircraft Maintenance Company member role code.
+            /// The right to access to the list of members.
             /// </summary>
-            public const string AircraftMaintenanceCompanyMember = "AircraftMaintenanceCompany_Member";
-
-            /// <summary>
-            /// The Aircraft Maintenance Company member role code.
-            /// </summary>
-            public const string AircraftMaintenanceCompanyMemberOfOne = "AircraftMaintenanceCompany_MemberOfOne";
-
-            /// <summary>
-            /// The Maintenance Team member role code.
-            /// </summary>
-            public const string MaintenanceTeamMember = "MaintenanceTeam_Member";
-
-            // End BIADemo
+            public const string TeamMemberOfOneSuffix = "_MemberOfOne";
         }
 
         /// <summary>

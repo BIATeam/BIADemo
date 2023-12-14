@@ -294,6 +294,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
 
                 // Begin BIADemo
+                // TODO use TeamConfig to filter allTeam when there is parent.
                 CurrentTeamDto currentAircraftMaintenanceCompany = userData.CurrentTeams?.FirstOrDefault(ct => ct.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany);
                 additionnalInfo = new AdditionalInfoDto
                 {
@@ -388,15 +389,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // get user rights
             if (loginParam.TeamsConfig != null)
             {
-                foreach (TeamConfigDto teamConfig in loginParam.TeamsConfig)
+                foreach (TeamConfigDto loginTeamConfig in loginParam.TeamsConfig)
                 {
-                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId) : null;
-                    if (teamLogin == null && teamConfig.InHeader)
+                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == loginTeamConfig.TeamTypeId) : null;
+                    if (teamLogin == null && loginTeamConfig.InHeader)
                     {
                         // if it is in header we select the default one with default roles.
                         teamLogin = new CurrentTeamDto
                         {
-                            TeamTypeId = teamConfig.TeamTypeId,
+                            TeamTypeId = loginTeamConfig.TeamTypeId,
                             TeamId = 0,
                             UseDefaultRoles = true,
                             CurrentRoleIds = { },
@@ -480,30 +481,29 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             // add the sites roles (filter if singleRole mode is used)
                             allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
 
+                            foreach (var teamConfig in TeamConfig.Config)
+                            {
+                                if (currentTeam.TeamTypeId == (int)teamConfig.Key)
+                                {
+                                    allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberSuffix);
+                                }
+
+                                if (teamConfig.Value.Parents != null && allTeams.Any(t => t.TeamTypeId == (int)teamConfig.Key && t.ParentTeamId == currentTeam.TeamId))
+                                {
+                                    allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                                }
+                            }
+
                             // add computed roles (can be customized)
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.Site)
-                            {
-                                allRoles.Add(Constants.Role.SiteMember);
-                            }
-
-                            // Begin BIADemo
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany)
-                            {
-                                allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMember);
-                            }
-
-                            if (allTeams.Any(t => t.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany))
-                            {
-                                allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMemberOfOne);
-                            }
-
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.MaintenanceTeam)
-                            {
-                                allRoles.Add(Constants.Role.MaintenanceTeamMember);
-                            }
-
-                            // End BIADemo
                         }
+                    }
+                }
+
+                foreach (var teamConfig in TeamConfig.Config)
+                {
+                    if (teamConfig.Value.Parents == null && allTeams.Any(t => t.TeamTypeId == (int)teamConfig.Key))
+                    {
+                        allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
                     }
                 }
             }
