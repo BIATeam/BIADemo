@@ -15,7 +15,8 @@ import { MaintenanceTeamTableComponent } from '../../components/maintenance-team
 
 export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<MaintenanceTeam> {
   // Custo for teams
-  canManageMembers = false;
+  canViewMembers = false;
+  canSelectElement = false;
 
   @ViewChild(MaintenanceTeamTableComponent, { static: false }) crudItemTableComponent: MaintenanceTeamTableComponent;
 
@@ -33,17 +34,20 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
     this.canDelete = this.authService.hasPermission(Permission.MaintenanceTeam_Delete);
     this.canAdd = this.authService.hasPermission(Permission.MaintenanceTeam_Create);
     // Custo for teams
-    this.canManageMembers = this.authService.hasPermission(Permission.MaintenanceTeam_Member_List_Access);
+    this.canViewMembers = this.authService.hasPermission(Permission.MaintenanceTeam_Member_List_Access);
+    this.canSelectElement = 
+      this.canDelete;
   }
 
-    // Custo for teams
-    onClickRow(crudItemId: any) {
-      this.onManageMember(crudItemId)
+  onClickRowData(crudItem: MaintenanceTeam) {
+    if (crudItem.canMemberListAccess) {
+      this.onViewMembers(crudItem.id);
     }
+  }
   
-    onManageMember(crudItemId: any) {
-      if (crudItemId && crudItemId > 0) {
-        this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
-      }
+  onViewMembers(crudItemId: any) {
+    if (crudItemId && crudItemId > 0) {
+      this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
     }
+  }
 }

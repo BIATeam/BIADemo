@@ -13,12 +13,19 @@
       <!-- // Custo for teams -->
       <ng-template pTemplate="actionOnSelected">
         <button
-        pButton
-        [disabled]="selectedCrudItems?.length !== 1"
-        *ngIf="canEdit"
-        class="p-button-outlined"
-        label="{{ 'site.edit' | translate }}"
-        (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+          pButton
+          [disabled]="selectedCrudItems?.length !== 1"
+          *ngIf="canEdit"
+          class="p-button-outlined"
+          label="{{ 'maintenanceTeam.edit' | translate }}"
+          (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+        <button
+          pButton
+          [disabled]="selectedCrudItems?.length !== 1 || (!selectedCrudItems[0].canMemberListAccess)"
+          *ngIf="canViewMembers"
+          class="p-button-outlined"
+          label="{{ 'app.members' | translate }}"
+          (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
       </ng-template>
     </bia-table-header>
     <bia-table-controller
@@ -63,10 +70,10 @@
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canManageMembers"
-      [canSelectElement]="canDelete"
+      [canClickRow]="canViewMembers"
+      [canSelectElement]="canSelectElement"
       [loading]="loading$ | async"
-      (clickRowId)="onClickRow($event)"
+      (clickRowData)="onClickRowData($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"

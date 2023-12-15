@@ -1,9 +1,8 @@
 import { BiaFieldConfig, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BaseTeamDto } from 'src/app/shared/bia-shared/model/base-team-dto';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
-export interface MaintenanceTeam extends BaseDto {
-  title: string;
+export interface MaintenanceTeam extends BaseTeamDto {
 }
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the field configuration
