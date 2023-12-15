@@ -180,10 +180,6 @@
         "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
       },
       {
-        "Names": [ "AircraftMaintenanceCompany_List_View_All" ],
-        "Roles": [ "Admin" ]
-      },
-      {
         "Names": [ "AircraftMaintenanceCompany_Member_Create", "AircraftMaintenanceCompany_Member_Read", "AircraftMaintenanceCompany_Member_Update", "AircraftMaintenanceCompany_Member_Delete", "AircraftMaintenanceCompany_Member_Save" ],
         "Roles": [ "Admin", "Supervisor" ]
       },
@@ -203,10 +199,6 @@
       {
         "Names": [ "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
         "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_Member" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_List_View_All" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */ ]
       },
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
