@@ -183,6 +183,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get global roles
             List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
+            List<int> roleIds = new List<int>();
+            foreach (var role in globalRoles)
+            {
+                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                {
+                    roleIds.Add((int)roleId);
+                }
+            }
 
             // If the user has no role
             if (globalRoles == null || globalRoles?.Any() != true)
@@ -255,6 +263,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
+                foreach (var role in fineGrainedRoles)
+                {
+                    if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                    {
+                        roleIds.Add((int)roleId);
+                    }
+                }
 
                 // translate roles in permission
                 List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
@@ -279,7 +294,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             this.userAppService.SelectDefaultLanguage(userInfo);
 
-            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, RoleIds = roleIds, Permissions = userPermissions, UserData = userData };
 
             UserProfileDto userProfile = null;
             if (userProfileTask != null)

@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     {
         public AircraftMaintenanceCompanyMapper(IPrincipal principal)
         {
-            this.UserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            this.UserRoleIds = (principal as BIAClaimsPrincipal).GetRoleIds();
             this.UserId = (principal as BIAClaimsPrincipal).GetUserId();
         }
 
@@ -51,9 +51,9 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         private int UserId { get; set; }
 
         /// <summary>
-        /// the user permission.
+        /// the user roles.
         /// </summary>
-        private IEnumerable<string> UserPermissions { get; set; }
+        private IEnumerable<int> UserRoleIds { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(AircraftMaintenanceCompanyDto dto, AircraftMaintenanceCompany entity)
@@ -77,10 +77,10 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 Title = entity.Title,
 
                 // Should correspond to AircraftMaintenanceCompany_Update permission (but without use the roles *_Member that is not determined at list display)
-                CanUpdate = this.UserPermissions.Contains(Rights.Permissions.Admin),
+                CanUpdate = this.UserRoleIds.Contains((int)RoleId.Admin),
 
                 // Should correspond to AircraftMaintenanceCompany_Member_List_Access (but without use the roles *_Member that is not determined at list display)
-                CanMemberListAccess = this.UserPermissions.Contains(Rights.Permissions.Admin) || entity.Members.Any(m => m.UserId == this.UserId),
+                CanMemberListAccess = this.UserRoleIds.Contains((int)RoleId.Admin) || entity.Members.Any(m => m.UserId == this.UserId),
             };
         }
 

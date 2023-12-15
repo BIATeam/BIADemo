@@ -13,6 +13,8 @@ namespace BIA.Net.Core.Application.Authentication
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
@@ -29,11 +31,6 @@ namespace BIA.Net.Core.Application.Authentication
         private readonly Jwt jwt;
 
         /// <summary>
-        /// The signing key to use when generating tokens.
-        /// </summary>
-        public SigningCredentials signingCredentials { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="JwtFactory"/> class.
         /// </summary>
         /// <param name="jwtOptions">The JWT options.</param>
@@ -41,13 +38,24 @@ namespace BIA.Net.Core.Application.Authentication
         {
             this.jwt = jwtOptions.Value;
 
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.jwt.SecretKey));
-            this.signingCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey signingKey = new (Encoding.ASCII.GetBytes(this.jwt.SecretKey));
+            this.SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
             ThrowIfInvalidOptions(this.jwt);
         }
 
-        public ClaimsPrincipal GetPrincipalFromToken(string Token, string SecretKey)
+        /// <summary>
+        /// The signing key to use when generating tokens.
+        /// </summary>
+        public SigningCredentials SigningCredentials { get; set; }
+
+        /// <summary>
+        /// Extract the claims from token.
+        /// </summary>
+        /// <param name="token">the token.</param>
+        /// <param name="secretKey">the secret key.</param>
+        /// <returns>the claims.</returns>
+        public ClaimsPrincipal GetPrincipalFromToken(string token, string secretKey)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationParameters = new TokenValidationParameters
@@ -55,17 +63,17 @@ namespace BIA.Net.Core.Application.Authentication
                 ValidateAudience = false, // you might want to validate the audience and issuer depending on your use case
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = this.signingCredentials.Key,
+                IssuerSigningKey = this.SigningCredentials.Key,
                 ValidateLifetime = false, // here we are saying that we don't care about the token's expiration date
             };
             try
             {
-                var principal = tokenHandler.ValidateToken(Token, tokenValidationParameters, out var validatedToken);
-                if (!this.ValidateSecurityAlgorithm(validatedToken))
+                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validatedToken);
+                if (!ValidateSecurityAlgorithm(validatedToken))
                 {
                     return null;
                 }
-;
+
                 return principal;
             }
             catch (Exception)
@@ -74,16 +82,12 @@ namespace BIA.Net.Core.Application.Authentication
             }
         }
 
-        private bool ValidateSecurityAlgorithm(SecurityToken SecurityToken)
-        {
-            var res = (SecurityToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
-            return res;
-        }
-
         /// <inheritdoc cref="IJwtFactory.GenerateClaimsIdentity"/>
-        public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto
+        public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : UserDataDto
         {
             var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
+            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BIAClaimsPrincipal.RoleId, s.ToString())).ToList());
             claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
             if (tokenDto.UserData != null)
             {
@@ -105,15 +109,15 @@ namespace BIA.Net.Core.Application.Authentication
             });
 
             // Create the JWT security token and encode it.
-            var jwt = new JwtSecurityToken(
+            var jwtSecurity = new JwtSecurityToken(
                 issuer: this.jwt.Issuer,
                 audience: this.jwt.Audience,
                 claims: claims,
                 notBefore: this.jwt.NotBefore,
                 expires: this.jwt.Expiration,
-                signingCredentials: this.signingCredentials);
+                signingCredentials: this.SigningCredentials);
 
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtSecurity);
 
             return encodedJwt;
         }
@@ -126,7 +130,7 @@ namespace BIA.Net.Core.Application.Authentication
             var claimsIdentity = await Task.FromResult(this.GenerateClaimsIdentity(tokenDto));
             if (claimsIdentity == null)
             {
-                throw new Exception("Unauthorized because claimsIdentity is null");
+                throw new UnauthorizedException("Unauthorized because claimsIdentity is null");
             }
 
             var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
@@ -136,6 +140,12 @@ namespace BIA.Net.Core.Application.Authentication
             };
 
             return response;
+        }
+
+        private static bool ValidateSecurityAlgorithm(SecurityToken securityToken)
+        {
+            var res = (securityToken is JwtSecurityToken jwtSecurityToken) && jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
+            return res;
         }
 
         /// <summary>
@@ -163,7 +173,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <returns>Date converted to seconds since Unix epoch (Jan 1, 1970, midnight UTC).</returns>
         private static long ToUnixEpochDate(DateTime date)
           => (long)Math.Round((date.ToUniversalTime() -
-                               new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
+                               DateTimeOffset.UnixEpoch)
                               .TotalSeconds);
     }
 }

@@ -18,6 +18,11 @@ namespace BIA.Net.Core.Domain.Dto.User
         public int Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the RoleIds.
+        /// </summary>
+        public List<int> RoleIds { get; set; }
+
+        /// <summary>
         /// Gets or sets the permissions.
         /// </summary>
         public IEnumerable<string> Permissions { get; set; }

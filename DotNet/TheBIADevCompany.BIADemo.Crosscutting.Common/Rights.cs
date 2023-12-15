@@ -334,11 +334,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         {
 
             /// <summary>
-            /// Admin permission (mapped on role Admin).
-            /// </summary>
-            public const string Admin = "Admin";
-
-            /// <summary>
             /// The right to access to the list of airports (options only).
             /// </summary>
             public const string Options = "Permissions_Options";

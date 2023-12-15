@@ -122,19 +122,7 @@
       }
     ],
     "Permissions": [
-      {
-        "Names": [ "Admin" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_Admin" ],
-        "Roles": [ "Site_Admin" ]
-      },
       // Begin BIADemo
-      {
-        "Names": [ "Pilot" ],
-        "Roles": [ "Pilot" ]
-      },
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
