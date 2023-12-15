@@ -291,18 +291,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AdditionalInfoDto additionnalInfo = null;
             if (loginParam.AdditionalInfos)
             {
-                additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Any(tc =>
+                (int)tc.Key == t.TeamTypeId && (
+                    tc.Value.Parents == null
+                    ||
+                    tc.Value.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
 
-                // Begin BIADemo
-                // TODO use TeamConfig to filter allTeam when there is parent.
-                CurrentTeamDto currentAircraftMaintenanceCompany = userData.CurrentTeams?.FirstOrDefault(ct => ct.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany);
                 additionnalInfo = new AdditionalInfoDto
                 {
                     UserInfo = userInfo, UserProfile = userProfile,
-                    Teams = allTeams.Where(t => t.TeamTypeId != (int)TeamTypeId.MaintenanceTeam || t.ParentTeamId == currentAircraftMaintenanceCompany?.TeamId).ToList(),
+                    Teams = allTeamsFilteredByCurrentParent,
                 };
-
-                // End BIADemo
             }
 
             AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
