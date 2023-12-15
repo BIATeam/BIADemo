@@ -8,27 +8,36 @@ namespace BIA.Net.Core.Common
     using System.Collections.Immutable;
     using System.Linq.Expressions;
 
-    public class BIATeamChildrenConfig<TTeamTypeIdEnum, TTeam>
+    /// <summary>
+    /// Structure to store config of children team.
+    /// </summary>
+    /// <typeparam name="TTeam">The team type.</typeparam>
+    public class BIATeamChildrenConfig<TTeam>
     {
-        public TTeamTypeIdEnum TypeId { get; set; }
+        public int TeamTypeId { get; set; }
 
         public Expression<Func<TTeam, IEnumerable<TTeam>>> GetChilds { get; set; }
     }
 
-    public class BIATeamParentConfig<TTeamTypeIdEnum, TTeam>
+    /// <summary>
+    /// Structure to store config of a parent team.
+    /// </summary>
+    /// <typeparam name="TTeam">The team type.</typeparam>
+    public class BIATeamParentConfig<TTeam>
     {
-        public TTeamTypeIdEnum TypeId { get; set; }
+        public int TeamTypeId { get; set; }
 
         public Expression<Func<TTeam, TTeam>> GetParent { get; set; }
     }
 
     /// <summary>
-    /// Structur to store config of a team.
+    /// Structure to store config of a team.
     /// </summary>
-    /// <typeparam name="TTeamTypeIdEnum">The enum for team type ids.</typeparam>
-    public class BIATeamConfig<TTeamTypeIdEnum, TTeam>
-        where TTeamTypeIdEnum : System.Enum
+    /// <typeparam name="TTeam">The team type.</typeparam>
+    public class BIATeamConfig<TTeam>
     {
+        public int TeamTypeId { get; set; }
+
         /// <summary>
         /// The prefixe to use for dynamicaly manage right.
         /// </summary>
@@ -37,11 +46,11 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// The chilren teams type.
         /// </summary>
-        public ImmutableList<BIATeamChildrenConfig<TTeamTypeIdEnum, TTeam>> Children { get; set; }
+        public ImmutableList<BIATeamChildrenConfig<TTeam>> Children { get; set; }
 
         /// <summary>
         /// The chilren teams type.
         /// </summary>
-        public ImmutableList<BIATeamParentConfig<TTeamTypeIdEnum, TTeam>> Parents { get; set; }
+        public ImmutableList<BIATeamParentConfig<TTeam>> Parents { get; set; }
     }
 }

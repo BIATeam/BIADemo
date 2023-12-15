@@ -69,20 +69,20 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 foreach (var teamConfig in TeamConfig.Config)
                 {
-                    if (teamConfig.Value.Children != null)
+                    if (teamConfig.Children != null)
                     {
-                        foreach (var child in teamConfig.Value.Children)
+                        foreach (var child in teamConfig.Children)
                         {
-                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == (int)teamConfig.Key)
+                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == teamConfig.TeamTypeId)
                                           && new DirectSpecification<Team>(IsMemberOfOneOfTeams(child.GetChilds, userId));
                         }
                     }
 
-                    if (teamConfig.Value.Parents != null)
+                    if (teamConfig.Parents != null)
                     {
-                        foreach (var parent in teamConfig.Value.Parents)
+                        foreach (var parent in teamConfig.Parents)
                         {
-                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == (int)teamConfig.Key)
+                            specification |= new DirectSpecification<Team>(team => team.TeamTypeId == teamConfig.TeamTypeId)
                                           && new DirectSpecification<Team>(IsMemberOfTeam(parent.GetParent, userId));
                         }
                     }
@@ -111,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // You can a team if your are member or have the viewAll permission
             Specification<TTeam> specification = new DirectSpecification<TTeam>(team => viewAll || team.Members.Any(m => m.UserId == userId));
-            var teamConfig = TeamConfig.Config[teamTypeId];
+            var teamConfig = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
             if (teamConfig?.Parents != null)
             {
                 // You can see a team if member of parent
@@ -135,7 +135,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 Specification<TTeam> specificationCurrentIsOneOfTheParent = new FalseSpecification<TTeam>();
                 foreach (var parent in teamConfig.Parents)
                 {
-                    var currentParentId = userData != null ? userData.GetCurrentTeamId((int)parent.TypeId) : 0;
+                    var currentParentId = userData != null ? userData.GetCurrentTeamId((int)parent.TeamTypeId) : 0;
                     specificationCurrentIsOneOfTheParent |= new DirectSpecification<TTeam>(IsCorrectId(Convert<TTeam>(parent.GetParent), currentParentId));
                 }
 

@@ -15,41 +15,49 @@
     /// </summary>
     public static class TeamConfig
     {
-        // Begin BIADemo
-        public static readonly BIATeamChildrenConfig<TeamTypeId, Team> ChildMaintenanceTeam = new BIATeamChildrenConfig<TeamTypeId, Team> { TypeId = TeamTypeId.MaintenanceTeam, GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams };
-        public static readonly ImmutableList<BIATeamChildrenConfig<TeamTypeId, Team>> AircraftMaintenanceCompanyChildren = new ImmutableListBuilder<BIATeamChildrenConfig<TeamTypeId, Team>> { ChildMaintenanceTeam }.ToImmutable();
 
-        public static readonly BIATeamParentConfig<TeamTypeId, Team> ParentAircraftMaintenanceCompany = new BIATeamParentConfig<TeamTypeId, Team> { TypeId = TeamTypeId.AircraftMaintenanceCompany, GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany };
-        public static readonly ImmutableList<BIATeamParentConfig<TeamTypeId, Team>> MaintenanceTeamParents = new ImmutableListBuilder<BIATeamParentConfig<TeamTypeId, Team>> { ParentAircraftMaintenanceCompany }.ToImmutable();
+        public static readonly BIATeamParentConfig<Team> ParentAircraftMaintenanceCompany = new BIATeamParentConfig<Team> { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany };
+        public static readonly ImmutableList<BIATeamParentConfig<Team>> MaintenanceTeamParents = new ImmutableListBuilder<BIATeamParentConfig<Team>> { ParentAircraftMaintenanceCompany }.ToImmutable();
 
         // End BIADemo
 
         /// <summary>
         /// the private mapping.
         /// </summary>
-        public static readonly ImmutableDictionary<TeamTypeId, BIATeamConfig<TeamTypeId, Team>> Config = new ImmutableDictionaryBuilder<TeamTypeId, BIATeamConfig<TeamTypeId, Team>>()
+        public static readonly ImmutableList<BIATeamConfig<Team>> Config = new ImmutableListBuilder<BIATeamConfig<Team>>()
         {
+            new BIATeamConfig<Team>()
             {
-                TeamTypeId.Site, new BIATeamConfig<TeamTypeId, Team>()
-                {
-                    RightPrefix = "Site",
-                }
+                TeamTypeId = (int)TeamTypeId.Site,
+                RightPrefix = "Site",
             },
 
             // Begin BIADemo
+            new BIATeamConfig<Team>()
             {
-                TeamTypeId.AircraftMaintenanceCompany, new BIATeamConfig<TeamTypeId, Team>()
+                TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
+                RightPrefix = "AircraftMaintenanceCompany",
+                Children = new ImmutableListBuilder<BIATeamChildrenConfig<Team>>
                 {
-                    RightPrefix = "AircraftMaintenanceCompany",
-                    Children = AircraftMaintenanceCompanyChildren,
-                }
+                    new BIATeamChildrenConfig<Team>
+                    {
+                        TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
+                        GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams,
+                    },
+                }.ToImmutable(),
             },
+            new BIATeamConfig<Team>()
             {
-                TeamTypeId.MaintenanceTeam, new BIATeamConfig<TeamTypeId, Team>()
+                TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
+                RightPrefix = "MaintenanceTeam",
+                Parents = new ImmutableListBuilder<BIATeamParentConfig<Team>>
                 {
-                    RightPrefix = "MaintenanceTeam",
-                    Parents = MaintenanceTeamParents,
-                }
+                    new BIATeamParentConfig<Team>
+                    {
+                        TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
+                        GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany,
+                    },
+                }.ToImmutable(),
             },
 
             // End BIADemo

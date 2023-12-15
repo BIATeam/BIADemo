@@ -291,11 +291,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AdditionalInfoDto additionnalInfo = null;
             if (loginParam.AdditionalInfos)
             {
-                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Any(tc =>
-                (int)tc.Key == t.TeamTypeId && (
-                    tc.Value.Parents == null
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Any(tc => tc.TeamTypeId == t.TeamTypeId && (
+                    tc.Parents == null
                     ||
-                    tc.Value.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
+                    tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
 
                 additionnalInfo = new AdditionalInfoDto
                 {
@@ -482,14 +481,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                             foreach (var teamConfig in TeamConfig.Config)
                             {
-                                if (currentTeam.TeamTypeId == (int)teamConfig.Key)
+                                if (currentTeam.TeamTypeId == teamConfig.TeamTypeId)
                                 {
-                                    allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberSuffix);
+                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberSuffix);
                                 }
 
-                                if (teamConfig.Value.Parents != null && allTeams.Any(t => t.TeamTypeId == (int)teamConfig.Key && t.ParentTeamId == currentTeam.TeamId))
+                                if (teamConfig.Parents != null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId && t.ParentTeamId == currentTeam.TeamId))
                                 {
-                                    allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
                                 }
                             }
 
@@ -500,9 +499,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 foreach (var teamConfig in TeamConfig.Config)
                 {
-                    if (teamConfig.Value.Parents == null && allTeams.Any(t => t.TeamTypeId == (int)teamConfig.Key))
+                    if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
                     {
-                        allRoles.Add(teamConfig.Value.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                        allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
                     }
                 }
             }

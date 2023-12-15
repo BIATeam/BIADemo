@@ -60,7 +60,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
-            if (TeamConfig.Config.TryGetValue(teamTypeId, out var config))
+            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
+            if (config != null)
             {
                 if (!this.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == config.RightPrefix + roleSuffix))
                 {
