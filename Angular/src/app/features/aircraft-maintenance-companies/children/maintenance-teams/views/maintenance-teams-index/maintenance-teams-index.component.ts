@@ -36,6 +36,7 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
     // Custo for teams
     this.canViewMembers = this.authService.hasPermission(Permission.MaintenanceTeam_Member_List_Access);
     this.canSelectElement = 
+      this.canViewMembers ||
       this.canDelete;
   }
 

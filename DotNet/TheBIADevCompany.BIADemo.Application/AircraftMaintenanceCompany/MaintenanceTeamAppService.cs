@@ -47,7 +47,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
                 AccessMode.Read,
                 TeamAppService.ReadSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
 
-            // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.FiltersContext.Add(
                 AccessMode.Update,
                 TeamAppService.UpdateSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));

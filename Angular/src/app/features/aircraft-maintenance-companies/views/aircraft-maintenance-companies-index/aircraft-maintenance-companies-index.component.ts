@@ -45,6 +45,7 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
       // Begin Child MaintenanceTeam
       this.canViewMaintenanceTeams ||
       // End Child MaintenanceTeam
+      this.canViewMembers ||
       this.canDelete;
 
   }
