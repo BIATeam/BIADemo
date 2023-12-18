@@ -27,6 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             {
                 TeamTypeId = (int)TeamTypeId.Site,
                 RightPrefix = "Site",
+                AdminRoleIds = new int[] { (int)RoleId.SiteAdmin },
             },
 
             // Begin BIADemo
@@ -34,6 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             {
                 TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                 RightPrefix = "AircraftMaintenanceCompany",
+                AdminRoleIds = new int[] { (int)RoleId.Supervisor },
                 Children = new ImmutableListBuilder<BIATeamChildrenConfig<Team>>
                 {
                     new BIATeamChildrenConfig<Team>
@@ -47,6 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
+                AdminRoleIds = new int[] { (int)RoleId.TeamLeader },
                 Parents = new ImmutableListBuilder<BIATeamParentConfig<Team>>
                 {
                     new BIATeamParentConfig<Team>

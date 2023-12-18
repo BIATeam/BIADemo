@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for site.

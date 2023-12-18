@@ -69,15 +69,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 }).ToList(),
 
                 // Map the parent properties if usefull in project:
-                /*
-                 ParentTeamId =
-                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompanyId :
-                    0,
-                 ParentTeamTitle =
-                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompany.Title :
-                    string.Empty,
-                */
-
                 // Begin BIADemo
                 ParentTeamId =
                     (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompanyId :

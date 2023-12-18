@@ -3,6 +3,7 @@
 // </copyright>
 namespace BIA.Net.Core.Common
 {
+    using BIA.Net.Core.Common.Configuration;
     using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
@@ -52,5 +53,15 @@ namespace BIA.Net.Core.Common
         /// The chilren teams type.
         /// </summary>
         public ImmutableList<BIATeamParentConfig<TTeam>> Parents { get; set; }
+
+        /// <summary>
+        /// The id of roles that can administrate the team.
+        /// </summary>
+        public int[] AdminRoleIds { get; set; }
+
+        /// <summary>
+        /// The id of roles that can administrate the team that come from parent or root level.
+        /// </summary>
+        public int[] ParentsAdminRoleIds { get; set; }    
     }
 }
