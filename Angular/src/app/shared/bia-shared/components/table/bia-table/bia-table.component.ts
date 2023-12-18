@@ -29,17 +29,29 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() columnToDisplays: KeyValuePair[];
   @Input() sortFieldValue = '';
   @Input() sortOrderValue = 1;
-  @Input() configuration: BiaFieldsConfig;
   @Input() showColSearch = false;
   @Input() globalSearchValue = '';
   @Input() canClickRow = true;
-
   @Input() canSelectElement = true;
   @Input() loading = false;
   @Input() tableStateKey: string;
   @Input() viewPreference: string;
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
+  @Input() scrollHeightValue = '';
+  @Input() isScrollable = false;
+
+  protected isSelectFrozen = false;
+  protected minWidthSelect: string;
+  protected alignFrozenSelect = 'left';
+  protected _configuration: BiaFieldsConfig;
+  get configuration(): BiaFieldsConfig {
+    return this._configuration;
+  }
+  @Input() set configuration(value: BiaFieldsConfig) {
+    this._configuration = value;
+    this.manageSelectFrozen(value);
+  }
 
   @Output() clickRowId = new EventEmitter<number>();
   @Output() clickRowData = new EventEmitter<any>();
@@ -268,26 +280,22 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {
-      let viewPreference : BiaTableState = JSON.parse(changes.viewPreference.currentValue);
+      let viewPreference: BiaTableState = JSON.parse(changes.viewPreference.currentValue);
 
       // compatibility switch sort multiple to single
-      if (this.table.sortMode === "multiple" )
-      {
-        if (viewPreference.multiSortMeta === undefined && viewPreference.sortField != null && viewPreference.sortField != ""&& viewPreference.sortOrder != null)
-        {
-          viewPreference.multiSortMeta = [{field : viewPreference.sortField, order: viewPreference.sortOrder }]
+      if (this.table.sortMode === "multiple") {
+        if (viewPreference.multiSortMeta === undefined && viewPreference.sortField != null && viewPreference.sortField != "" && viewPreference.sortOrder != null) {
+          viewPreference.multiSortMeta = [{ field: viewPreference.sortField, order: viewPreference.sortOrder }]
         }
       }
-      else
-      {
-        if (viewPreference.multiSortMeta !== undefined && viewPreference.multiSortMeta.length > 0)
-        {
+      else {
+        if (viewPreference.multiSortMeta !== undefined && viewPreference.multiSortMeta.length > 0) {
           viewPreference.sortField = viewPreference.multiSortMeta[0].field;
           viewPreference.sortOrder = viewPreference.multiSortMeta[0].order;
         }
       }
 
-    let sViewPreference = JSON.stringify(viewPreference);
+      let sViewPreference = JSON.stringify(viewPreference);
 
       if (!this.firstViewPreferenceApply || sessionStorage.getItem(this.tableStateKey) !== sViewPreference) {
         this.firstViewPreferenceApply = true;
@@ -377,12 +385,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         this.updateDisplayedColumns(false);
         this.table.restoreState();
 
-        if (this.table.sortMode === "multiple" )
-        {
+        if (this.table.sortMode === "multiple") {
           this.table.sortMultiple();
         }
-        else
-        {
+        else {
           this.table.sortSingle();
         }
 
@@ -407,6 +413,22 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
 
     return null;
+  }
+
+  /**
+   * If in the configuration, we have at least one frozen column, we freeze the select column.
+   * @param biaFieldsConfig 
+   */
+  protected manageSelectFrozen(biaFieldsConfig: BiaFieldsConfig) {
+    if (biaFieldsConfig) {
+      if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
+        this.isSelectFrozen = true;
+        this.minWidthSelect = '50px';
+      } else {
+        this.isSelectFrozen = false;
+        this.minWidthSelect = '';
+      }
+    }
   }
 
   hasPermission(permission: string): boolean {
