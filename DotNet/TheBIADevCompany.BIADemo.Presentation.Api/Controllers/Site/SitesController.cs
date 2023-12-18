@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage sites.
@@ -61,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [Authorize(Roles = Rights.Sites.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
         {
-            var (results, total) = await this.siteService.GetRangeWithMembersAsync(filters);
+            var (results, total) = await this.siteService.GetRangeAsync(filters, specification: SiteSpecification.SearchGetAll(filters));
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
 
@@ -88,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
 
             try
             {
-                var dto = await this.siteService.GetWithMembersAsync(id);
+                var dto = await this.siteService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)

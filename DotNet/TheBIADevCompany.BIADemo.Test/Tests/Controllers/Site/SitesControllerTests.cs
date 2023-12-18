@@ -211,7 +211,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            IEnumerable<SiteInfoDto> listSites = response.Value as IEnumerable<SiteInfoDto>;
+            IEnumerable<SiteDto> listSites = response.Value as IEnumerable<SiteDto>;
             Assert.IsNotNull(listSites);
             Assert.AreEqual(1, listSites.Count());
 
@@ -220,7 +220,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            SiteInfoDto selectedSiteInfo = response.Value as SiteInfoDto;
+            SiteDto selectedSiteInfo = response.Value as SiteDto;
             Assert.IsNotNull(selectedSiteInfo);
             Assert.AreEqual(DataConstants.DefaultSitesTitles[0], selectedSiteInfo.Title);
             Assert.AreEqual(1, selectedSiteInfo.Id);

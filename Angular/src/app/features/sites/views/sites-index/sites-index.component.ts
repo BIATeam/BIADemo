@@ -17,7 +17,8 @@ import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   // Custo for teams
-  canManageMembers = false;
+  canViewMembers = false;
+  canSelectElement = false;
 
   checkhasAdvancedFilter()
   {
@@ -40,15 +41,20 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.canDelete = this.authService.hasPermission(Permission.Site_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Site_Create);
     // Custo for teams
-    this.canManageMembers = this.authService.hasPermission(Permission.Site_Member_List_Access);
+    this.canViewMembers = this.authService.hasPermission(Permission.Site_Member_List_Access);
+    this.canSelectElement = 
+      this.canViewMembers ||
+      this.canDelete;
   }
   
   // Custo for teams
-  onClickRow(crudItemId: any) {
-    this.onManageMember(crudItemId)
+  onClickRowData(crudItem: Site) {
+    if (crudItem.canMemberListAccess) {
+      this.onViewMembers(crudItem.id);
+    }
   }
 
-  onManageMember(crudItemId: any) {
+  onViewMembers(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
       this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
     }

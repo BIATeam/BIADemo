@@ -1,4 +1,7 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+﻿// <copyright file="TeamConfig.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System.Collections.Immutable;
     using BIA.Net.Core.Common;
@@ -15,12 +18,6 @@
     /// </summary>
     public static class TeamConfig
     {
-
-        public static readonly BIATeamParentConfig<Team> ParentAircraftMaintenanceCompany = new BIATeamParentConfig<Team> { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany };
-        public static readonly ImmutableList<BIATeamParentConfig<Team>> MaintenanceTeamParents = new ImmutableListBuilder<BIATeamParentConfig<Team>> { ParentAircraftMaintenanceCompany }.ToImmutable();
-
-        // End BIADemo
-
         /// <summary>
         /// the private mapping.
         /// </summary>
