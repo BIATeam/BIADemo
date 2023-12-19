@@ -321,14 +321,15 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.tableState = tableState;
   }
 
-  onExportCSV() {
+  onExportCSV(fileName : string = 'bia.crud.listOf') {
+    fileName= this.translateService.instant(fileName);
     const columns: { [key: string]: string } = {};
     this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map((id => id.toString())), columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()
     };
     this.crudItemService.dasService.getFile(columnsAndFilter).subscribe((data) => {
-      FileSaver.saveAs(data, this.translateService.instant('app.crudItems') + '.csv');
+      FileSaver.saveAs(data, fileName + '.csv');
     });
   }
 

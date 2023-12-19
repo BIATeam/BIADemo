@@ -216,7 +216,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       parentIds: this.parentIds, columns: columns, ...this.planeListComponent.getLazyLoadMetadata()
     };
     this.planeDas.getFile(columnsAndFilter).subscribe((data) => {
-      FileSaver.saveAs(data, this.translateService.instant('app.planes') + '.csv');
+      FileSaver.saveAs(data, this.translateService.instant('plane.listOf') + '.csv');
     });
   }
 

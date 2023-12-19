@@ -180,7 +180,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
     };
     this.notificationDas.getFile(columnsAndFilter).subscribe((data) => {
-      FileSaver.saveAs(data, this.translateService.instant('app.notifications') + '.csv');
+      FileSaver.saveAs(data, this.translateService.instant('notification.listOf') + '.csv');
     });
   }
 

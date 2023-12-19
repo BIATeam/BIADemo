@@ -13,6 +13,9 @@
     "backgroundTaskReadOnly": "Voir les taches",
     "cancel": "Annuler",
     "close": "Fermer",
+    "crud" : {
+      "list": "Liste"
+    },
     "confirm": "Confirmer",
     "dateIso8601": "aaaa-mm-jj",
     "defineDefault": "Définir par défaut",
