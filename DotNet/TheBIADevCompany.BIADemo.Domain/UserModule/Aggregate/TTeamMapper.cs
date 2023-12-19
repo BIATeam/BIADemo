@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
 
     /// <summary>
     /// The mapper used for site.
@@ -119,6 +120,16 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             entity.Id = dto.Id;
             entity.Title = dto.Title;
             entity.TeamTypeId = this.TeamType;
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Func<TTeamDto, object[]> DtoToRecord(List<string> headerNames = null)
+        {
+            return x => (new object[]
+            {
+                CSVString(x.Title),
+                CSVList(x.Admins?.ToList()),
+            });
         }
     }
 }

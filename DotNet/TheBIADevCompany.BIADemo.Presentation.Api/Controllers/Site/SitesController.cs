@@ -275,5 +275,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
                 return this.StatusCode(500, "Internal server error");
             }
         }
+
+        /// <summary>
+        /// Generates a csv file according to the filters.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csv")]
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        {
+            byte[] buffer = await this.siteService.GetCsvAsync(filters);
+            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BIAConstants.Csv.Extension}");
+        }
     }
 }
