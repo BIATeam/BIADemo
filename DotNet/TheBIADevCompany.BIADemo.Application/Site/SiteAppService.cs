@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     /// <summary>
     /// The application service used for site.
     /// </summary>
-    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto<SiteAdvancedFilterDto>, SiteMapper>, ISiteAppService
+    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto, SiteMapper>, ISiteAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SiteAppService"/> class.

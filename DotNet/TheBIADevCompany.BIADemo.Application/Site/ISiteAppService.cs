@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     /// <summary>
     /// The interface defining the application service for site.
     /// </summary>
-    public interface ISiteAppService : ICrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto<SiteAdvancedFilterDto>>
+    public interface ISiteAppService : ICrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto>
     {
     }
 }

@@ -1,116 +1,128 @@
-<div>
-  <div>
-    <bia-table-header
-      [headerTitle]="'aircraftMaintenanceCompany.listOf' | translate"
-      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-      [canDelete]="canDelete"
-      [canExportCSV]="true"
-      (create)="onCreate()"
-      (exportCSV)="onExportCSV('aircraftMaintenanceCompany.listOf')"
-      (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"
-    >
-      <!-- // Custo for teams -->
-      <ng-template pTemplate="actionOnSelected">
-        <button
-          pButton
-          [disabled]="selectedCrudItems?.length !== 1"
-          *ngIf="canEdit"
-          class="p-button-outlined"
-          label="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
-          (click)="onEdit(this.selectedCrudItems[0].id)"></button>
-        <!-- // Begin Child MaintenanceTeam -->
-        <button
-          pButton
-          [disabled]="selectedCrudItems?.length !== 1"
-          *ngIf="canViewMaintenanceTeams"
-          class="p-button-outlined"
-          label="{{ 'aircraftMaintenanceCompany.maintenanceTeams' | translate }}"
-          (click)="onViewMaintenanceTeams()"></button>
-        <button
-          pButton
-          [disabled]="selectedCrudItems?.length !== 1 || (!selectedCrudItems[0].canMemberListAccess)"
-          *ngIf="canViewMembers"
-          class="p-button-outlined"
-          label="{{ 'app.members' | translate }}"
-          (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
-        <!-- // End Child MaintenanceTeam -->
-      </ng-template>
-    </bia-table-header>
-    <bia-table-controller
-      [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
-      [columns]="columns"
-      [columnToDisplays]="displayedColumns"
-      (displayedColumnsChange)="displayedColumnsChanged($event)"
-      (filter)="searchGlobalChanged($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
-      (toggleSearch)="onToggleSearch()"
-      (viewChange)="onViewChange($event)"
-      [tableStateKey]="tableStateKey"
-      [tableState]="tableState"
-      [defaultViewPref]="defaultViewPref"
-      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [hasColumnFilter]="hasColumnFilter"
-    >
-      <ng-template pTemplate="customControl">
-        <div class="flex flex-row gap-3 bia-table-controller-container" >
-          <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
-          (click)="useCalcModeChange(!crudConfiguration.useCalcMode)" 
-          pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
-          (click)="useViewChange(!crudConfiguration.useView)"
-          pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
-          (click)="useSignalRChange(!crudConfiguration.useSignalR)"
-          pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
-          <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
-          (click)="usePopupChange(!crudConfiguration.usePopup)"
-          pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
-        </div>
-      </ng-template>
-    </bia-table-controller>
-    <bia-table
-      *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [totalRecord]="totalCount$ | async"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canClickRow]="canViewMembers"
-      [canSelectElement]="canSelectElement"
-      [loading]="loading$ | async"
-      (clickRowData)="onClickRowData($event)"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-    ></bia-table>
-    <app-aircraft-maintenance-company-table
-      *ngIf="crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [dictOptionDtos]="aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
-      [columnToDisplays]="displayedColumns"
-      [pageSize]="pageSize"
-      [configuration]="crudConfiguration.fieldsConfig"
-      [showColSearch]="showColSearch"
-      [globalSearchValue]="globalSearchValue"
-      [canEdit]="canEdit"
-      [canAdd]="canAdd"
-      [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
-      (loadLazy)="onLoadLazy($event)"
-      [viewPreference]="viewPreference"
-      [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-      [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-    ></app-aircraft-maintenance-company-table>
+<div class="flex flex-row flex-wrap bia-page-remove-margin">
+  <app-aircraft-maintenance-company-filter *ngIf="showAdvancedFilter"
+    (filter)="onFilter($event)"
+    (closeFilter)="onCloseFilter()"
+    [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
+  ></app-aircraft-maintenance-company-filter>
+    <div class="flex-grow-1 bia-page-margin">
+      <div>
+      <bia-table-header
+        [headerTitle]="'aircraftMaintenanceCompany.listOf' | translate"
+        [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+        [canDelete]="canDelete"
+        [canExportCSV]="true"
+        (create)="onCreate()"
+        (exportCSV)="onExportCSV('aircraftMaintenanceCompany.listOf')"
+        (delete)="onDelete()"
+        [selectedElements]="selectedCrudItems"
+
+        [showBtnFilter]="true"
+        [showFilter]="showAdvancedFilter"
+        [hasFilter]="hasAdvancedFilter"
+        (openFilter)="onOpenFilter()"
+      >
+        <!-- // Custo for teams -->
+        <ng-template pTemplate="actionOnSelected">
+          <button
+            pButton
+            [disabled]="selectedCrudItems?.length !== 1"
+            *ngIf="canEdit"
+            class="p-button-outlined"
+            label="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
+            (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+          <!-- // Begin Child MaintenanceTeam -->
+          <button
+            pButton
+            [disabled]="selectedCrudItems?.length !== 1"
+            *ngIf="canViewMaintenanceTeams"
+            class="p-button-outlined"
+            label="{{ 'aircraftMaintenanceCompany.maintenanceTeams' | translate }}"
+            (click)="onViewMaintenanceTeams()"></button>
+          <button
+            pButton
+            [disabled]="selectedCrudItems?.length !== 1 || (!selectedCrudItems[0].canMemberListAccess)"
+            *ngIf="canViewMembers"
+            class="p-button-outlined"
+            label="{{ 'app.members' | translate }}"
+            (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
+          <!-- // End Child MaintenanceTeam -->
+        </ng-template>
+      </bia-table-header>
+      <bia-table-controller
+        [defaultPageSize]="defaultPageSize"
+        [length]="totalCount$ | async"
+        [columns]="columns"
+        [columnToDisplays]="displayedColumns"
+        (displayedColumnsChange)="displayedColumnsChanged($event)"
+        (filter)="searchGlobalChanged($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+        (toggleSearch)="onToggleSearch()"
+        (viewChange)="onViewChange($event)"
+        [tableStateKey]="tableStateKey"
+        [tableState]="tableState"
+        [defaultViewPref]="defaultViewPref"
+        [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+        [hasColumnFilter]="hasColumnFilter"
+      >
+        <ng-template pTemplate="customControl">
+          <div class="flex flex-row gap-3 bia-table-controller-container" >
+            <i class="pi pi-table bia-pointer" [class]="crudConfiguration.useCalcMode?'enable':'disabled'" 
+            (click)="useCalcModeChange(!crudConfiguration.useCalcMode)" 
+            pTooltip="{{ 'bia.useCalcMode' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-eye bia-pointer" [class]="crudConfiguration.useView?'enable':'disabled'" 
+            (click)="useViewChange(!crudConfiguration.useView)"
+            pTooltip="{{ 'bia.useView' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-sync bia-pointer" [class]="crudConfiguration.useSignalR?'enable':'disabled'" 
+            (click)="useSignalRChange(!crudConfiguration.useSignalR)"
+            pTooltip="{{ 'bia.useSignalR' | translate }}" tooltipPosition="top" ></i>
+            <i class="pi pi-clone bia-pointer" [class]="crudConfiguration.usePopup?'enable':'disabled'" 
+            (click)="usePopupChange(!crudConfiguration.usePopup)"
+            pTooltip="{{ 'bia.usePopup' | translate }}" tooltipPosition="top" ></i>  
+          </div>
+        </ng-template>
+      </bia-table-controller>
+      <bia-table
+        *ngIf="!crudConfiguration.useCalcMode"
+        [elements]="crudItems$ | async"
+        [totalRecord]="totalCount$ | async"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [showColSearch]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canClickRow]="canViewMembers"
+        [canSelectElement]="canSelectElement"
+        [loading]="loading$ | async"
+        (clickRowData)="onClickRowData($event)"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+      ></bia-table>
+      <app-aircraft-maintenance-company-table
+        *ngIf="crudConfiguration.useCalcMode"
+        [elements]="crudItems$ | async"
+        [dictOptionDtos]="aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async"
+        [totalRecord]="totalCount$ | async"
+        [columnToDisplays]="displayedColumns"
+        [pageSize]="pageSize"
+        [configuration]="crudConfiguration.fieldsConfig"
+        [showColSearch]="showColSearch"
+        [globalSearchValue]="globalSearchValue"
+        [canEdit]="canEdit"
+        [canAdd]="canAdd"
+        [canSelectElement]="canDelete"
+        [loading]="loading$ | async"
+        (loadLazy)="onLoadLazy($event)"
+        [viewPreference]="viewPreference"
+        [tableStateKey]="tableStateKey"
+        (selectedElementsChanged)="onSelectedElementsChanged($event)"
+        [sortFieldValue]="sortFieldValue"
+        (stateSave)="onStateSave($event)"
+        (save)="onSave($event)"
+      ></app-aircraft-maintenance-company-table>
+    </div>
   </div>
 </div>

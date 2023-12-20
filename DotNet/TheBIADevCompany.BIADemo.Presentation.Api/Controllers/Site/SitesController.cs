@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage sites.
@@ -60,9 +61,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Sites.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.siteService.GetRangeAsync(filters, specification: SiteSpecification.SearchGetAll(filters));
+            var (results, total) = await this.siteService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
 
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
 

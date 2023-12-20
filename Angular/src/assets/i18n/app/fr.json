@@ -22,7 +22,9 @@
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Ajouter entreprise de maintenance aéronautique",
+    "admins": "Administrateurs",
     "edit": "Editer entreprise de maintenance aéronautique",
+    "filterMember": "Utilisateur membre",
     "goto": "Voir Entreprise",
     "listOf": "Liste des entreprises de maintenance aéronautique",
     "maintenanceTeams": "Equipes de maintenance",
@@ -47,7 +49,9 @@
   },
   "maintenanceTeam": {
     "add": "Ajouter équipe de maintenance",
+    "admins": "Administrateurs",
     "edit": "Editer équipe de maintenance",
+    "filterMember": "Utilisateur membre",
     "headerLabel": "Equipe de maintenance",
     "listOf": "Liste des équipes de maintenance",
     "title": "Nom"

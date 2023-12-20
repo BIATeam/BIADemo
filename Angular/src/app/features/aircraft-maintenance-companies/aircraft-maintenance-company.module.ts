@@ -18,6 +18,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompanyFilterComponent } from './components/aircraft-maintenance-company-filter/aircraft-maintenance-company-filter.component';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 
 export let ROUTES: Routes = [
   {
@@ -102,6 +104,7 @@ export let ROUTES: Routes = [
   declarations: [
     AircraftMaintenanceCompanyItemComponent,
     AircraftMaintenanceCompaniesIndexComponent,
+    AircraftMaintenanceCompanyFilterComponent,
     // [Calc] : NOT used for calc (3 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
     AircraftMaintenanceCompanyFormComponent,
@@ -118,6 +121,7 @@ export let ROUTES: Routes = [
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
     // TODO after creation of CRUD Team AircraftMaintenanceCompany : select the optioDto dommain module requiered for link
     // Domain Modules:
+    UserOptionModule,
   ]
 })
 
