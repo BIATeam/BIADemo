@@ -17,20 +17,20 @@ import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
-import { AircraftMaintenanceCompanyAdvancedFilter } from '../../model/aircraft-maintenance-company-advanced-filter';
+import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
 
 @Component({
-  selector: 'app-aircraft-maintenance-company-filter',
-  templateUrl: './aircraft-maintenance-company-filter.component.html',
-  styleUrls: ['./aircraft-maintenance-company-filter.component.scss']
+  selector: 'bia-team-advanced-filter',
+  templateUrl: './team-advanced-filter.component.html',
+  styleUrls: ['./team-advanced-filter.component.scss']
 })
-export class AircraftMaintenanceCompanyFilterComponent implements OnInit, OnChanges {
+export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() hidden = false;
-  @Input() advancedFilter: AircraftMaintenanceCompanyAdvancedFilter;
+  @Input() advancedFilter: TeamAdvancedFilterDto;
   @Output() closeFilter = new EventEmitter<void>();
   @Output() searchUsers = new EventEmitter<string>();
-  @Output() filter = new EventEmitter<AircraftMaintenanceCompanyAdvancedFilter>();
+  @Output() filter = new EventEmitter<TeamAdvancedFilterDto>();
 
   userOptions$: Observable<OptionDto[]>;
   form: UntypedFormGroup;
@@ -69,7 +69,7 @@ export class AircraftMaintenanceCompanyFilterComponent implements OnInit, OnChan
   onFilter() {
     if (this.form.valid) {
       const vm = this.form.value;
-      const advancedFilter = <AircraftMaintenanceCompanyAdvancedFilter>{
+      const advancedFilter = <TeamAdvancedFilterDto>{
         userId: vm.userSelected
       };
       this.filter.emit(advancedFilter);

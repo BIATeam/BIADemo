@@ -6,7 +6,7 @@ import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { SiteService } from '../../services/site.service';
 import { SiteTableComponent } from '../../components/site-table/site-table.component';
-import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
+import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 
 @Component({
   selector: 'app-sites-index',
@@ -22,7 +22,7 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   checkhasAdvancedFilter()
   {
-    this.hasAdvancedFilter =  SiteAdvancedFilter.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
   }
   
   @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;

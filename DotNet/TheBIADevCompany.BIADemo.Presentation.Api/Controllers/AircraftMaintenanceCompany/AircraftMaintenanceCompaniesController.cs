@@ -47,20 +47,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompaniesController"/> class.
         /// </summary>
-        /// <param name="aircraftMaintenanceCompanieservice">The AircraftMaintenanceCompany application service.</param>
+        /// <param name="aircraftMaintenanceCompaniesService">The AircraftMaintenanceCompany application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInAircraftMaintenanceCompany
         public AircraftMaintenanceCompaniesController(
-            IAircraftMaintenanceCompanyAppService AircraftMaintenanceCompanieservice, IClientForHubRepository clientForHubService)
+            IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService, IClientForHubRepository clientForHubService)
 #else
-        public AircraftMaintenanceCompaniesController(IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompanieservice)
+        public AircraftMaintenanceCompaniesController(IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService)
 #endif
         {
 #if UseHubForClientInAircraftMaintenanceCompany
             this.clientForHubService = clientForHubService;
 #endif
-            this.aircraftMaintenanceCompaniesService = aircraftMaintenanceCompanieservice;
+            this.aircraftMaintenanceCompaniesService = aircraftMaintenanceCompaniesService;
         }
 
         /// <summary>

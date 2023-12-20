@@ -6,6 +6,7 @@ import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
+import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 
 @Component({
   selector: 'app-maintenance-teams-index',
@@ -18,6 +19,11 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
   canViewMembers = false;
   canSelectElement = false;
 
+  checkhasAdvancedFilter()
+  {
+    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+  }
+  
   @ViewChild(MaintenanceTeamTableComponent, { static: false }) crudItemTableComponent: MaintenanceTeamTableComponent;
 
   constructor(

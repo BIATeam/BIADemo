@@ -6,6 +6,7 @@ import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
+import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-index',
@@ -20,6 +21,11 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
   // Begin Child MaintenanceTeam
   canViewMaintenanceTeams = false;
   // End Child MaintenanceTeam
+
+  checkhasAdvancedFilter()
+  {
+    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+  }
 
   @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false }) crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
 

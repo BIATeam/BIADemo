@@ -122,6 +122,8 @@ import { BiaTableInputComponent } from './components/table/bia-table-input/bia-t
 import { BiaTableOutputComponent } from './components/table/bia-table-output/bia-table-output.component';
 import { BiaOutputComponent } from './components/form/bia-output/bia-output.component';
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { TeamAdvancedFilterComponent } from './components/team-advanced-filter/team-advanced-filter.component';
 
 const PRIMENG_MODULES = [
 //  AccordionModule,
@@ -210,6 +212,7 @@ const COMPONENTS = [
   BiaOnlineOfflineIconComponent,
   NotificationTeamWarningComponent,
   HangfireContainerComponent,
+  TeamAdvancedFilterComponent,
 ];
 
 
@@ -238,10 +241,13 @@ const NOTIFICATION_IMPORTS = [
   EffectsModule.forFeature([NotificationsEffects])
 ];
 
+const TEAM_ADVANCED_FILTER_IMPORTS = [
+  UserOptionModule,
+];
 const SERVICES = [MessageService];
 
 @NgModule({
-  imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS],
+  imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS, ...TEAM_ADVANCED_FILTER_IMPORTS],
   declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
   exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...PIPES],
   providers: [...SERVICES]

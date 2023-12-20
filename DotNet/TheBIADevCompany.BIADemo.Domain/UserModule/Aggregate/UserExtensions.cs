@@ -14,13 +14,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The formated display.</returns>
-        public static string SelectDisplay(this User user)
+        public static string Display(this User user)
         {
             string display = null;
 
             if (user != null)
             {
-                display = $"{user.FirstName} {user.LastName} ({user.Login})";
+                display = $"{user.LastName} {user.FirstName} ({user.Login})";
             }
 
             return display;

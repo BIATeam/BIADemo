@@ -1,9 +1,9 @@
 <div class="flex flex-row flex-wrap bia-page-remove-margin">
-  <app-site-filter *ngIf="showAdvancedFilter"
+  <bia-team-advanced-filter *ngIf="showAdvancedFilter"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
-  ></app-site-filter>
+  ></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
     <div>
       <bia-table-header

@@ -29,7 +29,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 #endif
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage MaintenanceTeams.
@@ -42,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <summary>
         /// The MaintenanceTeam application service.
         /// </summary>
-        private readonly IMaintenanceTeamAppService aircraftMaintenanceCompanieservice;
+        private readonly IMaintenanceTeamAppService maintenanceTeamAppService;
 
 #if UseHubForClientInMaintenanceTeam
         private readonly IClientForHubRepository clientForHubService;
@@ -51,20 +53,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
         /// </summary>
-        /// <param name="aircraftMaintenanceCompanieservice">The MaintenanceTeam application service.</param>
+        /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInMaintenanceTeam
         public MaintenanceTeamsController(
-            IMaintenanceTeamAppService MaintenanceTeamservice, IClientForHubRepository clientForHubService)
+            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubRepository clientForHubService)
 #else
-        public MaintenanceTeamsController(IMaintenanceTeamAppService aircraftMaintenanceCompanieservice)
+        public MaintenanceTeamsController(IMaintenanceTeamAppService maintenanceTeamAppService)
 #endif
         {
 #if UseHubForClientInMaintenanceTeam
             this.clientForHubService = clientForHubService;
 #endif
-            this.aircraftMaintenanceCompanieservice = aircraftMaintenanceCompanieservice;
+            this.maintenanceTeamAppService = maintenanceTeamAppService;
         }
 
         /// <summary>
@@ -79,7 +81,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.MaintenanceTeams.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.aircraftMaintenanceCompanieservice.GetRangeAsync(filters);
+            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters));
             this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -104,7 +106,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 
             try
             {
-                var dto = await this.aircraftMaintenanceCompanieservice.GetAsync(id);
+                var dto = await this.maintenanceTeamAppService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -131,7 +133,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         {
             try
             {
-                var createdDto = await this.aircraftMaintenanceCompanieservice.AddAsync(dto);
+                var createdDto = await this.maintenanceTeamAppService.AddAsync(dto);
 #if UseHubForClientInMaintenanceTeam
                 await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
@@ -169,7 +171,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 
             try
             {
-                var updatedDto = await this.aircraftMaintenanceCompanieservice.UpdateAsync(dto);
+                var updatedDto = await this.maintenanceTeamAppService.UpdateAsync(dto);
 #if UseHubForClientInMaintenanceTeam
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
@@ -209,7 +211,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 
             try
             {
-                var deletedDto = await this.aircraftMaintenanceCompanieservice.RemoveAsync(id);
+                var deletedDto = await this.maintenanceTeamAppService.RemoveAsync(id);
 #if UseHubForClientInMaintenanceTeam
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
@@ -245,7 +247,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 
             try
             {
-                var deletedDtos = await this.aircraftMaintenanceCompanieservice.RemoveAsync(ids);
+                var deletedDtos = await this.maintenanceTeamAppService.RemoveAsync(ids);
 
 #if UseHubForClientInMaintenanceTeam
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
@@ -286,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
 
             try
             {
-                var savedDtos = await this.aircraftMaintenanceCompanieservice.SaveAsync(dtoList);
+                var savedDtos = await this.maintenanceTeamAppService.SaveAsync(dtoList);
 #if UseHubForClientInMaintenanceTeam
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
@@ -317,7 +319,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.aircraftMaintenanceCompanieservice.GetCsvAsync(filters);
+            byte[] buffer = await this.maintenanceTeamAppService.GetCsvAsync(filters);
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"MaintenanceTeams{BIAConstants.Csv.Extension}");
         }
     }
