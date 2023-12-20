@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
@@ -205,7 +206,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             PagingFilterFormatDto filter = new PagingFilterFormatDto()
             {
                 Filters = null,
-                AdvancedFilter = new SiteAdvancedFilterDto() { UserId = 1 },
+                AdvancedFilter = new TeamAdvancedFilterDto() { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);

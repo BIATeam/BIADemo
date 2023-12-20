@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>
@@ -156,7 +157,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };
-            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters, specification: SiteSpecification.SearchGetAll(filters)).Result;
+            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters)).Result;
 
             // Only one site is returned (the one the user is a member of).
             Assert.IsNotNull(sites);

@@ -122,7 +122,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             Type templateType = typeof(BaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
-            List<Type> derivedTypes = ReflectiveEnumerator.GetTypesDerivedOfBaseGenericTypeFromAssembly(assembly, templateType);
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
             foreach (var type in derivedTypes)
             {
                 collection.AddScoped(type);

@@ -25,5 +25,22 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
             return display;
         }
+
+        /// <summary>
+        ///  Return the user short format to display in list ....
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <returns>The formated display.</returns>
+        public static string DisplayShort(this User user)
+        {
+            string display = null;
+
+            if (user != null)
+            {
+                display = $"{user.LastName} {user.FirstName}";
+            }
+
+            return display;
+        }
     }
 }

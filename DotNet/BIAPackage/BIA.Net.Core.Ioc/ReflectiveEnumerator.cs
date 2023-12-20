@@ -32,23 +32,10 @@ namespace BIA.Net.Core.Ioc
         /// <param name="assembly">the assembly to parse.</param>
         /// <param name="baseType">base type of the class to find.</param>
         /// <returns>List of classes with the name end by a string.</returns>
-        public static List<Type> GetTypesDerivedOfBaseTypeFromAssembly(Assembly assembly, Type baseType)
+        public static List<Type> GetDerivedTypes(Assembly assembly, Type baseType)
         {
             return assembly.GetTypes()
-                .Where(type => baseType.IsAssignableFrom(type) && type.IsClass && !type.IsAbstract)
-                .ToList();
-        }
-
-        /// <summary>
-        /// Return all classes of an assembly with derive of a generic type.
-        /// </summary>
-        /// <param name="assembly">the assembly to parse.</param>
-        /// <param name="baseGenericType">base type of the generic class to find.</param>
-        /// <returns>List of classes with the name end by a string.</returns>
-        public static List<Type> GetTypesDerivedOfBaseGenericTypeFromAssembly(Assembly assembly, Type baseGenericType)
-        {
-            return assembly.GetTypes()
-                .Where(type => type.IsClass && !type.IsAbstract && IsSubclassOfRawGeneric(type, baseGenericType))
+                .Where(type => ( baseType.IsAssignableFrom(type) || IsSubclassOfRawGeneric(type, baseType)) && type.IsClass && !type.IsAbstract)
                 .ToList();
         }
 

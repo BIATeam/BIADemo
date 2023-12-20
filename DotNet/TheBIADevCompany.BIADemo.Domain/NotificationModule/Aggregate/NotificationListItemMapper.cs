@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for user.
@@ -43,9 +44,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { HeaderName.CreatedDate, notification => notification.CreatedDate },
                     { HeaderName.Type, notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { HeaderName.Read, notification => notification.Read },
-                    { HeaderName.CreatedBy, notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
+                    { HeaderName.CreatedBy, notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
                     { HeaderName.NotifiedTeams, notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
-                    { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
+                    { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.LastName + " " + x.User.FirstName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
         }
@@ -69,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 CreatedBy = entity.CreatedBy != null ? new OptionDto
                 {
                     Id = entity.CreatedBy.Id,
-                    Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
+                    Display = entity.CreatedBy.Display(),
                 }
                 : null,
 
@@ -91,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
                 {
                     Id = nu.User.Id,
-                    Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
+                    Display = nu.User.Display(),
                 }).ToList(),
             };
         }

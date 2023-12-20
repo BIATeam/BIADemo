@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     { "Title", site => site.Title },
                     {
                         "Admins", site =>
-                        site.Members.Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId))).Select(s => s.User.FirstName + " " + s.User.LastName + " (" + s.User.Login + ")").OrderBy(x => x)
+                        site.Members.Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId))).Select(s => s.User.LastName + " " + s.User.FirstName + " (" + s.User.Login + ")").OrderBy(x => x)
                     },
                 };
             }
@@ -92,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
                 Admins = entity.Members
                     .Where(w => w.MemberRoles.Any(a => this.AdminRoleIds.Contains(a.RoleId)))
-                    .Select(s => new OptionDto { Id = s.User.Id, Display = s.User.LastName + " " + s.User.FirstName }),
+                    .Select(s => new OptionDto { Id = s.User.Id, Display = s.User.DisplayShort() }),
 
                 // Should correspond to TTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =

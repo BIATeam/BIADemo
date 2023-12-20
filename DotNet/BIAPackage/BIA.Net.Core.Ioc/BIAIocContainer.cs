@@ -14,6 +14,9 @@ namespace BIA.Net.Core.IocContainer
     using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System;
 
     /// <summary>
     /// The IoC Container.
@@ -48,6 +51,13 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
+            foreach (var type in derivedTypes)
+            {
+                collection.AddScoped(type);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
