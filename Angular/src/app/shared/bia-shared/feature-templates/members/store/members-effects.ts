@@ -42,13 +42,17 @@ export class MembersEffects {
       ofType(FeatureMembersActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.memberDas.get({ id: id }).pipe(
-          map((member) => FeatureMembersActions.loadSuccess({ member })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureMembersActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.memberDas.get({ id: id }).pipe(
+            map((member) => FeatureMembersActions.loadSuccess({ member })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureMembersActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureMembersActions.loadSuccess({ member: <Member>{} }));
+        }
       })
     )
   );
@@ -77,14 +81,14 @@ export class MembersEffects {
     )
   );
 
-  
+
   createMulti$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.createMulti),
       pluck('members'),
       concatMap((member) => of(member).pipe(withLatestFrom(this.store.select(FeatureMembersStore.getLastLazyLoadEvent)))),
       switchMap(([members, event]) => {
-        return this.memberDas.postItem({ item: members, endpoint:"addMulti", offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
+        return this.memberDas.postItem({ item: members, endpoint: "addMulti", offlineMode: MemberCRUDConfiguration.useOfflineMode }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
             if (MemberCRUDConfiguration.useSignalR) {
@@ -178,5 +182,5 @@ export class MembersEffects {
     private memberDas: MemberDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

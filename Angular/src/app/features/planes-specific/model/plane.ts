@@ -23,6 +23,8 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
   columns: [
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,
+      isFrozen: true,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: false,
@@ -31,15 +33,19 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
       specificInput:true,
       type: PropType.Boolean,
       icon: PrimeIcons.POWER_OFF,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
       type: PropType.DateTime,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
       type: PropType.Date,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
       type: PropType.Number,
@@ -48,12 +54,15 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
       specificInput:true,
       isRequired: true,
       validators: [Validators.required, Validators.min(1)],
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,
+      minWidth: '50px'
     }),
     Object.assign(new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'), {
       type: PropType.ManyToMany,
+      minWidth: '50px'
     })
   ],
 }

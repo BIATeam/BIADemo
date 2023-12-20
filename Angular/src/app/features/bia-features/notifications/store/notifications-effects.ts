@@ -12,6 +12,7 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { LazyLoadEvent } from 'primeng/api';
 import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { NotificationListItem } from '../model/notificationListItem';
+import { Notification } from '../model/notification';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -42,13 +43,17 @@ export class NotificationsEffects {
       ofType(FeatureNotificationsActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.notificationDas.get({ id: id }).pipe(
-          map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureNotificationsActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.notificationDas.get({ id: id }).pipe(
+            map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              return of(FeatureNotificationsActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeatureNotificationsActions.loadSuccess({ notification: <Notification>{} }));
+        }
       })
     )
   );
@@ -170,5 +175,5 @@ export class NotificationsEffects {
     private notificationDas: NotificationDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) {}
+  ) { }
 }

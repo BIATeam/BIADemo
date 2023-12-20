@@ -43,14 +43,18 @@ export class PlanesEffects {
       ofType(FeaturePlanesActions.load),
       pluck('id'),
       switchMap((id) => {
-        return this.planeDas.get({ id: id }).pipe(
-          map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            location.assign(this.baseHref);
-            return of(FeaturePlanesActions.failure({ error: err }));
-          })
-        );
+        if (id) {
+          return this.planeDas.get({ id: id }).pipe(
+            map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
+            catchError((err) => {
+              this.biaMessageService.showError();
+              location.assign(this.baseHref);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
+        } else {
+          return of(FeaturePlanesActions.loadSuccess({ plane: <Plane>{} }));
+        }
       })
     )
   );
@@ -157,5 +161,5 @@ export class PlanesEffects {
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>,
     @Inject(APP_BASE_HREF) public baseHref: string,
-  ) {}
+  ) { }
 }

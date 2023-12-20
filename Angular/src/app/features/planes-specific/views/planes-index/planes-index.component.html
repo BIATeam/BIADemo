@@ -78,6 +78,8 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
+      scrollHeightValue="calc( 100vh - 440px)"
+      [isScrollable]="true"
     >
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
@@ -127,6 +129,8 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
+      scrollHeightValue="calc( 100vh - 440px)"
+      [isScrollable]="true"
     >
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
