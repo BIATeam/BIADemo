@@ -27,8 +27,8 @@ namespace BIA.Net.Core.Domain.Service
         where TDtoListItem : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity, TKey>, new()
-        where TMapperListItem : BaseMapper<TDtoListItem, TEntity, TKey>, new()
+        where TMapper : BaseMapper<TDto, TEntity, TKey>
+        where TMapperListItem : BaseMapper<TDtoListItem, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see

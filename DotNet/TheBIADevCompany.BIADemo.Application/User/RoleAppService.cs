@@ -24,10 +24,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userContext">The user context.</param>
-        public RoleAppService(ITGenericRepository<Role, int> repository, UserContext userContext)
+        public RoleAppService(ITGenericRepository<Role, int> repository)
             : base(repository)
         {
-            this.userContext = userContext;
         }
 
         /// <summary>

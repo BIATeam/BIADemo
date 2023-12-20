@@ -38,11 +38,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="userContext">The user context.</param>
-        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal, UserContext userContext)
+        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal)
             : base(repository)
         {
             this.principal = principal as BIAClaimsPrincipal;
-            this.userContext = userContext;
 
             // Include already add with the mapper MemberMapper
             // this.Repository.QueryCustomizer = queryCustomizer

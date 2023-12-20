@@ -6,7 +6,7 @@
       [canDelete]="canDelete"
       [canExportCSV]="true"
       (create)="onCreate()"
-      (exportCSV)="onExportCSV()"
+      (exportCSV)="onExportCSV('planeType.listOf')"
       (delete)="onDelete()"
       [selectedElements]="selectedCrudItems"
     ></bia-table-header>

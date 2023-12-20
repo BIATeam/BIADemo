@@ -5,16 +5,20 @@
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
+    using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Ioc;
     using BIA.Net.Core.IocContainer;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
@@ -115,6 +119,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
             collection.AddTransient<INotificationDomainService, NotificationDomainService>();
             collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
+
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
+            foreach (var type in derivedTypes)
+            {
+                collection.AddScoped(type);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

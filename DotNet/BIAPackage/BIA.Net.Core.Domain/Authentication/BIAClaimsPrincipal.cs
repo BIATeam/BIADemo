@@ -28,6 +28,8 @@ namespace BIA.Net.Core.Domain.Authentication
             // Do nothing.
         }
 
+        public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
+
         /// <summary>
         /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
         /// </summary>
@@ -85,7 +87,7 @@ namespace BIA.Net.Core.Domain.Authentication
 
                     if (identity?.Groups?.Any() == true)
                     {
-                        groupNames = identity?.Groups.AsParallel().Select(id => id.Translate(typeof(NTAccount)).Value).ToList();
+                        groupNames = identity.Groups.AsParallel().Select(id => id.Translate(typeof(NTAccount)).Value).ToList();
                     }
                 }
             }
@@ -101,6 +103,16 @@ namespace BIA.Net.Core.Domain.Authentication
         public virtual IEnumerable<string> GetRoles()
         {
             return this.GetClaimValues(ClaimTypes.Role);
+        }
+
+        /// <summary>
+        /// Get the user roles in the claims.
+        /// This method is used to retrieve the roles contained in the token provided by the IdP.
+        /// </summary>
+        /// <returns>The user roles.</returns>
+        public virtual IEnumerable<int> GetRoleIds()
+        {
+            return this.GetClaimValues(RoleId).Select(c => int.Parse(c));
         }
 
         /// <summary>

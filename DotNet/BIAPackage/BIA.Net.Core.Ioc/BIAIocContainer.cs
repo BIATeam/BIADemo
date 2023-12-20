@@ -6,12 +6,17 @@ namespace BIA.Net.Core.IocContainer
 {
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System;
 
     /// <summary>
     /// The IoC Container.
@@ -46,6 +51,13 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
+            foreach (var type in derivedTypes)
+            {
+                collection.AddScoped(type);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

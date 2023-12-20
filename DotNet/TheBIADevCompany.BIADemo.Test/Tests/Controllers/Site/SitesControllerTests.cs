@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
@@ -202,16 +203,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
+            PagingFilterFormatDto filter = new PagingFilterFormatDto()
             {
                 Filters = null,
-                AdvancedFilter = new SiteAdvancedFilterDto() { UserId = 1 },
+                AdvancedFilter = new TeamAdvancedFilterDto() { UserId = 1 },
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            IEnumerable<SiteInfoDto> listSites = response.Value as IEnumerable<SiteInfoDto>;
+            IEnumerable<SiteDto> listSites = response.Value as IEnumerable<SiteDto>;
             Assert.IsNotNull(listSites);
             Assert.AreEqual(1, listSites.Count());
 
@@ -220,7 +221,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            SiteInfoDto selectedSiteInfo = response.Value as SiteInfoDto;
+            SiteDto selectedSiteInfo = response.Value as SiteDto;
             Assert.IsNotNull(selectedSiteInfo);
             Assert.AreEqual(DataConstants.DefaultSitesTitles[0], selectedSiteInfo.Title);
             Assert.AreEqual(1, selectedSiteInfo.Id);

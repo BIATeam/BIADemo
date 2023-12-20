@@ -155,11 +155,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string ListAccess = "MaintenanceTeam_List_Access";
 
             /// <summary>
-            /// The right to view all maintenance team for current aircraft maintenance companies.
-            /// </summary>
-            public const string ListViewAll = "MaintenanceTeam_List_View_All";
-
-            /// <summary>
             /// The right to create maintenance team.
             /// </summary>
             public const string Create = "MaintenanceTeam_Create";
@@ -337,6 +332,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class Permissions
         {
+
             /// <summary>
             /// The right to access to the list of airports (options only).
             /// </summary>

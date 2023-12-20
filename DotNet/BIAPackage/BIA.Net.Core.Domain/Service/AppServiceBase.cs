@@ -7,6 +7,8 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Collections.Generic;
 
     /// <summary>
     /// The base class for all application service.
@@ -16,12 +18,7 @@ namespace BIA.Net.Core.Domain.Service
     public abstract class AppServiceBase<TEntity, TKey>
                 where TEntity : class, IEntity<TKey>
     {
-        /// <summary>
-        /// The unit of work.
-        /// </summary>
-        protected UserContext userContext = null;
-
-        /// <summary>
+       /// <summary>
         /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -43,13 +40,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>The mapper.</returns>
         protected virtual TOtherMapper InitMapper<TOtherDto, TOtherMapper>()
             where TOtherDto : BaseDto<TKey>, new()
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
         {
-            TOtherMapper mapper = new TOtherMapper();
-            if (this.userContext != null)
-            {
-                mapper.UserContext = this.userContext;
-            }
+            TOtherMapper mapper = this.Repository.ServiceProvider.GetService<TOtherMapper>();
 
             return mapper;
         }

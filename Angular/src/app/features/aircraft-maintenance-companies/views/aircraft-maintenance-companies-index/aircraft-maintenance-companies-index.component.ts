@@ -6,6 +6,7 @@ import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
 import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircraft-maintenance-company-table/aircraft-maintenance-company-table.component';
+import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-index',
@@ -15,7 +16,16 @@ import { AircraftMaintenanceCompanyTableComponent } from '../../components/aircr
 
 export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexComponent<AircraftMaintenanceCompany> {
   // Custo for teams
-  canManageMembers = false;
+  canViewMembers = false;
+  canSelectElement = false;
+  // Begin Child MaintenanceTeam
+  canViewMaintenanceTeams = false;
+  // End Child MaintenanceTeam
+
+  checkhasAdvancedFilter()
+  {
+    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+  }
 
   @ViewChild(AircraftMaintenanceCompanyTableComponent, { static: false }) crudItemTableComponent: AircraftMaintenanceCompanyTableComponent;
 
@@ -33,23 +43,36 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     this.canDelete = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Delete);
     this.canAdd = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Create);
     // Custo for teams
-    this.canManageMembers = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Member_List_Access);
+    this.canViewMembers = this.authService.hasPermission(Permission.AircraftMaintenanceCompany_Member_List_Access);
+    // Begin Child MaintenanceTeam
+    this.canViewMaintenanceTeams = this.authService.hasPermission(Permission.MaintenanceTeam_List_Access);;
+    // End Child MaintenanceTeam
+    this.canSelectElement = 
+      // Begin Child MaintenanceTeam
+      this.canViewMaintenanceTeams ||
+      // End Child MaintenanceTeam
+      this.canViewMembers ||
+      this.canDelete;
+
+  }
+  
+  onClickRowData(crudItem: AircraftMaintenanceCompany) {
+    if (crudItem.canMemberListAccess) {
+      this.onViewMembers(crudItem.id);
+    }
   }
 
-    // Custo for teams
-    onClickRow(crudItemId: any) {
-      this.onManageMember(crudItemId)
+  onViewMembers(crudItemId: any) {
+    if (crudItemId && crudItemId > 0) {
+      this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
     }
-  
-    onManageMember(crudItemId: any) {
-      if (crudItemId && crudItemId > 0) {
-        this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
-      }
-    }
+  }
 
-    onMaintenanceTeams() {
-      if (this.selectedCrudItems.length == 1) {
-        this.router.navigate([this.selectedCrudItems[0].id, 'maintenance-teams'], { relativeTo: this.activatedRoute });
-      }
+  // Begin Child MaintenanceTeam
+  onViewMaintenanceTeams() {
+    if (this.selectedCrudItems.length == 1) {
+      this.router.navigate([this.selectedCrudItems[0].id, 'maintenance-teams'], { relativeTo: this.activatedRoute });
     }
+  }
+  // End Child MaintenanceTeam
 }

@@ -17,20 +17,20 @@ import { getAllUserOptions } from 'src/app/domains/bia-domains/user-option/store
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
-import { SiteAdvancedFilter } from '../../model/site-advanced-filter';
+import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
 
 @Component({
-  selector: 'app-site-filter',
-  templateUrl: './site-filter.component.html',
-  styleUrls: ['./site-filter.component.scss']
+  selector: 'bia-team-advanced-filter',
+  templateUrl: './team-advanced-filter.component.html',
+  styleUrls: ['./team-advanced-filter.component.scss']
 })
-export class SiteFilterComponent implements OnInit, OnChanges {
+export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
   @Input() hidden = false;
-  @Input() advancedFilter: SiteAdvancedFilter;
+  @Input() advancedFilter: TeamAdvancedFilterDto;
   @Output() closeFilter = new EventEmitter<void>();
   @Output() searchUsers = new EventEmitter<string>();
-  @Output() filter = new EventEmitter<SiteAdvancedFilter>();
+  @Output() filter = new EventEmitter<TeamAdvancedFilterDto>();
 
   userOptions$: Observable<OptionDto[]>;
   form: UntypedFormGroup;
@@ -69,7 +69,7 @@ export class SiteFilterComponent implements OnInit, OnChanges {
   onFilter() {
     if (this.form.valid) {
       const vm = this.form.value;
-      const advancedFilter = <SiteAdvancedFilter>{
+      const advancedFilter = <TeamAdvancedFilterDto>{
         userId: vm.userSelected
       };
       this.filter.emit(advancedFilter);

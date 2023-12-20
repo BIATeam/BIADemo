@@ -14,6 +14,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Test.Data;
 
     /// <summary>
@@ -151,17 +153,17 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Site
             ISiteAppService service = this.GetService<ISiteAppService>();
             #endregion Setup context
 
-            PagingFilterFormatDto<SiteAdvancedFilterDto> filters = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
+            PagingFilterFormatDto filters = new PagingFilterFormatDto()
             {
                 Filters = new Dictionary<string, JsonElement>(),
             };
-            (IEnumerable<SiteInfoDto> sites, int total) = service.GetRangeWithMembersAsync(filters).Result;
+            (IEnumerable<SiteDto> sites, int total) = service.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters)).Result;
 
             // Only one site is returned (the one the user is a member of).
             Assert.IsNotNull(sites);
             Assert.AreEqual(1, total);
 
-            SiteInfoDto site = sites.First();
+            SiteDto site = sites.First();
             Assert.AreEqual(1, site.Id);
             Assert.AreEqual(DataConstants.DefaultSitesTitles[0], site.Title);
         }

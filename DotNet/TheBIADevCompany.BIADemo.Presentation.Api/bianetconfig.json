@@ -122,19 +122,7 @@
       }
     ],
     "Permissions": [
-      {
-        "Names": [ "Admin" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_Admin" ],
-        "Roles": [ "Site_Admin" ]
-      },
       // Begin BIADemo
-      {
-        "Names": [ "Pilot" ],
-        "Roles": [ "Pilot" ]
-      },
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
@@ -172,7 +160,11 @@
         "Roles": [ "Admin" ]
       },
       {
-        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
+        "Names": [ "AircraftMaintenanceCompany_List_Access" ],
+        "Roles": [ "Admin", "AircraftMaintenanceCompany_MemberOfOne" ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
         "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
       },
       {
@@ -186,27 +178,23 @@
       // Maintenance Team
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
-        "Roles": [ "Admin", "Supervisor" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */ ]
       },
       {
-        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read" ],
-        "Roles": [ "AircraftMaintenanceCompany_Member" ]
+        "Names": [ "MaintenanceTeam_List_Access" ],
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_MemberOfOne" ]
       },
       {
-        "Names": [ "MaintenanceTeam_Member_List_Access" ],
-        "Roles": [ "Admin", "Supervisor", "MaintenanceTeam_Member" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_List_View_All" ],
-        "Roles": [ "Admin", "Supervisor" ]
+        "Names": [ "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_Member" ]
       },
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
       // Airport
       {

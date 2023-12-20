@@ -1,9 +1,9 @@
 <div class="flex flex-row flex-wrap bia-page-remove-margin">
-  <app-site-filter *ngIf="showAdvancedFilter"
+  <bia-team-advanced-filter *ngIf="showAdvancedFilter"
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="crudConfiguration.fieldsConfig?.advancedFilter"
-  ></app-site-filter>
+  ></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
     <div>
       <bia-table-header
@@ -12,7 +12,7 @@
         [canDelete]="canDelete"
         [canExportCSV]="true"
         (create)="onCreate()"
-        (exportCSV)="onExportCSV()"
+        (exportCSV)="onExportCSV('site.listOf')"
         (delete)="onDelete()"
         [selectedElements]="selectedCrudItems"
 
@@ -24,12 +24,19 @@
       <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
           <button
-          pButton
-          [disabled]="selectedCrudItems?.length !== 1"
-          *ngIf="canEdit"
-          class="p-button-outlined"
-          label="{{ 'site.edit' | translate }}"
-          (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+            pButton
+            [disabled]="selectedCrudItems?.length !== 1"
+            *ngIf="canEdit"
+            class="p-button-outlined"
+            label="{{ 'site.edit' | translate }}"
+            (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+          <button
+            pButton
+            [disabled]="selectedCrudItems?.length !== 1 || (!selectedCrudItems[0].canMemberListAccess)"
+            *ngIf="canViewMembers"
+            class="p-button-outlined"
+            label="{{ 'app.members' | translate }}"
+            (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
         </ng-template>
       </bia-table-header>
       <bia-table-controller
@@ -73,10 +80,10 @@
         [configuration]="crudConfiguration.fieldsConfig"
         [showColSearch]="showColSearch"
         [globalSearchValue]="globalSearchValue"
-        [canClickRow]="canManageMembers"
-        [canSelectElement]="canDelete"
+        [canClickRow]="canViewMembers"
+        [canSelectElement]="canSelectElement"
         [loading]="loading$ | async"
-        (clickRowId)="onClickRow($event)"
+        (clickRowData)="onClickRowData($event)"
         (loadLazy)="onLoadLazy($event)"
         [viewPreference]="viewPreference"
         [tableStateKey]="tableStateKey"

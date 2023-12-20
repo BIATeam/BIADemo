@@ -17,8 +17,9 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// The interface base for IGenericRepository.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
-
-    public interface ITGenericRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
+    public interface ITGenericRepository<TEntity, TKey>
+        where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// Get or set the Query customizer.
@@ -29,6 +30,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// Gets the unit of work.
         /// </summary>
         IUnitOfWork UnitOfWork { get; }
+
+        /// <summary>
+        /// The service provider.
+        /// </summary>
+        IServiceProvider ServiceProvider { get; }
 
         /// <summary>
         /// Add an item to the current context.

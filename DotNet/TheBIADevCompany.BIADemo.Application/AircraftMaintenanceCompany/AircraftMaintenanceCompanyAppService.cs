@@ -6,19 +6,21 @@
 namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using Microsoft.AspNetCore.Http;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for AircraftMaintenanceCompany.
@@ -33,24 +35,13 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         public AircraftMaintenanceCompanyAppService(ITGenericRepository<AircraftMaintenanceCompany, int> repository, IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            var currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
-
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
-            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
-
-            // You can see evrey team if your are member
-            // For AircraftMaintenanceCompany we add
-            //          - right for privilate acces (AccessAll) = Admin
             this.FiltersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
+                TeamAppService.ReadSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
 
-            // In teams the right in jwt depends on current teams. So you should ensure that you are working on current team.
             this.FiltersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<AircraftMaintenanceCompany>(p => p.Id == currentAircraftMaintenanceCompanyId));
+                TeamAppService.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
         }
     }
 }

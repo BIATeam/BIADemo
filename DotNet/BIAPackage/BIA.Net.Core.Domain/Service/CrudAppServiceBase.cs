@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Domain.Service
         where TDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()
-        where TMapper : BaseMapper<TDto, TEntity, TKey>, new()
+        where TMapper : BaseMapper<TDto, TEntity, TKey>
     {
         /// <summary>
         /// Initializes a new instance of the <see

@@ -18,8 +18,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { SitesEffects } from './store/sites-effects';
 import { FeatureSitesStore } from './store/site.state';
 import { SiteCRUDConfiguration } from './site.constants';
-import { SiteFilterComponent } from './components/site-filter/site-filter.component';
-import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 
 export let ROUTES: Routes = [
   {
@@ -95,7 +93,6 @@ export let ROUTES: Routes = [
   declarations: [
     SiteItemComponent,
     SitesIndexComponent,
-    SiteFilterComponent,
     // [Calc] : NOT used for calc (3 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
     SiteFormComponent,
@@ -111,7 +108,6 @@ export let ROUTES: Routes = [
     StoreModule.forFeature(SiteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
     EffectsModule.forFeature([SitesEffects]),
     // Domain Modules:
-    UserOptionModule,
   ]
 })
 
