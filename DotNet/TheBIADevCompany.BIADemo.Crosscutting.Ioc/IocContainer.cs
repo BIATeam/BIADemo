@@ -101,14 +101,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
+            /// BIAToolKit Partial Begin - Plane
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
+            /// BIAToolKit Partial End - Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
-
             // End BIADemo
+            /// BIAToolKit - Begin Dependency
+            /// BIAToolKit - End Dependency
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
