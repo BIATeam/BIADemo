@@ -186,6 +186,28 @@ function CopyModel {
   }
 }
 
+function ExtractPartial {
+  param (
+    [string]$modelName,
+    [string]$folderpath,
+    [string]$fileName
+  )
+  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+  $destinationFile = $destinationFolder + '\' + $fileName + ".partial"
+  $sourceFile = '.\' + $folderpath + '\' + $fileName
+  Copy-Item -path $sourceFile -Destination $destinationFile
+
+  $searchBegin = '/// BIAToolKit Partial Begin - Plane'
+  $searchEnd = '/// BIAToolKit Partial End - Plane'
+   
+  $start = GetLineNumber -pattern $searchBegin -file $destinationFile
+  $end = GetLineNumber -pattern $searchEnd -file $destinationFile
+  $lineNumber = (Get-Content $sourceFile).Length
+
+  DeleteLine -start ($end+1) -end $lineNumber -file $destinationFile 
+  DeleteLine -start 1 -end ($start-1) -file $destinationFile
+}
 
 RemoveFolder -path $newPath
 
@@ -205,6 +227,10 @@ CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'IPlaneAppS
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'PlaneMapper.cs'
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'Plane.cs'
 CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain.Dto\Plane' 'PlaneDto.cs'
+
+ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api' 'bianetconfig.json'
+ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Crosscutting.Ioc' 'IocContainer.cs'
+ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Crosscutting.Common' 'Rights.cs'
 
 compress-archive -path '.\docs\crud-planes\*' -destinationpath '.\docs\crud-planes.zip' -compressionlevel optimal
 Remove-Item '.\docs\crud-planes' -Recurse -Force -Confirm:$false
