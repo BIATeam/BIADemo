@@ -122,6 +122,8 @@
       }
     ],
     "Permissions": [
+      /// BIAToolKit - Begin Config
+      /// BIAToolKit - End Config
       // Begin BIADemo
       // Hangfire
       {
@@ -332,8 +334,6 @@
         "LightToken": true,
         "Roles": [ "Back_Read_Only" ]
       }
-      /// BIAToolKit - Begin Config
-      /// BIAToolKit - End Config
     ]
   }
 }
