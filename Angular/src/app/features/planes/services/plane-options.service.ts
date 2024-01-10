@@ -8,7 +8,9 @@ import { getAllPlaneTypeOptions } from 'src/app/domains/plane-type-option/store/
 import { DomainPlaneTypeOptionsActions } from 'src/app/domains/plane-type-option/store/plane-type-options-actions';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
+/* BIAToolKit - Begin Children */
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+/* BIAToolKit - End Children */
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
@@ -26,19 +28,20 @@ export class PlaneOptionsService extends CrudItemOptionsService {
         this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 
-        this.dictOptionDtos$ = combineLatest([this.planeTypeOptions$, this.airportOptions$]).pipe(
+        this.dictOptionDtos$ = combineLatest([
+            this.planeTypeOptions$,
+            this.airportOptions$
+        ]).pipe(
             map(
                 (options) =>
-                <DictOptionDto[]>[
-                    new DictOptionDto('planeType', options[0]),
-                    new DictOptionDto('connectingAirports', options[1])
-                ]
+                    <DictOptionDto[]>[/* BIAToolKit - Begin Children */new DictOptionDto('planeType', options[0]),
+                    new DictOptionDto('connectingAirports', options[1])/* BIAToolKit - End Children */]
             )
         );
     }
 
     loadAllOptions() {
-        this.store.dispatch(DomainPlaneTypeOptionsActions.loadAll());
-        this.store.dispatch(DomainAirportOptionsActions.loadAll());
+        /* BIAToolKit - Begin Children */this.store.dispatch(DomainPlaneTypeOptionsActions.loadAll());/* BIAToolKit - End Children */
+        /* BIAToolKit - Begin Children */this.store.dispatch(DomainAirportOptionsActions.loadAll());/* BIAToolKit - End Children */
     }
 }

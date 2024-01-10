@@ -1,0 +1,8 @@
+{
+	"OptionsToRemove":
+	[
+		"Airport",
+		"PlaneType"
+	]
+}
+ 
