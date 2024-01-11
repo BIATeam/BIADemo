@@ -130,7 +130,7 @@
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
-      /// BIAToolKit Partial Begin - Plane
+      /// BIAToolKit - Begin Partial Config Plane
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Read" ],
@@ -144,7 +144,7 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
-      /// BIAToolKit Partial End - Plane
+      /// BIAToolKit - End Partial Config Plane
       // Engine
       {
         "Names": [ "Engine_List_Access", "Engine_Read" ],

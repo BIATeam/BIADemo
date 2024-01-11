@@ -5,7 +5,7 @@ import { Validators } from '@angular/forms';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto {
-  /// BIAToolKit - Begin properties
+  /// BIAToolKit - Begin Properties
   msn: string;
   isActive: boolean;
   lastFlightDate: Date;
@@ -15,64 +15,64 @@ export interface Plane extends BaseDto {
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
-  /// BIAToolKit - End properties
+  /// BIAToolKit - End Properties
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const PlaneFieldsConfiguration: BiaFieldsConfig =
 {
   columns: [
-    /// BIAToolKit - Begin block msn
+    /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,
     })
-    /// BIAToolKit - End block msn
+    /// BIAToolKit - End Block msn
     ,
-    /// BIAToolKit - Begin block isActive
+    /// BIAToolKit - Begin Block isActive
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
     })
-    /// BIAToolKit - End block isActive
+    /// BIAToolKit - End Block isActive
     ,
-    /// BIAToolKit - Begin block lastFlightDate
+    /// BIAToolKit - Begin Block lastFlightDate
     Object.assign(new BiaFieldConfig('lastFlightDate', 'plane.lastFlightDate'), {
       type: PropType.DateTime,
     })
-    /// BIAToolKit - End block lastFlightDate
+    /// BIAToolKit - End Block lastFlightDate
     ,
-    /// BIAToolKit - Begin block deliveryDate
+    /// BIAToolKit - Begin Block deliveryDate
     Object.assign(new BiaFieldConfig('deliveryDate', 'plane.deliveryDate'), {
       type: PropType.Date,
     })
-    /// BIAToolKit - End block deliveryDate
+    /// BIAToolKit - End Block deliveryDate
     ,
-    /// BIAToolKit - Begin block syncTime
+    /// BIAToolKit - Begin Block syncTime
     Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
       type: PropType.TimeSecOnly,
     })
-    /// BIAToolKit - End block syncTime
+    /// BIAToolKit - End Block syncTime
     ,
-    /// BIAToolKit - Begin block capacity
+    /// BIAToolKit - Begin Block capacity
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
       isRequired: true,
       validators: [Validators.required, Validators.min(1)],
     })
-    /// BIAToolKit - End block capacity
+    /// BIAToolKit - End Block capacity
     ,
-    /// BIAToolKit - Begin block planeType
+    /// BIAToolKit - Begin Block planeType
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,
     })
-    /// BIAToolKit - End block planeType
+    /// BIAToolKit - End Block planeType
     ,
-    /// BIAToolKit - Begin block connectingAirports
+    /// BIAToolKit - Begin Block connectingAirports
     Object.assign(new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'), {
       type: PropType.ManyToMany,
     })
-    /// BIAToolKit - End block connectingAirports
+    /// BIAToolKit - End Block connectingAirports
   ]
 }

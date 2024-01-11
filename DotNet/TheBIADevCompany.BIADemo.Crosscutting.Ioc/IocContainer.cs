@@ -101,9 +101,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
-            /// BIAToolKit Partial Begin - Plane
+            /// BIAToolKit - Begin Partial Dependency Plane
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
-            /// BIAToolKit Partial End - Plane
+            /// BIAToolKit - End Partial Dependency Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IEngineAppService, EngineAppService>();

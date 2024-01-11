@@ -198,8 +198,8 @@ function ExtractPartial {
   $sourceFile = '.\' + $folderpath + '\' + $fileName
   Copy-Item -path $sourceFile -Destination $destinationFile
 
-  $searchBegin = '/// BIAToolKit Partial Begin - Plane'
-  $searchEnd = '/// BIAToolKit Partial End - Plane'
+  $searchBegin = 'BIAToolKit - Begin Partial'
+  $searchEnd = 'BIAToolKit - End Partial'
    
   $start = GetLineNumber -pattern $searchBegin -file $destinationFile
   $end = GetLineNumber -pattern $searchEnd -file $destinationFile

@@ -180,7 +180,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceTeam_Save";
         }
 
-        /// BIAToolKit Partial Begin - Plane
+        /// BIAToolKit - Begin Partial Rights Plane
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -216,7 +216,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Plane_Save";
         }
-        /// BIAToolKit Partial End - Plane
+        /// BIAToolKit - End Partial Rights Plane
 
         /// <summary>
         /// The planes rights.
