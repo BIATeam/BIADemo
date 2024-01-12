@@ -40,6 +40,12 @@
       "Issuer": "BIADemoApi",
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
-    }
+    },
+    "Permissions": [
+      {
+        "Names": [ "Team_Access_All", "Team_Options" ],
+        "Roles": [ "Service" ]
+      }
+    ]
   }
 }

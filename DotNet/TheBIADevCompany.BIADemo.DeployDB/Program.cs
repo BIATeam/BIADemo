@@ -59,6 +59,13 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         // Initialize here the recuring jobs
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
                         RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+
+                        // Begin BIADemo
+                        RecurringJob.RemoveIfExists("BIADemo.WithPermissionTask");
+                        RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
+//
+
+                        // End BIADemo
                     });
                 })
                 .ConfigureLogging((hostingContext, logging) =>
