@@ -16,6 +16,7 @@
     "ApiFeatures": {
       "HangfireDashboard": {
         "IsActive": true,
+        "LogsVisibleInDashboard": true,
         "DashboardAdmin": true,
         "DashboardAdminPermission": "Background_Task_Admin",
         "DashboardReadOnly": true,

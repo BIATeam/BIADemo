@@ -15,6 +15,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire;
     using Hangfire.Dashboard;
+    using Hangfire.Dashboard.JobLogs;
     using Hangfire.PostgreSql;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
@@ -59,7 +60,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     };
                     var securityRequirement = new OpenApiSecurityRequirement
                     {
-                        { apiScheme, new[] { "Bearer" } }
+                        { apiScheme, new[] { "Bearer" } },
                     };
 
                     a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
@@ -87,10 +88,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     {
                         services.AddSignalR().AddRedis(
                             apiFeatures.HubForClients.RedisConnectionString,
-                        redisOptions =>
-                        {
-                            redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
-                        });
+                            redisOptions =>
+                            {
+                                redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
+                            });
                     }
                 }
             }
@@ -117,7 +118,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
             if (apiFeatures.HangfireDashboard.IsActive)
             {
-                services.AddHangfire(config =>
+                services.AddHangfire((config) =>
                 {
                     string dbEngine = configuration.GetDBEngine(apiFeatures.HangfireDashboard.ConnectionStringName);
                     if (dbEngine.ToLower().Equals("sqlserver"))
@@ -136,6 +137,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
                               .UsePostgreSqlStorage(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName), optionsTime);
+                    }
+
+                    if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)
+                    {
+                        // Log in hangfire dashboard
+                        config.UseDashboardJobLogs();
                     }
                 });
             }
