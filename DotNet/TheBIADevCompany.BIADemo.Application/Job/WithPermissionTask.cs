@@ -46,7 +46,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             : base(configuration, logger)
         {
             this.principal = principal;
-            //List<string> userPermissionsBefore = (principal as BIAClaimsPrincipal).GetUserPermissions().ToList();
+
+            // update permission with the service account roles.
             List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: (principal as BIAClaimsPrincipal), userInfoDto: null, sid: null, domain: null).Result;
             List<string> userPermissions = userPermissionDomainService.TranslateRolesInPermissions(globalRoles, false);
 
@@ -55,9 +56,6 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             {
                 newIdentity.AddClaim(new Claim(ClaimTypes.Role, permission));
             }
-
-            //List<string> userPermissionsAfter = (principal as BIAClaimsPrincipal).GetUserPermissions().ToList();
-
         }
 
         /// <summary>
@@ -68,17 +66,15 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll) == true;
+            bool accessAll = (this.principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
 
             if (accessAll)
             {
                 this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask WITH AccessAll.");
-                //Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask with AccessAll.");
             }
             else
             {
                 this.Logger.LogInformation(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask WHITHOUT AccessAll.");
-                //Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + ": Hello from the job WithPermissionTask without AccessAll.");
             }
         }
     }
