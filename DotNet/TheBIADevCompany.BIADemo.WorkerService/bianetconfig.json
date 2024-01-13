@@ -16,6 +16,7 @@
     "WorkerFeatures": {
       "HangfireServer": {
         "IsActive": true,
+        "LogsVisibleInDashboard": true,
         "ServerName": "BIADemo",
         "ConnectionStringName": "BIADemoDatabase"
       },

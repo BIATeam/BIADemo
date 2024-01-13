@@ -1,0 +1,11 @@
+﻿.level-none {
+
+}
+.level-warn
+{
+    color: orange;
+}
+.level-error
+{
+    color: red;
+}

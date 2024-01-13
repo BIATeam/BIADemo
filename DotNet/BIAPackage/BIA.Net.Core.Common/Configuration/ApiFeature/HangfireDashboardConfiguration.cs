@@ -16,6 +16,11 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Boolean to render visible logs in dashboard.
+        /// </summary>
+        public bool LogsVisibleInDashboard { get; set; }
+
+        /// <summary>
         /// Boolean to activate the Dashboard admin.
         /// </summary>
         public bool DashboardAdmin { get; set; }
