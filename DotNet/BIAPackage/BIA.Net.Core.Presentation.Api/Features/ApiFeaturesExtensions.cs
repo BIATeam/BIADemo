@@ -142,7 +142,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)
                     {
                         // Log in hangfire dashboard
-                        config.UseDashboardJobLogs();
+                        config.UseDashboardJobLogs(apiFeatures.HangfireDashboard.LogFiles);
                     }
                 });
             }

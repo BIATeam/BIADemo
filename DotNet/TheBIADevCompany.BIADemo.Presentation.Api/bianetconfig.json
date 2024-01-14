@@ -17,6 +17,7 @@
       "HangfireDashboard": {
         "IsActive": true,
         "LogsVisibleInDashboard": true,
+        "LogFiles": "C:\\Logs\\BIADemo\\${shortdate}_TheBIADevCompany.BIADemo_WorkerService${hangfire-jobid}.log",
         "DashboardAdmin": true,
         "DashboardAdminPermission": "Background_Task_Admin",
         "DashboardReadOnly": true,

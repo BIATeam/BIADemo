@@ -21,6 +21,11 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         public bool LogsVisibleInDashboard { get; set; }
 
         /// <summary>
+        /// Path to log files.
+        /// </summary>
+        public string LogFiles { get; set; }
+
+        /// <summary>
         /// Boolean to activate the Dashboard admin.
         /// </summary>
         public bool DashboardAdmin { get; set; }
