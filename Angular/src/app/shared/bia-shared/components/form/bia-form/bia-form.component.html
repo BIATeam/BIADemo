@@ -1,6 +1,6 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <ng-container *ngFor="let field of fields">
-    <div class="flex flex-row align-items-center">
+    <div *ngIf="field.isVisible === true" class="flex flex-row align-items-center">
       <div class="app-field-container" >
         <ng-template [ngIf]="field.isEditable === true" [ngIfElse]="isNotEditable">
           <bia-input
