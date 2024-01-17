@@ -13,19 +13,38 @@ import { AppState } from 'src/app/store/state';
 
 // export const BIA_DEFAULT_LOCALE_ID = new InjectionToken('biaDefaultLocaleId');
 const TRANSLATION_LANG_KEY = '@@lang';
-export const STORAGE_LANG_KEY = 'lang';
+export const STORAGE_CULTURE_KEY = 'bia-culture';
 
 // Return last choosed lang or browser lang.
-export const getCurrentLang = () => {
-  let lang;
+export const getCurrentCulture = () => {
+  let culture;
   try {
-    lang = localStorage.getItem(STORAGE_LANG_KEY);
+    culture = localStorage.getItem(STORAGE_CULTURE_KEY);
   } catch {}
-  if (!lang) {
-    lang = navigator.language;
+  if (!culture) 
+  {
+    if (navigator.languages != undefined)
+    {
+      culture = navigator.languages[0];
+      for (let i=0; i < navigator.languages.length; i++)
+      {
+        if (APP_SUPPORTED_TRANSLATIONS.indexOf(navigator.languages[i]) !== -1)
+        {
+          culture = navigator.languages[i];
+          break;
+        }
+      }
+    }
+    else
+    {
+      culture = navigator.language;
+    }
+    if (culture.length == 2) culture = culture + '-' + culture.toUpperCase();
   }
-  if (APP_SUPPORTED_TRANSLATIONS.indexOf(lang) !== -1) {
-    return lang;
+  if (APP_SUPPORTED_TRANSLATIONS.indexOf(culture) !== -1)
+  {
+    localStorage.setItem(STORAGE_CULTURE_KEY, culture)
+    return culture;
   }
   return 'en-US';
 };
@@ -49,7 +68,7 @@ export interface DateFormat {
 export class BiaTranslationService {
   private translationsLoaded: { [lang: string]: boolean } = {};
   private lazyTranslateServices: TranslateService[] = [];
-  private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(getCurrentLang());
+  private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(getCurrentCulture());
   public currentCulture$: Observable<string | null> = this.cultureSubject.asObservable();
   public appSettings$: Observable<AppSettings | null> = this.store.select(getAppSettings);
   public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([this.currentCulture$, this.appSettings$])
@@ -105,7 +124,7 @@ export class BiaTranslationService {
         this.translate.setDefaultLang(defaultLang);
       }
       try {
-        localStorage.setItem(STORAGE_LANG_KEY, culture);
+        localStorage.setItem(STORAGE_CULTURE_KEY, culture);
       } catch {}
       this.cultureSubject.next(culture);
     });

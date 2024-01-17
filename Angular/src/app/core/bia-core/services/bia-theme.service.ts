@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
 
-const STORAGE_THEME_KEY = 'theme';
+export const STORAGE_THEME_KEY = 'theme';
 const DEFAULT_THEME = THEME_LIGHT;
 
 @Injectable({

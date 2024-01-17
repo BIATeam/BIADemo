@@ -12,7 +12,7 @@ import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
 import { HomeModule } from './features/home/home.module';
 import { BiaErrorHandler } from './core/bia-core/shared/bia-error-handler';
-import { getCurrentLang } from './core/bia-core/services/bia-translation.service';
+import { getCurrentCulture } from './core/bia-core/services/bia-translation.service';
 import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-http-loader';
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service';
@@ -66,7 +66,7 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
   ],
   providers: [
     DatePipe,
-    { provide: LOCALE_ID, useFactory: getCurrentLang },
+    { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService
   ],

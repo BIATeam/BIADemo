@@ -5,7 +5,7 @@ import { AuthInfo } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
-import { BiaTranslationService, getCurrentLang } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaTranslationService, getCurrentCulture } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { APP_BASE_HREF } from '@angular/common';
@@ -105,7 +105,7 @@ export class LayoutComponent implements OnInit {
   }
 
   private setLanguage(authInfo: AuthInfo) {
-    const langSelected: string | null = getCurrentLang();
+    const langSelected: string | null = getCurrentCulture();
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 

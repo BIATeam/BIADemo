@@ -12,10 +12,11 @@ import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
 import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaTranslationService, STORAGE_CULTURE_KEY } from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { Toast } from 'primeng/toast';
 import { Notification, NotificationData, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
+import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
 
 @Component({
   selector: 'bia-classic-header',
@@ -152,7 +153,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
+    let culture = localStorage.getItem(STORAGE_CULTURE_KEY);
+    let theme = localStorage.getItem(STORAGE_THEME_KEY);
     localStorage.clear();
+    if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
+    if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
     sessionStorage.clear();
     location.reload();
   }
