@@ -38,6 +38,7 @@ export class BiaFieldConfig {
   isSortable: boolean;
   icon: string;
   isEditable: boolean;
+  isVisible: boolean;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
@@ -70,6 +71,7 @@ export class BiaFieldConfig {
     this.isSortable = true;
     this.icon = '';
     this.isEditable = true;
+    this.isVisible = true;
     this.maxlength = maxlength;
     this.isRequired = false;
     this.specificOutput = false;
@@ -91,6 +93,7 @@ export class BiaFieldConfig {
       isSortable: this.isSortable,
       icon: this.icon,
       isEditable: this.isEditable,
+      isVisible: this.isVisible,
       translateKey: this.translateKey,
       searchPlaceholder: this.searchPlaceholder,
       isRequired: this.isRequired,

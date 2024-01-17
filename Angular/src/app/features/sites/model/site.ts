@@ -15,6 +15,7 @@ export const SiteFieldsConfiguration : BiaFieldsConfig =
     }),
     Object.assign(new BiaFieldConfig('admins', 'site.admins'), {
       isEditable: false,
+      isVisible: false,
       type: PropType.ManyToMany,
     }),
   ]
