@@ -1,7 +1,7 @@
 export enum Permission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',
-  
+
   // Begin BIADemo
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
@@ -12,6 +12,10 @@ export enum Permission {
   Notification_Delete = 'Notification_Delete',
   Notification_Read = 'Notification_Read',
   Notification_Update = 'Notification_Update',
+
+  /// BIAToolKit - Begin Permission
+  /// BIAToolKit - End Permission 
+
   // Begin BIADemo
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
   AircraftMaintenanceCompany_Delete = 'AircraftMaintenanceCompany_Delete',
@@ -39,12 +43,14 @@ export enum Permission {
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
 
+  /// BIAToolKit - Begin Partial Permission Plane
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
   Plane_List_Access = 'Plane_List_Access',
   Plane_Read = 'Plane_Read',
   Plane_Save = 'Plane_Save',
   Plane_Update = 'Plane_Update',
+  /// BIAToolKit - End Partial Permission Plane
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',
   Airport_List_Access = 'Airport_List_Access',
@@ -83,7 +89,7 @@ export enum Permission {
   User_List_Access = 'User_List_Access',
   User_Sync = 'User_Sync',
   User_UpdateRoles = 'User_UpdateRoles',
-  
+
   LdapDomains_List = 'LdapDomains_List',
   View_List = 'View_List',
   View_AddUserView = 'View_Add_UserView',

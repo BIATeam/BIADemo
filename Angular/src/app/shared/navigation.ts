@@ -12,23 +12,27 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [Permission.Site_List_Access],
     path: ['/sites']
   },
+  /// BIAToolKit - Begin Navigation
+  /// BIAToolKit - End Navigation 
   // Begin BIADemo
   {
     labelKey: 'app.examples',
-    permissions: [Permission.Plane_List_Access, 
-      Permission.AircraftMaintenanceCompany_List_Access ,
-      Permission.Hangfire_Access ],
+    permissions: [Permission.Plane_List_Access,
+    Permission.AircraftMaintenanceCompany_List_Access,
+    Permission.Hangfire_Access],
     children: [
       {
         labelKey: 'app.aircraft-maintenance-companies',
         permissions: [Permission.AircraftMaintenanceCompany_List_Access],
         path: ['/examples/aircraft-maintenance-companies']
       },
+      /// BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',
         permissions: [Permission.Plane_List_Access],
         path: ['/examples/planes']
       },
+      /// BIAToolKit - End Partial Navigation Plane
       {
         labelKey: 'app.planesFullCode',
         permissions: [Permission.Plane_List_Access],
