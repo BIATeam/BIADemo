@@ -143,6 +143,29 @@ function ReplaceProjectName {
   
 }
 
+function ExtractPartial {
+  param (
+    [string]$modelName,
+    [string]$folderpath,
+    [string]$fileName
+  )
+  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+  $destinationFile = $destinationFolder + '\' + $fileName + ".partial"
+  $sourceFile = '.\' + $folderpath + '\' + $fileName
+  Copy-Item -path $sourceFile -Destination $destinationFile
+
+  $searchBegin = 'BIAToolKit - Begin Partial'
+  $searchEnd = 'BIAToolKit - End Partial'
+   
+  $start = GetLineNumber -pattern $searchBegin -file $destinationFile
+  $end = GetLineNumber -pattern $searchEnd -file $destinationFile
+  $lineNumber = (Get-Content $sourceFile).Length
+
+  DeleteLine -start ($end+1) -end $lineNumber -file $destinationFile 
+  DeleteLine -start 1 -end ($start-1) -file $destinationFile
+}
+
 # Formats JSON in a nicer format than the built-in ConvertTo-Json does.
 function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
   $indent = 0;
@@ -169,17 +192,31 @@ Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules', '
 Set-Location -Path $newPath
 
 New-Item -ItemType Directory -Path '.\docs'
+
+Copy-Item -Path "$oldPath\src\app\features\planes"                         -Destination "$newPath\docs\feature-planes\src\app\features\planes"                                         -Recurse -Force
+Copy-Item -Path "$oldPath\src\app\features\planes-full-code"               -Destination "$newPath\docs\feature-planes-full-code\src\app\features\planes-full-code"                     -Recurse -Force
+Copy-Item -Path "$oldPath\src\app\features\aircraft-maintenance-companies" -Destination "$newPath\docs\aircraft-maintenance-companies\src\app\features\aircraft-maintenance-companies" -Recurse -Force
+Copy-Item -Path "$oldPath\src\app\domains\airport-option"                  -Destination "$newPath\docs\domain-airport-option\src\app\domains\airport-option"                           -Recurse -Force
+
+ExtractPartial 'feature-planes' 'src\app' 'app-routing.module.ts'
+ExtractPartial 'feature-planes' 'src\app\shared' 'navigation.ts'
+ExtractPartial 'feature-planes' 'src\app\shared' 'permission.ts'
+
 Write-Host "Zip plane"
-compress-archive -path '.\src\app\features\planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
+compress-archive -path '.\docs\feature-planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
+RemoveFolder  -path ".\docs\feature-planes"
 
 Write-Host "Zip plane full code"
-compress-archive -path '.\src\app\features\planes-full-code\*' -destinationpath '.\docs\feature-planes-full-code.zip' -compressionlevel optimal
+compress-archive -path '.\docs\feature-planes-full-code\*' -destinationpath '.\docs\feature-planes-full-code.zip' -compressionlevel optimal
+RemoveFolder  -path ".\docs\feature-planes-full-code"
 
 Write-Host "Zip airport option"
-compress-archive -path '.\src\app\domains\airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
+compress-archive -path '.\docs\domain-airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
+RemoveFolder  -path ".\docs\domain-airport-option"
 
 Write-Host "Zip aircraft-maintenance-companies"
-compress-archive -path '.\src\app\features\aircraft-maintenance-companies\*' -destinationpath '.\docs\aircraft-maintenance-companies.zip' -compressionlevel optimal
+compress-archive -path '.\docs\aircraft-maintenance-companies\*' -destinationpath '.\docs\aircraft-maintenance-companies.zip' -compressionlevel optimal
+RemoveFolder  -path ".\docs\aircraft-maintenance-companies"
 
 
 #Write-Host "RemoveFolder dist"
