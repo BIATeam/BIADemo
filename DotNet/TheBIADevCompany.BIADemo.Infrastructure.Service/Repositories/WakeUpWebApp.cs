@@ -17,27 +17,31 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// </summary>
     /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
 #pragma warning disable S101 // Types should be named in PascalCase
-    public class BIADemoWebApiRepository : WebApiRepository, IBIADemoWebApiRepository
+    public class WakeUpWebApp : WebApiRepository
 #pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly string baseAddress;
         private readonly string urlWakeUp;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIADemoWebApiRepository"/> class.
+        /// Initializes a new instance of the <see cref="WakeUpWebApp"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
-        /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public BIADemoWebApiRepository(HttpClient httpClient, IConfiguration configuration, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
+        /// <param name="baseAddress">The base adresse for urlWakeUp.</param>
+        /// <param name="urlWakeUp">The url to wakeup.</param>
+        public WakeUpWebApp(HttpClient httpClient, ILogger<WakeUpWebApps> logger, IBiaDistributedCache distributedCache, string baseAddress, string urlWakeUp)
              : base(httpClient, logger, distributedCache)
         {
-            this.baseAddress = configuration["BIADemoWebApi:baseAddress"];
-            this.urlWakeUp = configuration["BIADemoWebApi:urlWakeUp"];
+            this.baseAddress = baseAddress;
+            this.urlWakeUp = urlWakeUp;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Lanch the wakup process.
+        /// </summary>
+        /// <returns>The async task.</returns>
         public virtual async Task<(bool IsSuccessStatusCode, string ReasonPhrase)> WakeUp()
         {
             if (string.IsNullOrWhiteSpace(this.baseAddress))

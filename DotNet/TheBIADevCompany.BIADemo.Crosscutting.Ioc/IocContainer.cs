@@ -174,9 +174,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
-            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
-
-            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 

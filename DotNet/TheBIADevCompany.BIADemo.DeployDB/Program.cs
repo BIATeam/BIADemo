@@ -63,7 +63,6 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         // Begin BIADemo
                         RecurringJob.RemoveIfExists("BIADemo.WithPermissionTask");
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
-//
 
                         // End BIADemo
                     });

@@ -4,6 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
@@ -17,36 +20,40 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     /// </summary>
     /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
 #pragma warning disable S101 // Types should be named in PascalCase
-    public class BIADemoAppRepository : WebApiRepository, IBIADemoAppRepository
+    public class WakeUpWebApps : WebApiRepository, IWakeUpWebApps
 #pragma warning restore S101 // Types should be named in PascalCase
     {
-        private readonly string baseAddress;
-        private readonly string urlWakeUp;
+        private readonly List<WakeUpWebApp> wakeUpWebApps;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIADemoAppRepository"/> class.
+        /// Initializes a new instance of the <see cref="WakeUpWebApps"/> class.
         /// </summary>
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public BIADemoAppRepository(HttpClient httpClient, IConfiguration configuration, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
+        public WakeUpWebApps(HttpClient httpClient, IConfiguration configuration, ILogger<WakeUpWebApps> logger, IBiaDistributedCache distributedCache)
              : base(httpClient, logger, distributedCache)
         {
-            this.baseAddress = configuration["BIADemoApp:baseAddress"];
-            this.urlWakeUp = configuration["BIADemoApp:urlWakeUp"];
+            this.wakeUpWebApps = new List<WakeUpWebApp>();
+            var webAppToWakeUpSection = configuration.GetSection("WebAppToWakeUp");
+            IEnumerable<IConfigurationSection> webAppToWakeUpArray = webAppToWakeUpSection.GetChildren();
+            foreach (var configSection in webAppToWakeUpArray)
+            {
+                this.wakeUpWebApps.Add(new WakeUpWebApp(httpClient, logger, distributedCache, configSection["BaseAddress"], configSection["UrlWakeUp"]));
+            };
         }
 
         /// <inheritdoc/>
-        public virtual async Task<(bool IsSuccessStatusCode, string ReasonPhrase)> WakeUp()
+        public List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> WakeUp()
         {
-            if (string.IsNullOrWhiteSpace(this.baseAddress))
+            List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> wakeUpWebAppTasks = new ();
+            foreach (WakeUpWebApp wakeUpWebApp in this.wakeUpWebApps)
             {
-                return (false, "Base adresse not set.");
+                wakeUpWebAppTasks.Add(wakeUpWebApp.WakeUp());
             }
 
-            var result = await this.GetAsync<string>(this.baseAddress + this.urlWakeUp);
-            return (result.IsSuccessStatusCode, result.ReasonPhrase);
+            return wakeUpWebAppTasks;
         }
     }
 }
