@@ -123,6 +123,7 @@ export class BiaAppInitService implements OnDestroy {
   }
 
   protected getObsAuthInfo(): Observable<AuthInfo> {
+    console.info("Login from app init.");
     return this.authService.login().pipe(first(), catchError((error) => this.catchError(error)));
   }
 

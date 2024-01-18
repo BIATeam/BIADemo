@@ -1,6 +1,6 @@
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
-import { map, filter, take, switchMap, catchError } from 'rxjs/operators';
+import { map, filter, take, switchMap, catchError, skip } from 'rxjs/operators';
 import { AbstractDas } from './abstract-das.service';
 import { AuthInfo, AdditionalInfos, Token, LoginParamDto, CurrentTeamDto } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaMessageService } from './bia-message.service';
@@ -23,10 +23,10 @@ const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   public shouldRefreshToken = false;
   protected sub = new Subscription();
-  protected authInfoSubject: BehaviorSubject<AuthInfo | null> = new BehaviorSubject<AuthInfo | null>(null);
-  public authInfo$: Observable<AuthInfo | null> = this.authInfoSubject
+  protected authInfoSubject: BehaviorSubject<AuthInfo> = new BehaviorSubject<AuthInfo>(new AuthInfo());
+  public authInfo$: Observable<AuthInfo> = this.authInfoSubject
     .asObservable()
-    .pipe(filter((authInfo: AuthInfo | null) => authInfo !== null && authInfo !== undefined));
+    .pipe(filter((authInfo: AuthInfo) => authInfo !== null && authInfo !== undefined));
 
   constructor(
     injector: Injector,
@@ -57,10 +57,20 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   public logout() {
-    this.authInfoSubject.next(null);
+    this.authInfoSubject.next(new AuthInfo());
   }
 
+  protected isInLogin = false;
   public login(): Observable<AuthInfo> {
+    if (this.isInLogin)
+    {
+      console.info("isInLogin");
+      return this.authInfo$.pipe(
+        skip(1),
+        take(1)
+      );
+    }
+    this.isInLogin = true;
     return this.checkFrontEndVersion().pipe(
       take(1),
       switchMap((isCorrectVersion: boolean) => {
@@ -83,6 +93,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       return of(true);
     }
     if (this.shouldRefreshToken) {
+      console.info("Login from hasPermissionObs.");
       return this.login().pipe(
         map((authInfo: AuthInfo | null) => {
           return this.checkPermission(authInfo, permission);
@@ -90,7 +101,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       );
     }
     return this.authInfo$.pipe(
-      map((authInfo: AuthInfo | null) => {
+      map((authInfo: AuthInfo) => {
         return this.checkPermission(authInfo, permission);
       })
     );
@@ -188,7 +199,16 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
   public changeCurrentTeamId(teamTypeId: number, teamId: number) {
     if (this.setCurrentTeamId(teamTypeId, teamId)) {
+      this.ReLogin();
+    }
+  }
+
+  public ReLogin() {
+    if (! this.isInLogin)
+    {
       this.shouldRefreshToken = true;
+      this.authInfoSubject.next(new AuthInfo());
+      this.login().subscribe(() => { console.log('Logged after relogin'); });
     }
   }
 
@@ -229,7 +249,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public changeCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]) {
     if (this.setCurrentRoleIds(teamTypeId, teamId, roleIds)) {
-      this.shouldRefreshToken = true;
+      this.ReLogin();
     }
   }
 
@@ -276,7 +296,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           authInfo.uncryptedToken = this.DecodeToken(authInfo.token);
         }
         this.shouldRefreshToken = false;
+        this.isInLogin = false;
         this.authInfoSubject.next(authInfo);
+
         if (BiaOnlineOfflineService.isModeEnabled === true) {
           localStorage.setItem(STORAGE_AUTHINFO_KEY, JSON.stringify(authInfo));
         }

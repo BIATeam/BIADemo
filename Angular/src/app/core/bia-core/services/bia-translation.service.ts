@@ -10,6 +10,7 @@ import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
 import { APP_SUPPORTED_TRANSLATIONS } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
+import { AuthService } from './auth.service';
 
 // export const BIA_DEFAULT_LOCALE_ID = new InjectionToken('biaDefaultLocaleId');
 const TRANSLATION_LANG_KEY = '@@lang';
@@ -80,7 +81,8 @@ export class BiaTranslationService {
     private translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,
     private store: Store<AppState>,
-    private primeNgConfig: PrimeNGConfig
+    private primeNgConfig: PrimeNGConfig,
+    protected authService: AuthService
   ) {
     this.currentCultureDateFormat$.subscribe((dateFormat) => { 
       Calendar.prototype.getDateFormat = () => dateFormat.primeDateFormat;
@@ -95,40 +97,49 @@ export class BiaTranslationService {
     this.translate.setTranslation(data[TRANSLATION_LANG_KEY], data, true);
   }
 
+  private currentCulture : string = "None"; 
+  private currentLanguage : string = "None"; 
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
   // So we need to call getTranslation manually
   // NOTE: Check if it's still usefull
-  loadAndChangeLanguage(lang: string, defaultLang?: string) {
-    const culture = lang;
-
-    lang = lang.split('-')[0];
-    const translationLoaders$ = [];
-    const translateServices = [this.translate, ...this.lazyTranslateServices];
-    if (!this.translationsLoaded[lang]) {
-      for (const translateService of translateServices) {
-        translationLoaders$.push(translateService.getTranslation(lang));
+  loadAndChangeLanguage(culture: string, defaultLang?: string) {
+    if (this.currentCulture !== culture)
+    {
+      const lang = culture.split('-')[0];
+      this.currentCulture = culture;
+      const translationLoaders$ = [];
+      const translateServices = [this.translate, ...this.lazyTranslateServices];
+      if (!this.translationsLoaded[lang]) {
+        for (const translateService of translateServices) {
+          translationLoaders$.push(translateService.getTranslation(lang));
+        }
+      }
+      if (defaultLang && defaultLang !== lang && !this.translationsLoaded[defaultLang]) {
+        for (const translateService2 of translateServices) {
+          translationLoaders$.push(translateService2.getTranslation(defaultLang));
+        }
+      }
+      let lang$: Observable<any> = of(undefined);
+      if (translationLoaders$.length) {
+        lang$ = this.loadTranslations(translationLoaders$, lang, defaultLang);
+      }
+      lang$.subscribe(() => {
+        this.translate.use(lang);
+        if (defaultLang) {
+          this.translate.setDefaultLang(defaultLang);
+        }
+        try {
+          localStorage.setItem(STORAGE_CULTURE_KEY, culture);
+        } catch {}
+        this.cultureSubject.next(culture);
+      });
+      this.translate.get('primeng').subscribe(res => this.primeNgConfig.setTranslation(res));
+      if (this.currentLanguage !== lang)
+      {
+        this.currentLanguage = lang;
+        this.authService.ReLogin();
       }
     }
-    if (defaultLang && defaultLang !== lang && !this.translationsLoaded[defaultLang]) {
-      for (const translateService2 of translateServices) {
-        translationLoaders$.push(translateService2.getTranslation(defaultLang));
-      }
-    }
-    let lang$: Observable<any> = of(undefined);
-    if (translationLoaders$.length) {
-      lang$ = this.loadTranslations(translationLoaders$, lang, defaultLang);
-    }
-    lang$.subscribe(() => {
-      this.translate.use(lang);
-      if (defaultLang) {
-        this.translate.setDefaultLang(defaultLang);
-      }
-      try {
-        localStorage.setItem(STORAGE_CULTURE_KEY, culture);
-      } catch {}
-      this.cultureSubject.next(culture);
-    });
-    this.translate.get('primeng').subscribe(res => this.primeNgConfig.setTranslation(res));
   }
 
   registerLazyTranslateService(translateService: TranslateService) {

@@ -13,6 +13,7 @@ import { AppState } from 'src/app/store/state';
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
 import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { AuthInfo } from '../../../model/auth-info';
 
 @Component({
   selector: 'bia-classic-team-selector',
@@ -72,6 +73,14 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
         this.teams = this.SortTeams(teams);
         this.initDropdownTeam();
         this.initDropdownRole();
+      })
+    );
+    this.sub.add(
+      this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
+        if (authInfo && authInfo.token !== '') {
+          this.initDropdownTeam();
+          this.initDropdownRole();
+        }
       })
     );
   }

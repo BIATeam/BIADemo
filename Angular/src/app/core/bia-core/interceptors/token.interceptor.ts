@@ -8,7 +8,7 @@ import {
   HTTP_INTERCEPTORS
 } from '@angular/common/http';
 import { from, Observable, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, skip, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { getCurrentCulture } from '../services/bia-translation.service';
@@ -102,6 +102,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    console.info("Handler 401");
     if (this.isRefreshing === false) {
       return this.login(request, next);
     } else {
@@ -112,9 +113,10 @@ export class TokenInterceptor implements HttpInterceptor {
   protected login(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.isRefreshing = true;
     this.authService.logout();
-
+    console.info("Login start from intercepor.");
     const obs$: Observable<HttpEvent<any>> = this.authService.login().pipe(
       switchMap((authInfo: AuthInfo) => {
+        console.info("Login end from intercepor.");
         this.isRefreshing = false;
         return next.handle(this.addToken(request, authInfo.token));
       }));
@@ -130,6 +132,7 @@ export class TokenInterceptor implements HttpInterceptor {
 
   protected waitLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return this.authService.authInfo$.pipe(
+      skip(1),
       take(1),
       switchMap((authInfo) => {
         return next.handle(this.addToken(request, authInfo ? authInfo.token : ''));

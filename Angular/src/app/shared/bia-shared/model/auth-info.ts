@@ -53,8 +53,8 @@ export interface Token {
   userData: UserData;
 }
 
-export interface AuthInfo {
-  token: string;
-  uncryptedToken: Token;
-  additionalInfos: AdditionalInfos;
+export class AuthInfo {
+  token: string = "";
+  uncryptedToken: Token = {login: "",id : 0, permissions : [], userData : {currentTeams:[]}};
+  additionalInfos: AdditionalInfos = { userInfo : { login: "", country : "", id : 0, language: ""}, teams : [], userProfile : {theme:""}};
 }

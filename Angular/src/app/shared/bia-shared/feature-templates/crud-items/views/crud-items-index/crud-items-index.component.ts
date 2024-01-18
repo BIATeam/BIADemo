@@ -24,6 +24,7 @@ import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-onli
 import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -181,8 +182,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
     this.initTableConfiguration();
     this.sub.add(
-      this.authService.authInfo$.subscribe((authInfo) => {
-        if (authInfo) {
+      this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
+        if (authInfo && authInfo.token !== '') {
           this.setPermissions();
         }
       })

@@ -83,14 +83,16 @@ export class LayoutComponent implements OnInit {
 
   private setAllParamByUserInfo() {
     this.isLoadingUserInfo = true;
-    this.authService.authInfo$.subscribe((authInfo: AuthInfo | null) => {
-      if (authInfo) {
-        this.setLanguage(authInfo);
-        this.setUserName(authInfo);
-        this.filterNavByRole(authInfo);
-        this.setTheme(authInfo);
+    this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
+      if (authInfo && authInfo.token !== '') {
+        if (authInfo) {
+            this.setLanguage(authInfo);
+            this.setUserName(authInfo);
+            this.filterNavByRole(authInfo);
+            this.setTheme(authInfo);
+        }
+        this.isLoadingUserInfo = false;
       }
-      this.isLoadingUserInfo = false;
     });
   }
 
