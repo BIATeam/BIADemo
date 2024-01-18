@@ -8,6 +8,7 @@ import { AppState } from 'src/app/store/state';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
+  selector: 'app-maintenance-teams-item',
   templateUrl: '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: ['../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })

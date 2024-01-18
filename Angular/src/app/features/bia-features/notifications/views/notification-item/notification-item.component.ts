@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
+  selector: 'bia-notifications-item',
   templateUrl: './notification-item.component.html',
   styleUrls: ['./notification-item.component.scss']
 })

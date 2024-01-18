@@ -10,6 +10,7 @@ import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/la
 import { first } from 'rxjs/operators';
 
 @Component({
+  selector: 'app-planes-item',
   templateUrl: './plane-item.component.html',
   styleUrls: ['./plane-item.component.scss']
 })

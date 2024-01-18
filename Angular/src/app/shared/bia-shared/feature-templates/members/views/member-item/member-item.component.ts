@@ -6,6 +6,7 @@ import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templat
 import { MemberService } from '../../services/member.service';
 
 @Component({
+  selector: 'bia-members-item',
   templateUrl: '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: ['../../../crud-items/views/crud-item-item/crud-item-item.component.scss']
 })

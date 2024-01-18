@@ -8,6 +8,7 @@ import { AppState } from 'src/app/store/state';
 import { AirportService } from '../../services/airport.service';
 
 @Component({
+  selector: 'app-airports-item',
   templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
 })
