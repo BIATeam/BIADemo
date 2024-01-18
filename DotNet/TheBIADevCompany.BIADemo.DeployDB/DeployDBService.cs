@@ -69,6 +69,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
                         this.dataContext.Database.Migrate();
+
+                        this.CleanDistCacheAsync().Wait();
                     }
                     catch (Exception ex)
                     {
@@ -102,6 +104,24 @@ namespace TheBIADevCompany.BIADemo.DeployDB
             }
 
             return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// Cleans the dist cache asynchronous.
+        /// </summary>
+        private async Task CleanDistCacheAsync()
+        {
+            try
+            {
+                this.dataContext.DistCache.RemoveRange(this.dataContext.DistCache);
+                int nb = await this.dataContext.CommitAsync();
+                this.logger.LogInformation($"DistCache cleaned (nb removed: {nb})");
+            }
+            catch (Exception ex)
+            {
+                string methodName = nameof(this.CleanDistCacheAsync);
+                this.logger.LogWarning(exception: ex, message: methodName, args: default);
+            }
         }
     }
 }
