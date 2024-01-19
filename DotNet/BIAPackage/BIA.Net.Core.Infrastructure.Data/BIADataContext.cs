@@ -3,6 +3,7 @@
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
@@ -12,9 +13,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
-    using EFCore.BulkExtensions;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.Logging;
 
     public class BIADataContext : DbContext, IQueryableUnitOfWork
@@ -113,7 +112,9 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            await this.BulkInsertAsync(items?.ToList());
+            // TODO
+            // await this.BulkInsertAsync(items?.ToList());
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -124,11 +125,13 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            // TODO
+            //using (IDbContextTransaction transaction = this.Database.BeginTransaction())
+            //{
+            //    await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+            //    await transaction.CommitAsync();
+            //}
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -139,11 +142,13 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            // TODO
+            //using (IDbContextTransaction transaction = this.Database.BeginTransaction())
+            //{
+            //    await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
+            //    await transaction.CommitAsync();
+            //}
+            throw new NotImplementedException();
         }
 
         /// <summary>
