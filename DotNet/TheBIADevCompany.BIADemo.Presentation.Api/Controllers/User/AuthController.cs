@@ -103,10 +103,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.Forbid(ex.Message);
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>

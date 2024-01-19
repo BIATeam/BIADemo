@@ -120,10 +120,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -149,10 +145,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -191,10 +183,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -226,10 +214,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -267,10 +251,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -307,10 +287,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 

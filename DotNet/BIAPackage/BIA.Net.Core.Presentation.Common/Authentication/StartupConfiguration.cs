@@ -11,6 +11,8 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Logging;
@@ -30,6 +32,30 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         /// The JWT bearer keycloak.
         /// </summary>
         public const string JwtBearerIdentityProvider = "IdentityProvider";
+
+        /// <summary>
+        /// Configures the API exception handler.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        public static void ConfigureApiExceptionHandler(this IApplicationBuilder app)
+        {
+            app.UseExceptionHandler(exceptionHandlerApp =>
+            {
+                exceptionHandlerApp.Run(async context =>
+                {
+                    var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+                    if (exception != null)
+                    {
+                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+                        // We don't communicate sensitive error information to clients.
+                        // Serving errors is a security risk. We just send a simple error message.
+                        await context.Response.WriteAsync("Internal server error");
+                    }
+                });
+            });
+        }
 
         /// <summary>
         /// Configure the authentication.

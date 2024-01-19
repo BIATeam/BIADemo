@@ -5,12 +5,10 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
-    using System.Net.Http;
     using System.Security.Principal;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features;
@@ -107,6 +105,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             else
             {
                 app.UseHsts();
+                app.ConfigureApiExceptionHandler();
             }
 
             if (!string.IsNullOrEmpty(this.biaNetSection.Security?.Audience))
