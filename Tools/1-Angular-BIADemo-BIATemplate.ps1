@@ -193,30 +193,77 @@ Set-Location -Path $newPath
 
 New-Item -ItemType Directory -Path '.\docs'
 
-Copy-Item -Path "$oldPath\src\app\features\planes"                         -Destination "$newPath\docs\feature-planes\src\app\features\planes"                                         -Recurse -Force
-Copy-Item -Path "$oldPath\src\app\features\planes-full-code"               -Destination "$newPath\docs\feature-planes-full-code\src\app\features\planes-full-code"                     -Recurse -Force
-Copy-Item -Path "$oldPath\src\app\features\aircraft-maintenance-companies" -Destination "$newPath\docs\aircraft-maintenance-companies\src\app\features\aircraft-maintenance-companies" -Recurse -Force
-Copy-Item -Path "$oldPath\src\app\domains\airport-option"                  -Destination "$newPath\docs\domain-airport-option\src\app\domains\airport-option"                           -Recurse -Force
 
-ExtractPartial 'feature-planes' 'src\app' 'app-routing.module.ts'
-ExtractPartial 'feature-planes' 'src\app\shared' 'navigation.ts'
-ExtractPartial 'feature-planes' 'src\app\shared' 'permission.ts'
+$myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
 
-Write-Host "Zip plane"
-compress-archive -path '.\docs\feature-planes\*' -destinationpath '.\docs\feature-planes.zip' -compressionlevel optimal
-RemoveFolder  -path ".\docs\feature-planes"
+# Get settings for type
+$settingsCrudPlane = [System.Linq.Enumerable]::First($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "CRUD" })
+$settingsCrudPlaneFullCode = [System.Linq.Enumerable]::Last($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "CRUD" })
+$settingsOption = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "Option" })
+$settingsTeam = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "Team" })
 
-Write-Host "Zip plane full code"
-compress-archive -path '.\docs\feature-planes-full-code\*' -destinationpath '.\docs\feature-planes-full-code.zip' -compressionlevel optimal
-RemoveFolder  -path ".\docs\feature-planes-full-code"
+$featureCrudPlane = $settingsCrudPlane.Feature
+$featureCrudPlaneFullCode = $settingsCrudPlaneFullCode.Feature
+$featureOption = $settingsOption.Feature
+$featureTeam = $settingsTeam.Feature
 
-Write-Host "Zip airport option"
-compress-archive -path '.\docs\domain-airport-option\*' -destinationpath '.\docs\domain-airport-option.zip' -compressionlevel optimal
-RemoveFolder  -path ".\docs\domain-airport-option"
+# Copy files
+ForEach($contains in $settingsCrudPlane.Contains)
+{
+    Write-Host "Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlane\$contains" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlane\$contains" -Recurse -Force
+}
 
-Write-Host "Zip aircraft-maintenance-companies"
-compress-archive -path '.\docs\aircraft-maintenance-companies\*' -destinationpath '.\docs\aircraft-maintenance-companies.zip' -compressionlevel optimal
-RemoveFolder  -path ".\docs\aircraft-maintenance-companies"
+ForEach($contains in $settingsCrudPlaneFullCode.Contains)
+{
+    Write-Host " Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlaneFullCode\$contains" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlaneFullCode\$contains" -Recurse -Force
+}
+
+ForEach($contains in $settingsOption.Contains)
+{
+    Write-Host "Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureOption\$contains" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureOption\$contains" -Recurse -Force
+}
+
+ForEach($contains in $settingsTeam.Contains)
+{
+    Write-Host " Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureTeam\$contains" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureTeam\$contains" -Recurse -Force
+}
+
+
+# Extract partial
+ForEach($partial in $settingsCrudPlane.Partial)
+{
+    $index = $partial.lastIndexOf('\')
+    $fileName = $partial.Substring($index + 1)
+    $filePath = $partial.Substring(0, $index)
+
+    Write-Host "ExtractPartial $featureCrudPlane $filePath $fileName"
+    ExtractPartial $featureCrudPlane $filePath $fileName
+}
+
+# Create Zip
+$zipNameCrudPlane = $settingsCrudPlane.ZipName
+$zipNameCrudPlaneFullCode = $settingsCrudPlaneFullCode.ZipName
+$zipNameOption = $settingsOption.ZipName
+$zipNameTeam = $settingsTeam.ZipName
+
+Write-Host "Zip $featureCrudPlane"
+compress-archive -path ".\docs\$featureCrudPlane\*"         -destinationpath ".\docs\$zipNameCrudPlane"         -compressionlevel optimal
+Write-Host "Zip $featureCrudPlaneFullCode"
+compress-archive -path ".\docs\$featureCrudPlaneFullCode\*" -destinationpath ".\docs\$zipNameCrudPlaneFullCode" -compressionlevel optimal
+Write-Host "Zip $featureOption"
+compress-archive -path ".\docs\$featureOption\*"            -destinationpath ".\docs\$zipNameOption"            -compressionlevel optimal
+Write-Host "Zip $featureTeam"
+compress-archive -path ".\docs\$featureTeam\*"              -destinationpath ".\docs\$zipNameTeam"              -compressionlevel optimal
+
+# Delete temp folders
+RemoveFolder  -path ".\docs\$featureCrudPlane"
+RemoveFolder  -path ".\docs\$featureCrudPlaneFullCode"
+RemoveFolder  -path ".\docs\$featureOption"
+RemoveFolder  -path ".\docs\$featureTeam"
 
 
 #Write-Host "RemoveFolder dist"

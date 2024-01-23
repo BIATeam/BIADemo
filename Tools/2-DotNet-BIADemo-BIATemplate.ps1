@@ -10,6 +10,7 @@ $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\DotNet"
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
+###### ###### ###### Functions ###### ###### ######
 # Returns all line numbers containing the value passed as a parameter.
 function GetLineNumber($pattern, $file) {
   $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
@@ -209,6 +210,7 @@ function ExtractPartial {
   DeleteLine -start 1 -end ($start-1) -file $destinationFile
 }
 
+###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
@@ -221,19 +223,38 @@ Set-Location -Path $newPath
 
 Write-Host "Zip plane"
 
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api\Controllers\Plane' 'PlanesController.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'PlaneAppService.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'IPlaneAppService.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'PlaneMapper.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'Plane.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain.Dto\Plane' 'PlaneDto.cs'
+$myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
 
-ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api' 'bianetconfig.json'
-ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Crosscutting.Ioc' 'IocContainer.cs'
-ExtractPartial 'crud-planes' 'TheBIADevCompany.BIADemo.Crosscutting.Common' 'Rights.cs'
+# Get settings for "WebApi" type
+$settings = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "WebApi" })
+$feature = $settings.Feature
 
-compress-archive -path '.\docs\crud-planes\*' -destinationpath '.\docs\crud-planes.zip' -compressionlevel optimal
-Remove-Item '.\docs\crud-planes' -Recurse -Force -Confirm:$false
+# Copy files
+ForEach($contains in $settings.Contains)
+{
+    $index = $contains.lastIndexOf('\')
+    $fileName = $contains.Substring($index + 1)
+    $filePath = $contains.Substring(0, $index)
+
+    Write-Host "CopyModel $feature $filePath $fileName"
+    CopyModel $feature $filePath $fileName
+}
+
+# Extract partial
+ForEach($partial in $settings.Partial)
+{
+    $index = $partial.lastIndexOf('\')
+    $fileName = $partial.Substring($index + 1)
+    $filePath = $partial.Substring(0, $index)
+
+    Write-Host "ExtractPartial $feature $filePath $fileName"
+    ExtractPartial $feature $filePath $fileName
+}
+
+# Create Zip
+$zipName = $settings.ZipName
+compress-archive -path ".\docs\$feature\*" -destinationpath ".\docs\$zipName" -compressionlevel optimal
+Remove-Item ".\docs\$feature" -Recurse -Force -Confirm:$false
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
