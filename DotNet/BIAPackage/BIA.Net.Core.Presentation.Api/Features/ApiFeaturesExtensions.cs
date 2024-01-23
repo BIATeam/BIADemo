@@ -22,6 +22,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
+    using StackExchange.Redis;
 
     /// <summary>
     /// Add the standard service.
@@ -82,15 +83,15 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 {
                     if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddRedis(apiFeatures.HubForClients.RedisConnectionString);
+                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
                     }
                     else
                     {
-                        services.AddSignalR().AddRedis(
+                        services.AddSignalR().AddStackExchangeRedis(
                             apiFeatures.HubForClients.RedisConnectionString,
                             redisOptions =>
                             {
-                                redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
+                                redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
                             });
                     }
                 }
