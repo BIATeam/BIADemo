@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Copyright>Copyright © BIA 2021</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <Version>3.8.0</Version>
@@ -14,18 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.6.0" />
-    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" Version="1.4.2" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.23" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="6.0.23" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.33.0" />
-    <PackageReference Include="System.DirectoryServices" Version="6.0.0" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="6.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.33.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="6.0.0" />
+    <PackageReference Include="MailKit" Version="4.3.0" />
+    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" Version="1.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.2.0" />
+    <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
