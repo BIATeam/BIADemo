@@ -235,7 +235,7 @@ namespace BIA.Net.Core.Domain.Service
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-            StringBuilder csv = new ();
+            StringBuilder csv = new();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
@@ -514,17 +514,15 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dtoList != null)
             {
-                var entity = new List<TEntity>();
+                List<TEntity> entities = dtoList.AsParallel().Select(item =>
+                    {
+                        var converted = new TEntity();
+                        TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                        mapper.DtoToEntity(item, converted);
+                        return converted;
+                    }).ToList();
 
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.AddBulkAsync(entity);
+                await this.Repository.UnitOfWork.AddBulkAsync(entities);
             }
         }
 
