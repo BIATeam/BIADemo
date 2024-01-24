@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
@@ -112,9 +113,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            // TODO
-            // await this.BulkInsertAsync(items?.ToList());
-            throw new NotImplementedException();
+            if (this.Database.ProviderName.EndsWith(".SqlServer"))
+            {
+                SqlServerBulkHelper.Insert(this, items?.ToList());
+            }
+            else
+            {
+                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+            }
         }
 
         /// <summary>
