@@ -297,5 +297,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             byte[] buffer = await this.planeService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BIAConstants.Csv.Extension}");
         }
+
+        /// <summary>
+        /// Launches the job manually example.
+        /// </summary>
+        /// <returns>The status code.</returns>
+        [HttpPost("LaunchJobManually")]
+        public IActionResult LaunchJobManuallyExample()
+        {
+            this.planeService.LaunchJobManuallyExample();
+            return this.Ok();
+        }
     }
 }

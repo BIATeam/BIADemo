@@ -350,6 +350,29 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <summary>
+        /// Retrieve a DBSet.
+        /// </summary>
+        /// <returns>The DBSet of TEntity.</returns>
+        protected DbSet<TEntity> RetrieveSet()
+        {
+            if (this.unitOfWork == null)
+            {
+                throw new DataException("The context must not be null");
+            }
+
+            return this.unitOfWork.RetrieveSet<TEntity>();
+        }
+
+        /// <summary>
+        /// Retrieve a DBSet.
+        /// </summary>
+        /// <returns>The DBSet of TEntity.</returns>
+        protected DbSet<TEntity> RetrieveSetReadOnly()
+        {
+            return this.serviceProvider.GetService<IQueryableUnitOfWorkReadOnly>().RetrieveSet<TEntity>();
+        }
+
+        /// <summary>
         /// Get Elements with selected Columns of Entity By Specification Pattern, with Ordering,
         /// Paging and Includes.
         /// </summary>
@@ -537,29 +560,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             }
 
             return objectSet;
-        }
-
-        /// <summary>
-        /// Retrieve a DBSet.
-        /// </summary>
-        /// <returns>The DBSet of TEntity.</returns>
-        private DbSet<TEntity> RetrieveSet()
-        {
-            if (this.unitOfWork == null)
-            {
-                throw new DataException("The context must not be null");
-            }
-
-            return this.unitOfWork.RetrieveSet<TEntity>();
-        }
-
-        /// <summary>
-        /// Retrieve a DBSet.
-        /// </summary>
-        /// <returns>The DBSet of TEntity.</returns>
-        private DbSet<TEntity> RetrieveSetReadOnly()
-        {
-            return this.serviceProvider.GetService<IQueryableUnitOfWorkReadOnly>().RetrieveSet<TEntity>();
         }
 
         private void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)

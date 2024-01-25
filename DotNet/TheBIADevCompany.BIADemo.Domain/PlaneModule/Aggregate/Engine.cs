@@ -51,5 +51,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the Plane id.
         /// </summary>
         public int PlaneId { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is to be maintained.
+        /// </summary>
+        public bool IsToBeMaintained { get; set; }
     }
 }

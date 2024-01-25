@@ -123,6 +123,7 @@ namespace BIA.Net.Core.Infrastructure.Data
             }
         }
 
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk function to update entities.
         /// </summary>
@@ -131,15 +132,10 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            // TODO
-            //using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            //{
-            //    await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-            //    await transaction.CommitAsync();
-            //}
             throw new NotImplementedException();
         }
 
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk function to delete entities.
         /// </summary>
@@ -148,12 +144,6 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
         {
-            // TODO
-            //using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            //{
-            //    await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-            //    await transaction.CommitAsync();
-            //}
             throw new NotImplementedException();
         }
 
