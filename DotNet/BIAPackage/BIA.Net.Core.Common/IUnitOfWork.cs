@@ -46,6 +46,7 @@ namespace BIA.Net.Core.Common
         Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk method to update a list of item.
         /// </summary>
@@ -55,6 +56,7 @@ namespace BIA.Net.Core.Common
         Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class;
 
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk method to remove a list of item.
         /// </summary>

@@ -40,6 +40,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
@@ -165,6 +166,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
             collection.AddSingleton<AuditFeature>();
+
+            // Begin BIADemo
+            collection.AddTransient<IEngineRepository, EngineRepository>();
+
+            // End BIADemo
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)

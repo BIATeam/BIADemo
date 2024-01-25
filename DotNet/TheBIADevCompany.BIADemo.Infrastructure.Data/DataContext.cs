@@ -139,6 +139,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<PlaneType> PlanesTypes { get; set; }
 
+        /// <summary>
+        /// Gets or sets the engines.
+        /// </summary>
+        public DbSet<Engine> Engines { get; set; }
+
         // End BIADemo
 
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
