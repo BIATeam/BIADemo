@@ -10,7 +10,7 @@ $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
-
+###### ###### ###### Functions ###### ###### ######
 # Returns all line numbers containing the value passed as a parameter.
 function GetLineNumber($pattern, $file) {
   $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
@@ -184,6 +184,66 @@ function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
   }) -Join "`n"
 }
 
+function CopyFileFolder() {
+  param (
+    [string]$include, 
+    [string]$feature
+  )
+
+  if($include.EndsWith('*'))
+  {
+    # Directory found
+    $dirPath = $include.Replace('*', '')
+    Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force
+  } 
+  else
+  {       
+    # File found
+    $index = $include.lastIndexOf('\')
+    $fileName = $include.Substring($index + 1)
+    $filePath = $include.Substring(0, $index)
+    Write-Host "CopyModel $feature $filePath $fileName"
+    CopyModel $feature $filePath $fileName
+  }
+}
+
+function RemoveFileFolder() {
+  param (
+    [string]$exclude, 
+    [string]$feature
+  )
+
+  if($exclude.EndsWith('*'))
+  {
+    # Directory found
+    $dirPath = $exclude.Replace('*', '')
+    Write-Host "RemoveItemFolder -path '$newPath\docs\$feature\$dirPath'"
+    RemoveItemFolder -path "$newPath\docs\$feature\$dirPath"
+  } 
+  else
+  {       
+    # File found
+    Write-Host "Remove-Item "$newPath\docs\$feature\$exclude" -Force"
+    Remove-Item "$newPath\docs\$feature\$exclude" -Force
+  }
+}
+
+function ExtractPartialFile(){
+  param (
+    [string]$partial,
+    [string]$feature
+  )
+
+  $index = $partial.lastIndexOf('\')
+  $fileName = $partial.Substring($index + 1)
+  $filePath = $partial.Substring(0, $index)
+  Write-Host "ExtractPartial $feature $filePath $fileName"
+  ExtractPartial $feature $filePath $fileName
+}
+
+
+###### ###### ###### Start process ###### ###### ######
 RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
 
 Write-Host "Copy from $oldPath to $newPath"
@@ -193,7 +253,7 @@ Set-Location -Path $newPath
 
 New-Item -ItemType Directory -Path '.\docs'
 
-
+# Read Json settings
 $myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
 
 # Get settings for type
@@ -207,41 +267,58 @@ $featureCrudPlaneFullCode = $settingsCrudPlaneFullCode.Feature
 $featureOption = $settingsOption.Feature
 $featureTeam = $settingsTeam.Feature
 
-# Copy files
-ForEach($contains in $settingsCrudPlane.Contains)
+# Copy files/folders
+ForEach($include in $settingsCrudPlane.Contains.Include)
 {
-    Write-Host "Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlane\$contains" -Recurse -Force"
-    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlane\$contains" -Recurse -Force
+    CopyFileFolder -include $include -feature $featureCrudPlane
+}
+ForEach($include in $settingsCrudPlaneFullCode.Contains.Include)
+{
+    CopyFileFolder -include $include -feature $featureCrudPlaneFullCode
+}
+ForEach($include in $settingsOption.Contains.Include)
+{
+    CopyFileFolder -include $include -feature $featureOption
+}
+ForEach($include in $settingsTeam.Contains.Include)
+{
+    CopyFileFolder -include $include -feature $featureTeam
 }
 
-ForEach($contains in $settingsCrudPlaneFullCode.Contains)
+# Remove files/folders
+ForEach($exclude in $settingsCrudPlane.Contains.Exclude)
 {
-    Write-Host " Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlaneFullCode\$contains" -Recurse -Force"
-    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureCrudPlaneFullCode\$contains" -Recurse -Force
+    RemoveFileFolder -exclude $exclude -feature $featureCrudPlane
 }
-
-ForEach($contains in $settingsOption.Contains)
+ForEach($exclude in $settingsCrudPlaneFullCode.Contains.Exclude)
 {
-    Write-Host "Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureOption\$contains" -Recurse -Force"
-    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureOption\$contains" -Recurse -Force
+    RemoveFileFolder -exclude $exclude -feature $featureCrudPlaneFullCode
 }
-
-ForEach($contains in $settingsTeam.Contains)
+ForEach($exclude in $settingsOption.Contains.Exclude)
 {
-    Write-Host " Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureTeam\$contains" -Recurse -Force"
-    Copy-Item -Path "$oldPath\$contains" -Destination "$newPath\docs\$featureTeam\$contains" -Recurse -Force
+    RemoveFileFolder -exclude $exclude -feature $featureOption
 }
-
+ForEach($exclude in $settingsTeam.Contains.Exclude)
+{
+    RemoveFileFolder -exclude $exclude -feature $featureTeam
+}
 
 # Extract partial
 ForEach($partial in $settingsCrudPlane.Partial)
 {
-    $index = $partial.lastIndexOf('\')
-    $fileName = $partial.Substring($index + 1)
-    $filePath = $partial.Substring(0, $index)
-
-    Write-Host "ExtractPartial $featureCrudPlane $filePath $fileName"
-    ExtractPartial $featureCrudPlane $filePath $fileName
+    ExtractPartialFile -partial $partial -feature $featureCrudPlane
+}
+ForEach($partial in $settingsCrudPlaneFullCode.Partial)
+{
+    ExtractPartialFile -partial $partial -feature $featureCrudPlaneFullCode
+}
+ForEach($partial in $settingsOption.Partial)
+{
+    ExtractPartialFile -partial $partial -feature $featureOption
+}
+ForEach($partial in $settingsTeam.Partial)
+{
+    ExtractPartialFile -partial $partial -feature $featureTeam
 }
 
 # Create Zip

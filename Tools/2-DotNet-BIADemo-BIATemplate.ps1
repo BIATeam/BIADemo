@@ -223,21 +223,50 @@ Set-Location -Path $newPath
 
 Write-Host "Zip plane"
 
+# Read Json settings
 $myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
 
 # Get settings for "WebApi" type
 $settings = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "WebApi" })
 $feature = $settings.Feature
 
-# Copy files
-ForEach($contains in $settings.Contains)
+# Copy files/folders
+ForEach($include in $settings.Contains.Include)
 {
-    $index = $contains.lastIndexOf('\')
-    $fileName = $contains.Substring($index + 1)
-    $filePath = $contains.Substring(0, $index)
+    if($include.EndsWith('*'))
+    {
+        # Directory found
+        $dirPath = $include.Replace('*', '')
+        Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force"
+        Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force
+    } 
+    else
+    {       
+        # File found
+        $index = $include.lastIndexOf('\')
+        $fileName = $include.Substring($index + 1)
+        $filePath = $include.Substring(0, $index)
+        Write-Host "CopyModel $feature $filePath $fileName"
+        CopyModel $feature $filePath $fileName
+    }
+}
 
-    Write-Host "CopyModel $feature $filePath $fileName"
-    CopyModel $feature $filePath $fileName
+# Remove files/folders
+ForEach($exclude in $settings.Contains.Exclude)
+{
+    if($exclude.EndsWith('*'))
+    {
+        # Directory found
+        $dirPath = $exclude.Replace('*', '')
+        Write-Host "RemoveItemFolder -path '$newPath\docs\$feature\$dirPath'"
+        RemoveItemFolder -path "$newPath\docs\$feature\$dirPath"
+    } 
+    else
+    {       
+        # File found
+        Write-Host "Remove-Item "$newPath\docs\$feature\$exclude" -Force"
+        Remove-Item "$newPath\docs\$feature\$exclude" -Force
+    }
 }
 
 # Extract partial

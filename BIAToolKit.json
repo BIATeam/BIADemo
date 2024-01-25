@@ -6,14 +6,19 @@
 		"FeatureNamePlurial" : "Planes",
 		"ZipName" : "crud-planes.zip",
 		"Contains" :
-		[
-			"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
-			"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
-			"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
-			"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
-			"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
-			"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
-		],
+		{
+			"Include" :
+			[
+				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
+				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
+				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
+				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
+				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
+				"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
+			],
+			"Exclude":
+			[]
+		},		
 		"Children" : 
 		[],
 		"Options" :
@@ -32,9 +37,16 @@
 		"FeatureNamePlurial" : "Planes",
 		"ZipName" : "feature-planes.zip",
 		"Contains":
-		[
-			"src\\app\\features\\planes"
-		],
+		{
+			"Include" :
+			[
+				"src\\app\\features\\planes\\*"
+			],
+			"Exclude":
+			[
+				"src\\app\\features\\planes\\children\\engines\\*"
+			]
+		},		
 		"Children" : 
 		[
 			"Engines"
@@ -58,9 +70,14 @@
 		"FeatureNamePlurial" : "Planes",
 		"ZipName" : "feature-planes-full-code.zip",
 		"Contains":
-		[
-			"src\\app\\features\\planes-full-code"
-		],
+		{
+			"Include" :
+			[
+				"src\\app\\features\\planes-full-code\\*"
+			],
+			"Exclude":
+			[]
+		},		
 		"Children" : 
 		[],
 		"Options":
@@ -75,9 +92,14 @@
 		"FeatureNamePlurial" : "Airports",
 		"ZipName" : "domain-airport-option.zip",
 		"Contains":
-		[
-			"src\\app\\domains\\airport-option"
-		],
+		{
+			"Include" :
+			[
+				"src\\app\\domains\\airport-option\\*"
+			],
+			"Exclude":
+			[]
+		},	
 		"Children" : 
 		[],
 		"Options":
@@ -92,9 +114,14 @@
 		"FeatureNamePlurial" : "AircraftMaintenanceCompanies",
 		"ZipName" : "aircraft-maintenance-companies.zip",
 		"Contains":
-		[
-			"src\\app\\features\\aircraft-maintenance-companies"
-		],
+		{
+			"Include" :
+			[
+				"src\\app\\features\\aircraft-maintenance-companies\\*"
+			],
+			"Exclude":
+			[]
+		},	
 		"Children" : 
 		[],
 		"Options":
