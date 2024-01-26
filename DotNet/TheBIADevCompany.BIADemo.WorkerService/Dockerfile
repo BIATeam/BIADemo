@@ -3,8 +3,8 @@
 #Url Red Hat container:
 #https://catalog.redhat.com/software/containers/search
 
-#.NET 6.0 Runtime Only
-FROM registry.access.redhat.com/ubi8/dotnet-60-runtime@sha256:b5e7a494fc04700108eb80eb28fa5ad044abf1fb7dc59a204c066935a06e3a03 AS base
+#.NET Runtime Only
+FROM registry.access.redhat.com/ubi8/dotnet-80-runtime@sha256:bcca46f2b836ebcb0d552aac3e455f7131907e64627b2d5711cfbb4ef381e9b6 AS base
 WORKDIR /app
 #USER root
 #COPY /ca-certificates/ca-bundle.crt /etc/pki/ca-trust/source/anchors/ca-bundle.crt
@@ -12,8 +12,8 @@ WORKDIR /app
 #RUN chmod a+rx /etc/pki/ca-trust/source/anchors/ca-bundle.crt
 #USER 1001
 
-#.NET 6.0 SDK
-FROM registry.access.redhat.com/ubi8/dotnet-60@sha256:b1d8c102abc3212aa0261883157814d15115ccc3c6d93463532eb35a5c1497c0 AS build
+#.NET SDK
+FROM registry.access.redhat.com/ubi8/dotnet-80@sha256:d2fc25735545ed3649a094cc36f78cfaebed2d0744a456cae9a33909025ac4da AS build
 WORKDIR /src
 #USER root
 #COPY /ca-certificates/ca-bundle.crt /etc/pki/ca-trust/source/anchors/ca-bundle.crt

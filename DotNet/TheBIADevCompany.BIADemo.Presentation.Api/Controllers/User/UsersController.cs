@@ -145,10 +145,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -205,10 +201,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -302,15 +294,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Sync)]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
-            try
-            {
-                await this.userService.SynchronizeWithADAsync(fullSynchro);
-            }
-            catch (Exception)
-            {
-                return this.Problem("Error during synchronize. Retry Synchronize.");
-            }
-
+            await this.userService.SynchronizeWithADAsync(fullSynchro);
             return this.Ok();
         }
 
