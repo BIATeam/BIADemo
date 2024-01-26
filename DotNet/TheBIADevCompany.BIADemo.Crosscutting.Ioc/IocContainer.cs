@@ -54,9 +54,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// </summary>
         /// <param name="collection">The collection of service.</param>
         /// <param name="configuration">The application configuration.</param>
+        /// <param name="isApi">true if it's an API, false if it's a Worker.</param>
         /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
         /// specific ones in IocContainerTest.</param>
-        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
+        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isApi, bool isUnitTest = false)
         {
             if (configuration == null && !isUnitTest)
             {
@@ -70,7 +71,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
             ConfigureDomainContainer(collection);
-            ConfigureApplicationContainer(collection);
+            ConfigureApplicationContainer(collection, isApi);
 
             if (!isUnitTest)
             {
@@ -87,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             throw new NotImplementedException();
         }
 
-        private static void ConfigureApplicationContainer(IServiceCollection collection)
+        private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
             // Application Layer
             collection.AddTransient<ITeamAppService, TeamAppService>();
@@ -97,7 +98,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            collection.AddTransient<IAuthAppService, AuthAppService>();
+
+            if (isApi)
+            {
+                collection.AddTransient<IAuthAppService, AuthAppService>();
+            }
 
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();

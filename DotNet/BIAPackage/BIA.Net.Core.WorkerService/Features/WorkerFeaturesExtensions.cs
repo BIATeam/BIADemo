@@ -8,7 +8,6 @@ namespace BIA.Net.Core.WorkerService.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
-    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Hangfire;
     using Hangfire.PerformContextAccessor;
@@ -36,12 +35,6 @@ namespace BIA.Net.Core.WorkerService.Features
             IConfiguration configuration,
             List<DatabaseHandlerRepository> databaseHandlerRepositories)
         {
-            var biaNetSection = new BiaNetSection();
-            configuration.GetSection("BiaNet").Bind(biaNetSection);
-
-            // Authentication
-            services.ConfigureAuthentication(biaNetSection);
-
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)
             {
