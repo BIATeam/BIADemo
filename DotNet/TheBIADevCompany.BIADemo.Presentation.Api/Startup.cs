@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             // End BIA Standard service
 
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration);
+            IocContainer.ConfigureContainer(services, this.configuration, true);
         }
 
         /// <summary>
