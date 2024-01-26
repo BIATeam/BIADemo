@@ -14,7 +14,6 @@ import { EngineTableComponent } from '../../components/engine-table/engine-table
 })
 
 export class EnginesIndexComponent extends CrudItemsIndexComponent<Engine> {
-  
   @ViewChild(EngineTableComponent, { static: false }) crudItemTableComponent: EngineTableComponent;
 
   constructor(
@@ -24,6 +23,7 @@ export class EnginesIndexComponent extends CrudItemsIndexComponent<Engine> {
   ) {
     super(injector, engineService);
     this.crudConfiguration = EngineCRUDConfiguration;
+    this.reorderableColumns= false;
   }
 
   protected setPermissions() {

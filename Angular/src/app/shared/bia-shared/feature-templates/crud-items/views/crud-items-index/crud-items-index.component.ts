@@ -60,6 +60,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   canAdd = false;
   columns: KeyValuePair[];
   displayedColumns: KeyValuePair[];
+  reorderableColumns = true;
   viewPreference: string;
   popupTitle: string;
   tableStateKey: string | undefined;
@@ -68,6 +69,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   useViewTeamWithTypeId: TeamTypeId | null;
   defaultViewPref: BiaTableState;
   hasColumnFilter = false;
+
 
 
   protected store: Store<AppState>;

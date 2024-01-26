@@ -27,6 +27,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() paginator = true;
   @Input() elements: any[];
   @Input() columnToDisplays: KeyValuePair[];
+  @Input() reorderableColumns = true;
   @Input() sortFieldValue = '';
   @Input() sortOrderValue = 1;
   @Input() showColSearch = false;
