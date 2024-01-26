@@ -1,4 +1,5 @@
-﻿// <copyright file="EngineManageTask.cs" company="TheBIADevCompany">
+﻿// BIADemo only
+// <copyright file="EngineManageTask.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
