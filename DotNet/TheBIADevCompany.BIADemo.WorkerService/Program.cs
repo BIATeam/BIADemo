@@ -11,8 +11,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using NLog;
+    using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
-    using NLog.Web;
 
     /// <summary>
     /// The base program class.
@@ -66,7 +66,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             catch (Exception ex)
             {
                 // NLog: catch setup errors
-                var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+                var logger = LogManager.GetCurrentClassLogger();
                 logger.Error(ex, "Stopped program because of exception");
                 throw;
             }
