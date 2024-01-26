@@ -6,7 +6,6 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     /// <summary>
@@ -43,6 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<MaintenanceTeam>().ToTable("MaintenanceTeams");
             modelBuilder.Entity<MaintenanceTeam>().Property(p => p.Title).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<MaintenanceTeam>().Property(p => p.AircraftMaintenanceCompanyId).IsRequired(); // relationship 1-*
+            modelBuilder.Entity<MaintenanceTeam>().HasOne(x => x.AircraftMaintenanceCompany).WithMany(x => x.MaintenanceTeams).OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }
