@@ -235,7 +235,7 @@ namespace BIA.Net.Core.Domain.Service
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-            StringBuilder csv = new ();
+            StringBuilder csv = new();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
@@ -514,20 +514,19 @@ namespace BIA.Net.Core.Domain.Service
         {
             if (dtoList != null)
             {
-                var entity = new List<TEntity>();
+                List<TEntity> entities = dtoList.AsParallel().Select(item =>
+                    {
+                        var converted = new TEntity();
+                        TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                        mapper.DtoToEntity(item, converted);
+                        return converted;
+                    }).ToList();
 
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.AddBulkAsync(entity);
+                await this.Repository.UnitOfWork.AddBulkAsync(entities);
             }
         }
 
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Update quickly hudge number of element.
         /// </summary>
@@ -539,22 +538,10 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.UpdateBulkAsync(entity);
-            }
+            throw new NotImplementedException();
         }
 
+        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
         /// <summary>
         /// Remove quickly hudge number of element.
         /// </summary>
@@ -566,22 +553,10 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
-            }
+            throw new NotImplementedException();
         }
 
+        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
         /// <summary>
         /// Delete quickly hudge number of element by id.
         /// </summary>
@@ -593,13 +568,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
         {
-            var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
-            await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
+            throw new NotImplementedException();
         }
 
         /// <summary>

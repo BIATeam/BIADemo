@@ -132,10 +132,12 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = "Delete", string queryMode = "Delete");
 
         Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtos, string accessMode = null, string queryMode = null, string mapperMode = null)
@@ -155,6 +157,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>;
 
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Update an entity in DB with the DTO values.
         /// </summary>

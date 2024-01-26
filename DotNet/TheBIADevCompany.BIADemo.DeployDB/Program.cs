@@ -61,8 +61,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
                         // Begin BIADemo
-                        RecurringJob.RemoveIfExists("BIADemo.WithPermissionTask");
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
+                        RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
 
                         // End BIADemo
                     });

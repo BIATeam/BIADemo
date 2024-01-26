@@ -41,6 +41,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
             ApiFeatures apiFeatures,
             IConfiguration configuration)
         {
+            var biaNetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
+
+            // Authentication
+            services.ConfigureAuthentication(biaNetSection);
+
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {

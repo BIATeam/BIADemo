@@ -174,20 +174,22 @@ namespace BIA.Net.Core.Domain.Service
             await this.AddBulkAsync<TDto, TMapper>(dtos);
         }
 
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.UpdateBulkAsync"/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            await this.UpdateBulkAsync<TDto, TMapper>(dtos);
+            throw new NotImplementedException();
         }
 
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.RemoveBulkAsync(System.Collections.Generic.IEnumerable{TDto})"/>
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            await this.RemoveBulkAsync<TDto, TMapper>(dtos);
+            throw new NotImplementedException();
         }
 
         public virtual async Task<TDto> SaveAsync(
