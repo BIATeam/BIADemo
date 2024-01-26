@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
                 .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsToBeMaintained, true));
 
             await this.RetrieveSetReadOnly()
-                .Where(x => SqlServerDbFunctionsExtensions.DateDiffDay(EF.Functions, x.LastMaintenanceDate, DateTime.Today) >= nbMonth)
+                .Where(x => SqlServerDbFunctionsExtensions.DateDiffDay(EF.Functions, x.LastMaintenanceDate, DateTime.Today) <= nbMonth)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsToBeMaintained, false));
         }
     }
