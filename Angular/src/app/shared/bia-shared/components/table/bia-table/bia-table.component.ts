@@ -211,9 +211,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       if (this.table.resizableColumns) {
         this.table.saveColumnWidths(state);
       }
-      if (this.table.reorderableColumns) {
+      //if (this.table.reorderableColumns) {
         this.table.saveColumnOrder(state);
-      }
+      //}
       if (this.table.selection) {
         state.selection = this.table.selection;
       }
