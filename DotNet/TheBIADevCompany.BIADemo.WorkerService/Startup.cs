@@ -114,7 +114,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // End BIADemo
 
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration);
+            IocContainer.ConfigureContainer(services, this.configuration, false);
         }
     }
 }

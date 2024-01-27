@@ -5,7 +5,6 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Service;
@@ -17,5 +16,15 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public interface IEngineAppService : ICrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto>
     {
+        /// <summary>
+        /// Checks engine to be maintained asynchronous.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task CheckToBeMaintainedAsync();
+
+        /// <summary>
+        /// Launches the job manually (example).
+        /// </summary>
+        void LaunchJobManuallyExample();
     }
 }
