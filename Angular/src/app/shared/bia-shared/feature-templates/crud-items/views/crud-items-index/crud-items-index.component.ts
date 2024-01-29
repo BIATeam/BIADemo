@@ -191,6 +191,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       })
     );
 
+    this.crudItemService.clearAll();
     this.crudItems$ = this.crudItemService.crudItems$;
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;

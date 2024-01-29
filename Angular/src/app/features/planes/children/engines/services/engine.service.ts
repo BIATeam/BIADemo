@@ -64,4 +64,12 @@ export class EngineService extends CrudItemService<Engine> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureEnginesActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureEnginesActions.clearAll());
+    }
+    public clearCurrent(){
+        this._currentCrudItem = <Engine>{};
+        this._currentCrudItemId = 0;
+        this.store.dispatch(FeatureEnginesActions.clearCurrent());
+    }
 }

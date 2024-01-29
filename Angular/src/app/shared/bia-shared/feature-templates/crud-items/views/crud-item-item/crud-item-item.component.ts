@@ -37,9 +37,6 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
   }
 
   ngOnDestroy() {
-    this.crudItemService.currentCrudItemId = null;
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.crudItemService.clearCurrent();
   }
 }

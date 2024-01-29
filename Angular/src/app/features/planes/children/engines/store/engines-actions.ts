@@ -6,6 +6,10 @@ import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 
 export namespace FeatureEnginesActions
 {
+  export const clearAll = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear current');
+  
   export const loadAllByPost = createAction('[' + EngineCRUDConfiguration.storeKey +'] Load all by post', props<{ event: LazyLoadEvent }>());
 
   export const load = createAction('[' + EngineCRUDConfiguration.storeKey +'] Load', props<{ id: number }>());

@@ -85,4 +85,9 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     abstract update(crudItem: CrudItem):void;
     abstract remove(id: any):void;
     abstract multiRemove(ids: any[]):void;
+    public clearAll() {};
+    public clearCurrent() { 
+        this._currentCrudItem = <CrudItem>{};
+        this._currentCrudItemId = 0;
+    };
 }

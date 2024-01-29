@@ -41,6 +41,14 @@ export const INIT_STATE: State = enginesAdapter.getInitialState({
 
 export const engineReducers = createReducer<State>(
   INIT_STATE,
+  on(FeatureEnginesActions.clearAll, (state) => {
+    const stateUpdated = enginesAdapter.removeAll(state);
+    stateUpdated.totalCount = 0;
+    return stateUpdated;
+  }),
+  on(FeatureEnginesActions.clearCurrent, (state) => {
+    return { ...state, currentEngine: <Engine>{} };
+  }),
   on(FeatureEnginesActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
