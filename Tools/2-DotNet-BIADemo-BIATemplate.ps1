@@ -1,3 +1,5 @@
+#Import-Module ./GenerateZipArchive.ps1
+
 # $oldName = Read-Host "old project name ?"
 $oldName = 'BIADemo'
 # $newName = Read-Host "new project name ?"
@@ -226,64 +228,8 @@ Write-Host "Zip plane"
 # Read Json settings
 $myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
 
-# Get settings for "WebApi" type
-$settings = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq "WebApi" })
-$feature = $settings.Feature
+& "$scriptPath\GenerateZipArchive.ps1" -myJson $myJson -type "WebApi" -searchFirst $true 
 
-# Copy files/folders
-ForEach($include in $settings.Contains.Include)
-{
-    if($include.EndsWith('*'))
-    {
-        # Directory found
-        $dirPath = $include.Replace('*', '')
-        Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force"
-        Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force
-    } 
-    else
-    {       
-        # File found
-        $index = $include.lastIndexOf('\')
-        $fileName = $include.Substring($index + 1)
-        $filePath = $include.Substring(0, $index)
-        Write-Host "CopyModel $feature $filePath $fileName"
-        CopyModel $feature $filePath $fileName
-    }
-}
-
-# Remove files/folders
-ForEach($exclude in $settings.Contains.Exclude)
-{
-    if($exclude.EndsWith('*'))
-    {
-        # Directory found
-        $dirPath = $exclude.Replace('*', '')
-        Write-Host "RemoveItemFolder -path '$newPath\docs\$feature\$dirPath'"
-        RemoveItemFolder -path "$newPath\docs\$feature\$dirPath"
-    } 
-    else
-    {       
-        # File found
-        Write-Host "Remove-Item "$newPath\docs\$feature\$exclude" -Force"
-        Remove-Item "$newPath\docs\$feature\$exclude" -Force
-    }
-}
-
-# Extract partial
-ForEach($partial in $settings.Partial)
-{
-    $index = $partial.lastIndexOf('\')
-    $fileName = $partial.Substring($index + 1)
-    $filePath = $partial.Substring(0, $index)
-
-    Write-Host "ExtractPartial $feature $filePath $fileName"
-    ExtractPartial $feature $filePath $fileName
-}
-
-# Create Zip
-$zipName = $settings.ZipName
-compress-archive -path ".\docs\$feature\*" -destinationpath ".\docs\$zipName" -compressionlevel optimal
-Remove-Item ".\docs\$feature" -Recurse -Force -Confirm:$false
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
