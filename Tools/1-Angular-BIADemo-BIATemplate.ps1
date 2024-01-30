@@ -1,166 +1,16 @@
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+Import-Module $scriptPath/Library-BIA-BIATemplate.psm1
+
 # $oldName = Read-Host "old project name ?"
 $oldName = 'BIADemo'
 # $newName = Read-Host "new project name ?"
 $newName = 'BIATemplate'
 
-$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\Angular")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
 
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
-
-###### ###### ###### Functions ###### ###### ######
-# Returns all line numbers containing the value passed as a parameter.
-function GetLineNumber($pattern, $file) {
-  $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
-  return $LineNumber
-}
-
-# Deletes a set of lines whose number is between $start and $end.
-function DeleteLine($start, $end, $file) {
-  $i = 0
-  $start--
-  $end--
-  Write-Host "start " $start "end " $end "file " $file
-  (Get-Content $file) | Where-Object {
-	(($i -ne $start -1 -or $_.Trim() -ne '') -and 
-    ($i -lt $start -or $i -gt $end))
-    $i++
-  } | set-content $file 
-}
-
-# Deletes lines between // Begin BIADemo and // End BIADemo 
-function RemoveCodeExample {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveCodeExample -Path $childDirectory.FullName -Exclude $ExcludeDir
-    }	
-	
-  Get-ChildItem -Path $Path -File | Where-Object { $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
-  }
-}
-
-function RemoveBIADemoOnlyFiles {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveBIADemoOnlyFiles -Path $childDirectory.FullName -Exclude $ExcludeDir
-    }
-	foreach ($childFile in Get-ChildItem -Path $Path -File | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
-		$file = $childFile.FullName
-		$fileRel = Resolve-Path -Path "$file" -Relative
-		$searchWord = '// BIADemo only'
-		$starts = GetLineNumber -pattern $searchWord -file $file
-		if ($starts -eq 1)
-		{
-			Write-Verbose "Remove $fileRel" -Verbose
-			Remove-Item -Force -LiteralPath $file
-		}
-	}
-}
-
-function RemoveEmptyFolder {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-    foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveEmptyFolder -Path $childDirectory.FullName -Exclude $ExcludeDir
-    }
-    $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-    $isEmpty = $currentChildren -eq $null
-    if ($isEmpty) {
-	 	$fileRel = Resolve-Path -Path "$Path" -Relative
-        Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
-        Remove-Item -Force -LiteralPath $Path
-    }
-}
-
-function RemoveFolder {
-  param (
-    [string]$path
-  )
-  if (Test-Path $path) {
-    Write-Host "delete " $path " folder"
-    Remove-Item $path -Recurse -Force -Confirm:$false
-  }
-}
-
-function RemoveFolderContents {
-  param (
-    [string]$Path,
-	$Exclude
-  )
-  if (Test-Path $Path) {
-    Write-Host "delete " $Path " folder" 
-    Get-ChildItem -Path $Path $extension -Exclude $Exclude | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
-  }
-}
-
-function ReplaceProjectName {
-  param (
-    [string]$oldName,
-    [string]$newName,
-	$Path,
-	$ExcludeDir
-  )
-  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-	ReplaceProjectName -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
-  }
-  Get-ChildItem -LiteralPath $Path -File -Include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | ForEach-Object { 
-    $oldContent = [System.IO.File]::ReadAllText($_.FullName);
-    $newContent = $oldContent.Replace($oldName, $newName);
-    if ($oldContent -ne $newContent) {
-      Write-Host $_.FullName
-      [System.IO.File]::WriteAllText($_.FullName, $newContent)
-    }
-  }
-  
-}
-
-# Formats JSON in a nicer format than the built-in ConvertTo-Json does.
-function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
-  $indent = 0;
-  ($json -Split '\n' |
-    % {
-      if ($_ -match '[\}\]]') {
-        # This line contains  ] or }, decrement the indentation level
-        $indent--
-      }
-      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
-      if ($_ -match '[\{\[]') {
-        # This line contains [ or {, increment the indentation level
-        $indent++
-      }
-      $line
-  }) -Join "`n"
-}
-
 
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolderContents -path "$newPath" -Exclude ('dist', 'node_modules', '.angular')
@@ -172,13 +22,12 @@ Set-Location -Path $newPath
 
 New-Item -ItemType Directory -Path '.\docs'
 
-# Read Json settings
+# Read Json settings to generate archive
 $myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
-
-& "$scriptPath\GenerateZipArchive.ps1" -myJson $myJson -type "CRUD" -searchFirst $true 
-& "$scriptPath\GenerateZipArchive.ps1" -myJson $myJson -type "CRUD" -searchFirst $false 
-& "$scriptPath\GenerateZipArchive.ps1" -myJson $myJson -type "Option" -searchFirst $true 
-& "$scriptPath\GenerateZipArchive.ps1" -myJson $myJson -type "Team" -searchFirst $true 
+GenerateZipArchive -myJson $myJson -type "CRUD" -searchFirst $true 
+GenerateZipArchive -myJson $myJson -type "CRUD" -searchFirst $false 
+GenerateZipArchive -myJson $myJson -type "Option" -searchFirst $true 
+GenerateZipArchive -myJson $myJson -type "Team" -searchFirst $true 
 
 #Write-Host "RemoveFolder dist"
 #RemoveFolder -path 'dist'

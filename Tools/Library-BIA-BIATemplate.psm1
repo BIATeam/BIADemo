@@ -1,0 +1,338 @@
+###### ###### ###### ###### ####### ###### ###### ###### ######
+###### ###### ###### Librairy of functions ###### ###### ######
+###### ###### ###### ###### ####### ###### ###### ###### ######
+
+function RemoveFolderContents {
+  param (
+    [string]$Path,
+	$Exclude
+  )
+  if (Test-Path $Path) {
+    Write-Host "delete " $Path " folder" 
+    Get-ChildItem -Path $Path $extension -Exclude $Exclude | ForEach-Object { Remove-Item -Path $_.FullName -Recurse -Force -Confirm:$false }
+  }
+}
+
+# Formats JSON in a nicer format than the built-in ConvertTo-Json does.
+function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
+  $indent = 0;
+  ($json -Split '\n' |
+    % {
+      if ($_ -match '[\}\]]') {
+        # This line contains  ] or }, decrement the indentation level
+        $indent--
+      }
+      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
+      if ($_ -match '[\{\[]') {
+        # This line contains [ or {, increment the indentation level
+        $indent++
+      }
+      $line
+  }) -Join "`n"
+}
+
+# Returns all line numbers containing the value passed as a parameter.
+function GetLineNumber($pattern, $file) {
+  $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
+  return $LineNumber
+}
+
+# Deletes a set of lines whose number is between $start and $end.
+function DeleteLine($start, $end, $file) {
+  $i = 0
+  $start--
+  $end--
+  $fileRel = Resolve-Path -Path "$file" -Relative
+  Write-Verbose "Delete lines $start to $end in file $fileRel" -Verbose
+  (Get-Content $file) | Where-Object {
+	(($i -ne $start - 1 -or $_.Trim() -ne '') -and 
+    ($i -lt $start -or $i -gt $end))
+    $i++
+  } | set-content $file
+}
+
+# Deletes lines between // Begin BIADemo and // End BIADemo 
+function RemoveCodeExample {
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $lineBegin = @()
+    $file = $_.FullName
+  
+    $searchWord = 'Begin BIADemo'
+    $starts = GetLineNumber -pattern $searchWord -file $file
+    $lineBegin += $starts
+  
+    $searchWord = 'End BIADemo'
+    $ends = GetLineNumber -pattern $searchWord -file $file
+    $lineBegin += $ends
+  
+    if ($lineBegin -and $lineBegin.Length -gt 0) {
+      $lineBegin = $lineBegin | Sort-Object
+      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
+        $start = [int]$lineBegin[$i - 1]
+        $end = [int]$lineBegin[$i]
+        DeleteLine -start $start -end $end -file $file
+      }
+    }
+  }
+}
+
+# Deletes comment // Except BIADemo 
+function RemoveCommentExceptBIADemo {
+  ReplaceProjectName -oldName "// Except BIADemo " -newName ""
+}
+
+function RemoveBIADemoOnlyFiles {
+  foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
+    $file = $childFile.FullName
+    $fileRel = Resolve-Path -Path "$file" -Relative
+    $searchWord = '// BIADemo only'
+    $starts = GetLineNumber -pattern $searchWord -file $file
+    if ($starts -eq 1) {
+      Write-Verbose "Remove $fileRel" -Verbose
+      Remove-Item -Force -LiteralPath $file
+    }
+  }
+}
+
+function RemoveEmptyFolder {
+  param(
+    $Path
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude PublishProfiles, RepoContract) {
+    RemoveEmptyFolder $childDirectory.FullName
+  }
+  $currentChildren = Get-ChildItem -Force -LiteralPath $Path
+  $isEmpty = $currentChildren -eq $null
+  if ($isEmpty) {
+    $fileRel = Resolve-Path -Path "$Path" -Relative
+    Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
+    Remove-Item -Force -LiteralPath $Path
+  }
+}
+
+function RenameFile {
+  param (
+    [string]$oldName,
+    [string]$newName
+  )
+  Get-ChildItem -File -Recurse | ForEach-Object { if ($_.Name -ne $_.Name.replace($oldName, $newName)) { Rename-Item -Path $_.PSPath -NewName $_.Name.replace($oldName, $newName) } }
+}
+
+function RenameFolder {
+  param (
+    [string]$oldName,
+    [string]$newName
+  )
+  Get-ChildItem -Directory -Recurse | ForEach-Object { if ($_.Name -ne $_.Name.replace($oldName, $newName)) { Rename-Item -Path $_.PSPath -NewName $_.Name.replace($oldName, $newName) } }
+}
+
+function RemoveItemFolder {
+  param (
+    [string]$path
+  )
+  if (Test-Path $path) {
+    $fileRel = Resolve-Path -Path "$path" -Relative
+    Write-Verbose "Delete $fileRel" -Verbose
+    Remove-Item $path -Recurse -Force -Confirm:$false
+  }
+  else {
+    Write-Host "Error $path not found"
+  }
+}
+
+function ReplaceProjectName {
+  param (
+    [string]$oldName,
+    [string]$newName
+  )
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $file = $_.FullName
+    $oldContent = [System.IO.File]::ReadAllText($file);
+    $newContent = $oldContent.Replace($oldName, $newName);
+    if ($oldContent -ne $newContent) {
+	  
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Replace in $fileRel" -Verbose
+	  
+      [System.IO.File]::WriteAllText($file, $newContent)
+    }
+  }
+}
+
+function ReplaceInScript {
+  param (
+    [string]$oldName,
+    [string]$newName
+  )
+  Get-ChildItem -File -Recurse -include *.ps1 | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $file = $_.FullName
+    $oldContent = [System.IO.File]::ReadAllText($file);
+    $newContent = $oldContent.Replace($oldName, $newName);
+    if ($oldContent -ne $newContent) {
+	  
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Replace in $fileRel" -Verbose
+	  
+      [System.IO.File]::WriteAllText($file, $newContent)
+    }
+  }
+}
+
+function RemoveFolder {
+  param (
+    [string]$path
+  )
+  if (Test-Path $path) {
+    Write-Host "delete " $path " folder"
+    Remove-Item $path -Recurse -Force -Confirm:$false
+  }
+}
+
+function CopyModel {
+  param (
+    [string]$modelName,
+    [string]$folderpath,
+    [string]$fileName
+  )
+  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+  $destinationFile = $destinationFolder + '\' + $fileName
+  $sourceFile = '.\' + $folderpath + '\' + $fileName
+  Copy-Item -path $sourceFile -Destination $destinationFile
+
+  $searchWord = '// BIADemo only'
+  $starts = GetLineNumber -pattern $searchWord -file $destinationFile
+  if ($starts -eq 1) {
+    DeleteLine -start 1 -end 1 -file $destinationFile
+  }
+}
+
+function CopyFileFolder() {
+  param (
+    [string]$include, 
+    [string]$feature
+  )
+
+  if($include.EndsWith('*'))
+  {
+    # Directory found
+    $dirPath = $include.Replace('*', '')
+    Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force
+  } 
+  else
+  {       
+    # File found
+    $index = $include.lastIndexOf('\')
+    $fileName = $include.Substring($index + 1)
+    $filePath = $include.Substring(0, $index)
+    Write-Host "CopyModel $feature $filePath $fileName"
+    CopyModel $feature $filePath $fileName
+  }
+}
+
+function RemoveFileFolder() {
+  param (
+    [string]$exclude, 
+    [string]$feature
+        #[string]$newPath
+  )
+
+  if($exclude.EndsWith('*'))
+  {
+    # Directory found
+    $dirPath = $exclude.Replace('*', '')
+    Write-Host "RemoveItemFolder -path '$newPath\docs\$feature\$dirPath'"
+    RemoveItemFolder -path "$newPath\docs\$feature\$dirPath"
+  } 
+  else
+  {       
+    # File found
+    Write-Host "Remove-Item "$newPath\docs\$feature\$exclude" -Force"
+    Remove-Item "$newPath\docs\$feature\$exclude" -Force
+  }
+}
+
+function ExtractPartialFile(){
+  param (
+    [string]$partial,
+    [string]$feature
+  )
+
+  $index = $partial.lastIndexOf('\')
+  $fileName = $partial.Substring($index + 1)
+  $filePath = $partial.Substring(0, $index)
+  Write-Host "ExtractPartial $feature $filePath $fileName"
+  ExtractPartial $feature $filePath $fileName
+}
+
+function ExtractPartial {
+  param (
+    [string]$modelName,
+    [string]$folderpath,
+    [string]$fileName
+  )
+
+  $destinationFolder = ".\docs\$modelName\$folderpath"
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+
+  $destinationFile = "$destinationFolder\$fileName.partial"
+  $sourceFile = ".\$folderpath\$fileName"
+  Copy-Item -path $sourceFile -Destination $destinationFile
+
+  $searchBegin = 'BIAToolKit - Begin Partial'
+  $searchEnd = 'BIAToolKit - End Partial'
+   
+  $start = GetLineNumber -pattern $searchBegin -file $destinationFile
+  $end = GetLineNumber -pattern $searchEnd -file $destinationFile
+  $lineNumber = (Get-Content $sourceFile).Length
+
+  # Delete lines after marker end
+  DeleteLine -start ($end+1) -end $lineNumber -file $destinationFile 
+  # Delete lines before marker begin
+  DeleteLine -start 1 -end ($start-1) -file $destinationFile
+}
+
+function GenerateZipArchive(){
+    param(
+        [object]$myJson,
+        [string]$type,
+        [bool]$searchFirst = $true
+    )
+
+    # Get settings for type
+    if($searchFirst -eq $true) {
+        $settings = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq $type })
+    }
+    else{
+        $settings = [System.Linq.Enumerable]::LastOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq $type })
+    }
+
+    $feature = $settings.Feature
+
+    # Copy files/folders
+    ForEach($include in $settings.Contains.Include)
+    {
+        CopyFileFolder -include $include -feature $feature
+    }
+
+    # Remove files/folders
+    ForEach($exclude in $settings.Contains.Exclude)
+    {
+        RemoveFileFolder -exclude $exclude -feature $feature
+    }
+
+    # Extract partial
+    ForEach($partial in $settings.Partial)
+    {
+        ExtractPartialFile -partial $partial -feature $feature
+    }
+
+    # Create Zip
+    $zipName = $settings.ZipName
+    Write-Host "Zip $feature" 
+    compress-archive -path ".\docs\$feature\*" -destinationpath ".\docs\$zipName" -compressionlevel optimal
+
+    # Delete temp folders
+    RemoveFolder -path ".\docs\$feature" 
+}
