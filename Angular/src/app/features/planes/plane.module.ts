@@ -20,6 +20,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './plane.constants';
+import { PlaneBulkCopyComponent } from './views/plane-bulk-copy/plane-bulk-copy.component';
 
 export let ROUTES: Routes = [
   {
@@ -41,6 +42,19 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
+          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        },
+        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
+      },
+      {
+        path: 'bulkcopy',
+        data: {
+          breadcrumb: 'bia.add',
+          canNavigate: false,
+          permission: Permission.Plane_Create,
+          title: 'plane.add',
+          InjectComponent: PlaneBulkCopyComponent,
           dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
         component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
@@ -103,6 +117,7 @@ export let ROUTES: Routes = [
     PlaneEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
+    PlaneBulkCopyComponent,
   ],
   imports: [
     SharedModule,

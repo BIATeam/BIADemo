@@ -22,6 +22,7 @@ export const PlaneFieldsConfiguration : BiaFieldsConfig =
   columns: [
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,
+      validators: [Validators.required, Validators.maxLength(64)],
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: true,

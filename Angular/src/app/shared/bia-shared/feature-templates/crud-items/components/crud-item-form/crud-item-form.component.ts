@@ -4,10 +4,12 @@ import {
   EventEmitter,
   Input,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 
 @Component({
   selector: 'bia-crud-item-form',
@@ -24,15 +26,22 @@ export class CrudItemFormComponent<CrudItem extends BaseDto>  {
   @Output() save = new EventEmitter<CrudItem>();
   @Output() cancel = new EventEmitter<void>();
 
+  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
+
   constructor() {
   }
 
   onCancel() {
     this.cancel.next();
+
   }
 
   onSave(crudItem: any) {
     this.save.emit(crudItem);
+  }
+
+  checkObject(crudItem: any): boolean {
+    return this.biaFormComponent.checkObject(crudItem);
   }
 }
 
