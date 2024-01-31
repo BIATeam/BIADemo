@@ -1,0 +1,22 @@
+<app-plane-form
+  [hidden]="true"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-plane-form>
+
+<button
+  pButton
+  label="CSV"
+  type="button"
+  class="p-button-outlined"
+  (click)="downloadCsv()"></button>
+
+<button
+  pButton
+  label="test"
+  type="button"
+  class="p-button-outlined"
+  (click)="test()"></button>
+
+  <input type="file" (change)="onFileSelected($event)" />

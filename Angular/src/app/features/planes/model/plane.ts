@@ -30,7 +30,8 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig =
   columns: [
     /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
-      isRequired: true,
+        isRequired: true,
+        validators: [Validators.required, Validators.maxLength(64)],
     })
     /// BIAToolKit - End Block msn
     ,
