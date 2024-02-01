@@ -6,6 +6,8 @@ $oldName = 'BIADemo'
 # $newName = Read-Host "new project name ?"
 $newName = 'BIATemplate'
 
+$jsonFileName = 'BIAToolKit.json'
+
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\DotNet")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\DotNet"
 
@@ -26,8 +28,11 @@ Set-Location -Path $newPath
 Write-Host "Zip plane"
 
 # Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
-GenerateZipArchive -myJson $myJson -type "WebApi" -searchFirst $true 
+$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
+ForEach($settings in $myJson)
+{
+    GenerateZipArchive -settings $settings -settingsName $jsonFileName
+}
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'

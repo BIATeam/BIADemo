@@ -295,44 +295,43 @@ function ExtractPartial {
 
 function GenerateZipArchive(){
     param(
-        [object]$myJson,
-        [string]$type,
-        [bool]$searchFirst = $true
+        [object]$settings,
+        [string]$settingsName
     )
 
-    # Get settings for type
-    if($searchFirst -eq $true) {
-        $settings = [System.Linq.Enumerable]::FirstOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq $type })
-    }
-    else{
-        $settings = [System.Linq.Enumerable]::LastOrDefault($myJson, [Func[object,bool]]{ param($x) $x.Type -eq $type })
-    }
-
     $feature = $settings.Feature
+    Write-Host "Feature: $feature"
 
     # Copy files/folders
     ForEach($include in $settings.Contains.Include)
     {
+        Write-Host "CopyFileFolder -include $include -feature $feature"
         CopyFileFolder -include $include -feature $feature
     }
 
     # Remove files/folders
     ForEach($exclude in $settings.Contains.Exclude)
     {
+        Write-Host "RemoveFileFolder -exclude $exclude -feature $feature"
         RemoveFileFolder -exclude $exclude -feature $feature
     }
 
     # Extract partial
     ForEach($partial in $settings.Partial)
     {
+        Write-Host "ExtractPartialFile -partial $partial -feature $feature"
         ExtractPartialFile -partial $partial -feature $feature
     }
 
+    # Add part settings
+    $settings | ConvertTo-Json | Out-File -FilePath ".\docs\$feature\$settingsName"
+
     # Create Zip
     $zipName = $settings.ZipName
-    Write-Host "Zip $feature" 
+    Write-Host "Zip $feature to $zipName" 
     compress-archive -path ".\docs\$feature\*" -destinationpath ".\docs\$zipName" -compressionlevel optimal
 
-    # Delete temp folders
+    # Delete temp folder
+    Write-Host "RemoveFolder -path .\docs\$feature"
     RemoveFolder -path ".\docs\$feature" 
 }

@@ -1,36 +1,5 @@
 [
 	{
-		"Feature" : "crud-planes",
-		"Type" : "WebApi",
-		"FeatureName" : "Plane",
-		"FeatureNamePlurial" : "Planes",
-		"ZipName" : "crud-planes.zip",
-		"Contains" :
-		{
-			"Include" :
-			[
-				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
-				"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
-			],
-			"Exclude":
-			[]
-		},		
-		"Children" : 
-		[],
-		"Options" :
-		[],
-		"Partial" :
-		[
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
-		]
-	},
-	{
 		"Feature" : "planes",
 		"Type" : "CRUD",
 		"FeatureName" : "Plane",

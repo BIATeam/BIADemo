@@ -6,6 +6,8 @@ $oldName = 'BIADemo'
 # $newName = Read-Host "new project name ?"
 $newName = 'BIATemplate'
 
+$jsonFileName = 'BIAToolKit.json'
+
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\Angular")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
 
@@ -23,11 +25,11 @@ Set-Location -Path $newPath
 New-Item -ItemType Directory -Path '.\docs'
 
 # Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\..\BIAToolKit.json" -Raw | ConvertFrom-Json 
-GenerateZipArchive -myJson $myJson -type "CRUD" -searchFirst $true 
-GenerateZipArchive -myJson $myJson -type "CRUD" -searchFirst $false 
-GenerateZipArchive -myJson $myJson -type "Option" -searchFirst $true 
-GenerateZipArchive -myJson $myJson -type "Team" -searchFirst $true 
+$myJson = Get-Content "$oldPath\BIAToolKit.json" -Raw | ConvertFrom-Json 
+ForEach($settings in $myJson)
+{
+    GenerateZipArchive -settings $settings -settingsName $jsonFileName
+}
 
 #Write-Host "RemoveFolder dist"
 #RemoveFolder -path 'dist'
