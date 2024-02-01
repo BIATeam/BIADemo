@@ -41,7 +41,7 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
         component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -63,7 +63,7 @@ export let ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
-              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
             component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -73,7 +73,7 @@ export let ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit'
           },
-          // Begin Child Engine
+          /// BIAToolKit - Begin Child Engine
           {
             path: 'engines',
             data: {
@@ -84,7 +84,7 @@ export let ROUTES: Routes = [
             loadChildren: () =>
               import('./children/engines/engine.module').then((m) => m.EngineModule)
           },
-          // End Child Engine
+          /// BIAToolKit - End Child Engine
         ]
       },
     ]
