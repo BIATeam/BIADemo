@@ -7,6 +7,7 @@ $oldName = 'BIADemo'
 $newName = 'BIATemplate'
 
 $jsonFileName = 'BIAToolKit.json'
+$docsFolder = '.bia'
 
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\Angular")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\Angular"
@@ -22,14 +23,15 @@ Copy-Item -Path (Get-Item -Path "$oldPath\*" -Exclude ('dist', 'node_modules', '
 
 Set-Location -Path $newPath
 
-New-Item -ItemType Directory -Path '.\docs'
+#New-Item -ItemType Directory -Path $docsFolder
 
 # Read Json settings to generate archive
-$myJson = Get-Content "$oldPath\BIAToolKit.json" -Raw | ConvertFrom-Json 
+$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
 ForEach($settings in $myJson)
 {
     GenerateZipArchive -settings $settings -settingsName $jsonFileName
 }
+Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
 
 #Write-Host "RemoveFolder dist"
 #RemoveFolder -path 'dist'
@@ -72,7 +74,7 @@ Write-Host "Remove Empty Folder"
 RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'PublishProfiles','RepoContract')
 
 Write-Host "Remove code example partial files"
-RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'docs', 'scss' )
+RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
 
 Write-Host "replace project name"
 ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
@@ -93,7 +95,7 @@ Set-Location -Path $scriptPath
 
 
 # Write-Host "Prepare the zip."
-# compress-archive -path '.\Angular' -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# compress-archive -path '.\Angular' -destinationpath "..\BIADemo\$docsFolder\Templates\VX.Y.Z\BIA.AngularTemplate.X.Y.Z.zip" -compressionlevel optimal -Force
 
 
 Write-Host "Finish"

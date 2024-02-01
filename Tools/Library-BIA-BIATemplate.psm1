@@ -194,7 +194,7 @@ function CopyModel {
     [string]$folderpath,
     [string]$fileName
   )
-  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
+  $destinationFolder = ".\$docsFolder\$modelName\$folderpath"
   If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
   $destinationFile = $destinationFolder + '\' + $fileName
   $sourceFile = '.\' + $folderpath + '\' + $fileName
@@ -217,8 +217,8 @@ function CopyFileFolder() {
   {
     # Directory found
     $dirPath = $include.Replace('*', '')
-    Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force"
-    Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\docs\$feature\$dirPath" -Recurse -Force
+    Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force"
+    Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force
   } 
   else
   {       
@@ -242,14 +242,14 @@ function RemoveFileFolder() {
   {
     # Directory found
     $dirPath = $exclude.Replace('*', '')
-    Write-Host "RemoveItemFolder -path '$newPath\docs\$feature\$dirPath'"
-    RemoveItemFolder -path "$newPath\docs\$feature\$dirPath"
+    Write-Host "RemoveItemFolder -path $newPath\$docsFolder\$feature\$dirPath"
+    RemoveItemFolder -path "$newPath\$docsFolder\$feature\$dirPath"
   } 
   else
   {       
     # File found
-    Write-Host "Remove-Item "$newPath\docs\$feature\$exclude" -Force"
-    Remove-Item "$newPath\docs\$feature\$exclude" -Force
+    Write-Host "Remove-Item "$newPath\$docsFolder\$feature\$exclude" -Force"
+    Remove-Item "$newPath\$docsFolder\$feature\$exclude" -Force
   }
 }
 
@@ -273,7 +273,7 @@ function ExtractPartial {
     [string]$fileName
   )
 
-  $destinationFolder = ".\docs\$modelName\$folderpath"
+  $destinationFolder = ".\$docsFolder\$modelName\$folderpath"
   If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
 
   $destinationFile = "$destinationFolder\$fileName.partial"
@@ -295,8 +295,7 @@ function ExtractPartial {
 
 function GenerateZipArchive(){
     param(
-        [object]$settings,
-        [string]$settingsName
+        [object]$settings
     )
 
     $feature = $settings.Feature
@@ -323,15 +322,12 @@ function GenerateZipArchive(){
         ExtractPartialFile -partial $partial -feature $feature
     }
 
-    # Add part settings
-    $settings | ConvertTo-Json | Out-File -FilePath ".\docs\$feature\$settingsName"
-
     # Create Zip
     $zipName = $settings.ZipName
     Write-Host "Zip $feature to $zipName" 
-    compress-archive -path ".\docs\$feature\*" -destinationpath ".\docs\$zipName" -compressionlevel optimal
+    compress-archive -path ".\$docsFolder\$feature\*" -destinationpath ".\$docsFolder\$zipName" -compressionlevel optimal
 
     # Delete temp folder
-    Write-Host "RemoveFolder -path .\docs\$feature"
-    RemoveFolder -path ".\docs\$feature" 
+    Write-Host "RemoveFolder -path .\$docsFolder\$feature"
+    RemoveFolder -path ".\$docsFolder\$feature" 
 }

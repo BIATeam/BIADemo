@@ -7,6 +7,7 @@ $oldName = 'BIADemo'
 $newName = 'BIATemplate'
 
 $jsonFileName = 'BIAToolKit.json'
+$docsFolder = '.bia'
 
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\DotNet")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\DotNet"
@@ -33,6 +34,7 @@ ForEach($settings in $myJson)
 {
     GenerateZipArchive -settings $settings -settingsName $jsonFileName
 }
+Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
@@ -112,7 +114,7 @@ Set-Location -Path $scriptPath
 # }
 
 # Write-Host "   Zip files."
-# compress-archive -path $targetDir -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# compress-archive -path $targetDir -destinationpath "..\BIADemo\$docsFolder\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip" -compressionlevel optimal -Force
 # RemoveItemFolder -path 'Tmp'
 
 write-host "finish"
