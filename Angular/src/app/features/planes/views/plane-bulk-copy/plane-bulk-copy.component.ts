@@ -4,25 +4,24 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { PlaneService } from '../../services/plane.service';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
-import * as Papa from 'papaparse';
-import FileSaver from 'file-saver';
+import { BiaBulkCopyService } from 'src/app/core/bia-core/services/bia-bulk-copy.service';
 
 @Component({
   selector: 'app-plane-bulk-copy',
   templateUrl: './plane-bulk-copy.component.html',
-  styleUrls: ['./plane-bulk-copy.component.scss']
+  styleUrls: ['./plane-bulk-copy.component.scss'],
 })
 export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
-
   @ViewChild(PlaneFormComponent) planeFormComponent: PlaneFormComponent;
-  showPlaneForm = true;
 
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
+    private biaBulkCopyService: BiaBulkCopyService<Plane>
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
+    this.biaBulkCopyService.initCrudItemService(planeService);
   }
 
   checkObject(crudItem: any) {
@@ -31,20 +30,38 @@ export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
   }
 
   public downloadCsv() {
+    const columns: string[] = [
+      'id',
+      'msn',
+      'isActive',
+      'lastFlightDate',
+      'deliveryDate',
+      'capacity',
+    ];
 
-    this.planeService.dasService.getList({ endpoint: 'all' }).subscribe(
-      (x: Plane[]) => {
-        let csv = Papa.unparse<Plane>(x, { columns: ["id", "msn", "isActive", "lastFlightDate", "deliveryDate", "capacity"] });
-        csv = `sep=,\n${csv}`;
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        FileSaver.saveAs(blob, 'test.csv');
-      }
-    );
+    this.biaBulkCopyService.downloadCsv(columns);
+    // this.planeService.dasService
+    //   .getList({ endpoint: 'all' })
+    //   .subscribe((x: Plane[]) => {
+    //     let csv = Papa.unparse<Plane>(x, {
+    //       columns: [
+    //         'id',
+    //         'msn',
+    //         'isActive',
+    //         'lastFlightDate',
+    //         'deliveryDate',
+    //         'capacity',
+    //       ],
+    //     });
+    //     csv = `sep=,\n${csv}`;
+    //     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    //     FileSaver.saveAs(blob, 'test.csv');
+    //   });
   }
 
   onFileSelected(event: any) {
     // const selectedFile: File = event.target.files[0];
-    this.handleFileInput(event.target.files);
+    this.biaBulkCopyService.handleFileInput(event.target.files);
     // let fileContent = '';
     // const fileReader = new FileReader();
     // fileReader.onload = () => {
@@ -56,58 +73,199 @@ export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
     // console.log(list);
   }
 
-  handleFileInput(files: FileList) {
-    const file = files.item(0);
-    const reader = new FileReader();
+  // check<T extends BaseDto>(
+  //   newPlanes: T[],
+  //   oldPlanes$: Observable<T[]>
+  // ): Observable<T[]> {
+  //   return oldPlanes$.pipe(
+  //     map((oldPlanes: T[]) => {
+  //       const toDeletes: T[] = [];
+  //       const toInserts: T[] = [];
+  //       const toUpdates: T[] = [];
 
-    reader.onload = (e: any) => {
-      const csv = e.target.result;
-      this.parseCSV(csv);
-    };
-    if (file) {
-      reader.readAsText(file);
-    }
-  }
+  //       // Chercher les avions à supprimer
+  //       for (const oldPlane of oldPlanes) {
+  //         const found = newPlanes.some(newPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           oldPlane.dtoState = DtoState.Deleted;
+  //           toDeletes.push(oldPlane);
+  //         }
+  //       }
 
-  parseCSV(csv: string) {
-    const result = Papa.parse<Plane>(csv, {
-      header: true,
-      // complete: (result) => {
-      //   const planes: Plane[] = result.data.map((row) => ({
-      //     // Définir les propriétés Plane en fonction des colonnes du CSV
-      //     id: parseInt(row.id),
-      //     name: row.name,
-      //     // ...
-      //   }));
+  //       // Chercher les nouveaux avions à ajouter
+  //       for (const newPlane of newPlanes) {
+  //         const found = oldPlanes.some(oldPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           newPlane.dtoState = DtoState.Added;
+  //           toInserts.push(newPlane);
+  //         }
+  //       }
 
-      //   // Utilisez la liste 'planes' selon vos besoins
-      //   console.log(planes);
-      // }
-    });
+  //       // Chercher les avions à mettre à jour
+  //       for (const oldPlane of oldPlanes) {
+  //         const newPlane = newPlanes.find(
+  //           newPlane => newPlane.id === oldPlane.id
+  //         );
+  //         if (oldPlane && newPlane) {
+  //           const hasDifferentProperties = Object.keys(oldPlane).some(key => {
+  //             let oldValue = (<any>oldPlane)[key];
+  //             let newValue = (<any>newPlane)[key];
+  //             if (newValue === undefined) {
+  //               return false;
+  //             }
+  //             if (oldValue instanceof Date === true) {
+  //               oldValue = oldValue?.toISOString();
+  //               newValue = newValue?.toISOString();
+  //             }
+  //             return newValue !== oldValue;
+  //           });
+  //           if (hasDifferentProperties) {
+  //             Object.assign(oldPlane, newPlane);
+  //             oldPlane.dtoState = DtoState.Modified;
+  //             toUpdates.push(oldPlane);
+  //           }
+  //         }
+  //       }
 
-    console.log(result.data);
-    this.check(result.data);
-  }
+  //       console.log('toDeletes');
+  //       console.log(toDeletes);
+  //       console.log('toInserts');
+  //       console.log(toInserts);
+  //       console.log('toUpdates');
+  //       console.log(toUpdates);
 
-  check(newPlanes:Plane[]){
+  //       return toDeletes.concat(toInserts).concat(toUpdates);
+  //     })
+  //   );
+  // }
 
-    this.planeService.dasService.getList({ endpoint: 'all' }).subscribe(
-      (oldPlanes: Plane[]) => {
-        const toDeletes = oldPlanes.filter(oldPlane =>
-          !newPlanes.some(newPlane => newPlane.id === oldPlane.id)
-        );
-        const toInserts = newPlanes.filter(newPlane =>
-          !oldPlanes.some(oldPlane => newPlane.id === oldPlane.id)
-        );
-        console.log(toDeletes);
-        console.log(toInserts);
-      }
-    );
+  // check55(newPlanes: BaseDto[]) {
+  //   this.planeService.dasService
+  //     .getList({ endpoint: 'all' })
+  //     .subscribe((oldPlanes: BaseDto[]) => {
+  //       const toDeletes: BaseDto[] = [];
+  //       const toInserts: BaseDto[] = [];
+  //       const toUpdates: BaseDto[] = [];
 
-    
-  }
+  //       // Chercher les avions à supprimer
+  //       for (const oldPlane of oldPlanes) {
+  //         const found = newPlanes.some(newPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           oldPlane.dtoState = DtoState.Deleted;
+  //           toDeletes.push(oldPlane);
+  //         }
+  //       }
 
+  //       // Chercher les nouveaux avions à ajouter
+  //       for (const newPlane of newPlanes) {
+  //         const found = oldPlanes.some(oldPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           newPlane.dtoState = DtoState.Added;
+  //           toInserts.push(newPlane);
+  //         }
+  //       }
 
+  //       // Chercher les avions à mettre à jour
+  //       for (const oldPlane of oldPlanes) {
+  //         const newPlane = newPlanes.find(
+  //           newPlane => newPlane.id === oldPlane.id
+  //         );
+  //         if (oldPlane && newPlane) {
+  //           const hasDifferentProperties = Object.keys(oldPlane).some(key => {
+  //             let oldValue = (<any>oldPlane)[key];
+  //             let newValue = (<any>newPlane)[key];
+  //             if (newValue === undefined) {
+  //               return false;
+  //             }
+  //             if (oldValue instanceof Date === true) {
+  //               oldValue = oldValue?.toISOString();
+  //               newValue = newValue?.toISOString();
+  //             }
+  //             return newValue !== oldValue;
+  //           });
+  //           if (hasDifferentProperties) {
+  //             Object.assign(oldPlane, newPlane);
+  //             oldPlane.dtoState = DtoState.Modified;
+  //             toUpdates.push(oldPlane);
+  //           }
+  //         }
+  //       }
+
+  //       console.log('toDeletes');
+  //       console.log(toDeletes);
+  //       console.log('toInserts');
+  //       console.log(toInserts);
+  //       console.log('toUpdates');
+  //       console.log(toUpdates);
+  //     });
+  // }
+
+  // check3(newPlanes: BaseDto[]) {
+  //   this.planeService.dasService
+  //     .getList({ endpoint: 'all' })
+  //     .subscribe((oldPlanes: BaseDto[]) => {
+  //       const toDeletes: BaseDto[] = [];
+  //       const toInserts: BaseDto[] = [];
+  //       const toUpdates: BaseDto[] = [];
+
+  //       // Chercher les avions à supprimer
+  //       for (const oldPlane of oldPlanes) {
+  //         const found = newPlanes.some(newPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           oldPlane.dtoState = DtoState.Deleted;
+  //           toDeletes.push(oldPlane);
+  //         }
+  //       }
+
+  //       // Chercher les nouveaux avions à ajouter
+  //       for (const newPlane of newPlanes) {
+  //         const found = oldPlanes.some(oldPlane => newPlane.id === oldPlane.id);
+  //         if (!found) {
+  //           newPlane.dtoState = DtoState.Added;
+  //           toInserts.push(newPlane);
+  //         }
+  //       }
+
+  //       // Chercher les avions à mettre à jour
+  //       for (const oldPlane of oldPlanes) {
+  //         const newPlane = newPlanes.find(
+  //           newPlane => newPlane.id === oldPlane.id
+  //         );
+  //         if (oldPlane && newPlane) {
+  //           const hasDifferentProperties = Object.keys(oldPlane).some(key => {
+  //             let oldValue = (<any>oldPlane)[key];
+  //             let newValue = (<any>newPlane)[key];
+  //             if (newValue === undefined) {
+  //               return false;
+  //             }
+  //             if (oldValue instanceof Date === true) {
+  //               oldValue = oldValue?.toISOString();
+  //               newValue = newValue?.toISOString();
+  //             }
+  //             return newValue !== oldValue;
+  //           });
+  //           if (hasDifferentProperties) {
+  //             Object.assign(oldPlane, newPlane);
+  //             oldPlane.dtoState = DtoState.Modified;
+  //             toUpdates.push(oldPlane);
+  //           }
+  //         }
+  //       }
+
+  //       console.log('toDeletes');
+  //       console.log(toDeletes);
+  //       console.log('toInserts');
+  //       console.log(toInserts);
+  //       console.log('toUpdates');
+  //       console.log(toUpdates);
+
+  //       const toSaves: BaseDto[] = toDeletes
+  //         .concat(toInserts)
+  //         .concat(toUpdates);
+
+  //       return toSaves;
+  //     });
+  // }
 
   public test() {
     const jsonString = `{
@@ -130,5 +288,4 @@ export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
     const mavar = JSON.parse(jsonString);
     this.checkObject(mavar);
   }
-
 }
