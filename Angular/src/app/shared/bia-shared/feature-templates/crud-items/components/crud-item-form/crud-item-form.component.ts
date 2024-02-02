@@ -40,7 +40,7 @@ export class CrudItemFormComponent<CrudItem extends BaseDto>  {
     this.save.emit(crudItem);
   }
 
-  checkObject(crudItem: any): boolean {
+  checkObject(crudItem: CrudItem): boolean {
     return this.biaFormComponent.checkObject(crudItem);
   }
 }

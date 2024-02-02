@@ -5,50 +5,22 @@ import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import * as Papa from 'papaparse';
 import FileSaver from 'file-saver';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
+import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
+
+export interface BulkCopyData<T extends BaseDto> {
+  toDeletes: T[];
+  toInserts: T[];
+  toUpdates: T[];
+  errorToInserts: T[];
+  errorToUpdates: T[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class BiaBulkCopyService<T extends BaseDto> {
   private crudItemService: CrudItemService<T>;
-
-  initCrudItemService(crudItemService: CrudItemService<T>) {
-    this.crudItemService = crudItemService;
-  }
-  handleFileInput(files: FileList) {
-    const file = files.item(0);
-    const reader = new FileReader();
-
-    reader.onload = (e: any) => {
-      const csv = e.target.result;
-      this.parseCSV(csv);
-    };
-    if (file) {
-      reader.readAsText(file);
-    }
-  }
-
-  parseCSV(csv: string) {
-    const result = Papa.parse<T>(csv, {
-      header: true,
-      dynamicTyping: true,
-      // complete: result => {
-      //   result.data.map(plane =>
-      //     DateHelperService.fillDate(plane)
-      //   );
-      // },
-    });
-    // result.data.forEach(plane => DateHelperService.fillDate(plane));
-
-    const allPlanes$ = this.crudItemService.dasService.getList({
-      endpoint: 'all',
-    });
-    const toSaves$: Observable<T[]> = this.check(result.data, allPlanes$);
-
-    toSaves$
-      .pipe(map(x => this.crudItemService.dasService.save({ items: x })))
-      .subscribe();
-  }
+  private form: CrudItemFormComponent<T>;
 
   public downloadCsv(columns: string[]) {
     this.crudItemService.dasService
@@ -62,41 +34,81 @@ export class BiaBulkCopyService<T extends BaseDto> {
         FileSaver.saveAs(blob, 'test.csv');
       });
   }
+  public uploadCsv(
+    crudItemService: CrudItemService<T>,
+    form: CrudItemFormComponent<T>,
+    files: FileList
+  ): Observable<BulkCopyData<T>> {
+    this.crudItemService = crudItemService;
+    this.form = form;
 
-  check(newPlanes: T[], oldPlanes$: Observable<T[]>): Observable<T[]> {
-    return oldPlanes$.pipe(
-      map((oldPlanes: T[]) => {
+    const file = files.item(0);
+    const reader = new FileReader();
+
+    return new Observable(observer => {
+      reader.onload = (e: any) => {
+        const csv = e.target.result;
+        this.parseCSV(csv).subscribe((data: BulkCopyData<T>) => {
+          observer.next(data);
+          observer.complete();
+        });
+      };
+
+      if (file) {
+        reader.readAsText(file);
+      }
+    });
+  }
+
+  private parseCSV(csv: string): Observable<BulkCopyData<T>> {
+    const result = Papa.parse<T>(csv, {
+      header: true,
+      dynamicTyping: true,
+    });
+
+    const allObjs$ = this.crudItemService.dasService.getList({
+      endpoint: 'all',
+    });
+    const toSaves$: Observable<BulkCopyData<T>> = this.check(
+      result.data,
+      allObjs$
+    );
+
+    return toSaves$;
+  }
+
+  private check(
+    newObjs: T[],
+    oldObjs$: Observable<T[]>
+  ): Observable<BulkCopyData<T>> {
+    return oldObjs$.pipe(
+      map((oldObjs: T[]) => {
         const toDeletes: T[] = [];
         const toInserts: T[] = [];
         const toUpdates: T[] = [];
 
-        // Chercher les avions à supprimer
-        for (const oldPlane of oldPlanes) {
-          const found = newPlanes.some(newPlane => newPlane.id === oldPlane.id);
+        for (const oldObj of oldObjs) {
+          const found = newObjs.some(newObj => newObj.id === oldObj.id);
           if (!found) {
-            oldPlane.dtoState = DtoState.Deleted;
-            toDeletes.push(oldPlane);
+            oldObj.dtoState = DtoState.Deleted;
+            toDeletes.push(oldObj);
           }
         }
 
-        // Chercher les nouveaux avions à ajouter
-        for (const newPlane of newPlanes) {
-          const found = oldPlanes.some(oldPlane => newPlane.id === oldPlane.id);
+        for (const newObj of newObjs) {
+          const found = oldObjs.some(oldObj => newObj.id === oldObj.id);
           if (!found) {
-            newPlane.dtoState = DtoState.Added;
-            toInserts.push(newPlane);
+            newObj.dtoState = DtoState.Added;
+            toInserts.push(newObj);
           }
         }
 
-        // Chercher les avions à mettre à jour
-        for (const oldPlane of oldPlanes) {
-          const newPlane = newPlanes.find(
-            newPlane => newPlane.id === oldPlane.id
-          );
-          if (oldPlane && newPlane) {
-            const hasDifferentProperties = Object.keys(oldPlane).some(key => {
-              let oldValue = (<any>oldPlane)[key];
-              let newValue = (<any>newPlane)[key];
+        for (const oldObj of oldObjs) {
+          const newObj = newObjs.find(newObj => newObj.id === oldObj.id);
+          if (oldObj && newObj) {
+            const hasDifferentProperties = Object.keys(oldObj).some(key => {
+              let oldValue = (<any>oldObj)[key];
+              let newValue = (<any>newObj)[key];
               if (newValue === undefined) {
                 return false;
               }
@@ -107,21 +119,26 @@ export class BiaBulkCopyService<T extends BaseDto> {
               return newValue !== oldValue;
             });
             if (hasDifferentProperties) {
-              Object.assign(oldPlane, newPlane);
-              oldPlane.dtoState = DtoState.Modified;
-              toUpdates.push(oldPlane);
+              Object.assign(oldObj, newObj);
+              oldObj.dtoState = DtoState.Modified;
+              toUpdates.push(oldObj);
             }
           }
         }
 
-        console.log('toDeletes');
-        console.log(toDeletes);
-        console.log('toInserts');
-        console.log(toInserts);
-        console.log('toUpdates');
-        console.log(toUpdates);
+        const bulkCopyData: BulkCopyData<T> = {
+          toDeletes: toDeletes,
+          toInserts: toInserts.filter(x => this.form.checkObject(x) === true),
+          toUpdates: toUpdates.filter(x => this.form.checkObject(x) === true),
+          errorToInserts: toInserts.filter(
+            x => this.form.checkObject(x) !== true
+          ),
+          errorToUpdates: toUpdates.filter(
+            x => this.form.checkObject(x) !== true
+          ),
+        };
 
-        return toDeletes.concat(toInserts).concat(toUpdates);
+        return bulkCopyData;
       })
     );
   }
