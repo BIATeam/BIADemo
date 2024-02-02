@@ -21,8 +21,12 @@ import { AppState } from 'src/app/store/state';
     providedIn: 'root'
 })
 export class PlaneOptionsService extends CrudItemOptionsService {
+    // BIAToolKit - Begin Option PlaneType
     planeTypeOptions$: Observable<OptionDto[]>;
+    // BIAToolKit - End Option PlaneType
+    // BIAToolKit - Begin Option Airport
     airportOptions$: Observable<OptionDto[]>;
+    // BIAToolKit - End Option Airport
 
     constructor(
         private store: Store<AppState>,

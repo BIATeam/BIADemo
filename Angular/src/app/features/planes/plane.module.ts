@@ -112,8 +112,12 @@ export let ROUTES: Routes = [
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module requiered for link
     // Domain Modules:
+    // BIAToolKit - Begin Option Airport
     AirportOptionModule,
+    // BIAToolKit - End Option Airport
+    // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
+    // BIAToolKit - End Option PlaneType
   ]
 })
 
