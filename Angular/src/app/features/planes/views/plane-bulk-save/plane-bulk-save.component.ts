@@ -4,20 +4,20 @@ import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-template
 import { PlaneService } from '../../services/plane.service';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
-import { BiaBulkCopyService } from 'src/app/core/bia-core/services/bia-bulk-copy.service';
+import { CrudItemBulkSaveService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk-save.service';
 
 @Component({
-  selector: 'app-plane-bulk-copy',
-  templateUrl: './plane-bulk-copy.component.html',
-  styleUrls: ['./plane-bulk-copy.component.scss'],
+  selector: 'app-plane-bulk-save',
+  templateUrl: './plane-bulk-save.component.html',
+  styleUrls: ['./plane-bulk-save.component.scss'],
 })
-export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
+export class PlaneBulkSaveComponent extends CrudItemNewComponent<Plane> {
   @ViewChild(PlaneFormComponent) planeFormComponent: PlaneFormComponent;
 
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
-    private biaBulkCopyService: BiaBulkCopyService<Plane>
+    private crudItemBulkSaveService: CrudItemBulkSaveService<Plane>
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
@@ -38,11 +38,11 @@ export class PlaneBulkCopyComponent extends CrudItemNewComponent<Plane> {
       'capacity',
     ];
 
-    this.biaBulkCopyService.downloadCsv(columns);
+    this.crudItemBulkSaveService.downloadCsv(columns);
   }
 
   onFileSelected(event: any) {
-    this.biaBulkCopyService
+    this.crudItemBulkSaveService
       .uploadCsv(this.planeService, this.planeFormComponent, event.target.files)
       .subscribe(x => console.log(x));
   }
