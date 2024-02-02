@@ -18,28 +18,33 @@ export interface BulkSaveData<T extends BaseDto> {
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemBulkSaveService<T extends BaseDto> {
-  private crudItemService: CrudItemService<T>;
-  private form: CrudItemFormComponent<T>;
+export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
+  protected form: CrudItemFormComponent<T>;
 
-  public downloadCsv(columns: string[]) {
+  constructor(private crudItemService: CrudItemService<T>) {}
+
+  public downloadCsv(columns: string[], fileName: string) {
     this.crudItemService.dasService
       .getList({ endpoint: 'all' })
+      .pipe(
+        map(planes => {
+          return this.customMapJsonToCsv(planes);
+        })
+      )
       .subscribe((x: T[]) => {
         let csv = Papa.unparse<T>(x, {
           columns: columns,
         });
         csv = `sep=,\n${csv}`;
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
-        FileSaver.saveAs(blob, 'test.csv');
+        FileSaver.saveAs(blob, fileName + '.csv');
       });
   }
+
   public uploadCsv(
-    crudItemService: CrudItemService<T>,
     form: CrudItemFormComponent<T>,
     files: FileList
   ): Observable<BulkSaveData<T>> {
-    this.crudItemService = crudItemService;
     this.form = form;
 
     const file = files.item(0);
@@ -60,8 +65,14 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     });
   }
 
+  protected customMapJsonToCsv(planes: T[]): T[] {
+    return planes;
+  }
+
+  protected customMapCsvToJson(oldObj: T, newObj: TCsv): void {}
+
   private parseCSV(csv: string): Observable<BulkSaveData<T>> {
-    const result = Papa.parse<T>(csv, {
+    const result = Papa.parse<TCsv>(csv, {
       header: true,
       dynamicTyping: true,
     });
@@ -78,7 +89,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
   }
 
   private check(
-    newObjs: T[],
+    newObjs: TCsv[],
     oldObjs$: Observable<T[]>
   ): Observable<BulkSaveData<T>> {
     return oldObjs$.pipe(
@@ -119,7 +130,13 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
               return newValue !== oldValue;
             });
             if (hasDifferentProperties) {
-              Object.assign(oldObj, newObj);
+              for (const prop in oldObj) {
+                if (newObj.hasOwnProperty(prop)) {
+                  Object.assign(oldObj, { [prop]: newObj[prop] });
+                }
+              }
+              this.customMapCsvToJson(oldObj, newObj);
+
               oldObj.dtoState = DtoState.Modified;
               toUpdates.push(oldObj);
             }

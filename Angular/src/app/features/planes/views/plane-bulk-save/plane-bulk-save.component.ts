@@ -1,34 +1,40 @@
-import { Component, Injector, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { Plane } from '../../model/plane';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { PlaneService } from '../../services/plane.service';
-import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
-import { CrudItemBulkSaveService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk-save.service';
+import { take } from 'rxjs';
+import { PlaneCRUDConfiguration } from '../../plane.constants';
+import { PlaneOptionsService } from '../../services/plane-options.service';
+import { PlaneBulkSaveService } from '../../services/plane-bulk-save.service';
 
 @Component({
   selector: 'app-plane-bulk-save',
   templateUrl: './plane-bulk-save.component.html',
   styleUrls: ['./plane-bulk-save.component.scss'],
 })
-export class PlaneBulkSaveComponent extends CrudItemNewComponent<Plane> {
+export class PlaneBulkSaveComponent
+  extends CrudItemNewComponent<Plane>
+  implements OnInit
+{
   @ViewChild(PlaneFormComponent) planeFormComponent: PlaneFormComponent;
 
   constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
-    private crudItemBulkSaveService: CrudItemBulkSaveService<Plane>
+    protected planeService: PlaneService,
+    private planeOptionsService: PlaneOptionsService,
+    private planeBulkSaveService: PlaneBulkSaveService
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
   }
 
-  checkObject(crudItem: any) {
-    const b = this.planeFormComponent.checkObject(crudItem);
-    console.log(b);
+  ngOnInit() {
+    super.ngOnInit();
+    this.initServiceOptionDto();
   }
 
-  public downloadCsv() {
+  downloadCsv() {
     const columns: string[] = [
       'id',
       'msn',
@@ -36,14 +42,24 @@ export class PlaneBulkSaveComponent extends CrudItemNewComponent<Plane> {
       'lastFlightDate',
       'deliveryDate',
       'capacity',
+      'planeTypeDisplay',
     ];
 
-    this.crudItemBulkSaveService.downloadCsv(columns);
+    this.planeBulkSaveService.downloadCsv(columns, 'Planes');
   }
 
   onFileSelected(event: any) {
-    this.crudItemBulkSaveService
-      .uploadCsv(this.planeService, this.planeFormComponent, event.target.files)
+    this.planeBulkSaveService
+      .uploadCsv(this.planeFormComponent, event.target.files)
+      .pipe(take(1))
       .subscribe(x => console.log(x));
+  }
+
+  private initServiceOptionDto() {
+    this.sub.add(
+      this.planeOptionsService.planeTypeOptions$.subscribe(x => {
+        this.planeBulkSaveService.planeTypeOptions = x;
+      })
+    );
   }
 }
