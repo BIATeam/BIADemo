@@ -7,7 +7,7 @@ import FileSaver from 'file-saver';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 
-export interface BulkCopyData<T extends BaseDto> {
+export interface BulkSaveData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
@@ -18,7 +18,7 @@ export interface BulkCopyData<T extends BaseDto> {
 @Injectable({
   providedIn: 'root',
 })
-export class BiaBulkCopyService<T extends BaseDto> {
+export class CrudItemBulkSaveService<T extends BaseDto> {
   private crudItemService: CrudItemService<T>;
   private form: CrudItemFormComponent<T>;
 
@@ -38,7 +38,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
     crudItemService: CrudItemService<T>,
     form: CrudItemFormComponent<T>,
     files: FileList
-  ): Observable<BulkCopyData<T>> {
+  ): Observable<BulkSaveData<T>> {
     this.crudItemService = crudItemService;
     this.form = form;
 
@@ -48,7 +48,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
     return new Observable(observer => {
       reader.onload = (e: any) => {
         const csv = e.target.result;
-        this.parseCSV(csv).subscribe((data: BulkCopyData<T>) => {
+        this.parseCSV(csv).subscribe((data: BulkSaveData<T>) => {
           observer.next(data);
           observer.complete();
         });
@@ -60,7 +60,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
     });
   }
 
-  private parseCSV(csv: string): Observable<BulkCopyData<T>> {
+  private parseCSV(csv: string): Observable<BulkSaveData<T>> {
     const result = Papa.parse<T>(csv, {
       header: true,
       dynamicTyping: true,
@@ -69,7 +69,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
     const allObjs$ = this.crudItemService.dasService.getList({
       endpoint: 'all',
     });
-    const toSaves$: Observable<BulkCopyData<T>> = this.check(
+    const toSaves$: Observable<BulkSaveData<T>> = this.check(
       result.data,
       allObjs$
     );
@@ -80,7 +80,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
   private check(
     newObjs: T[],
     oldObjs$: Observable<T[]>
-  ): Observable<BulkCopyData<T>> {
+  ): Observable<BulkSaveData<T>> {
     return oldObjs$.pipe(
       map((oldObjs: T[]) => {
         const toDeletes: T[] = [];
@@ -126,7 +126,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
           }
         }
 
-        const bulkCopyData: BulkCopyData<T> = {
+        const bulkSaveData: BulkSaveData<T> = {
           toDeletes: toDeletes,
           toInserts: toInserts.filter(x => this.form.checkObject(x) === true),
           toUpdates: toUpdates.filter(x => this.form.checkObject(x) === true),
@@ -138,7 +138,7 @@ export class BiaBulkCopyService<T extends BaseDto> {
           ),
         };
 
-        return bulkCopyData;
+        return bulkSaveData;
       })
     );
   }
