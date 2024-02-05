@@ -26,4 +26,8 @@ export namespace FeaturePlanesTypesActions
   export const loadSuccess = createAction('[' + PlaneTypeCRUDConfiguration.storeKey +'] Load success', props<{ planeType: PlaneType }>());
   
   export const failure = createAction('[' + PlaneTypeCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + PlaneTypeCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + PlaneTypeCRUDConfiguration.storeKey +'] Clear current');
 }

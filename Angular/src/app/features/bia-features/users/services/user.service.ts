@@ -65,4 +65,12 @@ export class UserService extends CrudItemService<User> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureUsersActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureUsersActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <User>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureUsersActions.clearCurrent());
+  }
 }

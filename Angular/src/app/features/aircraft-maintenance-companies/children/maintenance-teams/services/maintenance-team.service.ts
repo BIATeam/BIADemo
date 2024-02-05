@@ -82,4 +82,12 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureMaintenanceTeamsActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureMaintenanceTeamsActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <MaintenanceTeam>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureMaintenanceTeamsActions.clearCurrent());
+  }
 }

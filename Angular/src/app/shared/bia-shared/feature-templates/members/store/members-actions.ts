@@ -28,4 +28,8 @@ export namespace FeatureMembersActions
   export const loadSuccess = createAction('[' + MemberCRUDConfiguration.storeKey +'] Load success', props<{ member: Member }>());
   
   export const failure = createAction('[' + MemberCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + MemberCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + MemberCRUDConfiguration.storeKey +'] Clear current');
 }

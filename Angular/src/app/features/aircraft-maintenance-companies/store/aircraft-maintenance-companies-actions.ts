@@ -26,4 +26,8 @@ export namespace FeatureAircraftMaintenanceCompaniesActions
   export const loadSuccess = createAction('[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey +'] Load success', props<{ aircraftMaintenanceCompany: AircraftMaintenanceCompany }>());
   
   export const failure = createAction('[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey +'] Clear current');
 }

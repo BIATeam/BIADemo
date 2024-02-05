@@ -26,4 +26,8 @@ export namespace FeatureMaintenanceTeamsActions
   export const loadSuccess = createAction('[' + MaintenanceTeamCRUDConfiguration.storeKey +'] Load success', props<{ maintenanceTeam: MaintenanceTeam }>());
   
   export const failure = createAction('[' + MaintenanceTeamCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + MaintenanceTeamCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + MaintenanceTeamCRUDConfiguration.storeKey +'] Clear current');
 }

@@ -26,4 +26,8 @@ export namespace FeatureSitesActions
   export const loadSuccess = createAction('[' + SiteCRUDConfiguration.storeKey +'] Load success', props<{ site: Site }>());
   
   export const failure = createAction('[' + SiteCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + SiteCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + SiteCRUDConfiguration.storeKey +'] Clear current');
 }

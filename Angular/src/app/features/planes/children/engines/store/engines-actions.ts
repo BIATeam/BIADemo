@@ -6,10 +6,6 @@ import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 
 export namespace FeatureEnginesActions
 {
-  export const clearAll = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear all in state');
-  
-  export const clearCurrent = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear current');
-  
   export const loadAllByPost = createAction('[' + EngineCRUDConfiguration.storeKey +'] Load all by post', props<{ event: LazyLoadEvent }>());
 
   export const load = createAction('[' + EngineCRUDConfiguration.storeKey +'] Load', props<{ id: number }>());
@@ -30,4 +26,8 @@ export namespace FeatureEnginesActions
   export const loadSuccess = createAction('[' + EngineCRUDConfiguration.storeKey +'] Load success', props<{ engine: Engine }>());
   
   export const failure = createAction('[' + EngineCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+
+  export const clearAll = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + EngineCRUDConfiguration.storeKey +'] Clear current');
 }

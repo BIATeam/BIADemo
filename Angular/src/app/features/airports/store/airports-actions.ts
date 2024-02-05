@@ -26,4 +26,8 @@ export namespace FeatureAirportsActions
   export const loadSuccess = createAction('[' + AirportCRUDConfiguration.storeKey +'] Load success', props<{ airport: Airport }>());
   
   export const failure = createAction('[' + AirportCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
+  
+  export const clearAll = createAction('[' + AirportCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + AirportCRUDConfiguration.storeKey +'] Clear current');
 }

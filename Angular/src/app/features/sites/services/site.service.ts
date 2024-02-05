@@ -82,4 +82,12 @@ export class SiteService extends CrudItemService<Site> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureSitesActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureSitesActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <Site>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureSitesActions.clearCurrent());
+  }
 }

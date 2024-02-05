@@ -65,4 +65,12 @@ export class PlaneService extends CrudItemService<Plane> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeaturePlanesActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeaturePlanesActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <Plane>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeaturePlanesActions.clearCurrent());
+  }
 }

@@ -28,4 +28,8 @@ export namespace FeatureUsersActions
   export const failure = createAction('[' + UserCRUDConfiguration.storeKey +'] Failure', props<{ error: any }>());
 
   export const synchronize = createAction('[' + UserCRUDConfiguration.storeKey +'] Synchronize');
+  
+  export const clearAll = createAction('[' + UserCRUDConfiguration.storeKey +'] Clear all in state');
+  
+  export const clearCurrent = createAction('[' + UserCRUDConfiguration.storeKey +'] Clear current');
 }

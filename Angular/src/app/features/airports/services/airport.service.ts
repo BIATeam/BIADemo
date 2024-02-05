@@ -64,4 +64,12 @@ export class AirportService extends CrudItemService<Airport> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureAirportsActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureAirportsActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <Airport>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureAirportsActions.clearCurrent());
+  }
 }

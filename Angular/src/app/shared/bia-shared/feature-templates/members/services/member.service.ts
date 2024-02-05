@@ -71,4 +71,12 @@ export class MemberService extends CrudItemService<Member> {
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureMembersActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureMembersActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <Member>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureMembersActions.clearCurrent());
+  }
 }

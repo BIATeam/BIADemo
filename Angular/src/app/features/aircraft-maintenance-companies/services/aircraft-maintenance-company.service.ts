@@ -81,4 +81,12 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
     public multiRemove(ids: any[]){
         this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.multiRemove({ ids }));
     }
+    public clearAll(){
+        this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.clearAll());
+    }
+    public clearCurrent(){
+      this._currentCrudItem = <AircraftMaintenanceCompany>{};
+      this._currentCrudItemId = 0;
+      this.store.dispatch(FeatureAircraftMaintenanceCompaniesActions.clearCurrent());
+  }
 }
