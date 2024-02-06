@@ -9,8 +9,12 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+// BIAToolKit - Begin Option Airport
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+// BIAToolKit - End Option Airport
+// BIAToolKit - Begin Option PlaneType
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
+// BIAToolKit - End Option PlaneType
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
