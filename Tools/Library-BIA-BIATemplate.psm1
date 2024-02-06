@@ -1,6 +1,9 @@
 ###### ###### ###### ###### ####### ###### ###### ###### ######
 ###### ###### ###### Librairy of functions ###### ###### ######
 ###### ###### ###### ###### ####### ###### ###### ###### ######
+$partialMarkerBegin = 'BIAToolKit - Begin Partial'
+$partialMarkerEnd = 'BIAToolKit - End Partial'
+
 
 function RemoveFolderContents {
   param (
@@ -262,35 +265,41 @@ function ExtractPartialFile(){
   $index = $partial.lastIndexOf('\')
   $fileName = $partial.Substring($index + 1)
   $filePath = $partial.Substring(0, $index)
-  Write-Host "ExtractPartial $feature $filePath $fileName"
-  ExtractPartial $feature $filePath $fileName
+
+  $destinationFolder = ".\$docsFolder\$feature\$filePath"
+  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+
+  $destinationFile = "$destinationFolder\$fileName.partial"
+  $sourceFile = ".\$filePath\$fileName"
+
+  Write-Host "ExtractPartial $destinationFile $sourceFile"
+  ExtractPartial $destinationFile $sourceFile
 }
 
 function ExtractPartial {
   param (
-    [string]$modelName,
-    [string]$folderpath,
-    [string]$fileName
+    [string]$destinationFile,
+    [string]$sourceFile
   )
 
-  $destinationFolder = ".\$docsFolder\$modelName\$folderpath"
-  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
+  # Search occurences of markers
+  [int[]]$startIndexes = GetLineNumber -pattern $partialMarkerBegin -file $sourceFile
+  [int[]]$endIndexes = GetLineNumber -pattern $partialMarkerEnd -file $sourceFile
+  if($startIndexes.Count -ne $endIndexes.Count)
+  {
+    Write-Error "File '$sourceFile' not correctly formated: partial marker count incorrect (start : [$startIndexes], end: [$endIndexes])."
+    return
+  }
 
-  $destinationFile = "$destinationFolder\$fileName.partial"
-  $sourceFile = ".\$folderpath\$fileName"
-  Copy-Item -path $sourceFile -Destination $destinationFile
+  # Create empty file
+  New-Item -Name $destinationFile -ItemType File -Force
 
-  $searchBegin = 'BIAToolKit - Begin Partial'
-  $searchEnd = 'BIAToolKit - End Partial'
-   
-  $start = GetLineNumber -pattern $searchBegin -file $destinationFile
-  $end = GetLineNumber -pattern $searchEnd -file $destinationFile
-  $lineNumber = (Get-Content $sourceFile).Length
-
-  # Delete lines after marker end
-  DeleteLine -start ($end+1) -end $lineNumber -file $destinationFile 
-  # Delete lines before marker begin
-  DeleteLine -start 1 -end ($start-1) -file $destinationFile
+  # Extract lines between markers
+  [string[]]$content = Get-Content -Path $sourceFile
+  For($i=0; $i -lt $startIndexes.Count; $i++) 
+  {
+    Add-Content -Path $destinationFile -Value $content[($startIndexes[$i]-1)..($endIndexes[$i]-1)]
+  }
 }
 
 function GenerateZipArchive(){

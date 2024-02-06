@@ -25,12 +25,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    /// BIAToolKit - Begin Dependency
+    /// BIAToolKit - End Dependency
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
+    /// BIAToolKit - Begin Partial Dependency Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
-
+    /// BIAToolKit - End Partial Dependency Plane
     // End BIADemo
+
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
