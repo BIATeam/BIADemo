@@ -25,14 +25,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// BIAToolKit - Begin Dependency
-    /// BIAToolKit - End Dependency
+    /// BIAToolKit - Begin Dependency 1
+    /// BIAToolKit - End Dependency 1
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
-    /// BIAToolKit - Begin Partial Dependency Plane
+    /// BIAToolKit - Begin Partial Dependency 1 Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
-    /// BIAToolKit - End Partial Dependency Plane
+    /// BIAToolKit - End Partial Dependency 1 Plane
     // End BIADemo
 
     using TheBIADevCompany.BIADemo.Application.Site;
@@ -105,17 +105,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
-            /// BIAToolKit - Begin Partial Dependency Plane
+            /// BIAToolKit - Begin Partial Dependency 2 Plane
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
-            /// BIAToolKit - End Partial Dependency Plane
+            /// BIAToolKit - End Partial Dependency 2 Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
             collection.AddTransient<IAirportAppService, AirportAppService>();
             collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
             // End BIADemo
-            /// BIAToolKit - Begin Dependency
-            /// BIAToolKit - End Dependency
+            /// BIAToolKit - Begin Dependency 2
+            /// BIAToolKit - End Dependency 2
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
