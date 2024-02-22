@@ -4,7 +4,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Validators } from '@angular/forms';
 
 // TODO after creation of CRUD Plane : adapt the model
-export interface Plane extends BaseDto {
+export class Plane extends BaseDto {
   /// BIAToolKit - Begin Properties
   msn: string;
   isActive: boolean;
@@ -16,6 +16,12 @@ export interface Plane extends BaseDto {
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
   /// BIAToolKit - End Properties
+
+  DisplayItemName(): string {
+    /// BIAToolKit - Begin Display
+    return this.msn;
+    /// BIAToolKit - End Display
+  }
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration

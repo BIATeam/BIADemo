@@ -1,4 +1,5 @@
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Notification {
@@ -19,10 +20,17 @@ export interface Notification {
   notificationTranslations: NotificationTranslation[];
 }
 
-export interface NotificationTranslation extends BaseDto {
+export class NotificationTranslation extends BaseDto {
   languageId: number;
   title: string;
   description: string;
+
+  constructor(id: any, languageId: number, title: string, description: string, dtoState: DtoState) {
+    super(id, dtoState);
+    this.languageId = languageId;
+    this.title = title;
+    this.description = description;
+  }
 }
 
 export class NotificationTeam extends BaseDto {
