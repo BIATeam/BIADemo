@@ -124,12 +124,15 @@
       }
     ],
     "Permissions": [
+      /// BIAToolKit - Begin Config
+      /// BIAToolKit - End Config
       // Begin BIADemo
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
+      /// BIAToolKit - Begin Partial Config Plane
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Read" ],
@@ -143,6 +146,7 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      /// BIAToolKit - End Partial Config Plane
       // Engine
       {
         "Names": [ "Engine_List_Access", "Engine_Read" ],

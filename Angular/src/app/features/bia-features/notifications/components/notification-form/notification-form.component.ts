@@ -54,7 +54,7 @@ export class NotificationFormComponent implements OnChanges {
           formArray.push(this.formBuilder.group({
             team: [team.team, Validators.required],
             roles: [team.roles],
-            teamTypeId : [team.teamTypeId],
+            teamTypeId: [team.teamTypeId],
           }))
         });
         this.form.setControl('notifiedTeams', formArray);
@@ -81,8 +81,8 @@ export class NotificationFormComponent implements OnChanges {
       createdBy: [/*this.notification.createdBy*/],
       notifiedUsers: [this.notification.notifiedUsers],
       jData: [this.notification.jData],
-      notificationTranslations: this.formBuilder.array([  ]),
-      languageToAdd : [],
+      notificationTranslations: this.formBuilder.array([]),
+      languageToAdd: [],
       notifiedTeams: this.formBuilder.array([]),
     };
 
@@ -92,26 +92,26 @@ export class NotificationFormComponent implements OnChanges {
 
   /** 
    * Returns the FormGroup as a Table Row 
-   */  
-  private createNotifiedTeams(): UntypedFormGroup {  
-    return this.formBuilder.group({   
-        team: [null, Validators.required]  , 
-        roles:  [  ],
-        dtoState: [DtoState.Added]
-    });  
+   */
+  private createNotifiedTeams(): UntypedFormGroup {
+    return this.formBuilder.group({
+      team: [null, Validators.required],
+      roles: [],
+      dtoState: [DtoState.Added]
+    });
   }
 
-  get notifiedTeams(): UntypedFormArray {  
-    return this.form.get('notifiedTeams') as UntypedFormArray;  
+  get notifiedTeams(): UntypedFormArray {
+    return this.form.get('notifiedTeams') as UntypedFormArray;
   }
 
-  addNewRow(): void {  
-    this.notifiedTeams.push(this.createNotifiedTeams());  
-  }  
+  addNewRow(): void {
+    this.notifiedTeams.push(this.createNotifiedTeams());
+  }
 
-  onDeleteRow(rowIndex:number): void {  
-    this.notifiedTeams.removeAt(rowIndex);  
-  } 
+  onDeleteRow(rowIndex: number): void {
+    this.notifiedTeams.removeAt(rowIndex);
+  }
 
   protected onSelectionLanguage(): void {
     if (this.form.value.languageToAdd?.id > 0) {
@@ -124,7 +124,7 @@ export class NotificationFormComponent implements OnChanges {
   createTranslation(notificationTranslation: NotificationTranslation): UntypedFormGroup {
     return this.formBuilder.group({
       id: notificationTranslation.id,
-      dtoState : notificationTranslation.dtoState,
+      dtoState: notificationTranslation.dtoState,
       languageId: notificationTranslation.languageId,
       description: [notificationTranslation.description, Validators.required],
       title: [notificationTranslation.title, Validators.required]
@@ -134,14 +134,14 @@ export class NotificationFormComponent implements OnChanges {
   addTranslation(): void {
     const formValue = this.form.value;
     this.notificationTranslations.push(
-      this.createTranslation({id: 0, languageId: formValue.languageToAdd.id, title: '', description: '', dtoState: DtoState.Added }));
+      this.createTranslation(new NotificationTranslation(0, formValue.languageToAdd.id, '', '', DtoState.Added)));
     this.computeMissingTranslation();
   }
 
   addAllTranslation(): void {
     this.missingLanguageOptions.forEach(lo =>
       this.notificationTranslations.push(
-        this.createTranslation({id: 0, languageId: lo.id, title: '', description: '', dtoState: DtoState.Added }))
+        this.createTranslation(new NotificationTranslation(0, lo.id, '', '', DtoState.Added)))
     );
     this.computeMissingTranslation();
   }
@@ -152,7 +152,7 @@ export class NotificationFormComponent implements OnChanges {
   }
 
   changeTranslation(index: number): void {
-    if (this.notificationTranslations.at(index).value.dtoState === DtoState.Unchanged ) {
+    if (this.notificationTranslations.at(index).value.dtoState === DtoState.Unchanged) {
       this.notificationTranslations.at(index).value.dtoState = DtoState.Modified;
     }
     this.computeMissingTranslation();
@@ -161,7 +161,7 @@ export class NotificationFormComponent implements OnChanges {
   private computeMissingTranslation() {
     this.missingLanguageOptions = this.languageOptions.filter(
       lo => !this.notificationTranslations.value.find((nt: { languageId: number; }) => nt.languageId === lo.id)
-         && ! APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta === lo.id)
+        && !APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY.find(nta => nta === lo.id)
     );
     if (this.missingLanguageOptions.length > 0) {
       this.missingTranslation = true;
@@ -186,18 +186,18 @@ export class NotificationFormComponent implements OnChanges {
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.notification?.notifiedUsers);
-      notification.type = {... notification.type};
+      notification.type = new OptionDto(notification.type.id, notification.type.display, notification.type.dtoState);
       notification.notificationTranslations =
-      NotificationFormComponent.DifferentialTranslation(notification.notificationTranslations, this.notification?.notificationTranslations);
+        NotificationFormComponent.DifferentialTranslation(notification.notificationTranslations, this.notification?.notificationTranslations);
       notification.notifiedTeams =
-      NotificationFormComponent.DifferentialNotificationTeam(notification.notifiedTeams, this.notification?.notifiedTeams);
+        NotificationFormComponent.DifferentialNotificationTeam(notification.notifiedTeams, this.notification?.notifiedTeams);
       this.save.emit(notification);
       this.form.reset();
     }
   }
 
   lang(item: any) {
-    console.log (item);
+    console.log(item);
   }
 
   public static DifferentialTranslation<T extends BaseDto>(newList: T[], oldList: T[]) {
@@ -243,27 +243,31 @@ export class NotificationFormComponent implements OnChanges {
         .filter((s) => !oldList || !oldList.map(x => x.team.id).includes(s.team.id))
         .map((s) => <NotificationTeam>{ ...s, dtoState: DtoState.Added });
 
-      if (toAdded && toAdded.length > 0)  {
+      if (toAdded && toAdded.length > 0) {
         differential = differential.concat(toAdded);
       }
     }
-    if  (newList && Array.isArray(newList) && oldList && Array.isArray(oldList)) {
+    if (newList && Array.isArray(newList) && oldList && Array.isArray(oldList)) {
       // TODO set to modified when role change 
 
       const toCheckModified = newList.filter((newNT) =>
-       oldList.some(oldNT => oldNT.team.id == newNT.team.id))
-       .map((s) => <NotificationTeam>{ ...s, 
-        roles: BiaOptionService.Differential(s.roles, oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles)});
+        oldList.some(oldNT => oldNT.team.id == newNT.team.id))
+        .map((s) => <NotificationTeam>{
+          ...s,
+          roles: BiaOptionService.Differential(s.roles, oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles)
+        });
 
-      const toModified = toCheckModified.filter((newNT) => newNT.roles.length > 0).map((s) => <NotificationTeam>{ ...s,
-        dtoState: DtoState.Modified});
+      const toModified = toCheckModified.filter((newNT) => newNT.roles.length > 0).map((s) => <NotificationTeam>{
+        ...s,
+        dtoState: DtoState.Modified
+      });
 
-      if (toModified && toModified.length > 0)  {
+      if (toModified && toModified.length > 0) {
         differential = differential.concat(toModified);
       }
 
     }
-    
+
     return differential;
   }
 }

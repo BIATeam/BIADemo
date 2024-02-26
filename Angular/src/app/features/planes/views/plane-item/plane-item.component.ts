@@ -27,9 +27,9 @@ export class PlaneItemComponent extends CrudItemItemComponent<Plane> implements 
       (
         this.planeService.crudItem$.subscribe((plane) => {
           // TODO after creation of CRUD Plane : set the field of the item to display in the breadcrump
-          if (plane?.msn) {
+          if (plane?.DisplayItemName()) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = plane.msn;
+              (routeData as any)['breadcrumb'] = plane.DisplayItemName();
             });
             this.layoutService.refreshBreadcrumb();
           }

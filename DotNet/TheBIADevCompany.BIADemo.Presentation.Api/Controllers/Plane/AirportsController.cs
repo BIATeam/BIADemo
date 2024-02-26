@@ -12,7 +12,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
 #if UseHubForClientInAirport
     using BIA.Net.Core.Domain.RepoContract;
@@ -22,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInAirport
-    using Microsoft.AspNetCore.SignalR;
 #endif
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -59,6 +57,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             this.airportService = airportService;
         }
 
+        // BIAToolKit - Begin Front Option
+
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
@@ -74,6 +74,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             var results = await this.airportService.GetAllOptionsAsync();
             return this.Ok(results);
         }
+
+        // BIAToolKit - End Front Option
+
+        // BIAToolKit - Begin Front CRUD
 
         /// <summary>
         /// Get all planes with filters.
@@ -300,5 +304,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             byte[] buffer = await this.airportService.GetCsvAsync(filters);
             return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Airports{BIAConstants.Csv.Extension}");
         }
+
+        // BIAToolKit - End Front CRUD
     }
 }
