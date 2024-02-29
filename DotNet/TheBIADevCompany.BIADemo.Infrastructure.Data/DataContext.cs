@@ -130,6 +130,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Airport> Airports { get; set; }
 
         /// <summary>
+        /// Gets or sets the PlaneAirport DBSet.
+        /// </summary>
+        public DbSet<PlaneAirport> PlaneAirport { get; set; }
+
+        /// <summary>
         /// Gets or sets the Airport Audit DBSet.
         /// </summary>
         public DbSet<AirportAudit> AirportsAudit { get; set; }

@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     /// <summary>
     /// The entity conformcertif repair site.
     /// </summary>
-    public class PlaneAirport : VersionedTable
+    public class PlaneAirport
     {
         /// <summary>
         /// Gets or sets the conformcertif.

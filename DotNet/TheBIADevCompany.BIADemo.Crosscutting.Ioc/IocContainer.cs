@@ -181,6 +181,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             // Begin BIADemo
             collection.AddTransient<IEngineRepository, EngineRepository>();
+            collection.AddTransient<IPlaneAirportRepository, PlaneAirportRepository>();
 
             // End BIADemo
         }

@@ -11,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
@@ -65,26 +64,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 
             // Mapping relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
-
-            // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
-            if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
-            {
-                foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
-                {
-                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id);
-                    if (connectingAirport != null)
-                    {
-                        entity.ConnectingAirports.Remove(connectingAirport);
-                    }
-                }
-
-                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
-                foreach (var airportDto in dto.ConnectingAirports.Where(w => w.DtoState == DtoState.Added))
-                {
-                    entity.ConnectingPlaneAirports.Add(new PlaneAirport
-                    { AirportId = airportDto.Id, PlaneId = dto.Id });
-                }
-            }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
@@ -182,12 +161,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             dto.Id = entity.Id;
             dto.SiteId = entity.SiteId;
-        }
-
-        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
-        public override Expression<Func<Plane, object>>[] IncludesForUpdate()
-        {
-            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports };
         }
 
         /// <summary>
