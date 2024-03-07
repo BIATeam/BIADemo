@@ -10,16 +10,25 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
     /// The custom attibute class for DTO fields.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class BIADtoFieldAttribute(string type = null, bool required = false) : Attribute
+    public class BIADtoFieldAttribute : Attribute
     {
         /// <summary>
         /// The Dto field type.
         /// </summary>
-        public string Type { get; set; } = type;
+        public string Type { get; set; }
 
         /// <summary>
         /// "Is required" field value.
         /// </summary>
-        public bool Required { get; set; } = required;
+        public bool Required { get; set; }
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public BIADtoFieldAttribute(string type = null, bool required = false)
+        {
+            this.Type = type;
+            this.Required = required;
+        }
     }
 }
