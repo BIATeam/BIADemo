@@ -3,6 +3,7 @@
 ###### ###### ###### ###### ####### ###### ###### ###### ######
 $partialMarkerBegin = 'BIAToolKit - Begin Partial'
 $partialMarkerEnd = 'BIAToolKit - End Partial'
+$docsFolder = '.bia'
 
 
 function RemoveFolderContents {
@@ -54,65 +55,6 @@ function DeleteLine($start, $end, $file) {
   } | set-content $file
 }
 
-# Deletes lines between // Begin BIADemo and // End BIADemo 
-function RemoveCodeExample {
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
-    $lineBegin = @()
-    $file = $_.FullName
-  
-    $searchWord = 'Begin BIADemo'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
-  
-    $searchWord = 'End BIADemo'
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
-  
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-      $lineBegin = $lineBegin | Sort-Object
-      for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-      }
-    }
-  }
-}
-
-# Deletes comment // Except BIADemo 
-function RemoveCommentExceptBIADemo {
-  ReplaceProjectName -oldName "// Except BIADemo " -newName ""
-}
-
-function RemoveBIADemoOnlyFiles {
-  foreach ($childFile in Get-ChildItem -File -Recurse | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
-    $file = $childFile.FullName
-    $fileRel = Resolve-Path -Path "$file" -Relative
-    $searchWord = '// BIADemo only'
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    if ($starts -eq 1) {
-      Write-Verbose "Remove $fileRel" -Verbose
-      Remove-Item -Force -LiteralPath $file
-    }
-  }
-}
-
-function RemoveEmptyFolder {
-  param(
-    $Path
-  )
-  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude PublishProfiles, RepoContract) {
-    RemoveEmptyFolder $childDirectory.FullName
-  }
-  $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-  $isEmpty = $currentChildren -eq $null
-  if ($isEmpty) {
-    $fileRel = Resolve-Path -Path "$Path" -Relative
-    Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
-    Remove-Item -Force -LiteralPath $Path
-  }
-}
-
 function RenameFile {
   param (
     [string]$oldName,
@@ -140,25 +82,6 @@ function RemoveItemFolder {
   }
   else {
     Write-Host "Error $path not found"
-  }
-}
-
-function ReplaceProjectName {
-  param (
-    [string]$oldName,
-    [string]$newName
-  )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
-    $file = $_.FullName
-    $oldContent = [System.IO.File]::ReadAllText($file);
-    $newContent = $oldContent.Replace($oldName, $newName);
-    if ($oldContent -ne $newContent) {
-	  
-      $fileRel = Resolve-Path -Path "$file" -Relative
-      Write-Verbose "Replace in $fileRel" -Verbose
-	  
-      [System.IO.File]::WriteAllText($file, $newContent)
-    }
   }
 }
 
@@ -213,7 +136,9 @@ function CopyModel {
 function CopyFileFolder() {
   param (
     [string]$include, 
-    [string]$feature
+    [string]$feature,
+    [string]$oldPath,
+    [string]$newPath
   )
 
   if($include.EndsWith('*'))
@@ -304,7 +229,9 @@ function ExtractPartial {
 
 function GenerateZipArchive(){
     param(
-        [object]$settings
+        [object]$settings,
+        [string]$oldPath,
+        [string]$newPath
     )
 
     $feature = $settings.Feature
@@ -314,7 +241,7 @@ function GenerateZipArchive(){
     ForEach($include in $settings.Contains.Include)
     {
         Write-Host "CopyFileFolder -include $include -feature $feature"
-        CopyFileFolder -include $include -feature $feature
+        CopyFileFolder -include $include -feature $feature -oldPath $oldPath -newPath $newPath
     }
 
     # Remove files/folders
