@@ -7,12 +7,16 @@ import FileSaver from 'file-saver';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 
+export interface BulkSaveDataError extends BaseDto {
+  errors: string[];
+}
+
 export interface BulkSaveData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
-  errorToInserts: T[];
-  errorToUpdates: T[];
+  errorToInserts: BulkSaveDataError[];
+  errorToUpdates: BulkSaveDataError[];
 }
 
 @Injectable({
@@ -69,7 +73,9 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     return planes;
   }
 
-  protected customMapCsvToJson(oldObj: T, newObj: TCsv): void {}
+  protected customMapCsvToJson(oldObj: T, newObj: TCsv): string[] {
+    return [];
+  }
 
   private parseCSV(csv: string): Observable<BulkSaveData<T>> {
     const result = Papa.parse<TCsv>(csv, {
@@ -80,7 +86,7 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     const allObjs$ = this.crudItemService.dasService.getList({
       endpoint: 'all',
     });
-    const toSaves$: Observable<BulkSaveData<T>> = this.check(
+    const toSaves$: Observable<BulkSaveData<T>> = this.fillBulkSaveData(
       result.data,
       allObjs$
     );
@@ -88,7 +94,7 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     return toSaves$;
   }
 
-  private check(
+  private fillBulkSaveData(
     newObjs: TCsv[],
     oldObjs$: Observable<T[]>
   ): Observable<BulkSaveData<T>> {
@@ -97,24 +103,18 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
         const toDeletes: T[] = [];
         const toInserts: T[] = [];
         const toUpdates: T[] = [];
+        const errorToInserts: BulkSaveDataError[] = [];
+        const errorToUpdates: BulkSaveDataError[] = [];
 
         for (const oldObj of oldObjs) {
+          // TO DELETE
           const found = newObjs.some(newObj => newObj.id === oldObj.id);
           if (!found) {
             oldObj.dtoState = DtoState.Deleted;
             toDeletes.push(oldObj);
           }
-        }
 
-        for (const newObj of newObjs) {
-          const found = oldObjs.some(oldObj => newObj.id === oldObj.id);
-          if (!found) {
-            newObj.dtoState = DtoState.Added;
-            toInserts.push(newObj);
-          }
-        }
-
-        for (const oldObj of oldObjs) {
+          // TO UPDATE
           const newObj = newObjs.find(newObj => newObj.id === oldObj.id);
           if (oldObj && newObj) {
             const hasDifferentProperties = Object.keys(oldObj).some(key => {
@@ -135,24 +135,44 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
                   Object.assign(oldObj, { [prop]: newObj[prop] });
                 }
               }
-              this.customMapCsvToJson(oldObj, newObj);
 
-              oldObj.dtoState = DtoState.Modified;
-              toUpdates.push(oldObj);
+              const mapErrors = this.customMapCsvToJson(oldObj, newObj);
+              const checkObject = this.form.checkObject(oldObj);
+
+              const errors = [...checkObject.errorMessages, ...mapErrors];
+              if (errors.length > 0) {
+                errorToUpdates.push({ ...newObj, errors: errors });
+              } else {
+                oldObj.dtoState = DtoState.Modified;
+                toUpdates.push(oldObj);
+              }
+            }
+          }
+        }
+
+        for (const newObj of newObjs) {
+          // TO INSERTS
+          if (newObj.id === 0) {
+            const oldObj = this.form.checkObject(newObj).element;
+            const mapErrors = this.customMapCsvToJson(oldObj, newObj);
+            const checkObject = this.form.checkObject(oldObj);
+
+            const errors = [...checkObject.errorMessages, ...mapErrors];
+            if (errors.length > 0) {
+              errorToInserts.push({ ...newObj, errors: errors });
+            } else {
+              oldObj.dtoState = DtoState.Added;
+              toInserts.push(oldObj);
             }
           }
         }
 
         const bulkSaveData: BulkSaveData<T> = {
           toDeletes: toDeletes,
-          toInserts: toInserts.filter(x => this.form.checkObject(x) === true),
-          toUpdates: toUpdates.filter(x => this.form.checkObject(x) === true),
-          errorToInserts: toInserts.filter(
-            x => this.form.checkObject(x) !== true
-          ),
-          errorToUpdates: toUpdates.filter(
-            x => this.form.checkObject(x) !== true
-          ),
+          toInserts: toInserts,
+          toUpdates: toUpdates,
+          errorToInserts: errorToInserts,
+          errorToUpdates: errorToUpdates,
         };
 
         return bulkSaveData;

@@ -13,6 +13,8 @@ export namespace FeaturePlanesActions
   export const create = createAction('[' + PlaneCRUDConfiguration.storeKey +'] Create', props<{ plane: Plane }>());
   
   export const update = createAction('[' + PlaneCRUDConfiguration.storeKey +'] Update', props<{ plane: Plane }>());
+
+  export const save = createAction('[' + PlaneCRUDConfiguration.storeKey +'] Save', props<{ planes: Plane[] }>());
   
   export const remove = createAction('[' + PlaneCRUDConfiguration.storeKey +'] Remove', props<{ id: number }>());
   

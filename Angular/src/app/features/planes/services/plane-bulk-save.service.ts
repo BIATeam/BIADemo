@@ -3,6 +3,8 @@ import { CrudItemBulkSaveService } from 'src/app/shared/bia-shared/feature-templ
 import { Plane } from '../model/plane';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { PlaneService } from './plane.service';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 
 export interface CsvPlane extends Plane {
   planeTypeDisplay: string;
@@ -15,7 +17,10 @@ export class PlaneBulkSaveService extends CrudItemBulkSaveService<
   Plane,
   CsvPlane
 > {
-  constructor(planeService: PlaneService) {
+  constructor(
+    planeService: PlaneService,
+    private authService: AuthService
+  ) {
     super(planeService);
   }
   public planeTypeOptions: OptionDto[];
@@ -29,10 +34,26 @@ export class PlaneBulkSaveService extends CrudItemBulkSaveService<
     });
   }
 
-  override customMapCsvToJson(plane: Plane, csvPlane: CsvPlane) {
+  override customMapCsvToJson(plane: Plane, csvPlane: CsvPlane): string[] {
+    const errorMessages: string[] = [];
+
     plane.planeType =
       this.planeTypeOptions.find(
         x => x.display === csvPlane?.planeTypeDisplay?.trim()
       ) ?? null;
+
+    plane.siteId =
+      plane.siteId > 0
+        ? plane.siteId
+        : this.authService.getCurrentTeamId(TeamTypeId.Site);
+
+    if (
+      (csvPlane?.planeTypeDisplay?.length > 0 && plane.planeType?.id > 0) !==
+      true
+    ) {
+      errorMessages.push('This type of plane does not exist.');
+    }
+
+    return errorMessages;
   }
 }
