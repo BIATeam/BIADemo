@@ -59,6 +59,9 @@ export class PlaneService extends CrudItemService<Plane> {
     public update(crudItem: Plane){
         this.store.dispatch(FeaturePlanesActions.update({ plane : crudItem }));
     }
+    public save(crudItems: Plane[]){
+        this.store.dispatch(FeaturePlanesActions.save({ planes : crudItems }));
+    }
     public remove(id: any){
         this.store.dispatch(FeaturePlanesActions.remove({ id }));
     }

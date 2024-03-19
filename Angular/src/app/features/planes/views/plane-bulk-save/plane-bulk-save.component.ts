@@ -7,6 +7,7 @@ import { take } from 'rxjs';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneBulkSaveService } from '../../services/plane-bulk-save.service';
+import { BulkSaveData } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk-save.service';
 
 @Component({
   selector: 'app-plane-bulk-save',
@@ -52,7 +53,11 @@ export class PlaneBulkSaveComponent
     this.planeBulkSaveService
       .uploadCsv(this.planeFormComponent, event.target.files)
       .pipe(take(1))
-      .subscribe(x => console.log(x));
+      .subscribe((bulkSaveData: BulkSaveData<Plane>) => {
+        const toSaves = [...bulkSaveData.toInserts, ...bulkSaveData.toUpdates];
+        this.planeService.save(toSaves);
+        console.log(bulkSaveData);
+      });
   }
 
   private initServiceOptionDto() {
