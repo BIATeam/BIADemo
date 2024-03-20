@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import * as Papa from 'papaparse';
 import FileSaver from 'file-saver';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
+import { CrudConfig } from '../model/crud-config';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface BulkSaveDataError extends BaseDto {
   errors: string[];
@@ -25,13 +28,16 @@ export interface BulkSaveData<T extends BaseDto> {
 export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
   protected form: CrudItemFormComponent<T>;
 
-  constructor(private crudItemService: CrudItemService<T>) {}
+  constructor(
+    private crudItemService: CrudItemService<T>,
+    private translateService: TranslateService
+  ) {}
 
   public downloadCsv(columns: string[], fileName: string) {
     this.crudItemService.dasService
       .getList({ endpoint: 'all' })
       .pipe(
-        map(planes => {
+        map((planes: T[]) => {
           return this.customMapJsonToCsv(planes);
         })
       )
@@ -47,17 +53,26 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
 
   public uploadCsv(
     form: CrudItemFormComponent<T>,
-    files: FileList
+    files: FileList,
+    crudConfig: CrudConfig
   ): Observable<BulkSaveData<T>> {
     this.form = form;
 
     const file = files.item(0);
     const reader = new FileReader();
 
+    const columnMapping = crudConfig.fieldsConfig.columns.reduce(
+      (map: { [key: string]: string }, obj) => {
+        map[this.translateService.instant(obj.header)] = obj.field;
+        return map;
+      },
+      {}
+    );
+
     return new Observable(observer => {
       reader.onload = (e: any) => {
         const csv = e.target.result;
-        this.parseCSV(csv).subscribe((data: BulkSaveData<T>) => {
+        this.parseCSV(csv, columnMapping).subscribe((data: BulkSaveData<T>) => {
           observer.next(data);
           observer.complete();
         });
@@ -73,14 +88,39 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     return planes;
   }
 
-  protected customMapCsvToJson(oldObj: T, newObj: TCsv): string[] {
+  protected customMapCsvToJson(oldObj: T, csvObj: TCsv): string[] {
     return [];
   }
 
-  private parseCSV(csv: string): Observable<BulkSaveData<T>> {
-    const result = Papa.parse<TCsv>(csv, {
+  private cleanCSVFormat(csvData: string): string {
+    // Check if the first line starts with "sep="
+    const firstLine = csvData.substring(0, csvData.indexOf('\n'));
+    if (firstLine.startsWith('sep=')) {
+      // The CSV uses a custom delimiter, remove the first line
+      csvData = csvData.substring(csvData.indexOf('\n') + 1);
+    }
+
+    // Use a regular expression to detect formatted strings
+    const regex = /"=""(.+?)"""/g;
+
+    // Replace each occurrence of formatted strings with the desired values
+    const cleanedData = csvData.replace(regex, (match, p1) => p1);
+
+    return cleanedData;
+  }
+
+  private parseCSV(
+    csv: string,
+    columnMapping: { [key: string]: string }
+  ): Observable<BulkSaveData<T>> {
+    const cleanedCSVData = this.cleanCSVFormat(csv);
+
+    // TODO: DEPLACER LE customMapCsvToJson ICI
+    const result = Papa.parse<TCsv>(cleanedCSVData, {
+      skipEmptyLines: 'greedy',
       header: true,
       dynamicTyping: true,
+      transformHeader: header => columnMapping[header],
     });
 
     const allObjs$ = this.crudItemService.dasService.getList({
@@ -95,7 +135,7 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
   }
 
   private fillBulkSaveData(
-    newObjs: TCsv[],
+    csvObjs: TCsv[],
     oldObjs$: Observable<T[]>
   ): Observable<BulkSaveData<T>> {
     return oldObjs$.pipe(
@@ -108,18 +148,18 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
 
         for (const oldObj of oldObjs) {
           // TO DELETE
-          const found = newObjs.some(newObj => newObj.id === oldObj.id);
+          const found = csvObjs.some(csvObj => csvObj.id === oldObj.id);
           if (!found) {
             oldObj.dtoState = DtoState.Deleted;
             toDeletes.push(oldObj);
           }
 
           // TO UPDATE
-          const newObj = newObjs.find(newObj => newObj.id === oldObj.id);
-          if (oldObj && newObj) {
+          const csvObj = csvObjs.find(csvObj => csvObj.id === oldObj.id);
+          if (oldObj && csvObj) {
             const hasDifferentProperties = Object.keys(oldObj).some(key => {
               let oldValue = (<any>oldObj)[key];
-              let newValue = (<any>newObj)[key];
+              let newValue = (<any>csvObj)[key];
               if (newValue === undefined) {
                 return false;
               }
@@ -130,39 +170,40 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
               return newValue !== oldValue;
             });
             if (hasDifferentProperties) {
-              for (const prop in oldObj) {
-                if (newObj.hasOwnProperty(prop)) {
-                  Object.assign(oldObj, { [prop]: newObj[prop] });
+              const newObj: T = { ...oldObj };
+              for (const prop in newObj) {
+                if (csvObj.hasOwnProperty(prop)) {
+                  Object.assign(newObj, { [prop]: csvObj[prop] });
                 }
               }
 
-              const mapErrors = this.customMapCsvToJson(oldObj, newObj);
-              const checkObject = this.form.checkObject(oldObj);
+              const mapErrors = this.customMapCsvToJson(newObj, csvObj);
+              const checkObject = this.form.checkObject(newObj);
 
               const errors = [...checkObject.errorMessages, ...mapErrors];
               if (errors.length > 0) {
-                errorToUpdates.push({ ...newObj, errors: errors });
+                errorToUpdates.push({ ...csvObj, errors: errors });
               } else {
-                oldObj.dtoState = DtoState.Modified;
-                toUpdates.push(oldObj);
+                newObj.dtoState = DtoState.Modified;
+                toUpdates.push(newObj);
               }
             }
           }
         }
 
-        for (const newObj of newObjs) {
+        for (const csvObj of csvObjs) {
           // TO INSERTS
-          if (newObj.id === 0) {
-            const oldObj = this.form.checkObject(newObj).element;
-            const mapErrors = this.customMapCsvToJson(oldObj, newObj);
-            const checkObject = this.form.checkObject(oldObj);
+          if (csvObj.id === 0) {
+            const newObj = this.form.checkObject(csvObj).element;
+            const mapErrors = this.customMapCsvToJson(newObj, csvObj);
+            const checkObject = this.form.checkObject(newObj);
 
             const errors = [...checkObject.errorMessages, ...mapErrors];
             if (errors.length > 0) {
-              errorToInserts.push({ ...newObj, errors: errors });
+              errorToInserts.push({ ...csvObj, errors: errors });
             } else {
-              oldObj.dtoState = DtoState.Added;
-              toInserts.push(oldObj);
+              newObj.dtoState = DtoState.Added;
+              toInserts.push(newObj);
             }
           }
         }

@@ -5,6 +5,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { PlaneService } from './plane.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TeamTypeId } from 'src/app/shared/constants';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface CsvPlane extends Plane {
   planeTypeDisplay: string;
@@ -19,9 +20,10 @@ export class PlaneBulkSaveService extends CrudItemBulkSaveService<
 > {
   constructor(
     planeService: PlaneService,
+    translateService: TranslateService,
     private authService: AuthService
   ) {
-    super(planeService);
+    super(planeService, translateService);
   }
   public planeTypeOptions: OptionDto[];
 
