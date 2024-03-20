@@ -51,7 +51,11 @@ export class PlaneBulkSaveComponent
 
   onFileSelected(event: any) {
     this.planeBulkSaveService
-      .uploadCsv(this.planeFormComponent, event.target.files)
+      .uploadCsv(
+        this.planeFormComponent,
+        event.target.files,
+        this.crudConfiguration
+      )
       .pipe(take(1))
       .subscribe((bulkSaveData: BulkSaveData<Plane>) => {
         const toSaves = [...bulkSaveData.toInserts, ...bulkSaveData.toUpdates];
