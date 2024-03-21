@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -9,6 +9,8 @@ import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/cru
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { CrudConfig } from '../model/crud-config';
 import { TranslateService } from '@ngx-translate/core';
+import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
+import { PropType } from '../../../model/bia-field-config';
 
 export interface BulkSaveDataError extends BaseDto {
   errors: string[];
@@ -18,15 +20,15 @@ export interface BulkSaveData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
-  errorToInserts: BulkSaveDataError[];
-  errorToUpdates: BulkSaveDataError[];
+  errorToSaves: BulkSaveDataError[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
+export class CrudItemBulkSaveService<T extends BaseDto> {
   protected form: CrudItemFormComponent<T>;
+  protected bulkSaveData: BulkSaveData<T>;
 
   constructor(
     private crudItemService: CrudItemService<T>,
@@ -57,22 +59,14 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     crudConfig: CrudConfig
   ): Observable<BulkSaveData<T>> {
     this.form = form;
-
+    this.initBulkSaveData();
     const file = files.item(0);
     const reader = new FileReader();
-
-    const columnMapping = crudConfig.fieldsConfig.columns.reduce(
-      (map: { [key: string]: string }, obj) => {
-        map[this.translateService.instant(obj.header)] = obj.field;
-        return map;
-      },
-      {}
-    );
 
     return new Observable(observer => {
       reader.onload = (e: any) => {
         const csv = e.target.result;
-        this.parseCSV(csv, columnMapping).subscribe((data: BulkSaveData<T>) => {
+        this.parseCSV(csv, crudConfig).subscribe((data: BulkSaveData<T>) => {
           observer.next(data);
           observer.complete();
         });
@@ -88,8 +82,68 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
     return planes;
   }
 
-  protected customMapCsvToJson(oldObj: T, csvObj: TCsv): string[] {
-    return [];
+  protected fillOptionDto(
+    csvObjs: T[],
+    crudConfig: CrudConfig
+  ): Observable<T[]> {
+    return this.crudItemService.optionsService.dictOptionDtos$.pipe(
+      map((dictOptionDtos: DictOptionDto[]) => {
+        for (const column of crudConfig.fieldsConfig.columns) {
+          // value = Property name
+          const dictOptionDto = dictOptionDtos.find(
+            x => x.key === column.field
+          );
+          // If there is an dictOptionDto for this property
+          if (dictOptionDto) {
+            // So, it's an OptionDto. In the csv, we have the display value (string).
+            // You must find the OptionDto and correctly fill the property.(string -> OptionDto)
+            if (column.type === PropType.ManyToMany) {
+              csvObjs.map(csvObj => {
+                const csvValues = csvObj[<keyof typeof csvObj>column.field]
+                  ?.toString()
+                  .trim()
+                  .split(' - ');
+                const optionDtos =
+                  dictOptionDto.value.filter(
+                    x => csvValues?.some(y => y === x.display) === true
+                  ) ?? null;
+
+                if (csvValues?.length !== optionDtos.length) {
+                  // this.bulkSaveData.errorToSaves.push({ ...csvObjs, errors });
+                } else {
+                  csvObj[<keyof typeof csvObj>column.field] = <any>optionDtos;
+                }
+              });
+            } else if (column.type === PropType.OneToMany) {
+              csvObjs.map(csvObj => {
+                const csvValue = csvObj[<keyof typeof csvObj>column.field]
+                  ?.toString()
+                  .trim();
+                const optionDto =
+                  dictOptionDto.value.find(
+                    x =>
+                      x.display ===
+                      csvObj[<keyof typeof csvObj>column.field]
+                        ?.toString()
+                        .trim()
+                  ) ?? null;
+                const isNotEmpty = csvValue && csvValue.length > 0;
+                const hasOptionDto = optionDto && optionDto?.display.length > 0;
+                if (
+                  (isNotEmpty === true && hasOptionDto === true) ||
+                  (isNotEmpty !== true && hasOptionDto !== true)
+                ) {
+                  csvObj[<keyof typeof csvObj>column.field] = <any>optionDto;
+                } else {
+                  // this.bulkSaveData.errorToSaves.push({ ...csvObjs, errors });
+                }
+              });
+            }
+          }
+        }
+        return csvObjs;
+      })
+    );
   }
 
   private cleanCSVFormat(csvData: string): string {
@@ -111,23 +165,32 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
 
   private parseCSV(
     csv: string,
-    columnMapping: { [key: string]: string }
+    crudConfig: CrudConfig
   ): Observable<BulkSaveData<T>> {
     const cleanedCSVData = this.cleanCSVFormat(csv);
 
-    // TODO: DEPLACER LE customMapCsvToJson ICI
-    const result = Papa.parse<TCsv>(cleanedCSVData, {
+    const columnMapping = crudConfig.fieldsConfig.columns.reduce(
+      (map: { [key: string]: string }, obj) => {
+        map[this.translateService.instant(obj.header)] = obj.field;
+        return map;
+      },
+      {}
+    );
+
+    const result = Papa.parse<T>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
       header: true,
       dynamicTyping: true,
       transformHeader: header => columnMapping[header],
     });
 
+    const resultData$ = this.fillOptionDto(result.data, crudConfig);
+
     const allObjs$ = this.crudItemService.dasService.getList({
       endpoint: 'all',
     });
     const toSaves$: Observable<BulkSaveData<T>> = this.fillBulkSaveData(
-      result.data,
+      resultData$,
       allObjs$
     );
 
@@ -135,11 +198,11 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
   }
 
   private fillBulkSaveData(
-    csvObjs: TCsv[],
+    csvObjs$: Observable<T[]>,
     oldObjs$: Observable<T[]>
   ): Observable<BulkSaveData<T>> {
-    return oldObjs$.pipe(
-      map((oldObjs: T[]) => {
+    return combineLatest([csvObjs$, oldObjs$]).pipe(
+      map(([csvObjs, oldObjs]) => {
         const toDeletes: T[] = [];
         const toInserts: T[] = [];
         const toUpdates: T[] = [];
@@ -157,19 +220,7 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
           // TO UPDATE
           const csvObj = csvObjs.find(csvObj => csvObj.id === oldObj.id);
           if (oldObj && csvObj) {
-            const hasDifferentProperties = Object.keys(oldObj).some(key => {
-              let oldValue = (<any>oldObj)[key];
-              let newValue = (<any>csvObj)[key];
-              if (newValue === undefined) {
-                return false;
-              }
-              if (oldValue instanceof Date === true) {
-                oldValue = oldValue?.toISOString();
-                newValue = newValue?.toISOString();
-              }
-              return newValue !== oldValue;
-            });
-            if (hasDifferentProperties) {
+            if (this.compareObjects(oldObj, csvObj) !== true) {
               const newObj: T = { ...oldObj };
               for (const prop in newObj) {
                 if (csvObj.hasOwnProperty(prop)) {
@@ -177,12 +228,13 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
                 }
               }
 
-              const mapErrors = this.customMapCsvToJson(newObj, csvObj);
               const checkObject = this.form.checkObject(newObj);
 
-              const errors = [...checkObject.errorMessages, ...mapErrors];
-              if (errors.length > 0) {
-                errorToUpdates.push({ ...csvObj, errors: errors });
+              if (checkObject.errorMessages.length > 0) {
+                errorToUpdates.push({
+                  ...csvObj,
+                  errors: checkObject.errorMessages,
+                });
               } else {
                 newObj.dtoState = DtoState.Modified;
                 toUpdates.push(newObj);
@@ -193,14 +245,15 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
 
         for (const csvObj of csvObjs) {
           // TO INSERTS
-          if (csvObj.id === 0) {
+          if (parseInt(csvObj.id, 10) === 0) {
             const newObj = this.form.checkObject(csvObj).element;
-            const mapErrors = this.customMapCsvToJson(newObj, csvObj);
             const checkObject = this.form.checkObject(newObj);
 
-            const errors = [...checkObject.errorMessages, ...mapErrors];
-            if (errors.length > 0) {
-              errorToInserts.push({ ...csvObj, errors: errors });
+            if (checkObject.errorMessages.length > 0) {
+              errorToInserts.push({
+                ...csvObj,
+                errors: checkObject.errorMessages,
+              });
             } else {
               newObj.dtoState = DtoState.Added;
               toInserts.push(newObj);
@@ -208,16 +261,54 @@ export class CrudItemBulkSaveService<T extends BaseDto, TCsv extends T> {
           }
         }
 
-        const bulkSaveData: BulkSaveData<T> = {
-          toDeletes: toDeletes,
-          toInserts: toInserts,
-          toUpdates: toUpdates,
-          errorToInserts: errorToInserts,
-          errorToUpdates: errorToUpdates,
-        };
-
-        return bulkSaveData;
+        return this.bulkSaveData;
       })
     );
+  }
+
+  private initBulkSaveData() {
+    this.bulkSaveData = <BulkSaveData<T>>{
+      toDeletes: [],
+      toInserts: [],
+      toUpdates: [],
+      errorToSaves: [],
+    };
+  }
+
+  private compareObjects(obj1: any, obj2: any): boolean {
+    // Check if the objects are of the same type
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+      return false;
+    }
+
+    // Check if the objects have the same number of properties
+    const props1 = Object.keys(obj1);
+    const props2 = Object.keys(obj2);
+    if (props1.length !== props2.length) {
+      return false;
+    }
+
+    // Check each property of obj1
+    for (const prop of props1) {
+      // Check if the property exists in obj2
+      if (!(prop in obj2)) {
+        return false;
+      }
+
+      // Check if the property values are different
+      const val1 = obj1[prop];
+      const val2 = obj2[prop];
+      if (typeof val1 === 'object' && typeof val2 === 'object') {
+        // Recursively compare child objects
+        if (!this.compareObjects(val1, val2)) {
+          return false;
+        }
+      } else if (val1 !== val2) {
+        return false;
+      }
+    }
+
+    // If all checks pass, the objects are identical
+    return true;
   }
 }
