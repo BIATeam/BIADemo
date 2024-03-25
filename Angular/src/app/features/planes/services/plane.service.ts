@@ -29,8 +29,7 @@ export class PlaneService extends CrudItemService<Plane> {
         super(dasService,signalRService,optionsService);
     }
 
-    public getParentIds(): any[]
-    {
+    public getParentIds(): any[] {
         // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
         return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
     }
@@ -53,7 +52,13 @@ export class PlaneService extends CrudItemService<Plane> {
     }
     public create(crudItem: Plane){
         // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-        crudItem.siteId = this.getParentIds()[0],
+        // TODO after creation of CRUD Plane : map parent Key on the corresponding field
+        /// BIAToolKit - Begin Parent
+        let indexParent = 0;
+        /// BIAToolKit - End Parent
+        /// BIAToolKit - Begin Parent siteId
+        crudItem.siteId = this.getParentIds()[indexParent++];
+        /// BIAToolKit - End Parent siteId
         this.store.dispatch(FeaturePlanesActions.create({ plane : crudItem }));
     }
     public update(crudItem: Plane){

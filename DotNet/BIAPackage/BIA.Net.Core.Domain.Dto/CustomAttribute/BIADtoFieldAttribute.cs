@@ -23,12 +23,18 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         public bool Required { get; set; }
 
         /// <summary>
+        /// "Block generation" field value.
+        /// </summary>
+        public bool IsParent { get; set; }
+
+        /// <summary>
         /// Constructor.
         /// </summary>
-        public BIADtoFieldAttribute(string type = null, bool required = false)
+        public BIADtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
         {
             this.Type = type;
             this.Required = required;
+            this.IsParent = isParent;
         }
     }
 }
