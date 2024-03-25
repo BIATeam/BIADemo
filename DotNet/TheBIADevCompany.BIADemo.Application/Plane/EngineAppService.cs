@@ -38,6 +38,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+
+            // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentSiteId));
         }
     }

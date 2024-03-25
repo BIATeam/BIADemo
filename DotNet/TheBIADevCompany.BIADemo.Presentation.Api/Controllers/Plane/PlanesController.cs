@@ -2,7 +2,9 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
+/// BIAToolKit - Begin Parent
 #define UseHubForClientInPlane
+/// BIAToolKit - End Parent
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 {
     using System;
