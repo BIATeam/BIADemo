@@ -2,9 +2,7 @@
 // <copyright file="PlanesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-/// BIAToolKit - Begin Parent
 #define UseHubForClientInPlane
-/// BIAToolKit - End Parent
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 {
     using System;
@@ -142,7 +140,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
+                /// BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
+                /// BIAToolKit - End Parent siteId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -179,7 +179,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
+                /// BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
+                /// BIAToolKit - End Parent siteId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -219,7 +221,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
+                /// BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
+                /// BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
@@ -256,10 +260,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var deletedDtos = await this.planeService.RemoveAsync(ids);
 
 #if UseHubForClientInPlane
+                /// BIAToolKit - Begin Parent siteId
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
+                /// BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
@@ -296,10 +302,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
+                /// BIAToolKit - Begin Parent siteId
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
+                /// BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }

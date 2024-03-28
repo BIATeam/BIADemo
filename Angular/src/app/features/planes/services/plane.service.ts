@@ -52,7 +52,6 @@ export class PlaneService extends CrudItemService<Plane> {
     }
     public create(crudItem: Plane){
         // TODO after creation of CRUD Plane : map parent Key on the corresponding field
-        // TODO after creation of CRUD Plane : map parent Key on the corresponding field
         /// BIAToolKit - Begin Parent
         let indexParent = 0;
         /// BIAToolKit - End Parent
