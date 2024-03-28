@@ -71,7 +71,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     if (this.table) {
       return this.table.selection as any[];
     }
-    return {} as any[];
+    return new Array();
   }
   set selectedElements(value: any[]) {
     if (this.table) {
@@ -212,7 +212,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         this.table.saveColumnWidths(state);
       }
       //if (this.table.reorderableColumns) {
-        this.table.saveColumnOrder(state);
+      this.table.saveColumnOrder(state);
       //}
       if (this.table.selection) {
         state.selection = this.table.selection;
