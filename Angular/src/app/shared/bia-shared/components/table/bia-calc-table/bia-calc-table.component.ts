@@ -91,13 +91,15 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
   }
 
   public initEditableRow(rowData: any) {
-    if (this.canEdit === true && (!rowData || (rowData &&
-      (
-        (rowData.id !== 0 && this.table.editingRowKeys[rowData.id] !== true)
-        ||
-        (rowData.id === 0 && this.editFooter !== true))
-    )
-    )) {
+    if ((this.canEdit === true || this.canAdd === true) &&
+      (!rowData ||
+        (rowData &&
+          ((rowData.id !== 0 && this.table.editingRowKeys[rowData.id] !== true) ||
+            (rowData.id === 0 && this.editFooter !== true)
+          )
+        )
+      )
+    ) {
       if (this.hasChanged === true) {
         if (this.form.valid) {
           this.onSave();
@@ -116,11 +118,15 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
     if (rowData) {
       this.element = rowData;
       if (rowData.id === 0) {
-        this.editFooter = true;
+        if (this.canAdd === true) {
+          this.editFooter = true;
+        }
       }
       else {
         this.editFooter = false;
-        this.table.initRowEdit(rowData);
+        if (this.canEdit === true) {
+          this.table.initRowEdit(rowData);
+        }
       }
       this.form.reset();
       this.form.patchValue({ ...rowData });
