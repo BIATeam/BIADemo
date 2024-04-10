@@ -6,6 +6,7 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { Notification } from '../../model/notification';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Component({
   selector: 'bia-notification-table',
@@ -38,14 +39,14 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
     });
   }
 
-    onSubmit() {
+  onSubmit() {
     if (this.form.valid) {
       const notification: Notification = <Notification>this.form.value;
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
       notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.element?.notifiedUsers);
-      notification.type = { ...notification.type };
+      notification.type = new OptionDto(notification.type.id, notification.type.display, notification.type.dtoState);
       this.save.emit(notification);
       this.form.reset();
     }

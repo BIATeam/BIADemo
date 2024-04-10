@@ -28,9 +28,9 @@ export class EngineService extends CrudItemService<Engine> {
         super(dasService,signalRService,optionsService);
     }
 
-    public getParentIds(): any[]
-    {
+    public getParentIds(): any[] {
         // TODO after creation of CRUD Engine : adapt the parent Key to the context. It can be null if root crud
+		// For child : set the Id of the Parent
         return  [this.planeService.currentCrudItemId];
     }
 

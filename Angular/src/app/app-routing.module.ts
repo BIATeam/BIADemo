@@ -14,6 +14,8 @@ const routes: Routes = [
         path: '',
         component: PageLayoutComponent,
         children: [
+          /// BIAToolKit - Begin Routing
+          /// BIAToolKit - End Routing 
           // Begin BIADemo
           {
             path: 'examples',
@@ -30,6 +32,7 @@ const routes: Routes = [
                 },
                 loadChildren: () => import('./features/aircraft-maintenance-companies/aircraft-maintenance-company.module').then((m) => m.AircraftMaintenanceCompanyModule)
               },
+              /// BIAToolKit - Begin Partial Routing Plane
               {
                 path: 'planes',
                 data: {
@@ -38,6 +41,7 @@ const routes: Routes = [
                 },
                 loadChildren: () => import('./features/planes/plane.module').then((m) => m.PlaneModule)
               },
+              /// BIAToolKit - End Partial Routing Plane
               {
                 path: 'planes-full-code',
                 data: {

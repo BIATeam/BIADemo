@@ -15,7 +15,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
 
     /// <summary>
     /// The mapper used for site.

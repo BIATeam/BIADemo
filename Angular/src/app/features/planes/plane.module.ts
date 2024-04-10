@@ -9,8 +9,12 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+// BIAToolKit - Begin Option Airport
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+// BIAToolKit - End Option Airport
+// BIAToolKit - Begin Option PlaneType
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
+// BIAToolKit - End Option PlaneType
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
@@ -41,7 +45,7 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
         component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -63,7 +67,7 @@ export let ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
-              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             },
             component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -73,7 +77,7 @@ export let ROUTES: Routes = [
             pathMatch: 'full',
             redirectTo: 'edit'
           },
-          // Begin Child Engine
+          /// BIAToolKit - Begin Child Engine
           {
             path: 'engines',
             data: {
@@ -84,7 +88,7 @@ export let ROUTES: Routes = [
             loadChildren: () =>
               import('./children/engines/engine.module').then((m) => m.EngineModule)
           },
-          // End Child Engine
+          /// BIAToolKit - End Child Engine
         ]
       },
     ]
@@ -112,8 +116,12 @@ export let ROUTES: Routes = [
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module requiered for link
     // Domain Modules:
+    // BIAToolKit - Begin Option Airport
     AirportOptionModule,
+    // BIAToolKit - End Option Airport
+    // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
+    // BIAToolKit - End Option PlaneType
   ]
 })
 
