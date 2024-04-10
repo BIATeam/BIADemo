@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.configuration = configuration;
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
-            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentSiteId));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(e => e.Plane.SiteId == this.currentSiteId));
         }
 
         /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
