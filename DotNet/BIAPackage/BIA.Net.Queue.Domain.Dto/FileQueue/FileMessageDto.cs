@@ -1,4 +1,4 @@
-﻿// <copyright file="FileQueueDto.cs" company="BIA">
+﻿// <copyright file="FileMessageDto.cs" company="BIA">
 //  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -7,10 +7,10 @@ namespace BIA.Net.Queue.Domain.Dto.FileQueue
     using System;
 
     /// <summary>
-    /// DTO of File Queue
+    /// DTO of File Message.
     /// </summary>
     [Serializable]
-    public class FileQueueDto
+    public class FileMessageDto
     {
         /// <summary>
         /// Gets or Sets the filename.
