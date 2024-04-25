@@ -4,102 +4,94 @@
 
 namespace BIA.Net.Queue.Infrastructure.Service.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
     using BIA.Net.Queue.Common.Observer;
     using BIA.Net.Queue.Domain.Dto.FileQueue;
     using BIA.Net.Queue.Domain.Dto.Queue;
     using BIA.Net.Queue.Domain.RepoContract;
     using BIA.Net.Queue.Infrastructure.Service.Helpers;
-    using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Threading;
 
     /// <summary>
     /// Repository for file queuing.
     /// </summary>
-    public class FileQueueRepository : IObservable<FileQueueDto>, IFileQueueRepository
+    public sealed class FileQueueRepository : IObservable<FileMessageDto>, IFileQueueRepository
     {
-        private List<IObserver<FileQueueDto>> observers;
-        private readonly QueuesHelper queuesHelper;
-        private IEnumerable<QueueDto> queues;
-
-        Dictionary<string, CancellationTokenSource> recieverLaunched;
+        private readonly List<IObserver<FileMessageDto>> observers;
+        private IEnumerable<TopicDto> topics;
 
         /// <summary>
-        /// Instanciate a <see cref="FileQueueRepository"/> class.
+        /// Initializes a new instance of the <see cref="FileQueueRepository"/> class.
         /// </summary>
         /// <param name="endpoint">The endpoint address of queue Server.</param>
         /// <param name="queueName">The queue name listen.</param>
         public FileQueueRepository()
         {
-            
-            this.observers = new List<IObserver<FileQueueDto>>();
-
-            queuesHelper = new QueuesHelper();
-            recieverLaunched = new Dictionary<string, CancellationTokenSource>();
+            this.observers = new List<IObserver<FileMessageDto>>();
         }
 
         /// <inheritdoc />
-        public void Configure(IEnumerable<QueueDto> queues)
+        public void Configure(IEnumerable<TopicDto> topics)
         {
-            if (queues == null)
+            if (topics == null)
             {
                 throw new ArgumentException("queues cannot be null");
             }
 
-            this.queues = queues;
+            this.topics = topics;
         }
 
         /// <inheritdoc />
-        public IDisposable Subscribe(IObserver<FileQueueDto> observer)
+        public IDisposable Subscribe(IObserver<FileMessageDto> observer)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public IDisposable Subscribe(IObserver<FileMessageDto> observer, CancellationToken cancellationToken)
         {
             // Check whether observer is already registered. If not, add it
-            if (!observers.Contains(observer))
+            if (!this.observers.Contains(observer))
             {
-                observers.Add(observer);
+                this.observers.Add(observer);
 
-                foreach (QueueDto queue in queues)
+                foreach (TopicDto topic in this.topics)
                 {
-                    queuesHelper.ReceiveMessage<FileQueueDto>(queue.Endpoint, queue.QueueName, observer.OnNext);
+                    RabbitMQHelper.ReceiveMessageAsync<FileMessageDto>(topic, observer.OnNext, cancellationToken);
                 }
             }
-            return new Unsubscriber<FileQueueDto>(observers, observer);
+
+            return new Unsubscriber<FileMessageDto>(this.observers, observer);
         }
 
         /// <inheritdoc />
-        public IDisposable Subscribe(IObserver<FileQueueDto> observer, string user, string password)
+        public IDisposable Subscribe(IObserver<FileMessageDto> observer, CancellationToken cancellationToken, string user, string password)
         {
             // Check whether observer is already registered. If not, add it
-            if (!observers.Contains(observer))
+            if (!this.observers.Contains(observer))
             {
-                observers.Add(observer);
+                this.observers.Add(observer);
 
-                foreach (QueueDto queue in queues)
+                foreach (TopicDto topic in this.topics)
                 {
-                    queuesHelper.ReceiveMessage<FileQueueDto>(queue.Endpoint, queue.QueueName, observer.OnNext, user, password);
+                    RabbitMQHelper.ReceiveMessageAsync<FileMessageDto>(topic, observer.OnNext, cancellationToken, user, password);
                 }
             }
-            return new Unsubscriber<FileQueueDto>(observers, observer);
+
+            return new Unsubscriber<FileMessageDto>(this.observers, observer);
         }
 
         /// <inheritdoc />
-        public bool SendFile(string endpoint, string queueName, FileQueueDto file)
+        public bool SendFile(TopicDto topic, FileMessageDto file)
         {
-             return queuesHelper.SendMessage(endpoint, queueName, file);
+             return RabbitMQHelper.SendMessage(topic, file);
         }
 
         /// <inheritdoc />
-        public bool SendFile(string endpoint, string queueName, FileQueueDto file, string user, string password)
+        public bool SendFile(TopicDto topic, FileMessageDto file, string user, string password)
         {
-            return queuesHelper.SendMessage(endpoint, queueName, file, user, password);
-        }
-
-        /// <summary>
-        /// Destructor of <see cref="FileQueueRepository"/>.
-        /// </summary>
-        ~FileQueueRepository()
-        {
-            queuesHelper.Dispose();
+            return RabbitMQHelper.SendMessage(topic, file, user, password);
         }
     }
 }
