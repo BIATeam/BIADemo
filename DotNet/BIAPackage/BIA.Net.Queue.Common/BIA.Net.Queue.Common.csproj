@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <Authors>BIA Team</Authors>
     <Product>$(AssemblyName)</Product>
     <Company>BIA</Company>
