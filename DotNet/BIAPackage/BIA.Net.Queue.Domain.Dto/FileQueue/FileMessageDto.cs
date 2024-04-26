@@ -23,8 +23,13 @@ namespace BIA.Net.Queue.Domain.Dto.FileQueue
         public string OutputPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the data of the files en bytes.
+        /// Gets or sets the data of the files in bytes.
         /// </summary>
         public byte[] Data { get; set; }
+
+        /// <summary>
+        /// Gets or sets the checksum of the data.
+        /// </summary>
+        public byte[] Checksum { get; set; }
     }
 }

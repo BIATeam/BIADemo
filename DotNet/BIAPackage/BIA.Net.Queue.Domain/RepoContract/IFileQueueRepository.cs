@@ -23,7 +23,7 @@ namespace BIA.Net.Queue.Domain.RepoContract
         void Configure(IEnumerable<TopicDto> topics);
 
         /// <summary>
-        /// Subscribe to recieve <see cref="FileQueueDto"/>.
+        /// Subscribe to receive <see cref="FileQueueDto"/>.
         /// </summary>
         /// <param name="observer">The <see cref="IObserver{T}"/> of <see cref="FileQueueDto"/>.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
@@ -31,7 +31,7 @@ namespace BIA.Net.Queue.Domain.RepoContract
         IDisposable Subscribe(IObserver<FileMessageDto> observer, CancellationToken cancellationToken);
 
         /// <summary>
-        /// Subscribe to recieve <see cref="FileQueueDto"/>.
+        /// Subscribe to receive <see cref="FileQueueDto"/>.
         /// </summary>
         /// <param name="observer">The <see cref="IObserver{T}"/> of <see cref="FileQueueDto"/>.</param>
         /// <param name="cancellationToken">The cancellation token.</param>

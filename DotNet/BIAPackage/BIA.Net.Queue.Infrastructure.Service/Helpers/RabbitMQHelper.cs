@@ -7,12 +7,9 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq.Expressions;
-    using System.Runtime.CompilerServices;
-    using System.Runtime.Serialization;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Xml.Serialization;
     using BIA.Net.Queue.Domain.Dto.Queue;
     using RabbitMQ.Client;
     using RabbitMQ.Client.Events;
@@ -22,8 +19,6 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
     /// </summary>
     internal static class RabbitMQHelper
     {
-        private static BinaryFormatter formatter = new BinaryFormatter();
-
         /// <summary>
         /// Send Message to a specific endpoint.
         /// </summary>
@@ -35,15 +30,14 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
         public static bool SendMessage(TopicDto topic, object body, string user = null, string password = null)
         {
             ConnectionFactory connectionFactory = new ConnectionFactory { UserName = user, Password = password, VirtualHost = topic.VirtualHost ?? "/", HostName = topic.Endpoint, Port = AmqpTcpEndpoint.UseDefaultPort };
-            using (IConnection connection = connectionFactory.CreateConnection())
-            using (IModel channel = connection.CreateModel())
-            {
+            using IConnection connection = connectionFactory.CreateConnection();
+            using IModel channel = connection.CreateModel();
                 channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
 
-                using (MemoryStream stream = new MemoryStream())
-                {
+            using MemoryStream stream = new MemoryStream();
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
-                    formatter.Serialize(stream, body);
+            XmlSerializer xmlSerializer = new(body.GetType());
+            xmlSerializer.Serialize(stream, body);
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
                     byte[] bytes = stream.ToArray();
                     channel.BasicPublish(
@@ -51,14 +45,12 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                         routingKey: topic.RoutingKey,
                         basicProperties: null,
                         body: bytes);
-                }
-            }
 
             return true;
         }
 
         /// <summary>
-        /// Recieve a message.
+        /// Receive a message.
         /// </summary>
         /// <typeparam name="T">The type of the body.</typeparam>
         /// <param name="topic">the global topic information to listen.</param>
@@ -71,9 +63,8 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             where T : class
         {
             ConnectionFactory connectionFactory = new ConnectionFactory { UserName = user, Password = password, VirtualHost = topic.VirtualHost, HostName = topic.Endpoint, Port = AmqpTcpEndpoint.UseDefaultPort };
-            using (IConnection connection = connectionFactory.CreateConnection())
-            using (IModel channel = connection.CreateModel())
-            {
+            using IConnection connection = connectionFactory.CreateConnection();
+            using IModel channel = connection.CreateModel();
                 channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
 
                 var queueName = channel.QueueDeclare(queue: $"{topic.RoutingKey}Queue", durable: true, exclusive: false, autoDelete: false).QueueName;
@@ -83,15 +74,12 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                 {
                     var body = ea.Body.ToArray();
 
-                    using (MemoryStream stream = new MemoryStream(body))
+                using MemoryStream stream = new MemoryStream(body);
+                XmlSerializer xmlSerializer = new(body.GetType());
+                if (xmlSerializer.Deserialize(stream) is T result)
                     {
-#pragma warning disable SYSLIB0011 // Type or member is obsolete
-                        if (formatter.Deserialize(stream) is T result)
-                        {
                             action.Invoke(result);
                         }
-#pragma warning restore SYSLIB0011 // Type or member is obsolete
-                    }
                 };
 
                 channel.QueueBind(
@@ -110,5 +98,4 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                 }
             }
         }
-    }
 }
