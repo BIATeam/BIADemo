@@ -37,10 +37,10 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
 
-
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  customControlTemplate: TemplateRef<any>;
 
+  customControlTemplate: TemplateRef<any>;
+  selectedViewName: string | null;
   pageSize: number;
   pageSizes: SelectItem[];
   resultMessageMapping = {
@@ -57,15 +57,15 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   private sub = new Subscription();
 
-  constructor(public translateService: TranslateService) {}
+  constructor(public translateService: TranslateService) { }
 
   ngAfterContentInit() {
     this.templates.forEach((item) => {
-        switch(item.getType()) {
-          case 'customControl':
-            this.customControlTemplate = item.template;
+      switch (item.getType()) {
+        case 'customControl':
+          this.customControlTemplate = item.template;
           break;
-        }
+      }
     });
   }
 
@@ -73,8 +73,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
     this.initPageSize();
     this.updateDisplayedPageSizeOptions();
     this.initFilterCtrl();
-    if (this.defaultViewPref === undefined)
-    {
+    if (this.defaultViewPref === undefined) {
       // compatibility with old system
       this.defaultViewPref = <BiaTableState>{
         first: 0,
@@ -118,6 +117,10 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   onViewChange(event: string) {
     this.setControlByViewState(event);
     setTimeout(() => this.viewChange.emit(event));
+  }
+
+  onViewNameChange(event: string) {
+    this.selectedViewName = event;
   }
 
   private onColumnsChange(changes: SimpleChanges) {
@@ -169,14 +172,13 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
     const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
     this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
     const newDisplayColumns = state.columnOrder ? state.columnOrder : []
-    if (this.displayedColumns !== newDisplayColumns)
-    {
+    if (this.displayedColumns !== newDisplayColumns) {
       this.displayedColumns = newDisplayColumns;
       this.onChangeSelectColumn();
     }
     for (const key in state.filters) {
       if (key.startsWith(TABLE_FILTER_GLOBAL)) {
-        this.globalFilter = (state.filters[key] as FilterMetadata ).value;
+        this.globalFilter = (state.filters[key] as FilterMetadata).value;
         break;
       }
     }
