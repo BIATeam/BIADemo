@@ -25,6 +25,7 @@ import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -32,11 +33,12 @@ import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
   styleUrls: ['./crud-items-index.component.scss']
 })
 export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
-  public crudConfiguration : CrudConfig;
+  public crudConfiguration: CrudConfig;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false }) biaTableComponent: BiaTableComponent;
+  @ViewChild(BiaTableControllerComponent, { static: false }) biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false }) crudItemTableComponent: CrudItemTableComponent<CrudItem>;
   public get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
@@ -70,8 +72,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   defaultViewPref: BiaTableState;
   hasColumnFilter = false;
 
-
-
   protected store: Store<AppState>;
   protected router: Router;
   public activatedRoute: ActivatedRoute;
@@ -82,7 +82,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>, 
+    public crudItemService: CrudItemService<CrudItem>,
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
@@ -108,7 +108,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.crudConfiguration.useSignalR = e;
     this.useSignalRConfig(true);
   }
-  
+
   usePopupChange(e: boolean) {
     this.crudConfiguration.usePopup = e;
     this.usePopupConfig(true);
@@ -117,11 +117,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
     this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
     if (this.crudConfiguration.useView) {
-      if (manualChange)
-      {
+      if (manualChange) {
         setTimeout(() => {
-          if (this.crudItemListComponent?.table) 
-          {
+          if (this.crudItemListComponent?.table) {
             this.crudItemListComponent.table.saveState();
           }
         });
@@ -132,7 +130,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
 
   isLoadAllOptionsSubsribe = false;
   protected useCalcModeConfig(manualChange: boolean) {
-    if (this.crudConfiguration.useCalcMode && ! this.isLoadAllOptionsSubsribe) {
+    if (this.crudConfiguration.useCalcMode && !this.isLoadAllOptionsSubsribe) {
       this.isLoadAllOptionsSubsribe = true;
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(event => {
@@ -143,18 +141,15 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   }
 
   protected usePopupConfig(manualChange: boolean) {
-    if (manualChange)
-    {
+    if (manualChange) {
       this.applyDynamicComponent(this.activatedRoute.routeConfig?.children);
     }
   }
 
-  private applyDynamicComponent(routes: Routes |undefined) {
-    if (routes)
-    {
+  private applyDynamicComponent(routes: Routes | undefined) {
+    if (routes) {
       routes.forEach((route) => {
-        if (route.data && (route.data as any).dynamicComponent)
-        {
+        if (route.data && (route.data as any).dynamicComponent) {
           route.component = (route.data as any).dynamicComponent();
         }
         this.applyDynamicComponent(route.children);
@@ -167,19 +162,17 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       this.crudItemService.signalRService.initialize(this.crudItemService);
       this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
     }
-    else
-    {
-      if (manualChange)
-      {
+    else {
+      if (manualChange) {
         this.crudItemService.signalRService.destroy();
       }
     }
   }
 
   ngOnInit() {
-/*    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
-    this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
-*/
+    /*    this.tableStateKey = this.crudConfiguration.useView ? this.crudConfiguration.tableStateKey : undefined;
+        this.useViewTeamWithTypeId = this.crudConfiguration.useView ? this.crudConfiguration.useViewTeamWithTypeId : null;
+    */
     this.sub = new Subscription();
 
     this.initTableConfiguration();
@@ -196,7 +189,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.OnDisplay();
-    
+
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
@@ -206,8 +199,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       );
     }
 
-    if (this.crudConfiguration.useOfflineMode)
-    {
+    if (this.crudConfiguration.useOfflineMode) {
       if (BiaOnlineOfflineService.isModeEnabled) {
         this.sub.add(
           this.injector.get<BiaOnlineOfflineService>(BiaOnlineOfflineService).syncCompleted$.pipe(skip(1), filter(x => x === true)).subscribe(() => {
@@ -254,7 +246,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       this.router.navigate([crudItemId, 'edit'], { relativeTo: this.activatedRoute });
     }
   }
-  
+
   onChange() {
     if (this.crudConfiguration.useCalcMode) {
       this.crudItemTableComponent.onChange();
@@ -266,8 +258,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       this.crudItemTableComponent.onComplexInput(isIn);
     }
   }
-
-
 
   onSave(crudItem: CrudItem) {
     if (this.crudConfiguration.useCalcMode) {
@@ -300,7 +290,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = { advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter, parentIds: this.crudItemService.getParentIds().map((id => id.toString())), ...lazyLoadEvent };
     this.crudItemService.loadAllByPost(pagingAndFilter);
-    this.hasColumnFilter= this.tableHelperService.hasFilter(this.biaTableComponent, true) || this.tableHelperService.hasFilter(this.crudItemTableComponent, true);
+    this.hasColumnFilter = this.tableHelperService.hasFilter(this.biaTableComponent, true) || this.tableHelperService.hasFilter(this.crudItemTableComponent, true);
   }
 
   searchGlobalChanged(value: string) {
@@ -320,13 +310,23 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.updateAdvancedFilterByView(viewPreference);
   }
 
+  // onViewNameChange(viewName: string) {
+  //   this.selectedViewName = viewName;
+  // }
+
   onStateSave(tableState: string) {
     this.viewPreference = tableState;
     this.tableState = tableState;
   }
 
-  onExportCSV(fileName : string = 'bia.crud.listOf') {
-    fileName= this.translateService.instant(fileName);
+  onExportCSV(fileName: string = 'bia.crud.listOf') {
+    let selectedViewName = this.biaTableControllerComponent.selectedViewName;
+    if (selectedViewName && selectedViewName.length > 0) {
+      fileName = selectedViewName;
+    }
+    else {
+      fileName = this.translateService.instant(fileName);
+    }
     const columns: { [key: string]: string } = {};
     this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
@@ -349,14 +349,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.sortFieldValue = this.columns[0].key;
 
     this.defaultViewPref = <BiaTableState>{
-        first: 0,
-        rows: this.defaultPageSize,
-        sortField: this.sortFieldValue,
-        sortOrder: 1,
-        filters: {},
-        columnOrder: this.crudConfiguration.fieldsConfig.columns.map((x) => x.field),
-        advancedFilter: undefined,
-      }
+      first: 0,
+      rows: this.defaultPageSize,
+      sortField: this.sortFieldValue,
+      sortOrder: 1,
+      filters: {},
+      columnOrder: this.crudConfiguration.fieldsConfig.columns.map((x) => x.field),
+      advancedFilter: undefined,
+    }
   }
 
 
@@ -372,9 +372,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }
 
-  checkhasAdvancedFilter()
-  {
-    this.hasAdvancedFilter =  false;
+  checkhasAdvancedFilter() {
+    this.hasAdvancedFilter = false;
   }
 
   private updateAdvancedFilterByView(viewPreference: string) {
@@ -385,8 +384,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
         this.checkhasAdvancedFilter();
       }
     }
-    else
-    {
+    else {
       this.crudConfiguration.fieldsConfig.advancedFilter = {};
       this.checkhasAdvancedFilter();
     }

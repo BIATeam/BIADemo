@@ -31,7 +31,8 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   translateKeys: string[] = ['bia.views.current', 'bia.views.system', 'bia.views.default', 'bia.views.team', 'bia.views.user'];
   translations: any;
   views: View[];
-  selectedView: number = undefinedView; 
+  selectedView: number = undefinedView;
+  selectedViewName: string | null = null;
   defaultView: number;
   urlView: number | null = null;
   private sub = new Subscription();
@@ -39,9 +40,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() tableState: string;
   @Input() defaultViewPref: BiaTableState;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
-  @Input() displayedColumns: string[]; 
-  @Input() columns: KeyValuePair[]; 
+  @Input() displayedColumns: string[];
+  @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
+  @Output() viewNameChange = new EventEmitter<string>();
 
   constructor(
     private store: Store<AppState>,
@@ -61,7 +63,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.sub.add(
       combineLatest([dataLoaded$, allView$, lastViewChanged$]).pipe(skip(1)).subscribe(([dataLoaded, views, view]) => {
         if (dataLoaded === true && views && view) {
-          if(this.views === undefined || this.views.length != views.length) {
+          if (this.views === undefined || this.views.length != views.length) {
             // the list of view change, so we reset the view selection.
             this.selectedView = undefinedView;
           }
@@ -97,13 +99,12 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   protected onDisplayedColumnsChange(changes: SimpleChanges) {
     if (changes.displayedColumns && changes.displayedColumns.isFirstChange() !== true) {
       setTimeout(() => {
-          let tableStateStr = this.getViewState();
-          if (tableStateStr)
-          {
-            this.AutoSelectView(tableStateStr);
-          }
+        let tableStateStr = this.getViewState();
+        if (tableStateStr) {
+          this.AutoSelectView(tableStateStr);
+        }
       });
-  }
+    }
   }
 
   protected onTableStateChange(changes: SimpleChanges) {
@@ -113,45 +114,56 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private AutoSelectView(tableStateStr: string) {
-    this.selectedView =  this.GetCorrespondingViewId(tableStateStr);
+    this.selectedView = this.GetCorrespondingViewId(tableStateStr);
+    this.selectedViewName = this.GetCurrentViewName();
+    this.viewNameChange.emit(this.selectedViewName?.toString());
   }
 
-  private GetCorrespondingViewId(preference: string) : number {
+  public GetCurrentViewName(): string | null {
+    let viewName: string | null = null;
+    if (this.selectedView > -1 && this.views.length > 0) {
+      this.views.forEach(v => {
+        if (v.id === this.selectedView) {
+          viewName = v.name;
+          return;
+        }
+      });
+    }
+
+    return viewName;
+  }
+
+  private GetCorrespondingViewId(preference: string): number {
     let pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
-    if (this.defaultViewPref != undefined)
-    {
-        if (this.areViewsEgals(pref, this.defaultViewPref))
-        {
-          return 0;
-        }
+    if (this.defaultViewPref != undefined) {
+      if (this.areViewsEgals(pref, this.defaultViewPref)) {
+        return 0;
+      }
     }
-    else{
-      console.log ("ViewList component Error: defaultViewPref is not defined");
+    else {
+      console.log("ViewList component Error: defaultViewPref is not defined");
     }
 
     // let prefString =  JSON.stringify(pref);
     // console.log("GetCorrespondingView : " + prefString  )
-    if (this.views)
-    {
+    if (this.views) {
       let correspondingView = this.views.find(v => {
         const viewPref: BiaTableState = JSON.parse(v.preference);
-        return this.areViewsEgals(pref,viewPref);
+        return this.areViewsEgals(pref, viewPref);
       });
-      if (correspondingView)
-      {
+      if (correspondingView) {
         return correspondingView.id
       }
     }
     return currentView;
   }
 
-  private areViewsEgals(view1: BiaTableState, view2: BiaTableState)
-  {
-    return (  
-      view1.first===view2.first &&
+  private areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
+    return (
+      view1.first === view2.first &&
       (
-        this.areFilterEgals(view1.filters,view2.filters)
+        this.areFilterEgals(view1.filters, view2.filters)
       ) &&
       JSON.stringify(view1.columnOrder) === JSON.stringify(view2.columnOrder) &&
       view1.rows === view2.rows &&
@@ -170,7 +182,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
             JSON.stringify(view1.multiSortMeta) === JSON.stringify(view2.multiSortMeta)
           )
         )
-        || 
+        ||
         (
           !this.isNullUndefEmptyStr(view1.multiSortMeta) && this.isNullUndefEmptyStr(view2.multiSortMeta) &&
           (
@@ -181,7 +193,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
             view2.sortOrder === view1.multiSortMeta[0].order
           )
         )
-        || 
+        ||
         (
           !this.isNullUndefEmptyStr(view2.multiSortMeta) && this.isNullUndefEmptyStr(view1.multiSortMeta) &&
           (
@@ -197,30 +209,24 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     )
   }
 
-  private areFilterEgals(filters1: {[s: string]: FilterMetadata | FilterMetadata[];} | undefined, filters2: {[s: string]: FilterMetadata | FilterMetadata[];} | undefined ) :boolean
-  {
-    if (this.isNullUndefEmptyStr(filters1) && (this.isNullUndefEmptyStr(filters2)))
-    {
+  private areFilterEgals(filters1: { [s: string]: FilterMetadata | FilterMetadata[]; } | undefined, filters2: { [s: string]: FilterMetadata | FilterMetadata[]; } | undefined): boolean {
+    if (this.isNullUndefEmptyStr(filters1) && (this.isNullUndefEmptyStr(filters2))) {
       return true;
     }
-    if (JSON.stringify(filters1) === JSON.stringify(filters2))
-    {
+    if (JSON.stringify(filters1) === JSON.stringify(filters2)) {
       return true;
     }
 
     for (let key in filters1) {
       let value1 = filters1[key];
-      let value2 = filters2?filters2[key]:undefined;
-      if (JSON.stringify(this.standardizeFilterMetadata(value1)) !== JSON.stringify(this.standardizeFilterMetadata(value2)))
-      {
+      let value2 = filters2 ? filters2[key] : undefined;
+      if (JSON.stringify(this.standardizeFilterMetadata(value1)) !== JSON.stringify(this.standardizeFilterMetadata(value2))) {
         return false;
       }
     }
     for (let key in filters2) {
-      if (filters1 == undefined || !(key in filters1))
-      {
-        if (JSON.stringify(this.standardizeFilterMetadata(filters2[key]))!= JSON.stringify([]))
-        {
+      if (filters1 == undefined || !(key in filters1)) {
+        if (JSON.stringify(this.standardizeFilterMetadata(filters2[key])) != JSON.stringify([])) {
           return false;
         }
       }
@@ -229,45 +235,36 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  private standardizeFilterMetadata( filterMetadata : FilterMetadata | FilterMetadata[] | undefined)  : FilterMetadata[]
-  {
+  private standardizeFilterMetadata(filterMetadata: FilterMetadata | FilterMetadata[] | undefined): FilterMetadata[] {
     let standardized: FilterMetadata[] = []
-    if (this.isValueNullUndefEmptyStr(filterMetadata))
-    {
+    if (this.isValueNullUndefEmptyStr(filterMetadata)) {
       return standardized;
     }
-    if (Array.isArray(filterMetadata))
-    {
+    if (Array.isArray(filterMetadata)) {
       (filterMetadata as FilterMetadata[]).forEach(element => {
-        if (!this.tableHelperService.isEmptyFilter(element))
-        {
+        if (!this.tableHelperService.isEmptyFilter(element)) {
           standardized.push(this.tableHelperService.cleanFilter(element));
         }
       });
     }
 
-    if (!this.tableHelperService.isEmptyFilter(filterMetadata as FilterMetadata))
-    {
+    if (!this.tableHelperService.isEmptyFilter(filterMetadata as FilterMetadata)) {
       standardized.push(this.tableHelperService.cleanFilter(filterMetadata as FilterMetadata))
     }
 
-    if (standardized.length === 1)
-    {
-      standardized[0].operator='and';
+    if (standardized.length === 1) {
+      standardized[0].operator = 'and';
     }
     return standardized;
   }
 
 
 
-  private isNullUndefEmptyStr(obj : any) : boolean
-  {
-    if (this.isValueNullUndefEmptyStr(obj )) 
-    {
+  private isNullUndefEmptyStr(obj: any): boolean {
+    if (this.isValueNullUndefEmptyStr(obj)) {
       return true;
     }
-    if (JSON.stringify(obj) === "{}")
-    {
+    if (JSON.stringify(obj) === "{}") {
       return true;
     }
     return Object.values(obj).every(value => {
@@ -279,11 +276,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private isValueNullUndefEmptyStr(obj : any) : boolean
-  {
-    return (obj === null || obj === undefined || obj === '') 
+  private isValueNullUndefEmptyStr(obj: any): boolean {
+    return (obj === null || obj === undefined || obj === '')
   }
-  
+
 
   onViewChange(event: any) {
     this.selectedView = event.value;
@@ -366,7 +362,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.defaultView = defaultView;
 
     this.groupedViews[0].items.push({ label: this.translations['bia.views.current'], value: currentView });
-    
+
   }
   protected initViewByQueryParam(views: View[]) {
     //<a [routerLink]="['/examples/planes-view']" [queryParams]="{ view: 'test2' }">link to plane view</a>
@@ -377,54 +373,52 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
         if (view && view.id > 0) {
           this.urlView = view.id;
           //setTimeout(() => {
-            this.selectedView = view.id;
+          this.selectedView = view.id;
           //});
         }
       }
     }
   }
   isFirstEmitDone = false;
-  private updateFilterValues(preference: string | null, manualChange:boolean) {
+  private updateFilterValues(preference: string | null, manualChange: boolean) {
     //setTimeout(() => {
-        if (!manualChange) this.initViewByQueryParam(this.views);
-        if (preference && !this.urlView) {
-          const correspondingViewId = this.GetCorrespondingViewId(preference);
-          if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId)
-          {
-            this.selectedView = correspondingViewId;
-            this.isFirstEmitDone = true;
-            setTimeout(() => {this.viewChange.emit(preference);});
-          }
-        } else {
-          if (this.selectedView == undefinedView )
-          {
-            this.selectedView = this.defaultView;
-          }
-          if (this.selectedView !== 0) {
-            const view = this.views.find((v) => v.id === this.selectedView);
-            if (view) {
-              //this.saveViewState(view.preference);
-              this.isFirstEmitDone = true;
-              setTimeout(() => {this.viewChange.emit(view.preference);});
-            }
-          } else {
-            this.isFirstEmitDone = true;
-            setTimeout(() => {this.viewChange.emit(JSON.stringify(this.defaultViewPref));});
-          }
+    if (!manualChange) this.initViewByQueryParam(this.views);
+    if (preference && !this.urlView) {
+      const correspondingViewId = this.GetCorrespondingViewId(preference);
+      if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId) {
+        this.selectedView = correspondingViewId;
+        this.isFirstEmitDone = true;
+        setTimeout(() => { this.viewChange.emit(preference); });
+      }
+    } else {
+      if (this.selectedView == undefinedView) {
+        this.selectedView = this.defaultView;
+      }
+      if (this.selectedView !== 0) {
+        const view = this.views.find((v) => v.id === this.selectedView);
+        if (view) {
+          //this.saveViewState(view.preference);
+          this.isFirstEmitDone = true;
+          setTimeout(() => { this.viewChange.emit(view.preference); });
         }
+      } else {
+        this.isFirstEmitDone = true;
+        setTimeout(() => { this.viewChange.emit(JSON.stringify(this.defaultViewPref)); });
+      }
+    }
     //});
   }
-/*
-  private saveViewState(stateString: string) {
-    if (stateString) {
-      const state = JSON.parse(stateString);
-      if (state && !state.filters) {
-        state.filters = {};
+  /*
+    private saveViewState(stateString: string) {
+      if (stateString) {
+        const state = JSON.parse(stateString);
+        if (state && !state.filters) {
+          state.filters = {};
+        }
+        stateString = JSON.stringify(state);
+        sessionStorage.setItem(this.tableStateKey, stateString);
       }
-      stateString = JSON.stringify(state);
-      sessionStorage.setItem(this.tableStateKey, stateString);
-    }
-  }*/
+    }*/
 
   private getViewState(): string | null {
     return sessionStorage.getItem(this.tableStateKey);
