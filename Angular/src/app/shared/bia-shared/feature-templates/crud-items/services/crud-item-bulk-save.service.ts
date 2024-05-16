@@ -10,9 +10,11 @@ import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templat
 import { CrudConfig } from '../model/crud-config';
 import { TranslateService } from '@ngx-translate/core';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
-import { PropType } from '../../../model/bia-field-config';
+import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
+import { clone, isEmpty } from '../../../utils';
 
-export interface BulkSaveDataError extends BaseDto {
+export interface BulkSaveDataError<T extends BaseDto> {
+  obj: T;
   errors: string[];
 }
 
@@ -20,7 +22,7 @@ export interface BulkSaveData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
-  errorToSaves: BulkSaveDataError[];
+  errorToSaves: BulkSaveDataError<T>[];
 }
 
 @Injectable({
@@ -82,62 +84,46 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     return planes;
   }
 
-  protected fillOptionDto(
+  protected parseCSVCustom(
     csvObjs: T[],
-    crudConfig: CrudConfig
+    crudConfig: CrudConfig,
+    separator = ' - '
   ): Observable<T[]> {
     return this.crudItemService.optionsService.dictOptionDtos$.pipe(
       map((dictOptionDtos: DictOptionDto[]) => {
         for (const column of crudConfig.fieldsConfig.columns) {
-          // value = Property name
-          const dictOptionDto = dictOptionDtos.find(
-            x => x.key === column.field
-          );
-          // If there is an dictOptionDto for this property
-          if (dictOptionDto) {
-            // So, it's an OptionDto. In the csv, we have the display value (string).
-            // You must find the OptionDto and correctly fill the property.(string -> OptionDto)
-            if (column.type === PropType.ManyToMany) {
-              csvObjs.map(csvObj => {
-                const csvValues = csvObj[<keyof typeof csvObj>column.field]
-                  ?.toString()
-                  .trim()
-                  .split(' - ');
-                const optionDtos =
-                  dictOptionDto.value.filter(
-                    x => csvValues?.some(y => y === x.display) === true
-                  ) ?? null;
-
-                if (csvValues?.length !== optionDtos.length) {
-                  // this.bulkSaveData.errorToSaves.push({ ...csvObjs, errors });
-                } else {
-                  csvObj[<keyof typeof csvObj>column.field] = <any>optionDtos;
-                }
-              });
-            } else if (column.type === PropType.OneToMany) {
-              csvObjs.map(csvObj => {
-                const csvValue = csvObj[<keyof typeof csvObj>column.field]
-                  ?.toString()
-                  .trim();
-                const optionDto =
-                  dictOptionDto.value.find(
-                    x =>
-                      x.display ===
-                      csvObj[<keyof typeof csvObj>column.field]
-                        ?.toString()
-                        .trim()
-                  ) ?? null;
-                const isNotEmpty = csvValue && csvValue.length > 0;
-                const hasOptionDto = optionDto && optionDto?.display.length > 0;
-                if (
-                  (isNotEmpty === true && hasOptionDto === true) ||
-                  (isNotEmpty !== true && hasOptionDto !== true)
-                ) {
-                  csvObj[<keyof typeof csvObj>column.field] = <any>optionDto;
-                } else {
-                  // this.bulkSaveData.errorToSaves.push({ ...csvObjs, errors });
-                }
-              });
+          if (column.type === PropType.String) {
+            this.parseCSVString(csvObjs, column.field);
+          } else if (
+            column.type === PropType.Date ||
+            column.type === PropType.DateTime
+          ) {
+            this.parseCSVDate(csvObjs, column);
+          } else if (column.type === PropType.Boolean) {
+            this.parseCSVBoolean(csvObjs, column.field);
+          } else if (column.type === PropType.Number) {
+            this.parseCSVNumber(csvObjs, column.field);
+          } else if (
+            column.type === PropType.OneToMany ||
+            column.type === PropType.ManyToMany
+          ) {
+            const dictOptionDto = dictOptionDtos.find(
+              x => x.key === column.field
+            );
+            // If there is an dictOptionDto for this property
+            if (dictOptionDto) {
+              // So, it's an OptionDto. In the csv, we have the display value (string).
+              // You must find the OptionDto and correctly fill the property.(string -> OptionDto)
+              if (column.type === PropType.ManyToMany) {
+                this.parseCSVManyToMany(
+                  csvObjs,
+                  column.field,
+                  separator,
+                  dictOptionDto
+                );
+              } else if (column.type === PropType.OneToMany) {
+                this.parseCSVOneToMany(csvObjs, column.field, dictOptionDto);
+              }
             }
           }
         }
@@ -163,6 +149,104 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     return cleanedData;
   }
 
+  protected parseCSVString(csvObjs: T[], field: string) {
+    const regex1 = /"=""(.+?)"""/g;
+    const regex2 = /=""(.+?)""/g;
+
+    csvObjs.map(csvObj => {
+      csvObj[<keyof typeof csvObj>field] = <any>String(
+        csvObj[<keyof typeof csvObj>field]
+      )
+        .replace(regex1, (match, p1) => p1)
+        .replace(regex2, (match, p2) => p2);
+    });
+  }
+
+  protected parseCSVDate(csvObjs: T[], column: BiaFieldConfig) {
+    csvObjs.map(csvObj => {
+      if (<any>csvObj[<keyof typeof csvObj>column.field] instanceof Date !== true) {
+        let value = String(csvObj[<keyof typeof csvObj>column.field]);
+        if (column.type === PropType.Date) {
+          value += ' 00:00';
+        }
+        csvObj[<keyof typeof csvObj>column.field] = <any>new Date(value);
+      }
+    });
+  }
+
+  protected parseCSVBoolean(csvObjs: T[], field: string) {
+    csvObjs.map(csvObj => {
+      if (<any>csvObj[<keyof typeof csvObj>field] instanceof Boolean !== true) {
+        csvObj[<keyof typeof csvObj>field] = <any>(
+          (String(csvObj[<keyof typeof csvObj>field]) === 'X')
+        );
+      }
+    });
+  }
+
+  protected parseCSVNumber(csvObjs: T[], field: string) {
+    csvObjs.map(csvObj => {
+      if (<any>csvObj[<keyof typeof csvObj>field] instanceof Number !== true) {
+        csvObj[<keyof typeof csvObj>field] = <any>(
+          Number(csvObj[<keyof typeof csvObj>field])
+        );
+      }
+    });
+  }
+
+  protected parseCSVOneToMany(
+    csvObjs: T[],
+    field: string,
+    dictOptionDto: DictOptionDto
+  ) {
+    csvObjs.map(csvObj => {
+      const csvValue = csvObj[<keyof typeof csvObj>field]?.toString().trim();
+      const optionDto =
+        dictOptionDto.value.find(
+          x =>
+            x.display === csvObj[<keyof typeof csvObj>field]?.toString().trim()
+        ) ?? null;
+      if (
+        (isEmpty(csvValue) === true && isEmpty(optionDto) === true) ||
+        (isEmpty(csvValue) !== true && isEmpty(optionDto) !== true)
+      ) {
+        csvObj[<keyof typeof csvObj>field] = <any>optionDto;
+      } else {
+        this.bulkSaveData.errorToSaves.push({
+          obj: csvObj,
+          errors: [field + ' not found'],
+        });
+      }
+    });
+  }
+
+  protected parseCSVManyToMany(
+    csvObjs: T[],
+    field: string,
+    separator: string,
+    dictOptionDto: DictOptionDto
+  ) {
+    csvObjs.map(csvObj => {
+      const csvValues = csvObj[<keyof typeof csvObj>field]
+        ?.toString()
+        .trim()
+        .split(separator);
+      const optionDtos =
+        dictOptionDto.value.filter(
+          x => csvValues?.some(y => y === x.display) === true
+        ) ?? null;
+
+      if (csvValues?.length !== optionDtos.length) {
+        this.bulkSaveData.errorToSaves.push({
+          obj: csvObj,
+          errors: [field + ' not found'],
+        });
+      } else {
+        csvObj[<keyof typeof csvObj>field] = <any>optionDtos;
+      }
+    });
+  }
+
   private parseCSV(
     csv: string,
     crudConfig: CrudConfig
@@ -184,7 +268,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       transformHeader: header => columnMapping[header],
     });
 
-    const resultData$ = this.fillOptionDto(result.data, crudConfig);
+    const resultData$ = this.parseCSVCustom(result.data, crudConfig);
 
     const allObjs$ = this.crudItemService.dasService.getList({
       endpoint: 'all',
@@ -203,60 +287,58 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
   ): Observable<BulkSaveData<T>> {
     return combineLatest([csvObjs$, oldObjs$]).pipe(
       map(([csvObjs, oldObjs]) => {
-        const toDeletes: T[] = [];
-        const toInserts: T[] = [];
-        const toUpdates: T[] = [];
-        const errorToInserts: BulkSaveDataError[] = [];
-        const errorToUpdates: BulkSaveDataError[] = [];
+        // Remove objects in error.
+        csvObjs = csvObjs.filter(
+          x => !this.bulkSaveData.errorToSaves.map(y => y.obj).includes(x)
+        );
 
         for (const oldObj of oldObjs) {
           // TO DELETE
           const found = csvObjs.some(csvObj => csvObj.id === oldObj.id);
           if (!found) {
             oldObj.dtoState = DtoState.Deleted;
-            toDeletes.push(oldObj);
+            this.bulkSaveData.toDeletes.push(oldObj);
           }
 
           // TO UPDATE
           const csvObj = csvObjs.find(csvObj => csvObj.id === oldObj.id);
           if (oldObj && csvObj) {
-            if (this.compareObjects(oldObj, csvObj) !== true) {
-              const newObj: T = { ...oldObj };
-              for (const prop in newObj) {
-                if (csvObj.hasOwnProperty(prop)) {
-                  Object.assign(newObj, { [prop]: csvObj[prop] });
-                }
+            const newObj: T = clone(oldObj);
+            for (const prop in newObj) {
+              if (csvObj.hasOwnProperty(prop)) {
+                Object.assign(newObj, { [prop]: csvObj[prop] });
               }
+            }
 
-              const checkObject = this.form.checkObject(newObj);
+            this.form.setElement(oldObj);
+            const checkObject = this.form.checkObject(newObj);
 
-              if (checkObject.errorMessages.length > 0) {
-                errorToUpdates.push({
-                  ...csvObj,
-                  errors: checkObject.errorMessages,
-                });
-              } else {
-                newObj.dtoState = DtoState.Modified;
-                toUpdates.push(newObj);
-              }
+            if (checkObject.errorMessages.length > 0) {
+              this.bulkSaveData.errorToSaves.push({
+                obj: csvObj,
+                errors: checkObject.errorMessages,
+              });
+            } else if (JSON.stringify(oldObj) !== JSON.stringify(newObj)) {
+              checkObject.element.dtoState = DtoState.Modified;
+              this.bulkSaveData.toUpdates.push(checkObject.element);
             }
           }
         }
 
         for (const csvObj of csvObjs) {
           // TO INSERTS
-          if (parseInt(csvObj.id, 10) === 0) {
+          if (isEmpty(csvObj.id) === true || csvObj.id === 0) {
             const newObj = this.form.checkObject(csvObj).element;
             const checkObject = this.form.checkObject(newObj);
 
             if (checkObject.errorMessages.length > 0) {
-              errorToInserts.push({
-                ...csvObj,
+              this.bulkSaveData.errorToSaves.push({
+                obj: csvObj,
                 errors: checkObject.errorMessages,
               });
             } else {
               newObj.dtoState = DtoState.Added;
-              toInserts.push(newObj);
+              this.bulkSaveData.toInserts.push(newObj);
             }
           }
         }
@@ -273,42 +355,5 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       toUpdates: [],
       errorToSaves: [],
     };
-  }
-
-  private compareObjects(obj1: any, obj2: any): boolean {
-    // Check if the objects are of the same type
-    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
-      return false;
-    }
-
-    // Check if the objects have the same number of properties
-    const props1 = Object.keys(obj1);
-    const props2 = Object.keys(obj2);
-    if (props1.length !== props2.length) {
-      return false;
-    }
-
-    // Check each property of obj1
-    for (const prop of props1) {
-      // Check if the property exists in obj2
-      if (!(prop in obj2)) {
-        return false;
-      }
-
-      // Check if the property values are different
-      const val1 = obj1[prop];
-      const val2 = obj2[prop];
-      if (typeof val1 === 'object' && typeof val2 === 'object') {
-        // Recursively compare child objects
-        if (!this.compareObjects(val1, val2)) {
-          return false;
-        }
-      } else if (val1 !== val2) {
-        return false;
-      }
-    }
-
-    // If all checks pass, the objects are identical
-    return true;
   }
 }
