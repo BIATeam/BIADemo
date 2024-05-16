@@ -224,7 +224,7 @@
           <!-- <p-cellEditor> -->
           <ng-container *ngIf="editFooter === true">
             <ng-template
-              [ngIf]="col.isEditable === true"
+              [ngIf]="col.isEditable === true || col.isOnlyInitializable === true"
               [ngIfElse]="isNotEditable">
               <bia-table-input
                 [field]="col"

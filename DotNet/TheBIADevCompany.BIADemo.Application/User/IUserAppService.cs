@@ -6,10 +6,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -70,6 +72,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="users">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
+
+        /// <summary>
+        /// Add a list of users in a group in AD.
+        /// </summary>
+        /// <param name="user">The list of users to add.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto user);
 
         /// <summary>
         /// Remove a user in a group in AD.

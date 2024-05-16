@@ -53,7 +53,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// </summary>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInPlane
         public PlanesController(
             IPlaneAppService planeService, IClientForHubRepository clientForHubService)

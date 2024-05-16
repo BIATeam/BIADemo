@@ -148,6 +148,41 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 
         /// <summary>
+        /// Add a User.
+        /// </summary>
+        /// <param name="dto">The User DTO.</param>
+        /// <returns>The result of the creation.</returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status303SeeOther)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = Rights.Users.Add)]
+        public async Task<IActionResult> Add([FromBody] UserDto dto)
+        {
+            try
+            {
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(dto);
+#if UseHubForClientInUser
+                /// BIAToolKit - Begin Parent siteId
+                _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "Users", "refresh-Users");
+                /// BIAToolKit - End Parent siteId
+#endif
+                if (result.Errors.Any())
+                {
+                    return this.StatusCode(303, result.Errors);
+                }
+
+                return this.Ok(result.UsersAddedDtos);
+            }
+            catch (ArgumentNullException ex)
+            {
+                return this.ValidationProblem();
+            }
+        }
+
+        /// <summary>
         /// Add some users in a group.
         /// </summary>
         /// <param name="users">The list of user.</param>
