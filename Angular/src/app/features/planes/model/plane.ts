@@ -30,6 +30,7 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig =
   columns: [
     Object.assign(new BiaFieldConfig('id', 'bia.id'), {
       isEditable: false,
+      type: PropType.Number,
     }),
     /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {

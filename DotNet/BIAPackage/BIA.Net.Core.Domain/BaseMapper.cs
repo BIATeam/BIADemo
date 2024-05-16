@@ -172,12 +172,12 @@ namespace BIA.Net.Core.Domain
 
         public static string CSVTime(DateTime? x)
         {
-            return x?.ToString("hh:mm");
+            return x?.ToString("HH:mm");
         }
 
         public static string CSVTime(TimeSpan? x)
         {
-            return x?.ToString("hh:mm");
+            return x?.ToString("HH:mm");
         }
 
         public static string CSVTime(string x)
@@ -187,7 +187,7 @@ namespace BIA.Net.Core.Domain
 
         public static string CSVDateTime(DateTime? x)
         {
-            return x?.ToString("yyyy-MM-dd hh:mm");
+            return x?.ToString("yyyy-MM-dd HH:mm");
         }
 
         public static string CSVBool(bool x)

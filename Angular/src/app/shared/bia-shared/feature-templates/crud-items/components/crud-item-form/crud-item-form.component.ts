@@ -15,10 +15,9 @@ import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-
   selector: 'bia-crud-item-form',
   templateUrl: './crud-item-form.component.html',
   styleUrls: ['./crud-item-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
-export class CrudItemFormComponent<CrudItem extends BaseDto>  {
+export class CrudItemFormComponent<CrudItem extends BaseDto> {
   @Input() crudItem: CrudItem = <CrudItem>{};
   @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
@@ -28,12 +27,10 @@ export class CrudItemFormComponent<CrudItem extends BaseDto>  {
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
 
-  constructor() {
-  }
+  constructor() {}
 
   onCancel() {
     this.cancel.next();
-
   }
 
   onSave(crudItem: any) {
@@ -43,5 +40,8 @@ export class CrudItemFormComponent<CrudItem extends BaseDto>  {
   checkObject(crudItem: CrudItem): { element: any; errorMessages: string[] } {
     return this.biaFormComponent.checkObject(crudItem);
   }
-}
 
+  setElement(crudItem: CrudItem) {
+    this.biaFormComponent.element = crudItem;
+  }
+}
