@@ -21,7 +21,8 @@ export const MemberFieldsConfiguration : BiaFieldsConfig =
   columns: [
     Object.assign(new BiaFieldConfig('user', 'member.user'), {
       isRequired: true,
-      type: PropType.OneToMany
+      type: PropType.OneToMany,
+      isEditableChoice: true
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany

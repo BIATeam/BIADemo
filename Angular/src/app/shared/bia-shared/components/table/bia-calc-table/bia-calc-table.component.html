@@ -138,7 +138,7 @@
           <p-cellEditor>
             <ng-template pTemplate="input">
               <ng-template
-                [ngIf]="col.isEditable === true"
+                [ngIf]="col.isEditable === true || col.isOnlyUpdatable === true"
                 [ngIfElse]="isNotEditable">
                 <bia-table-input
                   [field]="col"

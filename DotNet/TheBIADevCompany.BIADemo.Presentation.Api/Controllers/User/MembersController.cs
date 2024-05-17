@@ -2,6 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 #define UseHubForClientInMember
+#define UseHubForClientInUser
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
@@ -39,6 +40,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         private readonly IMemberAppService memberService;
 
+        /// <summary>
+        /// The member application service.
+        /// </summary>
+        private readonly IUserAppService userService;
 #if UseHubForClientInMember
         /// <summary>
         /// the client for hub (signalR) service.
@@ -49,14 +54,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Initializes a new instance of the <see cref="MembersController"/> class.
         /// </summary>
+        /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInMember
         public MembersController(
-            IMemberAppService memberService, ITeamAppService teamAppService, IClientForHubRepository clientForHubService)
+            IUserAppService userService,
+            IMemberAppService memberService,
+            ITeamAppService teamAppService,
+            IClientForHubRepository clientForHubService)
 #else
-        public MembersController(IMemberAppService memberService, ITeamAppService teamAppService)
+        public MembersController(
+            IUserAppService userService,
+            IMemberAppService memberService,
+            ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
         {
@@ -64,6 +76,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             this.clientForHubService = clientForHubService;
 #endif
             this.memberService = memberService;
+            this.userService = userService;
         }
 
         /// <summary>
@@ -135,6 +148,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <returns>The result of the creation.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -147,6 +161,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
+                // Specific Code to add user if required
+                var addUserResult = await this.AddUserIfRequiered(dto);
+                if (addUserResult != null)
+                {
+                    return addUserResult;
+                }
+
                 var createdDto = await this.memberService.AddAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(createdDto.TeamId.ToString(), "members", "refresh-members");
@@ -157,6 +178,32 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.ValidationProblem();
             }
+        }
+
+        private async Task<IActionResult> AddUserIfRequiered(MemberDto dto)
+        {
+            if (dto.User.DtoState == DtoState.AddedNewChoice)
+            {
+                if (!this.IsAuthorize(Rights.Users.Add))
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                UserDto userDto = new UserDto();
+                userDto.Login = dto.User.Display;
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                if (result.Errors.Any())
+                {
+                    return this.StatusCode(StatusCodes.Status303SeeOther, result.Errors);
+                }
+
+                dto.User = result.UsersAddedDtos.FirstOrDefault();
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -229,6 +276,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.UpdateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                // Specific Code to add user if required
+                var addUserResult = await this.AddUserIfRequiered(dto);
+                if (addUserResult != null)
+                {
+                    return addUserResult;
                 }
 
                 var updatedDto = await this.memberService.UpdateAsync(dto);

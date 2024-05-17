@@ -15,6 +15,7 @@
         (onChange)="onChange()"
         appendTo="body"
         [style]="{ width: '100%' }"
+        [editable]="field.isEditableChoice"
       ></p-dropdown>
     </ng-container>
     <ng-container *ngSwitchCase="'ManyToMany'">

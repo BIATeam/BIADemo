@@ -63,6 +63,7 @@ export class MemberService extends CrudItemService<Member> {
         this.store.dispatch(FeatureMembersActions.createMulti({ members: membersToCreate }));
     }
     public update(crudItem: Member){
+        crudItem.teamId = this.getParentIds()[0],
         this.store.dispatch(FeatureMembersActions.update({ member : crudItem }));
     }
     public remove(id: any){

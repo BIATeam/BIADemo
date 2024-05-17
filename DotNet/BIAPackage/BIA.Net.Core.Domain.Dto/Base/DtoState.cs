@@ -28,5 +28,10 @@ namespace BIA.Net.Core.Domain.Dto.Base
         /// The DTO is marked to be deleted in the context.
         /// </summary>
         Deleted,
+
+        /// <summary>
+        /// The DTO is a new choice and marked to be added to the context.
+        /// </summary>
+        AddedNewChoice,
     }
 }

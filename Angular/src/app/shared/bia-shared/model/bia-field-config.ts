@@ -39,6 +39,8 @@ export class BiaFieldConfig {
   icon: string;
   isEditable: boolean;
   isOnlyInitializable: boolean;
+  isOnlyUpdatable: boolean;
+  isEditableChoice: boolean;
   isVisible: boolean;
   maxlength: number;
   translateKey: string;
@@ -73,6 +75,8 @@ export class BiaFieldConfig {
     this.icon = '';
     this.isEditable = true;
     this.isOnlyInitializable = false;
+    this.isOnlyUpdatable = false;
+    this.isEditableChoice = false;
     this.isVisible = true;
     this.maxlength = maxlength;
     this.isRequired = false;
@@ -96,6 +100,8 @@ export class BiaFieldConfig {
       icon: this.icon,
       isEditable: this.isEditable,
       isOnlyInitializable: this.isOnlyInitializable,
+      isOnlyUpdatable: this.isOnlyUpdatable,
+      isChoiceEditable: this.isEditableChoice,
       isVisible: this.isVisible,
       translateKey: this.translateKey,
       searchPlaceholder: this.searchPlaceholder,
