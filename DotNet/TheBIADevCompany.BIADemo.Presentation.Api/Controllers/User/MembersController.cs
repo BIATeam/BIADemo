@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
@@ -184,6 +185,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             if (dto.User.DtoState == DtoState.AddedNewChoice)
             {
+                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
+                if (existingUser != null)
+                {
+                    dto.User.Id = existingUser.Id;
+                    return null;
+                }
+
                 if (!this.IsAuthorize(Rights.Users.Add))
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
