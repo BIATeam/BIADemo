@@ -5,7 +5,6 @@ import { PlaneService } from '../../services/plane.service';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { take } from 'rxjs';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
-import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneBulkSaveService } from '../../services/plane-bulk-save.service';
 import { BulkSaveData } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk-save.service';
 
@@ -23,7 +22,6 @@ export class PlaneBulkSaveComponent
   constructor(
     protected injector: Injector,
     protected planeService: PlaneService,
-    private planeOptionsService: PlaneOptionsService,
     private planeBulkSaveService: PlaneBulkSaveService
   ) {
     super(injector, planeService);
@@ -32,21 +30,6 @@ export class PlaneBulkSaveComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.initServiceOptionDto();
-  }
-
-  downloadCsv() {
-    const columns: string[] = [
-      'id',
-      'msn',
-      'isActive',
-      'lastFlightDate',
-      'deliveryDate',
-      'capacity',
-      'planeTypeDisplay',
-    ];
-
-    this.planeBulkSaveService.downloadCsv(columns, 'Planes');
   }
 
   onFileSelected(event: any) {
@@ -62,13 +45,5 @@ export class PlaneBulkSaveComponent
         this.planeService.save(toSaves);
         console.log(bulkSaveData);
       });
-  }
-
-  private initServiceOptionDto() {
-    this.sub.add(
-      this.planeOptionsService.planeTypeOptions$.subscribe(x => {
-        this.planeBulkSaveService.planeTypeOptions = x;
-      })
-    );
   }
 }

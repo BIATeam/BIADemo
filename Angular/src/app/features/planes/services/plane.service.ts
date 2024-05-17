@@ -64,6 +64,8 @@ export class PlaneService extends CrudItemService<Plane> {
         this.store.dispatch(FeaturePlanesActions.update({ plane : crudItem }));
     }
     public save(crudItems: Plane[]){
+        const siteId = this.getParentIds()[0];
+        crudItems.filter(x => !x.id).map(x => (x.siteId = siteId));
         this.store.dispatch(FeaturePlanesActions.save({ planes : crudItems }));
     }
     public remove(id: any){
