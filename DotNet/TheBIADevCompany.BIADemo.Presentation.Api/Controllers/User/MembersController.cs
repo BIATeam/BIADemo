@@ -163,7 +163,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 }
 
                 // Specific Code to add user if required
-                var addUserResult = await this.AddUserIfRequiered(dto);
+                var addUserResult = await this.AddUserIfRequired(dto);
                 if (addUserResult != null)
                 {
                     return addUserResult;
@@ -181,12 +181,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
         }
 
-        private async Task<IActionResult> AddUserIfRequiered(MemberDto dto)
+        private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
         {
             if (dto.User.DtoState == DtoState.AddedNewChoice)
             {
                 var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
-                if (existingUser != null)
+                if (existingUser != null && existingUser.IsActive)
                 {
                     dto.User.Id = existingUser.Id;
                     return null;
@@ -287,7 +287,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 }
 
                 // Specific Code to add user if required
-                var addUserResult = await this.AddUserIfRequiered(dto);
+                var addUserResult = await this.AddUserIfRequired(dto);
                 if (addUserResult != null)
                 {
                     return addUserResult;

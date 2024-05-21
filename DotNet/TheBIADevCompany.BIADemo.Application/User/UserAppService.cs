@@ -180,7 +180,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 foreach (var user in result.UsersAddedDtos)
                 {
                     userDto.Id = user.Id;
-                    await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "Roles");
+                    await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "RolesInit");
                 }
             }
 
@@ -265,7 +265,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<string> RemoveInGroupAsync(int id)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            var user = await this.Repository.GetEntityAsync(id: id);
+            var user = await this.Repository.GetEntityAsync(id: id, includes: [x => x.Roles]);
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
                 if (user == null)

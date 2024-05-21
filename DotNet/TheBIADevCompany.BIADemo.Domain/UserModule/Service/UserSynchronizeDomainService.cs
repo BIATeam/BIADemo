@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <inheritdoc cref="IUserSynchronizeDomainService.SynchronizeFromADGroupAsync"/>
         public async Task SynchronizeFromADGroupAsync(bool fullSynchro = false)
         {
-            List<User> users = (await this.repository.GetAllEntityAsync()).ToList();
+            List<User> users = (await this.repository.GetAllEntityAsync(includes:[x => x.Roles])).ToList();
             List<string> usersSidInDirectory = (await this.userDirectoryHelper.GetAllUsersSidInRoleToSync("User", fullSynchro))?.ToList();
 
             if (usersSidInDirectory == null)
@@ -118,6 +118,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="user">The user to deactivate.</param>
         public void DeactivateUser(User user)
         {
+            user.Roles.Clear();
             user.IsActive = false;
         }
 

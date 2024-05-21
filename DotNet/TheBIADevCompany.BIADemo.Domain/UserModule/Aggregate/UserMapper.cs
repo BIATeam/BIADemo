@@ -75,9 +75,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(UserDto dto, User entity, string mapperMode, IUnitOfWork context)
         {
-            if (mapperMode == "Roles" && dto.Roles?.Any() == true)
+            if ((mapperMode == "RolesInit" || mapperMode == "Roles") && dto.Roles?.Any() == true)
             {
-                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted || mapperMode == "RolesInit"))
                 {
                     var userRole = entity.Roles.FirstOrDefault(x => x.Id == userRoleDto.Id);
                     if (userRole != null)
