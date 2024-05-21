@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -60,16 +61,22 @@ namespace TheBIADevCompany.BIADemo.Application.View
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
-                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Team || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                    filter: view =>
+                        view.ViewType == ViewType.System ||
+                        view.ViewType == ViewType.Team ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
             else
             {
+                UserDataDto userData = this.principal.GetUserData<UserDataDto>();
+
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
                     filter: view =>
-                    (view.ViewType == ViewType.System) ||
-                    (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
-                    (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                        (view.ViewType == ViewType.System) ||
+                        (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => userData.CurrentTeams.Select(ct => ct.TeamId).Contains(viewTeam.Team.Id) &&
+                                                                                          viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
         }
 
