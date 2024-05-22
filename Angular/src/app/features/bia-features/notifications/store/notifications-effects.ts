@@ -30,7 +30,7 @@ export class NotificationsEffects {
         this.notificationDas.getListItemsByPost<NotificationListItem>({ event: event }).pipe(
           map((result: DataResult<NotificationListItem[]>) => FeatureNotificationsActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         )
@@ -47,7 +47,7 @@ export class NotificationsEffects {
           return this.notificationDas.get({ id: id }).pipe(
             map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureNotificationsActions.failure({ error: err }));
             })
           );
@@ -66,7 +66,7 @@ export class NotificationsEffects {
         return this.notificationDas.setUnread(id).pipe(
           map((notification) => FeatureNotificationsActions.loadSuccess({ notification })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
@@ -90,7 +90,7 @@ export class NotificationsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
@@ -114,7 +114,7 @@ export class NotificationsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
@@ -138,7 +138,7 @@ export class NotificationsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );
@@ -162,7 +162,7 @@ export class NotificationsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
         );

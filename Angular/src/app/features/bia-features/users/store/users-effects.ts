@@ -29,7 +29,7 @@ export class UsersEffects {
         this.userDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<User[]>) => FeatureUsersActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class UsersEffects {
           return this.userDas.get({ id: id }).pipe(
             map((user) => FeatureUsersActions.loadSuccess({ user })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureUsersActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class UsersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class UsersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class UsersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class UsersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
         );
@@ -164,7 +164,7 @@ export class UsersEffects {
             return FeatureUsersActions.loadAllByPost({ event: event });
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
           })
         );

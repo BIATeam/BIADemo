@@ -24,7 +24,7 @@ export class RoleOptionsEffects {
         this.roleDas.getList({ endpoint: 'allOptions?teamTypeId=' + teamTypeId }).pipe(
           map((roles) => DomainRoleOptionsActions.loadAllSuccess({ roles: roles?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainRoleOptionsActions.failure({ error: err }));
           })
         )
@@ -41,7 +41,7 @@ export class RoleOptionsEffects {
         this.roleDas.get({ id: id }).pipe(
           map((role) => loadSuccess({ role })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )

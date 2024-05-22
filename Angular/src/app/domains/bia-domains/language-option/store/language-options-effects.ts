@@ -23,7 +23,7 @@ export class LanguageOptionsEffects {
         this.languageDas.getList({ endpoint: 'allOptions' }).pipe(
           map((languages) => DomainLanguageOptionsActions.loadAllSuccess({ languages: languages?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainLanguageOptionsActions.failure({ error: err }));
           })
         )

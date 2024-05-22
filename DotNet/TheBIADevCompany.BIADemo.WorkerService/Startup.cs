@@ -91,7 +91,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
                     return new BIAClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });
-            services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
+            services.AddTransient<UserContext>(provider => new UserContext("en-GB", this.biaNetSection.Cultures));
 
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);

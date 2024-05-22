@@ -23,7 +23,7 @@ export class UsersFromDirectoryEffects {
         return this.userFromDirectoryDas.getAllByFilter(action.userFilter.filter, action.userFilter.ldapName, action.userFilter.returnSize).pipe(
           map((users) => FeatureUsersFromDirectoryActions.loadAllSuccess({ users })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersFromDirectoryActions.failure({ error: err }));
           })
         );
@@ -59,7 +59,7 @@ export class UsersFromDirectoryEffects {
               }
               this.biaMessageService.showErrorDetail(errorMessage);
             } else {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
             }
             return of(FeatureUsersFromDirectoryActions.failure({ error: { concern: 'CREATE', error: err } }));
           })

@@ -23,7 +23,7 @@ export class NotificationTypeOptionsEffects {
         this.notificationTypeDas.getList({ endpoint: 'allOptions' }).pipe(
           map((notificationTypes) => DomainNotificationTypeOptionsActions.loadAllSuccess({ notificationTypes: notificationTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationTypeOptionsActions.failure({ error: err }));
           })
         )
@@ -40,7 +40,7 @@ export class NotificationTypeOptionsEffects {
         this.notificationTypeDas.get({ id: id }).pipe(
           map((notificationType) => loadSuccess({ notificationType })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )

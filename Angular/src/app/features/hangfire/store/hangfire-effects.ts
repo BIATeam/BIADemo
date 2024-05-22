@@ -32,7 +32,7 @@ export class HangfireEffects {
             return biaSuccessWaitRefreshSignalR();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );

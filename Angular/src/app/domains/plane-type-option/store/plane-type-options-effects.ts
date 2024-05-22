@@ -25,7 +25,7 @@ export class PlaneTypeOptionsEffects {
           map((planesTypes) => DomainPlaneTypeOptionsActions.loadAllSuccess({ planesTypes: planesTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
             }
             return of(DomainPlaneTypeOptionsActions.failure({ error: err }));
           })

@@ -20,7 +20,7 @@ export class LdapDomainsEffects {
         return this.ldapDomainDas.getAll().pipe(
           map((ldapDomains) => DomainLdapDomainsActions.loadAllSuccess({ ldapDomains })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainLdapDomainsActions.failure({ error: err }));
           })
         );

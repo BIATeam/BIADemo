@@ -41,7 +41,7 @@ export class ViewsEffects {
         return this.viewDas.getAll().pipe(
           map((views) => loadAllSuccess({ views })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
@@ -60,7 +60,7 @@ export class ViewsEffects {
             return loadAllView();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
@@ -78,7 +78,7 @@ export class ViewsEffects {
             return [setViewSuccess(viewAdded), loadAllView()];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )
@@ -96,7 +96,7 @@ export class ViewsEffects {
             return [setViewSuccess(viewUpdated), loadAllView()];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )
@@ -114,7 +114,7 @@ export class ViewsEffects {
             return [setViewSuccess(viewUpdated), loadAllView()];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )
@@ -132,7 +132,7 @@ export class ViewsEffects {
             return loadAllView();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
@@ -151,7 +151,7 @@ export class ViewsEffects {
             return loadAllView();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
@@ -169,7 +169,7 @@ export class ViewsEffects {
             return [setViewSuccess(viewAdded), loadAllView()];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )
@@ -187,7 +187,7 @@ export class ViewsEffects {
             return loadAllView();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
@@ -205,7 +205,7 @@ export class ViewsEffects {
             return loadAllView();
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         );
