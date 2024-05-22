@@ -7,6 +7,8 @@ import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.serv
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 
 @Component({
   selector: 'bia-crud-item-table',
@@ -56,7 +58,13 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
               this.element?Reflect.get(this.element, col.field):undefined));
             break;
           case PropType.OneToMany:
-            Reflect.set(crudItem, col.field, BiaOptionService.Clone(crudItem[col.field as keyof CrudItem]));
+            var typeofValue = typeof crudItem[col.field as keyof CrudItem];
+            if (col.isEditableChoice && typeofValue === 'string') {
+                Reflect.set(crudItem, col.field, new OptionDto (0, crudItem[col.field as keyof CrudItem] as string, DtoState.AddedNewChoice))
+            }
+            else {
+              Reflect.set(crudItem, col.field, BiaOptionService.Clone(crudItem[col.field as keyof CrudItem]));
+            }
             break;
           }        
       }

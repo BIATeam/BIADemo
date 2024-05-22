@@ -25,6 +25,7 @@ export const UserFieldsConfiguration : BiaFieldsConfig =
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
       isEditable: false,
+      isOnlyInitializable: true,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,

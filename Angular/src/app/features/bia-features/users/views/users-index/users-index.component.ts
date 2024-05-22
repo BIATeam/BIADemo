@@ -40,17 +40,17 @@ export class UsersIndexComponent extends CrudItemsIndexComponent<User> implement
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);
   }
-
   ngOnInit() {
     super.ngOnInit();
 
     this.sub.add(
       this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(event => {
-        setTimeout(() => this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata()));
+        if (!UserCRUDConfiguration.useSignalR) {
+          setTimeout(() => this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata()));
+        }
       })
     )
   }
-
   onCreate() {
     this.displayUserAddFromDirectoryDialog = true;
     /*if (!this.useCalcMode) {

@@ -345,7 +345,23 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         public async Task<TUserFromDirectory> ResolveUser(UserFromDirectoryDto userFromDirectoryDto)
         {
-            UserPrincipal userPrincipal = await ResolveUserPrincipal(userFromDirectoryDto.Domain, this.GetIdentityKey(userFromDirectoryDto));
+            UserPrincipal userPrincipal = null;
+            if (userFromDirectoryDto.Domain != null)
+            {
+                userPrincipal = await ResolveUserPrincipal(userFromDirectoryDto.Domain, this.GetIdentityKey(userFromDirectoryDto));
+            }
+            else
+            {
+                foreach (var ldapDomainsUser in ldapDomainsUsers)
+                {
+                    userPrincipal = await ResolveUserPrincipal(ldapDomainsUser.Name, this.GetIdentityKey(userFromDirectoryDto));
+                    if (userPrincipal != null)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (userPrincipal == null) return null;
             return GetUser(userPrincipal, userFromDirectoryDto.Domain);
         }
 

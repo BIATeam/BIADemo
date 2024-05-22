@@ -167,6 +167,26 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
+        /// <inheritdoc cref="IUserAppService.AddByIdentityKeyAsync"/>
+        public async Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto)
+        {
+            UserFromDirectoryDto userFromDirectoryDto = new UserFromDirectoryDto();
+            userFromDirectoryDto.IdentityKey = this.userIdentityKeyDomainService.GetDtoIdentityKey(userDto);
+            List<UserFromDirectoryDto> users = new List<UserFromDirectoryDto>();
+            users.Add(userFromDirectoryDto);
+            var result = await this.AddFromDirectory(users);
+            if (result.UsersAddedDtos.Count > 0)
+            {
+                foreach (var user in result.UsersAddedDtos)
+                {
+                    userDto.Id = user.Id;
+                    await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "RolesInit");
+                }
+            }
+
+            return result;
+        }
+
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
         public async Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
@@ -204,15 +224,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
                         UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
-
-                        var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
-
-                        if (addedUser != null)
+                        if (userFormDirectory != null)
                         {
-                            usersAdded.Add(addedUser);
-                        }
+                            var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 
-                        await this.Repository.UnitOfWork.CommitAsync();
+                            if (addedUser != null)
+                            {
+                                usersAdded.Add(addedUser);
+                                await this.Repository.UnitOfWork.CommitAsync();
+                            }
+                            else
+                            {
+                                result.Errors.Add(userFormDirectoryDto.DisplayName);
+                            }
+                        }
+                        else
+                        {
+                            result.Errors.Add(userFormDirectoryDto.IdentityKey);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -236,7 +265,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<string> RemoveInGroupAsync(int id)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            var user = await this.Repository.GetEntityAsync(id: id);
+            var user = await this.Repository.GetEntityAsync(id: id, includes: [x => x.Roles]);
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
                 if (user == null)
