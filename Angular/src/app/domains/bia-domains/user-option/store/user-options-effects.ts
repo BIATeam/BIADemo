@@ -25,7 +25,7 @@ export class UserOptionsEffects {
         this.userDas.getList({ endpoint: 'allOptions' }).pipe(
           map((users) => DomainUserOptionsActions.loadAllSuccess({ users: users?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainUserOptionsActions.failure({ error: err }));
           })
         )
@@ -44,7 +44,7 @@ export class UserOptionsEffects {
         this.userDas.getList({ endpoint: 'allOptions', options: { params: { filter: action.filter } } }).pipe(
           map((users) => DomainUserOptionsActions.loadAllSuccess({ users })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainUserOptionsActions.failure({ error: err }));
           })
         )
@@ -61,7 +61,7 @@ export class UserOptionsEffects {
         this.userDas.get({ id: id }).pipe(
           map((user) => loadSuccess({ user })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )

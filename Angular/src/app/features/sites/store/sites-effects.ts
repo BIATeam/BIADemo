@@ -29,7 +29,7 @@ export class SitesEffects {
         this.siteDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Site[]>) => FeatureSitesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureSitesActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class SitesEffects {
           return this.siteDas.get({ id: id }).pipe(
             map((site) => FeatureSitesActions.loadSuccess({ site })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureSitesActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class SitesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureSitesActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class SitesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureSitesActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class SitesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureSitesActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class SitesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureSitesActions.failure({ error: err }));
           })
         );

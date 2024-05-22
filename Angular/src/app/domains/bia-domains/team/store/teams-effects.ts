@@ -22,7 +22,7 @@ export class TeamsEffects {
             return [ DomainTeamsActions.setDefaultTeamSuccess(data)];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainTeamsActions.failure({ error: err }));
           })
         )
@@ -39,7 +39,7 @@ export class TeamsEffects {
             return [ DomainTeamsActions.setDefaultRolesSuccess(data)];
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainTeamsActions.failure({ error: err }));
           })
         )

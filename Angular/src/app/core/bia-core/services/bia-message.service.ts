@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
 import { Notification, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
 const NOTIFICATION_LIFE_DEFAULT = 10000;
@@ -35,6 +36,15 @@ export class BiaMessageService {
       summary: this.translateService.instant('bia.error'),
       detail: this.translateService.instant('biaMsg.errorOccurredWhileProccessing')
     });
+  }
+
+  showErrorHttpResponse(err: HttpErrorResponse) {
+    if (err.status == 422) {
+      this.showErrorDetail(err.error,undefined);
+    }
+    else {
+      this.showError();
+    }
   }
 
   showSuccess(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {

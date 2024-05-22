@@ -29,7 +29,7 @@ export class PlanesEffects {
         this.planeDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Plane[]>) => FeaturePlanesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class PlanesEffects {
           return this.planeDas.get({ id: id }).pipe(
             map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class PlanesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class PlanesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class PlanesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class PlanesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
         );

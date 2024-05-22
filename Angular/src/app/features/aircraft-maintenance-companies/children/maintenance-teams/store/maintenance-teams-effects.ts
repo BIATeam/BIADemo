@@ -29,7 +29,7 @@ export class MaintenanceTeamsEffects {
         this.maintenanceTeamDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<MaintenanceTeam[]>) => FeatureMaintenanceTeamsActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class MaintenanceTeamsEffects {
           return this.maintenanceTeamDas.get({ id: id }).pipe(
             map((maintenanceTeam) => FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class MaintenanceTeamsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class MaintenanceTeamsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class MaintenanceTeamsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class MaintenanceTeamsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
         );

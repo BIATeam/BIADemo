@@ -20,7 +20,7 @@ export class NotificationsEffects {
         this.notificationDas.getList().pipe(
           map((notifications) => DomainNotificationsActions.loadAllSuccess({ notifications })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
         )
@@ -36,7 +36,7 @@ export class NotificationsEffects {
         this.notificationDas.get({ id: id }).pipe(
           map((notification) => DomainNotificationsActions.loadSuccess({ notification })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
         )
@@ -52,7 +52,7 @@ export class NotificationsEffects {
         this.notificationDas.getUnreadNotificationIds().pipe(
           map((ids) => DomainNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
         )
@@ -68,7 +68,7 @@ export class NotificationsEffects {
         return this.notificationDas.setAsRead(id).pipe(
           map(() => DomainNotificationsActions.setAsReadSuccess()),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
         );

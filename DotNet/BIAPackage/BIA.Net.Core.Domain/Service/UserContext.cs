@@ -5,10 +5,9 @@ namespace BIA.Net.Core.Domain.Service
 {
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.Linq;
-    using System.Security.Claims;
-    using Microsoft.Extensions.Primitives;
-    using Newtonsoft.Json;
+    using BIA.Net.Core.Common.Configuration;
 
     /// <summary>
     /// A <see cref="UserContext"/> implementation with additional utility methods.
@@ -18,15 +17,23 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Initializes a new instance of the <see cref="UserContext"/> class.
         /// </summary>
-        /// <param name="culture">The default culture.</param>
-        public UserContext(string culture)
+        /// <param name="culture">The wanted culture.</param>
+        /// <param name="acceptedCultures">The accepted cultures in config.</param>
+        public UserContext(string culture, IEnumerable<Culture> acceptedCultures)
         {
-            this.Culture = culture;
-            this.Language = this.Culture.Split(",")[0].Split("-")[0];
-            if (string.IsNullOrEmpty(this.Language) || this.Language.Count() != 2)
+            var acceptedCulture = acceptedCultures.FirstOrDefault(w => Array.Exists(w.AcceptedCodes, cc => cc == culture));
+
+            // Select the default culture
+            acceptedCulture ??= acceptedCultures.FirstOrDefault(w => Array.Exists(w.AcceptedCodes, cc => cc == "default"));
+
+            if (acceptedCulture == null)
             {
-                this.Language = "en";
+                throw new ConfigurationErrorsException("You forgot to specify a default culture in bianetconfig.json.");
             }
+
+            this.Culture = acceptedCulture.Code;
+            this.Language = acceptedCulture.LanguageCode;
+            this.LanguageId = acceptedCulture.LanguageId;
         }
 
         /// <summary>
@@ -38,5 +45,10 @@ namespace BIA.Net.Core.Domain.Service
         /// Language.
         /// </summary>
         public string Language { get; private set; }
+
+        /// <summary>
+        /// Language Id.
+        /// </summary>
+        public int LanguageId { get; private set; }
     }
 }

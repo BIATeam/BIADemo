@@ -29,7 +29,7 @@ export class MembersEffects {
         this.memberDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Member[]>) => FeatureMembersActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class MembersEffects {
           return this.memberDas.get({ id: id }).pipe(
             map((member) => FeatureMembersActions.loadSuccess({ member })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureMembersActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class MembersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         );
@@ -98,7 +98,7 @@ export class MembersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class MembersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class MembersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         );
@@ -169,7 +169,7 @@ export class MembersEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMembersActions.failure({ error: err }));
           })
         );

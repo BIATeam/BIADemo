@@ -25,7 +25,7 @@ export class TeamOptionsEffects {
           map((teams) => DomainTeamOptionsActions.loadAllSuccess({ teams: teams?.sort((a, b) => a.display.localeCompare(b.display)) })),
           catchError((err) => {
             if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
             }
             return of(DomainTeamOptionsActions.failure({ error: err }));
           })

@@ -11,12 +11,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -24,10 +26,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInMember
     using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.Options;
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
@@ -45,6 +49,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// The member application service.
         /// </summary>
         private readonly IUserAppService userService;
+
+        /// <summary>
+        /// The user context for message translation.
+        /// </summary>
+        private readonly UserContext userContext;
+
 #if UseHubForClientInMember
         /// <summary>
         /// the client for hub (signalR) service.
@@ -58,12 +68,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
+        /// <param name="userContext">The user context.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInMember
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
             ITeamAppService teamAppService,
+            UserContext userContext,
             IClientForHubRepository clientForHubService)
 #else
         public MembersController(
@@ -78,6 +90,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #endif
             this.memberService = memberService;
             this.userService = userService;
+            this.userContext = userContext;
         }
 
         /// <summary>
@@ -151,6 +164,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Add([FromBody] MemberDto dto)
@@ -178,6 +192,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContext.LanguageId));
             }
         }
 

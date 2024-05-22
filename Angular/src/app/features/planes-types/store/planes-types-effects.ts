@@ -29,7 +29,7 @@ export class PlanesTypesEffects {
         this.planeTypeDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<PlaneType[]>) => FeaturePlanesTypesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class PlanesTypesEffects {
           return this.planeTypeDas.get({ id: id }).pipe(
             map((planeType) => FeaturePlanesTypesActions.loadSuccess({ planeType })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesTypesActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class PlanesTypesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class PlanesTypesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class PlanesTypesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class PlanesTypesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
         );

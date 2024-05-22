@@ -30,7 +30,7 @@ export class EnginesEffects {
         this.engineDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Engine[]>) => FeatureEnginesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         )
@@ -47,7 +47,7 @@ export class EnginesEffects {
           return this.engineDas.get({ id: id }).pipe(
             map((engine) => FeatureEnginesActions.loadSuccess({ engine })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               location.assign(this.baseHref);
               return of(FeatureEnginesActions.failure({ error: err }));
             })
@@ -75,7 +75,7 @@ export class EnginesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -99,7 +99,7 @@ export class EnginesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -123,7 +123,7 @@ export class EnginesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );
@@ -147,7 +147,7 @@ export class EnginesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureEnginesActions.failure({ error: err }));
           })
         );

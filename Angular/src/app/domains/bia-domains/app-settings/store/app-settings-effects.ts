@@ -36,7 +36,7 @@ export class AppSettingsEffects {
                   return of(DomainAppSettingsActions.loadAllSuccess({ appSettings }));
                 }
               }
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(DomainAppSettingsActions.failure({ error: err }));
             })
           )

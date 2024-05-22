@@ -29,7 +29,7 @@ export class AirportsEffects {
         this.airportDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Airport[]>) => FeatureAirportsActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class AirportsEffects {
           return this.airportDas.get({ id: id }).pipe(
             map((airport) => FeatureAirportsActions.loadSuccess({ airport })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureAirportsActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class AirportsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class AirportsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class AirportsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class AirportsEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         );

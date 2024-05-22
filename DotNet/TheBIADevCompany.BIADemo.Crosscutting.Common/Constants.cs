@@ -39,11 +39,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The default theme.
             /// </summary>
             public const string Theme = "Light";
-
-            /// <summary>
-            /// The default language.
-            /// </summary>
-            public const string Language = "en-US";
         }
 
         /// <summary>

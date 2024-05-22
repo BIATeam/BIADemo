@@ -29,7 +29,7 @@ export class AircraftMaintenanceCompaniesEffects {
         this.aircraftMaintenanceCompanyDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<AircraftMaintenanceCompany[]>) => FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess({ result: result, event: event })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
           })
         )
@@ -46,7 +46,7 @@ export class AircraftMaintenanceCompaniesEffects {
           return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
             map((aircraftMaintenanceCompany) => FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany })),
             catchError((err) => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
             })
           );
@@ -73,7 +73,7 @@ export class AircraftMaintenanceCompaniesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
           })
         );
@@ -97,7 +97,7 @@ export class AircraftMaintenanceCompaniesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
           })
         );
@@ -121,7 +121,7 @@ export class AircraftMaintenanceCompaniesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
           })
         );
@@ -145,7 +145,7 @@ export class AircraftMaintenanceCompaniesEffects {
             }
           }),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
           })
         );
