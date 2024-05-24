@@ -156,8 +156,9 @@ export class BiaCalcTableComponent extends BiaTableComponent implements OnInit, 
     if (this.isInComplexInput === false) {
       setTimeout(() => {
         if (this.isInComplexInput !== true &&
-          this.getParentComponent(document.activeElement, 'bia-calc-form') === null /*&&
-        this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
+          this.getParentComponent(document.activeElement, 'bia-calc-form') === null &&
+          !document.activeElement?.className?.includes('p-dropdown') /*&&
+          this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
         ) {
           this.initEditableRow(null);
         }
