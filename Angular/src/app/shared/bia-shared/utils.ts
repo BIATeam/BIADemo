@@ -1,28 +1,26 @@
-export const isEmpty = (value: any): boolean => {
-  if (value == null) {
+export const isEmpty = (value: any | null | undefined): boolean => {
+  if (value == null) { // Covers both `null` and `undefined`
     return true;
   }
 
-  if (
-    typeof value === 'string' ||
-    value instanceof String ||
-    typeof value === 'number' ||
-    value instanceof Number
-  ) {
+  if ([
+    'string', 
+    'number'
+  ].includes(typeof value) || value instanceof String || value instanceof Number) {
     return String(value).trim().length === 0;
   }
-
-  if (Array.isArray(value)) {
-    return value.length === 0;
-  }
-
-  if (typeof value === 'object') {
+  
+  if (Array.isArray(value) || typeof value === 'object') {
     return Object.keys(value).length === 0;
   }
 
-  // TODO Date?
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime());
+  }
+
   return false;
 };
+
 
 export const isObject = (object: any): boolean => {
   return object != null && object instanceof Date !== true && typeof object === 'object';

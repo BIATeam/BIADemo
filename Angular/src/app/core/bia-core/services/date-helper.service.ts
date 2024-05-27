@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DateHelperService {
-  constructor() { }
-
   public static isDate(value: any): boolean {
     const regex = /(\d{4})-(\d{2})-(\d{2})T/;
     if (typeof value === 'string' && value.match(regex)) {
@@ -41,5 +39,41 @@ export class DateHelperService {
         date.getSeconds()
       )
     );
+  }
+
+  public static parseDate(dateString: string): Date | null {
+    if (isNaN(Date.parse(dateString)) !== true) {
+      return new Date(dateString);
+    }
+
+    const formats = [
+      // 'DD/MM/YYYY HH:mm'
+      {
+        regex: /^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/,
+        fn: (d: string) => {
+          const [date, time] = d.split(' ');
+          const [day, month, year] = date.split('/');
+          const [hours, minutes] = time.split(':');
+          return new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
+        },
+      },
+
+      // 'DD/MM/YYYY'
+      {
+        regex: /^\d{2}\/\d{2}\/\d{4}$/,
+        fn: (d: string) => {
+          const [day, month, year] = d.split('/');
+          return new Date(`${year}-${month}-${day}`);
+        },
+      },
+    ];
+
+    for (let i = 0; i < formats.length; i++) {
+      if (formats[i].regex.test(dateString)) {
+        return formats[i].fn(dateString);
+      }
+    }
+
+    return null;
   }
 }
