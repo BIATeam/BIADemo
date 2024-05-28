@@ -57,7 +57,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       };
 
       if (file) {
-        reader.readAsText(file);
+        reader.readAsText(file, 'ISO-8859-15');
       }
     });
   }
