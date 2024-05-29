@@ -106,32 +106,34 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
         csvObjs.map(csvObj => {
           crudConfig.fieldsConfig.columns.map(column => {
             const csvValue: any = csvObj[<keyof typeof csvObj>column.field];
-            if (column.type === PropType.String) {
-              this.parseCSVString(csvObj, column);
-            } else if (
-              column.type === PropType.Date &&
-              Object(csvValue) instanceof Date !== true
-            ) {
-              this.parseCSVDate(csvObj, column);
-            } else if (
-              column.type === PropType.DateTime &&
-              Object(csvValue) instanceof Date !== true
-            ) {
-              this.parseCSVDateTime(csvObj, column);
-            } else if (
-              column.type === PropType.Boolean &&
-              Object(csvValue) instanceof Boolean !== true
-            ) {
-              this.parseCSVBoolean(csvObj, column);
-            } else if (
-              column.type === PropType.Number &&
-              Object(csvValue) instanceof Number !== true
-            ) {
-              this.parseCSVNumber(csvObj, column);
-            } else if (column.type === PropType.OneToMany) {
-              this.parseCSVOneToMany(csvObj, column, dictOptionDtos);
-            } else if (column.type === PropType.ManyToMany) {
-              this.parseCSVManyToMany(csvObj, column, dictOptionDtos);
+            if (csvValue != null) {
+              if (column.type === PropType.String) {
+                this.parseCSVString(csvObj, column);
+              } else if (
+                column.type === PropType.Date &&
+                Object(csvValue) instanceof Date !== true
+              ) {
+                this.parseCSVDate(csvObj, column);
+              } else if (
+                column.type === PropType.DateTime &&
+                Object(csvValue) instanceof Date !== true
+              ) {
+                this.parseCSVDateTime(csvObj, column);
+              } else if (
+                column.type === PropType.Boolean &&
+                Object(csvValue) instanceof Boolean !== true
+              ) {
+                this.parseCSVBoolean(csvObj, column);
+              } else if (
+                column.type === PropType.Number &&
+                Object(csvValue) instanceof Number !== true
+              ) {
+                this.parseCSVNumber(csvObj, column);
+              } else if (column.type === PropType.OneToMany) {
+                this.parseCSVOneToMany(csvObj, column, dictOptionDtos);
+              } else if (column.type === PropType.ManyToMany) {
+                this.parseCSVManyToMany(csvObj, column, dictOptionDtos);
+              }
             }
           });
         });
@@ -294,6 +296,9 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
         // Remove objects in error.
         csvObjs = csvObjs.filter(
           x => !this.bulkSaveData.errorToSaves.map(y => y.obj).includes(x)
+        );
+        oldObjs = oldObjs.filter(
+          x => !this.bulkSaveData.errorToSaves.map(y => y.obj.id).includes(x.id)
         );
 
         for (const oldObj of oldObjs) {
