@@ -7,6 +7,7 @@ import { take } from 'rxjs';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
 import { PlaneBulkSaveService } from '../../services/plane-bulk-save.service';
 import { BulkSaveData } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk-save.service';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 
 @Component({
   selector: 'app-plane-bulk-save',
@@ -18,6 +19,12 @@ export class PlaneBulkSaveComponent
   implements OnInit
 {
   @ViewChild(PlaneFormComponent) planeFormComponent: PlaneFormComponent;
+  bulkSaveData: BulkSaveData<Plane>;
+  displayedColumns: KeyValuePair[];
+  sortFieldValue = '';
+  deleteChecked = false;
+  updateChecked = false;
+  insertChecked = false;
 
   constructor(
     protected injector: Injector,
@@ -30,20 +37,45 @@ export class PlaneBulkSaveComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.displayedColumns = this.crudConfiguration.fieldsConfig.columns.map(
+      col => <KeyValuePair>{ key: col.field, value: col.header }
+    );
+    this.sortFieldValue = this.displayedColumns[0].key;
   }
 
   onFileSelected(event: any) {
     this.planeBulkSaveService
-      .uploadCsv(
-        this.planeFormComponent,
-        event.target.files,
-        this.crudConfiguration
-      )
+      .uploadCsv(this.planeFormComponent, event.files, this.crudConfiguration)
       .pipe(take(1))
-      .subscribe((bulkSaveData: BulkSaveData<Plane>) => {
-        const toSaves = [...bulkSaveData.toInserts, ...bulkSaveData.toUpdates];
-        this.planeService.save(toSaves);
-        console.log(bulkSaveData);
-      });
+      .subscribe(
+        (bulkSaveData: BulkSaveData<Plane>) =>
+          (this.bulkSaveData = bulkSaveData)
+      );
+  }
+
+  onCancel() {
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
+  }
+
+  onSave() {
+    let toSaves: Plane[] = [];
+
+    if (this.deleteChecked === true) {
+      toSaves = toSaves.concat(this.bulkSaveData.toDeletes);
+    }
+
+    if (this.insertChecked === true) {
+      toSaves = toSaves.concat(this.bulkSaveData.toInserts);
+    }
+
+    if (this.updateChecked === true) {
+      toSaves = toSaves.concat(this.bulkSaveData.toUpdates);
+    }
+
+    if (toSaves.length > 0) {
+      this.planeService.save(toSaves);
+    }
+
+    this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 }
