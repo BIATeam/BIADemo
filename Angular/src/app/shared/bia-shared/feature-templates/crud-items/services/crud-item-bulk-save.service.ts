@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, combineLatest, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import * as Papa from 'papaparse';
@@ -45,16 +45,21 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     this.form = form;
     this.initBulkSaveData();
     const file = files.item(0);
-    const reader = new FileReader();
 
-    return new Observable(observer => {
+    return from(this.readFileAsText(file)).pipe(
+      switchMap(csv => this.parseCSV(csv, crudConfig))
+    );
+  }
+
+  protected readFileAsText(file: File | null): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
       reader.onload = (e: any) => {
-        const csv = e.target.result;
-        this.parseCSV(csv, crudConfig).subscribe((data: BulkSaveData<T>) => {
-          observer.next(data);
-          observer.complete();
-        });
+        return resolve(e.target.result);
       };
+
+      reader.onerror = error => reject(error);
 
       if (file) {
         reader.readAsText(file, 'ISO-8859-15');
@@ -82,12 +87,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       endpoint: 'all',
     });
 
-    const toSaves$: Observable<BulkSaveData<T>> = this.fillBulkSaveData(
-      resultData$,
-      allObjs$
-    );
-
-    return toSaves$;
+    return this.fillBulkSaveData(resultData$, allObjs$);
   }
 
   protected getColumnMapping(crudConfig: CrudConfig) {

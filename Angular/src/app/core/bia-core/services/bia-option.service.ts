@@ -2,7 +2,6 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 
 export class BiaOptionService {
-
   public static Clone<T>(value: any) {
     if (!value) {
       return null as any;
@@ -14,25 +13,37 @@ export class BiaOptionService {
     let differential: T[] = [];
     if (oldList && Array.isArray(oldList)) {
       // Delete items
-      const toDeletedConnectingAirports = oldList
-        .filter((s) => !newList || !newList.map(x => x.id).includes(s.id))
-        .map((s) => <T>{ ...s, dtoState: DtoState.Deleted });
+      const toDeleteds = oldList
+        .filter(s => !newList || !newList.map(x => x.id).includes(s.id))
+        .map(s => <T>{ ...s, dtoState: DtoState.Deleted });
 
-      if (toDeletedConnectingAirports) {
-        differential = differential.concat(toDeletedConnectingAirports);
+      if (toDeleteds) {
+        differential = differential.concat(toDeleteds);
       }
     }
 
     if (newList) {
       // Add items
-      const toAddedConnectingAirports = newList
-        ?.filter((s) => !oldList || !oldList.map(x => x.id).includes(s.id))
-        .map((s) => <T>{ ...s, dtoState: DtoState.Added });
+      const toAddeds = newList
+        .filter(s => !oldList || !oldList.map(x => x.id).includes(s.id))
+        .map(s => <T>{ ...s, dtoState: DtoState.Added });
 
-      if (toAddedConnectingAirports) {
-        differential = differential.concat(toAddedConnectingAirports);
+      if (toAddeds) {
+        differential = differential.concat(toAddeds);
       }
     }
+
+    if (oldList && newList) {
+      // Unchanged items
+      const unchangeds = newList
+        .filter(n => oldList.map(o => o.id).includes(n.id))
+        .map(n => <T>{ ...n, dtoState: DtoState.Unchanged });
+
+      if (unchangeds) {
+        differential = differential.concat(unchangeds);
+      }
+    }
+
     return differential;
   }
 }
