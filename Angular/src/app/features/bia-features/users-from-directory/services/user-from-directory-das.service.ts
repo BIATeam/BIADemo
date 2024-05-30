@@ -12,6 +12,9 @@ export class UserFromDirectoryDas extends AbstractDas<UserFromDirectory> {
   }
 
   public getAllByFilter(filter: string, ldapName: string, returnSize: number): Observable<Array<UserFromDirectory>> {
+    if (ldapName === undefined) {
+      return this.http.get<Array<UserFromDirectory>>(`${this.route}fromAD?filter=${filter}&returnSize=${returnSize}`);
+    }
     return this.http.get<Array<UserFromDirectory>>(`${this.route}fromAD?filter=${filter}&ldapName=${ldapName}&returnSize=${returnSize}`);
   }
 }
