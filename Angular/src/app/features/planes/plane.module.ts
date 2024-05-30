@@ -65,6 +65,19 @@ export let ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
+        path: 'bulksave',
+        data: {
+          breadcrumb: 'bia.add',
+          canNavigate: false,
+          permission: Permission.Plane_Create,
+          title: 'plane.add',
+          InjectComponent: PlaneBulkSaveComponent,
+          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        },
+        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
+      },
+      {
         path: ':crudItemId',
         data: {
           breadcrumb: '',
