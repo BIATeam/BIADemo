@@ -7,7 +7,7 @@ import { CrudItemEditComponent } from './views/crud-item-edit/crud-item-edit.com
 import { CrudItemItemComponent } from './views/crud-item-item/crud-item-item.component';
 import { CrudItemTableComponent } from './components/crud-item-table/crud-item-table.component';
 import { BaseDto } from '../../model/base-dto';
-
+import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud-item-bulk-form.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { BaseDto } from '../../model/base-dto';
     CrudItemEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     CrudItemTableComponent,
+    CrudItemBulkFormComponent,
   ],
   imports: [
     SharedModule,
@@ -27,9 +28,7 @@ import { BaseDto } from '../../model/base-dto';
     /*
     StoreModule.forFeature(storeKey, reducers),
     EffectsModule.forFeature([CrudItemsEffects]),*/
-  ]
+  ],
+  exports: [CrudItemBulkFormComponent],
 })
-
-export class CrudItemModule<CrudItem extends BaseDto> {
-}
-
+export class CrudItemModule<CrudItem extends BaseDto> {}
