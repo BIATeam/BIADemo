@@ -8,7 +8,7 @@
   (onSelect)="onFileSelected($event)"></p-fileUpload>
 <br />
 
-<ng-container *ngIf="bulkSaveData">
+<ng-container *ngIf="bulkData">
   <p-accordion class="w-full">
     <p-accordionTab>
       <ng-template pTemplate="header">
@@ -20,11 +20,11 @@
       <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
-            [elements]="bulkSaveData.toDeletes"
+            [elements]="bulkData.toDeletes"
             [paginator]="false"
-            [totalRecord]="bulkSaveData.toDeletes.length"
+            [totalRecord]="bulkData.toDeletes.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkSaveData.toDeletes.length"
+            [pageSize]="bulkData.toDeletes.length"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]=""
@@ -46,11 +46,11 @@
       <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
-            [elements]="bulkSaveData.toInserts"
+            [elements]="bulkData.toInserts"
             [paginator]="false"
-            [totalRecord]="bulkSaveData.toInserts.length"
+            [totalRecord]="bulkData.toInserts.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkSaveData.toInserts.length"
+            [pageSize]="bulkData.toInserts.length"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]=""
@@ -72,11 +72,11 @@
       <ng-template pTemplate="content">
         <p class="m-0">
           <bia-table
-            [elements]="bulkSaveData.toUpdates"
+            [elements]="bulkData.toUpdates"
             [paginator]="false"
-            [totalRecord]="bulkSaveData.toUpdates.length"
+            [totalRecord]="bulkData.toUpdates.length"
             [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkSaveData.toUpdates.length"
+            [pageSize]="bulkData.toUpdates.length"
             [configuration]="crudConfiguration.fieldsConfig"
             [showColSearch]="false"
             [globalSearchValue]=""
@@ -97,9 +97,9 @@
         [(ngModel)]="deleteChecked"
         [binary]="true"
         inputId="chkDelete"
-        [disabled]="bulkSaveData.toDeletes.length === 0"></p-checkbox>
+        [disabled]="bulkData.toDeletes.length === 0"></p-checkbox>
       <label for="chkDelete"
-        >To Delete ({{ bulkSaveData.toDeletes.length }})</label
+        >To Delete ({{ bulkData.toDeletes.length }})</label
       >
     </div>
 
@@ -108,9 +108,9 @@
         [(ngModel)]="insertChecked"
         [binary]="true"
         inputId="chkInsert"
-        [disabled]="bulkSaveData.toInserts.length === 0"></p-checkbox>
+        [disabled]="bulkData.toInserts.length === 0"></p-checkbox>
       <label for="chkInsert"
-        >To Insert ({{ bulkSaveData.toInserts.length }})</label
+        >To Insert ({{ bulkData.toInserts.length }})</label
       >
     </div>
 
@@ -119,9 +119,9 @@
         [(ngModel)]="updateChecked"
         [binary]="true"
         inputId="chkUpdate"
-        [disabled]="bulkSaveData.toUpdates.length === 0"></p-checkbox>
+        [disabled]="bulkData.toUpdates.length === 0"></p-checkbox>
       <label for="chkUpdate"
-        >To Update ({{ bulkSaveData.toUpdates.length }})</label
+        >To Update ({{ bulkData.toUpdates.length }})</label
       >
     </div>
   </div>

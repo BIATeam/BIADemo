@@ -25,7 +25,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Output() delete = new EventEmitter<void>();
   @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
-  @Output() bulkSave = new EventEmitter<void>();
+  @Output() bulk = new EventEmitter<void>();
 
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
@@ -75,8 +75,8 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     this.create.next();
   }
 
-  onBulkSave() {
-    this.bulkSave.next();
+  onBulk() {
+    this.bulk.next();
   }
 
   onDelete() {

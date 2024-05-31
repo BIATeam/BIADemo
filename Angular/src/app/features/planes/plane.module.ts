@@ -24,7 +24,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './plane.constants';
-import { PlaneBulkSaveComponent } from './views/plane-bulk-save/plane-bulk-save.component';
+import { PlaneBulkComponent } from './views/plane-bulk/plane-bulk.component';
 
 export let ROUTES: Routes = [
   {
@@ -52,26 +52,13 @@ export let ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'bulksave',
+        path: 'bulk',
         data: {
           breadcrumb: 'bia.add',
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          InjectComponent: PlaneBulkSaveComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-        },
-        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
-        canActivate: [PermissionGuard],
-      },
-      {
-        path: 'bulksave',
-        data: {
-          breadcrumb: 'bia.add',
-          canNavigate: false,
-          permission: Permission.Plane_Create,
-          title: 'plane.add',
-          InjectComponent: PlaneBulkSaveComponent,
+          InjectComponent: PlaneBulkComponent,
           dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },
         component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
@@ -134,7 +121,7 @@ export let ROUTES: Routes = [
     PlaneEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
-    PlaneBulkSaveComponent,
+    PlaneBulkComponent,
   ],
   imports: [
     SharedModule,

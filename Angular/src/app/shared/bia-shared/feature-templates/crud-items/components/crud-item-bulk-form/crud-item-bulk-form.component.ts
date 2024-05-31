@@ -24,7 +24,7 @@ export class CrudItemBulkFormComponent {
     this.initTableParam();
   }
 
-  @Input() bulkSaveData: any;
+  @Input() bulkData: any;
   @Output() save = new EventEmitter<any[]>();
   @Output() cancel = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<any>();
@@ -50,15 +50,15 @@ export class CrudItemBulkFormComponent {
     let toSaves: any[] = [];
 
     if (this.deleteChecked === true) {
-      toSaves = toSaves.concat(this.bulkSaveData.toDeletes);
+      toSaves = toSaves.concat(this.bulkData.toDeletes);
     }
 
     if (this.insertChecked === true) {
-      toSaves = toSaves.concat(this.bulkSaveData.toInserts);
+      toSaves = toSaves.concat(this.bulkData.toInserts);
     }
 
     if (this.updateChecked === true) {
-      toSaves = toSaves.concat(this.bulkSaveData.toUpdates);
+      toSaves = toSaves.concat(this.bulkData.toUpdates);
     }
 
     if (toSaves.length > 0) {

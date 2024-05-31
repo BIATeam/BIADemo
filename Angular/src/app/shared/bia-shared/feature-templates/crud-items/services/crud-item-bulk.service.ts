@@ -13,24 +13,24 @@ import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
 import { clone, isEmpty } from '../../../utils';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 
-export interface BulkSaveDataError<T extends BaseDto> {
+export interface BulkDataError<T extends BaseDto> {
   obj: T;
   errors: string[];
 }
 
-export interface BulkSaveData<T extends BaseDto> {
+export interface BulkData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
-  errorToSaves: BulkSaveDataError<T>[];
+  errorToSaves: BulkDataError<T>[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemBulkSaveService<T extends BaseDto> {
+export class CrudItemBulkService<T extends BaseDto> {
   protected form: CrudItemFormComponent<T>;
-  protected bulkSaveData: BulkSaveData<T>;
+  protected bulkData: BulkData<T>;
 
   constructor(
     protected crudItemService: CrudItemService<T>,
@@ -41,9 +41,9 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     form: CrudItemFormComponent<T>,
     files: FileList,
     crudConfig: CrudConfig
-  ): Observable<BulkSaveData<T>> {
+  ): Observable<BulkData<T>> {
     this.form = form;
-    this.initBulkSaveData();
+    this.initBulkData();
     const file = files.item(0);
 
     return from(this.readFileAsText(file)).pipe(
@@ -70,7 +70,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
   protected parseCSV(
     csv: string,
     crudConfig: CrudConfig
-  ): Observable<BulkSaveData<T>> {
+  ): Observable<BulkData<T>> {
     const cleanedCSVData = this.cleanCSVFormat(csv);
     const columnMapping = this.getColumnMapping(crudConfig);
 
@@ -87,7 +87,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       endpoint: 'all',
     });
 
-    return this.fillBulkSaveData(resultData$, allObjs$);
+    return this.fillBulkData(resultData$, allObjs$);
   }
 
   protected getColumnMapping(crudConfig: CrudConfig) {
@@ -287,18 +287,18 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
     }
   }
 
-  protected fillBulkSaveData(
+  protected fillBulkData(
     csvObjs$: Observable<T[]>,
     oldObjs$: Observable<T[]>
-  ): Observable<BulkSaveData<T>> {
+  ): Observable<BulkData<T>> {
     return combineLatest([csvObjs$, oldObjs$]).pipe(
       map(([csvObjs, oldObjs]) => {
         // Remove objects in error.
         csvObjs = csvObjs.filter(
-          x => !this.bulkSaveData.errorToSaves.map(y => y.obj).includes(x)
+          x => !this.bulkData.errorToSaves.map(y => y.obj).includes(x)
         );
         oldObjs = oldObjs.filter(
-          x => !this.bulkSaveData.errorToSaves.map(y => y.obj.id).includes(x.id)
+          x => !this.bulkData.errorToSaves.map(y => y.obj.id).includes(x.id)
         );
 
         for (const oldObj of oldObjs) {
@@ -322,14 +322,14 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
           }
         }
 
-        return this.bulkSaveData;
+        return this.bulkData;
       })
     );
   }
 
   protected fillToDeletes(oldObj: T) {
     oldObj.dtoState = DtoState.Deleted;
-    this.bulkSaveData.toDeletes.push(oldObj);
+    this.bulkData.toDeletes.push(oldObj);
   }
 
   protected fillToUpdates(oldObj: T, csvObj: T) {
@@ -347,7 +347,7 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       this.AddErrorsToSave(csvObj, checkObject.errorMessages);
     } else if (JSON.stringify(oldObj) !== JSON.stringify(newObj)) {
       checkObject.element.dtoState = DtoState.Modified;
-      this.bulkSaveData.toUpdates.push(checkObject.element);
+      this.bulkData.toUpdates.push(checkObject.element);
     }
   }
 
@@ -359,12 +359,12 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
       this.AddErrorsToSave(csvObj, checkObject.errorMessages);
     } else {
       checkObject.element.dtoState = DtoState.Added;
-      this.bulkSaveData.toInserts.push(checkObject.element);
+      this.bulkData.toInserts.push(checkObject.element);
     }
   }
 
-  protected initBulkSaveData() {
-    this.bulkSaveData = <BulkSaveData<T>>{
+  protected initBulkData() {
+    this.bulkData = <BulkData<T>>{
       toDeletes: [],
       toInserts: [],
       toUpdates: [],
@@ -373,13 +373,13 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
   }
 
   protected AddErrorToSave(obj: T, errorMessage: string) {
-    const existingErrorToSave = this.bulkSaveData.errorToSaves.find(
+    const existingErrorToSave = this.bulkData.errorToSaves.find(
       entry => entry.obj === obj
     );
     if (existingErrorToSave) {
       existingErrorToSave.errors.push(errorMessage);
     } else {
-      this.bulkSaveData.errorToSaves.push({
+      this.bulkData.errorToSaves.push({
         obj: obj,
         errors: [errorMessage],
       });
@@ -387,13 +387,13 @@ export class CrudItemBulkSaveService<T extends BaseDto> {
   }
 
   protected AddErrorsToSave(obj: T, errorMessages: string[]) {
-    const existingErrorToSave = this.bulkSaveData.errorToSaves.find(
+    const existingErrorToSave = this.bulkData.errorToSaves.find(
       entry => entry.obj === obj
     );
     if (existingErrorToSave) {
       existingErrorToSave.errors.concat(errorMessages);
     } else {
-      this.bulkSaveData.errorToSaves.push({
+      this.bulkData.errorToSaves.push({
         obj: obj,
         errors: errorMessages,
       });
