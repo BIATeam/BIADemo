@@ -310,23 +310,19 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     this.updateAdvancedFilterByView(viewPreference);
   }
 
-  // onViewNameChange(viewName: string) {
-  //   this.selectedViewName = viewName;
-  // }
-
   onStateSave(tableState: string) {
     this.viewPreference = tableState;
     this.tableState = tableState;
   }
 
   onExportCSV(fileName: string = 'bia.crud.listOf') {
+    fileName = this.translateService.instant(fileName);
+
     let selectedViewName = this.biaTableControllerComponent.selectedViewName;
     if (selectedViewName && selectedViewName.length > 0) {
-      fileName = selectedViewName;
+      fileName = `${fileName}-${selectedViewName}`;
     }
-    else {
-      fileName = this.translateService.instant(fileName);
-    }
+
     const columns: { [key: string]: string } = {};
     this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
