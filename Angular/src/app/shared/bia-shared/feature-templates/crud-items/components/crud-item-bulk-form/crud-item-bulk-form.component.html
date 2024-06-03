@@ -88,6 +88,32 @@
         </p>
       </ng-template>
     </p-accordionTab>
+    <p-accordionTab *ngIf="bulkData.errorToSaves.length > 0">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+          <i class="pi pi-sync mr-2"></i>
+          <span class="vertical-align-middle">Error(s)</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <p class="m-0">
+          <bia-table
+            [elements]="bulkData.errorToSaves"
+            [paginator]="false"
+            [totalRecord]="bulkData.errorToSaves.length"
+            [columnToDisplays]="displayedColumnErrors"
+            [pageSize]="bulkData.errorToSaves.length"
+            [configuration]="crudConfigurationError.fieldsConfig"
+            [showColSearch]="false"
+            [globalSearchValue]=""
+            [canClickRow]="false"
+            [canSelectElement]="false"
+            [loading]="false"
+            scrollHeightValue="calc( 100vh - 440px)"
+            [isScrollable]="true"></bia-table>
+        </p>
+      </ng-template>
+    </p-accordionTab>
   </p-accordion>
   <br />
 

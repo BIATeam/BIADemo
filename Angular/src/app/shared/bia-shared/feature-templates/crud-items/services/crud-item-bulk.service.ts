@@ -13,9 +13,13 @@ import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
 import { clone, isEmpty } from '../../../utils';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 
-export interface BulkDataError<T extends BaseDto> {
+interface TmpBulkDataError<T extends BaseDto> {
   obj: T;
   errors: string[];
+}
+
+export interface BulkDataError<T extends BaseDto> extends BaseDto {
+  sErrors: string | null;
 }
 
 export interface BulkData<T extends BaseDto> {
@@ -31,6 +35,7 @@ export interface BulkData<T extends BaseDto> {
 export class CrudItemBulkService<T extends BaseDto> {
   protected form: CrudItemFormComponent<T>;
   protected bulkData: BulkData<T>;
+  protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
 
   constructor(
     protected crudItemService: CrudItemService<T>,
@@ -295,10 +300,10 @@ export class CrudItemBulkService<T extends BaseDto> {
       map(([csvObjs, oldObjs]) => {
         // Remove objects in error.
         csvObjs = csvObjs.filter(
-          x => !this.bulkData.errorToSaves.map(y => y.obj).includes(x)
+          x => !this.tmpBulkDataErrors.map(y => y.obj).includes(x)
         );
         oldObjs = oldObjs.filter(
-          x => !this.bulkData.errorToSaves.map(y => y.obj.id).includes(x.id)
+          x => !this.tmpBulkDataErrors.map(y => y.obj.id).includes(x.id)
         );
 
         for (const oldObj of oldObjs) {
@@ -322,6 +327,7 @@ export class CrudItemBulkService<T extends BaseDto> {
           }
         }
 
+        this.bulkData.errorToSaves = this.FillsErrors(this.tmpBulkDataErrors);
         return this.bulkData;
       })
     );
@@ -373,13 +379,13 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected AddErrorToSave(obj: T, errorMessage: string) {
-    const existingErrorToSave = this.bulkData.errorToSaves.find(
+    const existingErrorToSave = this.tmpBulkDataErrors.find(
       entry => entry.obj === obj
     );
     if (existingErrorToSave) {
       existingErrorToSave.errors.push(errorMessage);
     } else {
-      this.bulkData.errorToSaves.push({
+      this.tmpBulkDataErrors.push({
         obj: obj,
         errors: [errorMessage],
       });
@@ -387,16 +393,27 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected AddErrorsToSave(obj: T, errorMessages: string[]) {
-    const existingErrorToSave = this.bulkData.errorToSaves.find(
+    const existingErrorToSave = this.tmpBulkDataErrors.find(
       entry => entry.obj === obj
     );
     if (existingErrorToSave) {
       existingErrorToSave.errors.concat(errorMessages);
     } else {
-      this.bulkData.errorToSaves.push({
+      this.tmpBulkDataErrors.push({
         obj: obj,
         errors: errorMessages,
       });
     }
+  }
+
+  protected FillsErrors(
+    tmpBulkDataErrors: TmpBulkDataError<T>[]
+  ): BulkDataError<T>[] {
+    return tmpBulkDataErrors.map(tmp => {
+      return <BulkDataError<T>>{
+        ...tmp.obj,
+        sErrors: tmp.errors.join(', '),
+      };
+    });
   }
 }

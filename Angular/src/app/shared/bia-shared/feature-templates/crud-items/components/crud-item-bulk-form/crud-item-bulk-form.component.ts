@@ -1,6 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudConfig } from '../../model/crud-config';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { clone } from 'src/app/shared/bia-shared/utils';
 
 @Component({
   selector: 'bia-crud-item-bulk-form',
@@ -13,7 +19,10 @@ export class CrudItemBulkFormComponent {
   insertChecked = false;
 
   displayedColumns: KeyValuePair[];
+  displayedColumnErrors: KeyValuePair[];
+  fieldsConfigErrors: BiaFieldsConfig;
   sortFieldValue = '';
+  protected crudConfigurationError: CrudConfig;
 
   protected _CrudConfiguration: CrudConfig;
   get crudConfiguration(): CrudConfig {
@@ -35,6 +44,25 @@ export class CrudItemBulkFormComponent {
         col => <KeyValuePair>{ key: col.field, value: col.header }
       );
       this.sortFieldValue = this.displayedColumns[0].key;
+
+      this.initTableErrorParam();
+    }
+  }
+
+  initTableErrorParam() {
+    if (this.crudConfiguration) {
+      this.crudConfigurationError = clone(this.crudConfiguration);
+      this.crudConfigurationError.fieldsConfig.columns.push(
+        Object.assign(new BiaFieldConfig('sErrors', 'sErrors'), {
+          isEditable: false,
+          type: PropType.String,
+        })
+      );
+
+      this.displayedColumnErrors =
+        this.crudConfigurationError.fieldsConfig.columns.map(
+          col => <KeyValuePair>{ key: col.field, value: col.header }
+        );
     }
   }
 
