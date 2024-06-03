@@ -236,7 +236,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             // Checking arguments for this query
             this.CheckArgument(orderByExpression);
 
-            // Call Private Methods
+            // Call protected Methods
             var result = this.GetAllElementsAsync(x => x, id, specification, filter, orderByExpression, ascending, firstElement, pageCount, null, includes, queryMode, isReadOnlyMode);
             return await result.ToListAsync();
         }
@@ -271,7 +271,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             // Checking arguments for this query
             this.CheckArgument(selectResult);
 
-            // Call Private Methods
+            // Call protected Methods
             var result = this.GetAllElementsAsync<int, TResult>(selectResult, id, specification, filter, null, true, firstElement, pageCount, queryOrder, includes, queryMode, isReadOnlyMode);
             return await result.ToListAsync();
         }
@@ -389,20 +389,39 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
+        protected async Task<Tuple<IEnumerable<TResult>, int>> GetAllElementsAndCountAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
         {
-            IQueryable<TEntity> objectSet = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
+            if (isReadOnlyMode)
+            {
+                IQueryable<TEntity> objectSetCount = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
+                IQueryable<TEntity> objectSetList = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
+                IQueryable<TResult> listQuery = this.GetElements(objectSetList, selectResult, orderByExpression, ascending, firstElement, pageCount, queryOrder, includes, queryMode);
 
-            var countTask = objectSet.CountAsync();
-            var count = await countTask; // cannot be donne in parallel on the same repo.
+                var countTask = objectSetCount.CountAsync();
+                var listTask = listQuery.ToListAsync();
 
-            IQueryable<TResult> listQuery = this.GetElements(objectSet, selectResult, orderByExpression, ascending, firstElement, pageCount, queryOrder, includes, queryMode);
-            var listTask = listQuery.ToListAsync();
+                Task.WaitAll(countTask, listTask);
+                var count = countTask.Result;
+                var list = listTask.Result;
 
-            var list = await listTask;
+                // Return List of Entity Object and count
+                return Tuple.Create(list.AsEnumerable(), count);
+            }
+            else
+            {
+                IQueryable<TEntity> objectSet = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
 
-            // Return List of Entity Object and count
-            return Tuple.Create(list.AsEnumerable(), count);
+                var countTask = objectSet.CountAsync();
+                var count = await countTask; // cannot be donne in parallel on the same repo.
+
+                IQueryable<TResult> listQuery = this.GetElements(objectSet, selectResult, orderByExpression, ascending, firstElement, pageCount, queryOrder, includes, queryMode);
+                var listTask = listQuery.ToListAsync();
+
+                var list = await listTask;
+
+                // Return List of Entity Object and count
+                return Tuple.Create(list.AsEnumerable(), count);
+            }
         }
 
         /// <summary>
@@ -424,7 +443,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="queryMode">Mode of the query (optionnal).</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetAllElementsAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
+        protected IQueryable<TResult> GetAllElementsAsync<TOrderKey, TResult>(Expression<Func<TEntity, TResult>> selectResult, TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode = null, bool isReadOnlyMode = false)
         {
             IQueryable<TEntity> objectSet = this.PrepareFilteredQuery(id, specification, filter, queryMode, isReadOnlyMode);
 
@@ -438,12 +457,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="x">key1.</param>
         /// <param name="y">key2.</param>
         /// <returns>true if equals.</returns>
-        private bool Compare(TKey x, TKey y)
+        protected bool Compare(TKey x, TKey y)
         {
             return EqualityComparer<TKey>.Default.Equals(x, y);
         }
 
-        private IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isReadOnlyMode = false)
+        protected IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isReadOnlyMode = false)
         {
             // Create IObjectSet for this particular type and query this
             IQueryable<TEntity> objectSet = isReadOnlyMode ? this.RetrieveSetReadOnly().AsNoTracking() : this.RetrieveSet();
@@ -512,7 +531,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="queryOrder">The queryOrder.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
-        private IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        protected IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             objectSet = this.CustomizeQueryAfter(objectSet, includes, queryMode);
 
@@ -544,7 +563,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return result;
         }
 
-        private IQueryable<TEntity> CustomizeQueryAfter(IQueryable<TEntity> objectSet, Expression<Func<TEntity, object>>[] includes, string queryMode)
+        protected IQueryable<TEntity> CustomizeQueryAfter(IQueryable<TEntity> objectSet, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             if (includes != null && includes.Length > 0)
             {
@@ -562,7 +581,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return objectSet;
         }
 
-        private void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)
+        protected void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)
         {
             if (expression == null)
             {
