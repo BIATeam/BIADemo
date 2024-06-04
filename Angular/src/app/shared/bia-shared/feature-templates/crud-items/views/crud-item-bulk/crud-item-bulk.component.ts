@@ -1,18 +1,18 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ViewChild } from '@angular/core';
 import { take } from 'rxjs';
 import {
   BulkData,
   CrudItemBulkService,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { CrudConfig } from '../../model/crud-config';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CrudItemService } from '../../services/crud-item.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 
 @Component({
-  template: '',
+  template: '', // le template pour ce composant abstrait doit être vide
 })
 export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
   protected crudConfiguration: CrudConfig;
@@ -24,6 +24,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
   protected canEdit = true;
   protected canDelete = true;
   protected canAdd = true;
+  @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
 
   constructor(
     protected injector: Injector,
@@ -65,5 +66,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
 
   abstract save(toSaves: CrudItem[]): void;
 
-  abstract getForm(): CrudItemFormComponent<CrudItem>;
+  protected getForm(): BiaFormComponent {
+    return this.biaFormComponent;
+  }
 }

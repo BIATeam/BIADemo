@@ -5,13 +5,13 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 import * as Papa from 'papaparse';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
-import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { CrudConfig } from '../model/crud-config';
 import { TranslateService } from '@ngx-translate/core';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';
 import { BiaFieldConfig, PropType } from '../../../model/bia-field-config';
 import { clone, isEmpty } from '../../../utils';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
+import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
 
 interface TmpBulkDataError<T extends BaseDto> {
   obj: T;
@@ -33,7 +33,7 @@ export interface BulkData<T extends BaseDto> {
   providedIn: 'root',
 })
 export class CrudItemBulkService<T extends BaseDto> {
-  protected form: CrudItemFormComponent<T>;
+  protected form: BiaFormComponent;
   protected bulkData: BulkData<T>;
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
@@ -42,7 +42,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   constructor(protected translateService: TranslateService) {}
 
   public uploadCsv(
-    form: CrudItemFormComponent<T>,
+    form: BiaFormComponent,
     files: FileList,
     crudConfig: CrudConfig,
     crudItemService: CrudItemService<T>
@@ -93,9 +93,9 @@ export class CrudItemBulkService<T extends BaseDto> {
       this.crudConfig.bulkMode?.useDelete === true ||
       this.crudConfig.bulkMode?.useUpdate === true
     ) {
-      allObjs$ = this.crudItemService.dasService.getList({
-        endpoint: 'all',
-      });
+      allObjs$ = this.crudItemService.dasService
+        .getListByPost({ event: {} })
+        .pipe(map(x => x.data));
     }
 
     return this.fillBulkData(resultData$, allObjs$);
@@ -364,7 +364,7 @@ export class CrudItemBulkService<T extends BaseDto> {
       }
     }
 
-    this.form.setElement(oldObj);
+    this.form.element = oldObj;
     const checkObject = this.form.checkObject(newObj);
 
     if (checkObject.errorMessages.length > 0) {
@@ -376,7 +376,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected fillToInserts(csvObj: T) {
-    this.form.setElement(<T>{});
+    this.form.element = <T>{};
     const checkObject = this.form.checkObject(csvObj);
 
     if (checkObject.errorMessages.length > 0) {

@@ -36,12 +36,4 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
   onSave(crudItem: any) {
     this.save.emit(crudItem);
   }
-
-  checkObject(crudItem: CrudItem): { element: any; errorMessages: string[] } {
-    return this.biaFormComponent.checkObject(crudItem);
-  }
-
-  setElement(crudItem: CrudItem) {
-    this.biaFormComponent.element = crudItem;
-  }
 }

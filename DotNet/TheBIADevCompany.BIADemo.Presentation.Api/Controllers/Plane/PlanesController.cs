@@ -83,17 +83,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             return this.Ok(results);
         }
 
-        [HttpGet("all")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.ListAccess)]
-        public async Task<IActionResult> RetrieveAll()
-        {
-            var results = await this.planeService.GetAllAsync();
-            return this.Ok(results);
-        }
-
         /// <summary>
         /// Get a plane by its identifier.
         /// </summary>

@@ -1,9 +1,9 @@
-<app-plane-form
+<bia-form
   [hidden]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="
-    planeService.optionsService.dictOptionDtos$ | async
-  "></app-plane-form>
+    crudItemService.optionsService.dictOptionDtos$ | async
+  "></bia-form>
 
 <bia-crud-item-bulk-form
   [bulkData]="bulkData"
