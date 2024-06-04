@@ -8,6 +8,7 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { CrudConfig } from '../../model/crud-config';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
   template: '',
@@ -15,21 +16,23 @@ import { ActivatedRoute, Router } from '@angular/router';
 export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
   protected crudConfiguration: CrudConfig;
   protected bulkData: BulkData<CrudItem>;
+  protected crudItemBulkService: CrudItemBulkService<CrudItem>;
 
   protected router: Router;
   protected activatedRoute: ActivatedRoute;
 
   constructor(
     protected injector: Injector,
-    protected crudItemBulkService: CrudItemBulkService<CrudItem>
+    protected crudItemService: CrudItemService<CrudItem>
   ) {
     this.router = this.injector.get<Router>(Router);
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
+    this.crudItemBulkService = this.injector.get<CrudItemBulkService<CrudItem>>(CrudItemBulkService<CrudItem>);
   }
 
   protected onFileSelected(event: any) {
     this.crudItemBulkService
-      .uploadCsv(this.getForm(), event.files, this.crudConfiguration)
+      .uploadCsv(this.getForm(), event.files, this.crudConfiguration, this.crudItemService)
       .pipe(take(1)) // auto unsubscribe
       .subscribe(
         (bulkData: BulkData<CrudItem>) =>

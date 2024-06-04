@@ -18,7 +18,7 @@ interface TmpBulkDataError<T extends BaseDto> {
   errors: string[];
 }
 
-export interface BulkDataError<T extends BaseDto> extends BaseDto {
+export interface BulkDataError extends BaseDto {
   sErrors: string | null;
 }
 
@@ -26,7 +26,7 @@ export interface BulkData<T extends BaseDto> {
   toDeletes: T[];
   toInserts: T[];
   toUpdates: T[];
-  errorToSaves: BulkDataError<T>[];
+  errorToSaves: BulkDataError[];
 }
 
 @Injectable({
@@ -36,17 +36,17 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected form: CrudItemFormComponent<T>;
   protected bulkData: BulkData<T>;
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
+  protected crudItemService: CrudItemService<T>;
 
-  constructor(
-    protected crudItemService: CrudItemService<T>,
-    protected translateService: TranslateService
-  ) {}
+  constructor(protected translateService: TranslateService) {}
 
   public uploadCsv(
     form: CrudItemFormComponent<T>,
     files: FileList,
-    crudConfig: CrudConfig
+    crudConfig: CrudConfig,
+    crudItemService: CrudItemService<T>
   ): Observable<BulkData<T>> {
+    this.crudItemService = crudItemService;
     this.form = form;
     this.initBulkData();
     const file = files.item(0);
@@ -408,9 +408,9 @@ export class CrudItemBulkService<T extends BaseDto> {
 
   protected FillsErrors(
     tmpBulkDataErrors: TmpBulkDataError<T>[]
-  ): BulkDataError<T>[] {
+  ): BulkDataError[] {
     return tmpBulkDataErrors.map(tmp => {
-      return <BulkDataError<T>>{
+      return <BulkDataError>{
         ...tmp.obj,
         sErrors: tmp.errors.join(', '),
       };

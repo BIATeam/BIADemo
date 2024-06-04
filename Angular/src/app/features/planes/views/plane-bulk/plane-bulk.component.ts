@@ -3,7 +3,6 @@ import { Plane } from '../../model/plane';
 import { PlaneService } from '../../services/plane.service';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { PlaneCRUDConfiguration } from '../../plane.constants';
-import { PlaneBulkService } from '../../services/plane-bulk.service';
 import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
 
 @Component({
@@ -15,10 +14,9 @@ export class PlaneBulkComponent extends CrudItemBulkComponent<Plane> {
 
   constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
-    protected planeBulkService: PlaneBulkService
+    public planeService: PlaneService
   ) {
-    super(injector, planeBulkService);
+    super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
   }
   save(toSaves: Plane[]): void {
