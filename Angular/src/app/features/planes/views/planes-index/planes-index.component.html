@@ -5,6 +5,7 @@
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
+      [canBulk]="crudConfiguration.useBulk"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"

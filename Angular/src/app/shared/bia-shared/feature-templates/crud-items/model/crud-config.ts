@@ -15,6 +15,7 @@ export class CrudConfig {
   fieldsConfig: BiaFieldsConfig;
   defaultViewPref: BiaTableState;
   optionFilter: any;
+  useBulk: boolean;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
@@ -64,5 +65,9 @@ export class CrudConfig {
     this.useOfflineMode = useOfflineMode;
     this.optionFilter = optionFilter;
     this.bulkMode = bulkMode;
+    this.useBulk =
+      bulkMode?.useDelete === true ||
+      bulkMode?.useInsert === true ||
+      bulkMode?.useUpdate === true;
   }
 }

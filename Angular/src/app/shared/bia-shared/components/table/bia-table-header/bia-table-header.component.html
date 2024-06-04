@@ -29,7 +29,7 @@
       (click)="onDelete()"></button>
     <button
       pButton
-      *ngIf="canDelete === true || canAdd === true || canEdit === true"
+      *ngIf="canBulk === true && (canDelete === true || canAdd === true || canEdit === true)"
       label="{{ 'bia.bulk' | translate }}"
       (click)="onBulk()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
