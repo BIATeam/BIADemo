@@ -318,7 +318,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
   onExportCSV(fileName: string = 'bia.crud.listOf') {
     fileName = this.translateService.instant(fileName);
 
-    let selectedViewName = this.biaTableControllerComponent.selectedViewName;
+    let selectedViewName = this.biaTableControllerComponent.getSelectedViewName();
     if (selectedViewName && selectedViewName.length > 0) {
       fileName = `${fileName}-${selectedViewName}`;
     }
