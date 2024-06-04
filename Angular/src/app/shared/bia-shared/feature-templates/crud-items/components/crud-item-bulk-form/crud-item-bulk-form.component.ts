@@ -34,6 +34,9 @@ export class CrudItemBulkFormComponent {
   }
 
   @Input() bulkData: any;
+  @Input() canEdit = false;
+  @Input() canDelete = false;
+  @Input() canAdd = false;
   @Output() save = new EventEmitter<any[]>();
   @Output() cancel = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<any>();
@@ -53,7 +56,7 @@ export class CrudItemBulkFormComponent {
     if (this.crudConfiguration) {
       this.crudConfigurationError = clone(this.crudConfiguration);
       this.crudConfigurationError.fieldsConfig.columns.push(
-        Object.assign(new BiaFieldConfig('sErrors', 'sErrors'), {
+        Object.assign(new BiaFieldConfig('sErrors', 'bia.error'), {
           isEditable: false,
           type: PropType.String,
         })
@@ -92,5 +95,26 @@ export class CrudItemBulkFormComponent {
     if (toSaves.length > 0) {
       this.save.emit(toSaves);
     }
+  }
+
+  canUseDelete(): boolean {
+    return (
+      this.canDelete === true &&
+      this.crudConfiguration.bulkMode?.useDelete === true
+    );
+  }
+
+  canUseInsert(): boolean {
+    return (
+      this.canAdd === true &&
+      this.crudConfiguration.bulkMode?.useInsert === true
+    );
+  }
+
+  canUseUpdate(): boolean {
+    return (
+      this.canEdit === true &&
+      this.crudConfiguration.bulkMode?.useUpdate === true
+    );
   }
 }

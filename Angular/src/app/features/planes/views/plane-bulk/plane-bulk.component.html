@@ -8,6 +8,10 @@
 <bia-crud-item-bulk-form
   [bulkData]="bulkData"
   [crudConfiguration]="crudConfiguration"
+  [canAdd]="canAdd"
+  [canDelete]="canDelete"
+  [canEdit]="canEdit"
   (save)="onSave($event)"
   (cancel)="onCancel()"
-  (fileSelected)="onFileSelected($event)"></bia-crud-item-bulk-form>
+  (fileSelected)="onFileSelected($event)">
+</bia-crud-item-bulk-form>

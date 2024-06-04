@@ -4,6 +4,7 @@
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canDelete]="canDelete"
+      [canEdit]="canEdit"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"

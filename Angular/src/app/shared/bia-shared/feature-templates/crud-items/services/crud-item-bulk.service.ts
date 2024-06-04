@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, combineLatest, from } from 'rxjs';
+import { EMPTY, Observable, combineLatest, from } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -37,6 +37,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected bulkData: BulkData<T>;
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
+  protected crudConfig: CrudConfig;
 
   constructor(protected translateService: TranslateService) {}
 
@@ -46,13 +47,15 @@ export class CrudItemBulkService<T extends BaseDto> {
     crudConfig: CrudConfig,
     crudItemService: CrudItemService<T>
   ): Observable<BulkData<T>> {
+    this.tmpBulkDataErrors = [];
     this.crudItemService = crudItemService;
+    this.crudConfig = crudConfig;
     this.form = form;
     this.initBulkData();
     const file = files.item(0);
 
     return from(this.readFileAsText(file)).pipe(
-      switchMap(csv => this.parseCSV(csv, crudConfig))
+      switchMap(csv => this.parseCSV(csv))
     );
   }
 
@@ -72,12 +75,9 @@ export class CrudItemBulkService<T extends BaseDto> {
     });
   }
 
-  protected parseCSV(
-    csv: string,
-    crudConfig: CrudConfig
-  ): Observable<BulkData<T>> {
+  protected parseCSV(csv: string): Observable<BulkData<T>> {
     const cleanedCSVData = this.cleanCSVFormat(csv);
-    const columnMapping = this.getColumnMapping(crudConfig);
+    const columnMapping = this.getColumnMapping();
 
     const result = Papa.parse<T>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
@@ -86,17 +86,23 @@ export class CrudItemBulkService<T extends BaseDto> {
       transformHeader: header => columnMapping[header],
     });
 
-    const resultData$ = this.parseCSVBia(result.data, crudConfig);
+    const resultData$ = this.parseCSVBia(result.data);
 
-    const allObjs$ = this.crudItemService.dasService.getList({
-      endpoint: 'all',
-    });
+    let allObjs$: Observable<T[]> = EMPTY;
+    if (
+      this.crudConfig.bulkMode?.useDelete === true ||
+      this.crudConfig.bulkMode?.useUpdate === true
+    ) {
+      allObjs$ = this.crudItemService.dasService.getList({
+        endpoint: 'all',
+      });
+    }
 
     return this.fillBulkData(resultData$, allObjs$);
   }
 
-  protected getColumnMapping(crudConfig: CrudConfig) {
-    return crudConfig.fieldsConfig.columns.reduce(
+  protected getColumnMapping() {
+    return this.crudConfig.fieldsConfig.columns.reduce(
       (map: { [key: string]: string }, obj) => {
         map[this.translateService.instant(obj.header)] = obj.field;
         return map;
@@ -105,11 +111,11 @@ export class CrudItemBulkService<T extends BaseDto> {
     );
   }
 
-  protected parseCSVBia(csvObjs: T[], crudConfig: CrudConfig): Observable<T[]> {
+  protected parseCSVBia(csvObjs: T[]): Observable<T[]> {
     return this.crudItemService.optionsService.dictOptionDtos$.pipe(
       map((dictOptionDtos: DictOptionDto[]) => {
         csvObjs.map(csvObj => {
-          crudConfig.fieldsConfig.columns.map(column => {
+          this.crudConfig.fieldsConfig.columns.map(column => {
             const csvValue: any = csvObj[<keyof typeof csvObj>column.field];
             if (csvValue != null) {
               if (column.type === PropType.String) {
@@ -302,28 +308,40 @@ export class CrudItemBulkService<T extends BaseDto> {
         csvObjs = csvObjs.filter(
           x => !this.tmpBulkDataErrors.map(y => y.obj).includes(x)
         );
-        oldObjs = oldObjs.filter(
-          x => !this.tmpBulkDataErrors.map(y => y.obj.id).includes(x.id)
-        );
 
-        for (const oldObj of oldObjs) {
-          // TO DELETE
-          const found = csvObjs.some(csvObj => csvObj.id === oldObj.id);
-          if (!found) {
-            this.fillToDeletes(oldObj);
-          }
+        if (
+          this.crudConfig.bulkMode?.useDelete === true ||
+          this.crudConfig.bulkMode?.useUpdate === true
+        ) {
+          oldObjs = oldObjs.filter(
+            x => !this.tmpBulkDataErrors.map(y => y.obj.id).includes(x.id)
+          );
 
-          // TO UPDATE
-          const csvObj = csvObjs.find(csvObj => csvObj.id === oldObj.id);
-          if (oldObj && csvObj) {
-            this.fillToUpdates(oldObj, csvObj);
+          for (const oldObj of oldObjs) {
+            // TO DELETE
+            if (this.crudConfig.bulkMode?.useDelete === true) {
+              const found = csvObjs.some(csvObj => csvObj.id === oldObj.id);
+              if (!found) {
+                this.fillToDeletes(oldObj);
+              }
+            }
+
+            // TO UPDATE
+            if (this.crudConfig.bulkMode?.useUpdate === true) {
+              const csvObj = csvObjs.find(csvObj => csvObj.id === oldObj.id);
+              if (oldObj && csvObj) {
+                this.fillToUpdates(oldObj, csvObj);
+              }
+            }
           }
         }
 
-        for (const csvObj of csvObjs) {
-          // TO INSERTS
-          if (isEmpty(csvObj.id) === true || csvObj.id === 0) {
-            this.fillToInserts(csvObj);
+        // TO INSERTS
+        if (this.crudConfig.bulkMode?.useInsert === true) {
+          for (const csvObj of csvObjs) {
+            if (isEmpty(csvObj.id) === true || csvObj.id === 0) {
+              this.fillToInserts(csvObj);
+            }
           }
         }
 

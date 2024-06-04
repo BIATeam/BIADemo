@@ -17,6 +17,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() showBtnFilter = false;
   @Input() canAdd = true;
   @Input() canDelete = true;
+  @Input() canEdit = true;
   @Input() canBack = false;
   @Input() canExportCSV = false;
   @Input() headerTitle: string;

@@ -10,7 +10,7 @@
 
 <ng-container *ngIf="bulkData">
   <p-accordion class="w-full">
-    <p-accordionTab>
+    <p-accordionTab *ngIf="canUseDelete() === true">
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-trash mr-2"></i>
@@ -36,7 +36,7 @@
         </p>
       </ng-template>
     </p-accordionTab>
-    <p-accordionTab>
+    <p-accordionTab *ngIf="canUseInsert() === true">
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-plus mr-2"></i>
@@ -62,7 +62,7 @@
         </p>
       </ng-template>
     </p-accordionTab>
-    <p-accordionTab>
+    <p-accordionTab *ngIf="canUseUpdate() === true">
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-sync mr-2"></i>
@@ -118,37 +118,31 @@
   <br />
 
   <div class="card flex justify-content-center gap-3">
-    <div class="flex align-items-center gap-1">
+    <div class="flex align-items-center gap-1" *ngIf="canUseDelete() === true">
       <p-checkbox
         [(ngModel)]="deleteChecked"
         [binary]="true"
         inputId="chkDelete"
         [disabled]="bulkData.toDeletes.length === 0"></p-checkbox>
-      <label for="chkDelete"
-        >To Delete ({{ bulkData.toDeletes.length }})</label
-      >
+      <label for="chkDelete">To Delete ({{ bulkData.toDeletes.length }})</label>
     </div>
 
-    <div class="flex align-items-center gap-1">
+    <div class="flex align-items-center gap-1" *ngIf="canUseInsert() === true">
       <p-checkbox
         [(ngModel)]="insertChecked"
         [binary]="true"
         inputId="chkInsert"
         [disabled]="bulkData.toInserts.length === 0"></p-checkbox>
-      <label for="chkInsert"
-        >To Insert ({{ bulkData.toInserts.length }})</label
-      >
+      <label for="chkInsert">To Insert ({{ bulkData.toInserts.length }})</label>
     </div>
 
-    <div class="flex align-items-center gap-1">
+    <div class="flex align-items-center gap-1" *ngIf="canUseUpdate() === true">
       <p-checkbox
         [(ngModel)]="updateChecked"
         [binary]="true"
         inputId="chkUpdate"
         [disabled]="bulkData.toUpdates.length === 0"></p-checkbox>
-      <label for="chkUpdate"
-        >To Update ({{ bulkData.toUpdates.length }})</label
-      >
+      <label for="chkUpdate">To Update ({{ bulkData.toUpdates.length }})</label>
     </div>
   </div>
   <br />
