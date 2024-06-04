@@ -43,7 +43,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Input() displayedColumns: string[];
   @Input() columns: KeyValuePair[];
   @Output() viewChange = new EventEmitter<string>();
-  @Output() viewNameChange = new EventEmitter<string>();
 
   constructor(
     private store: Store<AppState>,
@@ -116,7 +115,6 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   private AutoSelectView(tableStateStr: string) {
     this.selectedView = this.GetCorrespondingViewId(tableStateStr);
     this.selectedViewName = this.GetCurrentViewName();
-    this.viewNameChange.emit(this.selectedViewName?.toString());
   }
 
   public GetCurrentViewName(): string | null {

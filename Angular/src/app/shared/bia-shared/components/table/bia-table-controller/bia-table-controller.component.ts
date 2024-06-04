@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, TemplateRef } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
 import { BiaTableState } from '../../../model/bia-table-state';
+import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
 
 @Component({
   selector: 'bia-table-controller',
@@ -38,6 +39,8 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Output() viewChange = new EventEmitter<string>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
+  @ViewChild(ViewListComponent, { static: false }) viewListComponent: ViewListComponent;
+
 
   customControlTemplate: TemplateRef<any>;
   selectedViewName: string | null;
@@ -119,8 +122,8 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
     setTimeout(() => this.viewChange.emit(event));
   }
 
-  onViewNameChange(event: string) {
-    this.selectedViewName = event;
+  public getSelectedViewName(): string | null {
+    return this.viewListComponent.GetCurrentViewName();
   }
 
   private onColumnsChange(changes: SimpleChanges) {
