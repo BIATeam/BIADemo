@@ -54,10 +54,10 @@ export let ROUTES: Routes = [
       {
         path: 'bulk',
         data: {
-          breadcrumb: 'bia.add',
+          breadcrumb: 'bia.bulk',
           canNavigate: false,
           permission: Permission.Plane_Create,
-          title: 'plane.add',
+          title: 'bia.bulk',
           InjectComponent: PlaneBulkComponent,
           dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
         },

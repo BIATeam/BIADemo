@@ -1,5 +1,5 @@
-import { Component, Injector, ViewChild } from '@angular/core';
-import { take } from 'rxjs';
+import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription, take } from 'rxjs';
 import {
   BulkData,
   CrudItemBulkService,
@@ -10,15 +10,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CrudItemService } from '../../services/crud-item.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
   template: '', // le template pour ce composant abstrait doit être vide
 })
-export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
+export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
+  protected sub = new Subscription();
   protected crudConfiguration: CrudConfig;
   protected bulkData: BulkData<CrudItem>;
   protected crudItemBulkService: CrudItemBulkService<CrudItem>;
   protected authService: AuthService;
+  protected biaTranslationService: BiaTranslationService;
   protected router: Router;
   protected activatedRoute: ActivatedRoute;
   protected canEdit = true;
@@ -36,6 +39,21 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> {
       CrudItemBulkService<CrudItem>
     );
     this.authService = this.injector.get<AuthService>(AuthService);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+  }
+
+  ngOnInit() {
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+          this.crudItemService.optionsService.loadAllOptions(this.crudConfiguration.optionFilter);
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   protected onFileSelected(event: any) {

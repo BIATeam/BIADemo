@@ -332,6 +332,9 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
       fileName = this.translateService.instant(fileName);
     }
     const columns: { [key: string]: string } = {};
+    if(this.crudConfiguration.bulkMode?.useUpdate === true || this.crudConfiguration.bulkMode?.useDelete === true){
+      columns['id'] = this.translateService.instant('bia.id');
+    }
     this.crudItemListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map((id => id.toString())), columns: columns, ...this.crudItemListComponent.getLazyLoadMetadata()

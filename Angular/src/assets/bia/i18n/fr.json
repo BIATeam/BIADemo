@@ -4,6 +4,9 @@
     "action": "Action",
     "actions": "Actions",
     "add": "Ajouter",
+    "toAdd": "A Ajouter",
+    "toModify": "A Modifier",
+    "toDelete": "A Supprimer",
     "administer": "Administrer",
     "administration": "Administration",
     "all": "Tous",
@@ -16,6 +19,7 @@
     "crud" : {
       "list": "Liste"
     },
+    "bulk": "En Masse",
     "confirm": "Confirmer",
     "dateIso8601": "aaaa-mm-jj",
     "defineDefault": "Définir par défaut",

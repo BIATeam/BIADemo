@@ -4,10 +4,13 @@
       [headerTitle]="'user.listOf' | translate"
       [canAdd]="canAdd"
       [canDelete]="canDelete"
+      [canEdit]="canEdit"
+      [canBulk]="crudConfiguration.useBulk"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('user.listOf')"
       (delete)="onDelete()"
+      (bulk)="onBulk()"
       [selectedElements]="selectedCrudItems"
     >
       <ng-template pTemplate="actionOnList">

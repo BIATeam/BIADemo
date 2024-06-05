@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EMPTY, Observable, combineLatest, from } from 'rxjs';
+import { Observable, combineLatest, from, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
@@ -38,6 +38,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
   protected crudConfig: CrudConfig;
+  protected columns: BiaFieldConfig[];
 
   constructor(protected translateService: TranslateService) {}
 
@@ -88,7 +89,7 @@ export class CrudItemBulkService<T extends BaseDto> {
 
     const resultData$ = this.parseCSVBia(result.data);
 
-    let allObjs$: Observable<T[]> = EMPTY;
+    let allObjs$: Observable<T[]>;
     if (
       this.crudConfig.bulkMode?.useDelete === true ||
       this.crudConfig.bulkMode?.useUpdate === true
@@ -96,6 +97,8 @@ export class CrudItemBulkService<T extends BaseDto> {
       allObjs$ = this.crudItemService.dasService
         .getListByPost({ event: {} })
         .pipe(map(x => x.data));
+    } else {
+      allObjs$ = of([]);
     }
 
     return this.fillBulkData(resultData$, allObjs$);
@@ -192,13 +195,16 @@ export class CrudItemBulkService<T extends BaseDto> {
       csvObj[<keyof typeof csvObj>column.field] = <any>null;
     } else {
       let dateString = String(csvObj[<keyof typeof csvObj>column.field]);
+      if (isEmpty(dateString)) {
+        return;
+      }
       const timePattern = /\d{1,2}:\d{1,2}/;
 
       if (!timePattern.test(dateString)) {
         dateString += ' 00:00';
       }
-      const date: Date | null = DateHelperService.parseDate(dateString);
-      if (date) {
+      const date: Date = DateHelperService.parseDate(dateString);
+      if (DateHelperService.isValidDate(date)) {
         csvObj[<keyof typeof csvObj>column.field] = <any>date;
       } else {
         this.AddErrorToSave(
@@ -278,7 +284,8 @@ export class CrudItemBulkService<T extends BaseDto> {
       const csvValues = csvObj[<keyof typeof csvObj>column.field]
         ?.toString()
         .trim()
-        .split('-');
+        .split(/ - | -|- /) // Regular expression for ' - ' OR '- ' OR ' -'
+        .map(x => x.trim());
       const dictOptionDto = dictOptionDtos.find(x => x.key === column.field);
       const optionDtos =
         dictOptionDto?.value.filter(

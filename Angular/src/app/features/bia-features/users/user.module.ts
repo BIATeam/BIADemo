@@ -20,6 +20,7 @@ import { FeatureUsersStore } from './store/user.state';
 import { UserCRUDConfiguration } from './user.constants';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
+import { UserBulkComponent } from './views/user-bulk/user-bulk.component';
 
 export let ROUTES: Routes = [
   {
@@ -27,12 +28,30 @@ export let ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.User_List_Access,
-      InjectComponent: UsersIndexComponent
+      InjectComponent: UsersIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
     // [Calc] : The children are not used in calc
     children: [
+      {
+        path: 'bulk',
+        data: {
+          breadcrumb: 'bia.bulk',
+          canNavigate: false,
+          permission: Permission.User_Add,
+          title: 'bia.bulk',
+          InjectComponent: UserBulkComponent,
+          dynamicComponent: () =>
+            UserCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
+        },
+        component: UserCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
+      },
       {
         path: 'create',
         data: {
@@ -41,9 +60,14 @@ export let ROUTES: Routes = [
           permission: Permission.User_Add,
           title: 'user.add',
           InjectComponent: UserNewComponent,
-          dynamicComponent : () => (UserCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            UserCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (UserCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: UserCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -63,21 +87,26 @@ export let ROUTES: Routes = [
               permission: Permission.User_UpdateRoles,
               title: 'user.edit',
               InjectComponent: UserEditComponent,
-              dynamicComponent : () => (UserCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                UserCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (UserCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: UserCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -91,20 +120,21 @@ export let ROUTES: Routes = [
     UserEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     UserTableComponent,
+    UserBulkComponent,
   ],
   imports: [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(UserCRUDConfiguration.storeKey, FeatureUsersStore.reducers),
+    StoreModule.forFeature(
+      UserCRUDConfiguration.storeKey,
+      FeatureUsersStore.reducers
+    ),
     EffectsModule.forFeature([UsersEffects]),
     // TODO after creation of CRUD User : select the optioDto dommain module requiered for link
     // Domain Modules:
     RoleOptionModule,
     UserFromDirectoryModule, // requiered for the add user from directory feature
-  ]
+  ],
 })
-
-export class UserModule {
-}
-
+export class UserModule {}

@@ -41,7 +41,11 @@ export class DateHelperService {
     );
   }
 
-  public static parseDate(dateString: string): Date | null {
+  public static isValidDate(d: Date): boolean {
+    return !isNaN(d.getTime());
+  }
+
+  public static parseDate(dateString: string): Date {
     if (isNaN(Date.parse(dateString)) !== true) {
       return new Date(dateString);
     }
@@ -74,6 +78,6 @@ export class DateHelperService {
       }
     }
 
-    return null;
+    return new Date(dateString);
   }
 }

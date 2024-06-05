@@ -1,6 +1,6 @@
 <p-fileUpload
   mode="basic"
-  chooseLabel="Choose"
+  [chooseLabel]="'primeng.choose' | translate"
   chooseIcon="pi pi-upload"
   [customUpload]="true"
   accept="text/csv"
@@ -14,7 +14,7 @@
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-trash mr-2"></i>
-          <span class="vertical-align-middle">To Delete</span>
+          <span class="vertical-align-middle">{{ 'bia.toDelete' | translate }}</span>
         </div>
       </ng-template>
       <ng-template pTemplate="content">
@@ -40,7 +40,7 @@
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-plus mr-2"></i>
-          <span class="vertical-align-middle">To Insert</span>
+          <span class="vertical-align-middle">{{ 'bia.toAdd' | translate }}</span>
         </div>
       </ng-template>
       <ng-template pTemplate="content">
@@ -66,7 +66,7 @@
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
           <i class="pi pi-sync mr-2"></i>
-          <span class="vertical-align-middle">To Update</span>
+          <span class="vertical-align-middle">{{ 'bia.toModify' | translate }}</span>
         </div>
       </ng-template>
       <ng-template pTemplate="content">
@@ -91,8 +91,8 @@
     <p-accordionTab *ngIf="bulkData.errorToSaves.length > 0">
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
-          <i class="pi pi-sync mr-2"></i>
-          <span class="vertical-align-middle">Error(s)</span>
+          <i class="pi pi-times mr-2"></i>
+          <span class="vertical-align-middle">{{ 'bia.error' | translate }}</span>
         </div>
       </ng-template>
       <ng-template pTemplate="content">
@@ -124,7 +124,11 @@
         [binary]="true"
         inputId="chkDelete"
         [disabled]="bulkData.toDeletes.length === 0"></p-checkbox>
-      <label for="chkDelete">To Delete ({{ bulkData.toDeletes.length }})</label>
+      <label for="chkDelete"
+        >{{ 'bia.toDelete' | translate }} ({{
+          bulkData.toDeletes.length
+        }})</label
+      >
     </div>
 
     <div class="flex align-items-center gap-1" *ngIf="canUseInsert() === true">
@@ -133,7 +137,9 @@
         [binary]="true"
         inputId="chkInsert"
         [disabled]="bulkData.toInserts.length === 0"></p-checkbox>
-      <label for="chkInsert">To Insert ({{ bulkData.toInserts.length }})</label>
+      <label for="chkInsert"
+        >{{ 'bia.toAdd' | translate }} ({{ bulkData.toInserts.length }})</label
+      >
     </div>
 
     <div class="flex align-items-center gap-1" *ngIf="canUseUpdate() === true">
@@ -142,7 +148,11 @@
         [binary]="true"
         inputId="chkUpdate"
         [disabled]="bulkData.toUpdates.length === 0"></p-checkbox>
-      <label for="chkUpdate">To Update ({{ bulkData.toUpdates.length }})</label>
+      <label for="chkUpdate"
+        >{{ 'bia.toModify' | translate }} ({{
+          bulkData.toUpdates.length
+        }})</label
+      >
     </div>
   </div>
   <br />
@@ -151,7 +161,10 @@
 <div class="flex flex-row gap-1 justify-content-end">
   <button
     pButton
-    label="{{ 'bia.save' | translate }}"
+    [disabled]="
+      updateChecked !== true && insertChecked !== true && deleteChecked !== true
+    "
+    label="{{ 'primeng.apply' | translate }}"
     type="button"
     (click)="onSave()"></button>
   <button
