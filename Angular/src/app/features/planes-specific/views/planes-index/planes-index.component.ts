@@ -10,17 +10,16 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 @Component({
   selector: 'app-planes-index',
   templateUrl: './planes-index.component.html',
-  styleUrls: ['./planes-index.component.scss']
+  styleUrls: ['./planes-index.component.scss'],
 })
-
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
-
-  @ViewChild(PlaneTableComponent, { static: false }) crudItemTableComponent: PlaneTableComponent;
+  @ViewChild(PlaneTableComponent, { static: false })
+  crudItemTableComponent: PlaneTableComponent;
 
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;

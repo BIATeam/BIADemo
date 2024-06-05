@@ -4,7 +4,7 @@ import { AppSettingsState } from './app-settings.state';
 
 export const initializeAppSettingsState = (): AppSettingsState => {
   return {
-    appSettings: null
+    appSettings: null,
   };
 };
 

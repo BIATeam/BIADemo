@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { LOCALE_ID, NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule, TranslateStore } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateStore,
+} from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -29,21 +33,20 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    LoggerModule.forRoot(
-      BiaEnvironmentService.getLoggingConf(),
-      {
-        serverProvider: {
-          provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: BiaNgxLoggerServerService
-        }
-      }),
+    LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: BiaNgxLoggerServerService,
+      },
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: false,
-        strictActionImmutability: false
-      }
+        strictActionImmutability: false,
+      },
     }) /* Initialise the Central Store with Application's main reducer*/,
     buildSpecificModules,
     EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
@@ -52,8 +55,8 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, TranslateStore]
-      }
+        deps: [HttpClient, TranslateStore],
+      },
     }),
     CoreModule,
     HomeModule,
@@ -61,15 +64,15 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   providers: [
     DatePipe,
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
-    BiaSignalRService
+    BiaSignalRService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

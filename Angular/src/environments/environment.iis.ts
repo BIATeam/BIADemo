@@ -5,7 +5,7 @@ export const environment = {
   reportUrl: '',
   apiUrlDynamic: {
     oldValue: '',
-    newValue: ''
+    newValue: '',
   },
   apiUrl: 'http://localhost/BIADemo/WebApi/api',
   hubUrl: 'http://localhost/BIADemo/WebApi/HubForClients',
@@ -15,7 +15,7 @@ export const environment = {
     conf: {
       serverLoggingUrl: 'http://localhost/BIADemo/WebApi/api/logs',
       level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR
-    }
-  }
+      serverLogLevel: NgxLoggerLevel.ERROR,
+    },
+  },
 };

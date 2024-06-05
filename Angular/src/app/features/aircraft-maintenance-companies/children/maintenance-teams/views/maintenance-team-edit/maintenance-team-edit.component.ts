@@ -11,7 +11,7 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
 export class MaintenanceTeamEditComponent extends CrudItemEditComponent<MaintenanceTeam> {
   constructor(
     protected injector: Injector,
-    public maintenanceTeamService: MaintenanceTeamService,
+    public maintenanceTeamService: MaintenanceTeamService
   ) {
     super(injector, maintenanceTeamService);
     this.crudConfiguration = MaintenanceTeamCRUDConfiguration;

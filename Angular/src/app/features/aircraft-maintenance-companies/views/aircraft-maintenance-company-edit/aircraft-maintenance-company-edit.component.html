@@ -1,8 +1,11 @@
-<app-aircraft-maintenance-company-form  
-    [crudItem]="aircraftMaintenanceCompanyService.crudItem$ | async" 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></app-aircraft-maintenance-company-form>
-<bia-spinner *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async" [overlay]="true"></bia-spinner>
+<app-aircraft-maintenance-company-form
+  [crudItem]="aircraftMaintenanceCompanyService.crudItem$ | async"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="
+    aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async
+  "
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>
+<bia-spinner
+  *ngIf="aircraftMaintenanceCompanyService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>

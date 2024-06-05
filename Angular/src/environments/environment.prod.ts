@@ -5,7 +5,7 @@ export const environment = {
   reportUrl: '',
   apiUrlDynamic: {
     oldValue: '',
-    newValue: ''
+    newValue: '',
   },
   apiUrl: '../WebApi/api',
   hubUrl: '../WebApi/HubForClients',
@@ -15,7 +15,7 @@ export const environment = {
     conf: {
       serverLoggingUrl: '../WebApi/api/logs',
       level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR
-    }
-  }
+      serverLogLevel: NgxLoggerLevel.ERROR,
+    },
+  },
 };

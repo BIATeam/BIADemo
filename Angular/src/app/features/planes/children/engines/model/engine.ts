@@ -1,4 +1,9 @@
-import { PrimeNGFiltering, BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  PrimeNGFiltering,
+  BiaFieldConfig,
+  PropType,
+  BiaFieldsConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
@@ -11,15 +16,16 @@ export interface Engine extends BaseDto {
 }
 
 // TODO after creation of CRUD Engine : adapt the field configuration
-export const EngineFieldsConfiguration : BiaFieldsConfig =
-{
+export const EngineFieldsConfiguration: BiaFieldsConfig = {
   columns: [
-    Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {
-    }),
-    Object.assign(new BiaFieldConfig('lastMaintenanceDate', 'engine.lastMaintenanceDate'), {
-      type: PropType.DateTime,
-      isRequired: true,
-    }),
+    Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {}),
+    Object.assign(
+      new BiaFieldConfig('lastMaintenanceDate', 'engine.lastMaintenanceDate'),
+      {
+        type: PropType.DateTime,
+        isRequired: true,
+      }
+    ),
     Object.assign(new BiaFieldConfig('syncTime', 'engine.syncTime'), {
       type: PropType.TimeSecOnly,
       isRequired: true,
@@ -28,5 +34,5 @@ export const EngineFieldsConfiguration : BiaFieldsConfig =
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
     }),
-  ]
-}
+  ],
+};

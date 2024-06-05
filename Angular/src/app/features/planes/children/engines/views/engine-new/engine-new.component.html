@@ -1,6 +1,5 @@
-<app-engine-form 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></app-engine-form>
+<app-engine-form
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-engine-form>

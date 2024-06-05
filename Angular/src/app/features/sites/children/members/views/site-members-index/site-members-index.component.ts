@@ -6,13 +6,19 @@ import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'app-site-members-index',
-  templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
-  styleUrls: ['../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss']
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+  styleUrls: [
+    '../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+  ],
 })
-export class SiteMembersIndexComponent extends MembersIndexComponent implements OnInit {
+export class SiteMembersIndexComponent
+  extends MembersIndexComponent
+  implements OnInit
+{
   constructor(
     injector: Injector,
-    public siteService: SiteService,
+    public siteService: SiteService
   ) {
     super(injector);
   }
@@ -21,10 +27,14 @@ export class SiteMembersIndexComponent extends MembersIndexComponent implements 
     this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
   }
-  
+
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Site_Member_Update);
-    this.canDelete = this.authService.hasPermission(Permission.Site_Member_Delete);
+    this.canEdit = this.authService.hasPermission(
+      Permission.Site_Member_Update
+    );
+    this.canDelete = this.authService.hasPermission(
+      Permission.Site_Member_Delete
+    );
     this.canAdd = this.authService.hasPermission(Permission.Site_Member_Create);
   }
 }

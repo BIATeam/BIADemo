@@ -12,33 +12,34 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaneOptionsService extends CrudItemOptionsService {
-    planeTypeOptions$: Observable<OptionDto[]>;
-    airportOptions$: Observable<OptionDto[]>;
+  planeTypeOptions$: Observable<OptionDto[]>;
+  airportOptions$: Observable<OptionDto[]>;
 
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        super();
-        // TODO after creation of CRUD Plane : get all requiered option dto use in Table calc and create and edit form
-        this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
-        this.airportOptions$ = this.store.select(getAllAirportOptions);
+  constructor(private store: Store<AppState>) {
+    super();
+    // TODO after creation of CRUD Plane : get all requiered option dto use in Table calc and create and edit form
+    this.planeTypeOptions$ = this.store.select(getAllPlaneTypeOptions);
+    this.airportOptions$ = this.store.select(getAllAirportOptions);
 
-        this.dictOptionDtos$ = combineLatest([this.planeTypeOptions$, this.airportOptions$]).pipe(
-            map(
-                (options) =>
-                <DictOptionDto[]>[
-                    new DictOptionDto('planeType', options[0]),
-                    new DictOptionDto('connectingAirports', options[1])
-                ]
-            )
-        );
-    }
+    this.dictOptionDtos$ = combineLatest([
+      this.planeTypeOptions$,
+      this.airportOptions$,
+    ]).pipe(
+      map(
+        options =>
+          <DictOptionDto[]>[
+            new DictOptionDto('planeType', options[0]),
+            new DictOptionDto('connectingAirports', options[1]),
+          ]
+      )
+    );
+  }
 
-    loadAllOptions() {
-        this.store.dispatch(DomainPlaneTypeOptionsActions.loadAll());
-        this.store.dispatch(DomainAirportOptionsActions.loadAll());
-    }
+  loadAllOptions() {
+    this.store.dispatch(DomainPlaneTypeOptionsActions.loadAll());
+    this.store.dispatch(DomainAirportOptionsActions.loadAll());
+  }
 }

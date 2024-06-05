@@ -8,11 +8,13 @@ import { MaintenanceTeam } from '../../model/maintenance-team';
 
 @Component({
   selector: 'app-maintenance-team-table',
-  templateUrl: '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
 export class MaintenanceTeamTableComponent extends CrudItemTableComponent<MaintenanceTeam> {
-
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

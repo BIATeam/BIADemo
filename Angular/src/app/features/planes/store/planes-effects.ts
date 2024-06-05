@@ -35,8 +35,13 @@ export class PlanesEffects {
       pluck('event'),
       switchMap(event =>
         this.planeDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Plane[]>) => FeaturePlanesActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
+          map((result: DataResult<Plane[]>) =>
+            FeaturePlanesActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesActions.failure({ error: err }));
           })
@@ -52,8 +57,8 @@ export class PlanesEffects {
       switchMap(id => {
         if (id) {
           return this.planeDas.get({ id: id }).pipe(
-            map((plane) => FeaturePlanesActions.loadSuccess({ plane })),
-            catchError((err) => {
+            map(plane => FeaturePlanesActions.loadSuccess({ plane })),
+            catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               location.assign(this.baseHref);
               return of(FeaturePlanesActions.failure({ error: err }));
@@ -78,20 +83,27 @@ export class PlanesEffects {
         )
       ),
       switchMap(([plane, event]) => {
-        return this.planeDas.post({ item: plane, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (PlaneCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesActions.failure({ error: err }));
+        return this.planeDas
+          .post({
+            item: plane,
+            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (PlaneCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -108,60 +120,68 @@ export class PlanesEffects {
         )
       ),
       switchMap(([plane, event]) => {
-        return this.planeDas.put({ item: plane, id: plane.id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (PlaneCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesActions.failure({ error: err }));
+        return this.planeDas
+          .put({
+            item: plane,
+            id: plane.id,
+            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (PlaneCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
       })
     )
-    );
+  );
 
-    save$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(FeaturePlanesActions.save),
-            pluck('planes'),
-            concatMap(planes =>
-                of(planes).pipe(
-                    withLatestFrom(
-                        this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)
-                    )
-                )
-            ),
-            switchMap(([planes, event]) => {
-                return this.planeDas
-                    .save({
-                        items: planes,
-                        offlineMode: PlaneCRUDConfiguration.useOfflineMode,
-                    })
-                    .pipe(
-                        map(() => {
-                            this.biaMessageService.showUpdateSuccess();
-                            if (PlaneCRUDConfiguration.useSignalR) {
-                                return biaSuccessWaitRefreshSignalR();
-                            } else {
-                                return FeaturePlanesActions.loadAllByPost({
-                                    event: <LazyLoadEvent>event,
-                                });
-                            }
-                        }),
-                        catchError(err => {
-                            this.biaMessageService.showError();
-                            return of(FeaturePlanesActions.failure({ error: err }));
-                        })
-                    );
-            })
+  save$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FeaturePlanesActions.save),
+      pluck('planes'),
+      concatMap(planes =>
+        of(planes).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesStore.getLastLazyLoadEvent)
+          )
         )
-    );
+      ),
+      switchMap(([planes, event]) => {
+        return this.planeDas
+          .save({
+            items: planes,
+            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
+          })
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (PlaneCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showError();
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
+      })
+    )
+  );
 
   destroy$ = createEffect(() =>
     this.actions$.pipe(
@@ -175,20 +195,27 @@ export class PlanesEffects {
         )
       ),
       switchMap(([id, event]) => {
-        return this.planeDas.delete({ id: id, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (PlaneCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesActions.failure({ error: err }));
+        return this.planeDas
+          .delete({
+            id: id,
+            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (PlaneCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -205,20 +232,27 @@ export class PlanesEffects {
         )
       ),
       switchMap(([ids, event]) => {
-        return this.planeDas.deletes({ ids: ids, offlineMode: PlaneCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (PlaneCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesActions.failure({ error: err }));
+        return this.planeDas
+          .deletes({
+            ids: ids,
+            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (PlaneCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );

@@ -14,62 +14,79 @@ import { PlaneTypeDas } from './plane-type-das.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaneTypeService extends CrudItemService<PlaneType> {
+  constructor(
+    private store: Store<AppState>,
+    public dasService: PlaneTypeDas,
+    public signalRService: CrudItemSignalRService<PlaneType>,
+    public optionsService: PlaneTypeOptionsService,
+    // requiered only for parent key
+    protected authService: AuthService
+  ) {
+    super(dasService, signalRService, optionsService);
+  }
 
-    constructor(private store: Store<AppState>,
-        public dasService: PlaneTypeDas,
-        public signalRService: CrudItemSignalRService<PlaneType>,
-        public optionsService: PlaneTypeOptionsService,
-        // requiered only for parent key
-        protected authService: AuthService,
-        ) {
-        super(dasService,signalRService,optionsService);
-    }
+  public getParentIds(): any[] {
+    // TODO after creation of CRUD PlaneType : adapt the parent Key tothe context. It can be null if root crud
+    return [];
+  }
 
-    public getParentIds(): any[]
-    {
-        // TODO after creation of CRUD PlaneType : adapt the parent Key tothe context. It can be null if root crud
-        return [];
-    }
+  public getFeatureName() {
+    return PlaneTypeCRUDConfiguration.featureName;
+  }
 
-    public getFeatureName()  {  return PlaneTypeCRUDConfiguration.featureName; };
+  public crudItems$: Observable<PlaneType[]> = this.store.select(
+    FeaturePlanesTypesStore.getAllPlanesTypes
+  );
+  public totalCount$: Observable<number> = this.store.select(
+    FeaturePlanesTypesStore.getPlanesTypesTotalCount
+  );
+  public loadingGetAll$: Observable<boolean> = this.store.select(
+    FeaturePlanesTypesStore.getPlaneTypeLoadingGetAll
+  );
+  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+    FeaturePlanesTypesStore.getLastLazyLoadEvent
+  );
 
-    public crudItems$: Observable<PlaneType[]> = this.store.select(FeaturePlanesTypesStore.getAllPlanesTypes);
-    public totalCount$: Observable<number> = this.store.select(FeaturePlanesTypesStore.getPlanesTypesTotalCount);
-    public loadingGetAll$: Observable<boolean> = this.store.select(FeaturePlanesTypesStore.getPlaneTypeLoadingGetAll);;
-    public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent);
+  public crudItem$: Observable<PlaneType> = this.store.select(
+    FeaturePlanesTypesStore.getCurrentPlaneType
+  );
+  public loadingGet$: Observable<boolean> = this.store.select(
+    FeaturePlanesTypesStore.getPlaneTypeLoadingGet
+  );
 
-    public crudItem$: Observable<PlaneType> = this.store.select(FeaturePlanesTypesStore.getCurrentPlaneType);
-    public loadingGet$: Observable<boolean> = this.store.select(FeaturePlanesTypesStore.getPlaneTypeLoadingGet);
-
-    public load(id: any){
-        this.store.dispatch(FeaturePlanesTypesActions.load({ id }));
-    }
-    public loadAllByPost(event: LazyLoadEvent){
-        this.store.dispatch(FeaturePlanesTypesActions.loadAllByPost({ event }));
-    }
-    public create(crudItem: PlaneType){
-        // TODO after creation of CRUD PlaneType : map parent Key on the corresponding field
-        // crudItem.siteId = this.getParentIds()[0],
-        this.store.dispatch(FeaturePlanesTypesActions.create({ planeType : crudItem }));
-    }
-    public update(crudItem: PlaneType){
-        this.store.dispatch(FeaturePlanesTypesActions.update({ planeType : crudItem }));
-    }
-    public remove(id: any){
-        this.store.dispatch(FeaturePlanesTypesActions.remove({ id }));
-    }
-    public multiRemove(ids: any[]){
-        this.store.dispatch(FeaturePlanesTypesActions.multiRemove({ ids }));
-    }
-    public clearAll(){
-        this.store.dispatch(FeaturePlanesTypesActions.clearAll());
-    }
-    public clearCurrent(){
-      this._currentCrudItem = <PlaneType>{};
-      this._currentCrudItemId = 0;
-      this.store.dispatch(FeaturePlanesTypesActions.clearCurrent());
+  public load(id: any) {
+    this.store.dispatch(FeaturePlanesTypesActions.load({ id }));
+  }
+  public loadAllByPost(event: LazyLoadEvent) {
+    this.store.dispatch(FeaturePlanesTypesActions.loadAllByPost({ event }));
+  }
+  public create(crudItem: PlaneType) {
+    // TODO after creation of CRUD PlaneType : map parent Key on the corresponding field
+    // crudItem.siteId = this.getParentIds()[0],
+    this.store.dispatch(
+      FeaturePlanesTypesActions.create({ planeType: crudItem })
+    );
+  }
+  public update(crudItem: PlaneType) {
+    this.store.dispatch(
+      FeaturePlanesTypesActions.update({ planeType: crudItem })
+    );
+  }
+  public remove(id: any) {
+    this.store.dispatch(FeaturePlanesTypesActions.remove({ id }));
+  }
+  public multiRemove(ids: any[]) {
+    this.store.dispatch(FeaturePlanesTypesActions.multiRemove({ ids }));
+  }
+  public clearAll() {
+    this.store.dispatch(FeaturePlanesTypesActions.clearAll());
+  }
+  public clearCurrent() {
+    this._currentCrudItem = <PlaneType>{};
+    this._currentCrudItemId = 0;
+    this.store.dispatch(FeaturePlanesTypesActions.clearCurrent());
   }
 }

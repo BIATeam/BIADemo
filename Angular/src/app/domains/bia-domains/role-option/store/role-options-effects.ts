@@ -20,14 +20,22 @@ export class RoleOptionsEffects {
       /* Hit the Roles Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Roles Reducers' will take care of the rest */
-      switchMap((teamTypeId) =>
-        this.roleDas.getList({ endpoint: 'allOptions?teamTypeId=' + teamTypeId }).pipe(
-          map((roles) => DomainRoleOptionsActions.loadAllSuccess({ roles: roles?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(DomainRoleOptionsActions.failure({ error: err }));
-          })
-        )
+      switchMap(teamTypeId =>
+        this.roleDas
+          .getList({ endpoint: 'allOptions?teamTypeId=' + teamTypeId })
+          .pipe(
+            map(roles =>
+              DomainRoleOptionsActions.loadAllSuccess({
+                roles: roles?.sort((a, b) =>
+                  a.display.localeCompare(b.display)
+                ),
+              })
+            ),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(DomainRoleOptionsActions.failure({ error: err }));
+            })
+          )
       )
     )
   );
@@ -54,5 +62,5 @@ export class RoleOptionsEffects {
     private actions$: Actions,
     private roleDas: RoleOptionDas,
     private biaMessageService: BiaMessageService
-  ) { }
+  ) {}
 }

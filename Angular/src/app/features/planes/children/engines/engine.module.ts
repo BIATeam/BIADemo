@@ -19,13 +19,13 @@ import { EnginesEffects } from './store/engines-effects';
 import { FeatureEnginesStore } from './store/engine.state';
 import { EngineCRUDConfiguration } from './engine.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Engine_List_Access,
-      InjectComponent: EnginesIndexComponent
+      InjectComponent: EnginesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -39,9 +39,14 @@ export let ROUTES: Routes = [
           permission: Permission.Engine_Create,
           title: 'engine.add',
           InjectComponent: EngineNewComponent,
-          dynamicComponent : () => (EngineCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            EngineCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (EngineCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: EngineCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -61,21 +66,26 @@ export let ROUTES: Routes = [
               permission: Permission.Engine_Update,
               title: 'engine.edit',
               InjectComponent: EngineEditComponent,
-              dynamicComponent : () => (EngineCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                EngineCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (EngineCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: EngineCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -94,13 +104,13 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(EngineCRUDConfiguration.storeKey, FeatureEnginesStore.reducers),
+    StoreModule.forFeature(
+      EngineCRUDConfiguration.storeKey,
+      FeatureEnginesStore.reducers
+    ),
     EffectsModule.forFeature([EnginesEffects]),
     // TODO after creation of CRUD Engine : select the optioDto dommain module requiered for link
     // Domain Modules:
-  ]
+  ],
 })
-
-export class EngineModule {
-}
-
+export class EngineModule {}

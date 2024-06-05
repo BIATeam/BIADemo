@@ -24,7 +24,6 @@ export class BiaSignalRService {
    * without having to redefine every needed event and data structure in the domain.
    */
 
-
   private readonly hubConnection: HubConnection;
   private methods: string[];
   private isStarting: boolean;
@@ -35,7 +34,9 @@ export class BiaSignalRService {
    * Constructor.
    */
   public constructor() {
-    this.hubConnection = new HubConnectionBuilder().withUrl(BiaEnvironmentService.getHubUrl()).build();
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(BiaEnvironmentService.getHubUrl())
+      .build();
 
     this.configureConnection();
 
@@ -45,7 +46,10 @@ export class BiaSignalRService {
     this.targetedFeatures = [];
   }
 
-  public addMethod(methodName: string, newMethod: (...args: any[]) => void): void {
+  public addMethod(
+    methodName: string,
+    newMethod: (...args: any[]) => void
+  ): void {
     this.hubConnection.on(methodName, newMethod);
     if (this.methods.indexOf(methodName) < 0) {
       this.methods.push(methodName);
@@ -71,7 +75,7 @@ export class BiaSignalRService {
   }
 
   public joinGroup(targetedFeature: TargetedFeature) {
-    if (this.targetedFeatures.indexOf(targetedFeature) === -1 ) {
+    if (this.targetedFeatures.indexOf(targetedFeature) === -1) {
       this.targetedFeatures.push(targetedFeature);
     }
     if (this.isStarted) {
@@ -80,11 +84,17 @@ export class BiaSignalRService {
   }
 
   private invokeJoinGroup(targetedFeature: TargetedFeature) {
-    this.hubConnection.invoke('JoinGroup', JSON.stringify(targetedFeature))
+    this.hubConnection
+      .invoke('JoinGroup', JSON.stringify(targetedFeature))
       .then(() => {
-          console.log('%c [SignalRService] Join Group ' + targetedFeature.parentKey + '>' + targetedFeature.featureName, 'color: blue; font-weight: bold');
-        }
-      )
+        console.log(
+          '%c [SignalRService] Join Group ' +
+            targetedFeature.parentKey +
+            '>' +
+            targetedFeature.featureName,
+          'color: blue; font-weight: bold'
+        );
+      })
       .catch(err => {
         console.log(err);
       });
@@ -101,11 +111,17 @@ export class BiaSignalRService {
   }
 
   private invokeLeaveGroup(targetedFeature: TargetedFeature) {
-    this.hubConnection.invoke('LeaveGroup', JSON.stringify(targetedFeature))
+    this.hubConnection
+      .invoke('LeaveGroup', JSON.stringify(targetedFeature))
       .then(() => {
-          console.log('%c [SignalRService] Leave Group ' + targetedFeature.parentKey + '>' + targetedFeature.featureName, 'color: blue; font-weight: bold');
-        }
-      )
+        console.log(
+          '%c [SignalRService] Leave Group ' +
+            targetedFeature.parentKey +
+            '>' +
+            targetedFeature.featureName,
+          'color: blue; font-weight: bold'
+        );
+      })
       .catch(err => {
         console.log(err);
       });
@@ -117,13 +133,19 @@ export class BiaSignalRService {
   private configureConnection(): void {
     this.hubConnection.onclose(async () => {
       if (this.isStarting) {
-        console.log('%c [SignalRService] Hub connection closed. Try restarting it...', 'color: red; font-weight: bold');
+        console.log(
+          '%c [SignalRService] Hub connection closed. Try restarting it...',
+          'color: red; font-weight: bold'
+        );
         setTimeout(() => {
           this.startConnection();
         }, 5000);
       } else {
         this.isStarted = false;
-        console.log('%c [SignalRService] Hub connection stoped', 'color: blue; font-weight: bold');
+        console.log(
+          '%c [SignalRService] Hub connection stoped',
+          'color: blue; font-weight: bold'
+        );
       }
     });
   }
@@ -139,12 +161,16 @@ export class BiaSignalRService {
         this.targetedFeatures.forEach(element => {
           this.invokeJoinGroup(element);
         });
-        console.log('%c [SignalRService] Hub connection started', 'color: blue; font-weight: bold');
+        console.log(
+          '%c [SignalRService] Hub connection started',
+          'color: blue; font-weight: bold'
+        );
       })
       .catch((err: string) => {
         if (this.isStarting) {
           console.log(
-            '%c [SignalRService] Error while establishing connection, retrying...' + err,
+            '%c [SignalRService] Error while establishing connection, retrying...' +
+              err,
             'color: red; font-weight: bold'
           );
           setTimeout(() => {

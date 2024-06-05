@@ -1,17 +1,24 @@
 import * as fromPlanesTypes from './planes-types-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { PlaneTypeCRUDConfiguration } from '../plane-type.constants';
 
-export namespace FeaturePlanesTypesStore
-{
+export namespace FeaturePlanesTypesStore {
   export interface PlanesTypesState {
     planesTypes: fromPlanesTypes.State;
   }
 
   /** Provide reducers with AoT-compilation compliance */
-  export function reducers(state: PlanesTypesState | undefined, action: Action) {
+  export function reducers(
+    state: PlanesTypesState | undefined,
+    action: Action
+  ) {
     return combineReducers({
-      planesTypes: fromPlanesTypes.planeTypeReducers
+      planesTypes: fromPlanesTypes.planeTypeReducers,
     })(state, action);
   }
 
@@ -20,39 +27,44 @@ export namespace FeaturePlanesTypesStore
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getPlanesTypesState = createFeatureSelector<PlanesTypesState>(PlaneTypeCRUDConfiguration.storeKey);
+  export const getPlanesTypesState = createFeatureSelector<PlanesTypesState>(
+    PlaneTypeCRUDConfiguration.storeKey
+  );
 
   export const getPlanesTypesEntitiesState = createSelector(
     getPlanesTypesState,
-    (state) => state.planesTypes
+    state => state.planesTypes
   );
 
   export const getPlanesTypesTotalCount = createSelector(
     getPlanesTypesEntitiesState,
-    (state) => state.totalCount
+    state => state.totalCount
   );
 
   export const getCurrentPlaneType = createSelector(
     getPlanesTypesEntitiesState,
-    (state) => state.currentPlaneType
+    state => state.currentPlaneType
   );
 
   export const getLastLazyLoadEvent = createSelector(
     getPlanesTypesEntitiesState,
-    (state) => state.lastLazyLoadEvent
+    state => state.lastLazyLoadEvent
   );
 
   export const getPlaneTypeLoadingGet = createSelector(
     getPlanesTypesEntitiesState,
-    (state) => state.loadingGet
+    state => state.loadingGet
   );
 
   export const getPlaneTypeLoadingGetAll = createSelector(
     getPlanesTypesEntitiesState,
-    (state) => state.loadingGetAll
+    state => state.loadingGetAll
   );
 
-  export const { selectAll: getAllPlanesTypes } = fromPlanesTypes.planesTypesAdapter.getSelectors(getPlanesTypesEntitiesState);
+  export const { selectAll: getAllPlanesTypes } =
+    fromPlanesTypes.planesTypesAdapter.getSelectors(
+      getPlanesTypesEntitiesState
+    );
 
   export const getPlaneTypeById = (id: number) =>
     createSelector(

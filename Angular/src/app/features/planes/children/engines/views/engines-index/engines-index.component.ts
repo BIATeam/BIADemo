@@ -10,20 +10,20 @@ import { EngineTableComponent } from '../../components/engine-table/engine-table
 @Component({
   selector: 'app-engines-index',
   templateUrl: './engines-index.component.html',
-  styleUrls: ['./engines-index.component.scss']
+  styleUrls: ['./engines-index.component.scss'],
 })
-
 export class EnginesIndexComponent extends CrudItemsIndexComponent<Engine> {
-  @ViewChild(EngineTableComponent, { static: false }) crudItemTableComponent: EngineTableComponent;
+  @ViewChild(EngineTableComponent, { static: false })
+  crudItemTableComponent: EngineTableComponent;
 
   constructor(
     protected injector: Injector,
     public engineService: EngineService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, engineService);
     this.crudConfiguration = EngineCRUDConfiguration;
-    this.reorderableColumns= false;
+    this.reorderableColumns = false;
   }
 
   protected setPermissions() {

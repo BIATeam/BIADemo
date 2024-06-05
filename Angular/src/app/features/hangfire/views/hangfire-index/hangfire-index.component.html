@@ -1,42 +1,65 @@
-<div class="header flex flex-row justify-content-between align-content-between" >
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
-  </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
+<div class="header flex flex-row justify-content-between align-content-between">
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <h1>Launch random review plane in hanfire job.</h1>
   </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
-  </div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
 </div>
-<BR/>
-<BR/>
+<BR />
+<BR />
 <div class="flex flex-row flex-wrap">
   On a plane of one the following&nbsp;<b>Sites</b>
 </div>
-<BR/>
-<div class="flex flex-row flex-wrap justify-content-around align-content-around" >
-  <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === TeamTypeId.Site" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
+<BR />
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <ng-container *ngFor="let team of allTeams$ | async">
+    <button
+      *ngIf="team.teamTypeId === TeamTypeId.Site"
+      pButton
+      type="button"
+      (click)="randomReviewPlane(team.id)"
+      label="{{ team.title }}"></button>
   </ng-container>
 </div>
-<BR/>
-<BR/>
+<BR />
+<BR />
 <div class="flex flex-row flex-wrap">
-  On a plane of the current site and notify team of type&nbsp;<b>Aircraft Maintenance Company</b>
+  On a plane of the current site and notify team of type&nbsp;<b
+    >Aircraft Maintenance Company</b
+  >
 </div>
-<BR/>
-<div class="flex flex-row flex-wrap justify-content-around align-content-around" >
-  <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === TeamTypeId.AircraftMaintenanceCompany" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.title}}"></button>
+<BR />
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <ng-container *ngFor="let team of allTeams$ | async">
+    <button
+      *ngIf="team.teamTypeId === TeamTypeId.AircraftMaintenanceCompany"
+      pButton
+      type="button"
+      (click)="randomReviewPlane(team.id)"
+      label="{{ team.title }}"></button>
   </ng-container>
 </div>
-<BR/>
-<BR/>
-<div class="flex flex-row flex-wrap" >
-  On a plane of the current site and notify team of type&nbsp;<b>Maintenance Team</b>
+<BR />
+<BR />
+<div class="flex flex-row flex-wrap">
+  On a plane of the current site and notify team of type&nbsp;<b
+    >Maintenance Team</b
+  >
 </div>
-<BR/>
-<div class="flex flex-row flex-wrap justify-content-around align-content-around" >
-  <ng-container *ngFor="let team of (allTeams$ | async)">
-    <button *ngIf="team.teamTypeId === TeamTypeId.MaintenanceTeam" pButton type="button" (click)="randomReviewPlane(team.id)" label="{{team.parentTeamTitle}} > {{team.title}}"></button>
+<BR />
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <ng-container *ngFor="let team of allTeams$ | async">
+    <button
+      *ngIf="team.teamTypeId === TeamTypeId.MaintenanceTeam"
+      pButton
+      type="button"
+      (click)="randomReviewPlane(team.id)"
+      label="{{ team.parentTeamTitle }} > {{ team.title }}"></button>
   </ng-container>
 </div>

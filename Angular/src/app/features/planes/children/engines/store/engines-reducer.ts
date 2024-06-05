@@ -7,7 +7,7 @@ import { Engine } from '../model/engine';
 // This adapter will allow is to manipulate engines (mostly CRUD operations)
 export const enginesAdapter = createEntityAdapter<Engine>({
   selectId: (engine: Engine) => engine.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -41,18 +41,18 @@ export const INIT_STATE: State = enginesAdapter.getInitialState({
 
 export const engineReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureEnginesActions.clearAll, (state) => {
+  on(FeatureEnginesActions.clearAll, state => {
     const stateUpdated = enginesAdapter.removeAll(state);
     stateUpdated.totalCount = 0;
     return stateUpdated;
   }),
-  on(FeatureEnginesActions.clearCurrent, (state) => {
+  on(FeatureEnginesActions.clearCurrent, state => {
     return { ...state, currentEngine: <Engine>{} };
   }),
   on(FeatureEnginesActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureEnginesActions.load, (state) => {
+  on(FeatureEnginesActions.load, state => {
     return { ...state, loadingGet: true };
   }),
   on(FeatureEnginesActions.loadAllByPostSuccess, (state, { result, event }) => {
@@ -67,7 +67,8 @@ export const engineReducers = createReducer<State>(
   }),
   on(FeatureEnginesActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getEngineById = (id: number) => (state: State) => state.entities[id];
+export const getEngineById = (id: number) => (state: State) =>
+  state.entities[id];

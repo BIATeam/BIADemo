@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FeaturePlanesActions } from '../../store/planes-actions';
 import { Subscription } from 'rxjs';
@@ -12,7 +18,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 @Component({
   selector: 'app-plane-edit',
   templateUrl: './plane-edit.component.html',
-  styleUrls: ['./plane-edit.component.scss']
+  styleUrls: ['./plane-edit.component.scss'],
 })
 export class PlaneEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
@@ -24,13 +30,13 @@ export class PlaneEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public planeOptionsService: PlaneOptionsService,
     public planeService: PlaneService,
-    private biaTranslationService: BiaTranslationService,
-  ) { }
+    private biaTranslationService: BiaTranslationService
+  ) {}
 
   ngOnInit() {
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.planeOptionsService.loadAllOptions();
+        this.planeOptionsService.loadAllOptions();
       })
     );
   }

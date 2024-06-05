@@ -10,17 +10,16 @@ import { AirportTableComponent } from '../../components/airport-table/airport-ta
 @Component({
   selector: 'app-airports-index',
   templateUrl: './airports-index.component.html',
-  styleUrls: ['./airports-index.component.scss']
+  styleUrls: ['./airports-index.component.scss'],
 })
-
 export class AirportsIndexComponent extends CrudItemsIndexComponent<Airport> {
-  
-  @ViewChild(AirportTableComponent, { static: false }) crudItemTableComponent: AirportTableComponent;
+  @ViewChild(AirportTableComponent, { static: false })
+  crudItemTableComponent: AirportTableComponent;
 
   constructor(
     protected injector: Injector,
     public airportService: AirportService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, airportService);
     this.crudConfiguration = AirportCRUDConfiguration;

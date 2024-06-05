@@ -1,5 +1,10 @@
 import * as fromPlaneTypeOptions from './plane-type-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { storeKey } from '../plane-type-option.contants';
 
 export interface PlaneTypeOptionsState {
@@ -7,9 +12,12 @@ export interface PlaneTypeOptionsState {
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(state: PlaneTypeOptionsState | undefined, action: Action) {
+export function reducers(
+  state: PlaneTypeOptionsState | undefined,
+  action: Action
+) {
   return combineReducers({
-    planeTypeOptions: fromPlaneTypeOptions.planeTypeOptionReducers
+    planeTypeOptions: fromPlaneTypeOptions.planeTypeOptionReducers,
   })(state, action);
 }
 
@@ -18,37 +26,21 @@ export function reducers(state: PlaneTypeOptionsState | undefined, action: Actio
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getPlanesTypesState = createFeatureSelector<PlaneTypeOptionsState>(storeKey);
+export const getPlanesTypesState =
+  createFeatureSelector<PlaneTypeOptionsState>(storeKey);
 
 export const getPlaneTypeOptionsEntitiesState = createSelector(
   getPlanesTypesState,
-  (state) => state.planeTypeOptions
+  state => state.planeTypeOptions
 );
 
-export const { selectAll: getAllPlaneTypeOptions } = fromPlaneTypeOptions.planeTypeOptionsAdapter.getSelectors(
-  getPlaneTypeOptionsEntitiesState
-);
+export const { selectAll: getAllPlaneTypeOptions } =
+  fromPlaneTypeOptions.planeTypeOptionsAdapter.getSelectors(
+    getPlaneTypeOptionsEntitiesState
+  );
 
 export const getPlaneTypeOptionById = (id: number) =>
   createSelector(
     getPlaneTypeOptionsEntitiesState,
     fromPlaneTypeOptions.getPlaneTypeOptionById(id)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

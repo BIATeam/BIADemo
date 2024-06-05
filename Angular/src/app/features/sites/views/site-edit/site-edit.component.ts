@@ -11,7 +11,7 @@ import { SiteService } from '../../services/site.service';
 export class SiteEditComponent extends CrudItemEditComponent<Site> {
   constructor(
     protected injector: Injector,
-    public siteService: SiteService,
+    public siteService: SiteService
   ) {
     super(injector, siteService);
     this.crudConfiguration = SiteCRUDConfiguration;

@@ -10,19 +10,18 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 @Component({
   selector: 'app-planes-index',
   templateUrl: './planes-index.component.html',
-  styleUrls: ['./planes-index.component.scss']
+  styleUrls: ['./planes-index.component.scss'],
 })
-
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
-
-  @ViewChild(PlaneTableComponent, { static: false }) crudItemTableComponent: PlaneTableComponent;
+  @ViewChild(PlaneTableComponent, { static: false })
+  crudItemTableComponent: PlaneTableComponent;
   /// BIAToolKit - Begin Child Engine
-  canViewEngines: boolean = false;
+  canViewEngines = false;
   /// BIAToolKit - End Child Engine
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;
@@ -33,14 +32,18 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     /// BIAToolKit - Begin Child Engine
-    this.canViewEngines = this.authService.hasPermission(Permission.Engine_List_Access);
+    this.canViewEngines = this.authService.hasPermission(
+      Permission.Engine_List_Access
+    );
     /// BIAToolKit - End Child Engine
   }
 
   /// BIAToolKit - Begin Child Engine
   onViewEngines(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
-      this.router.navigate([crudItemId, 'engines'], { relativeTo: this.activatedRoute });
+      this.router.navigate([crudItemId, 'engines'], {
+        relativeTo: this.activatedRoute,
+      });
     }
   }
   /// BIAToolKit - End Child Engine

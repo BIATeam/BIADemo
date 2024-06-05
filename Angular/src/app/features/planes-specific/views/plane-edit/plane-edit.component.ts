@@ -11,7 +11,7 @@ import { PlaneService } from '../../services/plane.service';
 export class PlaneEditComponent extends CrudItemEditComponent<Plane> {
   constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
+    public planeService: PlaneService
   ) {
     super(injector, planeService);
     this.crudConfiguration = PlaneCRUDConfiguration;

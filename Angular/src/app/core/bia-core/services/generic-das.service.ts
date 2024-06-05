@@ -1,4 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpParams,
+  HttpResponse,
+} from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { from, NEVER, Observable, of, throwError } from 'rxjs';
@@ -12,16 +17,16 @@ import { BiaEnvironmentService } from './bia-environment.service';
 
 export interface HttpOptions {
   headers?:
-  | HttpHeaders
-  | {
-    [header: string]: string | string[];
-  };
+    | HttpHeaders
+    | {
+        [header: string]: string | string[];
+      };
   observe?: any;
   params?:
-  | HttpParams
-  | {
-    [param: string]: string | string[];
-  };
+    | HttpParams
+    | {
+        [param: string]: string | string[];
+      };
   reportProgress?: boolean;
   responseType?: any;
   withCredentials?: boolean;
@@ -37,15 +42,14 @@ export interface GetParam extends HttpParam {
   id?: string | number;
 }
 
-export interface GetListParam extends HttpParam {
-}
+export type GetListParam = HttpParam;
 
 export interface GetListByPostParam extends HttpParam {
   event: LazyLoadEvent;
 }
 
 export interface SaveParam<TIn> extends HttpParam {
-  items: TIn[],
+  items: TIn[];
 }
 
 export interface PutParam<TIn> extends HttpParam {
@@ -71,7 +75,10 @@ export abstract class GenericDas {
   protected matomoTracker: MatomoTracker;
   protected db: AppDB;
 
-  constructor(protected injector: Injector, protected endpoint: string) {
+  constructor(
+    protected injector: Injector,
+    protected endpoint: string
+  ) {
     this.http = injector.get<HttpClient>(HttpClient);
     this.route = GenericDas.buildRoute(endpoint);
     this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
@@ -91,18 +98,23 @@ export abstract class GenericDas {
   }
 
   getItem<TOut>(param?: GetParam): Observable<TOut> {
-    const url = `${this.concatRoute(this.route, param?.endpoint)}${param?.id ?? ''}`;
+    const url = `${this.concatRoute(this.route, param?.endpoint)}${
+      param?.id ?? ''
+    }`;
     //const url = `${this.route}${param?.endpoint ?? ''}${param?.id ?? ''}`;
 
     let obs$ = this.http.get<TOut>(url, param?.options).pipe(
-      map((data) => {
+      map(data => {
         DateHelperService.fillDate(data);
         this.translateItem(data);
         return data;
       })
     );
 
-    if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
+    if (
+      param?.offlineMode === true &&
+      BiaOnlineOfflineService.isModeEnabled === true
+    ) {
       obs$ = this.getWithCatchErrorOffline(obs$, url);
     }
 
@@ -113,50 +125,60 @@ export abstract class GenericDas {
     const url = `${this.route}${param?.endpoint ?? ''}`;
 
     let obs$ = this.http.get<TOut[]>(url, param?.options).pipe(
-      map((items) => {
-        items.forEach((item) => {
+      map(items => {
+        items.forEach(item => {
           DateHelperService.fillDate(item);
           this.translateItem(item);
         });
         return items;
-      }));
+      })
+    );
 
-    if (param?.offlineMode === true && BiaOnlineOfflineService.isModeEnabled === true) {
+    if (
+      param?.offlineMode === true &&
+      BiaOnlineOfflineService.isModeEnabled === true
+    ) {
       obs$ = this.getWithCatchErrorOffline(obs$, url);
     }
 
     return obs$;
   }
 
-  getListItemsByPost<TOut>(param: GetListByPostParam): Observable<DataResult<TOut[]>> {
+  getListItemsByPost<TOut>(
+    param: GetListByPostParam
+  ): Observable<DataResult<TOut[]>> {
     if (!param.event) {
       return of();
     }
 
     param.endpoint = param.endpoint ?? 'all';
 
-    return this.http.post<TOut[]>(`${this.route}${param.endpoint}`, param.event, { observe: 'response' }).pipe(
-      map((resp: HttpResponse<TOut[]>) => {
-        const totalCount = Number(resp.headers.get('X-Total-Count'));
-        const datas = resp.body ? resp.body : [];
-        datas.forEach((data) => {
-          DateHelperService.fillDate(data);
-          this.translateItem(data);
-        });
-
-        const dataResult = {
-          totalCount,
-          data: datas
-        } as DataResult<TOut[]>;
-        return dataResult;
+    return this.http
+      .post<TOut[]>(`${this.route}${param.endpoint}`, param.event, {
+        observe: 'response',
       })
-    );
+      .pipe(
+        map((resp: HttpResponse<TOut[]>) => {
+          const totalCount = Number(resp.headers.get('X-Total-Count'));
+          const datas = resp.body ? resp.body : [];
+          datas.forEach(data => {
+            DateHelperService.fillDate(data);
+            this.translateItem(data);
+          });
+
+          const dataResult = {
+            totalCount,
+            data: datas,
+          } as DataResult<TOut[]>;
+          return dataResult;
+        })
+      );
   }
 
   saveItem<TIn, TOut>(param: SaveParam<TIn>) {
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
-      param.items.forEach((item) => {
+      param.items.forEach(item => {
         DateHelperService.fillDate(item);
       });
     }
@@ -164,7 +186,9 @@ export abstract class GenericDas {
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.post<TOut>(url, param.items, param.options));
+      return this.setWithCatchErrorOffline(
+        this.http.post<TOut>(url, param.items, param.options)
+      );
     } else {
       return this.http.post<TOut>(url, param.items, param.options);
     }
@@ -177,10 +201,12 @@ export abstract class GenericDas {
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.put<TOut>(url, param.item, param.options));
+      return this.setWithCatchErrorOffline(
+        this.http.put<TOut>(url, param.item, param.options)
+      );
     } else {
       return this.http.put<TOut>(url, param.item, param.options).pipe(
-        map((data) => {
+        map(data => {
           DateHelperService.fillDate(data);
           this.translateItem(data);
           return data;
@@ -196,10 +222,12 @@ export abstract class GenericDas {
     const url = `${this.route}${param.endpoint}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.post<TOut>(url, param.item, param.options));
+      return this.setWithCatchErrorOffline(
+        this.http.post<TOut>(url, param.item, param.options)
+      );
     } else {
       return this.http.post<TOut>(url, param.item, param.options).pipe(
-        map((data) => {
+        map(data => {
           DateHelperService.fillDate(data);
           this.translateItem(data);
           return data;
@@ -214,7 +242,9 @@ export abstract class GenericDas {
     const url = `${this.route}${param.endpoint}${param.id}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.delete<void>(url, param.options));
+      return this.setWithCatchErrorOffline(
+        this.http.delete<void>(url, param.options)
+      );
     } else {
       return this.http.delete<void>(url, param.options);
     }
@@ -226,17 +256,19 @@ export abstract class GenericDas {
     const url = `${this.route}${param.endpoint}?ids=${param.ids.join('&ids=')}`;
     if (param.offlineMode === true) {
       param.options = BiaOnlineOfflineService.addHttpHeaderRetry(param.options);
-      return this.setWithCatchErrorOffline(this.http.delete<void>(url, param.options));
+      return this.setWithCatchErrorOffline(
+        this.http.delete<void>(url, param.options)
+      );
     } else {
       return this.http.delete<void>(url, param.options);
     }
   }
 
-  getItemFile(event: LazyLoadEvent, endpoint: string = 'csv'): Observable<any> {
+  getItemFile(event: LazyLoadEvent, endpoint = 'csv'): Observable<any> {
     this.matomoTracker.trackDownload('Export ' + endpoint);
     return this.http.post(`${this.route}${endpoint}`, event, {
       responseType: 'blob',
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
+      headers: new HttpHeaders().append('Content-Type', 'application/json'),
     });
   }
 
@@ -246,8 +278,11 @@ export abstract class GenericDas {
 
   protected setWithCatchErrorOffline(obs$: Observable<any>) {
     return obs$.pipe(
-      catchError((error) => {
-        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
+      catchError(error => {
+        if (
+          BiaOnlineOfflineService.isModeEnabled === true &&
+          BiaOnlineOfflineService.isServerAvailable(error) !== true
+        ) {
           return NEVER;
         }
         return throwError(error);
@@ -261,11 +296,16 @@ export abstract class GenericDas {
         this.clearDataByUrl(url);
         this.addDataTtem(url, result);
       }),
-      catchError((error) => {
-        if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(error) !== true) {
+      catchError(error => {
+        if (
+          BiaOnlineOfflineService.isModeEnabled === true &&
+          BiaOnlineOfflineService.isServerAvailable(error) !== true
+        ) {
           return from(this.db.datas.get(url)).pipe(
             first(),
-            map((dataItem: DataItem | undefined) => dataItem ? dataItem.data : undefined)
+            map((dataItem: DataItem | undefined) =>
+              dataItem ? dataItem.data : undefined
+            )
           );
         }
         return throwError(error);

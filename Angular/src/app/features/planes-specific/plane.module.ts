@@ -21,13 +21,13 @@ import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './plane.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
-      InjectComponent: PlanesIndexComponent
+      InjectComponent: PlanesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -41,9 +41,14 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            PlaneCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -63,21 +68,26 @@ export let ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
-              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                PlaneCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: PlaneCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -96,14 +106,14 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(PlaneCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+    StoreModule.forFeature(
+      PlaneCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesEffects]),
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,
-  ]
+  ],
 })
-
-export class PlaneModule {
-}
-
+export class PlaneModule {}

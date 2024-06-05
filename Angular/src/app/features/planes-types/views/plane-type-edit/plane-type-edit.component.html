@@ -1,8 +1,9 @@
-<app-plane-type-form  
-    [crudItem]="planeTypeService.crudItem$ | async" 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="planeTypeService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></app-plane-type-form>
-<bia-spinner *ngIf="planeTypeService.loadingGet$ | async" [overlay]="true"></bia-spinner>
+<app-plane-type-form
+  [crudItem]="planeTypeService.crudItem$ | async"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="planeTypeService.optionsService.dictOptionDtos$ | async"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-plane-type-form>
+<bia-spinner
+  *ngIf="planeTypeService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>

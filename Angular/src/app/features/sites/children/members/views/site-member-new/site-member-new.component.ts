@@ -5,19 +5,22 @@ import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-site-member-new',
-  templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
 })
-export class SiteMemberNewComponent extends MemberNewComponent implements OnInit {
-
+export class SiteMemberNewComponent
+  extends MemberNewComponent
+  implements OnInit
+{
   constructor(
     injector: Injector,
-    public siteService: SiteService,
+    public siteService: SiteService
   ) {
     super(injector);
   }
 
   ngOnInit() {
-    this.teamTypeId=TeamTypeId.Site;
+    this.teamTypeId = TeamTypeId.Site;
     super.ngOnInit();
   }
 }

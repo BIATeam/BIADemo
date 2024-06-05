@@ -8,12 +8,12 @@ import { AircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-main
   selector: 'app-aircraft-maintenance-company-new',
   templateUrl: './aircraft-maintenance-company-new.component.html',
 })
-export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent<AircraftMaintenanceCompany>  {
-   constructor(
+export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent<AircraftMaintenanceCompany> {
+  constructor(
     protected injector: Injector,
-    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
+    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService
   ) {
-     super(injector, aircraftMaintenanceCompanyService);
-     this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;
-   }
+    super(injector, aircraftMaintenanceCompanyService);
+    this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;
+  }
 }

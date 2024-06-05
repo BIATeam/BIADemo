@@ -1,22 +1,33 @@
-<bia-form 
+<bia-form
   [element]="crudItem"
   [fields]="fields"
   [dictOptionDtos]="dictOptionDtos"
   (save)="onSave($event)"
-  (cancel)="onCancel()"
->
+  (cancel)="onCancel()">
   <ng-template pTemplate="specificInput" let-field="field" let-form="form">
     <div [formGroup]="form">
       <ng-container [ngSwitch]="field.field">
         <ng-container *ngSwitchCase="'isActive'">
-          <p-checkbox binary="true" [formControlName]="field.field" label="{{ field.header | translate }}"></p-checkbox>
-        </ng-container> <!-- isActive -->
+          <p-checkbox
+            binary="true"
+            [formControlName]="field.field"
+            label="{{ field.header | translate }}"></p-checkbox>
+        </ng-container>
+        <!-- isActive -->
         <ng-container *ngSwitchCase="'capacity'">
           <span class="p-float-label">
-            <input [formControlName]="field.field" type="number" pInputText style="width: 100%;" />
-            <label><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>{{ field.header | translate }}</label>
+            <input
+              [formControlName]="field.field"
+              type="number"
+              pInputText
+              style="width: 100%" />
+            <label
+              ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
+              >{{ field.header | translate }}</label
+            >
           </span>
-        </ng-container> <!-- capacity -->
+        </ng-container>
+        <!-- capacity -->
       </ng-container>
     </div>
   </ng-template>

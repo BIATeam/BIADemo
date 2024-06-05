@@ -1,15 +1,13 @@
-import {
-  Component,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { CrudItemFormComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component';
 import { Airport } from '../../model/airport';
 
 @Component({
   selector: 'app-airport-form',
-  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
-  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss'],
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/components/crud-item-form/crud-item-form.component.scss',
+  ],
 })
-
-export class AirportFormComponent extends CrudItemFormComponent<Airport> {
-}
-
+export class AirportFormComponent extends CrudItemFormComponent<Airport> {}

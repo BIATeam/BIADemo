@@ -5,7 +5,7 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // This adapter will allow is to manipulate hangfire (mostly CRUD operations)
 export const hangfireAdapter = createEntityAdapter<OptionDto>({
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -28,9 +28,7 @@ export interface State {
 export const INIT_STATE: State = hangfireAdapter.getInitialState({
   // additional props default values here
   lastLazyLoadEvent: <LazyLoadEvent>{},
-  loadingGet: false
+  loadingGet: false,
 });
 
-export const hangfireReducers = createReducer<State>(
-  INIT_STATE,
-);
+export const hangfireReducers = createReducer<State>(INIT_STATE);

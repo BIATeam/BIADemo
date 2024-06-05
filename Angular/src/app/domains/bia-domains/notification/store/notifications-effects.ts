@@ -18,8 +18,10 @@ export class NotificationsEffects {
       ofType(DomainNotificationsActions.loadAll),
       switchMap(() =>
         this.notificationDas.getList().pipe(
-          map((notifications) => DomainNotificationsActions.loadAllSuccess({ notifications })),
-          catchError((err) => {
+          map(notifications =>
+            DomainNotificationsActions.loadAllSuccess({ notifications })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
@@ -32,10 +34,12 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(DomainNotificationsActions.load),
       pluck('id'),
-      switchMap((id) =>
+      switchMap(id =>
         this.notificationDas.get({ id: id }).pipe(
-          map((notification) => DomainNotificationsActions.loadSuccess({ notification })),
-          catchError((err) => {
+          map(notification =>
+            DomainNotificationsActions.loadSuccess({ notification })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
@@ -48,10 +52,12 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(DomainNotificationsActions.loadUnreadNotificationIds),
       pluck('event'),
-      switchMap((event) =>
+      switchMap(event =>
         this.notificationDas.getUnreadNotificationIds().pipe(
-          map((ids) => DomainNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })),
-          catchError((err) => {
+          map(ids =>
+            DomainNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
@@ -64,10 +70,10 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(DomainNotificationsActions.setAsRead),
       pluck('id'),
-      switchMap((id) => {
+      switchMap(id => {
         return this.notificationDas.setAsRead(id).pipe(
           map(() => DomainNotificationsActions.setAsReadSuccess()),
-          catchError((err) => {
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainNotificationsActions.failure({ error: err }));
           })
@@ -80,5 +86,5 @@ export class NotificationsEffects {
     private actions$: Actions,
     private notificationDas: NotificationDas,
     private biaMessageService: BiaMessageService
-  ) { }
+  ) {}
 }

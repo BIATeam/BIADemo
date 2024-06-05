@@ -6,7 +6,7 @@ import { DomainLanguageOptionsActions } from './language-options-actions';
 // This adapter will allow is to manipulate languages (mostly CRUD operations)
 export const languageOptionsAdapter = createEntityAdapter<OptionDto>({
   selectId: (language: OptionDto) => language.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -20,9 +20,7 @@ export const languageOptionsAdapter = createEntityAdapter<OptionDto>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<OptionDto> {
-  // additional props here
-}
+export type State = EntityState<OptionDto>;
 
 export const INIT_STATE: State = languageOptionsAdapter.getInitialState({
   // additional props default values here
@@ -30,26 +28,11 @@ export const INIT_STATE: State = languageOptionsAdapter.getInitialState({
 
 export const languageOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainLanguageOptionsActions.loadAllSuccess, (state, { languages }) => languageOptionsAdapter.setAll(languages, state)),
+  on(DomainLanguageOptionsActions.loadAllSuccess, (state, { languages }) =>
+    languageOptionsAdapter.setAll(languages, state)
+  )
   // on(loadSuccess, (state, { language }) => languageOptionsAdapter.upsertOne(language, state))
 );
 
-export const getLanguageOptionById = (id: number) => (state: State) => state.entities[id];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getLanguageOptionById = (id: number) => (state: State) =>
+  state.entities[id];

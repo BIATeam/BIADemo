@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 /**
  * Access to the global window variable.
  */
-declare var window: {
+declare let window: {
   [key: string]: any;
   prototype: Window;
   new (): Window;
@@ -15,7 +15,7 @@ declare var window: {
  * @export
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatomoTracker {
   /**
@@ -23,7 +23,9 @@ export class MatomoTracker {
    */
   constructor() {
     if (typeof window._paq === 'undefined') {
-      console.warn('Matomo has not yet been initialized! (Did you forget to inject it?)');
+      console.warn(
+        'Matomo has not yet been initialized! (Did you forget to inject it?)'
+      );
     }
   }
 
@@ -59,6 +61,10 @@ export class MatomoTracker {
    * @param description The description of the file downloaded.
    */
   trackDownload(description: string): void {
-    window._paq.push(['trackLink', window.location.href + ' - ' + description, 'download']);
+    window._paq.push([
+      'trackLink',
+      window.location.href + ' - ' + description,
+      'download',
+    ]);
   }
 }

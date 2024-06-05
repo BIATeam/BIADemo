@@ -8,12 +8,12 @@ import { EngineCRUDConfiguration } from '../../engine.constants';
   selector: 'app-engine-new',
   templateUrl: './engine-new.component.html',
 })
-export class EngineNewComponent extends CrudItemNewComponent<Engine>  {
-   constructor(
+export class EngineNewComponent extends CrudItemNewComponent<Engine> {
+  constructor(
     protected injector: Injector,
-    public engineService: EngineService,
+    public engineService: EngineService
   ) {
-     super(injector, engineService);
-     this.crudConfiguration = EngineCRUDConfiguration;
-   }
+    super(injector, engineService);
+    this.crudConfiguration = EngineCRUDConfiguration;
+  }
 }

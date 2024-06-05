@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor,
   HttpErrorResponse,
-  HTTP_INTERCEPTORS
+  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, filter, skip, switchMap, take } from 'rxjs/operators';
@@ -23,9 +23,13 @@ export class TokenInterceptor implements HttpInterceptor {
   constructor(
     public authService: AuthService,
     public keycloakService: KeycloakService,
-    protected appSettingsService: AppSettingsService) { }
+    protected appSettingsService: AppSettingsService
+  ) {}
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     if (this.checkUrlNoToken(request.url)) {
       if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
         return this.launchRequestKeycloak(request, next);
@@ -46,12 +50,19 @@ export class TokenInterceptor implements HttpInterceptor {
       url.toLowerCase().indexOf(allEnvironments.urlLog.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf(allEnvironments.urlEnv.toLowerCase()) > -1 ||
       url.toLowerCase().indexOf('./assets/') > -1 ||
-      this.appSettingsService.appSettings?.keycloak?.isActive === true && url.toLowerCase().startsWith(this.appSettingsService.appSettings?.keycloak?.baseUrl) === true
+      (this.appSettingsService.appSettings?.keycloak?.isActive === true &&
+        url
+          .toLowerCase()
+          .startsWith(
+            this.appSettingsService.appSettings?.keycloak?.baseUrl
+          ) === true)
     );
   }
 
-  protected launchRequestKeycloak(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+  protected launchRequestKeycloak(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return from(this.keycloakService.getToken()).pipe(
       switchMap(jwtToken => {
         if (jwtToken?.length > 0) {
@@ -60,7 +71,6 @@ export class TokenInterceptor implements HttpInterceptor {
         return next.handle(this.addLanguageOnly(request));
       })
     );
-
   }
 
   protected launchRequest(request: HttpRequest<any>, next: HttpHandler) {
@@ -71,8 +81,11 @@ export class TokenInterceptor implements HttpInterceptor {
     request = this.addToken(request, jwtToken);
 
     return next.handle(request).pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 498)) {
+      catchError(error => {
+        if (
+          error instanceof HttpErrorResponse &&
+          (error.status === 401 || error.status === 498)
+        ) {
           return this.handle401Error(request, next);
         } else {
           return throwError(error);
@@ -87,8 +100,8 @@ export class TokenInterceptor implements HttpInterceptor {
       withCredentials: false,
       setHeaders: {
         Authorization: `Bearer ${token}`,
-        'Accept-Language': (langSelected !== null) ? langSelected : ''
-      }
+        'Accept-Language': langSelected !== null ? langSelected : '',
+      },
     });
   }
 
@@ -96,13 +109,13 @@ export class TokenInterceptor implements HttpInterceptor {
     const langSelected = getCurrentCulture();
     return request.clone({
       setHeaders: {
-        'Accept-Language': (langSelected !== null) ? langSelected : ''
-      }
+        'Accept-Language': langSelected !== null ? langSelected : '',
+      },
     });
   }
 
   protected handle401Error(request: HttpRequest<any>, next: HttpHandler) {
-    console.info("Handler 401");
+    console.info('Handler 401');
     if (this.isRefreshing === false) {
       return this.login(request, next);
     } else {
@@ -110,32 +123,42 @@ export class TokenInterceptor implements HttpInterceptor {
     }
   }
 
-  protected login(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  protected login(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     this.isRefreshing = true;
     this.authService.logout();
-    console.info("Login start from intercepor.");
+    console.info('Login start from intercepor.');
     const obs$: Observable<HttpEvent<any>> = this.authService.login().pipe(
       switchMap((authInfo: AuthInfo) => {
-        console.info("Login end from intercepor.");
+        console.info('Login end from intercepor.');
         this.isRefreshing = false;
         return next.handle(this.addToken(request, authInfo.token));
-      }));
+      })
+    );
 
     if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
       return from(this.keycloakService.isLoggedIn()).pipe(
-        filter((x) => x === true),
-        switchMap(() => obs$))
+        filter(x => x === true),
+        switchMap(() => obs$)
+      );
     } else {
       return obs$;
     }
   }
 
-  protected waitLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  protected waitLogin(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return this.authService.authInfo$.pipe(
       skip(1),
       take(1),
-      switchMap((authInfo) => {
-        return next.handle(this.addToken(request, authInfo ? authInfo.token : ''));
+      switchMap(authInfo => {
+        return next.handle(
+          this.addToken(request, authInfo ? authInfo.token : '')
+        );
       })
     );
   }
@@ -144,5 +167,5 @@ export class TokenInterceptor implements HttpInterceptor {
 export const biaTokenInterceptor = {
   provide: HTTP_INTERCEPTORS,
   useClass: TokenInterceptor,
-  multi: true
+  multi: true,
 };

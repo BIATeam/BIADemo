@@ -11,5 +11,5 @@ export const getAppSettingsState = createFeatureSelector<AppSettingsState>(
 
 export const getAppSettings = createSelector(
   getAppSettingsState,
-  (state) => state.appSettings
+  state => state.appSettings
 );

@@ -11,26 +11,26 @@ import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-adva
 @Component({
   selector: 'app-sites-index',
   templateUrl: './sites-index.component.html',
-  styleUrls: ['./sites-index.component.scss']
+  styleUrls: ['./sites-index.component.scss'],
 })
-
 export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
-
   // Custo for teams
   canViewMembers = false;
   canSelectElement = false;
 
-  checkhasAdvancedFilter()
-  {
-    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+  checkhasAdvancedFilter() {
+    this.hasAdvancedFilter = TeamAdvancedFilterDto.hasFilter(
+      this.crudConfiguration.fieldsConfig.advancedFilter
+    );
   }
-  
-  @ViewChild(SiteTableComponent, { static: false }) crudItemTableComponent: SiteTableComponent;
+
+  @ViewChild(SiteTableComponent, { static: false })
+  crudItemTableComponent: SiteTableComponent;
 
   constructor(
     protected injector: Injector,
     public siteService: SiteService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, siteService);
     this.crudConfiguration = SiteCRUDConfiguration;
@@ -41,12 +41,12 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
     this.canDelete = this.authService.hasPermission(Permission.Site_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Site_Create);
     // Custo for teams
-    this.canViewMembers = this.authService.hasPermission(Permission.Site_Member_List_Access);
-    this.canSelectElement = 
-      this.canViewMembers ||
-      this.canDelete;
+    this.canViewMembers = this.authService.hasPermission(
+      Permission.Site_Member_List_Access
+    );
+    this.canSelectElement = this.canViewMembers || this.canDelete;
   }
-  
+
   // Custo for teams
   onClickRowData(crudItem: Site) {
     if (crudItem.canMemberListAccess) {
@@ -56,7 +56,9 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
 
   onViewMembers(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
-      this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([crudItemId, 'members'], {
+        relativeTo: this.activatedRoute,
+      });
     }
   }
 }

@@ -7,46 +7,44 @@ import { getCurrentPlane, getPlaneLoadingGet } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlaneService {
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        this.InitSub();
-        this.loading$ = this.store.select(getPlaneLoadingGet);
-        this.plane$ = this.store.select(getCurrentPlane);
-    }
-    private _currentPlane: Plane;
-    private _currentPlaneId: number;
-    private sub = new Subscription();
-    public loading$: Observable<boolean>;
-    public plane$: Observable<Plane>;
+  constructor(private store: Store<AppState>) {
+    this.InitSub();
+    this.loading$ = this.store.select(getPlaneLoadingGet);
+    this.plane$ = this.store.select(getCurrentPlane);
+  }
+  private _currentPlane: Plane;
+  private _currentPlaneId: number;
+  private sub = new Subscription();
+  public loading$: Observable<boolean>;
+  public plane$: Observable<Plane>;
 
-    public get currentPlane() {
-        if (this._currentPlane?.id === this._currentPlaneId) {
-            return this._currentPlane;
-        } else {
-            return null;
+  public get currentPlane() {
+    if (this._currentPlane?.id === this._currentPlaneId) {
+      return this._currentPlane;
+    } else {
+      return null;
+    }
+  }
+
+  public get currentPlaneId(): number {
+    return this._currentPlaneId;
+  }
+  public set currentPlaneId(id: number) {
+    this._currentPlaneId = Number(id);
+    this.store.dispatch(FeaturePlanesActions.load({ id: id }));
+  }
+
+  InitSub() {
+    this.sub = new Subscription();
+    this.sub.add(
+      this.store.select(getCurrentPlane).subscribe(plane => {
+        if (plane) {
+          this._currentPlane = plane;
         }
-    }
-
-    public get currentPlaneId(): number {
-        return this._currentPlaneId;
-    }
-    public set currentPlaneId(id: number) {
-        this._currentPlaneId = Number(id);
-        this.store.dispatch(FeaturePlanesActions.load({ id: id }));
-    }
-
-    InitSub() {
-        this.sub = new Subscription();
-        this.sub.add(
-            this.store.select(getCurrentPlane).subscribe((plane) => {
-                if (plane) {
-                    this._currentPlane = plane;
-                }
-            })
-        );
-    }
+      })
+    );
+  }
 }

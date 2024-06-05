@@ -8,12 +8,12 @@ import { AirportCRUDConfiguration } from '../../airport.constants';
   selector: 'app-airport-new',
   templateUrl: './airport-new.component.html',
 })
-export class AirportNewComponent extends CrudItemNewComponent<Airport>  {
-   constructor(
+export class AirportNewComponent extends CrudItemNewComponent<Airport> {
+  constructor(
     protected injector: Injector,
-    public airportService: AirportService,
+    public airportService: AirportService
   ) {
-     super(injector, airportService);
-     this.crudConfiguration = AirportCRUDConfiguration;
-   }
+    super(injector, airportService);
+    this.crudConfiguration = AirportCRUDConfiguration;
+  }
 }

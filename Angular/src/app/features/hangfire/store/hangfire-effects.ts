@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, withLatestFrom, concatMap, pluck } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  randomReviewPlane, failure,
-} from './hangfire-actions';
+  catchError,
+  map,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+  pluck,
+} from 'rxjs/operators';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { randomReviewPlane, failure } from './hangfire-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
@@ -23,7 +28,9 @@ export class HangfireEffects {
     this.actions$.pipe(
       ofType(randomReviewPlane),
       pluck('teamId'),
-      concatMap((teamId) => of(teamId).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))),
+      concatMap(teamId =>
+        of(teamId).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))
+      ),
       switchMap(([teamId, event]) => {
         return this.hangfireDas.randomReviewPlane(teamId).pipe(
           map(() => {
@@ -31,7 +38,7 @@ export class HangfireEffects {
             // return loadAllByPost({ event: event });
             return biaSuccessWaitRefreshSignalR();
           }),
-          catchError((err) => {
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
@@ -45,5 +52,5 @@ export class HangfireEffects {
     private hangfireDas: HangfireDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

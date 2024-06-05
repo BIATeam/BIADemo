@@ -11,7 +11,7 @@ import { EngineService } from '../../services/engine.service';
 export class EngineEditComponent extends CrudItemEditComponent<Engine> {
   constructor(
     protected injector: Injector,
-    public engineService: EngineService,
+    public engineService: EngineService
   ) {
     super(injector, engineService);
     this.crudConfiguration = EngineCRUDConfiguration;

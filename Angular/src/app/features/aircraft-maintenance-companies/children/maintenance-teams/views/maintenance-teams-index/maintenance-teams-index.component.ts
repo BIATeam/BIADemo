@@ -11,39 +11,46 @@ import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-adva
 @Component({
   selector: 'app-maintenance-teams-index',
   templateUrl: './maintenance-teams-index.component.html',
-  styleUrls: ['./maintenance-teams-index.component.scss']
+  styleUrls: ['./maintenance-teams-index.component.scss'],
 })
-
 export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<MaintenanceTeam> {
   // Custo for teams
   canViewMembers = false;
   canSelectElement = false;
 
-  checkhasAdvancedFilter()
-  {
-    this.hasAdvancedFilter =  TeamAdvancedFilterDto.hasFilter(this.crudConfiguration.fieldsConfig.advancedFilter);
+  checkhasAdvancedFilter() {
+    this.hasAdvancedFilter = TeamAdvancedFilterDto.hasFilter(
+      this.crudConfiguration.fieldsConfig.advancedFilter
+    );
   }
-  
-  @ViewChild(MaintenanceTeamTableComponent, { static: false }) crudItemTableComponent: MaintenanceTeamTableComponent;
+
+  @ViewChild(MaintenanceTeamTableComponent, { static: false })
+  crudItemTableComponent: MaintenanceTeamTableComponent;
 
   constructor(
     protected injector: Injector,
     public maintenanceTeamService: MaintenanceTeamService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, maintenanceTeamService);
     this.crudConfiguration = MaintenanceTeamCRUDConfiguration;
   }
 
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.MaintenanceTeam_Update);
-    this.canDelete = this.authService.hasPermission(Permission.MaintenanceTeam_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.MaintenanceTeam_Create);
+    this.canEdit = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Update
+    );
+    this.canDelete = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Delete
+    );
+    this.canAdd = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Create
+    );
     // Custo for teams
-    this.canViewMembers = this.authService.hasPermission(Permission.MaintenanceTeam_Member_List_Access);
-    this.canSelectElement = 
-      this.canViewMembers ||
-      this.canDelete;
+    this.canViewMembers = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Member_List_Access
+    );
+    this.canSelectElement = this.canViewMembers || this.canDelete;
   }
 
   onClickRowData(crudItem: MaintenanceTeam) {
@@ -51,10 +58,12 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
       this.onViewMembers(crudItem.id);
     }
   }
-  
+
   onViewMembers(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
-      this.router.navigate([crudItemId, 'members'], { relativeTo: this.activatedRoute });
+      this.router.navigate([crudItemId, 'members'], {
+        relativeTo: this.activatedRoute,
+      });
     }
   }
 }

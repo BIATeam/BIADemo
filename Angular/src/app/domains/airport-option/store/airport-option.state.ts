@@ -1,5 +1,10 @@
 import * as fromAirportOptions from './airport-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { storeKey } from '../airport-option.contants';
 
 export interface AirportOptionsState {
@@ -7,9 +12,12 @@ export interface AirportOptionsState {
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(state: AirportOptionsState | undefined, action: Action) {
+export function reducers(
+  state: AirportOptionsState | undefined,
+  action: Action
+) {
   return combineReducers({
-    airportOptions: fromAirportOptions.airportOptionReducers
+    airportOptions: fromAirportOptions.airportOptionReducers,
   })(state, action);
 }
 
@@ -18,37 +26,21 @@ export function reducers(state: AirportOptionsState | undefined, action: Action)
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getAirportsState = createFeatureSelector<AirportOptionsState>(storeKey);
+export const getAirportsState =
+  createFeatureSelector<AirportOptionsState>(storeKey);
 
 export const getAirportOptionsEntitiesState = createSelector(
   getAirportsState,
-  (state) => state.airportOptions
+  state => state.airportOptions
 );
 
-export const { selectAll: getAllAirportOptions } = fromAirportOptions.airportOptionsAdapter.getSelectors(
-  getAirportOptionsEntitiesState
-);
+export const { selectAll: getAllAirportOptions } =
+  fromAirportOptions.airportOptionsAdapter.getSelectors(
+    getAirportOptionsEntitiesState
+  );
 
 export const getAirportOptionById = (id: number) =>
   createSelector(
     getAirportOptionsEntitiesState,
     fromAirportOptions.getAirportOptionById(id)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,8 +1,9 @@
-<app-engine-form  
-    [crudItem]="engineService.crudItem$ | async" 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></app-engine-form>
-<bia-spinner *ngIf="engineService.loadingGet$ | async" [overlay]="true"></bia-spinner>
+<app-engine-form
+  [crudItem]="engineService.crudItem$ | async"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-engine-form>
+<bia-spinner
+  *ngIf="engineService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>

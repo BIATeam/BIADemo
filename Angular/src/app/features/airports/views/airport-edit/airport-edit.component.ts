@@ -11,7 +11,7 @@ import { AirportService } from '../../services/airport.service';
 export class AirportEditComponent extends CrudItemEditComponent<Airport> {
   constructor(
     protected injector: Injector,
-    public airportService: AirportService,
+    public airportService: AirportService
   ) {
     super(injector, airportService);
     this.crudConfiguration = AirportCRUDConfiguration;

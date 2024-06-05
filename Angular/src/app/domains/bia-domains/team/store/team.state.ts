@@ -1,5 +1,10 @@
 import * as fromTeams from './teams-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { storeKey } from '../team.contants';
 
 export interface TeamsState {
@@ -9,7 +14,7 @@ export interface TeamsState {
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: TeamsState | undefined, action: Action) {
   return combineReducers({
-    teams: fromTeams.teamReducers
+    teams: fromTeams.teamReducers,
   })(state, action);
 }
 
@@ -22,7 +27,7 @@ export const getTeamsState = createFeatureSelector<TeamsState>(storeKey);
 
 export const getTeamsEntitiesState = createSelector(
   getTeamsState,
-  (state) => state.teams
+  state => state.teams
 );
 
 export const { selectAll: getAllTeams } = fromTeams.teamsAdapter.getSelectors(
@@ -30,29 +35,9 @@ export const { selectAll: getAllTeams } = fromTeams.teamsAdapter.getSelectors(
 );
 
 export const getTeamById = (id: number) =>
-  createSelector(
-    getTeamsEntitiesState,
-    fromTeams.getTeamById(id)
-  );
+  createSelector(getTeamsEntitiesState, fromTeams.getTeamById(id));
 
 export const getAllTeamsOfType = (teamTypeId: number) =>
-  createSelector(
-    getAllTeams,
-    (teams) => teams.filter(team => team.teamTypeId === teamTypeId)
+  createSelector(getAllTeams, teams =>
+    teams.filter(team => team.teamTypeId === teamTypeId)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

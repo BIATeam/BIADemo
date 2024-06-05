@@ -1,9 +1,13 @@
 import * as fromEngines from './engines-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { EngineCRUDConfiguration } from '../engine.constants';
 
-export namespace FeatureEnginesStore
-{
+export namespace FeatureEnginesStore {
   export interface EnginesState {
     engines: fromEngines.State;
   }
@@ -11,7 +15,7 @@ export namespace FeatureEnginesStore
   /** Provide reducers with AoT-compilation compliance */
   export function reducers(state: EnginesState | undefined, action: Action) {
     return combineReducers({
-      engines: fromEngines.engineReducers
+      engines: fromEngines.engineReducers,
     })(state, action);
   }
 
@@ -20,43 +24,43 @@ export namespace FeatureEnginesStore
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getEnginesState = createFeatureSelector<EnginesState>(EngineCRUDConfiguration.storeKey);
+  export const getEnginesState = createFeatureSelector<EnginesState>(
+    EngineCRUDConfiguration.storeKey
+  );
 
   export const getEnginesEntitiesState = createSelector(
     getEnginesState,
-    (state) => state.engines
+    state => state.engines
   );
 
   export const getEnginesTotalCount = createSelector(
     getEnginesEntitiesState,
-    (state) => state.totalCount
+    state => state.totalCount
   );
 
   export const getCurrentEngine = createSelector(
     getEnginesEntitiesState,
-    (state) => state.currentEngine
+    state => state.currentEngine
   );
 
   export const getLastLazyLoadEvent = createSelector(
     getEnginesEntitiesState,
-    (state) => state.lastLazyLoadEvent
+    state => state.lastLazyLoadEvent
   );
 
   export const getEngineLoadingGet = createSelector(
     getEnginesEntitiesState,
-    (state) => state.loadingGet
+    state => state.loadingGet
   );
 
   export const getEngineLoadingGetAll = createSelector(
     getEnginesEntitiesState,
-    (state) => state.loadingGetAll
+    state => state.loadingGetAll
   );
 
-  export const { selectAll: getAllEngines } = fromEngines.enginesAdapter.getSelectors(getEnginesEntitiesState);
+  export const { selectAll: getAllEngines } =
+    fromEngines.enginesAdapter.getSelectors(getEnginesEntitiesState);
 
   export const getEngineById = (id: number) =>
-    createSelector(
-      getEnginesEntitiesState,
-      fromEngines.getEngineById(id)
-    );
+    createSelector(getEnginesEntitiesState, fromEngines.getEngineById(id));
 }

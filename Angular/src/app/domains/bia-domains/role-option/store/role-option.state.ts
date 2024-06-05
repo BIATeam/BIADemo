@@ -1,5 +1,10 @@
 import * as fromRoleOptions from './role-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 
 export interface RoleOptionsState {
   roleOptions: fromRoleOptions.State;
@@ -8,7 +13,7 @@ export interface RoleOptionsState {
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: RoleOptionsState | undefined, action: Action) {
   return combineReducers({
-    roleOptions: fromRoleOptions.roleOptionReducers
+    roleOptions: fromRoleOptions.roleOptionReducers,
   })(state, action);
 }
 
@@ -17,37 +22,20 @@ export function reducers(state: RoleOptionsState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getRolesState = createFeatureSelector<RoleOptionsState>('domain-role-options');
+export const getRolesState = createFeatureSelector<RoleOptionsState>(
+  'domain-role-options'
+);
 
 export const getRoleOptionsEntitiesState = createSelector(
   getRolesState,
-  (state) => state.roleOptions
+  state => state.roleOptions
 );
 
-export const { selectAll: getAllRoleOptions } = fromRoleOptions.roleOptionsAdapter.getSelectors(
-  getRoleOptionsEntitiesState
-);
+export const { selectAll: getAllRoleOptions } =
+  fromRoleOptions.roleOptionsAdapter.getSelectors(getRoleOptionsEntitiesState);
 
 export const getRoleOptionById = (id: number) =>
   createSelector(
     getRoleOptionsEntitiesState,
     fromRoleOptions.getRoleOptionById(id)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

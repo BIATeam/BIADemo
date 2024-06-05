@@ -25,7 +25,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
-      InjectComponent: PlanesIndexComponent
+      InjectComponent: PlanesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -40,7 +40,7 @@ const ROUTES: Routes = [
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
         },
-        component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: usePopup ? PopupLayoutComponent : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -61,19 +61,21 @@ const ROUTES: Routes = [
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
             },
-            component: (usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -96,9 +98,6 @@ const ROUTES: Routes = [
     // Domain Modules:
     AirportOptionModule,
     PlaneTypeOptionModule,
-  ]
+  ],
 })
-
-export class PlaneModule {
-}
-
+export class PlaneModule {}

@@ -8,11 +8,13 @@ import { Plane } from '../../model/plane';
 
 @Component({
   selector: 'app-plane-table',
-  templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
 export class PlaneTableComponent extends CrudItemTableComponent<Plane> {
-
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

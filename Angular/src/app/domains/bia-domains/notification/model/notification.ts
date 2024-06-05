@@ -26,11 +26,11 @@ export enum NotificationType {
   Info = 2,
   Success = 3,
   Warning = 4,
-  Error = 5
+  Error = 5,
 }
 
 export interface NotificationData {
   route: string[];
   display: string;
-  teams: NotificationTeam[]
+  teams: NotificationTeam[];
 }

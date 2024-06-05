@@ -14,7 +14,7 @@ export enum Permission {
   Notification_Update = 'Notification_Update',
 
   /// BIAToolKit - Begin Permission
-  /// BIAToolKit - End Permission 
+  /// BIAToolKit - End Permission
 
   // Begin BIADemo
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
@@ -100,5 +100,5 @@ export enum Permission {
   View_DeleteTeamView = 'View_Delete_TeamView',
   View_SetDefaultUserView = 'View_Set_Default_UserView',
   View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
-  View_AssignToTeamSuffix = '_View_Assign_To_Team'
+  View_AssignToTeamSuffix = '_View_Assign_To_Team',
 }

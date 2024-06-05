@@ -1,12 +1,12 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { DomainNotificationsActions} from './notifications-actions';
+import { DomainNotificationsActions } from './notifications-actions';
 import { Notification } from '../model/notification';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<Notification>({
   selectId: (notification: Notification) => notification.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -31,42 +31,51 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
   // additional props default values here
   userNotifications: null,
   loadingUnreadIds: false,
-  unreadIds: []
+  unreadIds: [],
 });
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainNotificationsActions.loadAllSuccess, (state, { notifications }) => notificationsAdapter.setAll(notifications, state)),
-  on(DomainNotificationsActions.loadSuccess, (state, { notification }) => notificationsAdapter.upsertOne(notification, state)),
-  on(DomainNotificationsActions.loadUnreadNotificationIds, (state) => {
+  on(DomainNotificationsActions.loadAllSuccess, (state, { notifications }) =>
+    notificationsAdapter.setAll(notifications, state)
+  ),
+  on(DomainNotificationsActions.loadSuccess, (state, { notification }) =>
+    notificationsAdapter.upsertOne(notification, state)
+  ),
+  on(DomainNotificationsActions.loadUnreadNotificationIds, state => {
     return {
       ...state,
-      loadingUnreadIds: true
+      loadingUnreadIds: true,
     };
   }),
-  on(DomainNotificationsActions.loadUnreadNotificationIdsSuccess, (state, { ids }) => {
-    return {
-      ...state,
-      loadingUnreadIds: false,
-      unreadIds: ids
-    };
-  }),
+  on(
+    DomainNotificationsActions.loadUnreadNotificationIdsSuccess,
+    (state, { ids }) => {
+      return {
+        ...state,
+        loadingUnreadIds: false,
+        unreadIds: ids,
+      };
+    }
+  ),
   on(DomainNotificationsActions.removeUnreadNotification, (state, { id }) => {
     const index = state.unreadIds.indexOf(id, 0);
     const copyState = {
-      ...state
+      ...state,
     };
     if (index > -1) {
       copyState.unreadIds.splice(index, 1);
     }
-    return  copyState;
+    return copyState;
   }),
   on(DomainNotificationsActions.addUnreadNotification, (state, { id }) => {
     const copyState = {
-      ...state
+      ...state,
     };
     copyState.unreadIds.push(id);
-    return  copyState;
-  }));
+    return copyState;
+  })
+);
 
-export const getNotificationById = (id: number) => (state: State) => state.entities[id];
+export const getNotificationById = (id: number) => (state: State) =>
+  state.entities[id];

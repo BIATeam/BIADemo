@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  pluck,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+} from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeaturePlanesTypesActions } from './planes-types-actions';
 import { Store } from '@ngrx/store';
@@ -25,10 +32,15 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.loadAllByPost),
       pluck('event'),
-      switchMap((event) =>
+      switchMap(event =>
         this.planeTypeDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<PlaneType[]>) => FeaturePlanesTypesActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
+          map((result: DataResult<PlaneType[]>) =>
+            FeaturePlanesTypesActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeaturePlanesTypesActions.failure({ error: err }));
           })
@@ -41,17 +53,21 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.load),
       pluck('id'),
-      switchMap((id) => {
+      switchMap(id => {
         if (id) {
           return this.planeTypeDas.get({ id: id }).pipe(
-            map((planeType) => FeaturePlanesTypesActions.loadSuccess({ planeType })),
-            catchError((err) => {
+            map(planeType =>
+              FeaturePlanesTypesActions.loadSuccess({ planeType })
+            ),
+            catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesTypesActions.failure({ error: err }));
             })
           );
         } else {
-          return of(FeaturePlanesTypesActions.loadSuccess({ planeType: <PlaneType>{} }));
+          return of(
+            FeaturePlanesTypesActions.loadSuccess({ planeType: <PlaneType>{} })
+          );
         }
       })
     )
@@ -61,22 +77,35 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.create),
       pluck('planeType'),
-      concatMap((planeType) => of(planeType).pipe(withLatestFrom(this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)))),
+      concatMap(planeType =>
+        of(planeType).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([planeType, event]) => {
-        return this.planeTypeDas.post({ item: planeType, offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (PlaneTypeCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesTypesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesTypesActions.failure({ error: err }));
+        return this.planeTypeDas
+          .post({
+            item: planeType,
+            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (PlaneTypeCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesTypesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesTypesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -85,22 +114,36 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.update),
       pluck('planeType'),
-      concatMap((planeType) => of(planeType).pipe(withLatestFrom(this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)))),
+      concatMap(planeType =>
+        of(planeType).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([planeType, event]) => {
-        return this.planeTypeDas.put({ item: planeType, id: planeType.id, offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (PlaneTypeCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesTypesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesTypesActions.failure({ error: err }));
+        return this.planeTypeDas
+          .put({
+            item: planeType,
+            id: planeType.id,
+            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (PlaneTypeCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesTypesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesTypesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -109,22 +152,35 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)))),
+      concatMap((id: number) =>
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([id, event]) => {
-        return this.planeTypeDas.delete({ id: id, offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (PlaneTypeCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesTypesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesTypesActions.failure({ error: err }));
+        return this.planeTypeDas
+          .delete({
+            id: id,
+            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (PlaneTypeCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesTypesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesTypesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -133,22 +189,35 @@ export class PlanesTypesEffects {
     this.actions$.pipe(
       ofType(FeaturePlanesTypesActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) =>
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(FeaturePlanesTypesStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([ids, event]) => {
-        return this.planeTypeDas.deletes({ ids: ids, offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (PlaneTypeCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeaturePlanesTypesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeaturePlanesTypesActions.failure({ error: err }));
+        return this.planeTypeDas
+          .deletes({
+            ids: ids,
+            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (PlaneTypeCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeaturePlanesTypesActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeaturePlanesTypesActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -158,5 +227,5 @@ export class PlanesTypesEffects {
     private planeTypeDas: PlaneTypeDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

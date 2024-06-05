@@ -8,11 +8,13 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
 
 @Component({
   selector: 'app-aircraft-maintenance-company-table',
-  templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
 export class AircraftMaintenanceCompanyTableComponent extends CrudItemTableComponent<AircraftMaintenanceCompany> {
-
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

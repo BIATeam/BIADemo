@@ -5,24 +5,17 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
 import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class EngineOptionsService extends CrudItemOptionsService {
+  constructor() {
+    super();
+    // TODO after creation of CRUD Engine : get all requiered option dto use in Table calc and create and edit form
 
-    constructor(
-    ) {
-        super();
-        // TODO after creation of CRUD Engine : get all requiered option dto use in Table calc and create and edit form
+    this.dictOptionDtos$ = combineLatest([]).pipe(
+      map(options => <DictOptionDto[]>[])
+    );
+  }
 
-        this.dictOptionDtos$ = combineLatest([]).pipe(
-            map(
-                (options) =>
-                <DictOptionDto[]>[
-                ]
-            )
-        );
-    }
-
-    loadAllOptions() {
-    }
+  loadAllOptions() {}
 }

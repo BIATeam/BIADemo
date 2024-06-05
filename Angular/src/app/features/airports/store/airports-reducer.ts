@@ -7,7 +7,7 @@ import { Airport } from '../model/airport';
 // This adapter will allow is to manipulate airports (mostly CRUD operations)
 export const airportsAdapter = createEntityAdapter<Airport>({
   selectId: (airport: Airport) => airport.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -44,22 +44,26 @@ export const airportReducers = createReducer<State>(
   on(FeatureAirportsActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureAirportsActions.load, (state) => {
+  on(FeatureAirportsActions.load, state => {
     return { ...state, loadingGet: true };
   }),
-  on(FeatureAirportsActions.loadAllByPostSuccess, (state, { result, event }) => {
-    const stateUpdated = airportsAdapter.setAll(result.data, state);
-    stateUpdated.totalCount = result.totalCount;
-    stateUpdated.lastLazyLoadEvent = event;
-    stateUpdated.loadingGetAll = false;
-    return stateUpdated;
-  }),
+  on(
+    FeatureAirportsActions.loadAllByPostSuccess,
+    (state, { result, event }) => {
+      const stateUpdated = airportsAdapter.setAll(result.data, state);
+      stateUpdated.totalCount = result.totalCount;
+      stateUpdated.lastLazyLoadEvent = event;
+      stateUpdated.loadingGetAll = false;
+      return stateUpdated;
+    }
+  ),
   on(FeatureAirportsActions.loadSuccess, (state, { airport }) => {
     return { ...state, currentAirport: airport, loadingGet: false };
   }),
   on(FeatureAirportsActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getAirportById = (id: number) => (state: State) => state.entities[id];
+export const getAirportById = (id: number) => (state: State) =>
+  state.entities[id];

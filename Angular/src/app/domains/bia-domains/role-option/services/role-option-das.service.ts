@@ -3,28 +3,10 @@ import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoleOptionDas extends AbstractDas<OptionDto> {
   constructor(injector: Injector) {
     super(injector, 'Roles');
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,19 +5,22 @@ import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-member-new',
-  templateUrl: '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
+  templateUrl:
+    '../../../../../../shared/bia-shared/feature-templates/members/views/member-new/member-new.component.html',
 })
-export class AircraftMaintenanceCompanyMemberNewComponent extends MemberNewComponent implements OnInit {
-
+export class AircraftMaintenanceCompanyMemberNewComponent
+  extends MemberNewComponent
+  implements OnInit
+{
   constructor(
     injector: Injector,
-    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
+    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService
   ) {
     super(injector);
   }
 
   ngOnInit() {
-    this.teamTypeId=TeamTypeId.AircraftMaintenanceCompany;
+    this.teamTypeId = TeamTypeId.AircraftMaintenanceCompany;
     super.ngOnInit();
   }
 }

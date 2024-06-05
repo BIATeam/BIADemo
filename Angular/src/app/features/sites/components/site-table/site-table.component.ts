@@ -8,11 +8,13 @@ import { Site } from '../../model/site';
 
 @Component({
   selector: 'app-site-table',
-  templateUrl: '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
 export class SiteTableComponent extends CrudItemTableComponent<Site> {
-
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

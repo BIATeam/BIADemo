@@ -8,16 +8,21 @@ export const STORAGE_THEME_KEY = 'theme';
 const DEFAULT_THEME = THEME_LIGHT;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaThemeService {
   private renderer: Renderer2;
   private document: Document;
   private currentTheme = new BehaviorSubject<string | undefined>(undefined);
 
-  isCurrentThemeDark$ = this.currentTheme.pipe(map((currentTheme) => currentTheme && /dark/.test(currentTheme)));
+  isCurrentThemeDark$ = this.currentTheme.pipe(
+    map(currentTheme => currentTheme && /dark/.test(currentTheme))
+  );
 
-  constructor(rendererFactory: RendererFactory2, @Inject(DOCUMENT) document: any) {
+  constructor(
+    rendererFactory: RendererFactory2,
+    @Inject(DOCUMENT) document: any
+  ) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.document = document;
     let theme;
@@ -59,10 +64,14 @@ export class BiaThemeService {
   }
 
   private applyPrimeNgTheme(theme: string) {
-    const themeLightLink: HTMLLinkElement = document.getElementById('theme-light-css') as HTMLLinkElement;
+    const themeLightLink: HTMLLinkElement = document.getElementById(
+      'theme-light-css'
+    ) as HTMLLinkElement;
     //const layoutLightLink: HTMLLinkElement = document.getElementById('layout-light-css') as HTMLLinkElement;
 
-    const themeDarkLink: HTMLLinkElement = document.getElementById('theme-dark-css') as HTMLLinkElement;
+    const themeDarkLink: HTMLLinkElement = document.getElementById(
+      'theme-dark-css'
+    ) as HTMLLinkElement;
     //const layoutDarkLink: HTMLLinkElement = document.getElementById('layout-dark-css') as HTMLLinkElement;
 
     themeLightLink.disabled = theme === THEME_DARK;

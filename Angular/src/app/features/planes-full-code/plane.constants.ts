@@ -1,7 +1,7 @@
-import { TeamTypeId } from "src/app/shared/constants";
+import { TeamTypeId } from 'src/app/shared/constants';
 
 // IMPORTANT: this key should be unique in all the application. Use the path of the feature.
-export const storeKey: string = 'feature-planes-full-code';
+export const storeKey = 'feature-planes-full-code';
 
 export const useCalcMode = true;
 export const useSignalR = false;

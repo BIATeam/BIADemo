@@ -9,30 +9,36 @@ import { PlaneService } from '../../services/plane.service';
 
 @Component({
   selector: 'app-planes-item',
-  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
 })
-export class PlaneItemComponent extends CrudItemItemComponent<Plane> implements OnInit {
-  constructor(protected store: Store<AppState>,
+export class PlaneItemComponent
+  extends CrudItemItemComponent<Plane>
+  implements OnInit
+{
+  constructor(
+    protected store: Store<AppState>,
     protected injector: Injector,
     public planeService: PlaneService,
-    protected layoutService: BiaClassicLayoutService,
+    protected layoutService: BiaClassicLayoutService
   ) {
     super(injector, planeService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.sub.add
-      (
-        this.planeService.crudItem$.subscribe((plane) => {
-          if (plane?.msn) {
-            this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = plane.msn;
-            });
-            this.layoutService.refreshBreadcrumb();
-          }
-        })
-      );
+    this.sub.add(
+      this.planeService.crudItem$.subscribe(plane => {
+        if (plane?.msn) {
+          this.route.data.pipe(first()).subscribe(routeData => {
+            (routeData as any)['breadcrumb'] = plane.msn;
+          });
+          this.layoutService.refreshBreadcrumb();
+        }
+      })
+    );
   }
 }

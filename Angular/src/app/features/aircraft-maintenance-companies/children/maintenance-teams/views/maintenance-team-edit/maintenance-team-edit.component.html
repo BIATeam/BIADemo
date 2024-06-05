@@ -1,8 +1,11 @@
-<app-maintenance-team-form  
-    [crudItem]="maintenanceTeamService.crudItem$ | async" 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="maintenanceTeamService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></app-maintenance-team-form>
-<bia-spinner *ngIf="maintenanceTeamService.loadingGet$ | async" [overlay]="true"></bia-spinner>
+<app-maintenance-team-form
+  [crudItem]="maintenanceTeamService.crudItem$ | async"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="
+    maintenanceTeamService.optionsService.dictOptionDtos$ | async
+  "
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></app-maintenance-team-form>
+<bia-spinner
+  *ngIf="maintenanceTeamService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>

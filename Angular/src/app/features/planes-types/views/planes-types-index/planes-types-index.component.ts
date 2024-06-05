@@ -10,17 +10,16 @@ import { PlaneTypeTableComponent } from '../../components/plane-type-table/plane
 @Component({
   selector: 'app-planes-types-index',
   templateUrl: './planes-types-index.component.html',
-  styleUrls: ['./planes-types-index.component.scss']
+  styleUrls: ['./planes-types-index.component.scss'],
 })
-
 export class PlanesTypesIndexComponent extends CrudItemsIndexComponent<PlaneType> {
-  
-  @ViewChild(PlaneTypeTableComponent, { static: false }) crudItemTableComponent: PlaneTypeTableComponent;
+  @ViewChild(PlaneTypeTableComponent, { static: false })
+  crudItemTableComponent: PlaneTypeTableComponent;
 
   constructor(
     protected injector: Injector,
     public planeTypeService: PlaneTypeService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, planeTypeService);
     this.crudConfiguration = PlaneTypeCRUDConfiguration;
@@ -28,7 +27,9 @@ export class PlanesTypesIndexComponent extends CrudItemsIndexComponent<PlaneType
 
   protected setPermissions() {
     this.canEdit = this.authService.hasPermission(Permission.PlaneType_Update);
-    this.canDelete = this.authService.hasPermission(Permission.PlaneType_Delete);
+    this.canDelete = this.authService.hasPermission(
+      Permission.PlaneType_Delete
+    );
     this.canAdd = this.authService.hasPermission(Permission.PlaneType_Create);
   }
 }

@@ -4,13 +4,10 @@ import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/la
 @Component({
   selector: 'app-home-index',
   templateUrl: './home-index.component.html',
-  styleUrls: ['./home-index.component.scss']
+  styleUrls: ['./home-index.component.scss'],
 })
-export class HomeIndexComponent implements OnInit, OnDestroy{
-  constructor ( private layoutService: BiaClassicLayoutService)
-  {
-    
-  }
+export class HomeIndexComponent implements OnInit, OnDestroy {
+  constructor(private layoutService: BiaClassicLayoutService) {}
   ngOnInit(): void {
     this.layoutService.hideBreadcrumb();
   }

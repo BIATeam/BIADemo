@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { GenericDas } from 'src/app/core/bia-core/services/generic-das.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HangfireDas extends GenericDas {
   constructor(injector: Injector) {

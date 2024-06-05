@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  pluck,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+} from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 import { Store } from '@ngrx/store';
@@ -25,10 +32,15 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.loadAllByPost),
       pluck('event'),
-      switchMap((event) =>
+      switchMap(event =>
         this.maintenanceTeamDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<MaintenanceTeam[]>) => FeatureMaintenanceTeamsActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
+          map((result: DataResult<MaintenanceTeam[]>) =>
+            FeatureMaintenanceTeamsActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
           })
@@ -41,17 +53,23 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.load),
       pluck('id'),
-      switchMap((id) => {
+      switchMap(id => {
         if (id) {
           return this.maintenanceTeamDas.get({ id: id }).pipe(
-            map((maintenanceTeam) => FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam })),
-            catchError((err) => {
+            map(maintenanceTeam =>
+              FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam })
+            ),
+            catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
             })
           );
         } else {
-          return of(FeatureMaintenanceTeamsActions.loadSuccess({ maintenanceTeam: <MaintenanceTeam>{} }));
+          return of(
+            FeatureMaintenanceTeamsActions.loadSuccess({
+              maintenanceTeam: <MaintenanceTeam>{},
+            })
+          );
         }
       })
     )
@@ -61,22 +79,35 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.create),
       pluck('maintenanceTeam'),
-      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
+      concatMap(maintenanceTeam =>
+        of(maintenanceTeam).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([maintenanceTeam, event]) => {
-        return this.maintenanceTeamDas.post({ item: maintenanceTeam, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+        return this.maintenanceTeamDas
+          .post({
+            item: maintenanceTeam,
+            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureMaintenanceTeamsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -85,22 +116,36 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.update),
       pluck('maintenanceTeam'),
-      concatMap((maintenanceTeam) => of(maintenanceTeam).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
+      concatMap(maintenanceTeam =>
+        of(maintenanceTeam).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([maintenanceTeam, event]) => {
-        return this.maintenanceTeamDas.put({ item: maintenanceTeam, id: maintenanceTeam.id, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+        return this.maintenanceTeamDas
+          .put({
+            item: maintenanceTeam,
+            id: maintenanceTeam.id,
+            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureMaintenanceTeamsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -109,22 +154,35 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
+      concatMap((id: number) =>
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([id, event]) => {
-        return this.maintenanceTeamDas.delete({ id: id, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+        return this.maintenanceTeamDas
+          .delete({
+            id: id,
+            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureMaintenanceTeamsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -133,22 +191,35 @@ export class MaintenanceTeamsEffects {
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) =>
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(FeatureMaintenanceTeamsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([ids, event]) => {
-        return this.maintenanceTeamDas.deletes({ ids: ids, offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (MaintenanceTeamCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureMaintenanceTeamsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+        return this.maintenanceTeamDas
+          .deletes({
+            ids: ids,
+            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureMaintenanceTeamsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureMaintenanceTeamsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -158,5 +229,5 @@ export class MaintenanceTeamsEffects {
     private maintenanceTeamDas: MaintenanceTeamDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

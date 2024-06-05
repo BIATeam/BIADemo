@@ -8,8 +8,7 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
-      [selectedElements]="selectedPlanes"
-    ></bia-table-header>
+      [selectedElements]="selectedPlanes"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
@@ -23,8 +22,7 @@
       [tableStateKey]="tableStateKey"
       [tableState]="tableState"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [hasColumnFilter]="hasColumnFilter"
-    ></bia-table-controller>
+      [hasColumnFilter]="hasColumnFilter"></bia-table-controller>
     <bia-table
       *ngIf="!useCalcMode"
       [elements]="planes$ | async"
@@ -43,8 +41,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-    ></bia-table>
+      (stateSave)="onStateSave($event)"></bia-table>
     <app-plane-table
       *ngIf="useCalcMode"
       [elements]="planes$ | async"
@@ -65,7 +62,6 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-    ></app-plane-table>
+      (save)="onSave($event)"></app-plane-table>
   </div>
 </div>

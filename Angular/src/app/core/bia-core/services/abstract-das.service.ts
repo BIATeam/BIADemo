@@ -1,10 +1,23 @@
 import { Observable } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { DeleteParam, DeletesParam, GenericDas, GetListByPostParam, GetListParam, GetParam, PostParam, PutParam, SaveParam } from './generic-das.service';
+import {
+  DeleteParam,
+  DeletesParam,
+  GenericDas,
+  GetListByPostParam,
+  GetListParam,
+  GetParam,
+  PostParam,
+  PutParam,
+  SaveParam,
+} from './generic-das.service';
 import { Injector } from '@angular/core';
 
-export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>> extends GenericDas {
+export abstract class AbstractDas<
+  TOut,
+  TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>,
+> extends GenericDas {
   constructor(injector: Injector, endpoint: string) {
     super(injector, endpoint);
   }
@@ -45,7 +58,7 @@ export abstract class AbstractDas<TOut, TIn = Pick<TOut, Exclude<keyof TOut, 'id
     return this.deleteItems(param);
   }
 
-  getFile(event: LazyLoadEvent, endpoint: string = 'csv'): Observable<any> {
+  getFile(event: LazyLoadEvent, endpoint = 'csv'): Observable<any> {
     return this.getItemFile(event, endpoint);
   }
 }

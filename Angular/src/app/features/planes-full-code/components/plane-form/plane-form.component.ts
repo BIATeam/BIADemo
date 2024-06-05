@@ -5,9 +5,13 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -18,9 +22,8 @@ import { Plane } from '../../model/plane';
   selector: 'app-plane-form',
   templateUrl: './plane-form.component.html',
   styleUrls: ['./plane-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
 export class PlaneFormComponent implements OnChanges {
   @Input() plane: Plane = <Plane>{};
   @Input() airportOptions: OptionDto[];
@@ -31,8 +34,10 @@ export class PlaneFormComponent implements OnChanges {
 
   form: UntypedFormGroup;
 
-  constructor(public formBuilder: UntypedFormBuilder,
-    private authService: AuthService) {
+  constructor(
+    public formBuilder: UntypedFormBuilder,
+    private authService: AuthService
+  ) {
     this.initForm();
   }
 
@@ -57,7 +62,6 @@ export class PlaneFormComponent implements OnChanges {
       connectingAirports: [this.plane.connectingAirports],
       planeType: [this.plane.planeType?.id],
     });
-
   }
 
   onCancel() {
@@ -70,14 +74,16 @@ export class PlaneFormComponent implements OnChanges {
       const plane: Plane = <Plane>this.form.value;
       plane.id = plane.id > 0 ? plane.id : 0;
       plane.isActive = plane.isActive ? plane.isActive : false;
-      plane.connectingAirports = BiaOptionService.Differential(plane.connectingAirports, this.plane?.connectingAirports);
+      plane.connectingAirports = BiaOptionService.Differential(
+        plane.connectingAirports,
+        this.plane?.connectingAirports
+      );
       plane.planeType = BiaOptionService.Clone(plane.planeType);
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
-      plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site),
-      this.save.emit(plane);
+      (plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site)),
+        this.save.emit(plane);
       this.form.reset();
     }
   }
 }
-

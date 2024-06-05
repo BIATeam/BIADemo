@@ -6,7 +6,7 @@ import { DomainAirportOptionsActions } from './airport-options-actions';
 // This adapter will allow is to manipulate airports (mostly CRUD operations)
 export const airportOptionsAdapter = createEntityAdapter<OptionDto>({
   selectId: (airport: OptionDto) => airport.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -20,9 +20,7 @@ export const airportOptionsAdapter = createEntityAdapter<OptionDto>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<OptionDto> {
-  // additional props here
-}
+export type State = EntityState<OptionDto>;
 
 export const INIT_STATE: State = airportOptionsAdapter.getInitialState({
   // additional props default values here
@@ -30,26 +28,11 @@ export const INIT_STATE: State = airportOptionsAdapter.getInitialState({
 
 export const airportOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainAirportOptionsActions.loadAllSuccess, (state, { airports }) => airportOptionsAdapter.setAll(airports, state)),
+  on(DomainAirportOptionsActions.loadAllSuccess, (state, { airports }) =>
+    airportOptionsAdapter.setAll(airports, state)
+  )
   // on(loadSuccess, (state, { airport }) => airportOptionsAdapter.upsertOne(airport, state))
 );
 
-export const getAirportOptionById = (id: number) => (state: State) => state.entities[id];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getAirportOptionById = (id: number) => (state: State) =>
+  state.entities[id];

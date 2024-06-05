@@ -2,18 +2,18 @@ import { Injectable } from '@angular/core';
 import { CrudItemOptionsService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-options.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class SiteOptionsService extends CrudItemOptionsService {
-    /*siteTypeOptions$: Observable<OptionDto[]>;
+  /*siteTypeOptions$: Observable<OptionDto[]>;
     airportOptions$: Observable<OptionDto[]>;*/
 
-    constructor(/*
+  constructor(/*
         private store: Store<AppState>,
     */) {
-        super();
-        // TODO after creation of CRUD Team Site : get all requiered option dto use in Table calc and create and edit form
-/*        this.siteTypeOptions$ = this.store.select(getAllSiteTypeOptions);
+    super();
+    // TODO after creation of CRUD Team Site : get all requiered option dto use in Table calc and create and edit form
+    /*        this.siteTypeOptions$ = this.store.select(getAllSiteTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 
         this.dictOptionDtos$ = combineLatest([this.siteTypeOptions$, this.airportOptions$]).pipe(
@@ -25,10 +25,10 @@ export class SiteOptionsService extends CrudItemOptionsService {
                 ]
             )
         );*/
-    }
+  }
 
-    loadAllOptions() {
-/*        this.store.dispatch(DomainSiteTypeOptionsActions .loadAll());
+  loadAllOptions() {
+    /*        this.store.dispatch(DomainSiteTypeOptionsActions .loadAll());
         this.store.dispatch(DomainAirportOptionsActions.loadAll());*/
-    }
+  }
 }

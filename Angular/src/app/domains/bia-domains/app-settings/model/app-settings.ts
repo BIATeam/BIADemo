@@ -2,7 +2,7 @@ export enum EnvironmentType {
   INT = 'INT',
   UAT = 'UAT',
   PRA = 'PRA',
-  PRD = 'PRD'
+  PRD = 'PRD',
 }
 
 export interface AppSettings {
@@ -12,11 +12,10 @@ export interface AppSettings {
   monitoringUrl: string;
 }
 
-
 export interface Environment {
   type: EnvironmentType;
   urlMatomo: string;
-  siteIdMatomo: string
+  siteIdMatomo: string;
   urlsAdditionalJS: string[];
   urlsAdditionalCSS: string[];
 }

@@ -8,12 +8,12 @@ import { PlaneTypeCRUDConfiguration } from '../../plane-type.constants';
   selector: 'app-plane-type-new',
   templateUrl: './plane-type-new.component.html',
 })
-export class PlaneTypeNewComponent extends CrudItemNewComponent<PlaneType>  {
-   constructor(
+export class PlaneTypeNewComponent extends CrudItemNewComponent<PlaneType> {
+  constructor(
     protected injector: Injector,
-    public planeTypeService: PlaneTypeService,
+    public planeTypeService: PlaneTypeService
   ) {
-     super(injector, planeTypeService);
-     this.crudConfiguration = PlaneTypeCRUDConfiguration;
-   }
+    super(injector, planeTypeService);
+    this.crudConfiguration = PlaneTypeCRUDConfiguration;
+  }
 }

@@ -8,12 +8,12 @@ import { SiteCRUDConfiguration } from '../../site.constants';
   selector: 'app-site-new',
   templateUrl: './site-new.component.html',
 })
-export class SiteNewComponent extends CrudItemNewComponent<Site>  {
-   constructor(
+export class SiteNewComponent extends CrudItemNewComponent<Site> {
+  constructor(
     protected injector: Injector,
-    public siteService: SiteService,
+    public siteService: SiteService
   ) {
-     super(injector, siteService);
-     this.crudConfiguration = SiteCRUDConfiguration;
-   }
+    super(injector, siteService);
+    this.crudConfiguration = SiteCRUDConfiguration;
+  }
 }

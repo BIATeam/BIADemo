@@ -15,21 +15,37 @@ import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-onli
 export class PlaneTypeOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainPlaneTypeOptionsActions.loadAll) /* When action is dispatched */,
+      ofType(
+        DomainPlaneTypeOptionsActions.loadAll
+      ) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the PlanesTypes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'PlanesTypes Reducers' will take care of the rest */
       switchMap(() =>
-        this.planeTypeDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((planesTypes) => DomainPlaneTypeOptionsActions.loadAllSuccess({ planesTypes: planesTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
-              this.biaMessageService.showErrorHttpResponse(err);
-            }
-            return of(DomainPlaneTypeOptionsActions.failure({ error: err }));
+        this.planeTypeDas
+          .getList({
+            endpoint: 'allOptions',
+            offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
-        )
+          .pipe(
+            map(planesTypes =>
+              DomainPlaneTypeOptionsActions.loadAllSuccess({
+                planesTypes: planesTypes?.sort((a, b) =>
+                  a.display.localeCompare(b.display)
+                ),
+              })
+            ),
+            catchError(err => {
+              if (
+                BiaOnlineOfflineService.isModeEnabled !== true ||
+                BiaOnlineOfflineService.isServerAvailable(err) === true
+              ) {
+                this.biaMessageService.showErrorHttpResponse(err);
+              }
+              return of(DomainPlaneTypeOptionsActions.failure({ error: err }));
+            })
+          )
       )
     )
   );
@@ -38,5 +54,5 @@ export class PlaneTypeOptionsEffects {
     private actions$: Actions,
     private planeTypeDas: PlaneTypeOptionDas,
     private biaMessageService: BiaMessageService
-  ) { }
+  ) {}
 }

@@ -19,13 +19,13 @@ import { PlanesTypesEffects } from './store/planes-types-effects';
 import { FeaturePlanesTypesStore } from './store/plane-type.state';
 import { PlaneTypeCRUDConfiguration } from './plane-type.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.PlaneType_List_Access,
-      InjectComponent: PlanesTypesIndexComponent
+      InjectComponent: PlanesTypesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -39,9 +39,14 @@ export let ROUTES: Routes = [
           permission: Permission.PlaneType_Create,
           title: 'planeType.add',
           InjectComponent: PlaneTypeNewComponent,
-          dynamicComponent : () => (PlaneTypeCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            PlaneTypeCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (PlaneTypeCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneTypeCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -61,21 +66,26 @@ export let ROUTES: Routes = [
               permission: Permission.PlaneType_Update,
               title: 'planeType.edit',
               InjectComponent: PlaneTypeEditComponent,
-              dynamicComponent : () => (PlaneTypeCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                PlaneTypeCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (PlaneTypeCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: PlaneTypeCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -94,13 +104,13 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(PlaneTypeCRUDConfiguration.storeKey, FeaturePlanesTypesStore.reducers),
+    StoreModule.forFeature(
+      PlaneTypeCRUDConfiguration.storeKey,
+      FeaturePlanesTypesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesTypesEffects]),
     // TODO after creation of CRUD PlaneType : select the optioDto dommain module requiered for link
     // Domain Modules:
-  ]
+  ],
 })
-
-export class PlaneTypeModule {
-}
-
+export class PlaneTypeModule {}

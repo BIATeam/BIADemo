@@ -8,7 +8,7 @@ export interface DataItem {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AppDB extends Dexie {
   public httpRequests!: Table<HttpRequestItem, number>;
@@ -18,7 +18,7 @@ export class AppDB extends Dexie {
     super('biaDemoDB');
     this.version(3).stores({
       httpRequests: '++id',
-      datas: 'url'
+      datas: 'url',
     });
   }
 }

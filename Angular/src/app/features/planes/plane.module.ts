@@ -26,13 +26,13 @@ import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './plane.constants';
 import { PlaneBulkComponent } from './views/plane-bulk/plane-bulk.component';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
-      InjectComponent: PlanesIndexComponent
+      InjectComponent: PlanesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -46,9 +46,14 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'plane.add',
           InjectComponent: PlaneNewComponent,
-          dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            PlaneCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -59,9 +64,14 @@ export let ROUTES: Routes = [
           permission: Permission.Plane_Create,
           title: 'bia.bulk',
           InjectComponent: PlaneBulkComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            PlaneCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: PlaneCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -81,15 +91,20 @@ export let ROUTES: Routes = [
               permission: Permission.Plane_Update,
               title: 'plane.edit',
               InjectComponent: PlaneEditComponent,
-              dynamicComponent: () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                PlaneCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: PlaneCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
           /// BIAToolKit - Begin Child Engine
           {
@@ -97,17 +112,19 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'app.engines',
               canNavigate: true,
-              permission: Permission.Engine_List_Access
+              permission: Permission.Engine_List_Access,
             },
             loadChildren: () =>
-              import('./children/engines/engine.module').then((m) => m.EngineModule)
+              import('./children/engines/engine.module').then(
+                m => m.EngineModule
+              ),
           },
           /// BIAToolKit - End Child Engine
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -127,7 +144,10 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(PlaneCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+    StoreModule.forFeature(
+      PlaneCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module requiered for link
     // Domain Modules:
@@ -137,9 +157,6 @@ export let ROUTES: Routes = [
     // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
     // BIAToolKit - End Option PlaneType
-  ]
+  ],
 })
-
-export class PlaneModule {
-}
-
+export class PlaneModule {}

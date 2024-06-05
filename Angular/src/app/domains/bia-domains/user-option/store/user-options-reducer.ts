@@ -6,7 +6,7 @@ import { DomainUserOptionsActions } from './user-options-actions';
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const userOptionsAdapter = createEntityAdapter<OptionDto>({
   selectId: (user: OptionDto) => user.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -22,41 +22,27 @@ export const userOptionsAdapter = createEntityAdapter<OptionDto>({
 
 export interface State extends EntityState<OptionDto> {
   // additional props here
-  lastUsersAdded : OptionDto [];
+  lastUsersAdded: OptionDto[];
 }
 
 export const INIT_STATE: State = userOptionsAdapter.getInitialState({
   // additional props default values here
-  lastUsersAdded:[]
+  lastUsersAdded: [],
 });
 
 export const userOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainUserOptionsActions.loadAllSuccess,
-     (state, { users }) => userOptionsAdapter.setAll(users, state)
-     ),
+  on(DomainUserOptionsActions.loadAllSuccess, (state, { users }) =>
+    userOptionsAdapter.setAll(users, state)
+  ),
   // on(loadSuccess, (state, { user }) => userOptionsAdapter.upsertOne(user, state))
-  on(DomainUserOptionsActions.userAddedInListSuccess, (state, { usersAdded }) => {
-    return { ...state, lastUsersAdded: usersAdded };
-  }),
+  on(
+    DomainUserOptionsActions.userAddedInListSuccess,
+    (state, { usersAdded }) => {
+      return { ...state, lastUsersAdded: usersAdded };
+    }
+  )
 );
 
-export const getUserOptionById = (id: number) => (state: State) => state.entities[id];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getUserOptionById = (id: number) => (state: State) =>
+  state.entities[id];

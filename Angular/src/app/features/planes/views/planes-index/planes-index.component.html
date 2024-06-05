@@ -11,8 +11,7 @@
       (exportCSV)="onExportCSV('plane.listOf')"
       (delete)="onDelete()"
       (bulk)="onBulk()"
-      [selectedElements]="selectedCrudItems"
-    >
+      [selectedElements]="selectedCrudItems">
       <!-- BIAToolKit - Begin Child Engine -->
       <ng-template pTemplate="actionOnSelected">
         <button
@@ -21,8 +20,7 @@
           [disabled]="selectedCrudItems?.length !== 1"
           class="p-button-outlined"
           label="{{ 'plane.engines' | translate }}"
-          (click)="onViewEngines(this.selectedCrudItems[0].id)"
-        ></button>
+          (click)="onViewEngines(this.selectedCrudItems[0].id)"></button>
       </ng-template>
       <!-- BIAToolKit - End Child Engine -->
     </bia-table-header>
@@ -40,8 +38,7 @@
       [tableState]="tableState"
       [defaultViewPref]="defaultViewPref"
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
-      [hasColumnFilter]="hasColumnFilter"
-    >
+      [hasColumnFilter]="hasColumnFilter">
       <ng-template pTemplate="customControl">
         <div class="flex flex-row gap-3 bia-table-controller-container">
           <i
@@ -49,29 +46,25 @@
             [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
             (click)="useCalcModeChange(!crudConfiguration.useCalcMode)"
             pTooltip="{{ 'bia.useCalcMode' | translate }}"
-            tooltipPosition="top"
-          ></i>
+            tooltipPosition="top"></i>
           <i
             class="pi pi-eye bia-pointer"
             [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
             (click)="useViewChange(!crudConfiguration.useView)"
             pTooltip="{{ 'bia.useView' | translate }}"
-            tooltipPosition="top"
-          ></i>
+            tooltipPosition="top"></i>
           <i
             class="pi pi-sync bia-pointer"
             [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
             (click)="useSignalRChange(!crudConfiguration.useSignalR)"
             pTooltip="{{ 'bia.useSignalR' | translate }}"
-            tooltipPosition="top"
-          ></i>
+            tooltipPosition="top"></i>
           <i
             class="pi pi-clone bia-pointer"
             [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
             (click)="usePopupChange(!crudConfiguration.usePopup)"
             pTooltip="{{ 'bia.usePopup' | translate }}"
-            tooltipPosition="top"
-          ></i>
+            tooltipPosition="top"></i>
         </div>
       </ng-template>
     </bia-table-controller>
@@ -93,8 +86,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"
-    ></bia-table>
+      (stateSave)="onStateSave($event)"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
@@ -115,7 +107,6 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"
-    ></app-plane-table>
+      (save)="onSave($event)"></app-plane-table>
   </div>
 </div>

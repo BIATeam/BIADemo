@@ -8,12 +8,12 @@ import { MaintenanceTeamCRUDConfiguration } from '../../maintenance-team.constan
   selector: 'app-maintenance-team-new',
   templateUrl: './maintenance-team-new.component.html',
 })
-export class MaintenanceTeamNewComponent extends CrudItemNewComponent<MaintenanceTeam>  {
-   constructor(
+export class MaintenanceTeamNewComponent extends CrudItemNewComponent<MaintenanceTeam> {
+  constructor(
     protected injector: Injector,
-    public maintenanceTeamService: MaintenanceTeamService,
+    public maintenanceTeamService: MaintenanceTeamService
   ) {
-     super(injector, maintenanceTeamService);
-     this.crudConfiguration = MaintenanceTeamCRUDConfiguration;
-   }
+    super(injector, maintenanceTeamService);
+    this.crudConfiguration = MaintenanceTeamCRUDConfiguration;
+  }
 }

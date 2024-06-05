@@ -11,7 +11,7 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
 export class AircraftMaintenanceCompanyEditComponent extends CrudItemEditComponent<AircraftMaintenanceCompany> {
   constructor(
     protected injector: Injector,
-    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
+    public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService
   ) {
     super(injector, aircraftMaintenanceCompanyService);
     this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;

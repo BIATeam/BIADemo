@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  pluck,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+} from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
 import { Store } from '@ngrx/store';
@@ -25,12 +32,19 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost),
       pluck('event'),
-      switchMap((event) =>
+      switchMap(event =>
         this.aircraftMaintenanceCompanyDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<AircraftMaintenanceCompany[]>) => FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
+          map((result: DataResult<AircraftMaintenanceCompany[]>) =>
+            FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+            return of(
+              FeatureAircraftMaintenanceCompaniesActions.failure({ error: err })
+            );
           })
         )
       )
@@ -41,17 +55,29 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.load),
       pluck('id'),
-      switchMap((id) => {
+      switchMap(id => {
         if (id) {
           return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
-            map((aircraftMaintenanceCompany) => FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany })),
-            catchError((err) => {
+            map(aircraftMaintenanceCompany =>
+              FeatureAircraftMaintenanceCompaniesActions.loadSuccess({
+                aircraftMaintenanceCompany,
+              })
+            ),
+            catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+              return of(
+                FeatureAircraftMaintenanceCompaniesActions.failure({
+                  error: err,
+                })
+              );
             })
           );
         } else {
-          return of(FeatureAircraftMaintenanceCompaniesActions.loadSuccess({ aircraftMaintenanceCompany: <AircraftMaintenanceCompany>{} }));
+          return of(
+            FeatureAircraftMaintenanceCompaniesActions.loadSuccess({
+              aircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
+            })
+          );
         }
       })
     )
@@ -61,22 +87,42 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.create),
       pluck('aircraftMaintenanceCompany'),
-      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
+      concatMap(aircraftMaintenanceCompany =>
+        of(aircraftMaintenanceCompany).pipe(
+          withLatestFrom(
+            this.store.select(
+              FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent
+            )
+          )
+        )
+      ),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.post({ item: aircraftMaintenanceCompany, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+        return this.aircraftMaintenanceCompanyDas
+          .post({
+            item: aircraftMaintenanceCompany,
+            offlineMode:
+              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
+                  { event: <LazyLoadEvent>event }
+                );
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(
+                FeatureAircraftMaintenanceCompaniesActions.failure({
+                  error: err,
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -85,22 +131,43 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.update),
       pluck('aircraftMaintenanceCompany'),
-      concatMap((aircraftMaintenanceCompany) => of(aircraftMaintenanceCompany).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
+      concatMap(aircraftMaintenanceCompany =>
+        of(aircraftMaintenanceCompany).pipe(
+          withLatestFrom(
+            this.store.select(
+              FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent
+            )
+          )
+        )
+      ),
       switchMap(([aircraftMaintenanceCompany, event]) => {
-        return this.aircraftMaintenanceCompanyDas.put({ item: aircraftMaintenanceCompany, id: aircraftMaintenanceCompany.id, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+        return this.aircraftMaintenanceCompanyDas
+          .put({
+            item: aircraftMaintenanceCompany,
+            id: aircraftMaintenanceCompany.id,
+            offlineMode:
+              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
+                  { event: <LazyLoadEvent>event }
+                );
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(
+                FeatureAircraftMaintenanceCompaniesActions.failure({
+                  error: err,
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -109,22 +176,42 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
+      concatMap((id: number) =>
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(
+              FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent
+            )
+          )
+        )
+      ),
       switchMap(([id, event]) => {
-        return this.aircraftMaintenanceCompanyDas.delete({ id: id, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+        return this.aircraftMaintenanceCompanyDas
+          .delete({
+            id: id,
+            offlineMode:
+              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
+                  { event: <LazyLoadEvent>event }
+                );
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(
+                FeatureAircraftMaintenanceCompaniesActions.failure({
+                  error: err,
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -133,22 +220,42 @@ export class AircraftMaintenanceCompaniesEffects {
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) =>
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(
+              FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent
+            )
+          )
+        )
+      ),
       switchMap(([ids, event]) => {
-        return this.aircraftMaintenanceCompanyDas.deletes({ ids: ids, offlineMode: AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureAircraftMaintenanceCompaniesActions.failure({ error: err }));
+        return this.aircraftMaintenanceCompanyDas
+          .deletes({
+            ids: ids,
+            offlineMode:
+              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
+                  { event: <LazyLoadEvent>event }
+                );
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(
+                FeatureAircraftMaintenanceCompaniesActions.failure({
+                  error: err,
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -158,5 +265,5 @@ export class AircraftMaintenanceCompaniesEffects {
     private aircraftMaintenanceCompanyDas: AircraftMaintenanceCompanyDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

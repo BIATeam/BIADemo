@@ -9,31 +9,40 @@ import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maint
 
 @Component({
   selector: 'app-aircraft-maintenance-companies-item',
-  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
 })
-export class AircraftMaintenanceCompanyItemComponent extends CrudItemItemComponent<AircraftMaintenanceCompany> implements OnInit {
-  constructor(protected store: Store<AppState>,
+export class AircraftMaintenanceCompanyItemComponent
+  extends CrudItemItemComponent<AircraftMaintenanceCompany>
+  implements OnInit
+{
+  constructor(
+    protected store: Store<AppState>,
     protected injector: Injector,
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService,
-    protected layoutService: BiaClassicLayoutService,
+    protected layoutService: BiaClassicLayoutService
   ) {
     super(injector, aircraftMaintenanceCompanyService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.sub.add
-      (
-        this.aircraftMaintenanceCompanyService.crudItem$.subscribe((aircraftMaintenanceCompany) => {
+    this.sub.add(
+      this.aircraftMaintenanceCompanyService.crudItem$.subscribe(
+        aircraftMaintenanceCompany => {
           // TODO after creation of CRUD Team AircraftMaintenanceCompany : set the field of the item to display in the breadcrump
           if (aircraftMaintenanceCompany?.title) {
             this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = aircraftMaintenanceCompany.title;
+              (routeData as any)['breadcrumb'] =
+                aircraftMaintenanceCompany.title;
             });
             this.layoutService.refreshBreadcrumb();
           }
-        })
-      );
+        }
+      )
+    );
   }
 }

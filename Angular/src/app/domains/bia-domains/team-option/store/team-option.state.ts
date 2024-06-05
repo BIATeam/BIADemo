@@ -1,5 +1,10 @@
 import * as fromTeamOptions from './team-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { storeKey } from '../team-option.contants';
 
 export interface TeamOptionsState {
@@ -9,7 +14,7 @@ export interface TeamOptionsState {
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: TeamOptionsState | undefined, action: Action) {
   return combineReducers({
-    teamOptions: fromTeamOptions.teamOptionReducers
+    teamOptions: fromTeamOptions.teamOptionReducers,
   })(state, action);
 }
 
@@ -22,33 +27,14 @@ export const getTeamsState = createFeatureSelector<TeamOptionsState>(storeKey);
 
 export const getTeamOptionsEntitiesState = createSelector(
   getTeamsState,
-  (state) => state.teamOptions
+  state => state.teamOptions
 );
 
-export const { selectAll: getAllTeamOptions } = fromTeamOptions.teamOptionsAdapter.getSelectors(
-  getTeamOptionsEntitiesState
-);
+export const { selectAll: getAllTeamOptions } =
+  fromTeamOptions.teamOptionsAdapter.getSelectors(getTeamOptionsEntitiesState);
 
 export const getTeamOptionById = (id: number) =>
   createSelector(
     getTeamOptionsEntitiesState,
     fromTeamOptions.getTeamOptionById(id)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

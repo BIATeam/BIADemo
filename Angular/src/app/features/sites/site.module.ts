@@ -19,13 +19,13 @@ import { SitesEffects } from './store/sites-effects';
 import { FeatureSitesStore } from './store/site.state';
 import { SiteCRUDConfiguration } from './site.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Site_List_Access,
-      InjectComponent: SitesIndexComponent
+      InjectComponent: SitesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -39,9 +39,14 @@ export let ROUTES: Routes = [
           permission: Permission.Site_Create,
           title: 'site.add',
           InjectComponent: SiteNewComponent,
-          dynamicComponent : () => (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          dynamicComponent: () =>
+            SiteCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: SiteCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -61,15 +66,20 @@ export let ROUTES: Routes = [
               permission: Permission.Site_Update,
               title: 'site.edit',
               InjectComponent: SiteEditComponent,
-              dynamicComponent : () => (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              dynamicComponent: () =>
+                SiteCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: SiteCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
           // Custo for teams
           {
@@ -77,16 +87,18 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'app.members',
               canNavigate: true,
-              permission: Permission.Site_Member_List_Access
+              permission: Permission.Site_Member_List_Access,
             },
             loadChildren: () =>
-              import('./children/members/site-member.module').then((m) => m.SiteMemberModule)
+              import('./children/members/site-member.module').then(
+                m => m.SiteMemberModule
+              ),
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -105,12 +117,12 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(SiteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
+    StoreModule.forFeature(
+      SiteCRUDConfiguration.storeKey,
+      FeatureSitesStore.reducers
+    ),
     EffectsModule.forFeature([SitesEffects]),
     // Domain Modules:
-  ]
+  ],
 })
-
-export class SiteModule {
-}
-
+export class SiteModule {}

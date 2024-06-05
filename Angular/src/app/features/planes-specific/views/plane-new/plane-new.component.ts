@@ -8,12 +8,12 @@ import { PlaneService } from '../../services/plane.service';
   selector: 'app-plane-new',
   templateUrl: './plane-new.component.html',
 })
-export class PlaneNewComponent extends CrudItemNewComponent<Plane>  {
-   constructor(
+export class PlaneNewComponent extends CrudItemNewComponent<Plane> {
+  constructor(
     protected injector: Injector,
-    public planeService: PlaneService,
+    public planeService: PlaneService
   ) {
-     super(injector, planeService);
-     this.crudConfiguration = PlaneCRUDConfiguration;
-   }
+    super(injector, planeService);
+    this.crudConfiguration = PlaneCRUDConfiguration;
+  }
 }
