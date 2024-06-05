@@ -47,6 +47,9 @@ export const userReducers = createReducer<State>(
   on(FeatureUsersActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
+  on(FeatureUsersActions.save, (state, { users }) => {
+    return { ...state, loadingGetAll: true };
+  }),
   on(FeatureUsersActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = usersAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
