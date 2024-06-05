@@ -107,6 +107,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
                         if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.LastName));

@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
-// import { AccordionModule } from 'primeng/accordion';
+import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -73,7 +73,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 // import { ToolbarModule } from 'primeng/toolbar';
 // import { TooltipModule } from 'primeng/tooltip';
-// import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadModule } from 'primeng/fileupload';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
@@ -126,7 +126,7 @@ import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-o
 import { TeamAdvancedFilterComponent } from './components/team-advanced-filter/team-advanced-filter.component';
 
 const PRIMENG_MODULES = [
-//  AccordionModule,
+  AccordionModule,
   AutoCompleteModule,
   BadgeModule,
   BreadcrumbModule,
@@ -173,7 +173,7 @@ const PRIMENG_MODULES = [
   ToggleButtonModule,
 //  ToolbarModule,
 //  TooltipModule,
-//  FileUploadModule,
+  FileUploadModule,
 ];
 
 const MODULES = [

@@ -13,6 +13,8 @@ export namespace FeatureUsersActions
   export const create = createAction('[' + UserCRUDConfiguration.storeKey +'] Create', props<{ user: User }>());
   
   export const update = createAction('[' + UserCRUDConfiguration.storeKey +'] Update', props<{ user: User }>());
+
+  export const save = createAction('[' + UserCRUDConfiguration.storeKey +'] Save', props<{ users: User[] }>());
   
   export const remove = createAction('[' + UserCRUDConfiguration.storeKey +'] Remove', props<{ id: number }>());
   

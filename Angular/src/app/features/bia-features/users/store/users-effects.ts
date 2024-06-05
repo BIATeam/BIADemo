@@ -105,6 +105,43 @@ export class UsersEffects {
     )
   );
 
+  save$ = createEffect(() =>
+    this.actions$.pipe(
+        ofType(FeatureUsersActions.save),
+        pluck('users'),
+        concatMap(users =>
+            of(users).pipe(
+                withLatestFrom(
+                    this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+                )
+            )
+        ),
+        switchMap(([users, event]) => {
+            return this.userDas
+                .save({
+                    items: users,
+                    offlineMode: UserCRUDConfiguration.useOfflineMode,
+                })
+                .pipe(
+                    map(() => {
+                        this.biaMessageService.showUpdateSuccess();
+                        if (UserCRUDConfiguration.useSignalR) {
+                            return biaSuccessWaitRefreshSignalR();
+                        } else {
+                            return FeatureUsersActions.loadAllByPost({
+                                event: <LazyLoadEvent>event,
+                            });
+                        }
+                    }),
+                    catchError(err => {
+                        this.biaMessageService.showError();
+                        return of(FeatureUsersActions.failure({ error: err }));
+                    })
+                );
+        })
+    )
+);
+
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.remove),

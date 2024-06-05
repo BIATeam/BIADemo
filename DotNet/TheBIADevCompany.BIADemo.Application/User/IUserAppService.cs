@@ -109,6 +109,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<List<string>> GetAllLdapUsersDomains();
 
         /// <summary>
+        /// Saves list of users.
+        /// </summary>
+        /// <param name="userDtos">List of users dto.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task SaveAsync(List<UserDto> userDtos);
+
+        /// <summary>
         /// Selects the default language.
         /// </summary>
         /// <param name="userInfo">The user information.</param>

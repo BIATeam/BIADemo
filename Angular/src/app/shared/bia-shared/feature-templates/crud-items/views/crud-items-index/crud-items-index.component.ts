@@ -237,6 +237,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto> implements OnInit
     }
   }
 
+  onBulk() {
+      this.router.navigate(['bulk'], { relativeTo: this.activatedRoute });
+  }
+
   onClickRow(crudItemId: any) {
     this.onEdit(crudItemId)
   }

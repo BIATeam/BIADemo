@@ -25,6 +25,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -336,6 +337,43 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
 
             return this.Ok();
+        }
+
+        /// <summary>
+        /// Saves list of users.
+        /// </summary>
+        /// <param name="dtos">The dtos.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPost("save")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = Rights.Users.Delete + "," + Rights.Users.UpdateRoles + "," + Rights.Users.Add)]
+        public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
+        {
+            var dtoList = dtos.ToList();
+            if (!dtoList.Any())
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                await this.userService.SaveAsync(dtoList);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                return this.Ok();
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
         }
 
         /// <summary>

@@ -131,6 +131,11 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Msn, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.Msn));

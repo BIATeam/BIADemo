@@ -1,0 +1,17 @@
+<bia-form
+  [hidden]="true"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="
+    crudItemService.optionsService.dictOptionDtos$ | async
+  "></bia-form>
+
+<bia-crud-item-bulk-form
+  [bulkData]="bulkData"
+  [crudConfiguration]="crudConfiguration"
+  [canAdd]="canAdd"
+  [canDelete]="canDelete"
+  [canEdit]="canEdit"
+  (save)="onSave($event)"
+  (cancel)="onCancel()"
+  (fileSelected)="onFileSelected($event)">
+</bia-crud-item-bulk-form>

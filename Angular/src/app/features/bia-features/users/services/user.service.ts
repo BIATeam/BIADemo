@@ -59,6 +59,9 @@ export class UserService extends CrudItemService<User> {
     public update(crudItem: User){
         this.store.dispatch(FeatureUsersActions.update({ user : crudItem }));
     }
+    public save(crudItems: User[]){
+        this.store.dispatch(FeatureUsersActions.save({ users : crudItems }));
+    }
     public remove(id: any){
         this.store.dispatch(FeatureUsersActions.remove({ id }));
     }

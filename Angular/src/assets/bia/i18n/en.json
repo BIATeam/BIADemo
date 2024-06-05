@@ -4,6 +4,9 @@
     "action": "Action",
     "actions": "Actions",
     "add": "Add",
+    "toAdd": "To Add",
+    "toModify": "To Modify",
+    "toDelete": "To Delete",
     "administer": "Administer",
     "administration" : "Administration",
     "all": "All",
@@ -16,6 +19,7 @@
     "crud" : {
       "listOf": "List"
     },
+    "bulk": "Bulk",
     "confirm": "Confirm",
     "dateIso8601": "yyyy-mm-dd",
     "defineDefault": "Set default",

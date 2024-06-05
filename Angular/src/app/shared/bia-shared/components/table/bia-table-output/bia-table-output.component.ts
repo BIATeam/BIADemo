@@ -7,21 +7,26 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { BiaFieldConfig, PropType} from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFieldConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { DtoState } from '../../../model/dto-state.enum';
 
 @Component({
   selector: 'bia-table-output',
   templateUrl: './bia-table-output.component.html',
   styleUrls: ['./bia-table-output.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
-export class BiaTableOutputComponent implements OnInit, OnDestroy, AfterContentInit {
+export class BiaTableOutputComponent
+  implements OnInit, OnDestroy, AfterContentInit
+{
   @Input() field: BiaFieldConfig;
   @Input() data: any;
 
@@ -29,12 +34,8 @@ export class BiaTableOutputComponent implements OnInit, OnDestroy, AfterContentI
 
   specificOutputTemplate: TemplateRef<any>;
   protected sub = new Subscription();
-  
-  constructor(
-    public biaTranslationService: BiaTranslationService
-    ) {
-    
-  }
+
+  constructor(public biaTranslationService: BiaTranslationService) {}
   ngOnInit() {
     this.initFieldConfiguration();
   }
@@ -45,49 +46,55 @@ export class BiaTableOutputComponent implements OnInit, OnDestroy, AfterContentI
     }
   }
   ngAfterContentInit() {
-    this.templates.forEach((item) => {
-        switch(item.getType()) {
-          case 'specificOutput':
-            this.specificOutputTemplate = item.template;
+    this.templates.forEach(item => {
+      switch (item.getType()) {
+        case 'specificOutput':
+          this.specificOutputTemplate = item.template;
           break;
-        }
+      }
     });
   }
   private initFieldConfiguration() {
     if (
-      this.field.type == PropType.DateTime
-      ||
-      this.field.type == PropType.Date
-      ||
-      this.field.type == PropType.Time
-      ||
-      this.field.type == PropType.TimeOnly
-      ||
+      this.field.type == PropType.DateTime ||
+      this.field.type == PropType.Date ||
+      this.field.type == PropType.Time ||
+      this.field.type == PropType.TimeOnly ||
       this.field.type == PropType.TimeSecOnly
-    )
-    {
-      this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-        let field = this.field.clone();
-        switch (field.type)
-        {
-          case PropType.DateTime :
-            field.formatDate = dateFormat.dateTimeFormat;
-            break;
-          case PropType.Date :
-            field.formatDate = dateFormat.dateFormat;
-            break;
-          case PropType.Time :
-            field.formatDate = dateFormat.timeFormat;
-            break;
-          case PropType.TimeOnly :
-            field.formatDate = dateFormat.timeFormat;
-            break;
-          case PropType.TimeSecOnly :
-            field.formatDate = dateFormat.timeFormatSec;
-            break;
-        }
-        this.field = field;
-      }));
+    ) {
+      this.sub.add(
+        this.biaTranslationService.currentCultureDateFormat$.subscribe(
+          dateFormat => {
+            let field = this.field.clone();
+            switch (field.type) {
+              case PropType.DateTime:
+                field.formatDate = dateFormat.dateTimeFormat;
+                break;
+              case PropType.Date:
+                field.formatDate = dateFormat.dateFormat;
+                break;
+              case PropType.Time:
+                field.formatDate = dateFormat.timeFormat;
+                break;
+              case PropType.TimeOnly:
+                field.formatDate = dateFormat.timeFormat;
+                break;
+              case PropType.TimeSecOnly:
+                field.formatDate = dateFormat.timeFormatSec;
+                break;
+            }
+            this.field = field;
+          }
+        )
+      );
     }
+  }
+
+  protected filterDtoState(data: any) {
+    if (!Array.isArray(data)) {
+      return data;
+    }
+
+    return data.filter(item => item.dtoState !== DtoState.Deleted);
   }
 }

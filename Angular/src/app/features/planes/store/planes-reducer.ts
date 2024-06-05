@@ -47,6 +47,9 @@ export const planeReducers = createReducer<State>(
   on(FeaturePlanesActions.load, (state) => {
     return { ...state, loadingGet: true };
   }),
+  on(FeaturePlanesActions.save, (state, { planes }) => {
+    return { ...state, loadingGetAll: true };
+  }),
   on(FeaturePlanesActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = planesAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
