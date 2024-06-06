@@ -119,7 +119,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.OnDisplay();
     if (this.useCalcMode) {
       this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
+        this.biaTranslationService.currentCulture$.subscribe(() => {
           this.planeOptionsService.loadAllOptions();
         })
       );
@@ -129,7 +129,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$
           .pipe(skip(1))
-          .subscribe(event => {
+          .subscribe(() => {
             this.onLoadLazy(this.planeListComponent.getLazyLoadMetadata());
           })
       );

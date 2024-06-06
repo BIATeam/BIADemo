@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -41,7 +40,7 @@ export class PlaneFormComponent implements OnChanges {
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.plane) {
       this.form.reset();
       if (this.plane) {

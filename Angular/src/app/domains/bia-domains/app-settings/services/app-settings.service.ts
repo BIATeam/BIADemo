@@ -6,6 +6,4 @@ import { AppSettings } from '../model/app-settings';
 })
 export class AppSettingsService {
   public appSettings: AppSettings;
-
-  constructor() {}
 }

@@ -6,14 +6,12 @@ import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
   providedIn: 'root',
 })
 export class NavigationService {
-  constructor() {}
-
   public filterNavByRole(
     authInfo: AuthInfo,
     biaNavigation: BiaNavigation[]
   ): BiaNavigation[] {
     const biaNavigationFiltered = new Array<BiaNavigation>();
-    biaNavigation.forEach((element: BiaNavigation, index: number) => {
+    biaNavigation.forEach((element: BiaNavigation) => {
       const found =
         !element.permissions ||
         element.permissions.some(

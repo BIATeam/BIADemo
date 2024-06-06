@@ -26,7 +26,7 @@ export class PlaneNewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
+      this.biaTranslationService.currentCulture$.subscribe(() => {
         this.planeOptionsService.loadAllOptions();
       })
     );

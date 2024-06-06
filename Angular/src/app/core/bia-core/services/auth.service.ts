@@ -406,7 +406,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           }
           return authInfo;
         }),
-        catchError(err => {
+        catchError(() => {
           const authInfo: AuthInfo = <AuthInfo>{};
           return of(authInfo);
         })

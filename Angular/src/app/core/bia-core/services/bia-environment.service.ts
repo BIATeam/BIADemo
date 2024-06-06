@@ -6,7 +6,6 @@ import { environment } from 'src/environments/environment';
 })
 export class BiaEnvironmentService {
   protected static baseUrl: string | null = null;
-  constructor() {}
 
   public static getBaseUrl(): string {
     if (BiaEnvironmentService.baseUrl === null) {

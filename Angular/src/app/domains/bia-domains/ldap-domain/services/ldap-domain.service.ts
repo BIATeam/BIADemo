@@ -7,8 +7,6 @@ import { LdapDomain } from '../../ldap-domain/model/ldap-domain';
   providedIn: 'root',
 })
 export class LdapDomainService {
-  constructor() {}
-
   public formatDisplayNameFromObs(
     ldapDomains$: Observable<Array<LdapDomain>>
   ): Observable<Array<LdapDomain>> {
