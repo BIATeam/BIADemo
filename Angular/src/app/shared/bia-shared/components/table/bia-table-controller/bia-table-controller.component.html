@@ -20,6 +20,8 @@
     <p-multiSelect
       defaultLabel="{{ 'bia.select' | translate }}"
       [options]="listedColumns"
+      optionLabel="label"
+      optionValue="value"
       [(ngModel)]="displayedColumns"
       (onChange)="onChangeSelectColumn()"
       autoWidth="false"
