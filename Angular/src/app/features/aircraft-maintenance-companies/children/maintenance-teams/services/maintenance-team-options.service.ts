@@ -13,9 +13,7 @@ export class MaintenanceTeamOptionsService extends CrudItemOptionsService {
     // TODO after creation of CRUD Team MaintenanceTeam : get all requiered option dto use in Table calc and create and edit form
 
     this.dictOptionDtos$ = combineLatest([]).pipe(
-      map(options => <DictOptionDto[]>[])
+      map(() => <DictOptionDto[]>[])
     );
   }
-
-  loadAllOptions() {}
 }

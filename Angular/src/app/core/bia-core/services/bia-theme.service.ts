@@ -50,7 +50,9 @@ export class BiaThemeService {
 
     try {
       localStorage.setItem(STORAGE_THEME_KEY, theme);
-    } catch {}
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   private applyTheme(theme: string, oldTheme?: string) {

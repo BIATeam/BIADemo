@@ -7,8 +7,6 @@ import { LdapDomain } from '../../ldap-domain/model/ldap-domain';
   providedIn: 'root',
 })
 export class LdapDomainService {
-  constructor() {}
-
   public formatDisplayNameFromObs(
     ldapDomains$: Observable<Array<LdapDomain>>
   ): Observable<Array<LdapDomain>> {
@@ -20,11 +18,9 @@ export class LdapDomainService {
   }
 
   public formatDisplayNames(ldapDomains: Array<LdapDomain>): Array<LdapDomain> {
-    ldapDomains.forEach((domain: LdapDomain) => {
-      domain = this.formatDisplayName(domain);
+    return ldapDomains.map((domain: LdapDomain) => {
+      return this.formatDisplayName(domain);
     });
-
-    return ldapDomains;
   }
 
   public formatDisplayName(domain: LdapDomain): LdapDomain {

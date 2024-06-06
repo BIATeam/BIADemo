@@ -21,7 +21,9 @@ export const getCurrentCulture = () => {
   let culture;
   try {
     culture = localStorage.getItem(STORAGE_CULTURE_KEY);
-  } catch {}
+  } catch (err) {
+    console.error(err);
+  }
   if (!culture) {
     if (navigator.languages != undefined) {
       culture = navigator.languages[0];
@@ -147,7 +149,9 @@ export class BiaTranslationService {
         }
         try {
           localStorage.setItem(STORAGE_CULTURE_KEY, culture);
-        } catch {}
+        } catch (err) {
+          console.error(err);
+        }
         this.cultureSubject.next(culture);
       });
       this.translate

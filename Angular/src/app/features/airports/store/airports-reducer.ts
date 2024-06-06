@@ -41,7 +41,7 @@ export const INIT_STATE: State = airportsAdapter.getInitialState({
 
 export const airportReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureAirportsActions.loadAllByPost, (state, { event }) => {
+  on(FeatureAirportsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureAirportsActions.load, state => {
@@ -60,7 +60,7 @@ export const airportReducers = createReducer<State>(
   on(FeatureAirportsActions.loadSuccess, (state, { airport }) => {
     return { ...state, currentAirport: airport, loadingGet: false };
   }),
-  on(FeatureAirportsActions.failure, (state, { error }) => {
+  on(FeatureAirportsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

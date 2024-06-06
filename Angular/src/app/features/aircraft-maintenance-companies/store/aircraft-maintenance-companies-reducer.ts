@@ -44,12 +44,9 @@ export const INIT_STATE: State =
 
 export const aircraftMaintenanceCompanyReducers = createReducer<State>(
   INIT_STATE,
-  on(
-    FeatureAircraftMaintenanceCompaniesActions.loadAllByPost,
-    (state, { event }) => {
-      return { ...state, loadingGetAll: true };
-    }
-  ),
+  on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost, state => {
+    return { ...state, loadingGetAll: true };
+  }),
   on(FeatureAircraftMaintenanceCompaniesActions.load, state => {
     return { ...state, loadingGet: true };
   }),
@@ -76,7 +73,7 @@ export const aircraftMaintenanceCompanyReducers = createReducer<State>(
       };
     }
   ),
-  on(FeatureAircraftMaintenanceCompaniesActions.failure, (state, { error }) => {
+  on(FeatureAircraftMaintenanceCompaniesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );
