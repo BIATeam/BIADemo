@@ -24,6 +24,7 @@
       optionValue="value"
       [(ngModel)]="displayedColumns"
       (onChange)="onChangeSelectColumn()"
+      (onSelectAllChange)="onChangeSelectColumn()"
       autoWidth="false"
       [style]="{ width: '300px' }"
       scrollHeight="50vh"></p-multiSelect>
