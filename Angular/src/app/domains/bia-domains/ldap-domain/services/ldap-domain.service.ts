@@ -18,11 +18,9 @@ export class LdapDomainService {
   }
 
   public formatDisplayNames(ldapDomains: Array<LdapDomain>): Array<LdapDomain> {
-    ldapDomains.forEach((domain: LdapDomain) => {
-      domain = this.formatDisplayName(domain);
+    return ldapDomains.map((domain: LdapDomain) => {
+      return this.formatDisplayName(domain);
     });
-
-    return ldapDomains;
   }
 
   public formatDisplayName(domain: LdapDomain): LdapDomain {

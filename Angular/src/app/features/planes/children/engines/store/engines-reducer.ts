@@ -49,7 +49,7 @@ export const engineReducers = createReducer<State>(
   on(FeatureEnginesActions.clearCurrent, state => {
     return { ...state, currentEngine: <Engine>{} };
   }),
-  on(FeatureEnginesActions.loadAllByPost, (state, { event }) => {
+  on(FeatureEnginesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureEnginesActions.load, state => {
@@ -65,7 +65,7 @@ export const engineReducers = createReducer<State>(
   on(FeatureEnginesActions.loadSuccess, (state, { engine }) => {
     return { ...state, currentEngine: engine, loadingGet: false };
   }),
-  on(FeatureEnginesActions.failure, (state, { error }) => {
+  on(FeatureEnginesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

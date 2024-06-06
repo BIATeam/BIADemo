@@ -52,7 +52,7 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(DomainNotificationsActions.loadUnreadNotificationIds),
       pluck('event'),
-      switchMap(event =>
+      switchMap(() =>
         this.notificationDas.getUnreadNotificationIds().pipe(
           map(ids =>
             DomainNotificationsActions.loadUnreadNotificationIdsSuccess({ ids })

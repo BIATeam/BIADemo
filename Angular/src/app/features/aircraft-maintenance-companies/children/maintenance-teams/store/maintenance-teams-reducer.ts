@@ -41,7 +41,7 @@ export const INIT_STATE: State = maintenanceTeamsAdapter.getInitialState({
 
 export const maintenanceTeamReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureMaintenanceTeamsActions.loadAllByPost, (state, { event }) => {
+  on(FeatureMaintenanceTeamsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureMaintenanceTeamsActions.load, state => {
@@ -67,7 +67,7 @@ export const maintenanceTeamReducers = createReducer<State>(
       };
     }
   ),
-  on(FeatureMaintenanceTeamsActions.failure, (state, { error }) => {
+  on(FeatureMaintenanceTeamsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

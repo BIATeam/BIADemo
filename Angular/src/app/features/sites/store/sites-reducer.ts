@@ -41,7 +41,7 @@ export const INIT_STATE: State = sitesAdapter.getInitialState({
 
 export const siteReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureSitesActions.loadAllByPost, (state, { event }) => {
+  on(FeatureSitesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureSitesActions.load, state => {
@@ -57,7 +57,7 @@ export const siteReducers = createReducer<State>(
   on(FeatureSitesActions.loadSuccess, (state, { site }) => {
     return { ...state, currentSite: site, loadingGet: false };
   }),
-  on(FeatureSitesActions.failure, (state, { error }) => {
+  on(FeatureSitesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );
