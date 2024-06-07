@@ -40,7 +40,7 @@ namespace BIA.Net.Core.WorkerService.Features
             {
                 services.AddTransient<IHostedService, DataBaseHandlerService>(provider =>
                 {
-                    return new DataBaseHandlerService(databaseHandlerRepositories);
+                    return new DataBaseHandlerService(provider, databaseHandlerRepositories);
                 });
             }
 
