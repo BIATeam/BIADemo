@@ -37,10 +37,10 @@ export let ROUTES: Routes = [
       {
         path: 'bulk',
         data: {
-          breadcrumb: 'bia.bulk',
+          breadcrumb: 'user.import',
           canNavigate: false,
           permission: Permission.User_Add,
-          title: 'bia.bulk',
+          title: 'user.import',
           InjectComponent: UserBulkComponent,
           dynamicComponent: () =>
             UserCRUDConfiguration.usePopup

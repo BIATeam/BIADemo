@@ -59,10 +59,10 @@ export const ROUTES: Routes = [
       {
         path: 'bulk',
         data: {
-          breadcrumb: 'bia.bulk',
+          breadcrumb: 'plane.import',
           canNavigate: false,
           permission: Permission.Plane_Create,
-          title: 'bia.bulk',
+          title: 'plane.import',
           InjectComponent: PlaneBulkComponent,
           dynamicComponent: () =>
             PlaneCRUDConfiguration.usePopup

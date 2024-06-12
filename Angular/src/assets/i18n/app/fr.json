@@ -68,6 +68,7 @@
     "lastFlightDate": "Date du dernier vol",
     "listOf": "Liste des avions",
     "msn": "Msn",
+    "import": "Importer avions",
     "planeType": "Type d'avions",
     "site": "Compagnie aérienne",
     "syncTime": "Heure de synchronisation"
@@ -115,6 +116,7 @@
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
     "login": "Login",
+    "manage": "Importer utilisateurs",
     "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD."
   },
   "notification": {

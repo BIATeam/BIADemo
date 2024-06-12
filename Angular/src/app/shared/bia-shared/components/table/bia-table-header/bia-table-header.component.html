@@ -27,11 +27,6 @@
       *ngIf="canDelete"
       label="{{ 'bia.delete' | translate }}"
       (click)="onDelete()"></button>
-    <button
-      pButton
-      *ngIf="canBulk === true && (canDelete === true || canAdd === true || canEdit === true)"
-      label="{{ 'bia.bulk' | translate }}"
-      (click)="onBulk()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
   <div
@@ -48,6 +43,14 @@
       (click)="onBack()"
       *ngIf="canBack"></button>
     <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
+    <button
+      pButton
+      *ngIf="
+        canBulk === true &&
+        (canDelete === true || canAdd === true || canEdit === true)
+      "
+      label="{{ 'bia.import' | translate }}"
+      (click)="onBulk()"></button>
     <button
       pButton
       *ngIf="canExportCSV"
