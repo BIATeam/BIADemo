@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudConfig } from '../../model/crud-config';
 import {
@@ -43,7 +49,9 @@ export class CrudItemBulkFormComponent {
   }
   @Input() set bulkData(value: any) {
     this._BulkData = value;
-    this.fileUpload.clear();
+    if (this.fileUpload) {
+      this.fileUpload.clear();
+    }
     this.loading = false;
   }
 

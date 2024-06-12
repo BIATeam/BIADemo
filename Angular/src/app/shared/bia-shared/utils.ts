@@ -26,6 +26,6 @@ export const isObject = (object: any): boolean => {
   return object != null && object instanceof Date !== true && typeof object === 'object';
 }
 
-export const clone = (object: any): any => {
+export const clone = <T>(object: T): T => {
   return JSON.parse(JSON.stringify(object));
 }

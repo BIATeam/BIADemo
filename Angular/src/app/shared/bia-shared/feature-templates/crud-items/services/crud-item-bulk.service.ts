@@ -48,7 +48,6 @@ export class CrudItemBulkService<T extends BaseDto> {
     crudConfig: CrudConfig,
     crudItemService: CrudItemService<T>
   ): Observable<BulkData<T>> {
-    this.tmpBulkDataErrors = [];
     this.crudItemService = crudItemService;
     this.crudConfig = crudConfig;
     this.form = form;
@@ -198,8 +197,9 @@ export class CrudItemBulkService<T extends BaseDto> {
       if (isEmpty(dateString)) {
         return;
       }
-      const timePattern = /\d{1,2}:\d{1,2}/;
 
+      // If there is no time, I add it otherwise there is a delay in the conversion to the time.
+      const timePattern = /\d{1,2}:\d{1,2}/;
       if (!timePattern.test(dateString)) {
         dateString += ' 00:00';
       }
@@ -224,9 +224,20 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected parseCSVBoolean(csvObj: T, column: BiaFieldConfig) {
-    csvObj[<keyof typeof csvObj>column.field] = <any>(
-      (String(csvObj[<keyof typeof csvObj>column.field])?.toUpperCase() === 'X')
-    );
+    const csvValue = csvObj[<keyof typeof csvObj>column.field]
+      ?.toString()
+      .trim();
+
+    if(isEmpty(csvValue)){
+      csvObj[<keyof typeof csvObj>column.field] = <any>false;
+    } else if(csvValue?.toUpperCase() === 'X'){
+      csvObj[<keyof typeof csvObj>column.field] = <any>true;
+    } else{
+      this.AddErrorToSave(
+        csvObj,
+        column.field + ': unsupported boolean format: ' + csvValue
+      );
+    }
   }
 
   protected parseCSVNumber(csvObj: T, column: BiaFieldConfig) {
@@ -395,6 +406,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected initBulkData() {
+    this.tmpBulkDataErrors = [];
     this.bulkData = <BulkData<T>>{
       toDeletes: [],
       toInserts: [],
