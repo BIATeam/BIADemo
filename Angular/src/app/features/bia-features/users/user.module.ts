@@ -39,6 +39,11 @@ export let ROUTES: Routes = [
         data: {
           breadcrumb: 'user.import',
           canNavigate: false,
+          style: {
+            minWidth: '80vw',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
+          },
           permission: Permission.User_Add,
           title: 'user.import',
           InjectComponent: UserBulkComponent,

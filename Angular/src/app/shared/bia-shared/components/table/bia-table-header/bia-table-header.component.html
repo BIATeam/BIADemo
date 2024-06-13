@@ -45,14 +45,6 @@
     <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
     <button
       pButton
-      *ngIf="
-        canBulk === true &&
-        (canDelete === true || canAdd === true || canEdit === true)
-      "
-      label="{{ 'bia.import' | translate }}"
-      (click)="onBulk()"></button>
-    <button
-      pButton
       *ngIf="canExportCSV"
       class="p-button-outlined"
       label="CSV"
@@ -62,6 +54,14 @@
       *ngIf="canAdd"
       label="{{ 'bia.add' | translate }}"
       (click)="onCreate()"></button>
+    <button
+      pButton
+      *ngIf="
+        canBulk === true &&
+        (canDelete === true || canAdd === true || canEdit === true)
+      "
+      label="{{ 'bia.import' | translate }}"
+      (click)="onBulk()"></button>
   </div>
 </div>
 <p-confirmDialog></p-confirmDialog>

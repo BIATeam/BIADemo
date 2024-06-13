@@ -123,7 +123,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   }
 
   public getSelectedViewName(): string | null {
-    return this.viewListComponent.GetCurrentViewName();
+    return this.viewListComponent?.GetCurrentViewName();
   }
 
   private onColumnsChange(changes: SimpleChanges) {

@@ -113,10 +113,10 @@
   "user": {
     "add": "Ajouter utilisateur",
     "firstName": "Prénom",
+    "import": "Importer utilisateurs",
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
     "login": "Login",
-    "manage": "Importer utilisateurs",
     "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD."
   },
   "notification": {

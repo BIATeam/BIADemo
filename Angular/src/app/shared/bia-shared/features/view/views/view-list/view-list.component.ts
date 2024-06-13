@@ -146,14 +146,27 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     // let prefString =  JSON.stringify(pref);
     // console.log("GetCorrespondingView : " + prefString  )
     if (this.views) {
-      let correspondingView = this.views.find(v => {
+      const correspondingViews = this.views.filter(v => {
         const viewPref: BiaTableState = JSON.parse(v.preference);
         return this.areViewsEgals(pref, viewPref);
       });
-      if (correspondingView) {
-        return correspondingView.id
+
+      if (correspondingViews?.length > 0) {
+        // There may be two identical views.
+        let correspondingView = correspondingViews.find(
+          v => v.id === this.selectedView
+        );
+
+        if (!correspondingView) {
+          correspondingView = correspondingViews[0];
+        }
+
+        if (correspondingView) {
+          return correspondingView.id;
+        }
       }
     }
+
     return currentView;
   }
 

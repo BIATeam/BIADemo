@@ -113,10 +113,10 @@
   "user": {
     "add": "Añadir usuario",
     "firstName": "Nombre",
+    "import": "Importar usuarios",
     "lastName": "Apellido",
     "listOf": "Lista de usuarios",
     "login": "Login",
-    "import": "Importar usuarios",
     "cannotAddMember": "No se puede añadir el miembro ${login} en el repositorio ldap."
   },
   "notification": {

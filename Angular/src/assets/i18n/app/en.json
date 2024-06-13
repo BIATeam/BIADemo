@@ -113,10 +113,10 @@
   "user": {
     "add": "Add user",
     "firstName": "First Name",
+    "import": "Import users",
     "lastName": "Last Name",
     "listOf": "List of users",
     "login": "Login",
-    "import": "Import users",
     "cannotAddMember": "Cannot add member ${login} on ldap repository."
   },
   "notification": {

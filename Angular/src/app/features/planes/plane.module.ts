@@ -61,6 +61,11 @@ export const ROUTES: Routes = [
         data: {
           breadcrumb: 'plane.import',
           canNavigate: false,
+          style: {
+            minWidth: '80vw',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
+          },
           permission: Permission.Plane_Create,
           title: 'plane.import',
           InjectComponent: PlaneBulkComponent,
