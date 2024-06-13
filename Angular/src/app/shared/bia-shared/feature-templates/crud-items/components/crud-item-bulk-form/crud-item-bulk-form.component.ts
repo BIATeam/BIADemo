@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { CrudConfig } from '../../model/crud-config';
 import {
@@ -7,6 +13,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { clone } from 'src/app/shared/bia-shared/utils';
+import { FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'bia-crud-item-bulk-form',
@@ -14,9 +21,12 @@ import { clone } from 'src/app/shared/bia-shared/utils';
   styleUrls: ['./crud-item-bulk-form.component.scss'],
 })
 export class CrudItemBulkFormComponent {
+  @ViewChild('fileUpload') fileUpload: FileUpload;
+
   deleteChecked = false;
   updateChecked = false;
   insertChecked = false;
+  loading = false;
 
   displayedColumns: KeyValuePair[];
   displayedColumnErrors: KeyValuePair[];
@@ -33,7 +43,18 @@ export class CrudItemBulkFormComponent {
     this.initTableParam();
   }
 
-  @Input() bulkData: any;
+  protected _BulkData: any;
+  get bulkData(): any {
+    return this._BulkData;
+  }
+  @Input() set bulkData(value: any) {
+    this._BulkData = value;
+    if (this.fileUpload) {
+      this.fileUpload.clear();
+    }
+    this.loading = false;
+  }
+
   @Input() canEdit = false;
   @Input() canDelete = false;
   @Input() canAdd = false;
@@ -56,7 +77,7 @@ export class CrudItemBulkFormComponent {
     if (this.crudConfiguration) {
       this.crudConfigurationError = clone(this.crudConfiguration);
       this.crudConfigurationError.fieldsConfig.columns.push(
-        Object.assign(new BiaFieldConfig('sErrors', 'bia.error'), {
+        Object.assign(new BiaFieldConfig('sErrors', 'bia.errors'), {
           isEditable: false,
           type: PropType.String,
         })
@@ -70,6 +91,7 @@ export class CrudItemBulkFormComponent {
   }
 
   onFileSelected(event: any) {
+    this.loading = true;
     this.fileSelected.next(event);
   }
 

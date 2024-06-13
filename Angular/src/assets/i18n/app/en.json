@@ -68,6 +68,7 @@
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
+    "import": "Import planes",
     "planeType": "Plane Type",
     "site": "Airline",
     "syncTime": "Synchronization time"
@@ -115,6 +116,7 @@
     "lastName": "Last Name",
     "listOf": "List of users",
     "login": "Login",
+    "import": "Import users",
     "cannotAddMember": "Cannot add member ${login} on ldap repository."
   },
   "notification": {

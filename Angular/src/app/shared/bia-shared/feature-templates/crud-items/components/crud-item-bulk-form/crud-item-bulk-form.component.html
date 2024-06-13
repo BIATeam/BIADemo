@@ -1,6 +1,7 @@
 <p-fileUpload
+#fileUpload
   mode="basic"
-  [chooseLabel]="'primeng.choose' | translate"
+  [chooseLabel]="'bia.select' | translate"
   chooseIcon="pi pi-upload"
   [customUpload]="true"
   accept="text/csv"
@@ -9,90 +10,18 @@
 <br />
 
 <ng-container *ngIf="bulkData">
-  <p-accordion class="w-full">
-    <p-accordionTab *ngIf="canUseDelete() === true">
+  <p-accordion
+    *ngIf="bulkData.errorToSaves.length > 0"
+    class="w-full bia-bulk-accordion">
+    <p-accordionTab class="bia-bulk-tab-error">
       <ng-template pTemplate="header">
         <div class="flex align-items-center">
-          <i class="pi pi-trash mr-2"></i>
-          <span class="vertical-align-middle">{{ 'bia.toDelete' | translate }}</span>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <p class="m-0">
-          <bia-table
-            [elements]="bulkData.toDeletes"
-            [paginator]="false"
-            [totalRecord]="bulkData.toDeletes.length"
-            [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkData.toDeletes.length"
-            [configuration]="crudConfiguration.fieldsConfig"
-            [showColSearch]="false"
-            [globalSearchValue]=""
-            [canClickRow]="false"
-            [canSelectElement]="false"
-            [loading]="false"
-            scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"></bia-table>
-        </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab *ngIf="canUseInsert() === true">
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center">
-          <i class="pi pi-plus mr-2"></i>
-          <span class="vertical-align-middle">{{ 'bia.toAdd' | translate }}</span>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <p class="m-0">
-          <bia-table
-            [elements]="bulkData.toInserts"
-            [paginator]="false"
-            [totalRecord]="bulkData.toInserts.length"
-            [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkData.toInserts.length"
-            [configuration]="crudConfiguration.fieldsConfig"
-            [showColSearch]="false"
-            [globalSearchValue]=""
-            [canClickRow]="false"
-            [canSelectElement]="false"
-            [loading]="false"
-            scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"></bia-table>
-        </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab *ngIf="canUseUpdate() === true">
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center">
-          <i class="pi pi-sync mr-2"></i>
-          <span class="vertical-align-middle">{{ 'bia.toModify' | translate }}</span>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <p class="m-0">
-          <bia-table
-            [elements]="bulkData.toUpdates"
-            [paginator]="false"
-            [totalRecord]="bulkData.toUpdates.length"
-            [columnToDisplays]="displayedColumns"
-            [pageSize]="bulkData.toUpdates.length"
-            [configuration]="crudConfiguration.fieldsConfig"
-            [showColSearch]="false"
-            [globalSearchValue]=""
-            [canClickRow]="false"
-            [canSelectElement]="false"
-            [loading]="false"
-            scrollHeightValue="calc( 100vh - 440px)"
-            [isScrollable]="true"></bia-table>
-        </p>
-      </ng-template>
-    </p-accordionTab>
-    <p-accordionTab *ngIf="bulkData.errorToSaves.length > 0">
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center">
-          <i class="pi pi-times mr-2"></i>
-          <span class="vertical-align-middle">{{ 'bia.error' | translate }}</span>
+          <i class="pi pi-exclamation-triangle mr-2"></i>
+          <span class="vertical-align-middle"
+            >{{ 'bia.errors' | translate }}({{
+              bulkData.errorToSaves.length
+            }})</span
+          >
         </div>
       </ng-template>
       <ng-template pTemplate="content">
@@ -116,48 +45,130 @@
     </p-accordionTab>
   </p-accordion>
   <br />
-
-  <div class="card flex justify-content-center gap-3">
-    <div class="flex align-items-center gap-1" *ngIf="canUseDelete() === true">
-      <p-checkbox
-        [(ngModel)]="deleteChecked"
-        [binary]="true"
-        inputId="chkDelete"
-        [disabled]="bulkData.toDeletes.length === 0"></p-checkbox>
-      <label for="chkDelete"
-        >{{ 'bia.toDelete' | translate }} ({{
-          bulkData.toDeletes.length
-        }})</label
-      >
-    </div>
-
-    <div class="flex align-items-center gap-1" *ngIf="canUseInsert() === true">
-      <p-checkbox
-        [(ngModel)]="insertChecked"
-        [binary]="true"
-        inputId="chkInsert"
-        [disabled]="bulkData.toInserts.length === 0"></p-checkbox>
-      <label for="chkInsert"
-        >{{ 'bia.toAdd' | translate }} ({{ bulkData.toInserts.length }})</label
-      >
-    </div>
-
-    <div class="flex align-items-center gap-1" *ngIf="canUseUpdate() === true">
-      <p-checkbox
-        [(ngModel)]="updateChecked"
-        [binary]="true"
-        inputId="chkUpdate"
-        [disabled]="bulkData.toUpdates.length === 0"></p-checkbox>
-      <label for="chkUpdate"
-        >{{ 'bia.toModify' | translate }} ({{
-          bulkData.toUpdates.length
-        }})</label
-      >
-    </div>
-  </div>
-  <br />
+  <p-accordion class="w-full bia-bulk-accordion">
+    <p-accordionTab
+      [ngClass]="{ 'bia-bulk-selected': insertChecked === true }"
+      [disabled]="bulkData.toInserts.length === 0"
+      *ngIf="canUseInsert() === true">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+          <p-checkbox
+            [(ngModel)]="insertChecked"
+            [binary]="true"
+            inputId="chkInsert"
+            [disabled]="bulkData.toInserts.length === 0"
+            (click)="$event.stopPropagation()"
+            class="mr-2"></p-checkbox>
+          <i class="pi pi-plus mr-2"></i>
+          <span class="vertical-align-middle"
+            >{{ 'bia.toAdd' | translate }}({{
+              bulkData.toInserts.length
+            }})</span
+          >
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content" *ngIf="bulkData.toInserts.length > 0">
+        <p class="m-0">
+          <bia-table
+            [elements]="bulkData.toInserts"
+            [paginator]="false"
+            [totalRecord]="bulkData.toInserts.length"
+            [columnToDisplays]="displayedColumns"
+            [pageSize]="bulkData.toInserts.length"
+            [configuration]="crudConfiguration.fieldsConfig"
+            [showColSearch]="false"
+            [globalSearchValue]=""
+            [canClickRow]="false"
+            [canSelectElement]="false"
+            [loading]="false"
+            scrollHeightValue="calc( 100vh - 440px)"
+            [isScrollable]="true"></bia-table>
+        </p>
+      </ng-template>
+    </p-accordionTab>
+    <p-accordionTab
+      [ngClass]="{ 'bia-bulk-selected': updateChecked === true }"
+      [disabled]="bulkData.toUpdates.length === 0"
+      *ngIf="canUseUpdate() === true">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+          <p-checkbox
+            [(ngModel)]="updateChecked"
+            [binary]="true"
+            inputId="chkUpdate"
+            [disabled]="bulkData.toUpdates.length === 0"
+            (click)="$event.stopPropagation()"
+            class="mr-2"></p-checkbox>
+          <i class="pi pi-sync mr-2"></i>
+          <span class="vertical-align-middle"
+            >{{ 'bia.toModify' | translate }}({{
+              bulkData.toUpdates.length
+            }})</span
+          >
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content" *ngIf="bulkData.toUpdates.length > 0">
+        <p class="m-0">
+          <bia-table
+            [elements]="bulkData.toUpdates"
+            [paginator]="false"
+            [totalRecord]="bulkData.toUpdates.length"
+            [columnToDisplays]="displayedColumns"
+            [pageSize]="bulkData.toUpdates.length"
+            [configuration]="crudConfiguration.fieldsConfig"
+            [showColSearch]="false"
+            [globalSearchValue]=""
+            [canClickRow]="false"
+            [canSelectElement]="false"
+            [loading]="false"
+            scrollHeightValue="calc( 100vh - 440px)"
+            [isScrollable]="true"></bia-table>
+        </p>
+      </ng-template>
+    </p-accordionTab>
+    <p-accordionTab
+      [ngClass]="{ 'bia-bulk-selected': deleteChecked === true }"
+      [disabled]="bulkData.toDeletes.length === 0"
+      *ngIf="canUseDelete() === true">
+      <ng-template pTemplate="header">
+        <div class="flex align-items-center">
+          <p-checkbox
+            [(ngModel)]="deleteChecked"
+            [binary]="true"
+            inputId="chkDelete"
+            [disabled]="bulkData.toDeletes.length === 0"
+            (click)="$event.stopPropagation()"
+            class="mr-2"></p-checkbox>
+          <i class="pi pi-trash mr-2"></i>
+          <span class="vertical-align-middle"
+            >{{ 'bia.toDelete' | translate }}({{
+              bulkData.toDeletes.length
+            }})</span
+          >
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content" *ngIf="bulkData.toDeletes.length > 0">
+        <p class="m-0">
+          <bia-table
+            [elements]="bulkData.toDeletes"
+            [paginator]="false"
+            [totalRecord]="bulkData.toDeletes.length"
+            [columnToDisplays]="displayedColumns"
+            [pageSize]="bulkData.toDeletes.length"
+            [configuration]="crudConfiguration.fieldsConfig"
+            [showColSearch]="false"
+            [globalSearchValue]=""
+            [canClickRow]="false"
+            [canSelectElement]="false"
+            [loading]="false"
+            scrollHeightValue="calc( 100vh - 440px)"
+            [isScrollable]="true"></bia-table>
+        </p>
+      </ng-template>
+    </p-accordionTab>
+  </p-accordion>
 </ng-container>
-
+<br />
 <div class="flex flex-row gap-1 justify-content-end">
   <button
     pButton
@@ -174,3 +185,7 @@
     class="p-button-outlined"
     (click)="onCancel()"></button>
 </div>
+
+<bia-spinner
+  *ngIf="loading"
+  [overlay]="true"></bia-spinner>
