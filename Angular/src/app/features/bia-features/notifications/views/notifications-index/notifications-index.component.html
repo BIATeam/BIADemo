@@ -8,8 +8,7 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV()"
       (delete)="onDelete()"
-      [selectedElements]="selectedNotifications"
-    ></bia-table-header>
+      [selectedElements]="selectedNotifications"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
       [length]="totalCount$ | async"
@@ -21,8 +20,7 @@
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
-      [hasColumnFilter]="hasColumnFilter"
-    ></bia-table-controller>
+      [hasColumnFilter]="hasColumnFilter"></bia-table-controller>
     <bia-table
       [elements]="notifications$ | async"
       [totalRecord]="totalCount$ | async"
@@ -38,7 +36,6 @@
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
-      (selectedElementsChanged)="onSelectedElementsChanged($event)"
-    ></bia-table>
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"></bia-table>
   </div>
 </div>

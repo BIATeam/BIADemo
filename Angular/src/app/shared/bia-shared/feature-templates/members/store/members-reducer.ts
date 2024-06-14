@@ -7,7 +7,7 @@ import { Member } from '../model/member';
 // This adapter will allow is to manipulate members (mostly CRUD operations)
 export const membersAdapter = createEntityAdapter<Member>({
   selectId: (member: Member) => member.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -44,7 +44,7 @@ export const memberReducers = createReducer<State>(
   on(FeatureMembersActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureMembersActions.load, (state) => {
+  on(FeatureMembersActions.load, state => {
     return { ...state, loadingGet: true };
   }),
   on(FeatureMembersActions.loadAllByPostSuccess, (state, { result, event }) => {
@@ -59,7 +59,8 @@ export const memberReducers = createReducer<State>(
   }),
   on(FeatureMembersActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getMemberById = (id: number) => (state: State) => state.entities[id];
+export const getMemberById = (id: number) => (state: State) =>
+  state.entities[id];

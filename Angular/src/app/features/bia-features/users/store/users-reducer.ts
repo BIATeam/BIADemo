@@ -7,7 +7,7 @@ import { User } from '../model/user';
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const usersAdapter = createEntityAdapter<User>({
   selectId: (user: User) => user.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -44,7 +44,7 @@ export const userReducers = createReducer<State>(
   on(FeatureUsersActions.loadAllByPost, (state, { event }) => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureUsersActions.load, (state) => {
+  on(FeatureUsersActions.load, state => {
     return { ...state, loadingGet: true };
   }),
   on(FeatureUsersActions.save, (state, { users }) => {
@@ -62,7 +62,7 @@ export const userReducers = createReducer<State>(
   }),
   on(FeatureUsersActions.failure, (state, { error }) => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
 export const getUserById = (id: number) => (state: State) => state.entities[id];

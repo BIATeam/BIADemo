@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { View } from '../../model/view';
 import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { ViewTeam } from '../../model/view-team';
@@ -36,12 +44,16 @@ export class ViewTeamTableComponent implements OnChanges {
 
   @Output() assignViewToTeam = new EventEmitter<AssignViewToTeam>();
   @Output() delete = new EventEmitter<number>();
-  @Output() setDefault = new EventEmitter<{ viewId: number; isDefault: boolean }>();
+  @Output() setDefault = new EventEmitter<{
+    viewId: number;
+    isDefault: boolean;
+  }>();
   @Output() viewSelect = new EventEmitter<View>();
 
-  constructor(    
+  constructor(
     private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService) {}
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
@@ -52,21 +64,28 @@ export class ViewTeamTableComponent implements OnChanges {
       ...this.biaDialogService.getDeleteConfirmation(),
       accept: () => {
         this.delete.emit(viewId);
-      }
+      },
     };
     this.confirmationService.confirm(confirmation);
   }
 
   onAssignViewToTeam(viewId: number, isAssign: boolean) {
-    this.assignViewToTeam.emit(<AssignViewToTeam>{ viewId: viewId, teamId: this.teamSelected.id, isAssign: isAssign });
+    this.assignViewToTeam.emit(<AssignViewToTeam>{
+      viewId: viewId,
+      teamId: this.teamSelected.id,
+      isAssign: isAssign,
+    });
   }
 
   onAssignViewToTeamWithDelete(viewId: number, isAssign: boolean) {
     const confirmation: Confirmation = {
-      
-      ...this.biaDialogService.getDeleteConfirmation("view-team-confirm"),
+      ...this.biaDialogService.getDeleteConfirmation('view-team-confirm'),
       accept: () => {
-        this.assignViewToTeam.emit(<AssignViewToTeam>{ viewId: viewId, teamId: this.teamSelected.id, isAssign: isAssign });
+        this.assignViewToTeam.emit(<AssignViewToTeam>{
+          viewId: viewId,
+          teamId: this.teamSelected.id,
+          isAssign: isAssign,
+        });
       },
     };
     this.confirmationService.confirm(confirmation);
@@ -82,7 +101,7 @@ export class ViewTeamTableComponent implements OnChanges {
 
   formatTeams(viewTeams: ViewTeam[]) {
     if (viewTeams) {
-      return viewTeams.map((x) => x.teamTitle).join(', ');
+      return viewTeams.map(x => x.teamTitle).join(', ');
     } else {
       return '';
     }
@@ -90,7 +109,9 @@ export class ViewTeamTableComponent implements OnChanges {
 
   containsCurrentTeam(view: View) {
     if (view && view.viewTeams && this.teamSelected) {
-      return view.viewTeams.some((x: ViewTeam) => x.teamId === this.teamSelected.id);
+      return view.viewTeams.some(
+        (x: ViewTeam) => x.teamId === this.teamSelected.id
+      );
     }
     return false;
   }
@@ -98,40 +119,57 @@ export class ViewTeamTableComponent implements OnChanges {
   containsOnlyCurrentTeam(view: View) {
     if (view.viewTeams?.length > 1) return false;
     if (view && view.viewTeams && this.teamSelected) {
-      return view.viewTeams.some((x: ViewTeam) => x.teamId === this.teamSelected.id);
+      return view.viewTeams.some(
+        (x: ViewTeam) => x.teamId === this.teamSelected.id
+      );
     }
     return false;
   }
   isTeamDefault(view: View): boolean {
     if (view && view.viewTeams && this.teamSelected) {
-      return view.viewTeams.some((x: ViewTeam) => x.teamId === this.teamSelected.id && x.isDefault === true);
+      return view.viewTeams.some(
+        (x: ViewTeam) =>
+          x.teamId === this.teamSelected.id && x.isDefault === true
+      );
     }
     return false;
   }
 
   showDefineDefault() {
-    return !(this.isTeamDefault(this.viewSelected) === true && this.canSetDefault === true);
+    return !(
+      this.isTeamDefault(this.viewSelected) === true &&
+      this.canSetDefault === true
+    );
   }
 
   showLinkWithTeam() {
-    return (this.containsCurrentTeam(this.viewSelected) === false && this.canAssign === true);
+    return (
+      this.containsCurrentTeam(this.viewSelected) === false &&
+      this.canAssign === true
+    );
   }
 
   showUnLinkWithTeamAsDelete() {
-    return (this.containsOnlyCurrentTeam(this.viewSelected) === true && this.canAssign === true);
+    return (
+      this.containsOnlyCurrentTeam(this.viewSelected) === true &&
+      this.canAssign === true
+    );
   }
 
   showUnlinkWithTeam() {
     return (
-      this.containsOnlyCurrentTeam(this.viewSelected) === false && 
-      this.containsCurrentTeam(this.viewSelected) === true && 
-      this.canAssign === true);
+      this.containsOnlyCurrentTeam(this.viewSelected) === false &&
+      this.containsCurrentTeam(this.viewSelected) === true &&
+      this.canAssign === true
+    );
   }
 
   private onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
       if (this.viewSelected && this.viewSelected.id > 0 && this.views) {
-        this.viewSelected = this.views.filter((x) => x.id === this.viewSelected.id)[0];
+        this.viewSelected = this.views.filter(
+          x => x.id === this.viewSelected.id
+        )[0];
       } else {
         this.viewSelected = {} as View;
       }

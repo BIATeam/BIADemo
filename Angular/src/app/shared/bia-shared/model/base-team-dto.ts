@@ -1,7 +1,7 @@
-import { BaseDto } from "./base-dto";
+import { BaseDto } from './base-dto';
 
-export class BaseTeamDto extends BaseDto{
+export class BaseTeamDto extends BaseDto {
   title: string;
-  canUpdate : boolean;
-  canMemberListAccess : boolean;
+  canUpdate: boolean;
+  canMemberListAccess: boolean;
 }

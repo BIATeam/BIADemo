@@ -1,4 +1,10 @@
-import { Component, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Injector,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Subscription, take } from 'rxjs';
 import {
   BulkData,
@@ -15,7 +21,9 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 @Component({
   template: '', // le template pour ce composant abstrait doit être vide
 })
-export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
+export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
+  implements OnInit, OnDestroy
+{
   protected sub = new Subscription();
   protected crudConfiguration: CrudConfig;
   protected bulkData: BulkData<CrudItem>;
@@ -39,13 +47,17 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto> implements
       CrudItemBulkService<CrudItem>
     );
     this.authService = this.injector.get<AuthService>(AuthService);
-    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(
+      BiaTranslationService
+    );
   }
 
   ngOnInit() {
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
-          this.crudItemService.optionsService.loadAllOptions(this.crudConfiguration.optionFilter);
+        this.crudItemService.optionsService.loadAllOptions(
+          this.crudConfiguration.optionFilter
+        );
       })
     );
   }

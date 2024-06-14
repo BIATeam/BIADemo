@@ -110,8 +110,8 @@ export class BiaFormComponent
     this.form = this.formBuilder.group(this.formFields());
   }
   protected formFields() {
-    let fields: { [key: string]: any } = { id: [this.element.id] };
-    for (let col of this.fields) {
+    const fields: { [key: string]: any } = { id: [this.element.id] };
+    for (const col of this.fields) {
       if (col.validators && col.validators.length > 0) {
         fields[col.field] = [this.element[col.field], col.validators];
       } else if (col.isRequired) {
@@ -138,7 +138,7 @@ export class BiaFormComponent
   public getElement() {
     const element: any = this.form.value;
     element.id = element.id > 0 ? element.id : 0;
-    for (let col of this.fields) {
+    for (const col of this.fields) {
       switch (col.type) {
         case PropType.Boolean:
           Reflect.set(

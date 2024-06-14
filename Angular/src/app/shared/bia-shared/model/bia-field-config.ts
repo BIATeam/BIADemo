@@ -1,4 +1,4 @@
-import { Validator } from "@angular/forms";
+import { Validator } from '@angular/forms';
 
 export enum PrimeNGFiltering {
   StartsWith = 'startsWith',
@@ -10,7 +10,7 @@ export enum PrimeNGFiltering {
   Lt = 'lt',
   Lte = 'lte',
   Gt = 'gt',
-  Gte = 'gte'
+  Gte = 'gte',
 }
 
 export enum PropType {
@@ -23,7 +23,7 @@ export enum PropType {
   Boolean = 'Boolean',
   String = 'String',
   OneToMany = 'OneToMany',
-  ManyToMany = 'ManyToMany'
+  ManyToMany = 'ManyToMany',
 }
 
 export class BiaFieldConfig {
@@ -53,7 +53,11 @@ export class BiaFieldConfig {
   isFrozen: boolean;
   alignFrozen: string;
   get isDate() {
-    return this.type === PropType.Date || this.type === PropType.DateTime || this.type === PropType.Time;
+    return (
+      this.type === PropType.Date ||
+      this.type === PropType.DateTime ||
+      this.type === PropType.Time
+    );
   }
   get filterPlaceHolder() {
     if (this.searchPlaceholder !== undefined) {
@@ -89,27 +93,30 @@ export class BiaFieldConfig {
   }
 
   public clone(): BiaFieldConfig {
-    return Object.assign(new BiaFieldConfig(this.field, this.header, this.maxlength), {
-      type: this.type,
-      filterMode: this.filterMode,
-      formatDate: this.formatDate,
-      primeDateFormat: this.primeDateFormat,
-      hourFormat: this.hourFormat,
-      isSearchable: this.isSearchable,
-      isSortable: this.isSortable,
-      icon: this.icon,
-      isEditable: this.isEditable,
-      isOnlyInitializable: this.isOnlyInitializable,
-      isOnlyUpdatable: this.isOnlyUpdatable,
-      isChoiceEditable: this.isEditableChoice,
-      isVisible: this.isVisible,
-      translateKey: this.translateKey,
-      searchPlaceholder: this.searchPlaceholder,
-      isRequired: this.isRequired,
-      specificOutput: this.specificOutput,
-      specificInput: this.specificInput,
-      validators: this.validators,
-    })
+    return Object.assign(
+      new BiaFieldConfig(this.field, this.header, this.maxlength),
+      {
+        type: this.type,
+        filterMode: this.filterMode,
+        formatDate: this.formatDate,
+        primeDateFormat: this.primeDateFormat,
+        hourFormat: this.hourFormat,
+        isSearchable: this.isSearchable,
+        isSortable: this.isSortable,
+        icon: this.icon,
+        isEditable: this.isEditable,
+        isOnlyInitializable: this.isOnlyInitializable,
+        isOnlyUpdatable: this.isOnlyUpdatable,
+        isChoiceEditable: this.isEditableChoice,
+        isVisible: this.isVisible,
+        translateKey: this.translateKey,
+        searchPlaceholder: this.searchPlaceholder,
+        isRequired: this.isRequired,
+        specificOutput: this.specificOutput,
+        specificInput: this.specificInput,
+        validators: this.validators,
+      }
+    );
   }
 }
 

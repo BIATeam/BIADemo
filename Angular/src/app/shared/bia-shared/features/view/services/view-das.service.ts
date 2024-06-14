@@ -6,7 +6,7 @@ import { AssignViewToTeam } from '../model/assign-view-to-team';
 // import { DefaultView } from '../model/defaultView';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
@@ -18,6 +18,9 @@ export class ViewDas extends AbstractDas<View> {
   }
 
   public assignViewToTeam(assignViewToTeam: AssignViewToTeam) {
-    return this.http.put(`${this.route}${assignViewToTeam.viewId}/AssignViewToTeam`, assignViewToTeam);
+    return this.http.put(
+      `${this.route}${assignViewToTeam.viewId}/AssignViewToTeam`,
+      assignViewToTeam
+    );
   }
 }

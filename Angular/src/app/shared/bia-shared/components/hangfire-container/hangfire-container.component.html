@@ -1,8 +1,14 @@
-<form #hangfireForm id="hangfireForm" target="iFrame1" [action]="this.url" method="POST" style="display:none">
-    <input type="text" name="jwt_token" [value]="this.token" />
-    <input type="submit">
+<form
+  #hangfireForm
+  id="hangfireForm"
+  target="iFrame1"
+  [action]="this.url"
+  method="POST"
+  style="display: none">
+  <input type="text" name="jwt_token" [value]="this.token" />
+  <input type="submit" />
 </form>
 
-<iframe  frameborder="0" name="iFrame1" style="width:100%;height:850px;">
-    Your browser does not support inline frames.
+<iframe frameborder="0" name="iFrame1" style="width: 100%; height: 850px">
+  Your browser does not support inline frames.
 </iframe>

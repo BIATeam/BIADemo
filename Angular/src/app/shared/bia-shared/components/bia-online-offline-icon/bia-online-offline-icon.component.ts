@@ -5,16 +5,17 @@ import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-onli
 @Component({
   selector: 'bia-online-offline-icon',
   templateUrl: './bia-online-offline-icon.component.html',
-  styleUrls: ['./bia-online-offline-icon.component.scss']
+  styleUrls: ['./bia-online-offline-icon.component.scss'],
 })
 export class BiaOnlineOfflineIconComponent implements OnInit {
-
   public biaOnlineOfflineService: BiaOnlineOfflineService;
   public serverAvailable$: Observable<boolean>;
 
   constructor(injector: Injector) {
     if (BiaOnlineOfflineService.isModeEnabled) {
-      this.biaOnlineOfflineService = injector.get<BiaOnlineOfflineService>(BiaOnlineOfflineService);
+      this.biaOnlineOfflineService = injector.get<BiaOnlineOfflineService>(
+        BiaOnlineOfflineService
+      );
     }
   }
 

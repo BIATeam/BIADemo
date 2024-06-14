@@ -9,22 +9,22 @@ import { reducers } from './store/user-from-directory.state';
 import { UsersFromDirectoryEffects } from './store/users-from-directory-effects';
 import { UserAddFromLdapComponent } from './views/user-add-from-directory-dialog/user-add-from-directory-dialog.component';
 
-const FEATURES = [
-  UserAddFromLdapComponent
-]
+const FEATURES = [UserAddFromLdapComponent];
 
 const USER_FROM_DIRECTORY_COMPONENTS = [
   UserAddFromLdapComponent,
-  UserFromLdapFormComponent
+  UserFromLdapFormComponent,
 ];
 
 @NgModule({
   imports: [
-    SharedModule, StoreModule.forFeature('users-from-directory', reducers), EffectsModule.forFeature([UsersFromDirectoryEffects]),
+    SharedModule,
+    StoreModule.forFeature('users-from-directory', reducers),
+    EffectsModule.forFeature([UsersFromDirectoryEffects]),
     UserOptionModule, // requiered for synchronization when user added
     LdapDomainModule,
   ],
   declarations: [...USER_FROM_DIRECTORY_COMPONENTS],
-  exports: [...FEATURES]
+  exports: [...FEATURES],
 })
 export class UserFromDirectoryModule {}

@@ -1,5 +1,5 @@
 <p-fileUpload
-#fileUpload
+  #fileUpload
   mode="basic"
   [chooseLabel]="'bia.select' | translate"
   chooseIcon="pi pi-upload"
@@ -186,6 +186,4 @@
     (click)="onCancel()"></button>
 </div>
 
-<bia-spinner
-  *ngIf="loading"
-  [overlay]="true"></bia-spinner>
+<bia-spinner *ngIf="loading" [overlay]="true"></bia-spinner>

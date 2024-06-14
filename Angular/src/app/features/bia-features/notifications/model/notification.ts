@@ -25,7 +25,13 @@ export class NotificationTranslation extends BaseDto {
   title: string;
   description: string;
 
-  constructor(id: any, languageId: number, title: string, description: string, dtoState: DtoState) {
+  constructor(
+    id: any,
+    languageId: number,
+    title: string,
+    description: string,
+    dtoState: DtoState
+  ) {
     super(id, dtoState);
     this.languageId = languageId;
     this.title = title;
@@ -43,5 +49,5 @@ export class NotificationTeam extends BaseDto {
 export interface NotificationData {
   route: string[];
   display: string;
-  teams: NotificationTeam[]
+  teams: NotificationTeam[];
 }

@@ -18,45 +18,51 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationOptionsService {
-    dictOptionDtos$: Observable<DictOptionDto[]>;
+  dictOptionDtos$: Observable<DictOptionDto[]>;
 
-    notificationTypeOptions$: Observable<OptionDto[]>;
-    roleOptions$: Observable<OptionDto[]>;
-    userOptions$: Observable<OptionDto[]>;
-    teamOptions$: Observable<OptionDto[]>;
-    languageOptions$: Observable<OptionDto[]>;
+  notificationTypeOptions$: Observable<OptionDto[]>;
+  roleOptions$: Observable<OptionDto[]>;
+  userOptions$: Observable<OptionDto[]>;
+  teamOptions$: Observable<OptionDto[]>;
+  languageOptions$: Observable<OptionDto[]>;
 
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        this.notificationTypeOptions$ = this.store.select(getAllNotificationTypeOptions);
-        this.roleOptions$ = this.store.select(getAllRoleOptions);
-        this.userOptions$ = this.store.select(getAllUserOptions);
-        this.languageOptions$ = this.store.select(getAllLanguageOptions);
-        this.teamOptions$ = this.store.select(getAllTeamOptions);
+  constructor(private store: Store<AppState>) {
+    this.notificationTypeOptions$ = this.store.select(
+      getAllNotificationTypeOptions
+    );
+    this.roleOptions$ = this.store.select(getAllRoleOptions);
+    this.userOptions$ = this.store.select(getAllUserOptions);
+    this.languageOptions$ = this.store.select(getAllLanguageOptions);
+    this.teamOptions$ = this.store.select(getAllTeamOptions);
 
-        // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
-        this.dictOptionDtos$ = combineLatest([this.notificationTypeOptions$, this.roleOptions$, this.userOptions$]).pipe(
-            map(
-                (options) =>
-                    <DictOptionDto[]>[
-                        new DictOptionDto('type', options[0]),
-                        new DictOptionDto('notifiedRoles', options[1]),
-                        new DictOptionDto('notifiedUsers', options[2]),
-                        new DictOptionDto('createdBy', options[2]),
-                    ]
-            )
-        );
-    }
+    // [Calc] Dict is used in calc mode only. It map the column name with the list OptionDto.
+    this.dictOptionDtos$ = combineLatest([
+      this.notificationTypeOptions$,
+      this.roleOptions$,
+      this.userOptions$,
+    ]).pipe(
+      map(
+        options =>
+          <DictOptionDto[]>[
+            new DictOptionDto('type', options[0]),
+            new DictOptionDto('notifiedRoles', options[1]),
+            new DictOptionDto('notifiedUsers', options[2]),
+            new DictOptionDto('createdBy', options[2]),
+          ]
+      )
+    );
+  }
 
-    loadAllOptions() {
-        this.store.dispatch(DomainNotificationTypeOptionsActions.loadAll());
-        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.All }));
-        this.store.dispatch(DomainUserOptionsActions.loadAll());
-        this.store.dispatch(DomainLanguageOptionsActions.loadAll());
-        this.store.dispatch(DomainTeamOptionsActions.loadAll());
-    }
+  loadAllOptions() {
+    this.store.dispatch(DomainNotificationTypeOptionsActions.loadAll());
+    this.store.dispatch(
+      DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.All })
+    );
+    this.store.dispatch(DomainUserOptionsActions.loadAll());
+    this.store.dispatch(DomainLanguageOptionsActions.loadAll());
+    this.store.dispatch(DomainTeamOptionsActions.loadAll());
+  }
 }

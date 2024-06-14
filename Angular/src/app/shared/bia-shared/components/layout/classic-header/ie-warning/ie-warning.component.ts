@@ -3,7 +3,7 @@ import {
   Component,
   HostBinding,
   HostListener,
-  OnInit
+  OnInit,
 } from '@angular/core';
 
 @Component({
@@ -21,9 +21,9 @@ import {
         align-items: center;
         cursor: pointer;
       }
-    `
+    `,
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IeWarningComponent implements OnInit {
   @HostBinding('class.mat-caption') c = true;

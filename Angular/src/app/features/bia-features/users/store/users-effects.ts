@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  pluck,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+} from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureUsersActions } from './users-actions';
 import { Store } from '@ngrx/store';
@@ -25,10 +32,15 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.loadAllByPost),
       pluck('event'),
-      switchMap((event) =>
+      switchMap(event =>
         this.userDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<User[]>) => FeatureUsersActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
+          map((result: DataResult<User[]>) =>
+            FeatureUsersActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureUsersActions.failure({ error: err }));
           })
@@ -41,11 +53,11 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.load),
       pluck('id'),
-      switchMap((id) => {
+      switchMap(id => {
         if (id) {
           return this.userDas.get({ id: id }).pipe(
-            map((user) => FeatureUsersActions.loadSuccess({ user })),
-            catchError((err) => {
+            map(user => FeatureUsersActions.loadSuccess({ user })),
+            catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureUsersActions.failure({ error: err }));
             })
@@ -61,22 +73,35 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.create),
       pluck('user'),
-      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      concatMap(user =>
+        of(user).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([user, event]) => {
-        return this.userDas.post({ item: user, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (UserCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersActions.failure({ error: err }));
+        return this.userDas
+          .post({
+            item: user,
+            offlineMode: UserCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (UserCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureUsersActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -85,83 +110,107 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.update),
       pluck('user'),
-      concatMap((user) => of(user).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      concatMap(user =>
+        of(user).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([user, event]) => {
-        return this.userDas.put({ item: user, id: user.id, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (UserCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersActions.failure({ error: err }));
+        return this.userDas
+          .put({
+            item: user,
+            id: user.id,
+            offlineMode: UserCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (UserCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureUsersActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
 
   save$ = createEffect(() =>
     this.actions$.pipe(
-        ofType(FeatureUsersActions.save),
-        pluck('users'),
-        concatMap(users =>
-            of(users).pipe(
-                withLatestFrom(
-                    this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
-                )
-            )
-        ),
-        switchMap(([users, event]) => {
-            return this.userDas
-                .save({
-                    items: users,
-                    offlineMode: UserCRUDConfiguration.useOfflineMode,
-                })
-                .pipe(
-                    map(() => {
-                        this.biaMessageService.showUpdateSuccess();
-                        if (UserCRUDConfiguration.useSignalR) {
-                            return biaSuccessWaitRefreshSignalR();
-                        } else {
-                            return FeatureUsersActions.loadAllByPost({
-                                event: <LazyLoadEvent>event,
-                            });
-                        }
-                    }),
-                    catchError(err => {
-                        this.biaMessageService.showError();
-                        return of(FeatureUsersActions.failure({ error: err }));
-                    })
-                );
-        })
+      ofType(FeatureUsersActions.save),
+      pluck('users'),
+      concatMap(users =>
+        of(users).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
+      switchMap(([users, event]) => {
+        return this.userDas
+          .save({
+            items: users,
+            offlineMode: UserCRUDConfiguration.useOfflineMode,
+          })
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (UserCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureUsersActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showError();
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
+      })
     )
-);
+  );
 
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.remove),
       pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      concatMap((id: number) =>
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([id, event]) => {
-        return this.userDas.delete({ id: id, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (UserCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersActions.failure({ error: err }));
-          })
-        );
+        return this.userDas
+          .delete({ id: id, offlineMode: UserCRUDConfiguration.useOfflineMode })
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (UserCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureUsersActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -170,22 +219,35 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(FeatureUsersActions.multiRemove),
       pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      concatMap((ids: number[]) =>
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([ids, event]) => {
-        return this.userDas.deletes({ ids: ids, offlineMode: UserCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (UserCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureUsersActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersActions.failure({ error: err }));
+        return this.userDas
+          .deletes({
+            ids: ids,
+            offlineMode: UserCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (UserCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureUsersActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureUsersActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -193,16 +255,26 @@ export class UsersEffects {
   synchronize$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.synchronize),
-      concatMap((x) => of(x).pipe(withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)))),
+      concatMap(x =>
+        of(x).pipe(
+          withLatestFrom(
+            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([x, event]) => {
         return this.userDas.synchronize().pipe(
           map(() => {
             this.biaMessageService.showSyncSuccess();
             return FeatureUsersActions.loadAllByPost({ event: event });
           }),
-          catchError((err) => {
+          catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersActions.failure({ error: { concern: 'CREATE', error: err } }));
+            return of(
+              FeatureUsersActions.failure({
+                error: { concern: 'CREATE', error: err },
+              })
+            );
           })
         );
       })
@@ -214,5 +286,5 @@ export class UsersEffects {
     private userDas: UserDas,
     private biaMessageService: BiaMessageService,
     private store: Store<AppState>
-  ) { }
+  ) {}
 }

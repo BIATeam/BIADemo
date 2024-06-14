@@ -12,38 +12,41 @@ import { skip } from 'rxjs/operators';
   selector: 'bia-member-new',
   templateUrl: './member-new.component.html',
 })
-export class MemberNewComponent extends CrudItemNewComponent<Member> implements OnInit {
-
+export class MemberNewComponent
+  extends CrudItemNewComponent<Member>
+  implements OnInit
+{
   teamTypeId: number;
 
   canAddFromDirectory = false;
 
   public memberService: MemberService;
   private authService: AuthService;
-  
-  public members : Members;
-  
-  constructor(
-    protected injector: Injector,
-  ) 
-  {
+
+  public members: Members;
+
+  constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = MemberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
     this.authService = injector.get<AuthService>(AuthService);
   }
 
-  ngOnInit()
-  {
-    this.canAddFromDirectory = this.authService.hasPermission(Permission.User_Add);
-    this.crudConfiguration.optionFilter = {teamTypeId: this.teamTypeId}
+  ngOnInit() {
+    this.canAddFromDirectory = this.authService.hasPermission(
+      Permission.User_Add
+    );
+    this.crudConfiguration.optionFilter = { teamTypeId: this.teamTypeId };
     this.memberService.teamTypeId = this.teamTypeId;
     this.members = new Members();
     this.sub.add(
-      this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(lastUsersAdded => {
-        this.memberService.optionsService.refreshUsersOptions();
-        this.members.users = lastUsersAdded;
-      })
+      this.store
+        .select(getLastUsersAdded)
+        .pipe(skip(1))
+        .subscribe(lastUsersAdded => {
+          this.memberService.optionsService.refreshUsersOptions();
+          this.members.users = lastUsersAdded;
+        })
     );
     super.ngOnInit();
   }

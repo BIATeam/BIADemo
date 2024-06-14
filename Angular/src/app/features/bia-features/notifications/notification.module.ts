@@ -29,7 +29,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Notification_List_Access,
-      InjectComponent: NotificationsIndexComponent
+      InjectComponent: NotificationsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -86,13 +86,13 @@ const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -120,8 +120,6 @@ const ROUTES: Routes = [
     LanguageOptionModule,
     RoleOptionModule,
     TeamOptionModule,
-  ]
+  ],
 })
-export class NotificationModule {
-}
-
+export class NotificationModule {}

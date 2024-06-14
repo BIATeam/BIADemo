@@ -14,14 +14,17 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 @Component({
   selector: 'bia-users-index',
   templateUrl: './users-index.component.html',
-  styleUrls: ['./users-index.component.scss']
+  styleUrls: ['./users-index.component.scss'],
 })
-
-export class UsersIndexComponent extends CrudItemsIndexComponent<User> implements OnInit{
+export class UsersIndexComponent
+  extends CrudItemsIndexComponent<User>
+  implements OnInit
+{
   canSync = false;
   displayUserAddFromDirectoryDialog = false;
 
-  @ViewChild(UserTableComponent, { static: false }) crudItemTableComponent: UserTableComponent;
+  @ViewChild(UserTableComponent, { static: false })
+  crudItemTableComponent: UserTableComponent;
 
   constructor(
     protected injector: Injector,
@@ -35,7 +38,9 @@ export class UsersIndexComponent extends CrudItemsIndexComponent<User> implement
   }
 
   protected setPermissions() {
-    this.canSync = this.appSettingsService.appSettings?.keycloak?.isActive !== true && this.authService.hasPermission(Permission.User_Sync);
+    this.canSync =
+      this.appSettingsService.appSettings?.keycloak?.isActive !== true &&
+      this.authService.hasPermission(Permission.User_Sync);
     this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);
@@ -44,12 +49,17 @@ export class UsersIndexComponent extends CrudItemsIndexComponent<User> implement
     super.ngOnInit();
 
     this.sub.add(
-      this.store.select(getLastUsersAdded).pipe(skip(1)).subscribe(event => {
-        if (!UserCRUDConfiguration.useSignalR) {
-          setTimeout(() => this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata()));
-        }
-      })
-    )
+      this.store
+        .select(getLastUsersAdded)
+        .pipe(skip(1))
+        .subscribe(event => {
+          if (!UserCRUDConfiguration.useSignalR) {
+            setTimeout(() =>
+              this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata())
+            );
+          }
+        })
+    );
   }
   onCreate() {
     this.displayUserAddFromDirectoryDialog = true;

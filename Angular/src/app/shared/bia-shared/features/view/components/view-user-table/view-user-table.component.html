@@ -1,24 +1,22 @@
-<div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
+<div
+  class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
   <button
     pButton
     *ngIf="canDelete === true"
     [disabled]="viewSelected?.viewType !== 2"
     label="{{ 'bia.delete' | translate }}"
-    (click)="onDeleteView(viewSelected?.id)"
-  ></button>
+    (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton
     *ngIf="showDefineDefault()"
     [disabled]="viewSelected?.viewType !== 2 && viewSelected?.viewType !== 1"
     label="{{ 'bia.views.defineDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, true)"
-  ></button>
+    (click)="onSetDefaultView(viewSelected?.id, true)"></button>
   <button
     pButton
     *ngIf="!showDefineDefault()"
     label="{{ 'bia.views.removeDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, false)"
-  ></button>
+    (click)="onSetDefaultView(viewSelected?.id, false)"></button>
 </div>
 <p-table
   #viewUserTable
@@ -27,11 +25,12 @@
   [scrollable]="true"
   scrollHeight="40vh"
   dataKey="id"
-  (selectionChange)="onSelectionChange()"
->
+  (selectionChange)="onSelectionChange()">
   <ng-template pTemplate="header">
     <tr>
-      <th *ngIf="canUpdate" class="app-action-col">{{ 'bia.select' | translate }}</th>
+      <th *ngIf="canUpdate" class="app-action-col">
+        {{ 'bia.select' | translate }}
+      </th>
       <th>{{ 'bia.views.name' | translate }}</th>
       <th>{{ 'bia.views.description' | translate }}</th>
       <th>{{ 'bia.views.viewType' | translate }}</th>
@@ -40,11 +39,23 @@
   <ng-template pTemplate="body" let-view>
     <tr [pSelectableRow]="view">
       <td *ngIf="canUpdate" class="app-action-col">
-        <p-tableRadioButton *ngIf="view.viewType === 2 || view.viewType === 1" [value]="view"></p-tableRadioButton>
+        <p-tableRadioButton
+          *ngIf="view.viewType === 2 || view.viewType === 1"
+          [value]="view"></p-tableRadioButton>
       </td>
-      <td>{{ view.name }} <i *ngIf="view.isUserDefault === true" class="pi pi-star-fill-border"></i></td>
+      <td>
+        {{ view.name }}
+        <i
+          *ngIf="view.isUserDefault === true"
+          class="pi pi-star-fill-border"></i>
+      </td>
       <td>{{ view.description }}</td>
-      <td>{{ (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser') | translate }}</td>
+      <td>
+        {{
+          (view.viewType === 1 ? 'bia.views.typeTeam' : 'bia.views.typeUser')
+            | translate
+        }}
+      </td>
     </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage" let-view>
@@ -56,4 +67,3 @@
   </ng-template>
 </p-table>
 <p-confirmDialog key="view-user-confirm"></p-confirmDialog>
-

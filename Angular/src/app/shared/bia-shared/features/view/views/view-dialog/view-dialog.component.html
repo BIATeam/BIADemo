@@ -8,16 +8,21 @@
   [maximizable]="true"
   [contentStyle]="{ overflow: 'auto' }"
   (onHide)="onClose()"
-  (onShow)="showDialogMaximized(viewDialog)"
->
+  (onShow)="showDialogMaximized(viewDialog)">
   <p-header>
     {{ 'bia.views.manageViews' | translate }}
   </p-header>
   <p-tabView *ngIf="display">
-    <p-tabPanel header="{{ 'bia.views.user' | translate | uppercase }}" *ngIf="canSetUserView()">
-      <div class="app-div-view-form" *ngIf="canAddUserView === true || canUpdateUserView === true">
+    <p-tabPanel
+      header="{{ 'bia.views.user' | translate | uppercase }}"
+      *ngIf="canSetUserView()">
+      <div
+        class="app-div-view-form"
+        *ngIf="canAddUserView === true || canUpdateUserView === true">
         <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
-        <bia-view-form [view]="userViewSelected" (save)="onSaveUserView($event)"></bia-view-form>
+        <bia-view-form
+          [view]="userViewSelected"
+          (save)="onSaveUserView($event)"></bia-view-form>
       </div>
       <bia-view-user-table
         [views]="viewUsers$ | async"
@@ -26,28 +31,29 @@
         [canUpdate]="canUpdateUserView"
         (delete)="onDeleteUserView($event)"
         (setDefault)="onSetDefaultUserView($event)"
-        (viewSelect)="onUserViewSelected($event)"
-      ></bia-view-user-table>
+        (viewSelect)="onUserViewSelected($event)"></bia-view-user-table>
     </p-tabPanel>
     <p-tabPanel
       header="{{ 'bia.views.team' | translate | uppercase }} {{
         (teams$ | async)?.length === 1 ? teamSelected?.title : ''
       }}"
-      *ngIf="canSetTeamView() && (teams$ | async)?.length > 0"
-    >
+      *ngIf="canSetTeamView() && (teams$ | async)?.length > 0">
       <div class="app-div-select-team">
         <p-dropdown
           *ngIf="(teams$ | async)?.length > 1"
           optionLabel="title"
           placeholder="{{ 'bia.views.selectTeam' | translate }}"
           [options]="teams$ | async"
-          [(ngModel)]="teamSelected"
-        ></p-dropdown>
+          [(ngModel)]="teamSelected"></p-dropdown>
       </div>
       <ng-container *ngIf="teamSelected">
-        <div class="app-div-view-form" *ngIf="canAddTeamView === true || canUpdateTeamView === true">
+        <div
+          class="app-div-view-form"
+          *ngIf="canAddTeamView === true || canUpdateTeamView === true">
           <div>{{ 'bia.views.msg.explanationSaveView' | translate }} :</div>
-          <bia-view-form [view]="teamViewSelected" (save)="onSaveTeamView($event)"></bia-view-form>
+          <bia-view-form
+            [view]="teamViewSelected"
+            (save)="onSaveTeamView($event)"></bia-view-form>
         </div>
         <bia-view-team-table
           [views]="viewTeams$ | async"
@@ -59,20 +65,18 @@
           (assignViewToTeam)="onAssignViewToTeam($event)"
           (delete)="onDeleteTeamView($event)"
           (setDefault)="onSetDefaultTeamView($event)"
-          (viewSelect)="onTeamViewSelected($event)"
-        ></bia-view-team-table>
+          (viewSelect)="onTeamViewSelected($event)"></bia-view-team-table>
       </ng-container>
     </p-tabPanel>
   </p-tabView>
   <p-footer>
-    <div class="flex flex-row justify-content-center" >
+    <div class="flex flex-row justify-content-center">
       <button
         id="btn-close"
         type="button"
         pButton
         (click)="display = false"
-        label="{{ 'bia.close' | translate }}"
-      ></button>
+        label="{{ 'bia.close' | translate }}"></button>
     </div>
   </p-footer>
 </p-dialog>

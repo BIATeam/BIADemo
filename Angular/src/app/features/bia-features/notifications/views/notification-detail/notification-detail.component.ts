@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
@@ -12,7 +18,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 @Component({
   selector: 'bia-notification-detail',
   templateUrl: './notification-detail.component.html',
-  styleUrls: ['./notification-detail.component.scss']
+  styleUrls: ['./notification-detail.component.scss'],
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
@@ -26,12 +32,14 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    public notificationService: NotificationService,
-  ) { }
+    public notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.notification$ = this.notificationService.notification$;
-    this.canEdit = this.authService.hasPermission(Permission.Notification_Update);
+    this.canEdit = this.authService.hasPermission(
+      Permission.Notification_Update
+    );
   }
 
   ngOnDestroy() {
@@ -41,7 +49,9 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(notificationToUpdate: Notification) {
-    this.store.dispatch(FeatureNotificationsActions.update({ notification: notificationToUpdate }));
+    this.store.dispatch(
+      FeatureNotificationsActions.update({ notification: notificationToUpdate })
+    );
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 
@@ -64,24 +74,26 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
 
   onAction(notification: Notification) {
     if (notification.data) {
-      let data : NotificationData = notification.data;
+      const data: NotificationData = notification.data;
       if (data.route) {
         if (data?.teams) {
           // Auto-switch to teams related to this notification
-          data.teams.forEach((team) => {
+          data.teams.forEach(team => {
             this.authService.changeCurrentTeamId(team.teamTypeId, team.team.id);
-            if (team.roles)
-            {
-              this.authService.changeCurrentRoleIds(team.teamTypeId, team.team.id, team.roles.map(r => r.id));
+            if (team.roles) {
+              this.authService.changeCurrentRoleIds(
+                team.teamTypeId,
+                team.team.id,
+                team.roles.map(r => r.id)
+              );
             }
-          })
+          });
         }
         this.router.navigate(notification.data.route);
       }
     }
   }
-  onSetUnread(id: number)
-  {
-    this.store.dispatch(FeatureNotificationsActions.setUnread({id}))
+  onSetUnread(id: number) {
+    this.store.dispatch(FeatureNotificationsActions.setUnread({ id }));
   }
 }

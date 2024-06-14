@@ -18,52 +18,72 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 export class UsersFromDirectoryEffects {
   loadAllByFilter$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(FeatureUsersFromDirectoryActions.loadAllByFilter) /* When action is dispatched */,
-      switchMap((action) => {
-        return this.userFromDirectoryDas.getAllByFilter(action.userFilter.filter, action.userFilter.ldapName, action.userFilter.returnSize).pipe(
-          map((users) => FeatureUsersFromDirectoryActions.loadAllSuccess({ users })),
-          catchError((err) => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(FeatureUsersFromDirectoryActions.failure({ error: err }));
-          })
-        );
+      ofType(
+        FeatureUsersFromDirectoryActions.loadAllByFilter
+      ) /* When action is dispatched */,
+      switchMap(action => {
+        return this.userFromDirectoryDas
+          .getAllByFilter(
+            action.userFilter.filter,
+            action.userFilter.ldapName,
+            action.userFilter.returnSize
+          )
+          .pipe(
+            map(users =>
+              FeatureUsersFromDirectoryActions.loadAllSuccess({ users })
+            ),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(
+                FeatureUsersFromDirectoryActions.failure({ error: err })
+              );
+            })
+          );
       })
     )
   );
 
-  
   addFromDirectory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersFromDirectoryActions.addFromDirectory),
       pluck('usersFromDirectory'),
-       switchMap((usersFromDirectory) => {
-        return this.userFromDirectoryDas.save({ items: usersFromDirectory, endpoint: "addFromDirectory"}).pipe(
-          map((usersAdded: OptionDto[]) => {
-            this.biaMessageService.showAddSuccess();
-            return DomainUserOptionsActions.userAddedInListSuccess({usersAdded});
-          }),
-          catchError((err) => {
-            if (err.status === 303) {
-              let errorMessage = '';
-              if (err.error) {
-                err.error.forEach((element: string) => {
-                  const currentError = `${this.translateService.instant('user.cannotAddMember')}`.replace(
-                    '${login}',
-                    element
-                  );
-                  if (errorMessage !== '') {
-                    errorMessage += '\n';
-                  }
-                  errorMessage += currentError;
-                });
+      switchMap(usersFromDirectory => {
+        return this.userFromDirectoryDas
+          .save({ items: usersFromDirectory, endpoint: 'addFromDirectory' })
+          .pipe(
+            map((usersAdded: OptionDto[]) => {
+              this.biaMessageService.showAddSuccess();
+              return DomainUserOptionsActions.userAddedInListSuccess({
+                usersAdded,
+              });
+            }),
+            catchError(err => {
+              if (err.status === 303) {
+                let errorMessage = '';
+                if (err.error) {
+                  err.error.forEach((element: string) => {
+                    const currentError =
+                      `${this.translateService.instant('user.cannotAddMember')}`.replace(
+                        '${login}',
+                        element
+                      );
+                    if (errorMessage !== '') {
+                      errorMessage += '\n';
+                    }
+                    errorMessage += currentError;
+                  });
+                }
+                this.biaMessageService.showErrorDetail(errorMessage);
+              } else {
+                this.biaMessageService.showErrorHttpResponse(err);
               }
-              this.biaMessageService.showErrorDetail(errorMessage);
-            } else {
-              this.biaMessageService.showErrorHttpResponse(err);
-            }
-            return of(FeatureUsersFromDirectoryActions.failure({ error: { concern: 'CREATE', error: err } }));
-          })
-        );
+              return of(
+                FeatureUsersFromDirectoryActions.failure({
+                  error: { concern: 'CREATE', error: err },
+                })
+              );
+            })
+          );
       })
     )
   );
@@ -72,6 +92,6 @@ export class UsersFromDirectoryEffects {
     private actions$: Actions,
     private userFromDirectoryDas: UserFromDirectoryDas,
     private biaMessageService: BiaMessageService,
-    private translateService: TranslateService,
+    private translateService: TranslateService
   ) {}
 }
