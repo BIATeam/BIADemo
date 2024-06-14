@@ -5,8 +5,8 @@ $accentColor: #072948;
 $accentDarkColor: #020f21;
 $accentLightColor: #e1e5e9;
 $accentTextColor: #ffffff;
-$primaryLightestColor: #ECEFF1;
-$primaryTextColor:#212121;
+$primaryLightestColor: #eceff1;
+$primaryTextColor: #212121;
 
 $biaBgColor: #0f1c28;
 $biaBgHoverColor: rgba(255, 255, 255, 0.04);
@@ -14,8 +14,8 @@ $biaFgTextColor: #fff;
 $biaBorderColor: black; //#111B1F;
 $biaTitleColor: #999999;
 $biaBgRowOdd: #182530;
-$biaBgRowSelected:#1a3646;
-$biaTabColor: #1B998B;
+$biaBgRowSelected: #1a3646;
+$biaTabColor: #1b998b;
 
 @import '../sass/theme/theme-dark/_variables';
 @import '../sass/theme/_compact';

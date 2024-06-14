@@ -1,21 +1,21 @@
 $spacer: 1rem;
 $spacer-map: (
-    1: $spacer * 0.25,
-    2: $spacer * 0.5,
-    3: $spacer * 0.75,
-    4: $spacer * 1,
-    5: $spacer * 1.25,
-    6: $spacer * 1.5,
+  1: $spacer * 0.25,
+  2: $spacer * 0.5,
+  3: $spacer * 0.75,
+  4: $spacer * 1,
+  5: $spacer * 1.25,
+  6: $spacer * 1.5,
 );
 
 @mixin padding-modifiers($attribute: 'padding', $direction: 'left') {
-    @each $name, $value in $spacer {
-      &-#{name} {
-          #{attribute}: $value; 
-      }
+  @each $name, $value in $spacer {
+    &-#{name} {
+      #{attribute}: $value;
     }
+  }
 }
 
 .pl {
-    @include padding-modifiers();
-  }
+  @include padding-modifiers();
+}

@@ -1,101 +1,62 @@
 [
-	{
-		"Feature" : "planes",
-		"Type" : "CRUD",
-		"FeatureName" : "Plane",
-		"FeatureNamePlurial" : "Planes",
-		"ZipName" : "feature-planes.zip",
-		"Contains":
-		{
-			"Include" :
-			[
-				"src\\app\\features\\planes\\*"
-			],
-			"Exclude":
-			[
-				"src\\app\\features\\planes\\children\\engines\\*"
-			]
-		},		
-		"Children" : 
-		[
-			"Engines"
-		],
-		"Options":
-		[
-			"Airport",
-			"PlaneType"
-		],
-		"Partial":
-		[
-			"src\\app\\app-routing.module.ts",
-			"src\\app\\shared\\navigation.ts",
-			"src\\app\\shared\\permission.ts"
-		]
-	},
-	{
-		"Feature" : "planes-full-code",
-		"Type" : "CRUD",
-		"FeatureName" : "Plane",
-		"FeatureNamePlurial" : "Planes",
-		"ZipName" : "feature-planes-full-code.zip",
-		"Contains":
-		{
-			"Include" :
-			[
-				"src\\app\\features\\planes-full-code\\*"
-			],
-			"Exclude":
-			[]
-		},		
-		"Children" : 
-		[],
-		"Options":
-		[],
-		"Partial":
-		[]
-	},
-	{
-		"Feature" : "airport-option",
-		"Type" : "Option",
-		"FeatureName" : "Airport",
-		"FeatureNamePlurial" : "Airports",
-		"ZipName" : "domain-airport-option.zip",
-		"Contains":
-		{
-			"Include" :
-			[
-				"src\\app\\domains\\airport-option\\*"
-			],
-			"Exclude":
-			[]
-		},	
-		"Children" : 
-		[],
-		"Options":
-		[],
-		"Partial":
-		[]
-	},
-	{
-		"Feature" : "aircraft-maintenance-companies",
-		"Type" : "Team",
-		"FeatureName" : "AircraftMaintenanceCompany",
-		"FeatureNamePlurial" : "AircraftMaintenanceCompanies",
-		"ZipName" : "aircraft-maintenance-companies.zip",
-		"Contains":
-		{
-			"Include" :
-			[
-				"src\\app\\features\\aircraft-maintenance-companies\\*"
-			],
-			"Exclude":
-			[]
-		},	
-		"Children" : 
-		[],
-		"Options":
-		[],
-		"Partial":
-		[]
-	}
+  {
+    "Feature": "planes",
+    "Type": "CRUD",
+    "FeatureName": "Plane",
+    "FeatureNamePlurial": "Planes",
+    "ZipName": "feature-planes.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\planes\\*"],
+      "Exclude": ["src\\app\\features\\planes\\children\\engines\\*"]
+    },
+    "Children": ["Engines"],
+    "Options": ["Airport", "PlaneType"],
+    "Partial": [
+      "src\\app\\app-routing.module.ts",
+      "src\\app\\shared\\navigation.ts",
+      "src\\app\\shared\\permission.ts"
+    ]
+  },
+  {
+    "Feature": "planes-full-code",
+    "Type": "CRUD",
+    "FeatureName": "Plane",
+    "FeatureNamePlurial": "Planes",
+    "ZipName": "feature-planes-full-code.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\planes-full-code\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "airport-option",
+    "Type": "Option",
+    "FeatureName": "Airport",
+    "FeatureNamePlurial": "Airports",
+    "ZipName": "domain-airport-option.zip",
+    "Contains": {
+      "Include": ["src\\app\\domains\\airport-option\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "aircraft-maintenance-companies",
+    "Type": "Team",
+    "FeatureName": "AircraftMaintenanceCompany",
+    "FeatureNamePlurial": "AircraftMaintenanceCompanies",
+    "ZipName": "aircraft-maintenance-companies.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\aircraft-maintenance-companies\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  }
 ]

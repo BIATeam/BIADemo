@@ -30,12 +30,12 @@ table {
   top: 2px;
 }
 
-.p-sortable-column[aria-sort="none"] {
-    p-sorticon {
-      display: none;
+.p-sortable-column[aria-sort='none'] {
+  p-sorticon {
+    display: none;
   }
 }
 
 ::ng-deep .p-datatable.singleSort .p-sortable-column .p-sortable-column-badge {
-    display: none;
+  display: none;
 }
