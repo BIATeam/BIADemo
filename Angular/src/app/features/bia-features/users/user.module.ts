@@ -22,7 +22,7 @@ import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-o
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
 import { UserBulkComponent } from './views/user-bulk/user-bulk.component';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {

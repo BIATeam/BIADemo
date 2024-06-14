@@ -58,7 +58,10 @@ body .p-dataview .p-dataview-header {
   background-color: $contentBgColor;
 }
 
-.p-datatable.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) .p-frozen-column {
+.p-datatable.p-datatable-striped
+  .p-datatable-tbody
+  > tr:nth-child(odd)
+  .p-frozen-column {
   background: $biaBgRowOdd;
 }
 

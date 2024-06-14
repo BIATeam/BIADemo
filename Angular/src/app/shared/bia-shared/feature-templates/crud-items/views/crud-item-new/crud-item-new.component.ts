@@ -11,11 +11,13 @@ import { CrudConfig } from '../../model/crud-config';
 @Component({
   selector: 'bia-crud-item-new',
   templateUrl: './crud-item-new.component.html',
-  styleUrls: ['./crud-item-new.component.scss']
+  styleUrls: ['./crud-item-new.component.scss'],
 })
-export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy  {
+export class CrudItemNewComponent<CrudItem extends BaseDto>
+  implements OnInit, OnDestroy
+{
   protected sub = new Subscription();
-  public crudConfiguration : CrudConfig;
+  public crudConfiguration: CrudConfig;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -23,18 +25,22 @@ export class CrudItemNewComponent<CrudItem extends BaseDto> implements OnInit, O
   protected biaTranslationService: BiaTranslationService;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>,
+    public crudItemService: CrudItemService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
-    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(
+      BiaTranslationService
+    );
   }
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.crudItemService.optionsService.loadAllOptions(this.crudConfiguration.optionFilter);
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.crudItemService.optionsService.loadAllOptions(
+          this.crudConfiguration.optionFilter
+        );
       })
     );
   }

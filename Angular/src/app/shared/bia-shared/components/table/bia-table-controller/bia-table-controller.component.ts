@@ -1,11 +1,29 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, QueryList, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  QueryList,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
 import { KeyValuePair } from '../../../model/key-value-pair';
-import { DEFAULT_PAGE_SIZE, TABLE_FILTER_GLOBAL, TeamTypeId } from 'src/app/shared/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  TABLE_FILTER_GLOBAL,
+  TeamTypeId,
+} from 'src/app/shared/constants';
 import { BiaTableState } from '../../../model/bia-table-state';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
 
@@ -15,12 +33,20 @@ import { ViewListComponent } from '../../../features/view/views/view-list/view-l
   styleUrls: ['./bia-table-controller.component.scss'],
   animations: [
     trigger('options', [
-      transition(':enter', [style({ height: 0 }), animate('200ms ease-out', style({ height: '*' }))]),
-      transition(':leave', [style({ height: '*' }), animate('200ms ease-out', style({ height: 0 }))])
-    ])
-  ]
+      transition(':enter', [
+        style({ height: 0 }),
+        animate('200ms ease-out', style({ height: '*' })),
+      ]),
+      transition(':leave', [
+        style({ height: '*' }),
+        animate('200ms ease-out', style({ height: 0 })),
+      ]),
+    ]),
+  ],
 })
-export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
+export class BiaTableControllerComponent
+  implements OnChanges, OnInit, OnDestroy, AfterContentInit
+{
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() defaultPageSize: number;
   @Input() length: number;
@@ -39,8 +65,8 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   @Output() viewChange = new EventEmitter<string>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  @ViewChild(ViewListComponent, { static: false }) viewListComponent: ViewListComponent;
-
+  @ViewChild(ViewListComponent, { static: false })
+  viewListComponent: ViewListComponent;
 
   customControlTemplate: TemplateRef<any>;
   selectedViewName: string | null;
@@ -49,7 +75,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   resultMessageMapping = {
     '=0': 'bia.noResult',
     '=1': 'bia.result',
-    other: 'bia.results'
+    other: 'bia.results',
   };
   listedColumns: SelectItem[];
   filterCtrl = new UntypedFormControl();
@@ -60,10 +86,10 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   private sub = new Subscription();
 
-  constructor(public translateService: TranslateService) { }
+  constructor(public translateService: TranslateService) {}
 
   ngAfterContentInit() {
-    this.templates.forEach((item) => {
+    this.templates.forEach(item => {
       switch (item.getType()) {
         case 'customControl':
           this.customControlTemplate = item.template;
@@ -84,9 +110,9 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
         sortField: this.columns[0].key,
         sortOrder: 1,
         filters: {},
-        columnOrder: this.columns.map((x) => x.key),
+        columnOrder: this.columns.map(x => x.key),
         advancedFilter: undefined,
-      }
+      };
     }
   }
 
@@ -109,7 +135,9 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   }
 
   onChangeSelectColumn() {
-    const cols = this.columns.filter((x) => this.displayedColumns.indexOf(x.key) > -1);
+    const cols = this.columns.filter(
+      x => this.displayedColumns.indexOf(x.key) > -1
+    );
     setTimeout(() => this.displayedColumnsChange.emit(cols));
   }
 
@@ -134,14 +162,17 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
       (changes.columns || changes.columnToDisplays)
     ) {
       this.firstChange = false;
-      const cols = this.columns.map((x) => x.value);
-      this.defaultDisplayedColumns = this.columnToDisplays.map((x) => x.key);
+      const cols = this.columns.map(x => x.value);
+      this.defaultDisplayedColumns = this.columnToDisplays.map(x => x.key);
       this.displayedColumns = this.defaultDisplayedColumns;
       this.sub.add(
-        this.translateService.stream(cols).subscribe((results) => {
+        this.translateService.stream(cols).subscribe(results => {
           this.listedColumns = new Array<SelectItem>();
-          this.columns.forEach((col) => {
-            this.listedColumns.push({ label: results[col.value], value: col.key });
+          this.columns.forEach(col => {
+            this.listedColumns.push({
+              label: results[col.value],
+              value: col.key,
+            });
           });
         })
       );
@@ -150,7 +181,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   private initFilterCtrl() {
     this.sub.add(
-      this.filterCtrl.valueChanges.subscribe((filterValue) => {
+      this.filterCtrl.valueChanges.subscribe(filterValue => {
         this.filter.emit(filterValue.trim().toLowerCase());
       })
     );
@@ -162,11 +193,16 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
 
   private updateDisplayedPageSizeOptions() {
     if (this.pageSizeOptions) {
-      const displayedPageSizeOptions = this.pageSizeOptions.sort((a, b) => a - b);
+      const displayedPageSizeOptions = this.pageSizeOptions.sort(
+        (a, b) => a - b
+      );
 
       this.pageSizes = new Array<SelectItem>();
-      displayedPageSizeOptions.forEach((displayedPageSizeOption) => {
-        this.pageSizes.push({ label: displayedPageSizeOption.toString(), value: displayedPageSizeOption });
+      displayedPageSizeOptions.forEach(displayedPageSizeOption => {
+        this.pageSizes.push({
+          label: displayedPageSizeOption.toString(),
+          value: displayedPageSizeOption,
+        });
       });
     }
   }
@@ -174,7 +210,7 @@ export class BiaTableControllerComponent implements OnChanges, OnInit, OnDestroy
   private setControlByViewState(stateString: string) {
     const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
     this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
-    const newDisplayColumns = state.columnOrder ? state.columnOrder : []
+    const newDisplayColumns = state.columnOrder ? state.columnOrder : [];
     if (this.displayedColumns !== newDisplayColumns) {
       this.displayedColumns = newDisplayColumns;
       this.onChangeSelectColumn();

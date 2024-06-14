@@ -14,7 +14,7 @@ const ROUTES: Routes = [
       permission: Permission.Background_Task_Admin,
     },
     component: BackgroundTaskAdminComponent,
-    canActivate: [PermissionGuard]
+    canActivate: [PermissionGuard],
   },
   {
     path: 'readonly',
@@ -23,20 +23,14 @@ const ROUTES: Routes = [
       permission: Permission.Background_Task_Read_Only,
     },
     component: BackgroundTaskReadOnlyComponent,
-    canActivate: [PermissionGuard]
+    canActivate: [PermissionGuard],
   },
-  { path: '**', redirectTo: 'readonly' }
+  { path: '**', redirectTo: 'readonly' },
 ];
 
 @NgModule({
-  declarations: [
-    BackgroundTaskAdminComponent,
-    BackgroundTaskReadOnlyComponent,
-  ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-  ],
-  providers: []
+  declarations: [BackgroundTaskAdminComponent, BackgroundTaskReadOnlyComponent],
+  imports: [SharedModule, RouterModule.forChild(ROUTES)],
+  providers: [],
 })
-export class BackgroundTaskModule { }
+export class BackgroundTaskModule {}

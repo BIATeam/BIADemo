@@ -7,8 +7,7 @@
   [maximizable]="true"
   [draggable]="false"
   [style]="{ minWidth: '50vw' }"
-  [contentStyle]="{ overflow: 'auto' }"
->
+  [contentStyle]="{ overflow: 'auto' }">
   <p-header>
     {{ 'user.add' | translate }}
   </p-header>
@@ -17,6 +16,5 @@
     [domains]="ldapDomains$ | async"
     (searchUsers)="onSearchUsers($event)"
     (cancel)="onCancelled()"
-    (save)="onSubmitted($event)"
-  ></bia-user-from-directory-form>
+    (save)="onSubmitted($event)"></bia-user-from-directory-form>
 </p-dialog>

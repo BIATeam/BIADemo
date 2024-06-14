@@ -27,8 +27,6 @@ export class CrudItemFormComponent<CrudItem extends BaseDto> {
 
   @ViewChild(BiaFormComponent) biaFormComponent: BiaFormComponent;
 
-  constructor() {}
-
   onCancel() {
     this.cancel.next();
   }

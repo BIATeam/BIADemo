@@ -8,7 +8,7 @@ import {
   TemplateRef,
   Input,
   SimpleChanges,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
@@ -22,7 +22,7 @@ import { TeamAdvancedFilterDto } from '../../model/team-advanced-filter-dto';
 @Component({
   selector: 'bia-team-advanced-filter',
   templateUrl: './team-advanced-filter.component.html',
-  styleUrls: ['./team-advanced-filter.component.scss']
+  styleUrls: ['./team-advanced-filter.component.scss'],
 })
 export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   @ViewChild('template', { static: true }) template: TemplateRef<HTMLElement>;
@@ -34,10 +34,12 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
 
   userOptions$: Observable<OptionDto[]>;
   form: UntypedFormGroup;
-  
-  constructor(public formBuilder: UntypedFormBuilder,
+
+  constructor(
+    public formBuilder: UntypedFormBuilder,
     private viewContainerRef: ViewContainerRef,
-    protected store: Store<AppState>) {
+    protected store: Store<AppState>
+  ) {
     this.initForm();
   }
 
@@ -70,7 +72,7 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
     if (this.form.valid) {
       const vm = this.form.value;
       const advancedFilter = <TeamAdvancedFilterDto>{
-        userId: vm.userSelected
+        userId: vm.userSelected,
       };
       this.filter.emit(advancedFilter);
     }
@@ -82,10 +84,10 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.advancedFilter) {
-        const vm = {
-          userSelected: this.advancedFilter?.userId
-        };
-        this.form.patchValue({ ...vm });
+      const vm = {
+        userSelected: this.advancedFilter?.userId,
+      };
+      this.form.patchValue({ ...vm });
     }
   }
 }

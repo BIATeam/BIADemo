@@ -1,4 +1,15 @@
-import { Component, Input, Output, EventEmitter, OnChanges, ChangeDetectionStrategy, TemplateRef, ContentChildren, QueryList, AfterContentInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  ChangeDetectionStrategy,
+  TemplateRef,
+  ContentChildren,
+  QueryList,
+  AfterContentInit,
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ConfirmationService, Confirmation, PrimeTemplate } from 'primeng/api';
@@ -9,7 +20,7 @@ import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.serv
   templateUrl: './bia-table-header.component.html',
   styleUrls: ['./bia-table-header.component.scss'],
   providers: [ConfirmationService],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Input() hasFilter = false;
@@ -29,12 +40,11 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Output() exportCSV = new EventEmitter<void>();
   @Output() bulk = new EventEmitter<void>();
 
-
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   actionOnSelectedTemplate: TemplateRef<any>;
   actionOnListTemplate: TemplateRef<any>;
   customControlTemplate: TemplateRef<any>;
-  
+
   nbSelectedElements = 0;
 
   constructor(
@@ -44,20 +54,19 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     private biaDialogService: BiaDialogService
   ) {}
 
-
   ngAfterContentInit() {
-    this.templates.forEach((item) => {
-        switch(item.getType()) {
-          case 'actionOnSelected':
-            this.actionOnSelectedTemplate = item.template;
+    this.templates.forEach(item => {
+      switch (item.getType()) {
+        case 'actionOnSelected':
+          this.actionOnSelectedTemplate = item.template;
           break;
-          case 'actionOnList':
-            this.actionOnListTemplate = item.template;
+        case 'actionOnList':
+          this.actionOnListTemplate = item.template;
           break;
-          case 'customControl':
-            this.customControlTemplate = item.template;
+        case 'customControl':
+          this.customControlTemplate = item.template;
           break;
-        }
+      }
     });
   }
 
@@ -70,7 +79,9 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   }
 
   onBack() {
-    window.history.length > 1 ? this.location.back() : this.router.navigate(['/']);
+    window.history.length > 1
+      ? this.location.back()
+      : this.router.navigate(['/']);
   }
 
   onCreate() {
@@ -86,7 +97,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
       ...this.biaDialogService.getDeleteConfirmation(),
       accept: () => {
         this.delete.next();
-      }
+      },
     };
     this.confirmationService.confirm(confirmation);
   }

@@ -1,5 +1,5 @@
-import { TableState } from "primeng/api";
+import { TableState } from 'primeng/api';
 
-export interface BiaTableState extends TableState  {
+export interface BiaTableState extends TableState {
   advancedFilter: any;
 }

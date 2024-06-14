@@ -11,7 +11,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 @Component({
   selector: 'bia-notification-new',
   templateUrl: './notification-new.component.html',
-  styleUrls: ['./notification-new.component.scss']
+  styleUrls: ['./notification-new.component.scss'],
 })
 export class NotificationNewComponent implements OnInit, OnDestroy {
   private sub = new Subscription();
@@ -21,13 +21,13 @@ export class NotificationNewComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public notificationOptionsService: NotificationOptionsService,
-    private biaTranslationService: BiaTranslationService,
+    private biaTranslationService: BiaTranslationService
   ) {}
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.notificationOptionsService.loadAllOptions();
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.notificationOptionsService.loadAllOptions();
       })
     );
   }
@@ -39,7 +39,9 @@ export class NotificationNewComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(notificationToCreate: Notification) {
-    this.store.dispatch(FeatureNotificationsActions.create({ notification: notificationToCreate }));
+    this.store.dispatch(
+      FeatureNotificationsActions.create({ notification: notificationToCreate })
+    );
     this.router.navigate(['../'], { relativeTo: this.activatedRoute });
   }
 

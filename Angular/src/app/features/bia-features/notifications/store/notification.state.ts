@@ -1,14 +1,22 @@
 import * as fromNotifications from './notifications-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 
 export interface NotificationsState {
   notifications: fromNotifications.State;
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(state: NotificationsState | undefined, action: Action) {
+export function reducers(
+  state: NotificationsState | undefined,
+  action: Action
+) {
   return combineReducers({
-    notifications: fromNotifications.notificationReducers
+    notifications: fromNotifications.notificationReducers,
   })(state, action);
 }
 
@@ -17,39 +25,43 @@ export function reducers(state: NotificationsState | undefined, action: Action) 
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getNotificationsState = createFeatureSelector<NotificationsState>('notifications');
+export const getNotificationsState =
+  createFeatureSelector<NotificationsState>('notifications');
 
 export const getNotificationsEntitiesState = createSelector(
   getNotificationsState,
-  (state) => state.notifications
+  state => state.notifications
 );
 
 export const getNotificationsTotalCount = createSelector(
   getNotificationsEntitiesState,
-  (state) => state.totalCount
+  state => state.totalCount
 );
 
 export const getCurrentNotification = createSelector(
   getNotificationsEntitiesState,
-  (state) => state.currentNotification
+  state => state.currentNotification
 );
 
 export const getLastLazyLoadEvent = createSelector(
   getNotificationsEntitiesState,
-  (state) => state.lastLazyLoadEvent
+  state => state.lastLazyLoadEvent
 );
 
 export const getNotificationLoadingGet = createSelector(
   getNotificationsEntitiesState,
-  (state) => state.loadingGet
+  state => state.loadingGet
 );
 
 export const getNotificationLoadingGetAll = createSelector(
   getNotificationsEntitiesState,
-  (state) => state.loadingGetAll
+  state => state.loadingGetAll
 );
 
-export const { selectAll: getAllNotifications } = fromNotifications.notificationsAdapter.getSelectors(getNotificationsEntitiesState);
+export const { selectAll: getAllNotifications } =
+  fromNotifications.notificationsAdapter.getSelectors(
+    getNotificationsEntitiesState
+  );
 
 export const getNotificationById = (id: number) =>
   createSelector(

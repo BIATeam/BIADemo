@@ -5,7 +5,10 @@ import { AuthInfo } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
-import { BiaTranslationService, getCurrentCulture } from 'src/app/core/bia-core/services/bia-translation.service';
+import {
+  BiaTranslationService,
+  getCurrentCulture,
+} from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaNavigation } from '../../model/bia-navigation';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { APP_BASE_HREF } from '@angular/common';
@@ -27,11 +30,10 @@ import { allEnvironments } from 'src/environments/all-environments';
       [reportUrl]="reportUrl"
       [enableNotifications]="enableNotifications"
       [companyName]="companyName"
-      class="p-input-filled"
-    >
+      class="p-input-filled">
       <router-outlet></router-outlet>
     </bia-classic-layout>
-  `
+  `,
 })
 export class LayoutComponent implements OnInit {
   @HostBinding('class') classes = 'bia-flex';
@@ -56,10 +58,9 @@ export class LayoutComponent implements OnInit {
     private biaThemeService: BiaThemeService,
     // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) { }
+  ) {}
 
   ngOnInit() {
-
     if (this.enableNotifications) {
       // this.initNotificationSignalRService();
     }
@@ -70,7 +71,7 @@ export class LayoutComponent implements OnInit {
   private initHeaderLogos() {
     this.headerLogos = [
       'assets/bia/img/Company.png',
-      `assets/bia/img/Division.gif`
+      `assets/bia/img/Division.gif`,
     ];
     /* If image change with the theme :
     this.biaThemeService.isCurrentThemeDark$.subscribe((isThemeDark) => {
@@ -86,10 +87,10 @@ export class LayoutComponent implements OnInit {
     this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
       if (authInfo && authInfo.token !== '') {
         if (authInfo) {
-            this.setLanguage(authInfo);
-            this.setUserName(authInfo);
-            this.filterNavByRole(authInfo);
-            this.setTheme(authInfo);
+          this.setLanguage();
+          this.setUserName(authInfo);
+          this.filterNavByRole(authInfo);
+          this.setTheme(authInfo);
         }
         this.isLoadingUserInfo = false;
       }
@@ -97,7 +98,11 @@ export class LayoutComponent implements OnInit {
   }
 
   private setUserName(authInfo: AuthInfo) {
-    if (authInfo && authInfo.additionalInfos && authInfo.additionalInfos.userInfo) {
+    if (
+      authInfo &&
+      authInfo.additionalInfos &&
+      authInfo.additionalInfos.userInfo
+    ) {
       this.username = authInfo.additionalInfos.userInfo.firstName
         ? authInfo.additionalInfos.userInfo.firstName
         : authInfo.additionalInfos.userInfo.login;
@@ -106,7 +111,7 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  private setLanguage(authInfo: AuthInfo) {
+  private setLanguage() {
     const langSelected: string | null = getCurrentCulture();
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
@@ -125,7 +130,9 @@ export class LayoutComponent implements OnInit {
       authInfo.additionalInfos.userProfile &&
       authInfo.additionalInfos.userProfile.theme
     ) {
-      this.biaThemeService.changeTheme(authInfo.additionalInfos.userProfile.theme.toLowerCase());
+      this.biaThemeService.changeTheme(
+        authInfo.additionalInfos.userProfile.theme.toLowerCase()
+      );
     }
   }
 }

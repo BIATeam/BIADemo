@@ -8,12 +8,12 @@ import { UserCRUDConfiguration } from '../../user.constants';
   selector: 'bia-user-new',
   templateUrl: './user-new.component.html',
 })
-export class UserNewComponent extends CrudItemNewComponent<User>  {
-   constructor(
+export class UserNewComponent extends CrudItemNewComponent<User> {
+  constructor(
     protected injector: Injector,
-    public userService: UserService,
+    public userService: UserService
   ) {
-     super(injector, userService);
-     this.crudConfiguration = UserCRUDConfiguration;
-   }
+    super(injector, userService);
+    this.crudConfiguration = UserCRUDConfiguration;
+  }
 }

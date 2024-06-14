@@ -96,7 +96,10 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
     SharedModule,
     CrudItemModule,
     // RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(MemberCRUDConfiguration.storeKey, FeatureMembersStore.reducers),
+    StoreModule.forFeature(
+      MemberCRUDConfiguration.storeKey,
+      FeatureMembersStore.reducers
+    ),
     EffectsModule.forFeature([MembersEffects]),
     // TODO after creation of CRUD Member : select the optioDto dommain module requiered for link
     // Domain Modules:
@@ -113,9 +116,6 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
     MemberNewComponent,
     MemberEditComponent,
     MemberTableComponent,
-  ]
+  ],
 })
-
-export class MemberModule {
-}
-
+export class MemberModule {}

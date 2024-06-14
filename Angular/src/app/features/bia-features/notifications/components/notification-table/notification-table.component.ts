@@ -10,11 +10,16 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Component({
   selector: 'bia-notification-table',
-  templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
-export class NotificationTableComponent extends BiaCalcTableComponent implements OnChanges {
-
+export class NotificationTableComponent
+  extends BiaCalcTableComponent
+  implements OnChanges
+{
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
@@ -45,8 +50,15 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
       notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.element?.notifiedUsers);
-      notification.type = new OptionDto(notification.type.id, notification.type.display, notification.type.dtoState);
+      notification.notifiedUsers = BiaOptionService.Differential(
+        notification.notifiedUsers,
+        this.element?.notifiedUsers
+      );
+      notification.type = new OptionDto(
+        notification.type.id,
+        notification.type.display,
+        notification.type.dtoState
+      );
       this.save.emit(notification);
       this.form.reset();
     }

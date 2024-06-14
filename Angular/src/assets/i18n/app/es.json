@@ -2,7 +2,7 @@
   "app": {
     "members": "Miembros",
     "sites": "Sitios",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
     "engines": "Motor",
@@ -15,12 +15,12 @@
     "planesSpecific": "Planos (Specific)",
     "planesTypes": "Tipos de planos",
     "sites": "Aerolíneas",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones"
   },
-  "Begin BIADemo" : "To remove in project from here",
+  "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Añadir empresa de mantenimiento de aeronaves",
     "admins": "Administradores",
@@ -33,10 +33,10 @@
   },
   "airport": {
     "add": "Añadir aeropuerto",
-    "city" : "Ciudad",
+    "city": "Ciudad",
     "edit": "Editar aeropuerto",
     "listOf": "Lista de aeropuertos",
-    "name" : "Nombre"
+    "name": "Nombre"
   },
   "engine": {
     "add": "Añadir motor",
@@ -80,7 +80,7 @@
     "listOf": "Lista de tipos de planos",
     "title": "Título"
   },
-  "End BIADemo" : "To remove in project up to here",
+  "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
     "listOf": "Lista de miembros",
@@ -98,17 +98,16 @@
     "admins": "Administradores",
     "edit": "Editar sitios",
     "listOf": "Lista de sitios",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "add": "Añadir aerolínea",
     "edit": "Editar aerolínea",
     "listOf": "Lista de aerolíneas",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "filterMember": "Usuario miembro",
     "title": "Title"
   },
-  "translation": 
-  {  
-    "defaultLanguage" :"Defecto (Inglesa)"
+  "translation": {
+    "defaultLanguage": "Defecto (Inglesa)"
   },
   "user": {
     "add": "Añadir usuario",

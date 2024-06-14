@@ -106,9 +106,8 @@
     "filterMember": "Utilisateur membre",
     "title": "Titre"
   },
-  "translation": 
-  {  
-    "defaultLanguage" :"Defaut (Anglais)"
+  "translation": {
+    "defaultLanguage": "Defaut (Anglais)"
   },
   "user": {
     "add": "Ajouter utilisateur",

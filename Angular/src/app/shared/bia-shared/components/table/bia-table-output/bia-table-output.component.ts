@@ -65,7 +65,7 @@ export class BiaTableOutputComponent
       this.sub.add(
         this.biaTranslationService.currentCultureDateFormat$.subscribe(
           dateFormat => {
-            let field = this.field.clone();
+            const field = this.field.clone();
             switch (field.type) {
               case PropType.DateTime:
                 field.formatDate = dateFormat.dateTimeFormat;

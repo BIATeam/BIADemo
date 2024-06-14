@@ -1,8 +1,9 @@
-<bia-user-form  
-    [crudItem]="userService.crudItem$ | async" 
-    [fields]="crudConfiguration.fieldsConfig.columns"
-    [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
-    (cancel)="onCancelled()" 
-    (save)="onSubmitted($event)"
-></bia-user-form>
-<bia-spinner *ngIf="userService.loadingGet$ | async" [overlay]="true"></bia-spinner>
+<bia-user-form
+  [crudItem]="userService.crudItem$ | async"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
+  (cancel)="onCancelled()"
+  (save)="onSubmitted($event)"></bia-user-form>
+<bia-spinner
+  *ngIf="userService.loadingGet$ | async"
+  [overlay]="true"></bia-spinner>

@@ -228,11 +228,11 @@ export class CrudItemBulkService<T extends BaseDto> {
       ?.toString()
       .trim();
 
-    if(isEmpty(csvValue)){
+    if (isEmpty(csvValue)) {
       csvObj[<keyof typeof csvObj>column.field] = <any>false;
-    } else if(csvValue?.toUpperCase() === 'X'){
+    } else if (csvValue?.toUpperCase() === 'X') {
       csvObj[<keyof typeof csvObj>column.field] = <any>true;
-    } else{
+    } else {
       this.AddErrorToSave(
         csvObj,
         column.field + ': unsupported boolean format: ' + csvValue
@@ -377,7 +377,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected fillToUpdates(oldObj: T, csvObj: T) {
     const newObj: T = clone(oldObj);
     for (const prop in newObj) {
-      if (csvObj.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(csvObj, prop)) {
         Object.assign(newObj, { [prop]: csvObj[prop] });
       }
     }

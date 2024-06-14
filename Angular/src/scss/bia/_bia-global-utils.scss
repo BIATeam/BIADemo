@@ -3,8 +3,7 @@
   flex: 1;
 }
 
-.bia-page-margin
-{
+.bia-page-margin {
   padding-left: 35px;
   padding-right: 35px;
   padding-top: 15px;
@@ -12,8 +11,7 @@
   min-width: 10px;
 }
 
-.bia-page-remove-margin
-{
+.bia-page-remove-margin {
   margin-left: -35px;
   margin-right: -35px;
   margin-top: -15px;
@@ -22,7 +20,7 @@
 
 .bia-advanced-filter {
   padding-bottom: 15px;
-  >button {
+  > button {
     position: absolute;
   }
   .pi pi-clear {
@@ -61,5 +59,3 @@
 i.bia-pointer:before {
   cursor: pointer;
 }
-
-

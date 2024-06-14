@@ -10,26 +10,27 @@ import { Permission } from 'src/app/shared/permission';
   selector: 'bia-member-edit',
   templateUrl: './member-edit.component.html',
 })
-export class MemberEditComponent extends CrudItemEditComponent<Member> implements OnInit {
+export class MemberEditComponent
+  extends CrudItemEditComponent<Member>
+  implements OnInit
+{
   teamTypeId: number;
   canAddFromDirectory = false;
 
   public memberService: MemberService;
   private authService: AuthService;
-  constructor(
-    protected injector: Injector,
-  ) 
-  {
+  constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = MemberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
     this.authService = injector.get<AuthService>(AuthService);
   }
 
-  ngOnInit()
-  {
-    this.canAddFromDirectory = this.authService.hasPermission(Permission.User_Add);
-    this.crudConfiguration.optionFilter = {teamTypeId: this.teamTypeId}
+  ngOnInit() {
+    this.canAddFromDirectory = this.authService.hasPermission(
+      Permission.User_Add
+    );
+    this.crudConfiguration.optionFilter = { teamTypeId: this.teamTypeId };
     this.memberService.teamTypeId = this.teamTypeId;
     super.ngOnInit();
   }

@@ -167,7 +167,7 @@
                           context: {
                             rowData: rowData,
                             field: col,
-                            data: getCellData(rowData, col)
+                            data: getCellData(rowData, col),
                           }
                         "></ng-container>
                     </ng-template>
@@ -188,7 +188,7 @@
                         context: {
                           rowData: rowData,
                           field: col,
-                          data: getCellData(rowData, col)
+                          data: getCellData(rowData, col),
                         }
                       "></ng-container>
                   </ng-template>
@@ -224,7 +224,9 @@
           <!-- <p-cellEditor> -->
           <ng-container *ngIf="editFooter === true">
             <ng-template
-              [ngIf]="col.isEditable === true || col.isOnlyInitializable === true"
+              [ngIf]="
+                col.isEditable === true || col.isOnlyInitializable === true
+              "
               [ngIfElse]="isNotEditable">
               <bia-table-input
                 [field]="col"
@@ -253,7 +255,7 @@
                         context: {
                           rowData: footerRowData,
                           field: col,
-                          data: getCellData(footerRowData, col)
+                          data: getCellData(footerRowData, col),
                         }
                       "></ng-container>
                   </ng-template>

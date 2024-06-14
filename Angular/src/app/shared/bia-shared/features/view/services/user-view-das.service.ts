@@ -4,7 +4,7 @@ import { View } from '../model/view';
 import { DefaultView } from '../model/default-view';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
@@ -12,6 +12,9 @@ export class UserViewDas extends AbstractDas<View> {
   }
 
   public setDefaultView(defaultView: DefaultView) {
-    return this.http.put<DefaultView>(`${this.route}${defaultView.id}/setDefault`, defaultView);
+    return this.http.put<DefaultView>(
+      `${this.route}${defaultView.id}/setDefault`,
+      defaultView
+    );
   }
 }

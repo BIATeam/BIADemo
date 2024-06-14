@@ -12,37 +12,40 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class MemberOptionsService extends CrudItemOptionsService {
-    userOptions$: Observable<OptionDto[]>;
-    roleOptions$: Observable<OptionDto[]>;
+  userOptions$: Observable<OptionDto[]>;
+  roleOptions$: Observable<OptionDto[]>;
 
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        super();
-        // TODO after creation of CRUD Member : get all requiered option dto use in Table calc and create and edit form
-        this.userOptions$ = this.store.select(getAllUserOptions);
-        this.roleOptions$ = this.store.select(getAllRoleOptions);
+  constructor(private store: Store<AppState>) {
+    super();
+    // TODO after creation of CRUD Member : get all requiered option dto use in Table calc and create and edit form
+    this.userOptions$ = this.store.select(getAllUserOptions);
+    this.roleOptions$ = this.store.select(getAllRoleOptions);
 
-        this.dictOptionDtos$ = combineLatest([this.userOptions$, this.roleOptions$]).pipe(
-            map(
-                (options) =>
-                <DictOptionDto[]>[
-                    new DictOptionDto('user', options[0]),
-                    new DictOptionDto('roles', options[1])
-                ]
-            )
-        );
-    }
+    this.dictOptionDtos$ = combineLatest([
+      this.userOptions$,
+      this.roleOptions$,
+    ]).pipe(
+      map(
+        options =>
+          <DictOptionDto[]>[
+            new DictOptionDto('user', options[0]),
+            new DictOptionDto('roles', options[1]),
+          ]
+      )
+    );
+  }
 
-    loadAllOptions(optionFilter : any) {
-        this.store.dispatch(DomainUserOptionsActions.loadAll());
-        this.store.dispatch(DomainRoleOptionsActions.loadAll({ teamTypeId: optionFilter.teamTypeId }));
-    }
+  loadAllOptions(optionFilter: any) {
+    this.store.dispatch(DomainUserOptionsActions.loadAll());
+    this.store.dispatch(
+      DomainRoleOptionsActions.loadAll({ teamTypeId: optionFilter.teamTypeId })
+    );
+  }
 
-    refreshUsersOptions() {
-        this.store.dispatch(DomainUserOptionsActions.loadAll());
-    }
+  refreshUsersOptions() {
+    this.store.dispatch(DomainUserOptionsActions.loadAll());
+  }
 }

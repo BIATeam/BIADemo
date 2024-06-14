@@ -6,7 +6,6 @@ import { CrudItemNewComponent } from './views/crud-item-new/crud-item-new.compon
 import { CrudItemEditComponent } from './views/crud-item-edit/crud-item-edit.component';
 import { CrudItemItemComponent } from './views/crud-item-item/crud-item-item.component';
 import { CrudItemTableComponent } from './components/crud-item-table/crud-item-table.component';
-import { BaseDto } from '../../model/base-dto';
 import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud-item-bulk-form.component';
 
 @NgModule({
@@ -31,4 +30,4 @@ import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud
   ],
   exports: [CrudItemBulkFormComponent],
 })
-export class CrudItemModule<CrudItem extends BaseDto> {}
+export class CrudItemModule {}

@@ -1,15 +1,25 @@
 <span *ngIf="col.isSearchable === true" class="p-float-label">
   <div class="flex flex-row justify-content-center">
-    <div class="app-field-container flex-1" style="max-width:18px;">
+    <div class="app-field-container flex-1" style="max-width: 18px">
       <ng-container *ngIf="!isArraySimple(col)">
-        <p-columnFilter [type]="columnFilterType" [matchModeOptions]="matchModeOptions"
-                        [field]="col.field" display="menu" *ngIf="showColumnFilter"></p-columnFilter>
+        <p-columnFilter
+          [type]="columnFilterType"
+          [matchModeOptions]="matchModeOptions"
+          [field]="col.field"
+          display="menu"
+          *ngIf="showColumnFilter"></p-columnFilter>
       </ng-container>
     </div>
-    <div class="app-field-container flex-1" >
+    <div class="app-field-container flex-1">
       <span *ngIf="isArrayFilter(col)" class="displayInline">
-        <ng-container *ngFor="let filter of table.filters[col.field]; let last = last" >
-          <ng-container *ngIf="filter.value !== null || filter.matchMode === 'empty' || filter.matchMode === 'notEmpty' ">
+        <ng-container
+          *ngFor="let filter of table.filters[col.field]; let last = last">
+          <ng-container
+            *ngIf="
+              filter.value !== null ||
+              filter.matchMode === 'empty' ||
+              filter.matchMode === 'notEmpty'
+            ">
             <ng-container [ngSwitch]="filter.matchMode">
               <ng-container *ngSwitchCase="'startsWith'">
                 [{{ filter.value }}*]
@@ -19,7 +29,7 @@
               </ng-container>
               <ng-container *ngSwitchCase="'contains'">
                 <ng-container *ngIf="columnFilterType === 'boolean'">
-                  [{{ "bia." + filter.value | translate }}]
+                  [{{ 'bia.' + filter.value | translate }}]
                 </ng-container>
                 <ng-container *ngIf="columnFilterType !== 'boolean'">
                   [*{{ filter.value }}*]
@@ -70,25 +80,39 @@
               <ng-container *ngSwitchCase="'gte'">
                 [>={{ filter.value }}]
               </ng-container>
-              <ng-container *ngSwitchDefault>{{ filter.matchMode + " " + filter.value }}</ng-container>
+              <ng-container *ngSwitchDefault>{{
+                filter.matchMode + ' ' + filter.value
+              }}</ng-container>
             </ng-container>
           </ng-container>
-          <ng-container  *ngIf="!last">
+          <ng-container *ngIf="!last">
             <ng-container *ngIf="filter.operator === 'and'"> & </ng-container>
-            <ng-container *ngIf="filter.operator === 'or'"> | </ng-container> 
+            <ng-container *ngIf="filter.operator === 'or'"> | </ng-container>
           </ng-container>
         </ng-container>
       </span>
-      <ng-container *ngIf="!isArrayFilter(col) && (columnFilterType !== 'boolean')">
+      <ng-container
+        *ngIf="!isArrayFilter(col) && columnFilterType !== 'boolean'">
         <input
           pInputText
           class="input-search"
           type="{{ col.type === 'Number' ? 'number' : 'text' }}"
-          placeholder="{{ col.searchPlaceholder !== undefined ? col.searchPlaceholder : col.isDate === true ? ('bia.dateIso8601' | translate) : '' }}"
+          placeholder="{{
+            col.searchPlaceholder !== undefined
+              ? col.searchPlaceholder
+              : col.isDate === true
+                ? ('bia.dateIso8601' | translate)
+                : ''
+          }}"
           (input)="setSimpleFilter($event.target.value, col)"
-          [value]="table.filters[col.field]?.value !== undefined ? table.filters[col.field]?.value:''"
-          [ngClass]="{ 'p-state-filled': table.filters[col.field]?.value !== '' }"
-        />
+          [value]="
+            table.filters[col.field]?.value !== undefined
+              ? table.filters[col.field]?.value
+              : ''
+          "
+          [ngClass]="{
+            'p-state-filled': table.filters[col.field]?.value !== '',
+          }" />
       </ng-container>
     </div>
   </div>

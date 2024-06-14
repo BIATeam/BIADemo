@@ -8,7 +8,7 @@ import { NotificationListItem } from '../model/notificationListItem';
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<NotificationListItem>({
   selectId: (notification: NotificationListItem) => notification.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -42,26 +42,30 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureNotificationsActions.loadAllByPost, (state, { event }) => {
+  on(FeatureNotificationsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureNotificationsActions.load, (state) => {
+  on(FeatureNotificationsActions.load, state => {
     return { ...state, loadingGet: true };
   }),
-  on(FeatureNotificationsActions.loadAllByPostSuccess, (state, { result, event }) => {
-    const stateUpdated = notificationsAdapter.setAll(result.data, state);
-    stateUpdated.totalCount = result.totalCount;
-    stateUpdated.lastLazyLoadEvent = event;
-    stateUpdated.loadingGetAll = false;
-    return stateUpdated;
-  }),
+  on(
+    FeatureNotificationsActions.loadAllByPostSuccess,
+    (state, { result, event }) => {
+      const stateUpdated = notificationsAdapter.setAll(result.data, state);
+      stateUpdated.totalCount = result.totalCount;
+      stateUpdated.lastLazyLoadEvent = event;
+      stateUpdated.loadingGetAll = false;
+      return stateUpdated;
+    }
+  ),
   on(FeatureNotificationsActions.loadSuccess, (state, { notification }) => {
     notification.data = JSON.parse(notification.jData);
     return { ...state, currentNotification: notification, loadingGet: false };
   }),
-  on(FeatureNotificationsActions.failure, (state, { error }) => {
+  on(FeatureNotificationsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getNotificationById = (id: number) => (state: State) => state.entities[id];
+export const getNotificationById = (id: number) => (state: State) =>
+  state.entities[id];

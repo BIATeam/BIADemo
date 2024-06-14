@@ -39,7 +39,10 @@ bia-classic-header {
 // classic-layout-theme
 bia-classic-layout {
   .content {
-    background-image: linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
+    background-image: linear-gradient(
+        rgba($biaBgColor, 0.6),
+        rgba($biaBgColor, 0.6)
+      ),
       url('~/assets/bia/img/bg-default.jpg');
   }
 

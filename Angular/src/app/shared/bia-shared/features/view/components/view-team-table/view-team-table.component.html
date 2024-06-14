@@ -1,45 +1,40 @@
-<div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
+<div
+  class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
   <button
     pButton
     *ngIf="canDelete === true"
     [disabled]="!viewSelected"
     label="{{ 'bia.delete' | translate }}"
-    (click)="onDeleteView(viewSelected?.id)"
-  ></button>
+    (click)="onDeleteView(viewSelected?.id)"></button>
   <button
     pButton
     *ngIf="showLinkWithTeam()"
     [disabled]="!viewSelected"
     label="{{ 'bia.views.linkWithTeam' | translate }}"
-    (click)="onAssignViewToTeam(viewSelected?.id, true)"
-  ></button>
+    (click)="onAssignViewToTeam(viewSelected?.id, true)"></button>
   <button
     pButton
     *ngIf="showUnLinkWithTeamAsDelete()"
     [disabled]="!viewSelected"
     label="{{ 'bia.delete' | translate }}"
-    (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"
-  ></button>
+    (click)="onAssignViewToTeamWithDelete(viewSelected?.id, false)"></button>
   <button
     pButton
     *ngIf="showUnlinkWithTeam()"
     [disabled]="!viewSelected"
     label="{{ 'bia.views.unlinkWithTeam' | translate }}"
-    (click)="onAssignViewToTeam(viewSelected?.id, false)"
-  ></button>
+    (click)="onAssignViewToTeam(viewSelected?.id, false)"></button>
   <button
     pButton
     *ngIf="showDefineDefault()"
     [disabled]="!viewSelected"
     label="{{ 'bia.views.defineDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, true)"
-  ></button>
+    (click)="onSetDefaultView(viewSelected?.id, true)"></button>
   <button
     pButton
     *ngIf="!showDefineDefault()"
     label="{{ 'bia.views.removeDefault' | translate }}"
-    (click)="onSetDefaultView(viewSelected?.id, false)"
-  ></button>
+    (click)="onSetDefaultView(viewSelected?.id, false)"></button>
 </div>
 <p-table
   #viewTeamTable
@@ -48,11 +43,12 @@
   [scrollable]="true"
   scrollHeight="40vh"
   dataKey="id"
-  (selectionChange)="onSelectionChange()"
->
+  (selectionChange)="onSelectionChange()">
   <ng-template pTemplate="header">
     <tr>
-      <th *ngIf="canUpdate" class="app-action-col">{{ 'bia.select' | translate }}</th>
+      <th *ngIf="canUpdate" class="app-action-col">
+        {{ 'bia.select' | translate }}
+      </th>
       <th>{{ 'bia.views.name' | translate }}</th>
       <th>{{ 'bia.views.description' | translate }}</th>
       <th>{{ 'app.teams' | translate }}</th>
@@ -63,7 +59,10 @@
       <td *ngIf="canUpdate" class="app-action-col">
         <p-tableRadioButton [value]="view"></p-tableRadioButton>
       </td>
-      <td>{{ view.name }} <i *ngIf="isTeamDefault(view) === true" class="pi pi-star"></i></td>
+      <td>
+        {{ view.name }}
+        <i *ngIf="isTeamDefault(view) === true" class="pi pi-star"></i>
+      </td>
       <td>{{ view.description }}</td>
       <td>{{ formatTeams(view.viewTeams) }}</td>
     </tr>
