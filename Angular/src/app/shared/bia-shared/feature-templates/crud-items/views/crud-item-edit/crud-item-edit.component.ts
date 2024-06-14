@@ -46,7 +46,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
+      this.biaTranslationService.currentCulture$.subscribe(() => {
         this.crudItemService.optionsService.loadAllOptions(
           this.crudConfiguration.optionFilter
         );

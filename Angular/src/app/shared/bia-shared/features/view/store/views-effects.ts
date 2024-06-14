@@ -37,7 +37,7 @@ export class ViewsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadAllView) /* When action is dispatched */,
-      switchMap(action => {
+      switchMap(() => {
         return this.viewDas.getAll().pipe(
           map(views => loadAllSuccess({ views })),
           catchError(err => {

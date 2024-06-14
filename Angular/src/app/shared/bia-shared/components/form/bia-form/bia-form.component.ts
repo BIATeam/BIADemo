@@ -10,7 +10,6 @@ import {
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
 import {
@@ -75,7 +74,7 @@ export class BiaFormComponent
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.element && this.form) {
       this.form.reset();
       if (this.element) {

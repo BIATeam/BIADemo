@@ -52,7 +52,7 @@ export class UsersIndexComponent
       this.store
         .select(getLastUsersAdded)
         .pipe(skip(1))
-        .subscribe(event => {
+        .subscribe(() => {
           if (!UserCRUDConfiguration.useSignalR) {
             setTimeout(() =>
               this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata())

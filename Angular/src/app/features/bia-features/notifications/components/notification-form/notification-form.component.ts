@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   UntypedFormArray,
@@ -51,7 +50,7 @@ export class NotificationFormComponent implements OnChanges {
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.notification) {
       this.form.reset();
       if (this.notification) {

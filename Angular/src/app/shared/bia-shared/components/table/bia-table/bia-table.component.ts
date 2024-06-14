@@ -372,7 +372,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   clickElementData(rowData: any) {
     if (this.canClickRow === true) {
       this.clickRowData.emit(rowData);
-      if (rowData && rowData.hasOwnProperty('id') === true) {
+      if (
+        rowData &&
+        Object.prototype.hasOwnProperty.call(rowData, 'id') === true
+      ) {
         this.clickElementId(rowData.id);
       }
     }

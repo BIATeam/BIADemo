@@ -42,7 +42,7 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
 
 export const notificationReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureNotificationsActions.loadAllByPost, (state, { event }) => {
+  on(FeatureNotificationsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureNotificationsActions.load, state => {
@@ -62,7 +62,7 @@ export const notificationReducers = createReducer<State>(
     notification.data = JSON.parse(notification.jData);
     return { ...state, currentNotification: notification, loadingGet: false };
   }),
-  on(FeatureNotificationsActions.failure, (state, { error }) => {
+  on(FeatureNotificationsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

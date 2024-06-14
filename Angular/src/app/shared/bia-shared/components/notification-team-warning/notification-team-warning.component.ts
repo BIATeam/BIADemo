@@ -8,6 +8,4 @@ import { Notification } from 'src/app/domains/bia-domains/notification/model/not
 })
 export class NotificationTeamWarningComponent {
   @Input() notification: Notification;
-
-  constructor() {}
 }

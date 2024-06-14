@@ -214,8 +214,8 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
       FeaturePlanesActions.loadAllByPost({ event: pagingAndFilter })
     );
     this.hasColumnFilter =
-      this.tableHelperService.hasFilter(this.biaTableComponent, true) ||
-      this.tableHelperService.hasFilter(this.planeTableComponent, true);
+      this.tableHelperService.hasFilter(this.biaTableComponent) ||
+      this.tableHelperService.hasFilter(this.planeTableComponent);
   }
 
   searchGlobalChanged(value: string) {

@@ -377,7 +377,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected fillToUpdates(oldObj: T, csvObj: T) {
     const newObj: T = clone(oldObj);
     for (const prop in newObj) {
-      if (csvObj.hasOwnProperty(prop)) {
+      if (Object.prototype.hasOwnProperty.call(csvObj, prop)) {
         Object.assign(newObj, { [prop]: csvObj[prop] });
       }
     }

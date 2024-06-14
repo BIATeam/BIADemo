@@ -41,13 +41,13 @@ export const INIT_STATE: State = usersAdapter.getInitialState({
 
 export const userReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureUsersActions.loadAllByPost, (state, { event }) => {
+  on(FeatureUsersActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureUsersActions.load, state => {
     return { ...state, loadingGet: true };
   }),
-  on(FeatureUsersActions.save, (state, { users }) => {
+  on(FeatureUsersActions.save, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureUsersActions.loadAllByPostSuccess, (state, { result, event }) => {
@@ -60,7 +60,7 @@ export const userReducers = createReducer<State>(
   on(FeatureUsersActions.loadSuccess, (state, { user }) => {
     return { ...state, currentUser: user, loadingGet: false };
   }),
-  on(FeatureUsersActions.failure, (state, { error }) => {
+  on(FeatureUsersActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

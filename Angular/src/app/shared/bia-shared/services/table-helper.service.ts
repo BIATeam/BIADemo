@@ -7,12 +7,7 @@ import { BiaTableComponent } from '../components/table/bia-table/bia-table.compo
   providedIn: 'root',
 })
 export class TableHelperService {
-  constructor() {}
-
-  public hasFilter(
-    biaTableComponent: BiaTableComponent,
-    ignoreGlobalFilter: boolean
-  ): boolean {
+  public hasFilter(biaTableComponent: BiaTableComponent): boolean {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }

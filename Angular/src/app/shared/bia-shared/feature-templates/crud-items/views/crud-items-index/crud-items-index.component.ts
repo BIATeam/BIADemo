@@ -114,7 +114,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   useCalcModeChange(e: boolean) {
     this.crudConfiguration.useCalcMode = e;
-    this.useCalcModeConfig(true);
+    this.useCalcModeConfig();
   }
 
   useSignalRChange(e: boolean) {
@@ -146,11 +146,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   }
 
   isLoadAllOptionsSubsribe = false;
-  protected useCalcModeConfig(manualChange: boolean) {
+  protected useCalcModeConfig() {
     if (this.crudConfiguration.useCalcMode && !this.isLoadAllOptionsSubsribe) {
       this.isLoadAllOptionsSubsribe = true;
       this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(event => {
+        this.biaTranslationService.currentCulture$.subscribe(() => {
           this.crudItemService.optionsService.loadAllOptions(
             this.crudConfiguration.optionFilter
           );
@@ -213,7 +213,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       this.sub.add(
         this.biaTranslationService.currentCulture$
           .pipe(skip(1))
-          .subscribe(event => {
+          .subscribe(() => {
             this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
           })
       );
@@ -246,7 +246,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   OnDisplay() {
     this.checkhasAdvancedFilter();
     this.useViewConfig(false);
-    this.useCalcModeConfig(false);
+    this.useCalcModeConfig();
     this.useSignalRConfig(false);
     this.usePopupConfig(false);
   }
@@ -327,8 +327,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     };
     this.crudItemService.loadAllByPost(pagingAndFilter);
     this.hasColumnFilter =
-      this.tableHelperService.hasFilter(this.biaTableComponent, true) ||
-      this.tableHelperService.hasFilter(this.crudItemTableComponent, true);
+      this.tableHelperService.hasFilter(this.biaTableComponent) ||
+      this.tableHelperService.hasFilter(this.crudItemTableComponent);
   }
 
   searchGlobalChanged(value: string) {

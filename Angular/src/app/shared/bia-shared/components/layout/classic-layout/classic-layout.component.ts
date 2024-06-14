@@ -66,13 +66,13 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     );
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
+      .subscribe(() => {
         this.setNoMargin(this.activatedRoute);
         this.updateMenuItems();
       });
 
     this.sub.add(
-      this.layoutService.breadcrumbRefresh$.subscribe(val => {
+      this.layoutService.breadcrumbRefresh$.subscribe(() => {
         this.setNoMargin(this.activatedRoute);
         this.updateMenuItems();
       })

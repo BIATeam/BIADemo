@@ -7,7 +7,7 @@
     <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" class="flex align-self-center separator"></span>
-        <img class="flex align-self-center" src="{{ logo }}" />
+        <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
@@ -60,7 +60,7 @@
       <a class="project-title" routerLink="/">
         <div
           class="flex flex-row align-items-center align-content-center align-self-stretch">
-          <img class="app-logo" src="{{ urlAppIcon }}" />
+          <img alt="appicon" class="app-logo" src="{{ urlAppIcon }}" />
           <span
             >{{ appTitle
             }}<span class="project-version">&nbsp;v{{ version }}</span></span

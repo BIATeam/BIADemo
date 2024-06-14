@@ -37,6 +37,30 @@
       }
     },
     {
+      "files": [
+        "src/app/features/bia-features/**/*.ts",
+        "src/app/shared/bia-shared/**/*.ts"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "prefix": "bia",
+            "style": "kebab-case",
+            "type": "element"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "prefix": "bia",
+            "style": "camelCase",
+            "type": "attribute"
+          }
+        ]
+      }
+    },
+    {
       "files": ["*.html"],
       "excludedFiles": ["*inline-template-*.component.html"],
       "extends": [

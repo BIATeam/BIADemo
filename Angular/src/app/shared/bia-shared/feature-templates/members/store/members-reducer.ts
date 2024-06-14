@@ -41,7 +41,7 @@ export const INIT_STATE: State = membersAdapter.getInitialState({
 
 export const memberReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureMembersActions.loadAllByPost, (state, { event }) => {
+  on(FeatureMembersActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
   on(FeatureMembersActions.load, state => {
@@ -57,7 +57,7 @@ export const memberReducers = createReducer<State>(
   on(FeatureMembersActions.loadSuccess, (state, { member }) => {
     return { ...state, currentMember: member, loadingGet: false };
   }),
-  on(FeatureMembersActions.failure, (state, { error }) => {
+  on(FeatureMembersActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
   })
 );

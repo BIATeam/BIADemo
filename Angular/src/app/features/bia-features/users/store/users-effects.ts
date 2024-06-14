@@ -255,14 +255,8 @@ export class UsersEffects {
   synchronize$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.synchronize),
-      concatMap(x =>
-        of(x).pipe(
-          withLatestFrom(
-            this.store.select(FeatureUsersStore.getLastLazyLoadEvent)
-          )
-        )
-      ),
-      switchMap(([x, event]) => {
+      withLatestFrom(this.store.select(FeatureUsersStore.getLastLazyLoadEvent)),
+      switchMap(([, event]) => {
         return this.userDas.synchronize().pipe(
           map(() => {
             this.biaMessageService.showSyncSuccess();

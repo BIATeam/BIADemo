@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -42,7 +41,7 @@ export class MemberFormEditComponent implements OnChanges {
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.member) {
       this.form.reset();
       if (this.member) {

@@ -108,7 +108,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       this.sub.add(
         this.biaTranslationService.currentCulture$
           .pipe(skip(1))
-          .subscribe(event => {
+          .subscribe(() => {
             this.onLoadLazy(
               this.notificationListComponent.getLazyLoadMetadata()
             );
@@ -179,8 +179,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter })
     );
     this.hasColumnFilter = this.tableHelperService.hasFilter(
-      this.notificationListComponent,
-      true
+      this.notificationListComponent
     );
   }
 

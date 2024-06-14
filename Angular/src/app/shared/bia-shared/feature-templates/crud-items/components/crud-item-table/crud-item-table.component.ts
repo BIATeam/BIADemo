@@ -80,8 +80,10 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
             );
             break;
           case PropType.OneToMany:
-            var typeofValue = typeof crudItem[col.field as keyof CrudItem];
-            if (col.isEditableChoice && typeofValue === 'string') {
+            if (
+              col.isEditableChoice &&
+              typeof crudItem[col.field as keyof CrudItem] === 'string'
+            ) {
               Reflect.set(
                 crudItem,
                 col.field,

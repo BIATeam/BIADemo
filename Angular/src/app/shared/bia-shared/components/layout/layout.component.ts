@@ -87,7 +87,7 @@ export class LayoutComponent implements OnInit {
     this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
       if (authInfo && authInfo.token !== '') {
         if (authInfo) {
-          this.setLanguage(authInfo);
+          this.setLanguage();
           this.setUserName(authInfo);
           this.filterNavByRole(authInfo);
           this.setTheme(authInfo);
@@ -111,7 +111,7 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  private setLanguage(authInfo: AuthInfo) {
+  private setLanguage() {
     const langSelected: string | null = getCurrentCulture();
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }

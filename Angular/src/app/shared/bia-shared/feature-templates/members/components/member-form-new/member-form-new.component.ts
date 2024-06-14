@@ -5,7 +5,6 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges,
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -42,7 +41,7 @@ export class MemberFormNewComponent implements OnChanges {
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.members) {
       const userSelected = (<Members>this.form.value).users;
       if (userSelected) {

@@ -28,6 +28,7 @@ export class CrudItemOptionsService {
         */
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loadAllOptions(optionFilter: any) {
     // TODO redefine in plane
     /*
