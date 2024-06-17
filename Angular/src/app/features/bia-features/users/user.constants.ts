@@ -15,7 +15,7 @@ export const UserCRUDConfiguration: CrudConfig = new CrudConfig({
   bulkMode: {
     useInsert: true,
     useUpdate: true,
-    useDelete: true,
+    useDelete: false,
   },
   // IMPORTANT: this key should be unique in all the application.
   // storeKey: 'feature-' + featureName,

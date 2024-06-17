@@ -14,6 +14,7 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { FileUpload } from 'primeng/fileupload';
+import { CheckboxChangeEvent } from 'primeng/checkbox';
 
 @Component({
   selector: 'bia-crud-item-bulk-form',
@@ -58,9 +59,11 @@ export class CrudItemBulkFormComponent {
   @Input() canEdit = false;
   @Input() canDelete = false;
   @Input() canAdd = false;
+  @Input() useCurrentViewChecked = false;
   @Output() save = new EventEmitter<any[]>();
   @Output() cancel = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<any>();
+  @Output() changeChkUseCurrentView = new EventEmitter<boolean>();
 
   initTableParam() {
     if (this.crudConfiguration) {
@@ -138,5 +141,9 @@ export class CrudItemBulkFormComponent {
       this.canEdit === true &&
       this.crudConfiguration.bulkMode?.useUpdate === true
     );
+  }
+
+  onChangeChkUseCurrentView(event: CheckboxChangeEvent) {
+    this.changeChkUseCurrentView.next(event.checked);
   }
 }

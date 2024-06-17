@@ -123,6 +123,9 @@
     "updateElementSuccess": "Elemento actualizado con éxito",
     "userAlreadyAssociatedSite": "Este usuario ya está asociado a este sitio"
   },
+  "bulk": {
+    "useCurrentView": "Basar el tratamiento de la importación en el filtro actual"
+  },
   "primeng": {
     "accept": "Aceptar",
     "addRule": "Agregar regla",
@@ -147,8 +150,24 @@
       "Viernes",
       "Sábado"
     ],
-    "dayNamesMin": ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sá"],
-    "dayNamesShort": ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+    "dayNamesMin": [
+      "Do",
+      "Lu",
+      "Ma",
+      "Mi",
+      "Ju",
+      "Vi",
+      "Sá"
+    ],
+    "dayNamesShort": [
+      "Dom",
+      "Lun",
+      "Mar",
+      "Mié",
+      "Jue",
+      "Vie",
+      "Sáb"
+    ],
     "empty": "Vacío",
     "emptyFilterMessage": "Ningún resultado encontrado",
     "emptyMessage": "Ningún resultado encontrado",

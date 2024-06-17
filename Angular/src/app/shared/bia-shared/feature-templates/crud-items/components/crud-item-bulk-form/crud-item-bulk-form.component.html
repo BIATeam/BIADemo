@@ -1,3 +1,15 @@
+<ng-container *ngIf="crudConfiguration.bulkMode?.useDelete === true">
+  <p-checkbox
+    class="mr-2"
+    [ngModel]="useCurrentViewChecked"
+    (onChange)="onChangeChkUseCurrentView($event)"
+    [binary]="true"
+    inputId="chkUseCurrentView"></p-checkbox>
+  <label for="chkUseCurrentView">{{ 'bulk.useCurrentView' | translate }}</label>
+  <br />
+  <br />
+</ng-container>
+
 <p-fileUpload
   #fileUpload
   mode="basic"
@@ -140,7 +152,7 @@
             (click)="$event.stopPropagation()"
             class="mr-2"></p-checkbox>
           <i class="pi pi-trash mr-2"></i>
-          <span class="vertical-align-middle"
+          <span class="mr-2 vertical-align-middle"
             >{{ 'bia.toDelete' | translate }}({{
               bulkData.toDeletes.length
             }})</span

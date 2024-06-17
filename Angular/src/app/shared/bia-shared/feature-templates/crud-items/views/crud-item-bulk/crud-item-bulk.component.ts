@@ -19,7 +19,7 @@ import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 
 @Component({
-  template: '', // le template pour ce composant abstrait doit être vide
+  template: '',
 })
 export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy
@@ -98,5 +98,9 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
 
   protected getForm(): BiaFormComponent {
     return this.biaFormComponent;
+  }
+
+  protected onChangeChkUseCurrentView(checked: boolean) {
+    this.crudItemBulkService.useCurrentView = checked;
   }
 }

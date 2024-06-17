@@ -38,7 +38,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
   protected crudConfig: CrudConfig;
-  protected columns: BiaFieldConfig[];
+  public useCurrentView = false;
 
   constructor(protected translateService: TranslateService) {}
 
@@ -89,13 +89,28 @@ export class CrudItemBulkService<T extends BaseDto> {
     const resultData$ = this.parseCSVBia(result.data);
 
     let allObjs$: Observable<T[]>;
+
     if (
       this.crudConfig.bulkMode?.useDelete === true ||
       this.crudConfig.bulkMode?.useUpdate === true
     ) {
-      allObjs$ = this.crudItemService.dasService
-        .getListByPost({ event: {} })
-        .pipe(map(x => x.data));
+      allObjs$ = this.crudItemService.lastLazyLoadEvent$.pipe(
+        map(event => {
+          if (this.useCurrentView === true) {
+            const customEvent = { ...event };
+            customEvent.first = 0;
+            customEvent.rows = 0;
+            return customEvent;
+          } else {
+            return {};
+          }
+        }),
+        switchMap(event =>
+          this.crudItemService.dasService
+            .getListByPost({ event })
+            .pipe(map(x => x.data))
+        )
+      );
     } else {
       allObjs$ = of([]);
     }

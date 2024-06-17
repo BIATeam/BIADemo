@@ -11,7 +11,9 @@
   [canAdd]="canAdd"
   [canDelete]="canDelete"
   [canEdit]="canEdit"
+  [useCurrentViewChecked]="crudItemBulkService.useCurrentView"
   (save)="onSave($event)"
   (cancel)="onCancel()"
-  (fileSelected)="onFileSelected($event)">
+  (fileSelected)="onFileSelected($event)"
+  (changeChkUseCurrentView)="onChangeChkUseCurrentView($event)">
 </bia-crud-item-bulk-form>
