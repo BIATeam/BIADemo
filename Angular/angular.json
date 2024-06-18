@@ -45,7 +45,6 @@
               "src/config.json",
               "src/web.config",
               "src/manifest.webmanifest"
-              // "src/ngsw-worker.js" // Self-destroying ServiceWorker
             ],
             "styles": [
               "node_modules/primeng/resources/primeng.min.css",
