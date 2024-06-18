@@ -1,24 +1,49 @@
-<ng-container *ngIf="crudConfiguration.bulkMode?.useDelete === true">
-  <p-checkbox
-    class="mr-2"
-    [ngModel]="useCurrentViewChecked"
-    (onChange)="onChangeChkUseCurrentView($event)"
-    [binary]="true"
-    inputId="chkUseCurrentView"></p-checkbox>
-  <label for="chkUseCurrentView">{{ 'bulk.useCurrentView' | translate }}</label>
-  <br />
-  <br />
-</ng-container>
+<form class="container" [formGroup]="form">
+  <p-fileUpload
+    #fileUpload
+    mode="basic"
+    [chooseLabel]="'bia.select' | translate"
+    chooseIcon="pi pi-upload"
+    [customUpload]="true"
+    accept="text/csv"
+    maxFileSize="1000000"
+    (onSelect)="onFileSelected($event)">
+  </p-fileUpload>
 
-<p-fileUpload
-  #fileUpload
-  mode="basic"
-  [chooseLabel]="'bia.select' | translate"
-  chooseIcon="pi pi-upload"
-  [customUpload]="true"
-  accept="text/csv"
-  maxFileSize="1000000"
-  (onSelect)="onFileSelected($event)"></p-fileUpload>
+  <span class="p-float-label">
+    <p-dropdown
+      formControlName="dateFormat"
+      [options]="dateFormats"
+      (ngModelChange)="onSubmit()"
+      placeholder="Select Date Format">
+    </p-dropdown>
+    <label>{{ 'bulk.dateFormat' | translate }}</label>
+  </span>
+
+  <span class="p-float-label">
+    <p-dropdown
+      formControlName="timeFormat"
+      [options]="timeFormats"
+      (ngModelChange)="onSubmit()"
+      placeholder="Select Time Format">
+    </p-dropdown>
+    <label>{{ 'bulk.timeFormat' | translate }}</label>
+  </span>
+
+  <ng-container *ngIf="crudConfiguration.bulkMode?.useDelete === true">
+    <div>
+      <p-checkbox
+        formControlName="useCurrentView"
+        class="mr-2"
+        (onChange)="onSubmit()"
+        [binary]="true"
+        inputId="chkUseCurrentView"></p-checkbox>
+      <label for="chkUseCurrentView">{{
+        'bulk.useCurrentView' | translate
+      }}</label>
+    </div>
+  </ng-container>
+</form>
 <br />
 
 <ng-container *ngIf="bulkData">

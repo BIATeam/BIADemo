@@ -124,6 +124,8 @@
     "userAlreadyAssociatedSite": "Este usuario ya está asociado a este sitio"
   },
   "bulk": {
+    "dateFormat": "Formato Fecha",
+    "timeFormat": "Formato Hora",
     "useCurrentView": "Basar el tratamiento de la importación en el filtro actual"
   },
   "primeng": {

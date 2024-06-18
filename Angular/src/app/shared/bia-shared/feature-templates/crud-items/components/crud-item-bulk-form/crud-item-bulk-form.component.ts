@@ -14,7 +14,13 @@ import {
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { FileUpload } from 'primeng/fileupload';
-import { CheckboxChangeEvent } from 'primeng/checkbox';
+import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { BulkParam } from '../../services/crud-item-bulk.service';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'bia-crud-item-bulk-form',
@@ -24,10 +30,14 @@ import { CheckboxChangeEvent } from 'primeng/checkbox';
 export class CrudItemBulkFormComponent {
   @ViewChild('fileUpload') fileUpload: FileUpload;
 
+  fillFormDone = false;
   deleteChecked = false;
   updateChecked = false;
   insertChecked = false;
   loading = false;
+  dateFormats: string[];
+  timeFormats: string[];
+  form: UntypedFormGroup;
 
   displayedColumns: KeyValuePair[];
   displayedColumnErrors: KeyValuePair[];
@@ -56,14 +66,65 @@ export class CrudItemBulkFormComponent {
     this.loading = false;
   }
 
+  protected _AppSettings: AppSettings | null;
+  get appSettings(): AppSettings | null {
+    return this._AppSettings;
+  }
+  @Input() set appSettings(value: AppSettings | null) {
+    this._AppSettings = value;
+    this.initDdlFormatDate();
+  }
+
+  protected _BulkParam: BulkParam = <BulkParam>{};
+  get bulkParam(): BulkParam {
+    return this._BulkParam;
+  }
+  @Input() set bulkParam(value: BulkParam) {
+    this._BulkParam = value;
+    this.fillForm();
+  }
+
   @Input() canEdit = false;
   @Input() canDelete = false;
   @Input() canAdd = false;
-  @Input() useCurrentViewChecked = false;
   @Output() save = new EventEmitter<any[]>();
   @Output() cancel = new EventEmitter<void>();
   @Output() fileSelected = new EventEmitter<any>();
-  @Output() changeChkUseCurrentView = new EventEmitter<boolean>();
+  @Output() changeBulkParam = new EventEmitter<BulkParam>();
+
+  constructor(public formBuilder: UntypedFormBuilder) {
+    this.initForm();
+  }
+
+  private initForm() {
+    this.form = this.formBuilder.group({
+      useCurrentView: [this.bulkParam.useCurrentView, Validators.required],
+      dateFormat: [this.bulkParam.dateFormat, Validators.required],
+      timeFormat: [this.bulkParam.timeFormat, Validators.required],
+    });
+  }
+
+  fillForm() {
+    if (this.bulkParam && this.fillFormDone !== true) {
+      this.form.reset();
+      if (this.bulkParam) {
+        this.form.patchValue({ ...this.bulkParam });
+      }
+      this.fillFormDone = true;
+    }
+  }
+
+  initDdlFormatDate() {
+    if (this.appSettings && this.appSettings.cultures.length > 0) {
+      this.appSettings.cultures.map(x => x.dateFormat);
+      this.dateFormats = [
+        ...new Set(this.appSettings.cultures.map(x => x.dateFormat)), // new Set => Distinct()
+      ];
+      this.timeFormats = [
+        ...new Set(this.appSettings.cultures.map(x => x.timeFormat)),
+      ];
+    }
+  }
 
   initTableParam() {
     if (this.crudConfiguration) {
@@ -143,7 +204,10 @@ export class CrudItemBulkFormComponent {
     );
   }
 
-  onChangeChkUseCurrentView(event: CheckboxChangeEvent) {
-    this.changeChkUseCurrentView.next(event.checked);
+  onSubmit() {
+    if (this.form.valid) {
+      this._BulkParam = <BulkParam>this.form.value;
+      this.changeBulkParam.next(this._BulkParam);
+    }
   }
 }

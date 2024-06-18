@@ -13,6 +13,12 @@ import { clone, isEmpty } from '../../../utils';
 import { DateHelperService } from 'src/app/core/bia-core/services/date-helper.service';
 import { BiaFormComponent } from '../../../components/form/bia-form/bia-form.component';
 
+export interface BulkParam {
+  useCurrentView: boolean;
+  dateFormat: string;
+  timeFormat: string;
+}
+
 interface TmpBulkDataError<T extends BaseDto> {
   obj: T;
   errors: string[];
@@ -38,7 +44,11 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
   protected crudConfig: CrudConfig;
-  public useCurrentView = false;
+  public bulkParam = <BulkParam>{
+    useCurrentView: false,
+    dateFormat: 'dd/MM/yyyy',
+    timeFormat: 'HH:mm',
+  };
 
   constructor(protected translateService: TranslateService) {}
 
@@ -96,7 +106,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     ) {
       allObjs$ = this.crudItemService.lastLazyLoadEvent$.pipe(
         map(event => {
-          if (this.useCurrentView === true) {
+          if (this.bulkParam.useCurrentView === true) {
             const customEvent = { ...event };
             customEvent.first = 0;
             customEvent.rows = 0;

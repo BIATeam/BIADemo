@@ -8,12 +8,13 @@
 <bia-crud-item-bulk-form
   [bulkData]="bulkData"
   [crudConfiguration]="crudConfiguration"
+  [appSettings]="this.biaTranslationService.appSettings$ | async"
   [canAdd]="canAdd"
   [canDelete]="canDelete"
   [canEdit]="canEdit"
-  [useCurrentViewChecked]="crudItemBulkService.useCurrentView"
+  [bulkParam]="crudItemBulkService.bulkParam"
   (save)="onSave($event)"
   (cancel)="onCancel()"
   (fileSelected)="onFileSelected($event)"
-  (changeChkUseCurrentView)="onChangeChkUseCurrentView($event)">
+  (changeBulkParam)="onChangeBulkParam($event)">
 </bia-crud-item-bulk-form>
