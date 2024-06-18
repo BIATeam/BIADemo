@@ -5,7 +5,6 @@
 namespace BIA.Net.Queue.Infrastructure.Service.Helpers
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
@@ -32,19 +31,19 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             ConnectionFactory connectionFactory = new ConnectionFactory { UserName = user, Password = password, VirtualHost = topic.VirtualHost ?? "/", HostName = topic.Endpoint, Port = AmqpTcpEndpoint.UseDefaultPort };
             using IConnection connection = connectionFactory.CreateConnection();
             using IModel channel = connection.CreateModel();
-                channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
+            channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
 
             using MemoryStream stream = new MemoryStream();
 #pragma warning disable SYSLIB0011 // Type or member is obsolete
             XmlSerializer xmlSerializer = new(body.GetType());
             xmlSerializer.Serialize(stream, body);
 #pragma warning restore SYSLIB0011 // Type or member is obsolete
-                    byte[] bytes = stream.ToArray();
-                    channel.BasicPublish(
-                        exchange: topic.Exchange,
-                        routingKey: topic.RoutingKey,
-                        basicProperties: null,
-                        body: bytes);
+            byte[] bytes = stream.ToArray();
+            channel.BasicPublish(
+                exchange: topic.Exchange,
+                routingKey: topic.RoutingKey,
+                basicProperties: null,
+                body: bytes);
 
             return true;
         }
@@ -65,37 +64,37 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
             ConnectionFactory connectionFactory = new ConnectionFactory { UserName = user, Password = password, VirtualHost = topic.VirtualHost, HostName = topic.Endpoint, Port = AmqpTcpEndpoint.UseDefaultPort };
             using IConnection connection = connectionFactory.CreateConnection();
             using IModel channel = connection.CreateModel();
-                channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
+            channel.ExchangeDeclare(exchange: topic.Exchange, durable: true, type: ExchangeType.Topic);
 
-                var queueName = channel.QueueDeclare(queue: $"{topic.RoutingKey}Queue", durable: true, exclusive: false, autoDelete: false).QueueName;
+            string queueName = channel.QueueDeclare(queue: $"{topic.RoutingKey}Queue", durable: true, exclusive: false, autoDelete: false).QueueName;
 
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
-                {
-                    var body = ea.Body.ToArray();
+            EventingBasicConsumer consumer = new(channel);
+            consumer.Received += (model, ea) =>
+            {
+                byte[] body = ea.Body.ToArray();
 
-                using MemoryStream stream = new MemoryStream(body);
-                XmlSerializer xmlSerializer = new(body.GetType());
+                using MemoryStream stream = new(body);
+                XmlSerializer xmlSerializer = new(typeof(T));
                 if (xmlSerializer.Deserialize(stream) is T result)
-                    {
-                            action.Invoke(result);
-                        }
-                };
-
-                channel.QueueBind(
-                    queue: queueName,
-                    exchange: topic.Exchange,
-                    routingKey: topic.RoutingKey);
-
-                channel.BasicConsume(
-                    queue: queueName,
-                    autoAck: true,
-                    consumer: consumer);
-
-                while (!cancellationToken.IsCancellationRequested)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
+                    action.Invoke(result);
                 }
+            };
+
+            channel.QueueBind(
+                queue: queueName,
+                exchange: topic.Exchange,
+                routingKey: topic.RoutingKey);
+
+            channel.BasicConsume(
+                queue: queueName,
+                autoAck: true,
+                consumer: consumer);
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(30), cancellationToken);
             }
         }
+    }
 }
