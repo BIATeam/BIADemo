@@ -8,6 +8,7 @@ import {
 import { Subscription, take } from 'rxjs';
 import {
   BulkData,
+  BulkParam,
   CrudItemBulkService,
 } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-bulk.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
@@ -100,7 +101,7 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     return this.biaFormComponent;
   }
 
-  protected onChangeChkUseCurrentView(checked: boolean) {
-    this.crudItemBulkService.useCurrentView = checked;
+  protected onChangeBulkParam(bulkParam: BulkParam) {
+    this.crudItemBulkService.bulkParam = bulkParam;
   }
 }
