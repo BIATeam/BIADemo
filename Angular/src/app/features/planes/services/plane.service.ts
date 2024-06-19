@@ -78,8 +78,12 @@ export class PlaneService extends CrudItemService<Plane> {
     this.store.dispatch(FeaturePlanesActions.update({ plane: crudItem }));
   }
   public save(crudItems: Plane[]) {
-    const siteId = this.getParentIds()[0];
-    crudItems.filter(x => !x.id).map(x => (x.siteId = siteId));
+    /// BIAToolKit - Begin Parent
+    let indexParent = 0;
+    /// BIAToolKit - End Parent
+    /// BIAToolKit - Begin Parent siteId
+    crudItems.filter(x => !x.id).map(x => (x.siteId = this.getParentIds()[indexParent++]));
+    /// BIAToolKit - End Parent siteId
     this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }
   public remove(id: any) {
