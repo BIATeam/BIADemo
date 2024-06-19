@@ -10,25 +10,27 @@
     (onSelect)="onFileSelected($event)">
   </p-fileUpload>
 
-  <span class="p-float-label">
-    <p-dropdown
-      formControlName="dateFormat"
-      [options]="dateFormats"
-      (ngModelChange)="onSubmit()"
-      placeholder="Select Date Format">
-    </p-dropdown>
-    <label>{{ 'bulk.dateFormat' | translate }}</label>
-  </span>
+  <ng-container *ngIf="hasDate === true">
+    <span class="p-float-label">
+      <p-dropdown
+        formControlName="dateFormat"
+        [options]="dateFormats"
+        (ngModelChange)="onSubmit()"
+        placeholder="Select Date Format">
+      </p-dropdown>
+      <label>{{ 'bulk.dateFormat' | translate }}</label>
+    </span>
 
-  <span class="p-float-label">
-    <p-dropdown
-      formControlName="timeFormat"
-      [options]="timeFormats"
-      (ngModelChange)="onSubmit()"
-      placeholder="Select Time Format">
-    </p-dropdown>
-    <label>{{ 'bulk.timeFormat' | translate }}</label>
-  </span>
+    <span class="p-float-label">
+      <p-dropdown
+        formControlName="timeFormat"
+        [options]="timeFormats"
+        (ngModelChange)="onSubmit()"
+        placeholder="Select Time Format">
+      </p-dropdown>
+      <label>{{ 'bulk.timeFormat' | translate }}</label>
+    </span>
+  </ng-container>
 
   <ng-container *ngIf="crudConfiguration.bulkMode?.useDelete === true">
     <div>

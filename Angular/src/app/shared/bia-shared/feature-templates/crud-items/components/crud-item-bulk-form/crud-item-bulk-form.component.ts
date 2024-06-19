@@ -35,6 +35,7 @@ export class CrudItemBulkFormComponent {
   updateChecked = false;
   insertChecked = false;
   loading = false;
+  hasDate = false;
   dateFormats: string[];
   timeFormats: string[];
   form: UntypedFormGroup;
@@ -51,6 +52,7 @@ export class CrudItemBulkFormComponent {
   }
   @Input() set crudConfiguration(value: CrudConfig) {
     this._CrudConfiguration = value;
+    this.initHasDate();
     this.initTableParam();
   }
 
@@ -123,6 +125,15 @@ export class CrudItemBulkFormComponent {
       this.timeFormats = [
         ...new Set(this.appSettings.cultures.map(x => x.timeFormat)),
       ];
+    }
+  }
+
+  initHasDate() {
+    if (this.crudConfiguration) {
+      this.hasDate =
+        this.crudConfiguration.fieldsConfig.columns.some(
+          x => x.type === PropType.Date || x.type === PropType.DateTime
+        ) === true;
     }
   }
 

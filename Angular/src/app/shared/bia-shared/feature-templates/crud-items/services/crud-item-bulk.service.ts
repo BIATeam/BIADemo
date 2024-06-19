@@ -218,17 +218,15 @@ export class CrudItemBulkService<T extends BaseDto> {
     if (isEmpty(csvValue)) {
       csvObj[<keyof typeof csvObj>column.field] = <any>null;
     } else {
-      let dateString = String(csvObj[<keyof typeof csvObj>column.field]);
+      const dateString = String(csvObj[<keyof typeof csvObj>column.field]);
       if (isEmpty(dateString)) {
         return;
       }
-
-      // If there is no time, I add it otherwise there is a delay in the conversion to the time.
-      const timePattern = /\d{1,2}:\d{1,2}/;
-      if (!timePattern.test(dateString)) {
-        dateString += ' 00:00';
-      }
-      const date: Date = DateHelperService.parseDate(dateString);
+      const date: Date = DateHelperService.parseDate(
+        dateString,
+        this.bulkParam.dateFormat,
+        this.bulkParam.timeFormat
+      );
       if (DateHelperService.isValidDate(date)) {
         csvObj[<keyof typeof csvObj>column.field] = <any>date;
       } else {

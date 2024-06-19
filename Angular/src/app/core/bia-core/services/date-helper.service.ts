@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { parse } from 'date-fns';
 
 @Injectable({
   providedIn: 'root',
@@ -45,39 +46,35 @@ export class DateHelperService {
     return !isNaN(d.getTime());
   }
 
-  public static parseDate(dateString: string): Date {
-    if (isNaN(Date.parse(dateString)) !== true) {
-      return new Date(dateString);
-    }
+  public static parseDate(
+    dateString: string,
+    dateFormat: string | null = null,
+    timeFormat: string | null = null
+  ): Date {
+    const timePattern = /:/;
 
-    const formats = [
-      // 'DD/MM/YYYY HH:mm'
-      {
-        regex: /^\d{2}\/\d{2}\/\d{4}\s\d{2}:\d{2}$/,
-        fn: (d: string) => {
-          const [date, time] = d.split(' ');
-          const [day, month, year] = date.split('/');
-          const [hours, minutes] = time.split(':');
-          return new Date(`${year}-${month}-${day}T${hours}:${minutes}`);
-        },
-      },
+    dateString = dateString.replace('  ', ' ').trim();
 
-      // 'DD/MM/YYYY'
-      {
-        regex: /^\d{2}\/\d{2}\/\d{4}$/,
-        fn: (d: string) => {
-          const [day, month, year] = d.split('/');
-          return new Date(`${year}-${month}-${day}`);
-        },
-      },
-    ];
-
-    for (let i = 0; i < formats.length; i++) {
-      if (formats[i].regex.test(dateString)) {
-        return formats[i].fn(dateString);
+    // Attempt to parse the date directly
+    let parsedDate = new Date(dateString);
+    if (!isNaN(parsedDate.getTime())) {
+      // If there is no time, add it to avoid delay in the conversion
+      if (!timePattern.test(dateString)) {
+        dateString += ' 00:00';
+        parsedDate = new Date(dateString);
       }
+      return parsedDate;
     }
 
-    return new Date(dateString);
+    // Handle custom format if provided
+    if (dateFormat != null) {
+      let format = dateFormat;
+      if (timePattern.test(dateString)) {
+        format = dateFormat + ' ' + timeFormat;
+      }
+      return parse(dateString, format, new Date());
+    }
+
+    return <Date>{};
   }
 }
