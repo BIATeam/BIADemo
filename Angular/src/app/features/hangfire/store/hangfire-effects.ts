@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, pluck } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { randomReviewPlane, failure } from './hangfire-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -17,7 +17,7 @@ export class HangfireEffects {
   randomReviewPlane$ = createEffect(() =>
     this.actions$.pipe(
       ofType(randomReviewPlane),
-      pluck('teamId'),
+      map(x => x?.teamId),
       switchMap(teamId => {
         return this.hangfireDas.randomReviewPlane(teamId).pipe(
           map(() => {

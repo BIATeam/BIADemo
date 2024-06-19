@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class AircraftMaintenanceCompaniesEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.aircraftMaintenanceCompanyDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<AircraftMaintenanceCompany[]>) =>
@@ -54,7 +53,7 @@ export class AircraftMaintenanceCompaniesEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.aircraftMaintenanceCompanyDas.get({ id: id }).pipe(
@@ -86,7 +85,7 @@ export class AircraftMaintenanceCompaniesEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.create),
-      pluck('aircraftMaintenanceCompany'),
+      map(x => x?.aircraftMaintenanceCompany),
       concatMap(aircraftMaintenanceCompany =>
         of(aircraftMaintenanceCompany).pipe(
           withLatestFrom(
@@ -130,7 +129,7 @@ export class AircraftMaintenanceCompaniesEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.update),
-      pluck('aircraftMaintenanceCompany'),
+      map(x => x?.aircraftMaintenanceCompany),
       concatMap(aircraftMaintenanceCompany =>
         of(aircraftMaintenanceCompany).pipe(
           withLatestFrom(
@@ -175,7 +174,7 @@ export class AircraftMaintenanceCompaniesEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -219,7 +218,7 @@ export class AircraftMaintenanceCompaniesEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAircraftMaintenanceCompaniesActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(

@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class UsersEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.userDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<User[]>) =>
@@ -52,7 +51,7 @@ export class UsersEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.userDas.get({ id: id }).pipe(
@@ -72,7 +71,7 @@ export class UsersEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.create),
-      pluck('user'),
+      map(x => x?.user),
       concatMap(user =>
         of(user).pipe(
           withLatestFrom(
@@ -109,7 +108,7 @@ export class UsersEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.update),
-      pluck('user'),
+      map(x => x?.user),
       concatMap(user =>
         of(user).pipe(
           withLatestFrom(
@@ -147,7 +146,7 @@ export class UsersEffects {
   save$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.save),
-      pluck('users'),
+      map(x => x?.users),
       concatMap(users =>
         of(users).pipe(
           withLatestFrom(
@@ -184,7 +183,7 @@ export class UsersEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -218,7 +217,7 @@ export class UsersEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(

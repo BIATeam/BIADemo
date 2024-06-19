@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class MembersEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.memberDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Member[]>) =>
@@ -52,7 +51,7 @@ export class MembersEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.memberDas.get({ id: id }).pipe(
@@ -72,7 +71,7 @@ export class MembersEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.create),
-      pluck('member'),
+      map(x => x?.member),
       concatMap(member =>
         of(member).pipe(
           withLatestFrom(
@@ -109,7 +108,7 @@ export class MembersEffects {
   createMulti$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.createMulti),
-      pluck('members'),
+      map(x => x?.members),
       concatMap(member =>
         of(member).pipe(
           withLatestFrom(
@@ -146,7 +145,7 @@ export class MembersEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.update),
-      pluck('member'),
+      map(x => x?.member),
       concatMap(member =>
         of(member).pipe(
           withLatestFrom(
@@ -184,7 +183,7 @@ export class MembersEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -221,7 +220,7 @@ export class MembersEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMembersActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(
