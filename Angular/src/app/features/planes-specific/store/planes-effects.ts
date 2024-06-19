@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class PlanesEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.planeDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Plane[]>) =>
@@ -52,7 +51,7 @@ export class PlanesEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.planeDas.get({ id: id }).pipe(
@@ -72,7 +71,7 @@ export class PlanesEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.create),
-      pluck('plane'),
+      map(x => x?.plane),
       concatMap(plane =>
         of(plane).pipe(
           withLatestFrom(
@@ -109,7 +108,7 @@ export class PlanesEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.update),
-      pluck('plane'),
+      map(x => x?.plane),
       concatMap(plane =>
         of(plane).pipe(
           withLatestFrom(
@@ -147,7 +146,7 @@ export class PlanesEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -184,7 +183,7 @@ export class PlanesEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeaturePlanesActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(
