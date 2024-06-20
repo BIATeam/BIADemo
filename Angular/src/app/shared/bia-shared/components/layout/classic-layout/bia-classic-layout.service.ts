@@ -8,7 +8,6 @@ import {
   Injectable,
   Injector,
   TemplateRef,
-  ComponentFactoryResolver,
   InjectionToken,
   ViewContainerRef,
 } from '@angular/core';
@@ -36,7 +35,6 @@ export class BiaClassicLayoutService {
   changeFooter<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -47,7 +45,6 @@ export class BiaClassicLayoutService {
       this.footerPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -55,7 +52,6 @@ export class BiaClassicLayoutService {
   changeMainBar<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -66,7 +62,6 @@ export class BiaClassicLayoutService {
       this.mainBarPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -103,7 +98,6 @@ export class BiaClassicLayoutService {
     portalSubject: BehaviorSubject<Portal<any> | null>,
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T>,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     let portal;
@@ -115,23 +109,17 @@ export class BiaClassicLayoutService {
     } else {
       let finalInjector = injector;
       if (data) {
-        const injectionTokens = new WeakMap<any, any>([
-          [BIA_LAYOUT_DATA, data],
-        ]);
+        // const injectionTokens = new WeakMap<any, any>([
+        //   [BIA_LAYOUT_DATA, data],
+        // ]);
         if (injector !== undefined) {
-          // finalInjector = new PortalInjector(injector, injectionTokens);
           finalInjector = Injector.create({
             parent: injector,
-            providers: [{ provide: injectionTokens, useValue: data }],
+            providers: [{ provide: BIA_LAYOUT_DATA, useValue: data }],
           });
         }
       }
-      portal = new ComponentPortal(
-        componentOrTemplateRef,
-        null,
-        finalInjector,
-        componentFactoryResolver
-      );
+      portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector);
     }
     portalSubject.next(portal);
     return portal;
