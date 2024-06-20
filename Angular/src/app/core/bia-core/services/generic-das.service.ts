@@ -285,7 +285,7 @@ export abstract class GenericDas {
         ) {
           return NEVER;
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
