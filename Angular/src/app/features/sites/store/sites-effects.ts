@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class SitesEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.siteDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Site[]>) =>
@@ -52,7 +51,7 @@ export class SitesEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.siteDas.get({ id: id }).pipe(
@@ -72,7 +71,7 @@ export class SitesEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.create),
-      pluck('site'),
+      map(x => x?.site),
       concatMap(site =>
         of(site).pipe(
           withLatestFrom(
@@ -109,7 +108,7 @@ export class SitesEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.update),
-      pluck('site'),
+      map(x => x?.site),
       concatMap(site =>
         of(site).pipe(
           withLatestFrom(
@@ -147,7 +146,7 @@ export class SitesEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -181,7 +180,7 @@ export class SitesEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureSitesActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(

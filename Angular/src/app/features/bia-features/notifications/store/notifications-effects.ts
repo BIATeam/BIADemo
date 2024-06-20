@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -32,7 +31,7 @@ export class NotificationsEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.notificationDas
           .getListItemsByPost<NotificationListItem>({ event: event })
@@ -55,7 +54,7 @@ export class NotificationsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.notificationDas.get({ id: id }).pipe(
@@ -81,7 +80,7 @@ export class NotificationsEffects {
   setUnread$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.setUnread),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         return this.notificationDas.setUnread(id).pipe(
           map(notification =>
@@ -99,7 +98,7 @@ export class NotificationsEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.create),
-      pluck('notification'),
+      map(x => x?.notification),
       concatMap(notification =>
         of(notification).pipe(
           withLatestFrom(this.store.select(getLastLazyLoadEvent))
@@ -129,7 +128,7 @@ export class NotificationsEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.update),
-      pluck('notification'),
+      map(x => x?.notification),
       concatMap(notification =>
         of(notification).pipe(
           withLatestFrom(this.store.select(getLastLazyLoadEvent))
@@ -161,7 +160,7 @@ export class NotificationsEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))
       ),
@@ -189,7 +188,7 @@ export class NotificationsEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(withLatestFrom(this.store.select(getLastLazyLoadEvent)))
       ),

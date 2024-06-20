@@ -45,7 +45,7 @@ export class NotificationTypeOptionsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap((id) =>
         this.notificationTypeDas.get({ id: id }).pipe(
           map((notificationType) => loadSuccess({ notificationType })),

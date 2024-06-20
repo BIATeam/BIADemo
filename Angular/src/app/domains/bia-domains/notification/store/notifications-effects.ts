@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { DomainNotificationsActions } from './notifications-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -33,7 +33,7 @@ export class NotificationsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainNotificationsActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id =>
         this.notificationDas.get({ id: id }).pipe(
           map(notification =>
@@ -51,7 +51,6 @@ export class NotificationsEffects {
   loadUnreadNotificationIds$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainNotificationsActions.loadUnreadNotificationIds),
-      pluck('event'),
       switchMap(() =>
         this.notificationDas.getUnreadNotificationIds().pipe(
           map(ids =>
@@ -69,7 +68,7 @@ export class NotificationsEffects {
   setAsRead$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainNotificationsActions.setAsRead),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         return this.notificationDas.setAsRead(id).pipe(
           map(() => DomainNotificationsActions.setAsReadSuccess()),

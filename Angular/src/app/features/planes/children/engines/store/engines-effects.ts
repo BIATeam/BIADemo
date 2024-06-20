@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -32,7 +31,7 @@ export class EnginesEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.engineDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<Engine[]>) =>
@@ -53,7 +52,7 @@ export class EnginesEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.engineDas.get({ id: id }).pipe(
@@ -74,7 +73,7 @@ export class EnginesEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.create),
-      pluck('engine'),
+      map(x => x?.engine),
       concatMap(engine =>
         of(engine).pipe(
           withLatestFrom(
@@ -111,7 +110,7 @@ export class EnginesEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.update),
-      pluck('engine'),
+      map(x => x?.engine),
       concatMap(engine =>
         of(engine).pipe(
           withLatestFrom(
@@ -149,7 +148,7 @@ export class EnginesEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -186,7 +185,7 @@ export class EnginesEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureEnginesActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(

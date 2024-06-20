@@ -88,7 +88,7 @@ export class TokenInterceptor implements HttpInterceptor {
         ) {
           return this.handle401Error(request, next);
         } else {
-          return throwError(error);
+          return throwError(() => error);
         }
       })
     );

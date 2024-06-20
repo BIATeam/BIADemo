@@ -23,7 +23,7 @@ export class BiaOnlineOfflineInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError(error => {
         this.biaOnlineOfflineService.manageHttpErrorResponse(request, error);
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }

@@ -6,7 +6,6 @@ import { CrudItemNewComponent } from './views/crud-item-new/crud-item-new.compon
 import { CrudItemEditComponent } from './views/crud-item-edit/crud-item-edit.component';
 import { CrudItemItemComponent } from './views/crud-item-item/crud-item-item.component';
 import { CrudItemTableComponent } from './components/crud-item-table/crud-item-table.component';
-import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud-item-bulk-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +18,6 @@ import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud
     CrudItemEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     CrudItemTableComponent,
-    CrudItemBulkFormComponent,
   ],
   imports: [
     SharedModule,
@@ -28,6 +26,5 @@ import { CrudItemBulkFormComponent } from './components/crud-item-bulk-form/crud
     StoreModule.forFeature(storeKey, reducers),
     EffectsModule.forFeature([CrudItemsEffects]),*/
   ],
-  exports: [CrudItemBulkFormComponent],
 })
 export class CrudItemModule {}
