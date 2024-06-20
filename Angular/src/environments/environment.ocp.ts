@@ -16,6 +16,7 @@ export const environment = {
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR,
+      withCredentials: true,
     },
   },
 };
