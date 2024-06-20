@@ -86,7 +86,8 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"></bia-table>
+      (stateSave)="onStateSave($event)"
+      frozeSelectColumn="true"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="crudItems$ | async"
@@ -107,6 +108,7 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"></app-plane-table>
+      (save)="onSave($event)"
+      frozeSelectColumn="true"></app-plane-table>
   </div>
 </div>
