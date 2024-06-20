@@ -26,7 +26,7 @@ import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationDas } from '../../services/notification-das.service';
-import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
@@ -213,7 +213,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
       ...this.notificationListComponent.getLazyLoadMetadata(),
     };
     this.notificationDas.getFile(columnsAndFilter).subscribe(data => {
-      FileSaver.saveAs(
+      saveAs(
         data,
         this.translateService.instant('notification.listOf') + '.csv'
       );
