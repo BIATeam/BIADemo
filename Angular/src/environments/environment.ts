@@ -16,6 +16,7 @@ export const environment = {
       serverLoggingUrl: 'http://localhost:32128/BIADemo/WebApi/api/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR,
+      withCredentials: true,
     },
   },
 };
