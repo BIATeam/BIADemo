@@ -21,6 +21,7 @@ import { UserCRUDConfiguration } from './user.constants';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
 import { UserBulkComponent } from './views/user-bulk/user-bulk.component';
+import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
 
 export const ROUTES: Routes = [
   {
@@ -130,6 +131,7 @@ export const ROUTES: Routes = [
   imports: [
     SharedModule,
     CrudItemModule,
+    CrudItemBulkModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       UserCRUDConfiguration.storeKey,

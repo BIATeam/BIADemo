@@ -25,6 +25,7 @@ import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
 import { PlaneCRUDConfiguration } from './plane.constants';
 import { PlaneBulkComponent } from './views/plane-bulk/plane-bulk.component';
+import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
 
 export const ROUTES: Routes = [
   {
@@ -148,6 +149,7 @@ export const ROUTES: Routes = [
   imports: [
     SharedModule,
     CrudItemModule,
+    CrudItemBulkModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
       PlaneCRUDConfiguration.storeKey,
