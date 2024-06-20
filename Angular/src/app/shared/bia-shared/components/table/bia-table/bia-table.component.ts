@@ -62,7 +62,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() isScrollable = false;
 
   protected isSelectFrozen = false;
-  protected minWidthSelect: string;
+  protected widthSelect: string;
   protected alignFrozenSelect = 'left';
   protected _configuration: BiaFieldsConfig;
   get configuration(): BiaFieldsConfig {
@@ -487,10 +487,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     if (biaFieldsConfig) {
       if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
         this.isSelectFrozen = true;
-        this.minWidthSelect = '50px';
+        this.widthSelect = '50px';
       } else {
         this.isSelectFrozen = false;
-        this.minWidthSelect = '';
+        this.widthSelect = '';
       }
     }
   }

@@ -32,7 +32,7 @@
       <th
         class="bia-table-select-col"
         *ngIf="canSelectElement === true"
-        [style.min-width]="minWidthSelect"
+        [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen">
@@ -84,7 +84,7 @@
     <tr *ngIf="showColSearch === true" class="searchTR">
       <th
         *ngIf="canSelectElement === true"
-        [style.min-width]="minWidthSelect"
+        [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen"></th>
@@ -104,7 +104,7 @@
     <tr [pSelectableRow]="rowData">
       <td
         *ngIf="canSelectElement === true"
-        [style.min-width]="minWidthSelect"
+        [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen">
