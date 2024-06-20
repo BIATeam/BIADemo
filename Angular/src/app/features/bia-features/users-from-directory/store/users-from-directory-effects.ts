@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureUsersFromDirectoryActions } from './users-from-directory-actions';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -46,7 +46,7 @@ export class UsersFromDirectoryEffects {
   addFromDirectory$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureUsersFromDirectoryActions.addFromDirectory),
-      pluck('usersFromDirectory'),
+      map(x => x?.usersFromDirectory),
       switchMap(usersFromDirectory => {
         return this.userFromDirectoryDas
           .save({ items: usersFromDirectory, endpoint: 'addFromDirectory' })

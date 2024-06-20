@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, pluck } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   failure,
@@ -52,7 +52,7 @@ export class ViewsEffects {
   deleteUserView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(removeUserView) /* When action is dispatched */,
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         return this.userViewDas.delete({ id: id }).pipe(
           map(() => {
@@ -143,7 +143,7 @@ export class ViewsEffects {
   deleteTeamView$ = createEffect(() =>
     this.actions$.pipe(
       ofType(removeTeamView) /* When action is dispatched */,
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         return this.teamViewDas.delete({ id: id }).pipe(
           map(() => {

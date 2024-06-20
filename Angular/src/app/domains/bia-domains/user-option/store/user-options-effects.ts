@@ -65,7 +65,7 @@ export class UserOptionsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap((id) =>
         this.userDas.get({ id: id }).pipe(
           map((user) => loadSuccess({ user })),

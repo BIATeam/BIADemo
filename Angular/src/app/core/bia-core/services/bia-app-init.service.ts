@@ -163,7 +163,7 @@ export class BiaAppInitService implements OnDestroy {
       window.location.href =
         allEnvironments.urlErrorPage + '?num=' + error.status;
     }
-    return throwError(error);
+    return throwError(() => error);
   }
 
   ngOnDestroy() {

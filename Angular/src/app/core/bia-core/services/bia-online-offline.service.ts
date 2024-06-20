@@ -231,7 +231,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
           } else {
             this.launchNextHttpRequestItem(httpRequestItem);
           }
-          return throwError(error);
+          return throwError(() => error);
         })
       )
       .subscribe(() => {

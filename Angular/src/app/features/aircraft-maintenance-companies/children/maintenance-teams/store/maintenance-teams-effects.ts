@@ -3,7 +3,6 @@ import { of } from 'rxjs';
 import {
   catchError,
   map,
-  pluck,
   switchMap,
   withLatestFrom,
   concatMap,
@@ -31,7 +30,7 @@ export class MaintenanceTeamsEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.loadAllByPost),
-      pluck('event'),
+      map(x => x?.event),
       switchMap(event =>
         this.maintenanceTeamDas.getListByPost({ event: event }).pipe(
           map((result: DataResult<MaintenanceTeam[]>) =>
@@ -52,7 +51,7 @@ export class MaintenanceTeamsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap(id => {
         if (id) {
           return this.maintenanceTeamDas.get({ id: id }).pipe(
@@ -78,7 +77,7 @@ export class MaintenanceTeamsEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.create),
-      pluck('maintenanceTeam'),
+      map(x => x?.maintenanceTeam),
       concatMap(maintenanceTeam =>
         of(maintenanceTeam).pipe(
           withLatestFrom(
@@ -115,7 +114,7 @@ export class MaintenanceTeamsEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.update),
-      pluck('maintenanceTeam'),
+      map(x => x?.maintenanceTeam),
       concatMap(maintenanceTeam =>
         of(maintenanceTeam).pipe(
           withLatestFrom(
@@ -153,7 +152,7 @@ export class MaintenanceTeamsEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.remove),
-      pluck('id'),
+      map(x => x?.id),
       concatMap((id: number) =>
         of(id).pipe(
           withLatestFrom(
@@ -190,7 +189,7 @@ export class MaintenanceTeamsEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureMaintenanceTeamsActions.multiRemove),
-      pluck('ids'),
+      map(x => x?.ids),
       concatMap((ids: number[]) =>
         of(ids).pipe(
           withLatestFrom(

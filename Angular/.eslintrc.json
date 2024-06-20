@@ -1,5 +1,6 @@
 {
   "root": true,
+  "plugins": ["deprecation"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -33,7 +34,8 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "deprecation/deprecation": "warn"
       }
     },
     {

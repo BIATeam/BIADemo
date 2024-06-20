@@ -14,7 +14,7 @@ import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config
 import { AppState } from 'src/app/store/state';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
@@ -377,7 +377,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudItemService.dasService
       .getFile(columnsAndFilter)
       .subscribe(data => {
-        FileSaver.saveAs(data, fileName + '.csv');
+        saveAs(data, fileName + '.csv');
       });
   }
 
