@@ -58,8 +58,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() viewPreference: string;
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
-  @Input() scrollHeightValue = '';
-  @Input() isScrollable = false;
+  @Input() scrollHeightValue = 'calc( 100vh - 450px)';
+  @Input() isScrollable = true;
+  @Input() frozeSelectColumn = false;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -484,7 +485,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
    * @param biaFieldsConfig
    */
   protected manageSelectFrozen(biaFieldsConfig: BiaFieldsConfig) {
-    if (biaFieldsConfig) {
+    if (!this.frozeSelectColumn && biaFieldsConfig) {
       if (biaFieldsConfig?.columns?.some(x => x.isFrozen === true) === true) {
         this.isSelectFrozen = true;
         this.widthSelect = '50px';
@@ -492,6 +493,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         this.isSelectFrozen = false;
         this.widthSelect = '';
       }
+    }
+    else {
+      this.isSelectFrozen = true;
+      this.widthSelect = '50px';
     }
   }
 
