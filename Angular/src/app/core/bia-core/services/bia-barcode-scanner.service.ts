@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import { ALT, CONTROL, SHIFT } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
