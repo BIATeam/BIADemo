@@ -493,8 +493,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         this.isSelectFrozen = false;
         this.widthSelect = '';
       }
-    }
-    else {
+    } else {
       this.isSelectFrozen = true;
       this.widthSelect = '50px';
     }
