@@ -189,8 +189,8 @@ export class CrudItemBulkService<T extends BaseDto> {
       csvData = csvData.substring(csvData.indexOf('\n') + 1);
     }
 
-    // Use a regular expression to detect formatted strings
-    const regex = /"=""(.+?)"""/g;
+    // Use a regular expression to detect formatted strings, allowing for empty strings
+    const regex = /"=""(.*?)"""/g;
 
     // Replace each occurrence of formatted strings with the desired values
     const cleanedData = csvData.replace(regex, (match, p1) => p1);
@@ -199,8 +199,8 @@ export class CrudItemBulkService<T extends BaseDto> {
   }
 
   protected parseCSVString(csvObj: T, column: BiaFieldConfig) {
-    const regex1 = /"=""(.+?)"""/g;
-    const regex2 = /=""(.+?)""/g;
+    const regex1 = /"=""(.*?)"""/g;
+    const regex2 = /=""(.*?)""/g;
 
     csvObj[<keyof typeof csvObj>column.field] = <any>String(
       csvObj[<keyof typeof csvObj>column.field]
@@ -400,8 +400,20 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected fillToUpdates(oldObj: T, csvObj: T) {
     const newObj: T = clone(oldObj);
     for (const prop in newObj) {
+      // We do not directly compare the CSV object because it could contain properties that are not known to the object.
+      // So, we start from an obj and we fill in the properties if they are present on both sides.
       if (Object.prototype.hasOwnProperty.call(csvObj, prop)) {
         Object.assign(newObj, { [prop]: csvObj[prop] });
+
+        if (
+          (isEmpty(newObj[prop]) || newObj[prop] === false) &&
+          (isEmpty(oldObj[prop]) || oldObj[prop] === false)
+        ) {
+          // Example: if newObj[prop] = null and oldObj[prop] = [] (Array empty)
+          // For our comparison, it is the same thing so we enter one of the values
+          // to facilitate comparison with JSON.stringify
+          newObj[prop] = oldObj[prop];
+        }
       }
     }
 

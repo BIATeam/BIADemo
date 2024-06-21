@@ -111,6 +111,7 @@
   },
   "user": {
     "add": "Add user",
+    "edit": "Edit user",
     "firstName": "First Name",
     "import": "Import users",
     "lastName": "Last Name",

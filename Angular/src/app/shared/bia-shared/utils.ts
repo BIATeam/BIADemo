@@ -4,6 +4,10 @@ export const isEmpty = (value: any | null | undefined): boolean => {
     return true;
   }
 
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime());
+  }
+
   if (
     ['string', 'number'].includes(typeof value) ||
     value instanceof String ||
@@ -14,10 +18,6 @@ export const isEmpty = (value: any | null | undefined): boolean => {
 
   if (Array.isArray(value) || typeof value === 'object') {
     return Object.keys(value).length === 0;
-  }
-
-  if (value instanceof Date) {
-    return Number.isNaN(value.getTime());
   }
 
   return false;

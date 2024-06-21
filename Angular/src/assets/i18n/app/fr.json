@@ -111,6 +111,7 @@
   },
   "user": {
     "add": "Ajouter utilisateur",
+    "edit": "Modifier utilisateur",
     "firstName": "Prénom",
     "import": "Importer utilisateurs",
     "lastName": "Nom",
