@@ -4,7 +4,7 @@
   style="width: calc(100vw);">
   <!-- topbar -->
 
-  <div class="topbar flex justify-content-between align-content-between">
+  <div class="topbar flex justify-content-between align-content-between flex-wrap">
     <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" class="flex align-self-center separator"></span>
@@ -12,7 +12,7 @@
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
-    <div class="controls flex flex-row" style="flex-wrap: wrap;">
+    <div class="controls flex flex-row flex-wrap">
       <ng-template
         ngFor
         let-teamTypeSelector
@@ -22,6 +22,8 @@
           [teamType]="teamTypeSelector"></bia-classic-team-selector>
         <span class="flex align-self-center separator"></span>
       </ng-template>
+    </div>
+    <div class="controls flex flex-row">
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <bia-online-offline-icon></bia-online-offline-icon>
       <i
