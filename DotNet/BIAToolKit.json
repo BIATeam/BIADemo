@@ -42,7 +42,10 @@
 			[
 				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
+				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs",
+				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\AirportMapper.cs",
+				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Airport.cs",
+				"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\AirportDto.cs"
 			],
 			"Exclude":
 			[]
