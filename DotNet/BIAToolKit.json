@@ -3,7 +3,7 @@
 		"Feature" : "crud-planes",
 		"Type" : "WebApi",
 		"FeatureName" : "Plane",
-		"FeatureNamePlurial" : "Planes",
+		"FeatureNamePlural" : "Planes",
 		"ZipName" : "crud-planes.zip",
 		"Contains" :
 		{
@@ -34,7 +34,7 @@
 		"Feature" : "airport-option",
 		"Type" : "WebApi_Option",
 		"FeatureName" : "Airport",
-		"FeatureNamePlurial" : "Airports",
+		"FeatureNamePlural" : "Airports",
 		"ZipName" : "airport-option.zip",
 		"Contains" :
 		{
@@ -42,10 +42,7 @@
 			[
 				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\AirportMapper.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Airport.cs",
-				"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\AirportDto.cs"
+				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
 			],
 			"Exclude":
 			[]
