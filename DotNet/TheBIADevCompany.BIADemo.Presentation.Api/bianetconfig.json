@@ -202,6 +202,7 @@
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
         "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
+      /// BIAToolKit - Begin Partial Config Airport
       // Airport
       {
         "Name": "Airport_Options",
@@ -211,6 +212,7 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
+      /// BIAToolKit - End Partial Config Airport
       // PlaneType
       {
         "Name": "PlaneType_Options",

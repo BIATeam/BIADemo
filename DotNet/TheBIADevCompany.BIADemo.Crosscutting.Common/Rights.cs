@@ -4,9 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 {
-    using System.Collections.Generic;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-
     /// <summary>
     /// The list of all rights.
     /// </summary>
@@ -259,6 +256,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "PlaneType_Save";
         }
 
+        /// BIAToolKit - Begin Partial Rights Airport
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -299,6 +297,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Airport_Save";
         }
+        /// BIAToolKit - End Partial Rights Airport
 
         /// <summary>
         /// The Hangfire rights.
