@@ -17,6 +17,9 @@ export class Plane extends BaseDto {
   deliveryDate: Date;
   syncTime: string;
   capacity: number;
+  probability: number ;
+  fuelLevel: number ;
+  estimatedPrice: number ;
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
@@ -75,6 +78,26 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig = {
       validators: [Validators.required, Validators.min(1)],
     }),
     /// BIAToolKit - End Block capacity
+    /// BIAToolKit - Begin Block probability
+    Object.assign(new BiaFieldConfig('probability', 'plane.probability'), {
+      type: PropType.Double,
+      filterMode: PrimeNGFiltering.Equals,
+    }),
+    /// BIAToolKit - End Block probability
+    /// BIAToolKit - Begin Block fuelLevel
+    Object.assign(new BiaFieldConfig('fuelLevel', 'plane.fuelLevel'), {
+      type: PropType.Float,
+      filterMode: PrimeNGFiltering.Equals,
+    }),
+    /// BIAToolKit - End Block fuelLevel
+    /// BIAToolKit - Begin Block estimatedPrice
+    Object.assign(new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'), {
+      type: PropType.Currency,
+      filterMode: PrimeNGFiltering.Equals,
+      isRequired: true,
+      validators: [Validators.min(0)],
+    }),
+    /// BIAToolKit - End Block estimatedPrice
     /// BIAToolKit - Begin Block planeType
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,

@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -524,6 +524,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("date");
 
+                    b.Property<decimal>("EstimatedPrice")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("Money")
+                        .HasDefaultValue(0m);
+
+                    b.Property<float>("FuelLevel")
+                        .HasColumnType("real");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -537,6 +545,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.Property<int?>("PlaneTypeId")
                         .HasColumnType("int");
+
+                    b.Property<double>("Probability")
+                        .HasColumnType("float");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()

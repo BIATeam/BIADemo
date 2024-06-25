@@ -53,6 +53,24 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         public int Capacity { get; set; }
 
         /// <summary>
+        /// Gets or sets the probability.
+        /// </summary>
+        [BIADtoField]
+        public double Probability { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fuelLevel.
+        /// </summary>
+        [BIADtoField]
+        public float FuelLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the estimated price.
+        /// </summary>
+        [BIADtoField]
+        public decimal EstimatedPrice { get; set; }
+
+        /// <summary>
         /// Gets or sets the site.
         /// </summary>
         [BIADtoField(IsParent = true, Required = true)]

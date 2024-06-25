@@ -35,6 +35,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.DeliveryDate, plane => plane.DeliveryDate },
                     { HeaderName.SyncTime, plane => plane.SyncTime },
                     { HeaderName.Capacity, plane => plane.Capacity },
+                    { HeaderName.Propability, plane => plane.Probability },
+                    { HeaderName.FuelLevel, plane => plane.FuelLevel },
+                    { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                 };
@@ -56,6 +59,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.DeliveryDate = dto.DeliveryDate;
             entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
             entity.Capacity = dto.Capacity;
+            entity.Probability = dto.Probability;
+            entity.FuelLevel = dto.FuelLevel;
+            entity.EstimatedPrice = dto.EstimatedPrice;
 
             // Mapping relationship 1-* : Site
             if (dto.SiteId != 0)
@@ -99,6 +105,9 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 DeliveryDate = entity.DeliveryDate,
                 SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
                 Capacity = entity.Capacity,
+                Probability = entity.Probability,
+                FuelLevel = entity.FuelLevel,
+                EstimatedPrice = entity.EstimatedPrice,
 
                 // Mapping relationship 1-* : Site
                 SiteId = entity.SiteId,
@@ -234,6 +243,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             /// Header Name Capacity.
             /// </summary>
             public const string Capacity = "capacity";
+
+            /// <summary>
+            /// Header Name Propability.
+            /// </summary>
+            public const string Propability = "propability";
+
+            /// <summary>
+            /// Header Name Fuel Level.
+            /// </summary>
+            public const string FuelLevel = "fuelLevel";
+
+            /// <summary>
+            /// Header Name Estimated Price.
+            /// </summary>
+            public const string EstimatedPrice = "estimatedPrice";
+
 
             /// <summary>
             /// Header Name PlaneType.

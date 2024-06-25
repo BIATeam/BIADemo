@@ -41,6 +41,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().Property(p => p.DeliveryDate).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.SyncTime).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.Capacity).IsRequired();
+            modelBuilder.Entity<Plane>().Property(p => p.Probability).IsRequired();
+            modelBuilder.Entity<Plane>().Property(p => p.FuelLevel).IsRequired();
+            modelBuilder.Entity<Plane>().Property(p => p.EstimatedPrice).IsRequired().HasColumnType("Money").HasDefaultValue(0.00);
             modelBuilder.Entity<Plane>()
                 .HasMany(p => p.ConnectingAirports)
                 .WithMany(a => a.ClientPlanes)
