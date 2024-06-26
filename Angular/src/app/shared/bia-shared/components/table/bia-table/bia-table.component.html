@@ -111,8 +111,9 @@
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
       <td
-        (click)="clickElementData(rowData)"
         *ngFor="let col of columns"
+        [class]="'bia-column-' + col.typeLowerCase"
+        (click)="clickElementData(rowData)"
         [style.min-width]="col.minWidth"
         [alignFrozen]="col.alignFrozen"
         pFrozenColumn

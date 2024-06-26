@@ -129,8 +129,9 @@
         </td>
         <!-- OTHER COLUMNS -->
         <td
-          (click)="initEditableRow(rowData)"
           *ngFor="let col of columns"
+          [class]="'bia-column-' + col.typeLowerCase"
+          (click)="initEditableRow(rowData)"
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn

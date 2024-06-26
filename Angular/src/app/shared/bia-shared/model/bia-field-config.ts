@@ -70,6 +70,9 @@ export class BiaFieldConfig {
     }
     return this.isDate === true ? 'bia.dateIso8601' : '';
   }
+  get typeLowerCase() {
+    return this.type.toLowerCase();
+  }
 
   constructor(field: string, header: string, maxlength = 255) {
     this.field = field;
