@@ -1,4 +1,4 @@
-import { DatePipe, Time } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe, Time } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import { BiaFieldConfig, PropType } from '../model/bia-field-config';
 
@@ -6,10 +6,34 @@ import { BiaFieldConfig, PropType } from '../model/bia-field-config';
   name: 'formatValue',
 })
 export class FormatValuePipe implements PipeTransform {
-  constructor(private datePipe: DatePipe) {}
+  constructor(
+    private datePipe: DatePipe,
+    private currencyPipe: CurrencyPipe,
+    private decimalPipe: DecimalPipe
+  ) {}
   transform(value: any, col: BiaFieldConfig): string | null {
     if (value === null || value === undefined) {
       return null;
+    }
+    if (col.type == PropType.Currency) {
+      return this.currencyPipe.transform(
+        value,
+        col.outputFormat[0],
+        col.outputFormat[1],
+        col.outputFormat[2],
+        col.culture
+      );
+    }
+    if (
+      col.type == PropType.Float ||
+      col.type == PropType.Double ||
+      col.type == PropType.Number
+    ) {
+      return this.decimalPipe.transform(
+        value,
+        col.outputFormat[0],
+        col.culture
+      );
     }
     if (col.isDate) {
       if (value instanceof Date) {

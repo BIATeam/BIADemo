@@ -61,6 +61,22 @@
         >
       </span>
     </ng-container>
+    <ng-container *ngSwitchCase="'Currency'">
+      <span class="p-float-label">
+        <input
+          [formControlName]="field.field"
+          type="number"
+          pInputText
+          style="width: 100%"
+          step="0.01"
+          value="0.00"
+          placeholder="0.00" />
+        <label
+          ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
+          >{{ field.header | translate }}</label
+        >
+      </span>
+    </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <span class="p-float-label">
         <p-calendar

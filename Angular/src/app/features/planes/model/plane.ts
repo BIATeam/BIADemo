@@ -17,9 +17,9 @@ export class Plane extends BaseDto {
   deliveryDate: Date;
   syncTime: string;
   capacity: number;
-  probability: number ;
-  fuelLevel: number ;
-  estimatedPrice: number ;
+  probability: number;
+  fuelLevel: number;
+  estimatedPrice: number;
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
@@ -81,6 +81,7 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig = {
     /// BIAToolKit - Begin Block probability
     Object.assign(new BiaFieldConfig('probability', 'plane.probability'), {
       type: PropType.Double,
+      outputFormat: ['1.6-6'],
       filterMode: PrimeNGFiltering.Equals,
     }),
     /// BIAToolKit - End Block probability
@@ -88,15 +89,20 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig = {
     Object.assign(new BiaFieldConfig('fuelLevel', 'plane.fuelLevel'), {
       type: PropType.Float,
       filterMode: PrimeNGFiltering.Equals,
+      outputFormat: ['1.2-2'],
+      validators: [Validators.min(0), Validators.max(100)],
     }),
     /// BIAToolKit - End Block fuelLevel
     /// BIAToolKit - Begin Block estimatedPrice
-    Object.assign(new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'), {
-      type: PropType.Currency,
-      filterMode: PrimeNGFiltering.Equals,
-      isRequired: true,
-      validators: [Validators.min(0)],
-    }),
+    Object.assign(
+      new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'),
+      {
+        type: PropType.Currency,
+        filterMode: PrimeNGFiltering.Equals,
+        outputFormat: ['EUR', 'symbol', '1.2-2'],
+        validators: [Validators.min(0)],
+      }
+    ),
     /// BIAToolKit - End Block estimatedPrice
     /// BIAToolKit - Begin Block planeType
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {

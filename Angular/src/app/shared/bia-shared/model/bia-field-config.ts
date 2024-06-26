@@ -34,6 +34,7 @@ export class BiaFieldConfig {
   header: string;
   type: PropType;
   filterMode: PrimeNGFiltering;
+  culture: string;
   formatDate: string;
   primeDateFormat: string;
   hourFormat: number;
@@ -55,6 +56,7 @@ export class BiaFieldConfig {
   minWidth: string;
   isFrozen: boolean;
   alignFrozen: string;
+  outputFormat: string[];
   get isDate() {
     return (
       this.type === PropType.Date ||
@@ -74,6 +76,7 @@ export class BiaFieldConfig {
     this.header = header;
     this.type = PropType.String;
     this.filterMode = PrimeNGFiltering.Contains;
+    this.culture = '';
     this.formatDate = '';
     this.primeDateFormat = 'yy/mm/dd';
     this.hourFormat = 12;
@@ -93,6 +96,7 @@ export class BiaFieldConfig {
     this.minWidth = '';
     this.isFrozen = false;
     this.alignFrozen = 'left';
+    this.outputFormat = [];
   }
 
   public clone(): BiaFieldConfig {
@@ -101,6 +105,7 @@ export class BiaFieldConfig {
       {
         type: this.type,
         filterMode: this.filterMode,
+        culture: this.culture,
         formatDate: this.formatDate,
         primeDateFormat: this.primeDateFormat,
         hourFormat: this.hourFormat,
@@ -118,6 +123,10 @@ export class BiaFieldConfig {
         specificOutput: this.specificOutput,
         specificInput: this.specificInput,
         validators: this.validators,
+        minWidth: this.minWidth,
+        isFrozen: this.isFrozen,
+        alignFrozen: this.alignFrozen,
+        outputFormat: this.outputFormat,
       }
     );
   }

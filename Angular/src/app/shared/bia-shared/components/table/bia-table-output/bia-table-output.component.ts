@@ -56,6 +56,22 @@ export class BiaTableOutputComponent
   }
   private initFieldConfiguration() {
     if (
+      this.field.type == PropType.Currency ||
+      this.field.type == PropType.Float ||
+      this.field.type == PropType.Double ||
+      this.field.type == PropType.Number
+    ) {
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(cuture => {
+          if (cuture != null) {
+            const field = this.field.clone();
+            field.culture = cuture;
+            this.field = field;
+          }
+        })
+      );
+    }
+    if (
       this.field.type == PropType.DateTime ||
       this.field.type == PropType.Date ||
       this.field.type == PropType.Time ||

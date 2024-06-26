@@ -23,7 +23,7 @@ import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service'
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { buildSpecificModules } from './build-specifics/bia-build-specifics';
 import { BiaEnvironmentService } from './core/bia-core/services/bia-environment.service';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { BiaNgxLoggerServerService } from './core/bia-core/services/bia-ngx-logger-server.service';
 
 export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
@@ -69,6 +69,8 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
   ],
   providers: [
     DatePipe,
+    CurrencyPipe,
+    DecimalPipe,
     { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
     BiaSignalRService,
