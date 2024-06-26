@@ -141,7 +141,7 @@ bia-notification-team-warning {
 
 :host ::ng-deep {
   // adjust height in topbar at minimu (35px)
-  .p-megamenu-root-list>.p-menuitem>.p-menuitem-content>.p-menuitem-link {
+  .p-megamenu-root-list > .p-menuitem > .p-menuitem-content > .p-menuitem-link {
     padding: 0px;
   }
   bia-online-offline-icon {
