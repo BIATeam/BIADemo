@@ -55,17 +55,12 @@ export class BiaTableOutputComponent
     });
   }
   private initFieldConfiguration() {
-    if (
-      this.field.type == PropType.Currency ||
-      this.field.type == PropType.Float ||
-      this.field.type == PropType.Double ||
-      this.field.type == PropType.Number
-    ) {
+    if (this.field.type == PropType.Number) {
       this.sub.add(
-        this.biaTranslationService.currentCulture$.subscribe(cuture => {
-          if (cuture != null) {
+        this.biaTranslationService.currentCulture$.subscribe(culture => {
+          if (culture != null) {
             const field = this.field.clone();
-            field.culture = cuture;
+            field.culture = culture;
             this.field = field;
           }
         })

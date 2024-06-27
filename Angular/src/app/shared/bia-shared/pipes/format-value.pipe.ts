@@ -1,6 +1,11 @@
 import { CurrencyPipe, DatePipe, DecimalPipe, Time } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
-import { BiaFieldConfig, PropType } from '../model/bia-field-config';
+import {
+  BiaFieldConfig,
+  BiaFieldNumberFormat,
+  NumberMode,
+  PropType,
+} from '../model/bia-field-config';
 
 @Pipe({
   name: 'formatValue',
@@ -15,25 +20,28 @@ export class FormatValuePipe implements PipeTransform {
     if (value === null || value === undefined) {
       return null;
     }
-    if (col.type == PropType.Currency) {
-      return this.currencyPipe.transform(
-        value,
-        col.outputFormat[0],
-        col.outputFormat[1],
-        col.outputFormat[2],
-        col.culture
-      );
-    }
-    if (
-      col.type == PropType.Float ||
-      col.type == PropType.Double ||
-      col.type == PropType.Number
-    ) {
-      return this.decimalPipe.transform(
-        value,
-        col.outputFormat[0],
-        col.culture
-      );
+    if (col.type == PropType.Number) {
+      if (
+        col.displayFormat == null ||
+        !(col.displayFormat instanceof BiaFieldNumberFormat)
+      ) {
+        return this.decimalPipe.transform(value, undefined, col.culture);
+      } else if (col.displayFormat.mode == NumberMode.Currency) {
+        return this.currencyPipe.transform(
+          value,
+          col.displayFormat.currency,
+          col.displayFormat.currencyDisplay,
+          col.displayFormat.outputFormat,
+          col.culture
+        );
+      } else {
+        // Integer or Decimal
+        return this.decimalPipe.transform(
+          value,
+          col.displayFormat.outputFormat,
+          col.culture
+        );
+      }
     }
     if (col.isDate) {
       if (value instanceof Date) {

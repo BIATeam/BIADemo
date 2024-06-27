@@ -81,6 +81,17 @@ export class BiaTableInputComponent
   }
 
   private initFieldConfiguration() {
+    if (this.field.type == PropType.Number) {
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(culture => {
+          if (culture != null) {
+            const field = this.field.clone();
+            field.culture = culture;
+            this.field = field;
+          }
+        })
+      );
+    }
     if (
       this.field.type == PropType.DateTime ||
       this.field.type == PropType.Date ||

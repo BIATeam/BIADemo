@@ -45,12 +45,22 @@
         (onChange)="onChange()"></p-checkbox>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
-      <input
-        class="bia-simple-input"
-        pInputText
-        type="number"
+      <p-inputNumber
+        *ngIf="field.displayFormat != null"
         [formControlName]="field.field"
-        (change)="onChange()" />
+        (onInput)="onChange()"
+        [mode]="field.displayFormat.mode"
+        [currency]="field.displayFormat.currency"
+        [minFractionDigits]="field.displayFormat.minFractionDigits"
+        [maxFractionDigits]="field.displayFormat.maxFractionDigits"
+        [min]="field.displayFormat.min"
+        [max]="field.displayFormat.max"
+        [locale]="field.culture || 'en-US'" />
+      <p-inputNumber
+        *ngIf="field.displayFormat == null"
+        [formControlName]="field.field"
+        (onInput)="onChange()"
+        [locale]="field.culture || 'en-US'" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-calendar

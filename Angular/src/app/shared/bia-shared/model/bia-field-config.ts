@@ -20,13 +20,50 @@ export enum PropType {
   TimeOnly = 'TimeOnly',
   TimeSecOnly = 'TimeSecOnly',
   Number = 'Number',
-  Double = 'Double',
-  Float = 'Float',
-  Currency = 'Currency',
   Boolean = 'Boolean',
   String = 'String',
   OneToMany = 'OneToMany',
   ManyToMany = 'ManyToMany',
+}
+
+export enum NumberMode {
+  Interger = 'interger',
+  Decimal = 'decimal',
+  Currency = 'currency',
+}
+
+export class BiaFieldNumberFormat {
+  mode: NumberMode; // can be interger(default), decimal, currency
+  currency: string; // can be USD(default), EUR ...
+  currencyDisplay: string; // can be symbole(default), code
+  minFractionDigits: number | null; // can be null(default) or an integer
+  maxFractionDigits: number | null; // can be null(default) or an integer
+  min: number | null;
+  max: number | null;
+  constructor() {
+    this.mode = NumberMode.Interger;
+    this.currency = 'USD';
+    this.currencyDisplay = 'symbol';
+    this.minFractionDigits = null;
+    this.maxFractionDigits = null;
+    this.min = null;
+    this.max = null;
+  }
+
+  get outputFormat(): string {
+    return (
+      '1.' +
+      (this.minFractionDigits || 0).toString() +
+      '-' +
+      (this.maxFractionDigits || 0).toString()
+    );
+  }
+}
+
+export class BiaFieldDateFormat {
+  formatDate: string;
+  primeDateFormat: string;
+  hourFormat: number;
 }
 
 export class BiaFieldConfig {
@@ -56,7 +93,7 @@ export class BiaFieldConfig {
   minWidth: string;
   isFrozen: boolean;
   alignFrozen: string;
-  outputFormat: string[];
+  displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
   get isDate() {
     return (
       this.type === PropType.Date ||
@@ -99,7 +136,7 @@ export class BiaFieldConfig {
     this.minWidth = '';
     this.isFrozen = false;
     this.alignFrozen = 'left';
-    this.outputFormat = [];
+    this.displayFormat = null;
   }
 
   public clone(): BiaFieldConfig {
@@ -129,7 +166,7 @@ export class BiaFieldConfig {
         minWidth: this.minWidth,
         isFrozen: this.isFrozen,
         alignFrozen: this.alignFrozen,
-        outputFormat: this.outputFormat,
+        displayFormat: this.displayFormat,
       }
     );
   }
