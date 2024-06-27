@@ -37,8 +37,24 @@
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
     "ZipName": "domain-airport-option.zip",
+	"Relation": "many-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "plane-type-option",
+    "Type": "Option",
+    "FeatureName": "PlaneType",
+    "FeatureNamePlural": "PlanesTypes",
+    "ZipName": "domain-plane-type-option.zip",
+	"Relation": "one-to-many",
+    "Contains": {
+      "Include": ["src\\app\\domains\\plane-type-option\\*"],
       "Exclude": []
     },
     "Children": [],
