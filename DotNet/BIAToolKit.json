@@ -36,6 +36,7 @@
 		"FeatureName" : "Airport",
 		"FeatureNamePlural" : "Airports",
 		"ZipName" : "airport-option.zip",
+		"Relation": "many-to-many",
 		"Contains" :
 		{
 			"Include" :
@@ -43,6 +44,35 @@
 				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
+			],
+			"Exclude":
+			[]
+		},		
+		"Children" : 
+		[],
+		"Options" :
+		[],
+		"Partial" :
+		[
+			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
+			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
+			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
+		]
+	},
+	{
+		"Feature" : "plane-type-option",
+		"Type" : "Option",
+		"FeatureName" : "PlaneType",
+		"FeatureNamePlural" : "PlanesTypes",
+		"ZipName" : "plane-type-option.zip",
+		"Relation": "one-to-many",
+		"Contains" :
+		{
+			"Include" :
+			[
+				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesTypesController.cs",
+				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneTypeAppService.cs",
+				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneTypeAppService.cs"
 			],
 			"Exclude":
 			[]
