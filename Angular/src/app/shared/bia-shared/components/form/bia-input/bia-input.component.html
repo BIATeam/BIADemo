@@ -28,7 +28,6 @@
     <ng-container *ngSwitchCase="'ManyToMany'">
       <span class="p-float-label">
         <p-multiSelect
-          defaultLabel="&nbsp;"
           [formControlName]="field.field"
           [options]="getOptionDto(field.field)"
           optionLabel="display"
