@@ -27,13 +27,14 @@ export enum PropType {
 }
 
 export enum NumberMode {
-  Interger = 'interger',
+  Default = 'decimal',
   Decimal = 'decimal',
   Currency = 'currency',
 }
 
 export class BiaFieldNumberFormat {
-  mode: NumberMode; // can be interger(default), decimal, currency
+  autoLocale: string;
+  mode: NumberMode; // can be default, decimal, currency
   currency: string; // can be USD(default), EUR ...
   currencyDisplay: string; // can be symbole(default), code
   minFractionDigits: number | null; // can be null(default) or an integer
@@ -41,7 +42,8 @@ export class BiaFieldNumberFormat {
   min: number | null;
   max: number | null;
   constructor() {
-    this.mode = NumberMode.Interger;
+    this.autoLocale = '';
+    this.mode = NumberMode.Default;
     this.currency = 'USD';
     this.currencyDisplay = 'symbol';
     this.minFractionDigits = null;
@@ -71,7 +73,6 @@ export class BiaFieldConfig {
   header: string;
   type: PropType;
   filterMode: PrimeNGFiltering;
-  culture: string;
   formatDate: string;
   primeDateFormat: string;
   hourFormat: number;
@@ -116,7 +117,6 @@ export class BiaFieldConfig {
     this.header = header;
     this.type = PropType.String;
     this.filterMode = PrimeNGFiltering.Contains;
-    this.culture = '';
     this.formatDate = '';
     this.primeDateFormat = 'yy/mm/dd';
     this.hourFormat = 12;
@@ -145,7 +145,6 @@ export class BiaFieldConfig {
       {
         type: this.type,
         filterMode: this.filterMode,
-        culture: this.culture,
         formatDate: this.formatDate,
         primeDateFormat: this.primeDateFormat,
         hourFormat: this.hourFormat,

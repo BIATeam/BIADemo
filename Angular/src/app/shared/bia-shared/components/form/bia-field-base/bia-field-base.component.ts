@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   BiaFieldConfig,
+  BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -35,7 +36,9 @@ export class BiaFieldBaseComponent implements OnInit, OnDestroy {
         this.biaTranslationService.currentCulture$.subscribe(culture => {
           if (culture != null) {
             const field = this.field.clone();
-            field.culture = culture;
+            field.displayFormat ||= new BiaFieldNumberFormat();
+            if (field.displayFormat instanceof BiaFieldNumberFormat)
+              field.displayFormat.autoLocale = culture;
             this.field = field;
           }
         })

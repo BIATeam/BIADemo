@@ -25,21 +25,21 @@ export class FormatValuePipe implements PipeTransform {
         col.displayFormat == null ||
         !(col.displayFormat instanceof BiaFieldNumberFormat)
       ) {
-        return this.decimalPipe.transform(value, undefined, col.culture);
+        return this.decimalPipe.transform(value);
       } else if (col.displayFormat.mode == NumberMode.Currency) {
         return this.currencyPipe.transform(
           value,
           col.displayFormat.currency,
           col.displayFormat.currencyDisplay,
           col.displayFormat.outputFormat,
-          col.culture
+          col.displayFormat.autoLocale
         );
       } else {
         // Integer or Decimal
         return this.decimalPipe.transform(
           value,
           col.displayFormat.outputFormat,
-          col.culture
+          col.displayFormat.autoLocale
         );
       }
     }

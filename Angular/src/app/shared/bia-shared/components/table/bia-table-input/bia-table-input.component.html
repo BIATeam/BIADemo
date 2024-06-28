@@ -45,7 +45,6 @@
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <p-inputNumber
-        *ngIf="field.displayFormat != null"
         [formControlName]="field.field"
         (onInput)="onChange()"
         [mode]="field.displayFormat.mode"
@@ -54,12 +53,7 @@
         [maxFractionDigits]="field.displayFormat.maxFractionDigits"
         [min]="field.displayFormat.min"
         [max]="field.displayFormat.max"
-        [locale]="field.culture || 'en-US'" />
-      <p-inputNumber
-        *ngIf="field.displayFormat == null"
-        [formControlName]="field.field"
-        (onInput)="onChange()"
-        [locale]="field.culture || 'en-US'" />
+        [locale]="field.displayFormat.autoLocale || 'en-US'" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-calendar

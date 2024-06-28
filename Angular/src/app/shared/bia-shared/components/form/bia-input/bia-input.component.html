@@ -50,7 +50,6 @@
     <ng-container *ngSwitchCase="'Number'">
       <span class="p-float-label">
         <p-inputNumber
-          *ngIf="field.displayFormat != null"
           [formControlName]="field.field"
           (onInput)="onChange()"
           [mode]="field.displayFormat.mode"
@@ -59,28 +58,7 @@
           [maxFractionDigits]="field.displayFormat.maxFractionDigits"
           [min]="field.displayFormat.min"
           [max]="field.displayFormat.max"
-          [locale]="field.culture || 'en-US'" />
-        <p-inputNumber
-          *ngIf="field.displayFormat == null"
-          [formControlName]="field.field"
-          (onInput)="onChange()"
-          [locale]="field.culture || 'en-US'" />
-        <label
-          ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
-          >{{ field.header | translate }}</label
-        >
-      </span>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Currency'">
-      <span class="p-float-label">
-        <input
-          [formControlName]="field.field"
-          type="number"
-          pInputText
-          style="width: 100%"
-          step="0.01"
-          value="0.00"
-          placeholder="0.00" />
+          [locale]="field.displayFormat.autoLocale || 'en-US'" />
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
