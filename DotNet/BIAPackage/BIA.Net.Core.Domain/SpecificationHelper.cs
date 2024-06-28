@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -172,7 +173,8 @@ namespace BIA.Net.Core.Domain
                 case "dateafter":
                     try
                     {
-                        object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
+                        var culture = new CultureInfo("en-US");
+                        object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(null, culture, value);
                         switch (criteria.ToLower())
                         {
                             case "gt":
@@ -272,6 +274,32 @@ namespace BIA.Net.Core.Domain
             }
 
             return Expression.Lambda<Func<TEntity, bool>>(binaryExpression, parameterExpression);
+        }
+
+        /// <summary>
+        /// test if a type is numeric.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNumericType(Type type)
+        {
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Byte:
+                case TypeCode.SByte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Single:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private static Expression ComputeExpression(Expression expressionBody, string filterFonction, string value)

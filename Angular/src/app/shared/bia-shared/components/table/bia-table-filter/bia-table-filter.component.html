@@ -4,6 +4,15 @@
       <ng-container *ngIf="!isArraySimple(field)">
         <p-columnFilter
           [type]="columnFilterType"
+          [locale]="field.displayFormat?.autoLocale"
+          [minFractionDigits]="field.displayFormat?.minFractionDigits"
+          [maxFractionDigits]="field.displayFormat?.maxFractionDigits"
+          [currency]="
+            field.displayFormat?.mode == 'currency'
+              ? field.displayFormat?.currency
+              : undefined
+          "
+          [currencyDisplay]="field.displayFormat?.currencyDisplay"
           [matchModeOptions]="matchModeOptions"
           [field]="field.field"
           display="menu"

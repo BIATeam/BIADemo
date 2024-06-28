@@ -101,13 +101,17 @@ export class BiaTableFilterComponent
       this.columnFilterType = 'boolean';
     } else if (
       this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date ||
+      this.field.type == PropType.Date
+    ) {
+      this.generateMatchModeOptions(this.filterMatchModeOptions.date);
+      this.columnFilterType = 'date';
+    } else if (
       this.field.type == PropType.Time ||
       this.field.type == PropType.TimeOnly ||
       this.field.type == PropType.TimeSecOnly
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
-      this.columnFilterType = 'date';
+      this.columnFilterType = 'text';
     } else {
       this.generateMatchModeOptions(this.filterMatchModeOptions.text);
       this.columnFilterType = 'text';
