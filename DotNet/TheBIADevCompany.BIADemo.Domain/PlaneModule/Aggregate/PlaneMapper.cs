@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.DeliveryDate, plane => plane.DeliveryDate },
                     { HeaderName.SyncTime, plane => plane.SyncTime },
                     { HeaderName.Capacity, plane => plane.Capacity },
-                    { HeaderName.Propability, plane => plane.Probability },
+                    { HeaderName.Probability, plane => plane.Probability },
                     { HeaderName.FuelLevel, plane => plane.FuelLevel },
                     { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
@@ -247,7 +247,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             /// <summary>
             /// Header Name Propability.
             /// </summary>
-            public const string Propability = "propability";
+            public const string Probability = "probability";
 
             /// <summary>
             /// Header Name Fuel Level.

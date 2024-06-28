@@ -1,19 +1,28 @@
-<span *ngIf="col.isSearchable === true" class="p-float-label">
+<span *ngIf="field.isSearchable === true" class="p-float-label">
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 18px">
-      <ng-container *ngIf="!isArraySimple(col)">
+      <ng-container *ngIf="!isArraySimple(field)">
         <p-columnFilter
           [type]="columnFilterType"
+          [locale]="field.displayFormat?.autoLocale"
+          [minFractionDigits]="field.displayFormat?.minFractionDigits"
+          [maxFractionDigits]="field.displayFormat?.maxFractionDigits"
+          [currency]="
+            field.displayFormat?.mode == 'currency'
+              ? field.displayFormat?.currency
+              : undefined
+          "
+          [currencyDisplay]="field.displayFormat?.currencyDisplay"
           [matchModeOptions]="matchModeOptions"
-          [field]="col.field"
+          [field]="field.field"
           display="menu"
           *ngIf="showColumnFilter"></p-columnFilter>
       </ng-container>
     </div>
     <div class="app-field-container flex-1">
-      <span *ngIf="isArrayFilter(col)" class="displayInline">
+      <span *ngIf="isArrayFilter(field)" class="displayInline">
         <ng-container
-          *ngFor="let filter of table.filters[col.field]; let last = last">
+          *ngFor="let filter of table.filters[field.field]; let last = last">
           <ng-container
             *ngIf="
               filter.value !== null ||
@@ -45,16 +54,16 @@
                 [!*{{ filter.value }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateIs'">
-                [{{ filter.value | formatValue: col }}]
+                [{{ filter.value | formatValue: field }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateIsNot'">
-                [!{{ filter.value | formatValue: col }}]
+                [!{{ filter.value | formatValue: field }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateBefore'">
-                [<{{ filter.value | formatValue: col }}]
+                [<{{ filter.value | formatValue: field }}]
               </ng-container>
               <ng-container *ngSwitchCase="'dateAfter'">
-                [>{{ filter.value | formatValue: col }}]
+                [>{{ filter.value | formatValue: field }}]
               </ng-container>
               <ng-container *ngSwitchCase="'equals'">
                 [={{ filter.value }}]
@@ -92,26 +101,26 @@
         </ng-container>
       </span>
       <ng-container
-        *ngIf="!isArrayFilter(col) && columnFilterType !== 'boolean'">
+        *ngIf="!isArrayFilter(field) && columnFilterType !== 'boolean'">
         <input
           pInputText
           class="input-search"
-          type="{{ col.type === 'Number' ? 'number' : 'text' }}"
+          type="{{ field.type === 'Number' ? 'number' : 'text' }}"
           placeholder="{{
-            col.searchPlaceholder !== undefined
-              ? col.searchPlaceholder
-              : col.isDate === true
+            field.searchPlaceholder !== undefined
+              ? field.searchPlaceholder
+              : field.isDate === true
                 ? ('bia.dateIso8601' | translate)
                 : ''
           }}"
-          (input)="setSimpleFilter($event.target.value, col)"
+          (input)="setSimpleFilter($event.target.value, field)"
           [value]="
-            table.filters[col.field]?.value !== undefined
-              ? table.filters[col.field]?.value
+            table.filters[field.field]?.value !== undefined
+              ? table.filters[field.field]?.value
               : ''
           "
           [ngClass]="{
-            'p-state-filled': table.filters[col.field]?.value !== '',
+            'p-state-filled': table.filters[field.field]?.value !== '',
           }" />
       </ng-container>
     </div>

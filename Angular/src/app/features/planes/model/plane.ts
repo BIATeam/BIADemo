@@ -3,6 +3,8 @@ import {
   BiaFieldConfig,
   PropType,
   BiaFieldsConfig,
+  BiaFieldNumberFormat,
+  NumberMode,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -17,9 +19,9 @@ export class Plane extends BaseDto {
   deliveryDate: Date;
   syncTime: string;
   capacity: number;
-  probability: number ;
-  fuelLevel: number ;
-  estimatedPrice: number ;
+  probability: number;
+  fuelLevel: number;
+  estimatedPrice: number;
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
@@ -80,23 +82,42 @@ export const PlaneFieldsConfiguration: BiaFieldsConfig = {
     /// BIAToolKit - End Block capacity
     /// BIAToolKit - Begin Block probability
     Object.assign(new BiaFieldConfig('probability', 'plane.probability'), {
-      type: PropType.Double,
+      type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
+      displayFormat: Object.assign(new BiaFieldNumberFormat(), {
+        mode: NumberMode.Decimal,
+        minFractionDigits: 6,
+        maxFractionDigits: 6,
+      }),
     }),
     /// BIAToolKit - End Block probability
     /// BIAToolKit - Begin Block fuelLevel
     Object.assign(new BiaFieldConfig('fuelLevel', 'plane.fuelLevel'), {
-      type: PropType.Float,
+      type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
+      displayFormat: Object.assign(new BiaFieldNumberFormat(), {
+        mode: NumberMode.Decimal,
+        minFractionDigits: 2,
+        maxFractionDigits: 2,
+      }),
+      validators: [Validators.min(0), Validators.max(100)],
     }),
     /// BIAToolKit - End Block fuelLevel
     /// BIAToolKit - Begin Block estimatedPrice
-    Object.assign(new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'), {
-      type: PropType.Currency,
-      filterMode: PrimeNGFiltering.Equals,
-      isRequired: true,
-      validators: [Validators.min(0)],
-    }),
+    Object.assign(
+      new BiaFieldConfig('estimatedPrice', 'plane.estimatedPrice'),
+      {
+        type: PropType.Number,
+        filterMode: PrimeNGFiltering.Equals,
+        displayFormat: Object.assign(new BiaFieldNumberFormat(), {
+          mode: NumberMode.Currency,
+          minFractionDigits: 2,
+          maxFractionDigits: 2,
+          currency: 'EUR',
+        }),
+        validators: [Validators.min(0)],
+      }
+    ),
     /// BIAToolKit - End Block estimatedPrice
     /// BIAToolKit - Begin Block planeType
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {

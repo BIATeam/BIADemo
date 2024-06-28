@@ -10,13 +10,8 @@ import {
   TemplateRef,
 } from '@angular/core';
 import { PrimeTemplate } from 'primeng/api';
-import { Subscription } from 'rxjs';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import {
-  BiaFieldConfig,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from '../../../model/dto-state.enum';
+import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-table-output',
@@ -25,26 +20,15 @@ import { DtoState } from '../../../model/dto-state.enum';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class BiaTableOutputComponent
+  extends BiaFieldBaseComponent
   implements OnInit, OnDestroy, AfterContentInit
 {
-  @Input() field: BiaFieldConfig;
   @Input() data: any;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
 
   specificOutputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
 
-  constructor(public biaTranslationService: BiaTranslationService) {}
-  ngOnInit() {
-    this.initFieldConfiguration();
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -53,41 +37,6 @@ export class BiaTableOutputComponent
           break;
       }
     });
-  }
-  private initFieldConfiguration() {
-    if (
-      this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date ||
-      this.field.type == PropType.Time ||
-      this.field.type == PropType.TimeOnly ||
-      this.field.type == PropType.TimeSecOnly
-    ) {
-      this.sub.add(
-        this.biaTranslationService.currentCultureDateFormat$.subscribe(
-          dateFormat => {
-            const field = this.field.clone();
-            switch (field.type) {
-              case PropType.DateTime:
-                field.formatDate = dateFormat.dateTimeFormat;
-                break;
-              case PropType.Date:
-                field.formatDate = dateFormat.dateFormat;
-                break;
-              case PropType.Time:
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeOnly:
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeSecOnly:
-                field.formatDate = dateFormat.timeFormatSec;
-                break;
-            }
-            this.field = field;
-          }
-        )
-      );
-    }
   }
 
   protected filterDtoState(data: any) {

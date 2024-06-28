@@ -124,6 +124,7 @@ import { BiaOutputComponent } from './components/form/bia-output/bia-output.comp
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
 import { TeamAdvancedFilterComponent } from './components/team-advanced-filter/team-advanced-filter.component';
+import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -196,6 +197,7 @@ const COMPONENTS = [
   IeWarningComponent,
   BiaTableComponent,
   BiaTableFilterComponent,
+  BiaFieldBaseComponent,
   BiaFormComponent,
   BiaInputComponent,
   BiaOutputComponent,

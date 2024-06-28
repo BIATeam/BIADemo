@@ -25,7 +25,6 @@
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
         class="bia-simple-input"
-        defaultLabel="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
         optionLabel="display"
@@ -45,12 +44,16 @@
         (onChange)="onChange()"></p-checkbox>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
-      <input
-        class="bia-simple-input"
-        pInputText
-        type="number"
+      <p-inputNumber
         [formControlName]="field.field"
-        (change)="onChange()" />
+        (onInput)="onChange()"
+        [mode]="field.displayFormat.mode"
+        [currency]="field.displayFormat.currency"
+        [minFractionDigits]="field.displayFormat.minFractionDigits"
+        [maxFractionDigits]="field.displayFormat.maxFractionDigits"
+        [min]="field.displayFormat.min"
+        [max]="field.displayFormat.max"
+        [locale]="field.displayFormat.autoLocale || 'en-US'" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-calendar
@@ -67,7 +70,9 @@
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
         [dateFormat]="
-          field.primeDateFormat ? field.primeDateFormat : 'yy-mm-dd'
+          field.displayFormat.autoPrimeDateFormat
+            ? field.displayFormat.autoPrimeDateFormat
+            : 'yy-mm-dd'
         "></p-calendar>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
@@ -86,10 +91,12 @@
         showTime="true"
         [timeOnly]="true"
         [dateFormat]="
-          field.primeDateFormat ? field.primeDateFormat : 'yy-mm-dd'
+          field.displayFormat.autoPrimeDateFormat
+            ? field.displayFormat.autoPrimeDateFormat
+            : 'yy-mm-dd'
         "
         [hourFormat]="24"></p-calendar>
-      <!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
       <p-calendar
@@ -107,8 +114,8 @@
         showTime="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="24"></p-calendar
-      ><!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+        [hourFormat]="24"></p-calendar>
+      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
       <p-calendar
@@ -127,8 +134,8 @@
         showSeconds="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="24"></p-calendar
-      ><!-- [hourFormat]="field.hourFormat?field.hourFormat:24" not work for 12 (PrimeNG 13)-->
+        [hourFormat]="24"></p-calendar>
+      <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
       <p-calendar
@@ -146,9 +153,15 @@
         [inputStyle]="{ width: '100%' }"
         showTime="true"
         [dateFormat]="
-          field.primeDateFormat ? field.primeDateFormat : 'yy-mm-dd'
+          field.displayFormat.autoPrimeDateFormat
+            ? field.displayFormat.autoPrimeDateFormat
+            : 'yy-mm-dd'
         "
-        [hourFormat]="field.hourFormat ? field.hourFormat : 24"></p-calendar>
+        [hourFormat]="
+          field.displayFormat.autoHourFormat
+            ? field.displayFormat.autoHourFormat
+            : 24
+        "></p-calendar>
     </ng-container>
     <ng-container *ngSwitchDefault>
       <input

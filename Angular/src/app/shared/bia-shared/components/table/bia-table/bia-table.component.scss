@@ -10,6 +10,9 @@
         }
       }
     }
+    td, th{
+      text-wrap: nowrap;
+    }
   }
 }
 
@@ -28,6 +31,10 @@ table {
 .bia-column-icon {
   position: relative;
   top: 2px;
+}
+
+.bia-column-double, .bia-column-float, .bia-column-currency, .bia-column-number{
+  text-align: right !important
 }
 
 .p-sortable-column[aria-sort='none'] {
