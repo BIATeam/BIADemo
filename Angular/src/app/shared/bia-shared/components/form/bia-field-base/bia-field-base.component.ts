@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
   BiaFieldConfig,
+  BiaFieldDateFormat,
   BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
@@ -37,8 +38,9 @@ export class BiaFieldBaseComponent implements OnInit, OnDestroy {
           if (culture != null) {
             const field = this.field.clone();
             field.displayFormat ||= new BiaFieldNumberFormat();
-            if (field.displayFormat instanceof BiaFieldNumberFormat)
+            if (field.displayFormat instanceof BiaFieldNumberFormat) {
               field.displayFormat.autoLocale = culture;
+            }
             this.field = field;
           }
         })
@@ -55,31 +57,40 @@ export class BiaFieldBaseComponent implements OnInit, OnDestroy {
         this.biaTranslationService.currentCultureDateFormat$.subscribe(
           dateFormat => {
             const field = this.field.clone();
-            switch (field.type) {
-              case PropType.DateTime:
-                field.primeDateFormat = dateFormat.primeDateFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                field.formatDate = dateFormat.dateTimeFormat;
-                break;
-              case PropType.Date:
-                field.primeDateFormat = dateFormat.primeDateFormat;
-                field.formatDate = dateFormat.dateFormat;
-                break;
-              case PropType.Time:
-                field.primeDateFormat = dateFormat.timeFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeOnly:
-                field.primeDateFormat = dateFormat.timeFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeSecOnly:
-                field.primeDateFormat = dateFormat.timeFormatSec;
-                field.hourFormat = dateFormat.hourFormat;
-                field.formatDate = dateFormat.timeFormatSec;
-                break;
+            field.displayFormat ||= new BiaFieldDateFormat();
+            if (field.displayFormat instanceof BiaFieldDateFormat) {
+              switch (field.type) {
+                case PropType.DateTime:
+                  field.displayFormat.autoPrimeDateFormat =
+                    dateFormat.primeDateFormat;
+                  field.displayFormat.autoHourFormat = dateFormat.hourFormat;
+                  field.displayFormat.autoFormatDate =
+                    dateFormat.dateTimeFormat;
+                  break;
+                case PropType.Date:
+                  field.displayFormat.autoPrimeDateFormat =
+                    dateFormat.primeDateFormat;
+                  field.displayFormat.autoFormatDate = dateFormat.dateFormat;
+                  break;
+                case PropType.Time:
+                  field.displayFormat.autoPrimeDateFormat =
+                    dateFormat.timeFormat;
+                  field.displayFormat.autoHourFormat = dateFormat.hourFormat;
+                  field.displayFormat.autoFormatDate = dateFormat.timeFormat;
+                  break;
+                case PropType.TimeOnly:
+                  field.displayFormat.autoPrimeDateFormat =
+                    dateFormat.timeFormat;
+                  field.displayFormat.autoHourFormat = dateFormat.hourFormat;
+                  field.displayFormat.autoFormatDate = dateFormat.timeFormat;
+                  break;
+                case PropType.TimeSecOnly:
+                  field.displayFormat.autoPrimeDateFormat =
+                    dateFormat.timeFormatSec;
+                  field.displayFormat.autoHourFormat = dateFormat.hourFormat;
+                  field.displayFormat.autoFormatDate = dateFormat.timeFormatSec;
+                  break;
+              }
             }
             this.field = field;
           }

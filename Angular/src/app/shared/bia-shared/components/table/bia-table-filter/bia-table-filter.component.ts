@@ -18,6 +18,7 @@ import {
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { TableHelperService } from '../../../services/table-helper.service';
+import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-table-filter',
@@ -26,8 +27,10 @@ import { TableHelperService } from '../../../services/table-helper.service';
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
 })
-export class BiaTableFilterComponent implements OnInit, OnDestroy {
-  @Input() col: BiaFieldConfig;
+export class BiaTableFilterComponent
+  extends BiaFieldBaseComponent
+  implements OnInit, OnDestroy
+{
   @Input() table: Table;
 
   // @Output() valueChange = new EventEmitter<void>();
@@ -41,10 +44,12 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     public biaTranslationService: BiaTranslationService,
     private translateService: TranslateService,
     private tableHelperService: TableHelperService
-  ) {}
+  ) {
+    super(biaTranslationService);
+  }
 
   ngOnInit() {
-    this.initFieldConfiguration();
+    this.initFiterConfiguration();
   }
 
   ngOnDestroy() {
@@ -87,46 +92,22 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     this.table.filter(value, col.field, col.filterMode);
   }
 
-  private initFieldConfiguration() {
-    if (this.col.type == PropType.Number) {
+  private initFiterConfiguration() {
+    this.initFieldConfiguration();
+    if (this.field.type == PropType.Number) {
       this.columnFilterType = 'numeric';
       this.generateMatchModeOptions(this.filterMatchModeOptions.numeric);
-    } else if (this.col.type == PropType.Boolean) {
+    } else if (this.field.type == PropType.Boolean) {
       this.columnFilterType = 'boolean';
     } else if (
-      this.col.type == PropType.DateTime ||
-      this.col.type == PropType.Date ||
-      this.col.type == PropType.Time ||
-      this.col.type == PropType.TimeOnly ||
-      this.col.type == PropType.TimeSecOnly
+      this.field.type == PropType.DateTime ||
+      this.field.type == PropType.Date ||
+      this.field.type == PropType.Time ||
+      this.field.type == PropType.TimeOnly ||
+      this.field.type == PropType.TimeSecOnly
     ) {
       this.generateMatchModeOptions(this.filterMatchModeOptions.date);
       this.columnFilterType = 'date';
-      this.sub.add(
-        this.biaTranslationService.currentCultureDateFormat$.subscribe(
-          dateFormat => {
-            const field = this.col.clone();
-            switch (field.type) {
-              case PropType.DateTime:
-                field.formatDate = dateFormat.dateTimeFormat;
-                break;
-              case PropType.Date:
-                field.formatDate = dateFormat.dateFormat;
-                break;
-              case PropType.Time:
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeOnly:
-                field.formatDate = dateFormat.timeFormat;
-                break;
-              case PropType.TimeSecOnly:
-                field.formatDate = dateFormat.timeFormatSec;
-                break;
-            }
-            this.col = field;
-          }
-        )
-      );
     } else {
       this.generateMatchModeOptions(this.filterMatchModeOptions.text);
       this.columnFilterType = 'text';
@@ -167,7 +148,7 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
             value: key,
           };
         });
-        if (this.col.isRequired === false) {
+        if (this.field.isRequired === false) {
           this.matchModeOptions.push(
             {
               label: this.translateService.instant('primeng.empty'),

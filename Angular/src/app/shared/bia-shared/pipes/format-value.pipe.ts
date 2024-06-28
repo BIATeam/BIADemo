@@ -2,6 +2,7 @@ import { CurrencyPipe, DatePipe, DecimalPipe, Time } from '@angular/common';
 import { Pipe, PipeTransform } from '@angular/core';
 import {
   BiaFieldConfig,
+  BiaFieldDateFormat,
   BiaFieldNumberFormat,
   NumberMode,
   PropType,
@@ -43,18 +44,21 @@ export class FormatValuePipe implements PipeTransform {
         );
       }
     }
-    if (col.isDate) {
+    if (col.isDate && col.displayFormat instanceof BiaFieldDateFormat) {
       if (value instanceof Date) {
-        return this.datePipe.transform(value, col.formatDate);
+        return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
       } else if (this.isTime(value)) {
         return this.datePipe.transform(
           '1990-10-10 ' + value.hours + ':' + value.minutes,
-          col.formatDate
+          col.displayFormat.autoFormatDate
         );
       } else if (col.type === PropType.Time) {
-        return this.datePipe.transform('1990-10-10 ' + value, col.formatDate);
+        return this.datePipe.transform(
+          '1990-10-10 ' + value,
+          col.displayFormat.autoFormatDate
+        );
       }
-      return this.datePipe.transform(value, col.formatDate);
+      return this.datePipe.transform(value, col.displayFormat.autoFormatDate);
     }
     return value;
   }

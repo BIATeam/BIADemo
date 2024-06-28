@@ -33,7 +33,7 @@ export enum NumberMode {
 }
 
 export class BiaFieldNumberFormat {
-  autoLocale: string;
+  autoLocale: string; // property automaticaly set when culture change.
   mode: NumberMode; // can be default, decimal, currency
   currency: string; // can be USD(default), EUR ...
   currencyDisplay: string; // can be symbole(default), code
@@ -63,9 +63,14 @@ export class BiaFieldNumberFormat {
 }
 
 export class BiaFieldDateFormat {
-  formatDate: string;
-  primeDateFormat: string;
-  hourFormat: number;
+  autoFormatDate: string; // property automaticaly set when culture change.
+  autoPrimeDateFormat: string; // property automaticaly set when culture change.
+  autoHourFormat: number; // property automaticaly set when culture change.
+  constructor() {
+    this.autoFormatDate = '';
+    this.autoPrimeDateFormat = 'yy/mm/dd';
+    this.autoHourFormat = 12;
+  }
 }
 
 export class BiaFieldConfig {
@@ -73,9 +78,6 @@ export class BiaFieldConfig {
   header: string;
   type: PropType;
   filterMode: PrimeNGFiltering;
-  formatDate: string;
-  primeDateFormat: string;
-  hourFormat: number;
   isSearchable: boolean;
   isSortable: boolean;
   icon: string;
@@ -117,9 +119,6 @@ export class BiaFieldConfig {
     this.header = header;
     this.type = PropType.String;
     this.filterMode = PrimeNGFiltering.Contains;
-    this.formatDate = '';
-    this.primeDateFormat = 'yy/mm/dd';
-    this.hourFormat = 12;
     this.isSearchable = true;
     this.isSortable = true;
     this.icon = '';
@@ -145,9 +144,6 @@ export class BiaFieldConfig {
       {
         type: this.type,
         filterMode: this.filterMode,
-        formatDate: this.formatDate,
-        primeDateFormat: this.primeDateFormat,
-        hourFormat: this.hourFormat,
         isSearchable: this.isSearchable,
         isSortable: this.isSortable,
         icon: this.icon,

@@ -73,7 +73,7 @@
           placeholder="&nbsp;"
           showButtonBar="true"
           appendTo="body"
-          [dateFormat]="field.primeDateFormat"
+          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
           [inputStyle]="{ width: '100%' }"></p-calendar>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -88,12 +88,12 @@
           showTime="true"
           showSeconds="false"
           timeOnly="true"
-          [dateFormat]="field.primeDateFormat"
+          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
           [hourFormat]="24"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
-        ><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
+        ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -112,7 +112,7 @@
           [hourFormat]="24"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
-        ><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
+        ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -131,7 +131,7 @@
           [hourFormat]="24"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
-        ><!-- [hourFormat]="field.hourFormat" not work for 12 (PrimeNG 13)-->
+        ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -144,8 +144,8 @@
           biaLocale
           [formControlName]="field.field"
           showTime="true"
-          [dateFormat]="field.primeDateFormat"
-          [hourFormat]="field.hourFormat"
+          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
+          [hourFormat]="field.displayFormat.autoHourFormat"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar>
