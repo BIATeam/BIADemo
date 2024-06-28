@@ -11,13 +11,9 @@ import {
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
-import { Subscription } from 'rxjs';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import {
-  BiaFieldConfig,
-  PropType,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
+import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-input',
@@ -25,7 +21,10 @@ import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-ta
   styleUrls: ['./bia-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
+export class BiaInputComponent
+  extends BiaFieldBaseComponent
+  implements OnInit, OnDestroy, AfterContentInit
+{
   @Input() field: BiaFieldConfig;
   @Input() form: UntypedFormGroup;
   @Input() dictOptionDtos: DictOptionDto[];
@@ -33,21 +32,7 @@ export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
 
-  constructor(
-    public biaTranslationService: BiaTranslationService
-    // protected authService: AuthService
-  ) {}
-  ngOnInit() {
-    this.initFieldConfiguration();
-  }
-
-  ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
@@ -63,45 +48,5 @@ export class BiaInputComponent implements OnInit, OnDestroy, AfterContentInit {
 
   public getOptionDto(key: string) {
     return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
-  }
-
-  private initFieldConfiguration() {
-    if (
-      this.field.type == PropType.DateTime ||
-      this.field.type == PropType.Date ||
-      this.field.type == PropType.Time ||
-      this.field.type == PropType.TimeOnly ||
-      this.field.type == PropType.TimeSecOnly
-    ) {
-      this.sub.add(
-        this.biaTranslationService.currentCultureDateFormat$.subscribe(
-          dateFormat => {
-            const field = this.field.clone();
-            switch (field.type) {
-              case PropType.DateTime:
-                field.primeDateFormat = dateFormat.primeDateFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                break;
-              case PropType.Date:
-                field.primeDateFormat = dateFormat.primeDateFormat;
-                break;
-              case PropType.Time:
-                field.primeDateFormat = dateFormat.timeFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                break;
-              case PropType.TimeOnly:
-                field.primeDateFormat = dateFormat.timeFormat;
-                field.hourFormat = dateFormat.hourFormat;
-                break;
-              case PropType.TimeSecOnly:
-                field.primeDateFormat = dateFormat.timeFormatSec;
-                field.hourFormat = dateFormat.hourFormat;
-                break;
-            }
-            this.field = field;
-          }
-        )
-      );
-    }
   }
 }
