@@ -43,6 +43,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     // BIAToolKit - End Option Airport
 
     /* BIAToolKit - Begin Option */
+    let cpt: number = 0;
     this.dictOptionDtos$ = combineLatest([
       // BIAToolKit - Begin Option PlaneType
       this.planeTypeOptions$,
@@ -55,10 +56,10 @@ export class PlaneOptionsService extends CrudItemOptionsService {
         options =>
           <DictOptionDto[]>[
             // BIAToolKit - Begin Option PlaneType
-            new DictOptionDto('planeType', options[0]),
+            new DictOptionDto('planeType', options[cpt++]),
             // BIAToolKit - End Option PlaneType
             // BIAToolKit - Begin Option Airport
-            new DictOptionDto('connectingAirports', options[1]),
+            new DictOptionDto('connectingAirports', options[cpt++]),
             // BIAToolKit - End Option Airport
           ]
       )

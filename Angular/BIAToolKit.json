@@ -3,7 +3,7 @@
     "Feature": "planes",
     "Type": "CRUD",
     "FeatureName": "Plane",
-    "FeatureNamePlurial": "Planes",
+    "FeatureNamePlural": "Planes",
     "ZipName": "feature-planes.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\*"],
@@ -21,7 +21,7 @@
     "Feature": "planes-full-code",
     "Type": "CRUD",
     "FeatureName": "Plane",
-    "FeatureNamePlurial": "Planes",
+    "FeatureNamePlural": "Planes",
     "ZipName": "feature-planes-full-code.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes-full-code\\*"],
@@ -35,10 +35,26 @@
     "Feature": "airport-option",
     "Type": "Option",
     "FeatureName": "Airport",
-    "FeatureNamePlurial": "Airports",
+    "FeatureNamePlural": "Airports",
     "ZipName": "domain-airport-option.zip",
+	"Relation": "many-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "plane-type-option",
+    "Type": "Option",
+    "FeatureName": "PlaneType",
+    "FeatureNamePlural": "PlanesTypes",
+    "ZipName": "domain-plane-type-option.zip",
+	"Relation": "one-to-many",
+    "Contains": {
+      "Include": ["src\\app\\domains\\plane-type-option\\*"],
       "Exclude": []
     },
     "Children": [],
@@ -49,7 +65,7 @@
     "Feature": "aircraft-maintenance-companies",
     "Type": "Team",
     "FeatureName": "AircraftMaintenanceCompany",
-    "FeatureNamePlurial": "AircraftMaintenanceCompanies",
+    "FeatureNamePlural": "AircraftMaintenanceCompanies",
     "ZipName": "aircraft-maintenance-companies.zip",
     "Contains": {
       "Include": ["src\\app\\features\\aircraft-maintenance-companies\\*"],

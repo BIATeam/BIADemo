@@ -115,7 +115,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
             /// BIAToolKit - End Partial Dependency 2 Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
+            /// BIAToolKit - Begin Partial Dependency 2 Airport
             collection.AddTransient<IAirportAppService, AirportAppService>();
+            /// BIAToolKit - End Partial Dependency 2 Airport
             collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
