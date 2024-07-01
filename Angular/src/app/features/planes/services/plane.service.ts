@@ -82,7 +82,9 @@ export class PlaneService extends CrudItemService<Plane> {
     let indexParent = 0;
     /// BIAToolKit - End Parent
     /// BIAToolKit - Begin Parent siteId
-    crudItems.filter(x => !x.id).map(x => (x.siteId = this.getParentIds()[indexParent++]));
+    crudItems
+      .filter(x => !x.id)
+      .map(x => (x.siteId = this.getParentIds()[indexParent++]));
     /// BIAToolKit - End Parent siteId
     this.store.dispatch(FeaturePlanesActions.save({ planes: crudItems }));
   }

@@ -37,7 +37,7 @@
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
     "ZipName": "domain-airport-option.zip",
-	"Relation": "many-to-many",
+    "Relation": "many-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
       "Exclude": []
@@ -52,7 +52,7 @@
     "FeatureName": "PlaneType",
     "FeatureNamePlural": "PlanesTypes",
     "ZipName": "domain-plane-type-option.zip",
-	"Relation": "one-to-many",
+    "Relation": "one-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\plane-type-option\\*"],
       "Exclude": []
