@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
@@ -198,6 +199,21 @@ namespace BIA.Net.Core.Domain
         public static string CSVNumber(int x)
         {
             return x.ToString();
+        }
+
+        public static string CSVNumber(float x)
+        {
+            return x.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static string CSVNumber(double x)
+        {
+            return x.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static string CSVNumber(decimal x)
+        {
+            return x.ToString(CultureInfo.InvariantCulture);
         }
     }
 }

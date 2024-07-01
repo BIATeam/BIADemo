@@ -184,6 +184,21 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                         {
                             records.Add(CSVList(x.ConnectingAirports));
                         }
+
+                        if (string.Equals(headerName, HeaderName.Probability, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Probability));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.FuelLevel, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.FuelLevel));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.EstimatedPrice));
+                        }
                     }
                 }
 

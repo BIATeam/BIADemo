@@ -291,9 +291,9 @@ export class CrudItemBulkService<T extends BaseDto> {
     if (isEmpty(csvValue) === true) {
       csvObj[<keyof typeof csvObj>column.field] = <any>null;
     } else {
-      const dictOptionDto = dictOptionDtos.find(x => x.key === column.field);
+      const dictOptionDto = dictOptionDtos?.find(x => x.key === column.field);
       const optionDto =
-        dictOptionDto?.value.find(x => x.display === csvValue) ?? null;
+        dictOptionDto?.value?.find(x => x.display === csvValue) ?? null;
 
       if (isEmpty(optionDto) !== true) {
         csvObj[<keyof typeof csvObj>column.field] = <any>optionDto;
@@ -320,9 +320,9 @@ export class CrudItemBulkService<T extends BaseDto> {
         .trim()
         .split(/ - | -|- /) // Regular expression for ' - ' OR '- ' OR ' -'
         .map(x => x.trim());
-      const dictOptionDto = dictOptionDtos.find(x => x.key === column.field);
+      const dictOptionDto = dictOptionDtos?.find(x => x.key === column.field);
       const optionDtos =
-        dictOptionDto?.value.filter(
+        dictOptionDto?.value?.filter(
           x => csvValues?.some(y => y.trim() === x.display) === true
         ) ?? null;
 
