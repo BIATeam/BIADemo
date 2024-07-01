@@ -55,19 +55,19 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the probability.
         /// </summary>
-        [BIADtoField]
+        [BIADtoField(Required = false)]
         public double Probability { get; set; }
 
         /// <summary>
         /// Gets or sets the fuelLevel.
         /// </summary>
-        [BIADtoField]
+        [BIADtoField(Required = false)]
         public float FuelLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated price.
         /// </summary>
-        [BIADtoField]
+        [BIADtoField(Required = false)]
         public decimal EstimatedPrice { get; set; }
 
         /// <summary>
