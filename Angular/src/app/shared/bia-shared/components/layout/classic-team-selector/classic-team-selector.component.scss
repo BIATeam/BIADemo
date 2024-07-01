@@ -45,6 +45,9 @@
     .p-multiselect-trigger-icon {
       color: white !important;
     }
+    .p-multiselect-label.p-placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
   }
   p-dropdown {
     .p-dropdown {
