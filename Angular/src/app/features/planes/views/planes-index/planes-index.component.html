@@ -9,6 +9,7 @@
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
+      (fullExportCSV)="onExportCSV('plane.listOf', true)"
       (delete)="onDelete()"
       (bulk)="onBulk()"
       [selectedElements]="selectedCrudItems">

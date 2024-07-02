@@ -52,15 +52,17 @@ export class CrudItemBulkService<T extends BaseDto> {
 
   constructor(protected translateService: TranslateService) {}
 
-  public uploadCsv(
+  public init(
     form: BiaFormComponent,
-    files: FileList,
     crudConfig: CrudConfig,
     crudItemService: CrudItemService<T>
-  ): Observable<BulkData<T>> {
+  ): void {
     this.crudItemService = crudItemService;
     this.crudConfig = crudConfig;
     this.form = form;
+  }
+
+  public uploadCsv(files: FileList): Observable<BulkData<T>> {
     this.initBulkData();
     const file = files.item(0);
 

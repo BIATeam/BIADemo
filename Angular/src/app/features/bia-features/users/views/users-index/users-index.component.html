@@ -9,6 +9,7 @@
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('user.listOf')"
+      (fullExportCSV)="onExportCSV('user.listOf', true)"
       (delete)="onDelete()"
       (bulk)="onBulk()"
       [selectedElements]="selectedCrudItems">

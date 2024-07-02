@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   Injector,
   OnDestroy,
@@ -18,12 +19,17 @@ import { CrudItemService } from '../../services/crud-item.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import {
+  BiaFieldConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 
 @Component({
   template: '',
 })
 export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
-  implements OnInit, OnDestroy
+  implements OnInit, AfterViewInit, OnDestroy
 {
   protected sub = new Subscription();
   protected crudConfiguration: CrudConfig;
@@ -63,20 +69,44 @@ export abstract class CrudItemBulkComponent<CrudItem extends BaseDto>
     );
   }
 
+  ngAfterViewInit() {
+    this.crudItemBulkService.init(
+      this.getForm(),
+      this.addColumnId(this.crudConfiguration),
+      this.crudItemService
+    );
+  }
+
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
     }
   }
 
+  protected addColumnId(crudConfig: CrudConfig) {
+    const columnIdExists = crudConfig.fieldsConfig.columns.some(
+      column => column.field === 'id'
+    );
+
+    if (columnIdExists !== true) {
+      const crudConfigCopy = clone(crudConfig);
+      crudConfigCopy.fieldsConfig.columns.unshift(this.getColumnId());
+      return crudConfigCopy;
+    } else {
+      return crudConfig;
+    }
+  }
+
+  protected getColumnId(): BiaFieldConfig {
+    return Object.assign(new BiaFieldConfig('id', 'bia.id'), {
+      isEditable: false,
+      type: PropType.Number,
+    });
+  }
+
   protected onFileSelected(event: any) {
     this.crudItemBulkService
-      .uploadCsv(
-        this.getForm(),
-        event.files,
-        this.crudConfiguration,
-        this.crudItemService
-      )
+      .uploadCsv(event.files)
       .pipe(take(1)) // auto unsubscribe
       .subscribe((bulkData: BulkData<CrudItem>) => (this.bulkData = bulkData));
   }

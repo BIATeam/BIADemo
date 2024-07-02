@@ -37,10 +37,6 @@ export class Plane extends BaseDto {
 // TODO after creation of CRUD Plane : adapt the field configuration
 export const PlaneFieldsConfiguration: BiaFieldsConfig = {
   columns: [
-    Object.assign(new BiaFieldConfig('id', 'bia.id'), {
-      isEditable: false,
-      type: PropType.Number,
-    }),
     /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,

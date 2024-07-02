@@ -51,17 +51,21 @@
       (click)="exportCSV.emit()"></button>
     <button
       pButton
+      *ngIf="displayBulkButton()"
+      class="p-button-outlined"
+      label="{{ 'bia.export' | translate }}"
+      (click)="fullExportCSV.emit()"></button>
+    <button
+      pButton
+      *ngIf="displayBulkButton()"
+      class="p-button-outlined"
+      label="{{ 'bia.import' | translate }}"
+      (click)="bulk.next()"></button>
+    <button
+      pButton
       *ngIf="canAdd"
       label="{{ 'bia.add' | translate }}"
       (click)="onCreate()"></button>
-    <button
-      pButton
-      *ngIf="
-        canBulk === true &&
-        (canDelete === true || canAdd === true || canEdit === true)
-      "
-      label="{{ 'bia.import' | translate }}"
-      (click)="onBulk()"></button>
   </div>
 </div>
 <p-confirmDialog></p-confirmDialog>

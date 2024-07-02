@@ -38,6 +38,7 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   @Output() delete = new EventEmitter<void>();
   @Output() openFilter = new EventEmitter<void>();
   @Output() exportCSV = new EventEmitter<void>();
+  @Output() fullExportCSV = new EventEmitter<void>();
   @Output() bulk = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
@@ -88,10 +89,6 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     this.create.next();
   }
 
-  onBulk() {
-    this.bulk.next();
-  }
-
   onDelete() {
     const confirmation: Confirmation = {
       ...this.biaDialogService.getDeleteConfirmation(),
@@ -107,5 +104,12 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
     if (this.showFilter === true) {
       this.openFilter.emit();
     }
+  }
+
+  displayBulkButton(): boolean {
+    return (
+      this.canBulk === true &&
+      (this.canDelete === true || this.canAdd === true || this.canEdit === true)
+    );
   }
 }

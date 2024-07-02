@@ -353,7 +353,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.tableState = tableState;
   }
 
-  onExportCSV(fileName = 'bia.crud.listOf') {
+  onExportCSV(fileName = 'bia.crud.listOf', useAllColumn = false) {
     fileName = this.translateService.instant(fileName);
 
     const selectedViewName =
@@ -363,12 +363,28 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
 
     const columns: { [key: string]: string } = {};
-    this.crudItemListComponent
-      .getPrimeNgTable()
-      .columns?.map(
+
+    if (useAllColumn === true) {
+      const allColumns = [...this.crudConfiguration.fieldsConfig.columns];
+      const columnIdExists = allColumns.some(column => column.field === 'id');
+
+      if (columnIdExists !== true) {
+        allColumns.unshift(new BiaFieldConfig('id', 'bia.id'));
+      }
+
+      allColumns?.map(
         (x: BiaFieldConfig) =>
           (columns[x.field] = this.translateService.instant(x.header))
       );
+    } else {
+      this.crudItemListComponent
+        .getPrimeNgTable()
+        .columns?.map(
+          (x: BiaFieldConfig) =>
+            (columns[x.field] = this.translateService.instant(x.header))
+        );
+    }
+
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
       columns: columns,
