@@ -172,16 +172,14 @@ Write-Host "replace project name"
 ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 
-Write-Host "npm install"
-npm install
-Write-Host "npm run clean"
-npm run clean
-
-
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false
 $a | ConvertTo-Json -depth 32 | Format-Json | set-content $newPath'\angular.json'
 
+Write-Host "npm install"
+npm install
+Write-Host "npm run clean"
+npm run clean
 
 Set-Location -Path $scriptPath
 
