@@ -172,7 +172,7 @@ export class UsersEffects {
               }
             }),
             catchError(err => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureUsersActions.failure({ error: err }));
             })
           );

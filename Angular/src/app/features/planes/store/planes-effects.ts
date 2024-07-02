@@ -174,7 +174,7 @@ export class PlanesEffects {
               }
             }),
             catchError(err => {
-              this.biaMessageService.showError();
+              this.biaMessageService.showErrorHttpResponse(err);
               return of(FeaturePlanesActions.failure({ error: err }));
             })
           );
