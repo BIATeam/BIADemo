@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// <summary>
     /// The DTO used to represent a plane.
     /// </summary>
+    [BIADtoClass(AncestorTeam = "Site")]
     public class PlaneDto : BaseDto<int>
     {
         /// <summary>
@@ -84,7 +85,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the  plane type title.
         /// </summary>
-        [BIADtoField(Required = false)]
         public OptionDto PlaneType { get; set; }
     }
 }
