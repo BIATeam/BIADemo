@@ -8,7 +8,7 @@
           [minFractionDigits]="field.displayFormat?.minFractionDigits"
           [maxFractionDigits]="field.displayFormat?.maxFractionDigits"
           [currency]="
-            field.displayFormat?.mode == 'currency'
+            field.displayFormat?.mode === 'currency'
               ? field.displayFormat?.currency
               : undefined
           "
