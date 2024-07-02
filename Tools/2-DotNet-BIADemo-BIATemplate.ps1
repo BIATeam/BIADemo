@@ -56,7 +56,7 @@ function RemoveCodeExample {
   
     if ($lineBegin -and $lineBegin.Length -gt 0) {
 
-     Write-Host "Delete BIADemo code for file $file"
+      Write-Host "Delete BIADemo code for file $file"
 
       $lineBegin = $lineBegin | Sort-Object
       for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
@@ -112,9 +112,8 @@ Write-Host "Zip plane"
 
 # Read Json settings to generate archive
 $myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach($settings in $myJson)
-{
-    GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
+ForEach ($settings in $myJson) {
+  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
 }
 Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
 

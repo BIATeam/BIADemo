@@ -20,11 +20,11 @@ function ReplaceProjectName {
   param (
     [string]$oldName,
     [string]$newName,
-	$Path,
-	$ExcludeDir
+    $Path,
+    $ExcludeDir
   )
   foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-	ReplaceProjectName -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
+    ReplaceProjectName -oldName $oldName -newName $newName -Path $childDirectory.FullName -Exclude $ExcludeDir
   }
   Get-ChildItem -LiteralPath $Path -File -Include *.csproj, *.cs, *.sln, *.json, *.config, *.ps1, *.ts, *.html, *.yml | ForEach-Object { 
     $oldContent = [System.IO.File]::ReadAllText($_.FullName);
@@ -38,13 +38,13 @@ function ReplaceProjectName {
 
 # Deletes lines between // Begin BIADemo and // End BIADemo 
 function RemoveCodeExample {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveCodeExample -Path $childDirectory.FullName -Exclude $ExcludeDir
-    }	
+  param(
+    $Path,
+    $ExcludeDir
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+    RemoveCodeExample -Path $childDirectory.FullName -Exclude $ExcludeDir
+  }	
 	
   Get-ChildItem -Path $Path -File | Where-Object { $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object { 
     $lineBegin = @()
@@ -70,41 +70,40 @@ function RemoveCodeExample {
 }
 
 function RemoveBIADemoOnlyFiles {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-	foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveBIADemoOnlyFiles -Path $childDirectory.FullName -Exclude $ExcludeDir
+  param(
+    $Path,
+    $ExcludeDir
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+    RemoveBIADemoOnlyFiles -Path $childDirectory.FullName -Exclude $ExcludeDir
+  }
+  foreach ($childFile in Get-ChildItem -Path $Path -File | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
+    $file = $childFile.FullName
+    $fileRel = Resolve-Path -Path "$file" -Relative
+    $searchWord = '// BIADemo only'
+    $starts = GetLineNumber -pattern $searchWord -file $file
+    if ($starts -eq 1) {
+      Write-Verbose "Remove $fileRel" -Verbose
+      Remove-Item -Force -LiteralPath $file
     }
-	foreach ($childFile in Get-ChildItem -Path $Path -File | Where-Object { Select-String "// BIADemo only" $_ -Quiet } ) { 
-		$file = $childFile.FullName
-		$fileRel = Resolve-Path -Path "$file" -Relative
-		$searchWord = '// BIADemo only'
-		$starts = GetLineNumber -pattern $searchWord -file $file
-		if ($starts -eq 1)
-		{
-			Write-Verbose "Remove $fileRel" -Verbose
-			Remove-Item -Force -LiteralPath $file
-		}
-	}
+  }
 }
 
 function RemoveEmptyFolder {
-    param(
-        $Path,
-		$ExcludeDir
-    )
-    foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
-        RemoveEmptyFolder -Path $childDirectory.FullName -Exclude $ExcludeDir
-    }
-    $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-    $isEmpty = $currentChildren -eq $null
-    if ($isEmpty) {
-	 	$fileRel = Resolve-Path -Path "$Path" -Relative
-        Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
-        Remove-Item -Force -LiteralPath $Path
-    }
+  param(
+    $Path,
+    $ExcludeDir
+  )
+  foreach ($childDirectory in Get-ChildItem -Force -Path $Path -Directory -Exclude $ExcludeDir) {
+    RemoveEmptyFolder -Path $childDirectory.FullName -Exclude $ExcludeDir
+  }
+  $currentChildren = Get-ChildItem -Force -LiteralPath $Path
+  $isEmpty = $currentChildren -eq $null
+  if ($isEmpty) {
+    $fileRel = Resolve-Path -Path "$Path" -Relative
+    Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
+    Remove-Item -Force -LiteralPath $Path
+  }
 }
 
 ###### ###### ###### Start process ###### ###### ######
@@ -119,9 +118,8 @@ Set-Location -Path $newPath
 
 # Read Json settings to generate archive
 $myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
-ForEach($settings in $myJson)
-{
-    GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
+ForEach ($settings in $myJson) {
+  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
 }
 
 Write-Host "Copy-Item -Path $oldPath\$jsonFileName -Destination $newPath\$docsFolder\$jsonFileName -Force"
@@ -165,7 +163,7 @@ Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular')
 
 Write-Host "Remove Empty Folder"
-RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'PublishProfiles','RepoContract')
+RemoveEmptyFolder "." -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', 'PublishProfiles', 'RepoContract')
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample -Path $newPath -ExcludeDir ('dist', 'node_modules', '.angular', $docsFolder, 'scss' )
@@ -174,15 +172,15 @@ Write-Host "replace project name"
 ReplaceProjectName -oldName $oldName -newName $newName -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 ReplaceProjectName -oldName $oldName.ToLower() -newName $newName.ToLower() -Path $newPath  -ExcludeDir ('dist', 'node_modules', '.angular', 'scss')
 
-# Write-Host "npm install"
-# npm install
-# Write-Host "ng build --aot"
-# ng build --aot
+Write-Host "npm install"
+npm install
+Write-Host "npm run clean"
+npm run clean
 
 
 $a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
-$a.projects.BIATemplate.architect.build.options.serviceWorker=$false
-$a | ConvertTo-Json -depth 32 | Format-Json |set-content $newPath'\angular.json'
+$a.projects.BIATemplate.architect.build.options.serviceWorker = $false
+$a | ConvertTo-Json -depth 32 | Format-Json | set-content $newPath'\angular.json'
 
 
 Set-Location -Path $scriptPath
