@@ -4,10 +4,7 @@
 
 namespace BIA.Net.Core.Presentation.Api.Features.HangfireDashboard
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
-    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using Hangfire.Dashboard;
 
     public class HangfireDashboardAuthorizations

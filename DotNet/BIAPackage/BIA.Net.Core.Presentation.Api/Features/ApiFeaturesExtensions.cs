@@ -7,12 +7,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
-    using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire;
     using Hangfire.Dashboard;
     using Hangfire.Dashboard.JobLogs;
@@ -157,9 +155,17 @@ namespace BIA.Net.Core.Presentation.Api.Features
             return services;
         }
 
-        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>(
+        /// <summary>
+        /// Use Bia Api Features.
+        /// </summary>
+        /// <param name="app">the application builder.</param>
+        /// <param name="apiFeatures">the Api feature.</param>
+        /// <param name="hangfireServerAuthorizations">authorization for hangfire dashboard.</param>
+        /// <returns>the application builder with bia feature.</returns>
+        public static IApplicationBuilder UseBiaApiFeatures(
             [NotNull] this IApplicationBuilder app,
-            ApiFeatures apiFeatures, HangfireDashboardAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
+            ApiFeatures apiFeatures,
+            HangfireDashboardAuthorizations hangfireServerAuthorizations)
         {
             app.UseEndpoints(endpoints =>
             {
@@ -184,7 +190,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             }
 
             // Hangfire Server
-            if (apiFeatures.HangfireDashboard.IsActive == true)
+            if (apiFeatures.HangfireDashboard.IsActive)
             {
                 app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
                 {
@@ -192,12 +198,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
-                    Authorization = hangfireServerAuthorizations.Authorization
+                    Authorization = hangfireServerAuthorizations.Authorization,
                 });
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions
                 {
                     IsReadOnlyFunc = (DashboardContext context) => true,
-                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
+                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly,
                 });
             }
 

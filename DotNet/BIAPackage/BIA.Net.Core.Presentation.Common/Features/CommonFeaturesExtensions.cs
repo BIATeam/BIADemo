@@ -21,15 +21,14 @@ namespace BIA.Net.Core.Presentation.Common.Features
         /// Start the Worker service features.
         /// </summary>
         /// <param name="services">the service collection.</param>
+        /// <param name="commonFeatures">the common Features.</param>
         /// <param name="configuration">the application configuration.</param>
-        /// <param name="databaseHandlerRepositories">the list of handler repositories.</param>
         /// <returns>the services collection.</returns>
         public static IServiceCollection AddBiaCommonFeatures(
             [NotNull] this IServiceCollection services,
             CommonFeatures commonFeatures,
             IConfiguration configuration)
         {
-
             // Distributed Cache
             if (commonFeatures?.DistributedCache?.IsActive == true)
             {
@@ -59,16 +58,15 @@ namespace BIA.Net.Core.Presentation.Common.Features
             return services;
         }
 
-        public static void UseBiaCommonFeatures<AuditFeature>(IServiceProvider services) where AuditFeature : IAuditFeature
+        /// <summary>
+        /// Use Bia Common Features.
+        /// </summary>
+        /// <typeparam name="TAuditFeature">the AuditFeature type.</typeparam>
+        /// <param name="services">the services.</param>
+        public static void UseBiaCommonFeatures<TAuditFeature>(IServiceProvider services)
+            where TAuditFeature : IAuditFeature
         {
-            //services = app.ApplicationServices for Api
-            // for worker
-            //using (var scope = host.Services.CreateScope())
-            //{
-            //    var services = scope.ServiceProvider;
-            //}
-
-            services.GetRequiredService<AuditFeature>().UseAuditFeatures(services);
+            services.GetRequiredService<TAuditFeature>().UseAuditFeatures(services);
         }
     }
 }

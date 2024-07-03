@@ -4,14 +4,12 @@
 
 namespace BIA.Net.Presentation.Api.Controllers.Base
 {
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.User;
+    using System.Linq;
+    using System.Security.Claims;
     using BIA.Net.Core.Presentation.Common.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
-    using System.Security.Claims;
 
     /// <summary>
     /// The base class for BIA controllers.

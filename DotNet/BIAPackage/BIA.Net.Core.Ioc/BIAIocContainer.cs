@@ -1,29 +1,29 @@
-// <copyright file="IocContainer.cs" company="BIA">
+// <copyright file="BiaIocContainer.cs" company="BIA">
 //  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.IocContainer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Reflection;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
     using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System;
-    using BIA.Net.Core.Infrastructure.Service.Repositories;
-    using System.Net.Http;
 
     /// <summary>
     /// The IoC Container.
     /// </summary>
-    public static class BIAIocContainer
+    public static class BiaIocContainer
     {
         /// <summary>
         /// The method used to register all instances.

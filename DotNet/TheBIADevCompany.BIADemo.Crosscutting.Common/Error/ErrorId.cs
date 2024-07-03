@@ -1,4 +1,4 @@
-// <copyright file="RoleId.cs" company="TheBIADevCompany">
+// <copyright file="ErrorId.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

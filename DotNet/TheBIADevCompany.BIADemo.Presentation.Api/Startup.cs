@@ -133,7 +133,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
-            app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
+            app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }
 }

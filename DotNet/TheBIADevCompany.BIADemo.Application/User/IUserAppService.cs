@@ -76,9 +76,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// Add a list of users in a group in AD.
         /// </summary>
-        /// <param name="user">The list of users to add.</param>
+        /// <param name="userDto">The list of users to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto user);
+        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto);
 
         /// <summary>
         /// Remove a user in a group in AD.

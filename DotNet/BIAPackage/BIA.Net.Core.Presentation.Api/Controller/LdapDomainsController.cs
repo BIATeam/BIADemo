@@ -4,7 +4,6 @@
 namespace BIA.Net.Presentation.Api.Controllers
 {
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Linq;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
@@ -38,7 +37,7 @@ namespace BIA.Net.Presentation.Api.Controllers
         /// </summary>
         /// <returns>The list of LDAP domains.</returns>
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<IEnumerable<LdapDomain>>(StatusCodes.Status200OK)]
         [Authorize(Roles = BiaRights.LdapDomains.List)]
         public IActionResult GetAll()
         {

@@ -77,7 +77,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
 
                 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 {
+#pragma warning disable CA1416 // Validate platform compatibility
                     Credential cred = CredentialManager.ReadCredential(applicationName: this.configuration.Authentication.Keycloak.Api.TokenConf.CredentialKeyInWindowsVault);
+#pragma warning restore CA1416 // Validate platform compatibility
                     tokenRequestDto.Username = cred?.UserName;
                     tokenRequestDto.Password = cred?.Password;
                 }

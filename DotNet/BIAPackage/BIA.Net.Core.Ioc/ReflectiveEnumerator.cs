@@ -9,9 +9,14 @@ namespace BIA.Net.Core.Ioc
     using System.Linq;
     using System.Reflection;
 
+    /// <summary>
+    /// helper class to enum types in the assembly.
+    /// </summary>
     public static class ReflectiveEnumerator
     {
-        static ReflectiveEnumerator() { }
+        static ReflectiveEnumerator()
+        {
+        }
 
         /// <summary>
         /// Return all classes of an assembly with the name end by a string.
@@ -35,7 +40,7 @@ namespace BIA.Net.Core.Ioc
         public static List<Type> GetDerivedTypes(Assembly assembly, Type baseType)
         {
             return assembly.GetTypes()
-                .Where(type => ( baseType.IsAssignableFrom(type) || IsSubclassOfRawGeneric(type, baseType)) && type.IsClass && !type.IsAbstract)
+                .Where(type => (baseType.IsAssignableFrom(type) || IsSubclassOfRawGeneric(type, baseType)) && type.IsClass && !type.IsAbstract)
                 .ToList();
         }
 

@@ -6,13 +6,11 @@
 using System;
 using BIA.Net.Core.Application.Authentication;
 using BIA.Net.Core.Common.Configuration;
-using BIA.Net.Core.Presentation.Common.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NLog;
-using NLog.Extensions.Logging;
 using NLog.Web;
 using TheBIADevCompany.BIADemo.Presentation.Api;
 #pragma warning restore SA1200 // Using directives should be placed correctly
@@ -38,7 +36,7 @@ try
     builder.Configuration.GetSection("BiaNet").Bind(biaNetSection);
     startup.Configure(app, app.Environment, new JwtFactory(Options.Create<Jwt>(biaNetSection.Jwt)));
 
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {

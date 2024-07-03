@@ -91,7 +91,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
             if (entity.ViewType != ViewType.Team)
             {
-                this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
+                var message = "Trying to delete the wrong view type: " + entity.ViewType;
+                this.logger.LogWarning(message);
                 throw new BusinessException("Wrong view type: " + entity.ViewType);
             }
 

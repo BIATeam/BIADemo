@@ -46,6 +46,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
+
             // BIAToolKit - End Parent siteId
         }
     }

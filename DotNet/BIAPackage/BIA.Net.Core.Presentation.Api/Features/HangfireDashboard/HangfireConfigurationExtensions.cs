@@ -12,7 +12,6 @@ namespace Hangfire.Dashboard.JobLogs
     using System.Text;
     using System.Text.RegularExpressions;
     using BIA.Net.Core.Presentation.Api.Features;
-    using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
     /// <summary>
     /// Provides extension methods to setup Hangfire.JobLogs.
@@ -23,6 +22,7 @@ namespace Hangfire.Dashboard.JobLogs
         /// Configures Hangfire to use JobLogs.
         /// </summary>
         /// <param name="configuration">Global configuration.</param>
+        /// <param name="logfiles">log files.</param>
         /// <returns>The global configuration.</returns>
         public static IGlobalConfiguration UseDashboardJobLogs(this IGlobalConfiguration configuration, string logfiles)
         {
@@ -54,7 +54,7 @@ namespace Hangfire.Dashboard.JobLogs
                         {
                             try
                             {
-                                messages.AddRange(readAllLines(file).ToList());
+                                messages.AddRange(ReadAllLines(file).ToList());
                             }
                             catch (Exception e)
                             {
@@ -76,7 +76,7 @@ namespace Hangfire.Dashboard.JobLogs
                 var logString = "No log";
                 if (messages != null)
                 {
-                    StringBuilder strBld = new();
+                    StringBuilder strBld = new ();
                     foreach (string message in messages)
                     {
                         string level = "none";
@@ -100,7 +100,7 @@ namespace Hangfire.Dashboard.JobLogs
             return configuration;
         }
 
-        private static string[] readAllLines(string file)
+        private static string[] ReadAllLines(string file)
         {
             string[] lines = null;
             using (FileStream fs = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

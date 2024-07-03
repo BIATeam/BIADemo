@@ -4,11 +4,9 @@
 
 namespace BIA.Net.Core.Presentation.Api.Controller
 {
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;

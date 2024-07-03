@@ -1,4 +1,4 @@
-﻿// <copyright file="SidResolvedGroup.cs" company="BIA.Net">
+﻿// <copyright file="GroupDomainSid.cs" company="BIA.Net">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -9,19 +9,19 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
     using System.Text;
 
     /// <summary>
-    /// Sid Resolved Group.
+    /// class for Domain and Sid.
     /// </summary>
     [Serializable]
-    public class SidResolvedGroup : SidResolvedItem
+    public class GroupDomainSid
     {
         /// <summary>
-        /// Members Group Sid.
+        /// The domain.
         /// </summary>
-        public List<GroupDomainSid> MembersGroupSid { get; set; }
+        public string Domain { get; set; }
 
         /// <summary>
-        /// Members User Sid.
+        /// The Sid.
         /// </summary>
-        public List<string> MembersUserSid { get; set; }
+        public string Sid { get; set; }
     }
 }

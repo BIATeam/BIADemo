@@ -306,7 +306,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AdditionalInfoDto additionnalInfo = null;
             if (loginParam.AdditionalInfos)
             {
-                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Any(tc => tc.TeamTypeId == t.TeamTypeId && (
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
                     tc.Parents == null
                     ||
                     tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();

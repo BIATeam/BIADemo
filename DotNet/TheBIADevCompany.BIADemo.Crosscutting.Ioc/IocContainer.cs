@@ -30,11 +30,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
+
     // BIAToolKit - Begin Partial Dependency 1 Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
+
     // BIAToolKit - End Partial Dependency 1 Plane
     // End BIADemo
-
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Application.View;
@@ -71,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-            BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
+            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
             ConfigureDomainContainer(collection);
@@ -111,16 +112,21 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
+
             // BIAToolKit - Begin Partial Dependency 2 Plane
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
+
             // BIAToolKit - End Partial Dependency 2 Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
+
             // BIAToolKit - Begin Partial Dependency 2 Airport
             collection.AddTransient<IAirportAppService, AirportAppService>();
+
             // BIAToolKit - End Partial Dependency 2 Airport
             collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
+
             // End BIADemo
             // BIAToolKit - Begin Dependency 2
             // BIAToolKit - End Dependency 2

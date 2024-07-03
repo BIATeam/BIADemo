@@ -58,7 +58,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
-            this.logger.LogInformation($"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}");
+            string message = $"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
+            this.logger.LogInformation(message);
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
@@ -75,7 +76,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");
-            this.logger.LogInformation($"databaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}");
+            string message = $"databaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
+            this.logger.LogInformation(message);
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {

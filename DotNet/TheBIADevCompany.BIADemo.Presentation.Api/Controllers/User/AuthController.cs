@@ -110,7 +110,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <returns>The front end version.</returns>
         [HttpGet("frontEndVersion")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public IActionResult GetFrontEndVersion()
         {
             return this.Ok(Constants.Application.FrontEndVersion);

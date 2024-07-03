@@ -11,6 +11,9 @@ namespace BIA.Net.Core.Presentation.Api.Controller
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
 
+    /// <summary>
+    /// Controller to provide setting define in back to the front.
+    /// </summary>
     public class AppSettingsController : BiaControllerBase
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
         private readonly AppSettingsDto appSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LdapDomainsController"/> class.
+        /// Initializes a new instance of the <see cref="AppSettingsController"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public AppSettingsController(IOptions<BiaNetSection> configuration)
@@ -29,7 +32,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
                 Keycloak = configuration.Value.Authentication.Keycloak,
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
-                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl
+                MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
             };
         }
 
@@ -39,7 +42,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller
         /// <returns>The Application settings.</returns>
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<AppSettingsDto>(StatusCodes.Status200OK)]
         public IActionResult Get()
         {
             return this.Ok(this.appSettings);

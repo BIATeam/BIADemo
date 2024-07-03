@@ -13,6 +13,9 @@ namespace BIA.Net.Core.WorkerService
     using Hangfire.Storage.Monitoring;
     using Microsoft.Extensions.Hosting;
 
+    /// <summary>
+    /// Helper for recurring jobs.
+    /// </summary>
     public static class RecuringJobsHelper
     {
         /// <summary>
@@ -40,7 +43,7 @@ namespace BIA.Net.Core.WorkerService
             var mon = JobStorage.Current.GetMonitoringApi();
             List<string> jobsToCheck = new ();
 
-            mon.ProcessingJobs(0, int.MaxValue).ToList().ToList().ForEach(x => jobsToCheck.Add(x.Key));
+            mon.ProcessingJobs(0, int.MaxValue).ToList().ForEach(x => jobsToCheck.Add(x.Key));
 
             List<QueueWithTopEnqueuedJobsDto> queues;
             if (string.IsNullOrEmpty(queueName))
@@ -88,14 +91,16 @@ namespace BIA.Net.Core.WorkerService
                 }
             }
 
-            //processingJobs.Where(o => Methods.Contains(o.Value.Job.Method.Name)).ToList().ForEach(x => jobInstanceIdsToDelete.Add(x.Key));
-
             foreach (var id in jobInstanceIdsToDelete)
             {
                 BackgroundJob.Delete(id);
             }
         }
 
+        /// <summary>
+        /// Purge all pending Job in Queue.
+        /// </summary>
+        /// <param name="queueName">name of the queue.</param>
         public static void PurgeQueue(string queueName)
         {
             var toDelete = new List<string>();

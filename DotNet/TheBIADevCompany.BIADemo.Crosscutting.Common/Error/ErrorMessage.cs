@@ -1,4 +1,4 @@
-// <copyright file="Constants.cs" company="TheBIADevCompany">
+// <copyright file="ErrorMessage.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
