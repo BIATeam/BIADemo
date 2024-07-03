@@ -15,7 +15,7 @@ import { randomReviewPlane } from '../../store/hangfire-actions';
 export class HangfireIndexComponent {
   @HostBinding('class') classes = 'bia-flex';
   allTeams$: Observable<Team[]>;
-  TeamTypeId: typeof TeamTypeId = TeamTypeId;
+  teamTypeId: typeof TeamTypeId = TeamTypeId;
 
   constructor(private store: Store<AppState>) {
     this.allTeams$ = this.store.select(getAllTeams);

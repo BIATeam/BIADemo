@@ -36,6 +36,7 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
     return request.clone({
       withCredentials: false,
       setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         Authorization: `Bearer ${token}`,
       },
     });
