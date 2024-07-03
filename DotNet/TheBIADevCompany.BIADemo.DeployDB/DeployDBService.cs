@@ -50,7 +50,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <returns>Task.CompletedTask.</returns>
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            this.logger.LogDebug($"Starting with arguments: {string.Join(" ", Environment.GetCommandLineArgs())}");
+            string message = $"Starting with arguments: {string.Join(" ", Environment.GetCommandLineArgs())}";
+            this.logger.LogDebug(message);
 
             this.appLifetime.ApplicationStarted.Register(() =>
             {
@@ -60,12 +61,15 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     {
                         this.logger.LogInformation("Start Migration!");
 
-                        this.logger.LogInformation($"ConnectionString: {this.dataContext.Database.GetDbConnection().ConnectionString}");
+                        string message = $"ConnectionString: {this.dataContext.Database.GetDbConnection().ConnectionString}";
+                        this.logger.LogInformation(message);
 
                         // Database Migrate CommandTimeout
                         string confCommandTimeout = "DatabaseMigrate:CommandTimeout";
                         int timeout = int.Parse(this.configuration["DatabaseMigrate:CommandTimeout"]);
-                        this.logger.LogInformation($"{confCommandTimeout}: {timeout} minutes");
+
+                        message = $"{confCommandTimeout}: {timeout} minutes";
+                        this.logger.LogInformation(message);
                         this.dataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(timeout));
 
                         this.dataContext.Database.Migrate();
@@ -76,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     {
                         this.exception = ex;
                         this.logger.LogError(ex, "Unhandled exception!");
-                        throw;
+                        throw new BIA.Net.Core.Common.Exceptions.SystemException("Unhandled exception!", ex);
                     }
                     finally
                     {
@@ -115,7 +119,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
             {
                 this.dataContext.DistCache.RemoveRange(this.dataContext.DistCache);
                 int nb = await this.dataContext.CommitAsync();
-                this.logger.LogInformation($"DistCache cleaned (nb removed: {nb})");
+                var message = $"DistCache cleaned (nb removed: {nb})";
+                this.logger.LogInformation(message);
             }
             catch (Exception ex)
             {

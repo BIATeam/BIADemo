@@ -1,19 +1,16 @@
-﻿// <copyright file="BIADemoAppRepository.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="WakeUpWebApps.cs" company="BIA.Net">
+//  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
+namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// WorkInstruction Repository.
@@ -41,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
             foreach (var configSection in webAppToWakeUpArray)
             {
                 this.wakeUpWebApps.Add(new WakeUpWebApp(httpClient, logger, distributedCache, configSection["BaseAddress"], configSection["UrlWakeUp"]));
-            };
+            }
         }
 
         /// <inheritdoc/>

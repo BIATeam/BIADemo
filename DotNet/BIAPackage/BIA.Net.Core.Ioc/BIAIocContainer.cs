@@ -17,6 +17,8 @@ namespace BIA.Net.Core.IocContainer
     using System.Collections.Generic;
     using System.Reflection;
     using System;
+    using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using System.Net.Http;
 
     /// <summary>
     /// The IoC Container.
@@ -97,6 +99,32 @@ namespace BIA.Net.Core.IocContainer
             }
 
             collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
+
+            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+        }
+
+        /// <summary>
+        /// Creates the HTTP client handler.
+        /// </summary>
+        /// <param name="biaNetSection">The bia net section.</param>
+        /// <returns>HttpClientHandler object.</returns>
+        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
+        {
+            HttpClientHandler httpClientHandler = new HttpClientHandler
+            {
+                UseDefaultCredentials = useDefaultCredentials,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            };
+
+            if (biaNetSection?.Security?.DisableTlsVerify == true)
+            {
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
+            }
+
+            return httpClientHandler;
         }
     }
 }

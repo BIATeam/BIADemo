@@ -177,7 +177,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "MaintenanceTeam_Save";
         }
 
-        /// BIAToolKit - Begin Partial Rights Plane
+        // BIAToolKit - Begin Partial Rights Plane
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -213,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Plane_Save";
         }
-        /// BIAToolKit - End Partial Rights Plane
+        // BIAToolKit - End Partial Rights Plane
 
         /// <summary>
         /// The planes rights.
@@ -256,7 +256,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "PlaneType_Save";
         }
 
-        /// BIAToolKit - Begin Partial Rights Airport
+        // BIAToolKit - Begin Partial Rights Airport
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -297,7 +297,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Airport_Save";
         }
-        /// BIAToolKit - End Partial Rights Airport
+        // BIAToolKit - End Partial Rights Airport
 
         /// <summary>
         /// The Hangfire rights.
@@ -567,7 +567,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Options = "NotificationType_Options";
         }
 
-        /// BIAToolKit - Begin Rights
-        /// BIAToolKit - End Rights
+        // BIAToolKit - Begin Rights
+        // BIAToolKit - End Rights
     }
 }

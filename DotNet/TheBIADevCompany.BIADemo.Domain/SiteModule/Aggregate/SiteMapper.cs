@@ -38,6 +38,5 @@ namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
         {
             get { return (int)TeamTypeId.Site; }
         }
-
     }
 }

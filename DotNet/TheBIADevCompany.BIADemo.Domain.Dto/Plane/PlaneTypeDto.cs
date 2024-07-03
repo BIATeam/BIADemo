@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
-
     /// <summary>
     /// The DTO used to represent a plane.
     /// </summary>

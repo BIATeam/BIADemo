@@ -1,8 +1,8 @@
-﻿// <copyright file="IBIADemoAppRepository.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="IWakeUpWebApps.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.RepoContract
+namespace BIA.Net.Core.Domain.RepoContract
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

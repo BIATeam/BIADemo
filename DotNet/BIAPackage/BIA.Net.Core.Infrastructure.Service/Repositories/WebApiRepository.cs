@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        protected readonly ILogger<WebApiRepository> logger;
+        protected readonly ILogger logger;
 
         /// <summary>
         /// The child class name.
@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <param name="httpClient">The HTTP client.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        protected WebApiRepository(HttpClient httpClient, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
+        protected WebApiRepository(HttpClient httpClient, ILogger logger, IBiaDistributedCache distributedCache)
         {
             this.httpClient = httpClient;
             this.logger = logger;

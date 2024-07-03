@@ -86,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.airportService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 

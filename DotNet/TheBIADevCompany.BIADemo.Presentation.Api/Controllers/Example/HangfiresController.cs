@@ -85,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
                 var client = new BackgroundJobClient();
                 client.Create<BiaDemoTestHangfireService>(x => x.RandomReviewPlane(teamId, this.principal.GetUserData<UserDataDto>().GetCurrentTeam((int)TeamTypeId.Site), this.principal.GetUserId(), null), new EnqueuedState());
 
-                return this.Ok("Operation being processed in background...");
+                return this.Ok();
             }
             catch (ArgumentNullException)
             {

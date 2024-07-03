@@ -10,10 +10,10 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.RepoContract;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// Task to wake up.

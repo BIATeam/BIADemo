@@ -1,4 +1,4 @@
-// <copyright file="SiteSpecification.cs" company="TheBIADevCompany">
+// <copyright file="TeamAdvancedFilterSpecification.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

@@ -124,15 +124,15 @@
       }
     ],
     "Permissions": [
-      /// BIAToolKit - Begin Config
-      /// BIAToolKit - End Config
+      // BIAToolKit - Begin Config
+      // BIAToolKit - End Config
       // Begin BIADemo
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
-      /// BIAToolKit - Begin Partial Config Plane
+      // BIAToolKit - Begin Partial Config Plane
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Read" ],
@@ -146,7 +146,7 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
-      /// BIAToolKit - End Partial Config Plane
+      // BIAToolKit - End Partial Config Plane
       // Engine
       {
         "Names": [ "Engine_List_Access", "Engine_Read" ],
@@ -202,7 +202,7 @@
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
         "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
-      /// BIAToolKit - Begin Partial Config Airport
+      // BIAToolKit - Begin Partial Config Airport
       // Airport
       {
         "Name": "Airport_Options",
@@ -212,7 +212,7 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
-      /// BIAToolKit - End Partial Config Airport
+      // BIAToolKit - End Partial Config Airport
       // PlaneType
       {
         "Name": "PlaneType_Options",

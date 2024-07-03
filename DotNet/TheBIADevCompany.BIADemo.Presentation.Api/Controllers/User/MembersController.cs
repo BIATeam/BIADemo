@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
 
             var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -193,43 +193,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.ValidationProblem();
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContext.LanguageId));
             }
-        }
-
-        private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
-        {
-            if (dto.User.DtoState == DtoState.AddedNewChoice)
-            {
-                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
-                if (existingUser != null && existingUser.IsActive)
-                {
-                    dto.User.Id = existingUser.Id;
-                    return null;
-                }
-
-                if (!this.IsAuthorize(Rights.Users.Add))
-                {
-                    return this.StatusCode(StatusCodes.Status403Forbidden);
-                }
-
-                UserDto userDto = new UserDto();
-                userDto.Login = dto.User.Display;
-                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
-#if UseHubForClientInUser
-                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
-#endif
-                if (result.Errors.Any())
-                {
-                    return this.StatusCode(StatusCodes.Status303SeeOther, result.Errors);
-                }
-
-                dto.User = result.UsersAddedDtos.FirstOrDefault();
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -480,6 +447,39 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             var buffer = await this.memberService.ExportCSV(filters);
             string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
             return this.File(buffer, "text/csv;charset=utf-8", fileName);
+        }
+
+        private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
+        {
+            if (dto.User.DtoState == DtoState.AddedNewChoice)
+            {
+                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
+                if (existingUser != null && existingUser.IsActive)
+                {
+                    dto.User.Id = existingUser.Id;
+                    return null;
+                }
+
+                if (!this.IsAuthorize(Rights.Users.Add))
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                UserDto userDto = new UserDto();
+                userDto.Login = dto.User.Display;
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                if (result.Errors.Any())
+                {
+                    return this.StatusCode(StatusCodes.Status303SeeOther, result.Errors);
+                }
+
+                dto.User = result.UsersAddedDtos.FirstOrDefault();
+            }
+
+            return null;
         }
     }
 }

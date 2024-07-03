@@ -116,14 +116,16 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
             if (entity.ViewType != ViewType.User)
             {
-                this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
+                var message = "Trying to delete the wrong view type: " + entity.ViewType;
+                this.logger.LogWarning(message);
                 throw new BusinessException("Wrong view type: " + entity.ViewType);
             }
 
             var currentUserId = this.principal.GetUserId();
             if (entity.ViewUsers.All(a => a.UserId != currentUserId))
             {
-                this.logger.LogWarning($"The user {currentUserId} is trying to delete the view {id} of an other user.");
+                var message = $"The user {currentUserId} is trying to delete the view {id} of an other user.";
+                this.logger.LogWarning(message);
                 throw new BusinessException("Can't delete the view of other users !");
             }
 
@@ -137,7 +139,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
             var entity = await this.Repository.GetEntityAsync(id: dto.Id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
             if (entity == null)
             {
-                this.logger.LogWarning($"View with id {dto.Id} not found.");
+                var message = $"View with id {dto.Id} not found.";
+                this.logger.LogWarning(message);
                 throw new ElementNotFoundException();
             }
 
@@ -211,13 +214,16 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 View entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
                 if (entity == null)
                 {
-                    this.logger.LogWarning($"View with id {dto.Id} not found.");
-                    throw new ElementNotFoundException();
+                    var message = $"View with id {dto.Id} not found.";
+                    this.logger.LogWarning(message);
+                    throw new ElementNotFoundException(message);
                 }
 
                 if (entity.ViewType != ViewType.Team)
                 {
-                    throw new BusinessException("Wrong view type: " + entity.ViewType);
+                    var message = "Wrong view type: " + entity.ViewType;
+                    this.logger.LogWarning(message);
+                    throw new BusinessException(message);
                 }
 
                 IEnumerable<ViewDto> entities = await this.GetAllAsync();
@@ -314,7 +320,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 var currentUserId = this.principal.GetUserId();
                 if (entity.ViewType == ViewType.User && entity.ViewUsers.All(a => a.UserId != currentUserId))
                 {
-                    this.logger.LogWarning($"The user {currentUserId} is trying to update the view {dto.Id} of an other user.");
+                    var message = $"The user {currentUserId} is trying to update the view {dto.Id} of an other user.";
+                    this.logger.LogWarning(message);
                     throw new BusinessException("Can't update the view of other users !");
                 }
 
@@ -340,8 +347,9 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
                 if (entity.ViewType != ViewType.Team)
                 {
-                    this.logger.LogWarning("Wrong view type: " + entity.ViewType);
-                    throw new BusinessException("Wrong view type: " + entity.ViewType);
+                    var message = "Wrong view type: " + entity.ViewType;
+                    this.logger.LogWarning(message);
+                    throw new BusinessException(message);
                 }
 
                 Func<ViewTeam, bool> keysPredicate = x => x.ViewId == dto.ViewId && x.TeamId == dto.TeamId;

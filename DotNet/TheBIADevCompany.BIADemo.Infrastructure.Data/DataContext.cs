@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataContext(DbContextOptions<DataContext> options, ILogger<BIADataContext> logger)
+        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger)
             : base(options, logger)
         {
         }

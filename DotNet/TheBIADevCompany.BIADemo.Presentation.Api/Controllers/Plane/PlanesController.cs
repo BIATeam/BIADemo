@@ -8,14 +8,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInPlane
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -79,7 +75,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.planeService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -128,9 +124,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
-                /// BIAToolKit - Begin Parent siteId
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
-                /// BIAToolKit - End Parent siteId
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -163,9 +160,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
-                /// BIAToolKit - Begin Parent siteId
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
-                /// BIAToolKit - End Parent siteId
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -201,9 +199,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
-                /// BIAToolKit - Begin Parent siteId
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
-                /// BIAToolKit - End Parent siteId
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
@@ -236,12 +235,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var deletedDtos = await this.planeService.RemoveAsync(ids);
 
 #if UseHubForClientInPlane
-                /// BIAToolKit - Begin Parent siteId
+                // BIAToolKit - Begin Parent siteId
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
-                /// BIAToolKit - End Parent siteId
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
@@ -274,12 +274,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var savedDtos = await this.planeService.SaveAsync(dtoList);
 #if UseHubForClientInPlane
-                /// BIAToolKit - Begin Parent siteId
+                // BIAToolKit - Begin Parent siteId
                 savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
-                /// BIAToolKit - End Parent siteId
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }

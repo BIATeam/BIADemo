@@ -77,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -94,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 

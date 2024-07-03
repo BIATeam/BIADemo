@@ -23,12 +23,14 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public class PlaneAppService : CrudAppServiceBase<PlaneDto, Plane, int, PagingFilterFormatDto, PlaneMapper>, IPlaneAppService
     {
-        /// BIAToolKit - Begin Parent
+        // BIAToolKit - Begin Parent
+
         /// <summary>
         /// The current SiteId.
         /// </summary>
         private readonly int currentSiteId;
-        /// BIAToolKit - End Parent
+
+        // BIAToolKit - End Parent
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneAppService"/> class.
@@ -38,12 +40,13 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public PlaneAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
-            /// BIAToolKit - Begin Parent siteId
+            // BIAToolKit - Begin Parent siteId
             var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+
             // For child : set the TeamId of the Ancestor that contain a team Parent
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Plane>(p => p.SiteId == this.currentSiteId));
-            /// BIAToolKit - End Parent siteId
+            // BIAToolKit - End Parent siteId
         }
     }
 }

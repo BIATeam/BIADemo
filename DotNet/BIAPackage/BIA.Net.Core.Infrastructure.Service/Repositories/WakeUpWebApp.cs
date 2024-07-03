@@ -1,24 +1,20 @@
-﻿// <copyright file="BIADemoWebApiRepository.cs" company="TheBIADevCompany">
-// Copyright (c) TheBIADevCompany. All rights reserved.
+﻿// <copyright file="WakeUpWebApp.cs" company="BIA.Net">
+//  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
+namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// WorkInstruction Repository.
     /// </summary>
     /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
-#pragma warning disable S101 // Types should be named in PascalCase
     public class WakeUpWebApp : WebApiRepository
-#pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly string baseAddress;
         private readonly string urlWakeUp;
@@ -31,7 +27,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="distributedCache">The distributed cache.</param>
         /// <param name="baseAddress">The base adresse for urlWakeUp.</param>
         /// <param name="urlWakeUp">The url to wakeup.</param>
-        public WakeUpWebApp(HttpClient httpClient, ILogger<WakeUpWebApps> logger, IBiaDistributedCache distributedCache, string baseAddress, string urlWakeUp)
+#pragma warning disable S6672 // Generic logger injection should match enclosing type
+        public WakeUpWebApp(HttpClient httpClient, ILogger logger, IBiaDistributedCache distributedCache, string baseAddress, string urlWakeUp)
+#pragma warning restore S6672 // Generic logger injection should match enclosing type
              : base(httpClient, logger, distributedCache)
         {
             this.baseAddress = baseAddress;
