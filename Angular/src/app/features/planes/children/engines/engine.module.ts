@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Engine_List_Access,
-      InjectComponent: EnginesIndexComponent,
+      injectComponent: EnginesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Engine_Create,
           title: 'engine.add',
-          InjectComponent: EngineNewComponent,
+          injectComponent: EngineNewComponent,
           dynamicComponent: () =>
             EngineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Engine_Update,
               title: 'engine.edit',
-              InjectComponent: EngineEditComponent,
+              injectComponent: EngineEditComponent,
               dynamicComponent: () =>
                 EngineCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

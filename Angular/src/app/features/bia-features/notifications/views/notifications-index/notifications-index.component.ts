@@ -101,7 +101,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.notifications$ = this.store.select(getAllNotifications);
     this.totalCount$ = this.store.select(getNotificationsTotalCount);
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
-    this.OnDisplay();
+    this.onDisplay();
 
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
@@ -121,10 +121,10 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-    this.OnHide();
+    this.onHide();
   }
 
-  OnDisplay() {
+  onDisplay() {
     if (this.useView) {
       this.store.dispatch(loadAllView());
     }
@@ -135,7 +135,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     }
   }
 
-  OnHide() {
+  onHide() {
     if (this.useSignalR) {
       NotificationsEffects.useSignalR = false;
       this.notificationsSignalRService.destroy();

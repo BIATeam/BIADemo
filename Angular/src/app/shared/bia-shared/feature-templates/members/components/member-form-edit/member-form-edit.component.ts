@@ -72,7 +72,7 @@ export class MemberFormEditComponent implements OnChanges {
     if (this.form.valid) {
       const member: Member = <Member>this.form.value;
       member.id = member.id > 0 ? member.id : 0;
-      member.roles = BiaOptionService.Differential(
+      member.roles = BiaOptionService.differential(
         member.roles,
         this.member?.roles
       );

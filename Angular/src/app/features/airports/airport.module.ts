@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Airport_List_Access,
-      InjectComponent: AirportsIndexComponent,
+      injectComponent: AirportsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Airport_Create,
           title: 'airport.add',
-          InjectComponent: AirportNewComponent,
+          injectComponent: AirportNewComponent,
           dynamicComponent: () =>
             AirportCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Airport_Update,
               title: 'airport.edit',
-              InjectComponent: AirportEditComponent,
+              injectComponent: AirportEditComponent,
               dynamicComponent: () =>
                 AirportCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

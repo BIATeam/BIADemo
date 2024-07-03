@@ -206,7 +206,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudItems$ = this.crudItemService.crudItems$;
     this.totalCount$ = this.crudItemService.totalCount$;
     this.loading$ = this.crudItemService.loadingGetAll$;
-    this.OnDisplay();
+    this.onDisplay();
 
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
@@ -240,10 +240,10 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     if (this.sub) {
       this.sub.unsubscribe();
     }
-    this.OnHide();
+    this.onHide();
   }
 
-  OnDisplay() {
+  onDisplay() {
     this.checkhasAdvancedFilter();
     this.useViewConfig(false);
     this.useCalcModeConfig();
@@ -251,7 +251,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.usePopupConfig(false);
   }
 
-  OnHide() {
+  onHide() {
     if (this.crudConfiguration.useSignalR) {
       this.crudItemService.signalRService.destroy();
     }

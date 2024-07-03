@@ -159,7 +159,7 @@ export class BiaTranslationService {
         .subscribe(res => this.primeNgConfig.setTranslation(res));
       if (this.currentLanguage !== lang) {
         this.currentLanguage = lang;
-        this.authService.ReLogin();
+        this.authService.reLogin();
       }
     }
   }

@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.PlaneType_List_Access,
-      InjectComponent: PlanesTypesIndexComponent,
+      injectComponent: PlanesTypesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.PlaneType_Create,
           title: 'planeType.add',
-          InjectComponent: PlaneTypeNewComponent,
+          injectComponent: PlaneTypeNewComponent,
           dynamicComponent: () =>
             PlaneTypeCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.PlaneType_Update,
               title: 'planeType.edit',
-              InjectComponent: PlaneTypeEditComponent,
+              injectComponent: PlaneTypeEditComponent,
               dynamicComponent: () =>
                 PlaneTypeCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

@@ -49,8 +49,8 @@ export class NotificationTableComponent
       const notification: Notification = <Notification>this.form.value;
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
-      notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedUsers = BiaOptionService.Differential(
+      notification.createdBy = BiaOptionService.clone(notification.createdBy);
+      notification.notifiedUsers = BiaOptionService.differential(
         notification.notifiedUsers,
         this.element?.notifiedUsers
       );

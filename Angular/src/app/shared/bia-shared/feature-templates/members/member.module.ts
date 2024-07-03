@@ -25,7 +25,7 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //     data: {
 //       breadcrumb: null,
 //       permission: Permission.Member_List_Access,
-//       InjectComponent: MembersIndexComponent
+//       injectComponent: MembersIndexComponent
 //     },
 //     component: FullPageLayoutComponent,
 //     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //           canNavigate: false,
 //           permission: Permission.Member_Create,
 //           title: 'member.add',
-//           InjectComponent: MemberNewComponent,
+//           injectComponent: MemberNewComponent,
 //           dynamicComponent : () => (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //         },
 //         component: (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
@@ -60,7 +60,7 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //               canNavigate: true,
 //               permission: Permission.Member_Update,
 //               title: 'member.edit',
-//               InjectComponent: MemberEditComponent,
+//               injectComponent: MemberEditComponent,
 //               dynamicComponent : () => (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //             },
 //             component: (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,

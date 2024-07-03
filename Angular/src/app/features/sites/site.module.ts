@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Site_List_Access,
-      InjectComponent: SitesIndexComponent,
+      injectComponent: SitesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Site_Create,
           title: 'site.add',
-          InjectComponent: SiteNewComponent,
+          injectComponent: SiteNewComponent,
           dynamicComponent: () =>
             SiteCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Site_Update,
               title: 'site.edit',
-              InjectComponent: SiteEditComponent,
+              injectComponent: SiteEditComponent,
               dynamicComponent: () =>
                 SiteCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

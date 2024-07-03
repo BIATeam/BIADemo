@@ -138,7 +138,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return <Token>{};
   }
 
-  public DecodeToken(token: string): Token {
+  public decodeToken(token: string): Token {
     const jsonDecodedToken: string = atob(token.split('.')[1]);
     const objDecodedToken: any = JSON.parse(jsonDecodedToken);
 
@@ -236,11 +236,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
   public changeCurrentTeamId(teamTypeId: number, teamId: number) {
     if (this.setCurrentTeamId(teamTypeId, teamId)) {
-      this.ReLogin();
+      this.reLogin();
     }
   }
 
-  public ReLogin() {
+  public reLogin() {
     if (!this.isInLogin) {
       this.shouldRefreshToken = true;
       this.authInfoSubject.next(new AuthInfo());
@@ -289,7 +289,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     roleIds: number[]
   ) {
     if (this.setCurrentRoleIds(teamTypeId, teamId, roleIds)) {
-      this.ReLogin();
+      this.reLogin();
     }
   }
 
@@ -342,7 +342,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       .pipe(
         map((authInfo: AuthInfo) => {
           if (authInfo) {
-            authInfo.uncryptedToken = this.DecodeToken(authInfo.token);
+            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
           }
           this.shouldRefreshToken = false;
           this.isInLogin = false;
@@ -402,7 +402,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       .pipe(
         map((authInfo: AuthInfo) => {
           if (authInfo) {
-            authInfo.uncryptedToken = this.DecodeToken(authInfo.token);
+            authInfo.uncryptedToken = this.decodeToken(authInfo.token);
           }
           return authInfo;
         }),

@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.AircraftMaintenanceCompany_List_Access,
-      InjectComponent: AircraftMaintenanceCompaniesIndexComponent,
+      injectComponent: AircraftMaintenanceCompaniesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Create,
           title: 'aircraftMaintenanceCompany.add',
-          InjectComponent: AircraftMaintenanceCompanyNewComponent,
+          injectComponent: AircraftMaintenanceCompanyNewComponent,
           dynamicComponent: () =>
             AircraftMaintenanceCompanyCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -78,7 +78,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Update,
               title: 'aircraftMaintenanceCompany.edit',
-              InjectComponent: AircraftMaintenanceCompanyEditComponent,
+              injectComponent: AircraftMaintenanceCompanyEditComponent,
               dynamicComponent: () =>
                 AircraftMaintenanceCompanyCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

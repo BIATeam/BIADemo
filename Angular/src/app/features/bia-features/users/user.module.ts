@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.User_List_Access,
-      InjectComponent: UsersIndexComponent,
+      injectComponent: UsersIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -47,7 +47,7 @@ export const ROUTES: Routes = [
           },
           permission: Permission.User_Add,
           title: 'user.import',
-          InjectComponent: UserBulkComponent,
+          injectComponent: UserBulkComponent,
           dynamicComponent: () =>
             UserCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -65,7 +65,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.User_Add,
           title: 'user.add',
-          InjectComponent: UserNewComponent,
+          injectComponent: UserNewComponent,
           dynamicComponent: () =>
             UserCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -92,7 +92,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.User_UpdateRoles,
               title: 'user.edit',
-              InjectComponent: UserEditComponent,
+              injectComponent: UserEditComponent,
               dynamicComponent: () =>
                 UserCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_List_Access,
-      InjectComponent: MaintenanceTeamsIndexComponent,
+      injectComponent: MaintenanceTeamsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,7 +38,7 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
-          InjectComponent: MaintenanceTeamNewComponent,
+          injectComponent: MaintenanceTeamNewComponent,
           dynamicComponent: () =>
             MaintenanceTeamCRUDConfiguration.usePopup
               ? PopupLayoutComponent
@@ -77,7 +77,7 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
-              InjectComponent: MaintenanceTeamEditComponent,
+              injectComponent: MaintenanceTeamEditComponent,
               dynamicComponent: () =>
                 MaintenanceTeamCRUDConfiguration.usePopup
                   ? PopupLayoutComponent

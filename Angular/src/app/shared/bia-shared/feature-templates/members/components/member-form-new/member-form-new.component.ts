@@ -71,11 +71,11 @@ export class MemberFormNewComponent implements OnChanges {
   onSubmit() {
     if (this.form.valid) {
       const members: Members = <Members>this.form.value;
-      members.roles = BiaOptionService.Differential(
+      members.roles = BiaOptionService.differential(
         members.roles,
         this.members?.roles
       );
-      members.users = BiaOptionService.Differential(members.users, []);
+      members.users = BiaOptionService.differential(members.users, []);
 
       this.save.emit(members);
       this.form.reset();
