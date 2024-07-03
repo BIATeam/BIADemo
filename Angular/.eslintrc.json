@@ -19,6 +19,7 @@
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/naming-convention": "off",
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -47,17 +48,17 @@
         "@angular-eslint/component-selector": [
           "error",
           {
+            "type": "element",
             "prefix": "bia",
-            "style": "kebab-case",
-            "type": "element"
+            "style": "kebab-case"
           }
         ],
         "@angular-eslint/directive-selector": [
           "error",
           {
+            "type": "attribute",
             "prefix": "bia",
-            "style": "camelCase",
-            "type": "attribute"
+            "style": "camelCase"
           }
         ]
       }

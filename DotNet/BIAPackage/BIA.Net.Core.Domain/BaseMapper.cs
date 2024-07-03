@@ -196,24 +196,16 @@ namespace BIA.Net.Core.Domain
             return x ? "X" : string.Empty;
         }
 
-        public static string CSVNumber(int x)
+        public static string CSVNumber<T>(T? x)
+            where T : struct, IFormattable
         {
-            return x.ToString();
+            return x.HasValue ? x.Value.ToString(null, CultureInfo.InvariantCulture) : string.Empty;
         }
 
-        public static string CSVNumber(float x)
+        public static string CSVNumber<T>(T x)
+            where T : IFormattable
         {
-            return x.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public static string CSVNumber(double x)
-        {
-            return x.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public static string CSVNumber(decimal x)
-        {
-            return x.ToString(CultureInfo.InvariantCulture);
+            return x.ToString(null, CultureInfo.InvariantCulture);
         }
     }
 }

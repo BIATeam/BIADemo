@@ -524,12 +524,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("date");
 
-                    b.Property<decimal>("EstimatedPrice")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("Money")
-                        .HasDefaultValue(0m);
+                    b.Property<decimal?>("EstimatedPrice")
+                        .HasColumnType("Money");
 
-                    b.Property<float>("FuelLevel")
+                    b.Property<float?>("FuelLevel")
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
@@ -546,7 +544,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int?>("PlaneTypeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Probability")
+                    b.Property<double?>("Probability")
                         .HasColumnType("float");
 
                     b.Property<byte[]>("RowVersion")
