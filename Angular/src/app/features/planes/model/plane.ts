@@ -27,7 +27,7 @@ export class Plane extends BaseDto {
   planeType: OptionDto | null;
   /// BIAToolKit - End Properties
 
-  DisplayItemName(): string {
+  displayItemName(): string {
     /// BIAToolKit - Begin Display
     return this.msn;
     /// BIAToolKit - End Display

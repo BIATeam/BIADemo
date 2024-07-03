@@ -99,7 +99,9 @@ export class TokenInterceptor implements HttpInterceptor {
     return request.clone({
       withCredentials: false,
       setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         Authorization: `Bearer ${token}`,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Accept-Language': langSelected !== null ? langSelected : '',
       },
     });
@@ -109,6 +111,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const langSelected = getCurrentCulture();
     return request.clone({
       setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'Accept-Language': langSelected !== null ? langSelected : '',
       },
     });
@@ -129,10 +132,10 @@ export class TokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.isRefreshing = true;
     this.authService.logout();
-    console.info('Login start from intercepor.');
+    console.info('Login start from interceptor.');
     const obs$: Observable<HttpEvent<any>> = this.authService.login().pipe(
       switchMap((authInfo: AuthInfo) => {
-        console.info('Login end from intercepor.');
+        console.info('Login end from interceptor.');
         this.isRefreshing = false;
         return next.handle(this.addToken(request, authInfo.token));
       })

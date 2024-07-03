@@ -11,7 +11,7 @@ import { FeaturePlanesActions } from '../store/planes-actions';
 })
 export class PlaneService {
   constructor(private store: Store<AppState>) {
-    this.InitSub();
+    this.initSub();
     this.loading$ = this.store.select(getPlaneLoadingGet);
     this.plane$ = this.store.select(getCurrentPlane);
   }
@@ -37,7 +37,7 @@ export class PlaneService {
     this.store.dispatch(FeaturePlanesActions.load({ id: id }));
   }
 
-  InitSub() {
+  initSub() {
     this.sub = new Subscription();
     this.sub.add(
       this.store.select(getCurrentPlane).subscribe(plane => {

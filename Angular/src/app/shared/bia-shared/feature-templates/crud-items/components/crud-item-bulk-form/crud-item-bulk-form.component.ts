@@ -46,43 +46,43 @@ export class CrudItemBulkFormComponent {
   sortFieldValue = '';
   protected crudConfigurationError: CrudConfig;
 
-  protected _CrudConfiguration: CrudConfig;
+  protected _crudConfiguration: CrudConfig;
   get crudConfiguration(): CrudConfig {
-    return this._CrudConfiguration;
+    return this._crudConfiguration;
   }
   @Input() set crudConfiguration(value: CrudConfig) {
-    this._CrudConfiguration = value;
+    this._crudConfiguration = value;
     this.initHasDate();
     this.initTableParam();
   }
 
-  protected _BulkData: any;
+  protected _bulkData: any;
   get bulkData(): any {
-    return this._BulkData;
+    return this._bulkData;
   }
   @Input() set bulkData(value: any) {
-    this._BulkData = value;
+    this._bulkData = value;
     if (this.fileUpload) {
       this.fileUpload.clear();
     }
     this.loading = false;
   }
 
-  protected _AppSettings: AppSettings | null;
+  protected _appSettings: AppSettings | null;
   get appSettings(): AppSettings | null {
-    return this._AppSettings;
+    return this._appSettings;
   }
   @Input() set appSettings(value: AppSettings | null) {
-    this._AppSettings = value;
+    this._appSettings = value;
     this.initDdlFormatDate();
   }
 
-  protected _BulkParam: BulkParam = <BulkParam>{};
+  protected _bulkParam: BulkParam = <BulkParam>{};
   get bulkParam(): BulkParam {
-    return this._BulkParam;
+    return this._bulkParam;
   }
   @Input() set bulkParam(value: BulkParam) {
-    this._BulkParam = value;
+    this._bulkParam = value;
     this.fillForm();
   }
 
@@ -217,8 +217,8 @@ export class CrudItemBulkFormComponent {
 
   onSubmit() {
     if (this.form.valid) {
-      this._BulkParam = <BulkParam>this.form.value;
-      this.changeBulkParam.next(this._BulkParam);
+      this._bulkParam = <BulkParam>this.form.value;
+      this.changeBulkParam.next(this._bulkParam);
     }
   }
 }

@@ -9,7 +9,7 @@ export class OptionDto extends BaseDto {
     this.display = display;
   }
 
-  DisplayItemName(): string {
+  displayItemName(): string {
     return this.display;
   }
 }

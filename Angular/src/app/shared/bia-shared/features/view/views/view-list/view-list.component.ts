@@ -131,7 +131,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       setTimeout(() => {
         const tableStateStr = this.getViewState();
         if (tableStateStr) {
-          this.AutoSelectView(tableStateStr);
+          this.autoSelectView(tableStateStr);
         }
       });
     }
@@ -139,16 +139,16 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   protected onTableStateChange(changes: SimpleChanges) {
     if (changes.tableState && changes.tableState.isFirstChange() !== true) {
-      this.AutoSelectView(changes.tableState.currentValue);
+      this.autoSelectView(changes.tableState.currentValue);
     }
   }
 
-  private AutoSelectView(tableStateStr: string) {
-    this.selectedView = this.GetCorrespondingViewId(tableStateStr);
-    this.selectedViewName = this.GetCurrentViewName();
+  private autoSelectView(tableStateStr: string) {
+    this.selectedView = this.getCorrespondingViewId(tableStateStr);
+    this.selectedViewName = this.getCurrentViewName();
   }
 
-  public GetCurrentViewName(): string | null {
+  public getCurrentViewName(): string | null {
     let viewName: string | null = null;
     if (this.selectedView > -1 && this.views.length > 0) {
       this.views.forEach(v => {
@@ -162,7 +162,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return viewName;
   }
 
-  private GetCorrespondingViewId(preference: string): number {
+  private getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
     if (this.defaultViewPref != undefined) {
@@ -426,7 +426,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     //setTimeout(() => {
     if (!manualChange) this.initViewByQueryParam(this.views);
     if (preference && !this.urlView) {
-      const correspondingViewId = this.GetCorrespondingViewId(preference);
+      const correspondingViewId = this.getCorrespondingViewId(preference);
       if (!this.isFirstEmitDone || this.selectedView !== correspondingViewId) {
         this.selectedView = correspondingViewId;
         this.isFirstEmitDone = true;

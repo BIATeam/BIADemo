@@ -14,7 +14,7 @@ import { FeatureNotificationsActions } from '../store/notifications-actions';
 })
 export class NotificationService {
   constructor(private store: Store<AppState>) {
-    this.InitSub();
+    this.initSub();
     this.loading$ = this.store.select(getNotificationLoadingGet);
     this.notification$ = this.store.select(getCurrentNotification);
   }
@@ -44,7 +44,7 @@ export class NotificationService {
     return this._currentNotification.jData;
   }
 
-  InitSub() {
+  initSub() {
     this.sub = new Subscription();
     this.sub.add(
       this.store.select(getCurrentNotification).subscribe(notification => {
