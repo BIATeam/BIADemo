@@ -56,17 +56,17 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the probability.
         /// </summary>
-        public double Probability { get; set; }
+        public double? Probability { get; set; }
 
         /// <summary>
         /// Gets or sets the fuelLevel.
         /// </summary>
-        public float FuelLevel { get; set; }
+        public float? FuelLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated price.
         /// </summary>
-        public decimal EstimatedPrice { get; set; }
+        public decimal? EstimatedPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the site.

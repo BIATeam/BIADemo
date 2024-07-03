@@ -19,9 +19,9 @@ export class Plane extends BaseDto {
   deliveryDate: Date;
   syncTime: string;
   capacity: number;
-  probability: number;
-  fuelLevel: number;
-  estimatedPrice: number;
+  probability: number | null;
+  fuelLevel: number | null;
+  estimatedPrice: number | null;
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
