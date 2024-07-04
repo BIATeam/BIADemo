@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            var result = await this.GetAsync<AuthInfoDto<UserDataDto, AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
+            var result = await this.GetAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
             return result.Result?.Token;
         }
     }

@@ -28,6 +28,8 @@ namespace BIA.Net.Core.Test.IoC
         /// The method used to register all instances for unit test purposes.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
+        /// <typeparam name="TDbContext">The type of the database context.</typeparam>
+        /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
         public static void ConfigureContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
             where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
@@ -42,6 +44,8 @@ namespace BIA.Net.Core.Test.IoC
         /// Configure the database IoC.
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
+        /// <typeparam name="TDbContext">The type of the database context.</typeparam>
+        /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
         public static void ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
             where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
@@ -83,7 +87,7 @@ namespace BIA.Net.Core.Test.IoC
         /// </summary>
         /// <param name="services">The collection of services to update.</param>
         /// <param name="principal">The principal mock to apply.</param>
-        public static void ApplyPrincipalMock(IServiceCollection services, BIAClaimsPrincipal principal)
+        public static void ApplyPrincipalMock(IServiceCollection services, BiaClaimsPrincipal principal)
         {
             services.AddTransient<IPrincipal>(p => principal);
         }

@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal claimsPrincipal;
+        private readonly BiaClaimsPrincipal claimsPrincipal;
 
         /// <summary>
         /// The JWT factory.
@@ -128,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IIdentityProviderRepository identityProviderRepository)
         {
             this.jwtFactory = jwtFactory;
-            this.claimsPrincipal = principal as BIAClaimsPrincipal;
+            this.claimsPrincipal = principal as BiaClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
             this.userAppService = userAppService;
             this.teamAppService = teamAppService;
@@ -149,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
-        public async Task<AuthInfoDto<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
             // Check inputs parameter
             this.CheckIsAuthenticated();
@@ -318,7 +318,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 };
             }
 
-            AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
 
             return authInfo;
         }

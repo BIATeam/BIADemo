@@ -31,8 +31,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <param name="principal">The principal.</param>
         public TTeamMapper(IPrincipal principal)
         {
-            this.UserRoleIds = (principal as BIAClaimsPrincipal).GetRoleIds();
-            this.UserId = (principal as BIAClaimsPrincipal).GetUserId();
+            this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
+            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
             this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault();
         }
 

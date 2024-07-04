@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
     /// <summary>
     /// The base class for DTO.
     /// </summary>
+    /// <typeparam name="TKey">Type of the key.</typeparam>
     public class BaseDto<TKey>
     {
         /// <summary>

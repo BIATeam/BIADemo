@@ -17,6 +17,7 @@ namespace BIA.Net.Core.Test
     /// </summary>
     /// <typeparam name="TMockEF">The type of the Entity Framework mock.</typeparam>
     /// <typeparam name="TDbContext">The type of the database context.</typeparam>
+    /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
     public abstract class BIAAbstractUnitTest<TMockEF, TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
         where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly

@@ -38,7 +38,6 @@ namespace BIA.Net.Core.Domain.QueryOrder
         /// <returns>List of order.</returns>
         public IList<ItemOrder> GetThenByList { get; }
 
-
         /// <summary>
         /// Set the order.
         /// </summary>
@@ -161,6 +160,7 @@ namespace BIA.Net.Core.Domain.QueryOrder
             {
                 info.Append("," + ((MemberExpression)item.Expression.Body)?.Member.Name + ((!item.Ascending) ? " Desc" : string.Empty));
             }
+
             foreach (var item in this.GetThenByList)
             {
                 info.Append("," + ((MemberExpression)item.Expression.Body)?.Member.Name + ((!item.Ascending) ? " Desc" : string.Empty));

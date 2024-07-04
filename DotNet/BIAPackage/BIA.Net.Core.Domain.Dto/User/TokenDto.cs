@@ -5,7 +5,12 @@ namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
 
-    public class TokenDto<TUserDataDto> where TUserDataDto : UserDataDto
+    /// <summary>
+    /// TokenDto.
+    /// </summary>
+    /// <typeparam name="TUserDataDto">The type of the user data dto.</typeparam>
+    public class TokenDto<TUserDataDto>
+        where TUserDataDto : UserDataDto
     {
         /// <summary>
         /// Gets or sets the login.

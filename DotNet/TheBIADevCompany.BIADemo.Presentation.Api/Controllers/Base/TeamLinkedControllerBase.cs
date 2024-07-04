@@ -68,7 +68,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
                     return false;
                 }
 
-                var userData = new BIAClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
+                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
                 if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
                 {
                     return false;

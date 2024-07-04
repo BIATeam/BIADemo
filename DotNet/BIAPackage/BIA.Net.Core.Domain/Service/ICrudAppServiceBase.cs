@@ -60,7 +60,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
         Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             TKey id = default,
@@ -74,6 +76,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Get the csv with other filter.
         /// </summary>
+        /// <typeparam name="TOtherFilter">The type of the other filter.</typeparam>
         /// <param name="filters">The filters.</param>
         /// <param name="id">The id.</param>
         /// <param name="specification">Specification Used to filter query.</param>
@@ -82,7 +85,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
         Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             TKey id = default,
@@ -133,13 +138,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="firstElement">First element to take.</param>
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="includes">The list of includes.</param>
-        /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
         /// <returns>Data in csv format.</returns>
-        Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+        Task<IEnumerable<TDto>> GetAllAsync(
+            Expression<Func<TEntity, TKey>> orderByExpression,
+            bool ascending,
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -191,8 +197,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
-        Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update,
-            string mapperMode = null);
+        Task<TDto> UpdateAsync(TDto dto, string accessMode = AccessMode.Update, string queryMode = QueryMode.Update, string mapperMode = null);
 
         /// <summary>
         /// Remove an entity with its identifier.
@@ -217,8 +222,13 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Save the DTO in DB regarding to theirs state.
         /// </summary>
-        /// <param name="dto"></param>
-        /// <returns>The saved DTO.</returns>
+        /// <param name="dto">The dto.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <returns>
+        /// The saved DTO.
+        /// </returns>
         Task<TDto> SaveAsync(
             TDto dto,
             string accessMode = null,
@@ -229,6 +239,9 @@ namespace BIA.Net.Core.Domain.Service
         /// Save the list of DTO in DB regarding to theirs state.
         /// </summary>
         /// <param name="dtos">The list of DTO to save.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>The saved list of DTOs.</returns>
         Task<IEnumerable<TDto>> SaveAsync(
             IEnumerable<TDto> dtos,
@@ -244,20 +257,16 @@ namespace BIA.Net.Core.Domain.Service
         Task AddBulkAsync(IEnumerable<TDto> dtos);
 
         /// <summary>
-        /// Transform the DTO into the corresponding entities and update these to the DB.
+        /// Transform the DTO into the corresponding entities and update these to the DB
         /// </summary>
+        /// <param name="dtos">The dtos.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task UpdateBulkAsync(IEnumerable<TDto> dtos);
 
         /// <summary>
-        /// Remove entities in DB from the list of ids.
-        /// </summary>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete);
-
-        /// <summary>
         /// Transform the DTO into the corresponding entities and delete these to the DB.
         /// </summary>
+        /// <param name="idList">The identifier list.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task RemoveBulkAsync(IEnumerable<TDto> idList);
     }

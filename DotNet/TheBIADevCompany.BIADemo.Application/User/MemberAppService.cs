@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberAppService"/> class.
@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
 
             // Include already add with the mapper MemberMapper
             // this.Repository.QueryCustomizer = queryCustomizer

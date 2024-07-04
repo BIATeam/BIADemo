@@ -13,6 +13,19 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
     public class BiaDtoFieldAttribute : Attribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="BiaDtoFieldAttribute"/> class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="required">if set to <c>true</c> [required].</param>
+        /// <param name="isParent">if set to <c>true</c> [is parent].</param>
+        public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
+        {
+            this.Type = type;
+            this.Required = required;
+            this.IsParent = isParent;
+        }
+
+        /// <summary>
         /// The Dto field type.
         /// </summary>
         public string Type { get; set; }
@@ -26,15 +39,5 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         /// "Block generation" field value.
         /// </summary>
         public bool IsParent { get; set; }
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
-        {
-            this.Type = type;
-            this.Required = required;
-            this.IsParent = isParent;
-        }
     }
 }

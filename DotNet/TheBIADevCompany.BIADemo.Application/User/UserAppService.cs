@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService" /> class.
@@ -89,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.logger = logger;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 

@@ -34,8 +34,8 @@ namespace TheBIADevCompany.BIADemo.Application.Common
         /// <param name="principal">The user principal.</param>
         public SearchExpressionService(IPrincipal principal)
         {
-            this.userId = (principal as BIAClaimsPrincipal).GetUserId();
-            this.userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            this.userId = (principal as BiaClaimsPrincipal).GetUserId();
+            this.userDataDto = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
 
             this.Dictionary = new BIADictionary<SearchExpressionItem>
             {

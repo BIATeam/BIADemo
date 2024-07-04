@@ -235,7 +235,7 @@ namespace BIA.Net.Core.Domain.Service
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
             List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-            StringBuilder csv = new();
+            StringBuilder csv = new ();
             records.ForEach(line =>
             {
                 csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));

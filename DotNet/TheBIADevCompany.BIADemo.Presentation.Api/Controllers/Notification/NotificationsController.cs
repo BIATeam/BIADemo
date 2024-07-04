@@ -340,7 +340,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetUnreadIds()
         {
-            int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (this.principal as BiaClaimsPrincipal).GetUserId();
             try
             {
                 var dto = await this.notificationService.GetUnreadIds(userId);

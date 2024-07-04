@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// The logger.
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
             this.logger = logger;
             this.Repository.QueryCustomizer = queryCustomizer;
         }

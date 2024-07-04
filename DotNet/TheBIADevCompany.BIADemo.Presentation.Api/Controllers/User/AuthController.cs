@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             try
             {
-                AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
+                AuthInfoDto<AdditionalInfoDto> authInfo = await this.authService.LoginOnTeamsAsync(loginParam);
 
                 return this.Ok(authInfo);
             }

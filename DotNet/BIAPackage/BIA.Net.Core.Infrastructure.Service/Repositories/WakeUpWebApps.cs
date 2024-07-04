@@ -16,9 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// WorkInstruction Repository.
     /// </summary>
     /// <seealso cref="TheBIADevCompany.BIADemo.Domain.RepoContract.IWorkInstructionRepository" />
-#pragma warning disable S101 // Types should be named in PascalCase
     public class WakeUpWebApps : WebApiRepository, IWakeUpWebApps
-#pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly List<WakeUpWebApp> wakeUpWebApps;
 

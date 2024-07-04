@@ -8,7 +8,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.DependencyInjection;
-    using System.Collections.Generic;
 
     /// <summary>
     /// The base class for all application service.

@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             this.principal = principal;
 
             // update permission with the service account roles.
-            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BIAClaimsPrincipal, userInfoDto: null, sid: null, domain: null).Result;
+            List<string> globalRoles = userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: principal as BiaClaimsPrincipal, userInfoDto: null, sid: null, domain: null).Result;
             List<string> userPermissions = userPermissionDomainService.TranslateRolesInPermissions(globalRoles, false);
 
             var newIdentity = (ClaimsIdentity)principal.Identity;
@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         protected override async Task RunMonitoredTask()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            bool accessAll = (this.principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            bool accessAll = (this.principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
 
             if (accessAll)
             {

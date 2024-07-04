@@ -15,9 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     /// <summary>
     /// Store object in distributed with the IDistributedCache service.
     /// </summary>
-#pragma warning disable S101 // Types should be named in PascalCase
     public class BiaDistributedCache : IBiaDistributedCache
-#pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly IDistributedCache distibutedCache;
 

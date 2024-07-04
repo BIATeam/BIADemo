@@ -10,9 +10,7 @@ namespace BIA.Net.Core.Domain.RepoContract
     /// <summary>
     /// Interface BIADemoWebApiRepository.
     /// </summary>
-#pragma warning disable S101 // Types should be named in PascalCase
     public interface IWakeUpWebApps
-#pragma warning restore S101 // Types should be named in PascalCase
     {
         /// <summary>
         /// Wakeup the Apps pools.

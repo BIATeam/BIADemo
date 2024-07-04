@@ -14,34 +14,47 @@ namespace BIA.Net.Core.Domain.Dto.User
     /// </summary>
     public class UserDataDto
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserDataDto"/> class.
+        /// </summary>
         public UserDataDto()
         {
             this.CurrentTeams = new List<CurrentTeamDto>();
         }
 
-        [JsonProperty("currentTeams")]
         /// <summary>
         /// Gets or sets the current team.
         /// </summary>
+        [JsonProperty("currentTeams")]
         public ICollection<CurrentTeamDto> CurrentTeams { get; set; }
 
+        /// <summary>
+        /// Gets the current team identifier.
+        /// </summary>
+        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <returns>the team id and 0 if not found.</returns>
         public int GetCurrentTeamId(int teamTypeId)
         {
-            var CurrentSite = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
-            if (CurrentSite != null)
+            var currentSite = this.CurrentTeams?.FirstOrDefault(t => t.TeamTypeId == teamTypeId);
+            if (currentSite != null)
             {
-                return CurrentSite.TeamId;
+                return currentSite.TeamId;
             }
 
             return 0;
         }
 
+        /// <summary>
+        /// Gets the current team.
+        /// </summary>
+        /// <param name="teamTypeId">The team type identifier.</param>
+        /// <returns>the current Team.</returns>
         public CurrentTeamDto GetCurrentTeam(int teamTypeId)
         {
-            var CurrentTeam = this.CurrentTeams?.Where(t => t.TeamTypeId == teamTypeId).FirstOrDefault();
-            if (CurrentTeam != null)
+            var currentTeam = this.CurrentTeams?.FirstOrDefault(t => t.TeamTypeId == teamTypeId);
+            if (currentTeam != null)
             {
-                return CurrentTeam;
+                return currentTeam;
             }
 
             return null;

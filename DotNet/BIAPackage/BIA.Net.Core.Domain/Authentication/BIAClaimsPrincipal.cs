@@ -1,4 +1,4 @@
-﻿// <copyright file="BIAClaimsPrincipal.cs" company="BIA">
+﻿// <copyright file="BiaClaimsPrincipal.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Domain.Authentication
@@ -16,25 +16,26 @@ namespace BIA.Net.Core.Domain.Authentication
     /// A <see cref="ClaimsPrincipal"/> implementation with additional utility methods.
     /// </summary>
     /// <seealso cref="ClaimsPrincipal" />
-#pragma warning disable S101 // Types should be named in PascalCase
-    public class BIAClaimsPrincipal : ClaimsPrincipal
-#pragma warning restore S101 // Types should be named in PascalCase
+    public class BiaClaimsPrincipal : ClaimsPrincipal
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class.
+        /// The role identifier.
         /// </summary>
-        public BIAClaimsPrincipal()
+        public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.
+        /// </summary>
+        public BiaClaimsPrincipal()
         {
             // Do nothing.
         }
 
-        public const string RoleId = "http://schemas.microsoft.com/ws/2008/06/identity/claims/roleid";
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="BIAClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
+        /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class from the given <see cref="ClaimsPrincipal"/>.
         /// </summary>
         /// <param name="principal">The base principal.</param>
-        public BIAClaimsPrincipal(ClaimsPrincipal principal)
+        public BiaClaimsPrincipal(ClaimsPrincipal principal)
             : base(principal)
         {
             // Do nothing.
@@ -87,7 +88,9 @@ namespace BIA.Net.Core.Domain.Authentication
 
                     if (identity?.Groups?.Any() == true)
                     {
+#pragma warning disable CA1416 // Validate platform compatibility
                         groupNames = identity.Groups.AsParallel().Select(id => id.Translate(typeof(NTAccount)).Value).ToList();
+#pragma warning restore CA1416 // Validate platform compatibility
                     }
                 }
             }

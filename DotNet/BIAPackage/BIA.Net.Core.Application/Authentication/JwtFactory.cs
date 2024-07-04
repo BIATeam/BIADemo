@@ -87,7 +87,7 @@ namespace BIA.Net.Core.Application.Authentication
             where TUserDataDto : UserDataDto
         {
             var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
-            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BIAClaimsPrincipal.RoleId, s.ToString())).ToList());
+            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())).ToList());
             claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
             if (tokenDto.UserData != null)
             {
@@ -123,7 +123,7 @@ namespace BIA.Net.Core.Application.Authentication
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
-        public async Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
+        public async Task<AuthInfoDto<TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto
         {
@@ -133,7 +133,7 @@ namespace BIA.Net.Core.Application.Authentication
                 throw new UnauthorizedException("Unauthorized because claimsIdentity is null");
             }
 
-            var response = new AuthInfoDto<TUserDataDto, TAdditionalInfoDto>
+            var response = new AuthInfoDto<TAdditionalInfoDto>
             {
                 Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
                 AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,

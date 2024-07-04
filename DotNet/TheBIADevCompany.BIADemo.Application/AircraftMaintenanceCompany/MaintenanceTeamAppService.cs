@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             : base(repository)
         {
             /* Begin Parent AircraftMaintenanceCompany */
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
             /* End Parent AircraftMaintenanceCompany */
 

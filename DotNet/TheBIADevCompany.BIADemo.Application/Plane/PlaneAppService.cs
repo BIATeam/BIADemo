@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             : base(repository)
         {
             // BIAToolKit - Begin Parent siteId
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent

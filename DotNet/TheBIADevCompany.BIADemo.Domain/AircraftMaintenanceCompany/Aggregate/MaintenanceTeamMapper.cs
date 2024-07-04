@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <param name="principal">The principal.</param>
         public MaintenanceTeamMapper(IPrincipal principal)
         {
-            this.UserRoleIds = (principal as BIAClaimsPrincipal).GetRoleIds();
-            this.UserId = (principal as BIAClaimsPrincipal).GetUserId();
+            this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
+            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>

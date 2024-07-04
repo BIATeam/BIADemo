@@ -26,6 +26,7 @@ namespace BIA.Net.Core.Domain.Service
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
     /// <typeparam name="TMapper">The mapper used between entity and DTO.</typeparam>
     public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : FilteredServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
@@ -35,8 +36,7 @@ namespace BIA.Net.Core.Domain.Service
         where TMapper : BaseMapper<TDto, TEntity, TKey>
     {
         /// <summary>
-        /// Initializes a new instance of the <see
-        /// cref="CrudAppServiceBase{TDto,TEntity,TFilterDto,TMapper}"/> class.
+        /// Initializes a new instance of the <see cref="CrudAppServiceBase{TDto, TEntity, TKey, TFilterDto, TMapper}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         protected CrudAppServiceBase(ITGenericRepository<TEntity, TKey> repository)
@@ -58,6 +58,23 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetRangeAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
+        /// <summary>
+        /// Get the DTO list. (with a queryOrder).
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="queryOrder">Order the Query.</param>
+        /// <param name="firstElement">First element to take.</param>
+        /// <param name="pageCount">Number of elements in each page.</param>
+        /// <param name="includes">The list of includes.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// The list of DTO.
+        /// </returns>
         public async Task<IEnumerable<TDto>> GetAllAsync(
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -74,7 +91,27 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetAllAsync<TDto, TMapper>(id: id, specification: specification, filter: filter, queryOrder: queryOrder, firstElement: firstElement, pageCount: pageCount, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TEntity, TKey>> orderByExpression, bool ascending,
+        /// <summary>
+        /// Get the DTO list. (with an order By Expression and direction).
+        /// </summary>
+        /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
+        /// <param name="ascending">Direction of Ordering.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used for Filtering Query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="firstElement">First element to take.</param>
+        /// <param name="pageCount">Number of elements in each page.</param>
+        /// <param name="includes">The list of includes.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// Data in csv format.
+        /// </returns>
+        public async Task<IEnumerable<TDto>> GetAllAsync(
+            Expression<Func<TEntity, TKey>> orderByExpression,
+            bool ascending,
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -89,6 +126,18 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetAllAsync<TDto, TMapper>(orderByExpression, ascending, id: id, specification: specification, filter: filter, firstElement: firstElement, pageCount: pageCount, includes: includes, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
+        /// <summary>
+        /// Get the csv with other filter.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>A csv.</returns>
         public virtual async Task<byte[]> GetCsvAsync(
             TFilterDto filters = null,
             TKey id = default,
@@ -102,6 +151,21 @@ namespace BIA.Net.Core.Domain.Service
             return await this.GetCsvAsync<TDto, TMapper, TFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode, isReadOnlyMode: isReadOnlyMode);
         }
 
+        /// <summary>
+        /// Get the csv with other filter.
+        /// </summary>
+        /// <typeparam name="TOtherFilter">type of the filters.</typeparam>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// A <see cref="T:System.Threading.Tasks.Task" /> representing the asynchronous operation.
+        /// </returns>
         public virtual async Task<byte[]> GetCsvAsync<TOtherFilter>(
             TOtherFilter filters,
             TKey id = default,
@@ -174,8 +238,8 @@ namespace BIA.Net.Core.Domain.Service
             await this.AddBulkAsync<TDto, TMapper>(dtos);
         }
 
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.UpdateBulkAsync"/>
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task UpdateBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -183,8 +247,8 @@ namespace BIA.Net.Core.Domain.Service
             throw new NotImplementedException();
         }
 
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <inheritdoc cref="ICrudAppServiceBase{TDto,TEntity,TFilterDto}.RemoveBulkAsync(System.Collections.Generic.IEnumerable{TDto})"/>
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task RemoveBulkAsync(IEnumerable<TDto> dtos)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -192,6 +256,16 @@ namespace BIA.Net.Core.Domain.Service
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Save the DTO in DB regarding to theirs state.
+        /// </summary>
+        /// <param name="dto">The dto.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mappar mode.</param>
+        /// <returns>
+        /// The saved DTO.
+        /// </returns>
         public virtual async Task<TDto> SaveAsync(
             TDto dto,
             string accessMode = null,

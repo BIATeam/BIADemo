@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamAppService"/> class.
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public TeamAppService(ITGenericRepository<Team, int> repository, IPrincipal principal)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
         }
 
         /// <summary>
@@ -52,10 +52,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public static Specification<TTeam> ReadSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
             where TTeam : Team
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
+            IEnumerable<string> currentUserPermissions = (principal as BiaClaimsPrincipal).GetUserPermissions();
             bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (principal as BiaClaimsPrincipal).GetUserId();
 
             return ReadSpecification<TTeam>(teamTypeId, userData, accessAll, userId);
         }
@@ -121,7 +121,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public static Specification<TTeam> UpdateSpecification<TTeam>(TeamTypeId teamTypeId, IPrincipal principal)
             where TTeam : Team
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             var currentTeamId = userData != null ? userData.GetCurrentTeamId((int)teamTypeId) : 0;
             return new DirectSpecification<TTeam>(p => p.Id == currentTeamId);
         }

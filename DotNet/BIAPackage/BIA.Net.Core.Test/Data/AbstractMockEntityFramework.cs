@@ -12,6 +12,8 @@ namespace BIA.Net.Core.Test.Data
     /// (and thus specific to the project).
     /// It can be empty if you want to always add data manually in your tests, rather than do it automatically before each test through AbstractUnitTest.InitTestBase().
     /// </summary>
+    /// <typeparam name="TDbContext">The type of the database context.</typeparam>
+    /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
     public abstract class AbstractMockEntityFramework<TDbContext, TDbContextReadOnly> : IMockEntityFramework<TDbContext, TDbContextReadOnly>
         where TDbContext : class, IQueryableUnitOfWork
         where TDbContextReadOnly : class, IQueryableUnitOfWorkReadOnly
