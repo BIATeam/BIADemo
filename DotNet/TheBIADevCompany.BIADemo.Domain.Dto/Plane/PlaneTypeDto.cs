@@ -17,13 +17,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the first flight date.
         /// </summary>
-        [BIADtoField(Type = "date&time", Required = false)]
+        [BiaDtoField(Type = "date&time", Required = false)]
         public DateTime? CertificationDate { get; set; }
     }
 }

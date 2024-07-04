@@ -1,4 +1,4 @@
-﻿// <copyright file="BIADataContext.cs" company="BIA">
+﻿// <copyright file="BiaDataContext.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
@@ -17,19 +17,22 @@ namespace BIA.Net.Core.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
-    public class BIADataContext : DbContext, IQueryableUnitOfWork
+    /// <summary>
+    /// Bia Data Context.
+    /// </summary>
+    public class BiaDataContext : DbContext, IQueryableUnitOfWork
     {
         /// <summary>
         /// The current logger.
         /// </summary>
-        private readonly ILogger<BIADataContext> logger;
+        private readonly ILogger<BiaDataContext> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContext"/> class.
+        /// Initializes a new instance of the <see cref="BiaDataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public BIADataContext(DbContextOptions options, ILogger<BIADataContext> logger)
+        public BiaDataContext(DbContextOptions options, ILogger<BiaDataContext> logger)
             : base(options)
         {
             this.logger = logger;
@@ -111,7 +114,10 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             if (this.Database.ProviderName.EndsWith(".SqlServer"))
             {
@@ -123,26 +129,32 @@ namespace BIA.Net.Core.Infrastructure.Data
             }
         }
 
-        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk function to update entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             throw new NotImplementedException();
         }
 
-        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
         /// <summary>
         /// Bulk function to delete entities.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            where TEntity : class
         {
             throw new NotImplementedException();
         }
@@ -180,11 +192,19 @@ namespace BIA.Net.Core.Infrastructure.Data
             this.Entry(item).State = EntityState.Modified;
         }
 
+        /// <summary>
+        /// OnModelCreating.
+        /// </summary>
+        /// <param name="modelBuilder">the model Builder.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
         }
 
+        /// <summary>
+        /// OnEndModelCreating.
+        /// </summary>
+        /// <param name="modelBuilder">the model Builder.</param>
         protected void OnEndModelCreating(ModelBuilder modelBuilder)
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);

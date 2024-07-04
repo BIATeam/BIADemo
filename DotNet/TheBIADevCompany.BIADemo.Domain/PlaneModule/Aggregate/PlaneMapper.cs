@@ -274,7 +274,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             /// </summary>
             public const string EstimatedPrice = "estimatedPrice";
 
-
             /// <summary>
             /// Header Name PlaneType.
             /// </summary>

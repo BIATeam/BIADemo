@@ -21,9 +21,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// the private mapping.
         /// </summary>
-        public static readonly ImmutableList<BIATeamConfig<Team>> Config = new ImmutableListBuilder<BIATeamConfig<Team>>()
+        public static readonly ImmutableList<BiaTeamConfig<Team>> Config = new ImmutableListBuilder<BiaTeamConfig<Team>>()
         {
-            new BIATeamConfig<Team>()
+            new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.Site,
                 RightPrefix = "Site",
@@ -31,28 +31,28 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             },
 
             // Begin BIADemo
-            new BIATeamConfig<Team>()
+            new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                 RightPrefix = "AircraftMaintenanceCompany",
                 AdminRoleIds = new int[] { (int)RoleId.Supervisor },
-                Children = new ImmutableListBuilder<BIATeamChildrenConfig<Team>>
+                Children = new ImmutableListBuilder<BiaTeamChildrenConfig<Team>>
                 {
-                    new BIATeamChildrenConfig<Team>
+                    new BiaTeamChildrenConfig<Team>
                     {
                         TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                         GetChilds = team => (team as AircraftMaintenanceCompany).MaintenanceTeams,
                     },
                 }.ToImmutable(),
             },
-            new BIATeamConfig<Team>()
+            new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
                 AdminRoleIds = new int[] { (int)RoleId.TeamLeader },
-                Parents = new ImmutableListBuilder<BIATeamParentConfig<Team>>
+                Parents = new ImmutableListBuilder<BiaTeamParentConfig<Team>>
                 {
-                    new BIATeamParentConfig<Team>
+                    new BiaTeamParentConfig<Team>
                     {
                         TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                         GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany,

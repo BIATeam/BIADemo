@@ -178,6 +178,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - Begin Partial Rights Plane
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -213,6 +214,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Plane_Save";
         }
+
         // BIAToolKit - End Partial Rights Plane
 
         /// <summary>
@@ -257,6 +259,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         // BIAToolKit - Begin Partial Rights Airport
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -297,6 +300,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Airport_Save";
         }
+
         // BIAToolKit - End Partial Rights Airport
 
         /// <summary>
@@ -333,7 +337,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         /// </summary>
         public static class Permissions
         {
-
             /// <summary>
             /// The right to access to the list of airports (options only).
             /// </summary>

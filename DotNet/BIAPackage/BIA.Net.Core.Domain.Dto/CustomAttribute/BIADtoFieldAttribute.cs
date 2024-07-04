@@ -1,4 +1,4 @@
-﻿// <copyright file="BIADtoFieldAttribute.cs" company="BIA">
+﻿// <copyright file="BiaDtoFieldAttribute.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
     /// The custom attibute class for DTO fields.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public class BIADtoFieldAttribute : Attribute
+    public class BiaDtoFieldAttribute : Attribute
     {
         /// <summary>
         /// The Dto field type.
@@ -30,7 +30,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         /// <summary>
         /// Constructor.
         /// </summary>
-        public BIADtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
+        public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
         {
             this.Type = type;
             this.Required = required;

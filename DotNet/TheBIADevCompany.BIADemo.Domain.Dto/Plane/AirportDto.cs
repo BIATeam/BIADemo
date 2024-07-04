@@ -16,13 +16,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the name of the airport.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the City where is the airport.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public string City { get; set; }
     }
 }

@@ -3,9 +3,19 @@
 // </copyright>
 namespace BIA.Net.Core.Domain.Dto.Base
 {
+    /// <summary>
+    /// Targeted Feature Dto.
+    /// </summary>
     public class TargetedFeatureDto
     {
-        public string FeatureName;
-        public string ParentKey;
+        /// <summary>
+        /// Feature Name.
+        /// </summary>
+        public string FeatureName { get; set; }
+
+        /// <summary>
+        /// Parent Key.
+        /// </summary>
+        public string ParentKey { get; set; }
     }
 }

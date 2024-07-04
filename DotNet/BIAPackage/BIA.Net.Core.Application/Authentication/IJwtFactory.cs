@@ -39,7 +39,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Generate a JWT.
         /// </summary>
-        /// <typeparam name="TUserDataDto">Type of the user data </typeparam>
+        /// <typeparam name="TUserDataDto">Type of the user data. </typeparam>
         /// <typeparam name="TAdditionalInfoDto">Type of the additionnal infos.</typeparam>
         /// <param name="tokenDto">The token not uncrypted.</param>
         /// <param name="additionalInfos">Additionnal Info for front.</param>

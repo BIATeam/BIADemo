@@ -34,22 +34,22 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <summary>
         /// The distributed cache.
         /// </summary>
-        protected readonly IBiaDistributedCache distributedCache;
+        private readonly IBiaDistributedCache distributedCache;
 
         /// <summary>
         /// Gets the HTTP client.
         /// </summary>
-        protected readonly HttpClient httpClient;
+        private readonly HttpClient httpClient;
 
         /// <summary>
         /// Gets the logger.
         /// </summary>
-        protected readonly ILogger logger;
+        private readonly ILogger logger;
 
         /// <summary>
         /// The child class name.
         /// </summary>
-        protected readonly string className;
+        private readonly string className;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebApiRepository" /> class.
@@ -66,16 +66,24 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         }
 
         /// <summary>
-        /// Send an HTTP request as an asynchronous operation.
+        /// The distributed cache.
         /// </summary>
-        /// <typeparam name="T">The result type.</typeparam>
-        /// <param name="request">The request.</param>
-        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
-        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
-        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(HttpRequestMessage request, bool useBearerToken = false)
-        {
-            return await this.SendAsync<T>(request: request, useBearerToken: useBearerToken, retry: false);
-        }
+        protected IBiaDistributedCache DistributedCache => this.distributedCache;
+
+        /// <summary>
+        /// Gets the HTTP client.
+        /// </summary>
+        protected HttpClient HttpClient => this.httpClient;
+
+        /// <summary>
+        /// Gets the logger.
+        /// </summary>
+        protected ILogger Logger => this.logger;
+
+        /// <summary>
+        /// The child class name.
+        /// </summary>
+        protected string ClassName => this.className;
 
         /// <summary>
         /// Send a GET request to the specified Uri as an asynchronous operation.
@@ -188,7 +196,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">Type of return.</typeparam>
         /// <param name="res">The resource.</param>
         /// <returns>object T.</returns>
-        private T DeserializeIfRequired<T>(string res)
+        protected T DeserializeIfRequired<T>(string res)
         {
             T content;
             if (typeof(T) == typeof(string))
@@ -207,7 +215,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Add bearer in http request authorization.
         /// </summary>
         /// <returns>A async task.</returns>
-        private async Task AddAuthorizationBearerAsync()
+        protected async Task AddAuthorizationBearerAsync()
         {
             string bearerToken = await this.GetBearerTokenInCacheAsync();
 
@@ -225,7 +233,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The token.</param>
         /// <returns>The DateTimeOffset.</returns>
-        private DateTimeOffset GetJwtTokenExpirationDate(string token)
+        protected DateTimeOffset GetJwtTokenExpirationDate(string token)
         {
             DateTimeOffset expirationDate = default;
 
@@ -244,7 +252,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The bearerToken.</param>
         /// <returns>Return true if the token is valid.</returns>
-        private bool CheckTokenValid(string token)
+        protected bool CheckTokenValid(string token)
         {
             bool isValid = false;
 
@@ -261,7 +269,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the storage key of the token in the cache.
         /// </summary>
         /// <returns>The storage key.</returns>
-        private string GetBearerCacheKey()
+        protected string GetBearerCacheKey()
         {
             return $"{this.className}|{Bearer}";
         }
@@ -270,7 +278,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// Get the bearer token in the cache.
         /// </summary>
         /// <returns>The bearer token.</returns>
-        private async Task<string> GetBearerTokenInCacheAsync()
+        protected async Task<string> GetBearerTokenInCacheAsync()
         {
             return await this.distributedCache.Get<string>(this.GetBearerCacheKey());
         }
@@ -280,7 +288,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="bearerToken">The bearer token.</param>
         /// <returns>A async task.</returns>
-        private async Task SetBearerTokenInCacheAsync(string bearerToken)
+        protected async Task SetBearerTokenInCacheAsync(string bearerToken)
         {
             if (!string.IsNullOrWhiteSpace(bearerToken))
             {
@@ -294,17 +302,41 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
         }
 
-        private async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(string url = default, HttpMethod httpMethod = default, HttpRequestMessage request = default, bool useBearerToken = false, bool retry = false)
+        /// <summary>
+        /// Send an HTTP request as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="request">The request.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected virtual async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(HttpRequestMessage request, bool useBearerToken = false)
+        {
+            return await this.SendAsync<T>(request: request, useBearerToken: useBearerToken, retry: false);
+        }
+
+        /// <summary>
+        /// Send an HTTP request as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="T">The result type.</typeparam>
+        /// <param name="url">The url.</param>
+        /// <param name="httpMethod">The httpMethod.</param>
+        /// <param name="request">The request.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="retry">if true it is a retry operation.</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected async Task<(T Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<T>(string url = default, HttpMethod httpMethod = default, HttpRequestMessage request = default, bool useBearerToken = false, bool retry = false)
         {
             if (!string.IsNullOrWhiteSpace(url) || request != default)
             {
                 if (!string.IsNullOrWhiteSpace(url))
                 {
-                    this.logger.LogInformation($"Call WebApi {httpMethod?.Method}: {url}");
+                    string message = $"Call WebApi {httpMethod?.Method}: {url}";
+                    this.logger.LogInformation(message);
                 }
                 else
                 {
-                    this.logger.LogInformation($"Call WebApi {request?.Method?.Method}: {request?.RequestUri?.AbsoluteUri}");
+                    string message = $"Call WebApi {request?.Method?.Method}: {request?.RequestUri?.AbsoluteUri}";
+                    this.logger.LogInformation(message);
                 }
 
                 if (useBearerToken)
@@ -341,7 +373,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         return await this.SendAsync<T>(url: url, httpMethod: httpMethod, request: request, useBearerToken: useBearerToken, retry: true);
                     }
 
-                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    string message = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
+                    this.logger.LogError(message);
                     return (default(T), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }
             }
@@ -349,11 +382,25 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return (default(T), default(bool), default(string));
         }
 
-        private async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(string url, HttpMethod httpMethod, TBody body = default, HttpContent httpContent = default, bool isFormUrlEncoded = false, bool useBearerToken = false, bool retry = false)
+        /// <summary>
+        /// Send an HTTP request as an asynchronous operation.
+        /// </summary>
+        /// <typeparam name="TResult">The result type.</typeparam>
+        /// <typeparam name="TBody">The body type.</typeparam>
+        /// <param name="url">The url.</param>
+        /// <param name="httpMethod">The httpMethod.</param>
+        /// <param name="body">The body.</param>
+        /// <param name="httpContent">The request.</param>
+        /// <param name="isFormUrlEncoded">specify if form url is encoded.</param>
+        /// <param name="useBearerToken">if set to <c>true</c> [use bearer token].</param>
+        /// <param name="retry">if true it is a retry operation.</param>
+        /// <returns>Result, IsSuccessStatusCode, ReasonPhrase.</returns>
+        protected async Task<(TResult Result, bool IsSuccessStatusCode, string ReasonPhrase)> SendAsync<TResult, TBody>(string url, HttpMethod httpMethod, TBody body = default, HttpContent httpContent = default, bool isFormUrlEncoded = false, bool useBearerToken = false, bool retry = false)
         {
-            if (!string.IsNullOrWhiteSpace(url) && (body != null || httpContent != default))
+            if (!string.IsNullOrWhiteSpace(url) && (!object.Equals(body, default(TBody)) || httpContent != default))
             {
-                this.logger.LogInformation($"Call WebApi {httpMethod.Method}: {url}");
+                string message = $"Call WebApi {httpMethod.Method}: {url}";
+                this.logger.LogInformation(message);
                 if (useBearerToken)
                 {
                     await this.AddAuthorizationBearerAsync();
@@ -399,7 +446,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                         return await this.SendAsync<TResult, TBody>(url: url, httpMethod: httpMethod, body: body, httpContent: httpContent, isFormUrlEncoded: isFormUrlEncoded, useBearerToken: useBearerToken, retry: true);
                     }
 
-                    this.logger.LogError($"Url:{url} ReasonPhrase:{response.ReasonPhrase}");
+                    string message2 = $"Url:{url} ReasonPhrase:{response.ReasonPhrase}";
+                    this.logger.LogError(message2);
                     httpContent?.Dispose();
                     return (default(TResult), response.IsSuccessStatusCode, response.ReasonPhrase);
                 }

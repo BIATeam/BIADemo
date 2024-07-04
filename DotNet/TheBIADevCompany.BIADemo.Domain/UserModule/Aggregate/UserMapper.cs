@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Initializes a new instance of the <see cref="UserMapper"/> class.
         /// </summary>
-        /// <param name="userContext">the user context</param>
+        /// <param name="userContext">the user context.</param>
         public UserMapper(UserContext userContext)
         {
             this.UserContext = userContext;

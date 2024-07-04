@@ -1,4 +1,4 @@
-﻿// <copyright file="SqlInsertBulkHelper.cs" company="BIA">
+﻿// <copyright file="SqlServerBulkHelper.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -25,7 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <typeparam name="T">Type en entity.</typeparam>
         /// <param name="dbContext">The database context.</param>
         /// <param name="datas">The datas.</param>
-        public static void Insert<T>(BIADataContext dbContext, List<T> datas)
+        public static void Insert<T>(BiaDataContext dbContext, List<T> datas)
             where T : class
         {
             IEntityType entityType = dbContext.Model.FindEntityType(typeof(T));

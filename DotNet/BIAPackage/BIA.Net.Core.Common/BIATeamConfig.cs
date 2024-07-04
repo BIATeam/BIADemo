@@ -1,4 +1,4 @@
-﻿// <copyright file="BIATeamConfig.cs" company="BIA.Net">
+﻿// <copyright file="BiaTeamConfig.cs" company="BIA.Net">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Common
@@ -10,33 +10,14 @@ namespace BIA.Net.Core.Common
     using BIA.Net.Core.Common.Configuration;
 
     /// <summary>
-    /// Structure to store config of children team.
-    /// </summary>
-    /// <typeparam name="TTeam">The team type.</typeparam>
-    public class BIATeamChildrenConfig<TTeam>
-    {
-        public int TeamTypeId { get; set; }
-
-        public Expression<Func<TTeam, IEnumerable<TTeam>>> GetChilds { get; set; }
-    }
-
-    /// <summary>
-    /// Structure to store config of a parent team.
-    /// </summary>
-    /// <typeparam name="TTeam">The team type.</typeparam>
-    public class BIATeamParentConfig<TTeam>
-    {
-        public int TeamTypeId { get; set; }
-
-        public Expression<Func<TTeam, TTeam>> GetParent { get; set; }
-    }
-
-    /// <summary>
     /// Structure to store config of a team.
     /// </summary>
     /// <typeparam name="TTeam">The team type.</typeparam>
-    public class BIATeamConfig<TTeam>
+    public class BiaTeamConfig<TTeam>
     {
+        /// <summary>
+        /// Team type Id.
+        /// </summary>
         public int TeamTypeId { get; set; }
 
         /// <summary>
@@ -47,12 +28,12 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// The chilren teams type.
         /// </summary>
-        public ImmutableList<BIATeamChildrenConfig<TTeam>> Children { get; set; }
+        public ImmutableList<BiaTeamChildrenConfig<TTeam>> Children { get; set; }
 
         /// <summary>
         /// The chilren teams type.
         /// </summary>
-        public ImmutableList<BIATeamParentConfig<TTeam>> Parents { get; set; }
+        public ImmutableList<BiaTeamParentConfig<TTeam>> Parents { get; set; }
 
         /// <summary>
         /// The id of roles that can administrate the team.
@@ -62,6 +43,6 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// The id of roles that can administrate the team that come from parent or root level.
         /// </summary>
-        public int[] ParentsAdminRoleIds { get; set; }    
+        public int[] ParentsAdminRoleIds { get; set; }
     }
 }

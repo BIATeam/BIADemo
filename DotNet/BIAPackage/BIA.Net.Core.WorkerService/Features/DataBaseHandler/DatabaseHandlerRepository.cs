@@ -18,37 +18,32 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The connection string.
         /// </summary>
-        protected readonly string connectionString;
+        private readonly string connectionString;
 
         /// <summary>
         /// The SQL on change event handler request.
         /// </summary>
-        protected readonly string sqlOnChangeEventHandlerRequest;
+        private readonly string sqlOnChangeEventHandlerRequest;
 
         /// <summary>
         /// The SQL read change request.
         /// </summary>
-        protected readonly string sqlReadChangeRequest;
+        private readonly string sqlReadChangeRequest;
 
         /// <summary>
         /// The filter notifiction infos.
         /// </summary>
-        protected readonly List<SqlNotificationInfo> filterNotifictionInfos;
-
-        /// <summary>
-        /// The service provider.
-        /// </summary>
-        protected IServiceProvider serviceProvider;
+        private readonly List<SqlNotificationInfo> filterNotifictionInfos;
 
         /// <summary>
         /// The logger.
         /// </summary>
-        protected ILogger<DatabaseHandlerRepository> logger;
+        private ILogger<DatabaseHandlerRepository> logger;
 
         /// <summary>
         /// Detect if it is the first detection. (to ignore).
         /// </summary>
-        protected bool isFirst = true;
+        private bool isFirst = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseHandlerRepository" /> class.
@@ -85,18 +80,41 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         protected event ChangeHandler OnChange;
 
         /// <summary>
+        /// The connection string.
+        /// </summary>
+        protected string ConnectionString => this.connectionString;
+
+        /// <summary>
+        /// The SQL on change event handler request.
+        /// </summary>
+        protected string SqlOnChangeEventHandlerRequest => this.sqlOnChangeEventHandlerRequest;
+
+        /// <summary>
+        /// The SQL read change request.
+        /// </summary>
+        protected string SqlReadChangeRequest => this.sqlReadChangeRequest;
+
+        /// <summary>
+        /// The filter notifiction infos.
+        /// </summary>
+        protected List<SqlNotificationInfo> FilterNotifictionInfos => this.filterNotifictionInfos;
+
+        /// <summary>
         /// Start the process of event handler.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         public virtual void Start(IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
-            this.logger = this.serviceProvider.GetService<ILogger<DatabaseHandlerRepository>>();
+            this.logger = serviceProvider.GetService<ILogger<DatabaseHandlerRepository>>();
 
-            this.logger.LogInformation($"{nameof(DatabaseHandlerRepository)}.{nameof(this.Start)}");
-            this.logger.LogInformation($"{nameof(connectionString)} = {connectionString}");
-            this.logger.LogInformation($"{nameof(sqlOnChangeEventHandlerRequest)} = {sqlOnChangeEventHandlerRequest}");
-            this.logger.LogInformation($"{nameof(sqlReadChangeRequest)} = {sqlReadChangeRequest}");
+            string message = $"{nameof(DatabaseHandlerRepository)}.{nameof(this.Start)}";
+            this.logger.LogInformation(message);
+            message = $"{nameof(this.connectionString)} = {this.connectionString}";
+            this.logger.LogInformation(message);
+            message = $"{nameof(this.sqlOnChangeEventHandlerRequest)} = {this.sqlOnChangeEventHandlerRequest}";
+            this.logger.LogInformation(message);
+            message = $"{nameof(this.sqlReadChangeRequest)} = {this.sqlReadChangeRequest}";
+            this.logger.LogInformation(message);
 
             this.NotifyNewItem(null);
         }
@@ -106,7 +124,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         public virtual void Stop()
         {
-            this.logger.LogInformation($"{nameof(DatabaseHandlerRepository)}.{nameof(this.Stop)}");
+            string message = $"{nameof(DatabaseHandlerRepository)}.{nameof(this.Stop)}";
+            this.logger.LogInformation(message);
             SqlDependency.Stop(this.connectionString);
         }
 
@@ -122,18 +141,20 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             if (this.isFirst)
             {
-                this.logger.LogInformation($"{baseLog} {nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
+                string message = $"{baseLog} {nameof(SqlDependency)}.{nameof(SqlDependency.Start)}";
+                this.logger.LogInformation(message);
                 SqlDependency.Start(this.connectionString);
             }
 
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                using (SqlCommand command = new SqlCommand(this.sqlOnChangeEventHandlerRequest, connection))
+                using (SqlCommand command = new (this.sqlOnChangeEventHandlerRequest, connection))
                 {
                     connection.Open();
 
                     SqlDependency dependency = new SqlDependency(command);
-                    this.logger.LogInformation($"{baseLog} dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange)");
+                    string message = $"{baseLog} dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange)";
+                    this.logger.LogInformation(message);
                     dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange);
                     command.ExecuteNonQuery();
 
@@ -143,7 +164,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                         {
                             if (this.IsValidEvent(e) && this.OnChange != null)
                             {
-                                this.logger.LogInformation($"{baseLog} this.OnChange(null)");
+                                string message1 = $"{baseLog} this.OnChange(null)";
+                                this.logger.LogInformation(message1);
                                 this.OnChange(null);
                             }
                         }
@@ -153,14 +175,16 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                             {
                                 using (SqlDataReader reader = selectCommand.ExecuteReader())
                                 {
-                                    this.logger.LogInformation($"{baseLog} reader.HasRows = {reader.HasRows}");
+                                    string message1 = $"{baseLog} reader.HasRows = {reader.HasRows}";
+                                    this.logger.LogInformation(message1);
                                     if (reader.HasRows)
                                     {
                                         reader.Read();
 
                                         if (this.IsValidEvent(e) && this.OnChange != null)
                                         {
-                                            this.logger.LogInformation($"{baseLog} this.OnChange(reader)");
+                                            string message2 = $"{baseLog} this.OnChange(reader)";
+                                            this.logger.LogInformation(message2);
                                             this.OnChange(reader);
                                         }
                                     }
@@ -188,7 +212,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                         ||
                         this.filterNotifictionInfos.Contains(e.Info));
 
-            this.logger.LogInformation($"{nameof(isValidEvent)} = {isValidEvent}");
+            string message = $"{nameof(isValidEvent)} = {isValidEvent}";
+            this.logger.LogInformation(message);
 
             return isValidEvent;
         }
@@ -206,7 +231,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             if (e.Info != SqlNotificationInfo.Invalid)
             {
-                this.logger.LogInformation($"{nameof(DatabaseHandlerRepository)}.{nameof(this.OnDependencyChange)} this.NotifyNewItem({e.Info});");
+                string message = $"{nameof(DatabaseHandlerRepository)}.{nameof(this.OnDependencyChange)} this.NotifyNewItem({e.Info});";
+                this.logger.LogInformation(message);
                 this.NotifyNewItem(e);
             }
         }

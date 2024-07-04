@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-    public class DataContext : BIADataContext
+    public class DataContext : BiaDataContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContext"/> class.

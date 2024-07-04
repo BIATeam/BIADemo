@@ -108,7 +108,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         public async Task<T> GetAllSources<T>(string key)
         {
             T item = await this.GetLocal<T>(key);
-            if (item != null)
+            if (!object.Equals(item, default(T)))
             {
                 return item;
             }

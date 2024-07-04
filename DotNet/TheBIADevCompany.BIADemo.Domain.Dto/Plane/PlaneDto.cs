@@ -14,67 +14,67 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     /// <summary>
     /// The DTO used to represent a plane.
     /// </summary>
-    [BIADtoClass(AncestorTeam = "Site")]
+    [BiaDtoClass(AncestorTeam = "Site")]
     public class PlaneDto : BaseDto<int>
     {
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public string Msn { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the plane is active.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public bool IsActive { get; set; }
 
         /// <summary>
         /// Gets or sets the last flight date and time.
         /// </summary>
-        [BIADtoField(Type = "datetime", Required = false)]
+        [BiaDtoField(Type = "datetime", Required = false)]
         public DateTime? LastFlightDate { get; set; }
 
         /// <summary>
         /// Gets or sets the delivery date.
         /// </summary>
-        [BIADtoField(Type = "date", Required = false)]
+        [BiaDtoField(Type = "date", Required = false)]
         public DateTime? DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
-        [BIADtoField(Type = "time", Required = false)]
+        [BiaDtoField(Type = "time", Required = false)]
         public string SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity.
         /// </summary>
-        [BIADtoField(Required = true)]
+        [BiaDtoField(Required = true)]
         public int Capacity { get; set; }
 
         /// <summary>
         /// Gets or sets the probability.
         /// </summary>
-        [BIADtoField(Required = false)]
+        [BiaDtoField(Required = false)]
         public double? Probability { get; set; }
 
         /// <summary>
         /// Gets or sets the fuelLevel.
         /// </summary>
-        [BIADtoField(Required = false)]
+        [BiaDtoField(Required = false)]
         public float? FuelLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated price.
         /// </summary>
-        [BIADtoField(Required = false)]
+        [BiaDtoField(Required = false)]
         public decimal? EstimatedPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the site.
         /// </summary>
-        [BIADtoField(IsParent = true, Required = true)]
+        [BiaDtoField(IsParent = true, Required = true)]
         public int SiteId { get; set; }
 
         /// <summary>

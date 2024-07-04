@@ -1,4 +1,4 @@
-﻿// <copyright file="GenericRepository.cs" company="BIA">
+﻿// <copyright file="TGenericRepositoryEF.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -12,9 +12,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
@@ -22,28 +22,26 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
     /// <summary>
     /// The class representing a GenericRepository.
     /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
     public class TGenericRepositoryEF<TEntity, TKey> : ITGenericRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
     {
         /// <summary>
         /// The unit of work.
         /// </summary>
-        protected readonly IQueryableUnitOfWork unitOfWork;
+        private readonly IQueryableUnitOfWork unitOfWork;
 
         /// <summary>
         /// The service provider.
         /// </summary>
-        public IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
-        /// Get or set the Query customizer.
-        /// </summary>
-        public IQueryCustomizer<TEntity> QueryCustomizer { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GenericRepositoryEF" /> class.
+        /// Initializes a new instance of the <see cref="TGenericRepositoryEF{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="unitOfWork">The unit Of Work.</param>
+        /// <param name="serviceProvider">The service Provider.</param>
         public TGenericRepositoryEF(IQueryableUnitOfWork unitOfWork, IServiceProvider serviceProvider)
         {
             this.unitOfWork = unitOfWork;
@@ -59,6 +57,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// Gets service provider.
         /// </summary>
         public IServiceProvider ServiceProvider => this.serviceProvider;
+
+        /// <summary>
+        /// Get or set the Query customizer.
+        /// </summary>
+        public IQueryCustomizer<TEntity> QueryCustomizer { get; set; }
 
         /// <summary>
         /// Add an item to the current context.
@@ -379,7 +382,9 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <typeparam name="TOrderKey">Type of Ordering.</typeparam>
         /// <typeparam name="TResult">Type of Selected return.</typeparam>
         /// <param name="selectResult">Lambda Expression for Select on query.</param>
+        /// <param name="id">the element id.</param>
         /// <param name="specification">Specification Used for Filtering Query.</param>
+        /// <param name="filter">filter lambda expression for Filtering Query.</param>
         /// <param name="orderByExpression">Lambda Expression for Ordering Query.</param>
         /// <param name="ascending">Direction of Ordering.</param>
         /// <param name="firstElement">First element to take.</param>
@@ -462,6 +467,15 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return EqualityComparer<TKey>.Default.Equals(x, y);
         }
 
+        /// <summary>
+        /// Prepares the filtered query.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="specification">The specification.</param>
+        /// <param name="filter">The filter.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
+        /// <returns>A filtered query.</returns>
         protected IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isReadOnlyMode = false)
         {
             // Create IObjectSet for this particular type and query this
@@ -530,6 +544,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="firstElement">First element to take.</param>
         /// <param name="pageCount">Number of elements in each page.</param>
         /// <param name="queryOrder">The queryOrder.</param>
+        /// <param name="includes">The includes.</param>
+        /// <param name="queryMode">The queryMode.</param>
         /// <returns>List of Selected column of Entity Object, Count of records (0 if not used).</returns>
         protected IQueryable<TResult> GetElements<TOrderKey, TResult>(IQueryable<TEntity> objectSet, Expression<Func<TEntity, TResult>> selectResult, Expression<Func<TEntity, TOrderKey>> orderByExpression, bool ascending, int firstElement, int pageCount, QueryOrder<TEntity> queryOrder, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
@@ -563,6 +579,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return result;
         }
 
+        /// <summary>
+        /// Customizes the query after.
+        /// </summary>
+        /// <param name="objectSet">The object set.</param>
+        /// <param name="includes">The includes.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <returns>The query customized after.</returns>
         protected IQueryable<TEntity> CustomizeQueryAfter(IQueryable<TEntity> objectSet, Expression<Func<TEntity, object>>[] includes, string queryMode)
         {
             if (includes != null && includes.Length > 0)
@@ -581,6 +604,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
             return objectSet;
         }
 
+        /// <summary>
+        /// Checks if the argument is null.
+        /// </summary>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="expression">The expression.</param>
+        /// <exception cref="System.ArgumentNullException">expression.</exception>
         protected void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)
         {
             if (expression == null)

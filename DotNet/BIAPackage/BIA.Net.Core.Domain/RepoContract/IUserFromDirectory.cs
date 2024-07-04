@@ -4,8 +4,9 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
-    using System;
-
+    /// <summary>
+    /// Interface User From Directory.
+    /// </summary>
     public interface IUserFromDirectory
     {
         /// <summary>

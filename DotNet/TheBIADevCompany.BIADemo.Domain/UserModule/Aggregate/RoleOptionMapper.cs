@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleOptionMapper"/> class.
         /// </summary>
-        /// <param name="userContext">the user context</param>
+        /// <param name="userContext">the user context.</param>
         public RoleOptionMapper(UserContext userContext)
         {
             this.UserContext = userContext;

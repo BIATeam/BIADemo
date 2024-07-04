@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationListItemMapper"/> class.
         /// </summary>
-        /// <param name="userContext">the user context</param>
+        /// <param name="userContext">the user context.</param>
         public NotificationListItemMapper(UserContext userContext)
         {
             this.UserContext = userContext;
