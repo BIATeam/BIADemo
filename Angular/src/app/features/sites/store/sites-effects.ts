@@ -53,17 +53,13 @@ export class SitesEffects {
       ofType(FeatureSitesActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.siteDas.get({ id: id }).pipe(
-            map(site => FeatureSitesActions.loadSuccess({ site })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureSitesActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(FeatureSitesActions.loadSuccess({ site: <Site>{} }));
-        }
+        return this.siteDas.get({ id: id }).pipe(
+          map(site => FeatureSitesActions.loadSuccess({ site })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeatureSitesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

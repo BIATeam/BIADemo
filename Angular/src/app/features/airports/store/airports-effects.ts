@@ -53,19 +53,13 @@ export class AirportsEffects {
       ofType(FeatureAirportsActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.airportDas.get({ id: id }).pipe(
-            map(airport => FeatureAirportsActions.loadSuccess({ airport })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureAirportsActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(
-            FeatureAirportsActions.loadSuccess({ airport: <Airport>{} })
-          );
-        }
+        return this.airportDas.get({ id: id }).pipe(
+          map(airport => FeatureAirportsActions.loadSuccess({ airport })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeatureAirportsActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

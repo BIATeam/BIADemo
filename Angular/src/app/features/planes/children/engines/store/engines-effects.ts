@@ -54,18 +54,14 @@ export class EnginesEffects {
       ofType(FeatureEnginesActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.engineDas.get({ id: id }).pipe(
-            map(engine => FeatureEnginesActions.loadSuccess({ engine })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              location.assign(this.baseHref);
-              return of(FeatureEnginesActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(FeatureEnginesActions.loadSuccess({ engine: <Engine>{} }));
-        }
+        return this.engineDas.get({ id: id }).pipe(
+          map(engine => FeatureEnginesActions.loadSuccess({ engine })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            location.assign(this.baseHref);
+            return of(FeatureEnginesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

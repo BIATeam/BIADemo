@@ -26,12 +26,6 @@ export class Plane extends BaseDto {
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
   /// BIAToolKit - End Properties
-
-  displayItemName(): string {
-    /// BIAToolKit - Begin Display
-    return this.msn;
-    /// BIAToolKit - End Display
-  }
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
