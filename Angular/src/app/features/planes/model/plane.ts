@@ -27,7 +27,7 @@ export class Plane extends BaseDto {
   planeType: OptionDto | null;
   /// BIAToolKit - End Properties
 
-  DisplayItemName(): string {
+  displayItemName(): string {
     /// BIAToolKit - Begin Display
     return this.msn;
     /// BIAToolKit - End Display
@@ -35,7 +35,7 @@ export class Plane extends BaseDto {
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
-export const PlaneFieldsConfiguration: BiaFieldsConfig = {
+export const planeFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     /// BIAToolKit - Begin Block msn
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {

@@ -18,7 +18,7 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     public signalRService: CrudItemSignalRService<CrudItem>,
     public optionsService: CrudItemOptionsService
   ) {
-    setTimeout(() => this.InitSub()); // should be done after initialization of the parent constructor
+    setTimeout(() => this.initSub()); // should be done after initialization of the parent constructor
   }
   protected capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -73,7 +73,7 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     this.load(id);
   }
 
-  InitSub() {
+  initSub() {
     this.crudItem$.subscribe(crudItem => {
       if (crudItem) {
         this._currentCrudItem = crudItem;

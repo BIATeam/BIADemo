@@ -45,7 +45,7 @@ export class NotificationSignalRService {
     this.signalRService.addMethod('notification-addUnread', args => {
       const notification: Notification = JSON.parse(args);
       notification.data = JSON.parse(notification.jData);
-      if (this.IsInMyDisplay(notification)) {
+      if (this.isInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
         this.store.dispatch(
           DomainNotificationsActions.addUnreadNotification({
@@ -83,7 +83,7 @@ export class NotificationSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private IsInMyDisplay(notification: Notification) {
+  private isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers

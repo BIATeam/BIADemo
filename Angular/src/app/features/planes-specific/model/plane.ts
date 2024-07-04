@@ -23,7 +23,7 @@ export interface Plane extends BaseDto {
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
-export const PlaneFieldsConfiguration: BiaFieldsConfig = {
+export const planeFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('msn', 'plane.msn'), {
       isRequired: true,

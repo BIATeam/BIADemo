@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Airport } from '../model/airport';
-import { AirportCRUDConfiguration } from '../airport.constants';
+import { airportCRUDConfiguration } from '../airport.constants';
 import { FeatureAirportsStore } from '../store/airport.state';
 import { FeatureAirportsActions } from '../store/airports-actions';
 import { AirportOptionsService } from './airport-options.service';
@@ -34,7 +34,7 @@ export class AirportService extends CrudItemService<Airport> {
   }
 
   public getFeatureName() {
-    return AirportCRUDConfiguration.featureName;
+    return airportCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<Airport[]> = this.store.select(

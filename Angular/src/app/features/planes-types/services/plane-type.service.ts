@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { PlaneType } from '../model/plane-type';
-import { PlaneTypeCRUDConfiguration } from '../plane-type.constants';
+import { planeTypeCRUDConfiguration } from '../plane-type.constants';
 import { FeaturePlanesTypesStore } from '../store/plane-type.state';
 import { FeaturePlanesTypesActions } from '../store/planes-types-actions';
 import { PlaneTypeOptionsService } from './plane-type-options.service';
@@ -34,7 +34,7 @@ export class PlaneTypeService extends CrudItemService<PlaneType> {
   }
 
   public getFeatureName() {
-    return PlaneTypeCRUDConfiguration.featureName;
+    return planeTypeCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<PlaneType[]> = this.store.select(

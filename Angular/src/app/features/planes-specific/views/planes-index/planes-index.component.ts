@@ -1,6 +1,6 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { Plane } from '../../model/plane';
-import { PlaneCRUDConfiguration } from '../../plane.constants';
+import { planeCRUDConfiguration } from '../../plane.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -22,7 +22,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     protected authService: AuthService
   ) {
     super(injector, planeService);
-    this.crudConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = planeCRUDConfiguration;
   }
 
   protected setPermissions() {

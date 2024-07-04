@@ -9,7 +9,7 @@ import { BaseTeamDto } from 'src/app/shared/bia-shared/model/base-team-dto';
 export type Site = BaseTeamDto;
 
 // TODO after creation of CRUD Team Site : adapt the field configuration
-export const SiteFieldsConfiguration: BiaFieldsConfig = {
+export const siteFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('title', 'site.title'), {
       isRequired: true,

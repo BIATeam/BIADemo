@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Site } from '../model/site';
-import { SiteCRUDConfiguration } from '../site.constants';
+import { siteCRUDConfiguration } from '../site.constants';
 import { FeatureSitesStore } from '../store/site.state';
 import { FeatureSitesActions } from '../store/sites-actions';
 import { SiteOptionsService } from './site-options.service';
@@ -51,7 +51,7 @@ export class SiteService extends CrudItemService<Site> {
   }
 
   public getFeatureName() {
-    return SiteCRUDConfiguration.featureName;
+    return siteCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<Site[]> = this.store.select(

@@ -18,7 +18,7 @@ export interface User extends BaseDto {
 }
 
 // TODO after creation of CRUD User : adapt the field configuration
-export const UserFieldsConfiguration: BiaFieldsConfig = {
+export const userFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
       isEditable: false,

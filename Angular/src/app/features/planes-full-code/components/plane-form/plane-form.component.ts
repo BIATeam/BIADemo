@@ -73,11 +73,11 @@ export class PlaneFormComponent implements OnChanges {
       const plane: Plane = <Plane>this.form.value;
       plane.id = plane.id > 0 ? plane.id : 0;
       plane.isActive = plane.isActive ? plane.isActive : false;
-      plane.connectingAirports = BiaOptionService.Differential(
+      plane.connectingAirports = BiaOptionService.differential(
         plane.connectingAirports,
         this.plane?.connectingAirports
       );
-      plane.planeType = BiaOptionService.Clone(plane.planeType);
+      plane.planeType = BiaOptionService.clone(plane.planeType);
 
       // force the parent key => siteId from authService or other Id from 'parent'Service
       (plane.siteId = this.authService.getCurrentTeamId(TeamTypeId.Site)),

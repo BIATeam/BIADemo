@@ -12,7 +12,7 @@ export interface PlaneType extends BaseDto {
 }
 
 // TODO after creation of CRUD PlaneType : adapt the field configuration
-export const PlaneTypeFieldsConfiguration: BiaFieldsConfig = {
+export const planeTypeFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('title', 'planeType.title'), {
       isRequired: true,

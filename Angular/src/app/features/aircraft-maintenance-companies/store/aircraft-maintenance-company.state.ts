@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 
 export namespace FeatureAircraftMaintenanceCompaniesStore {
   export interface AircraftMaintenanceCompaniesState {
@@ -30,7 +30,7 @@ export namespace FeatureAircraftMaintenanceCompaniesStore {
 
   export const getAircraftMaintenanceCompaniesState =
     createFeatureSelector<AircraftMaintenanceCompaniesState>(
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey
     );
 
   export const getAircraftMaintenanceCompaniesEntitiesState = createSelector(

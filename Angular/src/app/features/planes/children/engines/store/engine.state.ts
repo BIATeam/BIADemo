@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { EngineCRUDConfiguration } from '../engine.constants';
+import { engineCRUDConfiguration } from '../engine.constants';
 
 export namespace FeatureEnginesStore {
   export interface EnginesState {
@@ -25,7 +25,7 @@ export namespace FeatureEnginesStore {
    */
 
   export const getEnginesState = createFeatureSelector<EnginesState>(
-    EngineCRUDConfiguration.storeKey
+    engineCRUDConfiguration.storeKey
   );
 
   export const getEnginesEntitiesState = createSelector(

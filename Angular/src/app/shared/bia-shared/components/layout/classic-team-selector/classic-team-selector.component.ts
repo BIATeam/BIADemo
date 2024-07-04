@@ -87,7 +87,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     );
     this.sub.add(
       this.teams$.subscribe(teams => {
-        this.teams = this.SortTeams(teams);
+        this.teams = this.sortTeams(teams);
         this.initDropdownTeam();
         this.initDropdownRole();
       })
@@ -198,14 +198,14 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
           if (this.currentRoles.length === 1)
             this.currentRole = this.currentRoles[0];
           else this.currentRole = null;
-          this.roles = this.SortRoles(roles);
+          this.roles = this.sortRoles(roles);
           if (defaultRoleIds && defaultRoleIds.length === 1) {
             this.defaultRoleIds = defaultRoleIds;
           }
         }
         if (this.multiRoleMode) {
           this.displayRoleMultiSelect = true;
-          this.roles = this.SortRoles(roles);
+          this.roles = this.sortRoles(roles);
           if (defaultRoleIds) {
             this.defaultRoleIds = defaultRoleIds;
           }
@@ -214,13 +214,13 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected SortTeams(teams: Team[]): Team[] {
+  protected sortTeams(teams: Team[]): Team[] {
     return teams?.sort((a, b) => {
       return a?.title?.localeCompare(b?.title);
     });
   }
 
-  protected SortRoles(roles: RoleDto[]): RoleDto[] {
+  protected sortRoles(roles: RoleDto[]): RoleDto[] {
     return roles?.sort((a, b) => {
       return a?.display?.localeCompare(b?.display);
     });

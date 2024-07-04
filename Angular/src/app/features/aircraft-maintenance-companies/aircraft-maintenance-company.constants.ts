@@ -1,12 +1,12 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
-import { AircraftMaintenanceCompanyFieldsConfiguration } from './model/aircraft-maintenance-company';
+import { aircraftMaintenanceCompanyFieldsConfiguration } from './model/aircraft-maintenance-company';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the global configuration
-export const AircraftMaintenanceCompanyCRUDConfiguration: CrudConfig =
+export const aircraftMaintenanceCompanyCRUDConfiguration: CrudConfig =
   new CrudConfig({
     // IMPORTANT: this key should be unique in all the application.
     featureName: 'aircraft-maintenance-companies',
-    fieldsConfig: AircraftMaintenanceCompanyFieldsConfiguration,
+    fieldsConfig: aircraftMaintenanceCompanyFieldsConfiguration,
     useCalcMode: false,
     useSignalR: false,
     useView: false,

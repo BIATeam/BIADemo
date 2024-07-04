@@ -16,7 +16,7 @@ export interface Engine extends BaseDto {
 }
 
 // TODO after creation of CRUD Engine : adapt the field configuration
-export const EngineFieldsConfiguration: BiaFieldsConfig = {
+export const engineFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {}),
     Object.assign(

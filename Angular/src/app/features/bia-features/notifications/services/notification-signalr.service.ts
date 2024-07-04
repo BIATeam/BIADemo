@@ -53,7 +53,7 @@ export class NotificationsSignalRService {
     );
     this.signalRService.addMethod('refresh-notification', args => {
       const notification: Notification = JSON.parse(args);
-      if (this.IsInMyDisplay(notification)) {
+      if (this.isInMyDisplay(notification)) {
         this.store
           .select(getLastLazyLoadEvent)
           .pipe(first())
@@ -73,7 +73,7 @@ export class NotificationsSignalRService {
     this.signalRService.addMethod('refresh-notifications-several', args => {
       const notifications: Notification[] = JSON.parse(args);
       if (
-        notifications.some(notification => this.IsInMyDisplay(notification))
+        notifications.some(notification => this.isInMyDisplay(notification))
       ) {
         this.store
           .select(getLastLazyLoadEvent)
@@ -95,7 +95,7 @@ export class NotificationsSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private IsInMyDisplay(notification: Notification) {
+  private isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers

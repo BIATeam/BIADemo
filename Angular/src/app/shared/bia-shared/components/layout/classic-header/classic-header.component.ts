@@ -85,7 +85,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   teamTypeSelectors: any[];
 
   @ViewChild('toast', { static: true }) toast: Toast;
-  NotificationType = NotificationType;
+  notificationType = NotificationType;
 
   constructor(
     public layoutService: BiaClassicLayoutService,

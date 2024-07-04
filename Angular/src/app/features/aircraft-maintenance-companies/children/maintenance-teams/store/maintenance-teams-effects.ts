@@ -12,7 +12,7 @@ import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 import { Store } from '@ngrx/store';
 import { FeatureMaintenanceTeamsStore } from './maintenance-team.state';
 import { MaintenanceTeam } from '../model/maintenance-team';
-import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -89,12 +89,12 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .post({
             item: maintenanceTeam,
-            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
+            offlineMode: maintenanceTeamCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+              if (maintenanceTeamCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
@@ -127,12 +127,12 @@ export class MaintenanceTeamsEffects {
           .put({
             item: maintenanceTeam,
             id: maintenanceTeam.id,
-            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
+            offlineMode: maintenanceTeamCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+              if (maintenanceTeamCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
@@ -164,12 +164,12 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .delete({
             id: id,
-            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
+            offlineMode: maintenanceTeamCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+              if (maintenanceTeamCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
@@ -201,12 +201,12 @@ export class MaintenanceTeamsEffects {
         return this.maintenanceTeamDas
           .deletes({
             ids: ids,
-            offlineMode: MaintenanceTeamCRUDConfiguration.useOfflineMode,
+            offlineMode: maintenanceTeamCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (MaintenanceTeamCRUDConfiguration.useSignalR) {
+              if (maintenanceTeamCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({

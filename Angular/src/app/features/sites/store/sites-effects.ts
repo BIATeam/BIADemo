@@ -12,7 +12,7 @@ import { FeatureSitesActions } from './sites-actions';
 import { Store } from '@ngrx/store';
 import { FeatureSitesStore } from './site.state';
 import { Site } from '../model/site';
-import { SiteCRUDConfiguration } from '../site.constants';
+import { siteCRUDConfiguration } from '../site.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -83,12 +83,12 @@ export class SitesEffects {
         return this.siteDas
           .post({
             item: site,
-            offlineMode: SiteCRUDConfiguration.useOfflineMode,
+            offlineMode: siteCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (SiteCRUDConfiguration.useSignalR) {
+              if (siteCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureSitesActions.loadAllByPost({
@@ -121,12 +121,12 @@ export class SitesEffects {
           .put({
             item: site,
             id: site.id,
-            offlineMode: SiteCRUDConfiguration.useOfflineMode,
+            offlineMode: siteCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (SiteCRUDConfiguration.useSignalR) {
+              if (siteCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureSitesActions.loadAllByPost({
@@ -156,11 +156,11 @@ export class SitesEffects {
       ),
       switchMap(([id, event]) => {
         return this.siteDas
-          .delete({ id: id, offlineMode: SiteCRUDConfiguration.useOfflineMode })
+          .delete({ id: id, offlineMode: siteCRUDConfiguration.useOfflineMode })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (SiteCRUDConfiguration.useSignalR) {
+              if (siteCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureSitesActions.loadAllByPost({
@@ -192,12 +192,12 @@ export class SitesEffects {
         return this.siteDas
           .deletes({
             ids: ids,
-            offlineMode: SiteCRUDConfiguration.useOfflineMode,
+            offlineMode: siteCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (SiteCRUDConfiguration.useSignalR) {
+              if (siteCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureSitesActions.loadAllByPost({

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Engine } from '../model/engine';
-import { EngineCRUDConfiguration } from '../engine.constants';
+import { engineCRUDConfiguration } from '../engine.constants';
 import { FeatureEnginesStore } from '../store/engine.state';
 import { FeatureEnginesActions } from '../store/engines-actions';
 import { EngineOptionsService } from './engine-options.service';
@@ -35,7 +35,7 @@ export class EngineService extends CrudItemService<Engine> {
   }
 
   public getFeatureName() {
-    return EngineCRUDConfiguration.featureName;
+    return engineCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<Engine[]> = this.store.select(

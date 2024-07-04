@@ -73,7 +73,9 @@ export class BiaTableControllerComponent
   pageSize: number;
   pageSizes: SelectItem[];
   resultMessageMapping = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     '=0': 'bia.noResult',
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     '=1': 'bia.result',
     other: 'bia.results',
   };
@@ -151,7 +153,7 @@ export class BiaTableControllerComponent
   }
 
   public getSelectedViewName(): string | null {
-    return this.viewListComponent?.GetCurrentViewName();
+    return this.viewListComponent?.getCurrentViewName();
   }
 
   private onColumnsChange(changes: SimpleChanges) {

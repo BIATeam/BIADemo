@@ -11,7 +11,7 @@ export interface Airport extends BaseDto {
 }
 
 // TODO after creation of CRUD Airport : adapt the field configuration
-export const AirportFieldsConfiguration: BiaFieldsConfig = {
+export const airportFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('name', 'airport.name'), {
       isRequired: true,

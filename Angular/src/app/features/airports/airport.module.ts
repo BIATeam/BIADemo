@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AirportsEffects } from './store/airports-effects';
 import { FeatureAirportsStore } from './store/airport.state';
-import { AirportCRUDConfiguration } from './airport.constants';
+import { airportCRUDConfiguration } from './airport.constants';
 
 export const ROUTES: Routes = [
   {
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Airport_List_Access,
-      InjectComponent: AirportsIndexComponent,
+      injectComponent: AirportsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,13 +38,13 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Airport_Create,
           title: 'airport.add',
-          InjectComponent: AirportNewComponent,
+          injectComponent: AirportNewComponent,
           dynamicComponent: () =>
-            AirportCRUDConfiguration.usePopup
+            airportCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: AirportCRUDConfiguration.usePopup
+        component: airportCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -65,13 +65,13 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Airport_Update,
               title: 'airport.edit',
-              InjectComponent: AirportEditComponent,
+              injectComponent: AirportEditComponent,
               dynamicComponent: () =>
-                AirportCRUDConfiguration.usePopup
+                airportCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: AirportCRUDConfiguration.usePopup
+            component: airportCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      AirportCRUDConfiguration.storeKey,
+      airportCRUDConfiguration.storeKey,
       FeatureAirportsStore.reducers
     ),
     EffectsModule.forFeature([AirportsEffects]),

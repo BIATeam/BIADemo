@@ -9,7 +9,7 @@ import { BaseTeamDto } from 'src/app/shared/bia-shared/model/base-team-dto';
 export type AircraftMaintenanceCompany = BaseTeamDto;
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the field configuration
-export const AircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig = {
+export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('title', 'site.title'), {
       isRequired: true,

@@ -1,62 +1,62 @@
 import { createAction, props } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { MaintenanceTeam } from '../model/maintenance-team';
-import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 
 export namespace FeatureMaintenanceTeamsActions {
   export const loadAllByPost = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Load all by post',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Load all by post',
     props<{ event: LazyLoadEvent }>()
   );
 
   export const load = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Load',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Load',
     props<{ id: number }>()
   );
 
   export const create = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Create',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Create',
     props<{ maintenanceTeam: MaintenanceTeam }>()
   );
 
   export const update = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Update',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Update',
     props<{ maintenanceTeam: MaintenanceTeam }>()
   );
 
   export const remove = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Remove',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Remove',
     props<{ id: number }>()
   );
 
   export const multiRemove = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Multi Remove',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Multi Remove',
     props<{ ids: number[] }>()
   );
 
   export const loadAllByPostSuccess = createAction(
     '[' +
-      MaintenanceTeamCRUDConfiguration.storeKey +
+      maintenanceTeamCRUDConfiguration.storeKey +
       '] Load all by post success',
     props<{ result: DataResult<MaintenanceTeam[]>; event: LazyLoadEvent }>()
   );
 
   export const loadSuccess = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Load success',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Load success',
     props<{ maintenanceTeam: MaintenanceTeam }>()
   );
 
   export const failure = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Failure',
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Failure',
     props<{ error: any }>()
   );
 
   export const clearAll = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Clear all in state'
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Clear all in state'
   );
 
   export const clearCurrent = createAction(
-    '[' + MaintenanceTeamCRUDConfiguration.storeKey + '] Clear current'
+    '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Clear current'
   );
 }

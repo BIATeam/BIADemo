@@ -12,7 +12,7 @@ import { FeaturePlanesActions } from './planes-actions';
 import { Store } from '@ngrx/store';
 import { FeaturePlanesStore } from './plane.state';
 import { Plane } from '../model/plane';
-import { PlaneCRUDConfiguration } from '../plane.constants';
+import { planeCRUDConfiguration } from '../plane.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -83,12 +83,12 @@ export class PlanesEffects {
         return this.planeDas
           .post({
             item: plane,
-            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
+            offlineMode: planeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (PlaneCRUDConfiguration.useSignalR) {
+              if (planeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesActions.loadAllByPost({
@@ -121,12 +121,12 @@ export class PlanesEffects {
           .put({
             item: plane,
             id: plane.id,
-            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
+            offlineMode: planeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (PlaneCRUDConfiguration.useSignalR) {
+              if (planeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesActions.loadAllByPost({
@@ -158,12 +158,12 @@ export class PlanesEffects {
         return this.planeDas
           .delete({
             id: id,
-            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
+            offlineMode: planeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (PlaneCRUDConfiguration.useSignalR) {
+              if (planeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesActions.loadAllByPost({
@@ -195,12 +195,12 @@ export class PlanesEffects {
         return this.planeDas
           .deletes({
             ids: ids,
-            offlineMode: PlaneCRUDConfiguration.useOfflineMode,
+            offlineMode: planeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (PlaneCRUDConfiguration.useSignalR) {
+              if (planeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesActions.loadAllByPost({

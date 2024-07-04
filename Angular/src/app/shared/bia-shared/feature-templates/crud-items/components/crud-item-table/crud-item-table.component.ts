@@ -73,7 +73,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
             Reflect.set(
               crudItem,
               col.field,
-              BiaOptionService.Differential(
+              BiaOptionService.differential(
                 Reflect.get(crudItem, col.field) as BaseDto[],
                 this.element ? Reflect.get(this.element, col.field) : undefined
               )
@@ -97,7 +97,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
               Reflect.set(
                 crudItem,
                 col.field,
-                BiaOptionService.Clone(crudItem[col.field as keyof CrudItem])
+                BiaOptionService.clone(crudItem[col.field as keyof CrudItem])
               );
             }
             break;
