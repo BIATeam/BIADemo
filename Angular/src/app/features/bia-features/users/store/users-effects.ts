@@ -53,17 +53,13 @@ export class UsersEffects {
       ofType(FeatureUsersActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.userDas.get({ id: id }).pipe(
-            map(user => FeatureUsersActions.loadSuccess({ user })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureUsersActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(FeatureUsersActions.loadSuccess({ user: <User>{} }));
-        }
+        return this.userDas.get({ id: id }).pipe(
+          map(user => FeatureUsersActions.loadSuccess({ user })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeatureUsersActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

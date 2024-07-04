@@ -53,17 +53,13 @@ export class PlanesEffects {
       ofType(FeaturePlanesActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.planeDas.get({ id: id }).pipe(
-            map(plane => FeaturePlanesActions.loadSuccess({ plane })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeaturePlanesActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(FeaturePlanesActions.loadSuccess({ plane: <Plane>{} }));
-        }
+        return this.planeDas.get({ id: id }).pipe(
+          map(plane => FeaturePlanesActions.loadSuccess({ plane })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeaturePlanesActions.failure({ error: err }));
+          })
+        );
       })
     )
   );

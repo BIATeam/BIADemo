@@ -14,6 +14,7 @@ import { MatomoTracker } from './matomo/matomo-tracker.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { AppDB, DataItem } from '../db';
 import { BiaEnvironmentService } from './bia-environment.service';
+import { APP_BASE_HREF } from '@angular/common';
 
 export interface HttpOptions {
   headers?:
@@ -74,11 +75,13 @@ export abstract class GenericDas {
   public route: string;
   protected matomoTracker: MatomoTracker;
   protected db: AppDB;
+  protected baseHref: string;
 
   constructor(
     protected injector: Injector,
     protected endpoint: string
   ) {
+    this.baseHref = this.injector.get(APP_BASE_HREF);
     this.http = injector.get<HttpClient>(HttpClient);
     this.route = GenericDas.buildRoute(endpoint);
     this.matomoTracker = injector.get<MatomoTracker>(MatomoTracker);
@@ -108,6 +111,15 @@ export abstract class GenericDas {
         DateHelperService.fillDate(data);
         this.translateItem(data);
         return data;
+      }),
+      catchError(error => {
+        // Example: if I am on an element and I change of Team,
+        // and this Team does not access to this current element,
+        // we return to the root of the site.
+        if (error.status >= 401 && error.status <= 404) {
+          location.assign(this.baseHref);
+        }
+        return throwError(() => error);
       })
     );
 

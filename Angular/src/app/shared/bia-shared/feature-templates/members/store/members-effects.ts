@@ -53,17 +53,13 @@ export class MembersEffects {
       ofType(FeatureMembersActions.load),
       map(x => x?.id),
       switchMap(id => {
-        if (id) {
-          return this.memberDas.get({ id: id }).pipe(
-            map(member => FeatureMembersActions.loadSuccess({ member })),
-            catchError(err => {
-              this.biaMessageService.showErrorHttpResponse(err);
-              return of(FeatureMembersActions.failure({ error: err }));
-            })
-          );
-        } else {
-          return of(FeatureMembersActions.loadSuccess({ member: <Member>{} }));
-        }
+        return this.memberDas.get({ id: id }).pipe(
+          map(member => FeatureMembersActions.loadSuccess({ member })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(FeatureMembersActions.failure({ error: err }));
+          })
+        );
       })
     )
   );
