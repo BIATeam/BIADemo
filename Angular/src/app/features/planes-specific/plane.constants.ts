@@ -1,6 +1,6 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { PlaneFieldsConfiguration } from './model/plane';
+import { planeFieldsConfiguration } from './model/plane';
 
 // IMPORTANT: this key should be unique in all the application.
 export const featureName = 'planes-specific';
@@ -8,7 +8,7 @@ export const featureName = 'planes-specific';
 // TODO after creation of CRUD Plane : adapt the global configuration
 export const PlaneCRUDConfiguration: CrudConfig = new CrudConfig({
   featureName: 'planes-specific',
-  fieldsConfig: PlaneFieldsConfiguration,
+  fieldsConfig: planeFieldsConfiguration,
   useCalcMode: false,
   useSignalR: false,
   useView: false,

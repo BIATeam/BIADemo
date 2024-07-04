@@ -20,7 +20,7 @@ export class Members {
 }
 
 // TODO after creation of CRUD Member : adapt the field configuration
-export const MemberFieldsConfiguration: BiaFieldsConfig = {
+export const memberFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('user', 'member.user'), {
       isRequired: true,
