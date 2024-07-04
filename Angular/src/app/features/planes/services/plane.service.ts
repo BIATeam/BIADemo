@@ -29,6 +29,12 @@ export class PlaneService extends CrudItemService<Plane> {
     super(dasService, signalRService, optionsService);
   }
 
+  public static getDisplayItemName(plane: Plane) {
+    /// BIAToolKit - Begin Display
+    return plane?.msn;
+    /// BIAToolKit - End Display
+  }
+
   public getParentIds(): any[] {
     // TODO after creation of CRUD Plane : adapt the parent Key tothe context. It can be null if root crud
     return [this.authService.getCurrentTeamId(TeamTypeId.Site)];
