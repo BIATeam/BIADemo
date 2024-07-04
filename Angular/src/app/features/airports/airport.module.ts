@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AirportsEffects } from './store/airports-effects';
 import { FeatureAirportsStore } from './store/airport.state';
-import { AirportCRUDConfiguration } from './airport.constants';
+import { airportCRUDConfiguration } from './airport.constants';
 
 export const ROUTES: Routes = [
   {
@@ -40,11 +40,11 @@ export const ROUTES: Routes = [
           title: 'airport.add',
           injectComponent: AirportNewComponent,
           dynamicComponent: () =>
-            AirportCRUDConfiguration.usePopup
+            airportCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: AirportCRUDConfiguration.usePopup
+        component: airportCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -67,11 +67,11 @@ export const ROUTES: Routes = [
               title: 'airport.edit',
               injectComponent: AirportEditComponent,
               dynamicComponent: () =>
-                AirportCRUDConfiguration.usePopup
+                airportCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: AirportCRUDConfiguration.usePopup
+            component: airportCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      AirportCRUDConfiguration.storeKey,
+      airportCRUDConfiguration.storeKey,
       FeatureAirportsStore.reducers
     ),
     EffectsModule.forFeature([AirportsEffects]),

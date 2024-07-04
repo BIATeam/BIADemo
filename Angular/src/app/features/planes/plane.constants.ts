@@ -3,7 +3,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { planeFieldsConfiguration } from './model/plane';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
-export const PlaneCRUDConfiguration: CrudConfig = new CrudConfig({
+export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'planes',
   fieldsConfig: planeFieldsConfiguration,

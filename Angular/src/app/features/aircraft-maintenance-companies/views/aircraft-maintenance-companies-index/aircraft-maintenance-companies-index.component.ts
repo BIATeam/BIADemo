@@ -1,6 +1,6 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -36,7 +36,7 @@ export class AircraftMaintenanceCompaniesIndexComponent extends CrudItemsIndexCo
     protected authService: AuthService
   ) {
     super(injector, aircraftMaintenanceCompanyService);
-    this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;
+    this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
   }
 
   protected setPermissions() {

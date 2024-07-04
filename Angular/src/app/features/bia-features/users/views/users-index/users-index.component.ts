@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { User } from '../../model/user';
-import { UserCRUDConfiguration } from '../../user.constants';
+import { userCRUDConfiguration } from '../../user.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -34,7 +34,7 @@ export class UsersIndexComponent
   ) {
     super(injector, userService);
     this.useRefreshAtLanguageChange = true;
-    this.crudConfiguration = UserCRUDConfiguration;
+    this.crudConfiguration = userCRUDConfiguration;
   }
 
   protected setPermissions() {
@@ -53,7 +53,7 @@ export class UsersIndexComponent
         .select(getLastUsersAdded)
         .pipe(skip(1))
         .subscribe(() => {
-          if (!UserCRUDConfiguration.useSignalR) {
+          if (!userCRUDConfiguration.useSignalR) {
             setTimeout(() =>
               this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata())
             );

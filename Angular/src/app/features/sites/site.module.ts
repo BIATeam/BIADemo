@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SitesEffects } from './store/sites-effects';
 import { FeatureSitesStore } from './store/site.state';
-import { SiteCRUDConfiguration } from './site.constants';
+import { siteCRUDConfiguration } from './site.constants';
 
 export const ROUTES: Routes = [
   {
@@ -40,11 +40,11 @@ export const ROUTES: Routes = [
           title: 'site.add',
           injectComponent: SiteNewComponent,
           dynamicComponent: () =>
-            SiteCRUDConfiguration.usePopup
+            siteCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: SiteCRUDConfiguration.usePopup
+        component: siteCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -67,11 +67,11 @@ export const ROUTES: Routes = [
               title: 'site.edit',
               injectComponent: SiteEditComponent,
               dynamicComponent: () =>
-                SiteCRUDConfiguration.usePopup
+                siteCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: SiteCRUDConfiguration.usePopup
+            component: siteCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -118,7 +118,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      SiteCRUDConfiguration.storeKey,
+      siteCRUDConfiguration.storeKey,
       FeatureSitesStore.reducers
     ),
     EffectsModule.forFeature([SitesEffects]),

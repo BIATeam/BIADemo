@@ -138,7 +138,7 @@
         <div
           class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
           (click)="
-            message.data?.notification?.type?.id === NotificationType.Task ||
+            message.data?.notification?.type?.id === notificationType.Task ||
               onNotificationClick(message)
           ">
           <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
@@ -146,7 +146,7 @@
         </div>
       </div>
       <div
-        *ngIf="message.data?.notification?.type?.id === NotificationType.Task"
+        *ngIf="message.data?.notification?.type?.id === notificationType.Task"
         class="notification-actions flex flex-row justify-content-between align-content-between">
         <button
           pButton

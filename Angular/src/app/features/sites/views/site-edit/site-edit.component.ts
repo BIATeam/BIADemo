@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { Site } from '../../model/site';
-import { SiteCRUDConfiguration } from '../../site.constants';
+import { siteCRUDConfiguration } from '../../site.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { SiteService } from '../../services/site.service';
 
@@ -14,6 +14,6 @@ export class SiteEditComponent extends CrudItemEditComponent<Site> {
     public siteService: SiteService
   ) {
     super(injector, siteService);
-    this.crudConfiguration = SiteCRUDConfiguration;
+    this.crudConfiguration = siteCRUDConfiguration;
   }
 }

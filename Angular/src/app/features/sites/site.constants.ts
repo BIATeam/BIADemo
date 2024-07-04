@@ -2,7 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import { siteFieldsConfiguration } from './model/site';
 
 // TODO after creation of CRUD Team Site : adapt the global configuration
-export const SiteCRUDConfiguration: CrudConfig = new CrudConfig({
+export const siteCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'sites',
   fieldsConfig: siteFieldsConfiguration,

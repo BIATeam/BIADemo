@@ -2,7 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import { memberFieldsConfiguration } from './model/member';
 
 // TODO after creation of CRUD Member : adapt the global configuration
-export const MemberCRUDConfiguration: CrudConfig = new CrudConfig({
+export const memberCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'members',
   fieldsConfig: memberFieldsConfiguration,

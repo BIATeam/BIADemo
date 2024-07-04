@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { SiteCRUDConfiguration } from '../site.constants';
+import { siteCRUDConfiguration } from '../site.constants';
 
 export namespace FeatureSitesStore {
   export interface SitesState {
@@ -25,7 +25,7 @@ export namespace FeatureSitesStore {
    */
 
   export const getSitesState = createFeatureSelector<SitesState>(
-    SiteCRUDConfiguration.storeKey
+    siteCRUDConfiguration.storeKey
   );
 
   export const getSitesEntitiesState = createSelector(

@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { EnginesEffects } from './store/engines-effects';
 import { FeatureEnginesStore } from './store/engine.state';
-import { EngineCRUDConfiguration } from './engine.constants';
+import { engineCRUDConfiguration } from './engine.constants';
 
 export const ROUTES: Routes = [
   {
@@ -40,11 +40,11 @@ export const ROUTES: Routes = [
           title: 'engine.add',
           injectComponent: EngineNewComponent,
           dynamicComponent: () =>
-            EngineCRUDConfiguration.usePopup
+            engineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: EngineCRUDConfiguration.usePopup
+        component: engineCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -67,11 +67,11 @@ export const ROUTES: Routes = [
               title: 'engine.edit',
               injectComponent: EngineEditComponent,
               dynamicComponent: () =>
-                EngineCRUDConfiguration.usePopup
+                engineCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: EngineCRUDConfiguration.usePopup
+            component: engineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      EngineCRUDConfiguration.storeKey,
+      engineCRUDConfiguration.storeKey,
       FeatureEnginesStore.reducers
     ),
     EffectsModule.forFeature([EnginesEffects]),

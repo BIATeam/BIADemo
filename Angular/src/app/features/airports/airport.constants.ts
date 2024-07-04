@@ -2,7 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import { airportFieldsConfiguration } from './model/airport';
 
 // TODO after creation of CRUD Airport : adapt the global configuration
-export const AirportCRUDConfiguration: CrudConfig = new CrudConfig({
+export const airportCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'airports',
   fieldsConfig: airportFieldsConfiguration,

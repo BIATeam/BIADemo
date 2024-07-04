@@ -12,7 +12,7 @@ import { FeatureUsersActions } from './users-actions';
 import { Store } from '@ngrx/store';
 import { FeatureUsersStore } from './user.state';
 import { User } from '../model/user';
-import { UserCRUDConfiguration } from '../user.constants';
+import { userCRUDConfiguration } from '../user.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -83,12 +83,12 @@ export class UsersEffects {
         return this.userDas
           .post({
             item: user,
-            offlineMode: UserCRUDConfiguration.useOfflineMode,
+            offlineMode: userCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (UserCRUDConfiguration.useSignalR) {
+              if (userCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
@@ -121,12 +121,12 @@ export class UsersEffects {
           .put({
             item: user,
             id: user.id,
-            offlineMode: UserCRUDConfiguration.useOfflineMode,
+            offlineMode: userCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (UserCRUDConfiguration.useSignalR) {
+              if (userCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
@@ -158,12 +158,12 @@ export class UsersEffects {
         return this.userDas
           .save({
             items: users,
-            offlineMode: UserCRUDConfiguration.useOfflineMode,
+            offlineMode: userCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (UserCRUDConfiguration.useSignalR) {
+              if (userCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
@@ -193,11 +193,11 @@ export class UsersEffects {
       ),
       switchMap(([id, event]) => {
         return this.userDas
-          .delete({ id: id, offlineMode: UserCRUDConfiguration.useOfflineMode })
+          .delete({ id: id, offlineMode: userCRUDConfiguration.useOfflineMode })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (UserCRUDConfiguration.useSignalR) {
+              if (userCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
@@ -229,12 +229,12 @@ export class UsersEffects {
         return this.userDas
           .deletes({
             ids: ids,
-            offlineMode: UserCRUDConfiguration.useOfflineMode,
+            offlineMode: userCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (UserCRUDConfiguration.useSignalR) {
+              if (userCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({

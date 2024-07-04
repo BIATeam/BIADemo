@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
-import { UserCRUDConfiguration } from '../../user.constants';
+import { userCRUDConfiguration } from '../../user.constants';
 import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
 import { Permission } from 'src/app/shared/permission';
 
@@ -16,7 +16,7 @@ export class UserBulkComponent extends CrudItemBulkComponent<User> {
     protected userService: UserService
   ) {
     super(injector, userService);
-    this.crudConfiguration = UserCRUDConfiguration;
+    this.crudConfiguration = userCRUDConfiguration;
     this.setPermissions();
   }
 

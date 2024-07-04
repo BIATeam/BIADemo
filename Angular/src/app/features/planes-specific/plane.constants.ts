@@ -6,7 +6,7 @@ import { planeFieldsConfiguration } from './model/plane';
 export const featureName = 'planes-specific';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
-export const PlaneCRUDConfiguration: CrudConfig = new CrudConfig({
+export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   featureName: 'planes-specific',
   fieldsConfig: planeFieldsConfiguration,
   useCalcMode: false,

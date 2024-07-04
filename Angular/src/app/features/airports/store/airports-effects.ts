@@ -12,7 +12,7 @@ import { FeatureAirportsActions } from './airports-actions';
 import { Store } from '@ngrx/store';
 import { FeatureAirportsStore } from './airport.state';
 import { Airport } from '../model/airport';
-import { AirportCRUDConfiguration } from '../airport.constants';
+import { airportCRUDConfiguration } from '../airport.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -85,12 +85,12 @@ export class AirportsEffects {
         return this.airportDas
           .post({
             item: airport,
-            offlineMode: AirportCRUDConfiguration.useOfflineMode,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (AirportCRUDConfiguration.useSignalR) {
+              if (airportCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAirportsActions.loadAllByPost({
@@ -123,12 +123,12 @@ export class AirportsEffects {
           .put({
             item: airport,
             id: airport.id,
-            offlineMode: AirportCRUDConfiguration.useOfflineMode,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (AirportCRUDConfiguration.useSignalR) {
+              if (airportCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAirportsActions.loadAllByPost({
@@ -160,12 +160,12 @@ export class AirportsEffects {
         return this.airportDas
           .delete({
             id: id,
-            offlineMode: AirportCRUDConfiguration.useOfflineMode,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (AirportCRUDConfiguration.useSignalR) {
+              if (airportCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAirportsActions.loadAllByPost({
@@ -197,12 +197,12 @@ export class AirportsEffects {
         return this.airportDas
           .deletes({
             ids: ids,
-            offlineMode: AirportCRUDConfiguration.useOfflineMode,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (AirportCRUDConfiguration.useSignalR) {
+              if (airportCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAirportsActions.loadAllByPost({

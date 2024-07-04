@@ -12,7 +12,7 @@ import { FeaturePlanesTypesActions } from './planes-types-actions';
 import { Store } from '@ngrx/store';
 import { FeaturePlanesTypesStore } from './plane-type.state';
 import { PlaneType } from '../model/plane-type';
-import { PlaneTypeCRUDConfiguration } from '../plane-type.constants';
+import { planeTypeCRUDConfiguration } from '../plane-type.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -87,12 +87,12 @@ export class PlanesTypesEffects {
         return this.planeTypeDas
           .post({
             item: planeType,
-            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
+            offlineMode: planeTypeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (PlaneTypeCRUDConfiguration.useSignalR) {
+              if (planeTypeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
@@ -125,12 +125,12 @@ export class PlanesTypesEffects {
           .put({
             item: planeType,
             id: planeType.id,
-            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
+            offlineMode: planeTypeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (PlaneTypeCRUDConfiguration.useSignalR) {
+              if (planeTypeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
@@ -162,12 +162,12 @@ export class PlanesTypesEffects {
         return this.planeTypeDas
           .delete({
             id: id,
-            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
+            offlineMode: planeTypeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (PlaneTypeCRUDConfiguration.useSignalR) {
+              if (planeTypeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
@@ -199,12 +199,12 @@ export class PlanesTypesEffects {
         return this.planeTypeDas
           .deletes({
             ids: ids,
-            offlineMode: PlaneTypeCRUDConfiguration.useOfflineMode,
+            offlineMode: planeTypeCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (PlaneTypeCRUDConfiguration.useSignalR) {
+              if (planeTypeCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({

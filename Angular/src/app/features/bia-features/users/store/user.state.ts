@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { UserCRUDConfiguration } from '../user.constants';
+import { userCRUDConfiguration } from '../user.constants';
 
 export namespace FeatureUsersStore {
   export interface UsersState {
@@ -25,7 +25,7 @@ export namespace FeatureUsersStore {
    */
 
   export const getUsersState = createFeatureSelector<UsersState>(
-    UserCRUDConfiguration.storeKey
+    userCRUDConfiguration.storeKey
   );
 
   export const getUsersEntitiesState = createSelector(

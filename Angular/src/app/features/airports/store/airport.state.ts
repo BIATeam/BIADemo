@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { AirportCRUDConfiguration } from '../airport.constants';
+import { airportCRUDConfiguration } from '../airport.constants';
 
 export namespace FeatureAirportsStore {
   export interface AirportsState {
@@ -25,7 +25,7 @@ export namespace FeatureAirportsStore {
    */
 
   export const getAirportsState = createFeatureSelector<AirportsState>(
-    AirportCRUDConfiguration.storeKey
+    airportCRUDConfiguration.storeKey
   );
 
   export const getAirportsEntitiesState = createSelector(

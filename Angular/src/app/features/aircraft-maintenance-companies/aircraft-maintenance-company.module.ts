@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 
 export const ROUTES: Routes = [
   {
@@ -40,11 +40,11 @@ export const ROUTES: Routes = [
           title: 'aircraftMaintenanceCompany.add',
           injectComponent: AircraftMaintenanceCompanyNewComponent,
           dynamicComponent: () =>
-            AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+            aircraftMaintenanceCompanyCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+        component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -80,11 +80,11 @@ export const ROUTES: Routes = [
               title: 'aircraftMaintenanceCompany.edit',
               injectComponent: AircraftMaintenanceCompanyEditComponent,
               dynamicComponent: () =>
-                AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+                aircraftMaintenanceCompanyCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+            component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -130,7 +130,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
       FeatureAircraftMaintenanceCompaniesStore.reducers
     ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),

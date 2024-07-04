@@ -7,7 +7,7 @@ import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/cru
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 import { FeatureAircraftMaintenanceCompaniesStore } from '../store/aircraft-maintenance-company.state';
 import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-maintenance-companies-actions';
 import { AircraftMaintenanceCompanyOptionsService } from './aircraft-maintenance-company-options.service';
@@ -53,7 +53,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   }
 
   public getFeatureName() {
-    return AircraftMaintenanceCompanyCRUDConfiguration.featureName;
+    return aircraftMaintenanceCompanyCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<AircraftMaintenanceCompany[]> =

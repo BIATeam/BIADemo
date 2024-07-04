@@ -3,7 +3,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { maintenanceTeamFieldsConfiguration } from './model/maintenance-team';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the global configuration
-export const MaintenanceTeamCRUDConfiguration: CrudConfig = new CrudConfig({
+export const maintenanceTeamCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'maintenance-teams',
   fieldsConfig: maintenanceTeamFieldsConfiguration,

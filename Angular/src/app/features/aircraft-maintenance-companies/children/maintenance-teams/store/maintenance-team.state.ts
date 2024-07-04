@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 
 export namespace FeatureMaintenanceTeamsStore {
   export interface MaintenanceTeamsState {
@@ -29,7 +29,7 @@ export namespace FeatureMaintenanceTeamsStore {
 
   export const getMaintenanceTeamsState =
     createFeatureSelector<MaintenanceTeamsState>(
-      MaintenanceTeamCRUDConfiguration.storeKey
+      maintenanceTeamCRUDConfiguration.storeKey
     );
 
   export const getMaintenanceTeamsEntitiesState = createSelector(

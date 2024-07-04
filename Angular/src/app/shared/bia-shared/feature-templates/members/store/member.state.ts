@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { MemberCRUDConfiguration } from '../member.constants';
+import { memberCRUDConfiguration } from '../member.constants';
 
 export namespace FeatureMembersStore {
   export interface MembersState {
@@ -25,7 +25,7 @@ export namespace FeatureMembersStore {
    */
 
   export const getMembersState = createFeatureSelector<MembersState>(
-    MemberCRUDConfiguration.storeKey
+    memberCRUDConfiguration.storeKey
   );
 
   export const getMembersEntitiesState = createSelector(

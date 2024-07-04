@@ -3,7 +3,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { engineFieldsConfiguration } from './model/engine';
 
 // TODO after creation of CRUD Engine : adapt the global configuration
-export const EngineCRUDConfiguration: CrudConfig = new CrudConfig({
+export const engineCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'engines',
   fieldsConfig: engineFieldsConfiguration,

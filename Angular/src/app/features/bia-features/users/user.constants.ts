@@ -2,7 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import { userFieldsConfiguration } from './model/user';
 
 // TODO after creation of CRUD User : adapt the global configuration
-export const UserCRUDConfiguration: CrudConfig = new CrudConfig({
+export const userCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'users',
   fieldsConfig: userFieldsConfiguration,

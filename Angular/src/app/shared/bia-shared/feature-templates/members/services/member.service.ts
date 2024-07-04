@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { Member, Members } from '../model/member';
-import { MemberCRUDConfiguration } from '../member.constants';
+import { memberCRUDConfiguration } from '../member.constants';
 import { FeatureMembersStore } from '../store/member.state';
 import { FeatureMembersActions } from '../store/members-actions';
 import { MemberOptionsService } from './member-options.service';
@@ -36,7 +36,7 @@ export class MemberService extends CrudItemService<Member> {
   }
 
   public getFeatureName() {
-    return MemberCRUDConfiguration.featureName;
+    return memberCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<Member[]> = this.store.select(

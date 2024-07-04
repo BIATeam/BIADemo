@@ -12,7 +12,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MembersEffects } from './store/members-effects';
 import { FeatureMembersStore } from './store/member.state';
-import { MemberCRUDConfiguration } from './member.constants';
+import { memberCRUDConfiguration } from './member.constants';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserFromDirectoryModule } from 'src/app/features/bia-features/users-from-directory/user-from-directory.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
@@ -39,9 +39,9 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //           permission: Permission.Member_Create,
 //           title: 'member.add',
 //           injectComponent: MemberNewComponent,
-//           dynamicComponent : () => (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+//           dynamicComponent : () => (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //         },
-//         component: (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+//         component: (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //         canActivate: [PermissionGuard],
 //       },
 //       {
@@ -61,9 +61,9 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
 //               permission: Permission.Member_Update,
 //               title: 'member.edit',
 //               injectComponent: MemberEditComponent,
-//               dynamicComponent : () => (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+//               dynamicComponent : () => (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //             },
-//             component: (MemberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+//             component: (memberCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
 //             canActivate: [PermissionGuard],
 //           },
 //           {
@@ -97,7 +97,7 @@ import { MemberFormNewComponent } from './components/member-form-new/member-form
     CrudItemModule,
     // RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      MemberCRUDConfiguration.storeKey,
+      memberCRUDConfiguration.storeKey,
       FeatureMembersStore.reducers
     ),
     EffectsModule.forFeature([MembersEffects]),

@@ -2,7 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { Member, Members } from '../../model/member';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { MemberService } from '../../services/member.service';
-import { MemberCRUDConfiguration } from '../../member.constants';
+import { memberCRUDConfiguration } from '../../member.constants';
 import { Permission } from 'src/app/shared/permission';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { getLastUsersAdded } from 'src/app/domains/bia-domains/user-option/store/user-option.state';
@@ -27,7 +27,7 @@ export class MemberNewComponent
 
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
-    this.crudConfiguration = MemberCRUDConfiguration;
+    this.crudConfiguration = memberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
     this.authService = injector.get<AuthService>(AuthService);
   }

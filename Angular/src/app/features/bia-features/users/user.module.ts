@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UsersEffects } from './store/users-effects';
 import { FeatureUsersStore } from './store/user.state';
-import { UserCRUDConfiguration } from './user.constants';
+import { userCRUDConfiguration } from './user.constants';
 import { RoleOptionModule } from 'src/app/domains/bia-domains/role-option/role-option.module';
 import { UserFromDirectoryModule } from '../users-from-directory/user-from-directory.module';
 import { UserBulkComponent } from './views/user-bulk/user-bulk.component';
@@ -49,11 +49,11 @@ export const ROUTES: Routes = [
           title: 'user.import',
           injectComponent: UserBulkComponent,
           dynamicComponent: () =>
-            UserCRUDConfiguration.usePopup
+            userCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: UserCRUDConfiguration.usePopup
+        component: userCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -67,11 +67,11 @@ export const ROUTES: Routes = [
           title: 'user.add',
           injectComponent: UserNewComponent,
           dynamicComponent: () =>
-            UserCRUDConfiguration.usePopup
+            userCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: UserCRUDConfiguration.usePopup
+        component: userCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -94,11 +94,11 @@ export const ROUTES: Routes = [
               title: 'user.edit',
               injectComponent: UserEditComponent,
               dynamicComponent: () =>
-                UserCRUDConfiguration.usePopup
+                userCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: UserCRUDConfiguration.usePopup
+            component: userCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -134,7 +134,7 @@ export const ROUTES: Routes = [
     CrudItemBulkModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      UserCRUDConfiguration.storeKey,
+      userCRUDConfiguration.storeKey,
       FeatureUsersStore.reducers
     ),
     EffectsModule.forFeature([UsersEffects]),

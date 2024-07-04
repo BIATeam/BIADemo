@@ -2,7 +2,7 @@ import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-ite
 import { planeTypeFieldsConfiguration } from './model/plane-type';
 
 // TODO after creation of CRUD PlaneType : adapt the global configuration
-export const PlaneTypeCRUDConfiguration: CrudConfig = new CrudConfig({
+export const planeTypeCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'planes-types',
   fieldsConfig: planeTypeFieldsConfiguration,

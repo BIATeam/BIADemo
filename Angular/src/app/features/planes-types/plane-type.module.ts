@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { PlanesTypesEffects } from './store/planes-types-effects';
 import { FeaturePlanesTypesStore } from './store/plane-type.state';
-import { PlaneTypeCRUDConfiguration } from './plane-type.constants';
+import { planeTypeCRUDConfiguration } from './plane-type.constants';
 
 export const ROUTES: Routes = [
   {
@@ -40,11 +40,11 @@ export const ROUTES: Routes = [
           title: 'planeType.add',
           injectComponent: PlaneTypeNewComponent,
           dynamicComponent: () =>
-            PlaneTypeCRUDConfiguration.usePopup
+            planeTypeCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: PlaneTypeCRUDConfiguration.usePopup
+        component: planeTypeCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -67,11 +67,11 @@ export const ROUTES: Routes = [
               title: 'planeType.edit',
               injectComponent: PlaneTypeEditComponent,
               dynamicComponent: () =>
-                PlaneTypeCRUDConfiguration.usePopup
+                planeTypeCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: PlaneTypeCRUDConfiguration.usePopup
+            component: planeTypeCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      PlaneTypeCRUDConfiguration.storeKey,
+      planeTypeCRUDConfiguration.storeKey,
       FeaturePlanesTypesStore.reducers
     ),
     EffectsModule.forFeature([PlanesTypesEffects]),
