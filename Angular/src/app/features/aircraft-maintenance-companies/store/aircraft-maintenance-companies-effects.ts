@@ -12,7 +12,7 @@ import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenan
 import { Store } from '@ngrx/store';
 import { FeatureAircraftMaintenanceCompaniesStore } from './aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -100,12 +100,12 @@ export class AircraftMaintenanceCompaniesEffects {
           .post({
             item: aircraftMaintenanceCompany,
             offlineMode:
-              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
+              aircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+              if (aircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
@@ -145,12 +145,12 @@ export class AircraftMaintenanceCompaniesEffects {
             item: aircraftMaintenanceCompany,
             id: aircraftMaintenanceCompany.id,
             offlineMode:
-              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
+              aircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+              if (aircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
@@ -189,12 +189,12 @@ export class AircraftMaintenanceCompaniesEffects {
           .delete({
             id: id,
             offlineMode:
-              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
+              aircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+              if (aircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
@@ -233,12 +233,12 @@ export class AircraftMaintenanceCompaniesEffects {
           .deletes({
             ids: ids,
             offlineMode:
-              AircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
+              aircraftMaintenanceCompanyCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (AircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
+              if (aircraftMaintenanceCompanyCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(

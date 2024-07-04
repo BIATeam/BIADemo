@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum Permission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',

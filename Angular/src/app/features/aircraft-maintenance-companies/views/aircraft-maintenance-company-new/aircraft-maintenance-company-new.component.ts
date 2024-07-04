@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { AircraftMaintenanceCompanyService } from '../../services/aircraft-maintenance-company.service';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../../aircraft-maintenance-company.constants';
 
 @Component({
   selector: 'app-aircraft-maintenance-company-new',
@@ -14,6 +14,6 @@ export class AircraftMaintenanceCompanyNewComponent extends CrudItemNewComponent
     public aircraftMaintenanceCompanyService: AircraftMaintenanceCompanyService
   ) {
     super(injector, aircraftMaintenanceCompanyService);
-    this.crudConfiguration = AircraftMaintenanceCompanyCRUDConfiguration;
+    this.crudConfiguration = aircraftMaintenanceCompanyCRUDConfiguration;
   }
 }

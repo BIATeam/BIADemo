@@ -33,9 +33,9 @@ export class PlaneItemComponent
     this.sub.add(
       this.planeService.crudItem$.subscribe(plane => {
         // TODO after creation of CRUD Plane : set the field of the item to display in the breadcrump
-        if (plane?.DisplayItemName()) {
+        if (plane?.displayItemName()) {
           this.route.data.pipe(first()).subscribe(routeData => {
-            (routeData as any)['breadcrumb'] = plane.DisplayItemName();
+            (routeData as any)['breadcrumb'] = plane.displayItemName();
           });
           this.layoutService.refreshBreadcrumb();
         }

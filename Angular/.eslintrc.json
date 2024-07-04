@@ -1,11 +1,12 @@
 {
   "root": true,
+  "ignorePatterns": ["projects/**/*"],
   "plugins": ["deprecation"],
   "overrides": [
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "project": ["tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
@@ -16,10 +17,11 @@
         "plugin:prettier/recommended"
       ],
       "rules": {
+        "prettier/prettier": "error",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "error",
-        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/naming-convention": "warn",
         "@angular-eslint/directive-selector": [
           "error",
           {

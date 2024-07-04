@@ -7,7 +7,7 @@ import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/cru
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { MaintenanceTeam } from '../model/maintenance-team';
-import { MaintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
 import { FeatureMaintenanceTeamsStore } from '../store/maintenance-team.state';
 import { FeatureMaintenanceTeamsActions } from '../store/maintenance-teams-actions';
 import { MaintenanceTeamOptionsService } from './maintenance-team-options.service';
@@ -52,7 +52,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   }
 
   public getFeatureName() {
-    return MaintenanceTeamCRUDConfiguration.featureName;
+    return maintenanceTeamCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<MaintenanceTeam[]> = this.store.select(

@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Member } from '../../model/member';
-import { MemberCRUDConfiguration } from '../../member.constants';
+import { memberCRUDConfiguration } from '../../member.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { MemberService } from '../../services/member.service';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -21,7 +21,7 @@ export class MemberEditComponent
   private authService: AuthService;
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
-    this.crudConfiguration = MemberCRUDConfiguration;
+    this.crudConfiguration = memberCRUDConfiguration;
     this.memberService = injector.get<MemberService>(MemberService);
     this.authService = injector.get<AuthService>(AuthService);
   }

@@ -150,7 +150,7 @@ export class BiaFormComponent
           Reflect.set(
             element,
             col.field,
-            BiaOptionService.Differential(
+            BiaOptionService.differential(
               Reflect.get(element, col.field),
               this.element ? Reflect.get(this.element, col.field) : undefined
             )
@@ -160,7 +160,7 @@ export class BiaFormComponent
           Reflect.set(
             element,
             col.field,
-            BiaOptionService.Clone(element[col.field])
+            BiaOptionService.clone(element[col.field])
           );
           break;
       }

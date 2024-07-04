@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SitesEffects } from './store/sites-effects';
 import { FeatureSitesStore } from './store/site.state';
-import { SiteCRUDConfiguration } from './site.constants';
+import { siteCRUDConfiguration } from './site.constants';
 
 export const ROUTES: Routes = [
   {
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Site_List_Access,
-      InjectComponent: SitesIndexComponent,
+      injectComponent: SitesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,13 +38,13 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Site_Create,
           title: 'site.add',
-          InjectComponent: SiteNewComponent,
+          injectComponent: SiteNewComponent,
           dynamicComponent: () =>
-            SiteCRUDConfiguration.usePopup
+            siteCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: SiteCRUDConfiguration.usePopup
+        component: siteCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -65,13 +65,13 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Site_Update,
               title: 'site.edit',
-              InjectComponent: SiteEditComponent,
+              injectComponent: SiteEditComponent,
               dynamicComponent: () =>
-                SiteCRUDConfiguration.usePopup
+                siteCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: SiteCRUDConfiguration.usePopup
+            component: siteCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -118,7 +118,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      SiteCRUDConfiguration.storeKey,
+      siteCRUDConfiguration.storeKey,
       FeatureSitesStore.reducers
     ),
     EffectsModule.forFeature([SitesEffects]),

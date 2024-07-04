@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { User } from '../model/user';
-import { UserCRUDConfiguration } from '../user.constants';
+import { userCRUDConfiguration } from '../user.constants';
 import { FeatureUsersStore } from '../store/user.state';
 import { FeatureUsersActions } from '../store/users-actions';
 import { UserOptionsService } from './user-options.service';
@@ -35,7 +35,7 @@ export class UserService extends CrudItemService<User> {
   }
 
   public getFeatureName() {
-    return UserCRUDConfiguration.featureName;
+    return userCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<User[]> = this.store.select(

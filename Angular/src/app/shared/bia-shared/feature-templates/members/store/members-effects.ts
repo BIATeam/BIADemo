@@ -12,7 +12,7 @@ import { FeatureMembersActions } from './members-actions';
 import { Store } from '@ngrx/store';
 import { FeatureMembersStore } from './member.state';
 import { Member } from '../model/member';
-import { MemberCRUDConfiguration } from '../member.constants';
+import { memberCRUDConfiguration } from '../member.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -83,12 +83,12 @@ export class MembersEffects {
         return this.memberDas
           .post({
             item: member,
-            offlineMode: MemberCRUDConfiguration.useOfflineMode,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (MemberCRUDConfiguration.useSignalR) {
+              if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
@@ -121,12 +121,12 @@ export class MembersEffects {
           .postItem({
             item: members,
             endpoint: 'addMulti',
-            offlineMode: MemberCRUDConfiguration.useOfflineMode,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (MemberCRUDConfiguration.useSignalR) {
+              if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
@@ -158,12 +158,12 @@ export class MembersEffects {
           .put({
             item: member,
             id: member.id,
-            offlineMode: MemberCRUDConfiguration.useOfflineMode,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (MemberCRUDConfiguration.useSignalR) {
+              if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
@@ -195,12 +195,12 @@ export class MembersEffects {
         return this.memberDas
           .delete({
             id: id,
-            offlineMode: MemberCRUDConfiguration.useOfflineMode,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (MemberCRUDConfiguration.useSignalR) {
+              if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
@@ -232,12 +232,12 @@ export class MembersEffects {
         return this.memberDas
           .deletes({
             ids: ids,
-            offlineMode: MemberCRUDConfiguration.useOfflineMode,
+            offlineMode: memberCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (MemberCRUDConfiguration.useSignalR) {
+              if (memberCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({

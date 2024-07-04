@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Validator } from '@angular/forms';
 
 export enum PrimeNGFiltering {

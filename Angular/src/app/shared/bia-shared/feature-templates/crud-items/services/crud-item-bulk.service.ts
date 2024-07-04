@@ -232,7 +232,7 @@ export class CrudItemBulkService<T extends BaseDto> {
       if (DateHelperService.isValidDate(date)) {
         csvObj[<keyof typeof csvObj>column.field] = <any>date;
       } else {
-        this.AddErrorToSave(
+        this.addErrorToSave(
           csvObj,
           column.field + ': unsupported date format: ' + csvValue
         );
@@ -258,7 +258,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     } else if (csvValue?.toUpperCase() === 'X') {
       csvObj[<keyof typeof csvObj>column.field] = <any>true;
     } else {
-      this.AddErrorToSave(
+      this.addErrorToSave(
         csvObj,
         column.field + ': unsupported boolean format: ' + csvValue
       );
@@ -272,7 +272,7 @@ export class CrudItemBulkService<T extends BaseDto> {
 
     const number = Number(csvValue);
     if (isNaN(number)) {
-      this.AddErrorToSave(
+      this.addErrorToSave(
         csvObj,
         column.field + ': unsupported number format: ' + csvValue
       );
@@ -300,7 +300,7 @@ export class CrudItemBulkService<T extends BaseDto> {
       if (isEmpty(optionDto) !== true) {
         csvObj[<keyof typeof csvObj>column.field] = <any>optionDto;
       } else {
-        this.AddErrorToSave(csvObj, column.field + ' not found: ' + csvValue);
+        this.addErrorToSave(csvObj, column.field + ' not found: ' + csvValue);
       }
     }
   }
@@ -329,7 +329,7 @@ export class CrudItemBulkService<T extends BaseDto> {
         ) ?? null;
 
       if (csvValues?.length !== optionDtos?.length) {
-        this.AddErrorToSave(
+        this.addErrorToSave(
           csvObj,
           column.field +
             ' not found: ' +
@@ -388,7 +388,7 @@ export class CrudItemBulkService<T extends BaseDto> {
           }
         }
 
-        this.bulkData.errorToSaves = this.FillsErrors(this.tmpBulkDataErrors);
+        this.bulkData.errorToSaves = this.fillsErrors(this.tmpBulkDataErrors);
         return this.bulkData;
       })
     );
@@ -423,7 +423,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     const checkObject = this.form.checkObject(newObj);
 
     if (checkObject.errorMessages.length > 0) {
-      this.AddErrorsToSave(csvObj, checkObject.errorMessages);
+      this.addErrorsToSave(csvObj, checkObject.errorMessages);
     } else if (JSON.stringify(oldObj) !== JSON.stringify(newObj)) {
       checkObject.element.dtoState = DtoState.Modified;
       this.bulkData.toUpdates.push(checkObject.element);
@@ -435,7 +435,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     const checkObject = this.form.checkObject(csvObj);
 
     if (checkObject.errorMessages.length > 0) {
-      this.AddErrorsToSave(csvObj, checkObject.errorMessages);
+      this.addErrorsToSave(csvObj, checkObject.errorMessages);
     } else {
       checkObject.element.dtoState = DtoState.Added;
       this.bulkData.toInserts.push(checkObject.element);
@@ -452,7 +452,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     };
   }
 
-  protected AddErrorToSave(obj: T, errorMessage: string) {
+  protected addErrorToSave(obj: T, errorMessage: string) {
     const existingErrorToSave = this.tmpBulkDataErrors.find(
       entry => entry.obj === obj
     );
@@ -466,7 +466,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     }
   }
 
-  protected AddErrorsToSave(obj: T, errorMessages: string[]) {
+  protected addErrorsToSave(obj: T, errorMessages: string[]) {
     const existingErrorToSave = this.tmpBulkDataErrors.find(
       entry => entry.obj === obj
     );
@@ -480,7 +480,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     }
   }
 
-  protected FillsErrors(
+  protected fillsErrors(
     tmpBulkDataErrors: TmpBulkDataError<T>[]
   ): BulkDataError[] {
     return tmpBulkDataErrors.map(tmp => {

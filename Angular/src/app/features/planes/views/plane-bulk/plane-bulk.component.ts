@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { Plane } from '../../model/plane';
 import { PlaneService } from '../../services/plane.service';
-import { PlaneCRUDConfiguration } from '../../plane.constants';
+import { planeCRUDConfiguration } from '../../plane.constants';
 import { CrudItemBulkComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-bulk/crud-item-bulk.component';
 import { Permission } from 'src/app/shared/permission';
 
@@ -16,7 +16,7 @@ export class PlaneBulkComponent extends CrudItemBulkComponent<Plane> {
     private planeService: PlaneService
   ) {
     super(injector, planeService);
-    this.crudConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = planeCRUDConfiguration;
     this.setPermissions();
   }
 

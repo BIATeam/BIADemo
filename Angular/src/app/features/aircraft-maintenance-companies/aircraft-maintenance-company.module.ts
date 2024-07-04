@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 
 export const ROUTES: Routes = [
   {
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.AircraftMaintenanceCompany_List_Access,
-      InjectComponent: AircraftMaintenanceCompaniesIndexComponent,
+      injectComponent: AircraftMaintenanceCompaniesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,13 +38,13 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Create,
           title: 'aircraftMaintenanceCompany.add',
-          InjectComponent: AircraftMaintenanceCompanyNewComponent,
+          injectComponent: AircraftMaintenanceCompanyNewComponent,
           dynamicComponent: () =>
-            AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+            aircraftMaintenanceCompanyCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+        component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -78,13 +78,13 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Update,
               title: 'aircraftMaintenanceCompany.edit',
-              InjectComponent: AircraftMaintenanceCompanyEditComponent,
+              injectComponent: AircraftMaintenanceCompanyEditComponent,
               dynamicComponent: () =>
-                AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+                aircraftMaintenanceCompanyCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: AircraftMaintenanceCompanyCRUDConfiguration.usePopup
+            component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -130,7 +130,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
       FeatureAircraftMaintenanceCompaniesStore.reducers
     ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),

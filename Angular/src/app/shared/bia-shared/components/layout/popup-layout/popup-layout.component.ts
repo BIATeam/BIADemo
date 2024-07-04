@@ -47,7 +47,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     setTimeout(() => {
       this.dynamicComponent = this.serviceInjector.addDynamicComponent(
         this.viewContainerRef,
-        this.activatedRoute.snapshot.data['InjectComponent']
+        this.activatedRoute.snapshot.data['injectComponent']
       );
     }, 0);
   }

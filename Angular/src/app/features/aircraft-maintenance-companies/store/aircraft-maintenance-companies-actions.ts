@@ -1,47 +1,47 @@
 import { createAction, props } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 
 export namespace FeatureAircraftMaintenanceCompaniesActions {
   export const loadAllByPost = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Load all by post',
     props<{ event: LazyLoadEvent }>()
   );
 
   export const load = createAction(
-    '[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Load',
+    '[' + aircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Load',
     props<{ id: number }>()
   );
 
   export const create = createAction(
-    '[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Create',
+    '[' + aircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Create',
     props<{ aircraftMaintenanceCompany: AircraftMaintenanceCompany }>()
   );
 
   export const update = createAction(
-    '[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Update',
+    '[' + aircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Update',
     props<{ aircraftMaintenanceCompany: AircraftMaintenanceCompany }>()
   );
 
   export const remove = createAction(
-    '[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Remove',
+    '[' + aircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Remove',
     props<{ id: number }>()
   );
 
   export const multiRemove = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Multi Remove',
     props<{ ids: number[] }>()
   );
 
   export const loadAllByPostSuccess = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Load all by post success',
     props<{
       result: DataResult<AircraftMaintenanceCompany[]>;
@@ -51,25 +51,25 @@ export namespace FeatureAircraftMaintenanceCompaniesActions {
 
   export const loadSuccess = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Load success',
     props<{ aircraftMaintenanceCompany: AircraftMaintenanceCompany }>()
   );
 
   export const failure = createAction(
-    '[' + AircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Failure',
+    '[' + aircraftMaintenanceCompanyCRUDConfiguration.storeKey + '] Failure',
     props<{ error: any }>()
   );
 
   export const clearAll = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Clear all in state'
   );
 
   export const clearCurrent = createAction(
     '[' +
-      AircraftMaintenanceCompanyCRUDConfiguration.storeKey +
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Clear current'
   );
 }

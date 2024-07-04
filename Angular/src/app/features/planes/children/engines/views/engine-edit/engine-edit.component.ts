@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { Engine } from '../../model/engine';
-import { EngineCRUDConfiguration } from '../../engine.constants';
+import { engineCRUDConfiguration } from '../../engine.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { EngineService } from '../../services/engine.service';
 
@@ -14,6 +14,6 @@ export class EngineEditComponent extends CrudItemEditComponent<Engine> {
     public engineService: EngineService
   ) {
     super(injector, engineService);
-    this.crudConfiguration = EngineCRUDConfiguration;
+    this.crudConfiguration = engineCRUDConfiguration;
   }
 }

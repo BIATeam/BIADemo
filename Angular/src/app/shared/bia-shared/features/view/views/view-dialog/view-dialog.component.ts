@@ -187,7 +187,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onSaveUserView(view: View) {
     if (view) {
-      const json = this.GetViewPreference();
+      const json = this.getViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
@@ -202,7 +202,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onSaveTeamView(view: TeamView) {
     if (view && this.teamSelected) {
-      const json = this.GetViewPreference();
+      const json = this.getViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
@@ -224,7 +224,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.teamViewSelected = view;
   }
 
-  private GetViewPreference(): string | null {
+  private getViewPreference(): string | null {
     let stateString = sessionStorage.getItem(this.tableStateKey);
     if (stateString) {
       const state = JSON.parse(stateString);

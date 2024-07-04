@@ -18,7 +18,7 @@
   class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
-      *ngIf="team.teamTypeId === TeamTypeId.Site"
+      *ngIf="team.teamTypeId === teamTypeId.Site"
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"
@@ -37,7 +37,7 @@
   class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
-      *ngIf="team.teamTypeId === TeamTypeId.AircraftMaintenanceCompany"
+      *ngIf="team.teamTypeId === teamTypeId.AircraftMaintenanceCompany"
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"
@@ -56,7 +56,7 @@
   class="flex flex-row flex-wrap justify-content-around align-content-around">
   <ng-container *ngFor="let team of allTeams$ | async">
     <button
-      *ngIf="team.teamTypeId === TeamTypeId.MaintenanceTeam"
+      *ngIf="team.teamTypeId === teamTypeId.MaintenanceTeam"
       pButton
       type="button"
       (click)="randomReviewPlane(team.id)"

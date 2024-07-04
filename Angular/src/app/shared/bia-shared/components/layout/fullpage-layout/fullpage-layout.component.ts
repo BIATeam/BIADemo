@@ -79,15 +79,15 @@ export class FullPageLayoutComponent
         setTimeout(() => {
           this.dynamicComponent = this.serviceInjector.addDynamicComponent(
             this.viewContainerRef,
-            snapshot.data['InjectComponent']
+            snapshot.data['injectComponent']
           );
         }, 0);
       } else {
         if (this.dynamicComponent !== undefined) {
           if (this.$displayPageComponent.value) {
-            this.dynamicComponent.instance.OnDisplay();
+            this.dynamicComponent.instance.onDisplay();
           } else {
-            this.dynamicComponent.instance.OnHide();
+            this.dynamicComponent.instance.onHide();
           }
         }
         // if( this.dynamicComponent !== undefined ) this.dynamicComponent.destroy();

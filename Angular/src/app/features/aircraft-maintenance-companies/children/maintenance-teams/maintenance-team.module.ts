@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
-import { MaintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 
 export const ROUTES: Routes = [
   {
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_List_Access,
-      InjectComponent: MaintenanceTeamsIndexComponent,
+      injectComponent: MaintenanceTeamsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,13 +38,13 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
-          InjectComponent: MaintenanceTeamNewComponent,
+          injectComponent: MaintenanceTeamNewComponent,
           dynamicComponent: () =>
-            MaintenanceTeamCRUDConfiguration.usePopup
+            maintenanceTeamCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: MaintenanceTeamCRUDConfiguration.usePopup
+        component: maintenanceTeamCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -77,13 +77,13 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
-              InjectComponent: MaintenanceTeamEditComponent,
+              injectComponent: MaintenanceTeamEditComponent,
               dynamicComponent: () =>
-                MaintenanceTeamCRUDConfiguration.usePopup
+                maintenanceTeamCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: MaintenanceTeamCRUDConfiguration.usePopup
+            component: maintenanceTeamCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -117,7 +117,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      MaintenanceTeamCRUDConfiguration.storeKey,
+      maintenanceTeamCRUDConfiguration.storeKey,
       FeatureMaintenanceTeamsStore.reducers
     ),
     EffectsModule.forFeature([MaintenanceTeamsEffects]),

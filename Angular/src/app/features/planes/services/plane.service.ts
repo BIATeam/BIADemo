@@ -7,7 +7,7 @@ import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/cru
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../model/plane';
-import { PlaneCRUDConfiguration } from '../plane.constants';
+import { planeCRUDConfiguration } from '../plane.constants';
 import { FeaturePlanesStore } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
 import { PlaneOptionsService } from './plane-options.service';
@@ -35,7 +35,7 @@ export class PlaneService extends CrudItemService<Plane> {
   }
 
   public getFeatureName() {
-    return PlaneCRUDConfiguration.featureName;
+    return planeCRUDConfiguration.featureName;
   }
 
   public crudItems$: Observable<Plane[]> = this.store.select(

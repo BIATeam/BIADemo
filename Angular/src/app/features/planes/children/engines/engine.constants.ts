@@ -1,12 +1,12 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
-import { EngineFieldsConfiguration } from './model/engine';
+import { engineFieldsConfiguration } from './model/engine';
 
 // TODO after creation of CRUD Engine : adapt the global configuration
-export const EngineCRUDConfiguration: CrudConfig = new CrudConfig({
+export const engineCRUDConfiguration: CrudConfig = new CrudConfig({
   // IMPORTANT: this key should be unique in all the application.
   featureName: 'engines',
-  fieldsConfig: EngineFieldsConfiguration,
+  fieldsConfig: engineFieldsConfiguration,
   useCalcMode: true,
   useSignalR: false,
   useView: true,

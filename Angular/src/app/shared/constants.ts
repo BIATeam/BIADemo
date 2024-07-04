@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const APP_SUPPORTED_TRANSLATIONS = [
   'es-ES',
   'fr-FR',

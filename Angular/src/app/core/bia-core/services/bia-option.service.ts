@@ -2,14 +2,14 @@ import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 
 export class BiaOptionService {
-  public static Clone<T>(value: any) {
+  public static clone<T>(value: any) {
     if (!value) {
       return null as any;
     }
     return <T>{ ...value };
   }
 
-  public static Differential<T extends BaseDto>(newList: T[], oldList: T[]) {
+  public static differential<T extends BaseDto>(newList: T[], oldList: T[]) {
     let differential: T[] = [];
     if (oldList && Array.isArray(oldList)) {
       // Delete items

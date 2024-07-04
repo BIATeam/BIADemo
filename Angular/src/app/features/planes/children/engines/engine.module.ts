@@ -17,7 +17,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { EnginesEffects } from './store/engines-effects';
 import { FeatureEnginesStore } from './store/engine.state';
-import { EngineCRUDConfiguration } from './engine.constants';
+import { engineCRUDConfiguration } from './engine.constants';
 
 export const ROUTES: Routes = [
   {
@@ -25,7 +25,7 @@ export const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Engine_List_Access,
-      InjectComponent: EnginesIndexComponent,
+      injectComponent: EnginesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,13 +38,13 @@ export const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Engine_Create,
           title: 'engine.add',
-          InjectComponent: EngineNewComponent,
+          injectComponent: EngineNewComponent,
           dynamicComponent: () =>
-            EngineCRUDConfiguration.usePopup
+            engineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
         },
-        component: EngineCRUDConfiguration.usePopup
+        component: engineCRUDConfiguration.usePopup
           ? PopupLayoutComponent
           : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
@@ -65,13 +65,13 @@ export const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Engine_Update,
               title: 'engine.edit',
-              InjectComponent: EngineEditComponent,
+              injectComponent: EngineEditComponent,
               dynamicComponent: () =>
-                EngineCRUDConfiguration.usePopup
+                engineCRUDConfiguration.usePopup
                   ? PopupLayoutComponent
                   : FullPageLayoutComponent,
             },
-            component: EngineCRUDConfiguration.usePopup
+            component: engineCRUDConfiguration.usePopup
               ? PopupLayoutComponent
               : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
@@ -105,7 +105,7 @@ export const ROUTES: Routes = [
     CrudItemModule,
     RouterModule.forChild(ROUTES),
     StoreModule.forFeature(
-      EngineCRUDConfiguration.storeKey,
+      engineCRUDConfiguration.storeKey,
       FeatureEnginesStore.reducers
     ),
     EffectsModule.forFeature([EnginesEffects]),

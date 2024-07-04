@@ -9,7 +9,7 @@ export class BaseDto {
     this.dtoState = dtoState;
   }
 
-  DisplayItemName(): string {
+  displayItemName(): string {
     return this.id.toString();
   }
 }

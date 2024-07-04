@@ -5,7 +5,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { PlaneTypeCRUDConfiguration } from '../plane-type.constants';
+import { planeTypeCRUDConfiguration } from '../plane-type.constants';
 
 export namespace FeaturePlanesTypesStore {
   export interface PlanesTypesState {
@@ -28,7 +28,7 @@ export namespace FeaturePlanesTypesStore {
    */
 
   export const getPlanesTypesState = createFeatureSelector<PlanesTypesState>(
-    PlaneTypeCRUDConfiguration.storeKey
+    planeTypeCRUDConfiguration.storeKey
   );
 
   export const getPlanesTypesEntitiesState = createSelector(

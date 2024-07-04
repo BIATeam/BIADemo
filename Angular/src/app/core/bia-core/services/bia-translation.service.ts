@@ -159,7 +159,7 @@ export class BiaTranslationService {
         .subscribe(res => this.primeNgConfig.setTranslation(res));
       if (this.currentLanguage !== lang) {
         this.currentLanguage = lang;
-        this.authService.ReLogin();
+        this.authService.reLogin();
       }
     }
   }
@@ -233,7 +233,7 @@ export class BiaTranslationService {
     code: string | null,
     appSettings: AppSettings | null
   ): number {
-    let LanguageId = 0;
+    let languageId = 0;
     if (appSettings != null) {
       let culture;
 
@@ -248,9 +248,9 @@ export class BiaTranslationService {
       }
 
       if (culture) {
-        LanguageId = culture.languageId;
+        languageId = culture.languageId;
       }
     }
-    return LanguageId;
+    return languageId;
   }
 }

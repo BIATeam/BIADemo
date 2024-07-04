@@ -13,7 +13,7 @@ import { FeatureEnginesActions } from './engines-actions';
 import { Store } from '@ngrx/store';
 import { FeatureEnginesStore } from './engine.state';
 import { Engine } from '../model/engine';
-import { EngineCRUDConfiguration } from '../engine.constants';
+import { engineCRUDConfiguration } from '../engine.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -85,12 +85,12 @@ export class EnginesEffects {
         return this.engineDas
           .post({
             item: engine,
-            offlineMode: EngineCRUDConfiguration.useOfflineMode,
+            offlineMode: engineCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showAddSuccess();
-              if (EngineCRUDConfiguration.useSignalR) {
+              if (engineCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
@@ -123,12 +123,12 @@ export class EnginesEffects {
           .put({
             item: engine,
             id: engine.id,
-            offlineMode: EngineCRUDConfiguration.useOfflineMode,
+            offlineMode: engineCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (EngineCRUDConfiguration.useSignalR) {
+              if (engineCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
@@ -160,12 +160,12 @@ export class EnginesEffects {
         return this.engineDas
           .delete({
             id: id,
-            offlineMode: EngineCRUDConfiguration.useOfflineMode,
+            offlineMode: engineCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (EngineCRUDConfiguration.useSignalR) {
+              if (engineCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
@@ -197,12 +197,12 @@ export class EnginesEffects {
         return this.engineDas
           .deletes({
             ids: ids,
-            offlineMode: EngineCRUDConfiguration.useOfflineMode,
+            offlineMode: engineCRUDConfiguration.useOfflineMode,
           })
           .pipe(
             map(() => {
               this.biaMessageService.showDeleteSuccess();
-              if (EngineCRUDConfiguration.useSignalR) {
+              if (engineCRUDConfiguration.useSignalR) {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({

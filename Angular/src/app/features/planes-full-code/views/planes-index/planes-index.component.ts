@@ -116,7 +116,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.planes$ = this.store.select(getAllPlanes);
     this.totalCount$ = this.store.select(getPlanesTotalCount);
     this.loading$ = this.store.select(getPlaneLoadingGetAll);
-    this.OnDisplay();
+    this.onDisplay();
     if (this.useCalcMode) {
       this.sub.add(
         this.biaTranslationService.currentCulture$.subscribe(() => {
@@ -140,10 +140,10 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-    this.OnHide();
+    this.onHide();
   }
 
-  OnDisplay() {
+  onDisplay() {
     if (this.useView) {
       this.store.dispatch(loadAllView());
     }
@@ -153,7 +153,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     }
   }
 
-  OnHide() {
+  onHide() {
     if (this.useSignalR) {
       this.planesSignalRService.destroy();
     }

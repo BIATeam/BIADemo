@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 export interface Notification {

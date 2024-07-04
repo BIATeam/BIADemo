@@ -2,7 +2,7 @@ import { Component, Injector } from '@angular/core';
 import { Plane } from '../../model/plane';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { PlaneService } from '../../services/plane.service';
-import { PlaneCRUDConfiguration } from '../../plane.constants';
+import { planeCRUDConfiguration } from '../../plane.constants';
 
 @Component({
   selector: 'app-plane-new',
@@ -14,6 +14,6 @@ export class PlaneNewComponent extends CrudItemNewComponent<Plane> {
     public planeService: PlaneService
   ) {
     super(injector, planeService);
-    this.crudConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = planeCRUDConfiguration;
   }
 }

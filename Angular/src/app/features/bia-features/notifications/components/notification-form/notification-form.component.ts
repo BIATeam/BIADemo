@@ -221,8 +221,8 @@ export class NotificationFormComponent implements OnChanges {
       const notification: Notification = <Notification>this.form.value;
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
-      notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedUsers = BiaOptionService.Differential(
+      notification.createdBy = BiaOptionService.clone(notification.createdBy);
+      notification.notifiedUsers = BiaOptionService.differential(
         notification.notifiedUsers,
         this.notification?.notifiedUsers
       );
@@ -232,12 +232,12 @@ export class NotificationFormComponent implements OnChanges {
         notification.type.dtoState
       );
       notification.notificationTranslations =
-        NotificationFormComponent.DifferentialTranslation(
+        NotificationFormComponent.differentialTranslation(
           notification.notificationTranslations,
           this.notification?.notificationTranslations
         );
       notification.notifiedTeams =
-        NotificationFormComponent.DifferentialNotificationTeam(
+        NotificationFormComponent.differentialNotificationTeam(
           notification.notifiedTeams,
           this.notification?.notifiedTeams
         );
@@ -250,7 +250,7 @@ export class NotificationFormComponent implements OnChanges {
     console.log(item);
   }
 
-  public static DifferentialTranslation<T extends BaseDto>(
+  public static differentialTranslation<T extends BaseDto>(
     newList: T[],
     oldList: T[]
   ) {
@@ -279,7 +279,7 @@ export class NotificationFormComponent implements OnChanges {
     return differential;
   }
 
-  public static DifferentialNotificationTeam(
+  public static differentialNotificationTeam(
     newList: NotificationTeam[],
     oldList: NotificationTeam[]
   ) {
@@ -323,7 +323,7 @@ export class NotificationFormComponent implements OnChanges {
           s =>
             <NotificationTeam>{
               ...s,
-              roles: BiaOptionService.Differential(
+              roles: BiaOptionService.differential(
                 s.roles,
                 oldList.filter(oldNT => oldNT.team.id == s.team.id)[0].roles
               ),
