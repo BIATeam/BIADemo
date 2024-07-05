@@ -18,6 +18,7 @@ import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
+import { HttpStatusCode } from '@angular/common/http';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
@@ -363,7 +364,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           return authInfo;
         }),
         catchError(err => {
-          if (err.status == 401) {
+          if (err.status === HttpStatusCode.Unauthorized) {
             window.location.href =
               allEnvironments.urlErrorPage + '?num=' + err.status;
           }

@@ -3,6 +3,7 @@ import {
   HttpHeaders,
   HttpParams,
   HttpResponse,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
 import { catchError, first, map, tap } from 'rxjs/operators';
@@ -116,7 +117,11 @@ export abstract class GenericDas {
         // Example: if I am on an element and I change of Team,
         // and this Team does not access to this current element,
         // we return to the root of the site.
-        if (error.status >= 401 && error.status <= 404) {
+        if (
+          error.status === HttpStatusCode.Unauthorized ||
+          error.status === HttpStatusCode.Forbidden ||
+          error.status == HttpStatusCode.NotFound
+        ) {
           location.assign(this.baseHref);
         }
         return throwError(() => error);

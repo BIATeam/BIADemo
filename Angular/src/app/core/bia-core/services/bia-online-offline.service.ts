@@ -4,6 +4,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
   HttpRequest,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -21,6 +22,7 @@ import { AuthService } from './auth.service';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
 import { HttpOptions } from './generic-das.service';
+import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
 
 export interface HttpRequestItem {
   id?: number;
@@ -75,7 +77,11 @@ export class BiaOnlineOfflineService implements OnDestroy {
   public static isServerAvailable(error: any) {
     return (
       error instanceof HttpErrorResponse &&
-      !(error.status === 0 || error.status === 504 || error.status === 503)
+      !(
+        error.status === HttpStatusCodeCustom.FailedConnection ||
+        error.status === HttpStatusCode.GatewayTimeout ||
+        error.status === HttpStatusCode.ServiceUnavailable
+      )
     );
   }
 
@@ -226,7 +232,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
         catchError(error => {
           if (
             BiaOnlineOfflineService.isServerAvailable(error) === true &&
-            error.status !== 498
+            error.status !== HttpStatusCodeCustom.InvalidToken
           ) {
             this.deleteHttpRequestItem(httpRequestItem);
           } else {

@@ -8,6 +8,7 @@ import { UserFromDirectoryDas } from '../services/user-from-directory-das.servic
 import { TranslateService } from '@ngx-translate/core';
 import { DomainUserOptionsActions } from 'src/app/domains/bia-domains/user-option/store/user-options-actions';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { HttpStatusCode } from '@angular/common/http';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -58,7 +59,7 @@ export class UsersFromDirectoryEffects {
               });
             }),
             catchError(err => {
-              if (err.status === 303) {
+              if (err.status === HttpStatusCode.UnprocessableEntity) {
                 let errorMessage = '';
                 if (err.error) {
                   err.error.forEach((element: string) => {

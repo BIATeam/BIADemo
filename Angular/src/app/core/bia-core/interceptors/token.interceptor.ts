@@ -6,6 +6,7 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
   HTTP_INTERCEPTORS,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, filter, skip, switchMap, take } from 'rxjs/operators';
@@ -15,6 +16,7 @@ import { getCurrentCulture } from '../services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { KeycloakService } from 'keycloak-angular';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -84,7 +86,9 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError(error => {
         if (
           error instanceof HttpErrorResponse &&
-          (error.status === 0 || error.status === 401 || error.status === 498)
+          (error.status === HttpStatusCodeCustom.FailedConnection ||
+            error.status === HttpStatusCode.Unauthorized ||
+            error.status === HttpStatusCodeCustom.InvalidToken)
         ) {
           return this.handle401Error(request, next);
         } else {
