@@ -5,7 +5,7 @@ import {
   Notification,
   NotificationType,
 } from 'src/app/domains/bia-domains/notification/model/notification';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
 const NOTIFICATION_LIFE_DEFAULT = 10000;
@@ -53,7 +53,7 @@ export class BiaMessageService {
   }
 
   showErrorHttpResponse(err: HttpErrorResponse) {
-    if (err.status == 422) {
+    if (err.status == HttpStatusCode.UnprocessableEntity) {
       this.showErrorDetail(err.error, undefined);
     } else {
       this.showError();

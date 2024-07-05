@@ -112,8 +112,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// Saves list of users.
         /// </summary>
         /// <param name="userDtos">List of users dto.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task SaveAsync(List<UserDto> userDtos);
+        /// <returns>Error message.</returns>
+        Task<string> SaveAsync(List<UserDto> userDtos);
 
         /// <summary>
         /// Selects the default language.

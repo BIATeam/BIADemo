@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { APP_BASE_HREF } from '@angular/common';
 import { allEnvironments } from 'src/environments/all-environments';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class PermissionGuard {
       tap((hasPermission: boolean) => {
         if (hasPermission !== true) {
           if (window.location.href === this.baseHref) {
-            window.location.href = allEnvironments.urlErrorPage + '?num=403';
+            window.location.href =
+              allEnvironments.urlErrorPage + '?num=' + HttpStatusCode.Forbidden;
           } else {
             location.assign(this.baseHref);
           }

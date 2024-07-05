@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Principal;
+    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
@@ -331,54 +332,66 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc cref="IUserAppService.SaveAsync"/>
-        public async Task SaveAsync(List<UserDto> userDtos)
+        public async Task<string> SaveAsync(List<UserDto> userDtos)
         {
+            StringBuilder strBldr = new StringBuilder();
+
+            int nbAdded = default;
+            int nbUpdated = default;
+            int nbError = default;
+
             if (userDtos?.Any() == true)
             {
                 IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
                 bool canAdd = currentUserPermissions?.Any(x => x == Rights.Users.Add) == true;
                 bool canUpdate = currentUserPermissions?.Any(x => x == Rights.Users.UpdateRoles) == true;
-                bool canDelete = currentUserPermissions?.Any(x => x == Rights.Users.Delete) == true;
 
                 var exceptions = new List<Exception>();
 
                 foreach (UserDto userDto in userDtos)
                 {
-                    bool save = false;
                     try
                     {
                         if (canAdd && userDto.DtoState == DtoState.Added)
                         {
-                            await this.AddByIdentityKeyAsync(userDto);
-                            save = true;
+                            ResultAddUsersFromDirectoryDto result = await this.AddByIdentityKeyAsync(userDto);
+                            this.Repository.UnitOfWork.Reset();
+
+                            if (result?.Errors?.Any() == true)
+                            {
+                                result.Errors.ForEach(error => strBldr.AppendLine(error));
+                                nbError++;
+                            }
+                            else if (result?.UsersAddedDtos?.Any() == true)
+                            {
+                                nbAdded++;
+                            }
                         }
                         else if (canUpdate && userDto.DtoState == DtoState.Modified)
                         {
                             await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "Roles");
-                            save = true;
-                        }
-                        else if (canDelete && userDto.DtoState == DtoState.Deleted)
-                        {
-                            await this.RemoveInGroupAsync(userDto.Id);
-                            save = true;
-                        }
-
-                        if (save)
-                        {
                             this.Repository.UnitOfWork.Reset();
+                            nbUpdated++;
                         }
                     }
                     catch (Exception ex)
                     {
                         exceptions.Add(ex);
+                        nbError++;
                     }
                 }
 
-                if (exceptions.Any())
+                if (nbError > 0)
                 {
-                    throw new AggregateException("One or more errors occurred during the saving of users.", exceptions);
+                    strBldr.Insert(0, $"Added: {nbAdded}, Updated: {nbUpdated}, Error{(nbError > 1 ? "s" : null)}: {nbError}{Environment.NewLine}");
+                    string errorMessage = strBldr.ToString();
+                    var aggregateException = new AggregateException(exceptions);
+                    this.logger.LogError(message: errorMessage, exception: aggregateException);
+                    return errorMessage;
                 }
             }
+
+            return null;
         }
 
         /// <summary>

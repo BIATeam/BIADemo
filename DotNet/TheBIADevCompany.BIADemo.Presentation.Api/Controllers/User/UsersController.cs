@@ -171,7 +171,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesResponseType(StatusCodes.Status303SeeOther)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Users.Add)]
         public async Task<IActionResult> Add([FromBody] UserDto dto)
@@ -184,7 +184,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #endif
                 if (result.Errors.Any())
                 {
-                    return this.StatusCode(303, result.Errors);
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, result.Errors);
                 }
 
                 return this.Ok(result.UsersAddedDtos);
@@ -347,6 +347,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(Roles = Rights.Users.Delete + "," + Rights.Users.UpdateRoles + "," + Rights.Users.Add)]
         public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
         {
@@ -358,11 +359,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                await this.userService.SaveAsync(dtoList);
+                string errorMessage = await this.userService.SaveAsync(dtoList);
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
-                return this.Ok();
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, errorMessage);
+                }
+                else
+                {
+                    return this.Ok();
+                }
             }
             catch (ArgumentNullException)
             {
