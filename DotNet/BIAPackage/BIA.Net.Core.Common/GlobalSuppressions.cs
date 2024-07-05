@@ -4,5 +4,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "BIA is a tolerate suffix", Scope = "type", Target = "~T:BIA.Net.Core.Common.BIAConstants")]
-[assembly: SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase", Justification = "BIA is a tolerate suffix", Scope = "type", Target = "~T:BIA.Net.Core.Common.BiaTeamConfig`1")]
+[assembly: SuppressMessage("Design", "CA1060:Move pinvokes to native methods class", Justification = "Should POC to find solution for Linux.", Scope = "type", Target = "~T:BIA.Net.Core.Common.Helpers.WindowsIdentityHelper")]

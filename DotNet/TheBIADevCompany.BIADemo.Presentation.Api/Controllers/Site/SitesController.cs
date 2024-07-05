@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         {
             var (results, total) = await this.siteService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
 
-            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
 
             return this.Ok(results);
         }
@@ -261,7 +261,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.siteService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BiaConstants.Csv.Extension}");
         }
     }
 }

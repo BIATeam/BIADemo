@@ -82,7 +82,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.planeService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
-            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -295,7 +295,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>

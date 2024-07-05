@@ -122,11 +122,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             StringBuilder csv = new StringBuilder();
             records.ForEach(line =>
                     {
-                        csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                        csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                     });
 
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
         }
     }

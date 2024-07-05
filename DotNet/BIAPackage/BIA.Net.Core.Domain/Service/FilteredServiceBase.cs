@@ -238,11 +238,11 @@ namespace BIA.Net.Core.Domain.Service
             StringBuilder csv = new ();
             records.ForEach(line =>
             {
-                csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
             });
 
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
+            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
         }
 
         /// <summary>

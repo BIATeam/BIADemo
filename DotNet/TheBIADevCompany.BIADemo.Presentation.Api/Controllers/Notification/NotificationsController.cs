@@ -77,7 +77,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -94,7 +94,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
-            this.HttpContext.Response.Headers.Append(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -361,7 +361,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.notificationService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BiaConstants.Csv.Extension}");
         }
     }
 }

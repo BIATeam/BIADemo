@@ -118,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithExposedHeaders(BIAConstants.HttpHeaders.TotalCount));
+                    .WithExposedHeaders(BiaConstants.HttpHeaders.TotalCount));
             }
 
             app.UseResponseCompression();

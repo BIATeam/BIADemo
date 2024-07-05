@@ -1,4 +1,4 @@
-﻿// <copyright file="BIAConstants.cs" company="BIA">
+﻿// <copyright file="BiaConstants.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Common
     /// <summary>
     /// The class containing all constants.
     /// </summary>
-    public static class BIAConstants
+    public static class BiaConstants
     {
         /// <summary>
         /// CSV parameters.
@@ -49,7 +49,7 @@ namespace BIA.Net.Core.Common
         /// <summary>
         /// PDF.
         /// </summary>
-        public static class PDF
+        public static class Pdf
         {
             /// <summary>
             /// the extension of a eclipse file.
