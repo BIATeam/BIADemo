@@ -1,8 +1,8 @@
-﻿// <copyright file="StartupConfiguration.cs" company="BIA">
+﻿// <copyright file="AuthenticationConfiguration.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Common.Authentication
+namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System;
     using System.Text;
@@ -21,7 +21,7 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
     /// <summary>
     /// The class containing configuration for authentication.
     /// </summary>
-    public static class StartupConfiguration
+    public static class AuthenticationConfiguration
     {
         /// <summary>
         /// The JWT bearer default.
@@ -32,30 +32,6 @@ namespace BIA.Net.Core.Presentation.Common.Authentication
         /// The JWT bearer keycloak.
         /// </summary>
         public const string JwtBearerIdentityProvider = "IdentityProvider";
-
-        /// <summary>
-        /// Configures the API exception handler.
-        /// </summary>
-        /// <param name="app">The application.</param>
-        public static void ConfigureApiExceptionHandler(this IApplicationBuilder app)
-        {
-            app.UseExceptionHandler(exceptionHandlerApp =>
-            {
-                exceptionHandlerApp.Run(async context =>
-                {
-                    var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
-
-                    if (exception != null)
-                    {
-                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-
-                        // We don't communicate sensitive error information to clients.
-                        // Serving errors is a security risk. We just send a simple error message.
-                        await context.Response.WriteAsync("Internal server error");
-                    }
-                });
-            });
-        }
 
         /// <summary>
         /// Configure the authentication.

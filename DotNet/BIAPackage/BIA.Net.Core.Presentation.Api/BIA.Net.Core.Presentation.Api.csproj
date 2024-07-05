@@ -14,12 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Authentication\**" />
-    <EmbeddedResource Remove="Authentication\**" />
-    <None Remove="Authentication\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Features\HangfireDashboard\BIAHangireDashboard.css" />
   </ItemGroup>
 

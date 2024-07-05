@@ -9,24 +9,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
-    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.CookiePolicy;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 

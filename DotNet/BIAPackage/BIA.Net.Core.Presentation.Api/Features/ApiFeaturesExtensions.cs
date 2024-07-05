@@ -7,9 +7,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
-    using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Hangfire.Dashboard;
