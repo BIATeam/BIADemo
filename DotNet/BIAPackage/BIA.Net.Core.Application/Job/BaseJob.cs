@@ -5,9 +5,7 @@
 namespace BIA.Net.Core.Application.Job
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Helpers;
     using Hangfire;
     using Hangfire.Storage;
     using Microsoft.Extensions.Configuration;

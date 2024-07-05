@@ -75,7 +75,7 @@ namespace BIA.Net.Core.WorkerService.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(workerFeatures.HangfireServer.ConnectionStringName)), optionsTime);
                     }
 
                     // Log in hangfire dashboard

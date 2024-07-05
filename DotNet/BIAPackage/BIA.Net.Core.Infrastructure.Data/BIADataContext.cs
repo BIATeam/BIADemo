@@ -130,12 +130,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         }
 
         /// <summary>
-        /// Bulk function to update entities.
+        /// Bulk function to update entities. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
         [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
             where TEntity : class
@@ -145,12 +147,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         }
 
         /// <summary>
-        /// Bulk function to delete entities.
+        /// Bulk function to delete entities. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
         [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously

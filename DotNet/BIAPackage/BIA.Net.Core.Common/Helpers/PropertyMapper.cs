@@ -23,7 +23,7 @@ namespace BIA.Net.Core.Common.Helpers
         /// <param name="excludeProperties">The excluded properties of the mapping.</param>
         public static void Map<TSource, TDest>(TSource source, TDest dest, List<string> excludeProperties = null)
         {
-            if (source == null || dest == null)
+            if (object.Equals(source, default(TSource)) || object.Equals(dest, default(TDest)))
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace BIA.Net.Core.Common.Helpers
             sourceProperties = sourceProperties.AsEnumerable().Where(x =>
                 x.CanWrite && (excludeProperties == null || !excludeProperties.Contains(x.Name))).ToArray();
 
-            if (!(sourceProperties?.Length > 0) || !(destProperties?.Length > 0))
+            if ((sourceProperties.Length <= 0) || (destProperties.Length <= 0))
             {
                 return;
             }

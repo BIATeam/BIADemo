@@ -10,7 +10,6 @@ namespace BIA.Net.Core.Common.Exceptions
     /// <summary>
     /// The element not found exception.
     /// </summary>
-    [Serializable]
     public class ElementNotFoundException : Exception
     {
         /// <summary>
@@ -36,16 +35,6 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <param name="exception">The exception.</param>
         public ElementNotFoundException(string message, Exception exception)
             : base(message, exception)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ElementNotFoundException"/> class.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
-        protected ElementNotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

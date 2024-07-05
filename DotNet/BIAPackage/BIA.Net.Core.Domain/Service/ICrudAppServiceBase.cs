@@ -257,7 +257,7 @@ namespace BIA.Net.Core.Domain.Service
         Task AddBulkAsync(IEnumerable<TDto> dtos);
 
         /// <summary>
-        /// Transform the DTO into the corresponding entities and update these to the DB
+        /// Transform the DTO into the corresponding entities and update these to the DB.
         /// </summary>
         /// <param name="dtos">The dtos.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
@@ -266,8 +266,8 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Transform the DTO into the corresponding entities and delete these to the DB.
         /// </summary>
-        /// <param name="idList">The identifier list.</param>
+        /// <param name="dtos">The dto list.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task RemoveBulkAsync(IEnumerable<TDto> idList);
+        Task RemoveBulkAsync(IEnumerable<TDto> dtos);
     }
 }

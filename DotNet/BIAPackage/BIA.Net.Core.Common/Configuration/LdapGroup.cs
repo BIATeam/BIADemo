@@ -4,10 +4,9 @@
 
 namespace BIA.Net.Core.Common.Configuration
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// LdapGroup.
+    /// </summary>
     public class LdapGroup
     {
         /// <summary>

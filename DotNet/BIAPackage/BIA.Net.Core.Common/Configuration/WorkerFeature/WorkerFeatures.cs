@@ -3,6 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration.WorkerFeature
 {
+    /// <summary>
+    /// WorkerFeatures.
+    /// </summary>
     public class WorkerFeatures
     {
         /// <summary>

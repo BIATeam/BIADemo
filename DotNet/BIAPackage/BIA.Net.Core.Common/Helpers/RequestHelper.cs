@@ -12,9 +12,11 @@ namespace BIA.Net.Core.Common.Helpers
     using System.Threading.Tasks;
 
     /// <summary>
-    /// The helper used to encapsulate the API calls.
+    /// The helper used to encapsulate the API calls. Obsolete in V3.9.0.
     /// </summary>
+#pragma warning disable S1133 // Deprecated code should be removed
     [Obsolete("Use instead BIA.Net.Core.Infrastructure.Service.Repositories.WebApiRepository")]
+#pragma warning restore S1133 // Deprecated code should be removed
     public static class RequestHelper
     {
         /// <summary>
@@ -39,7 +41,7 @@ namespace BIA.Net.Core.Common.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception("Can't join url : " + url, ex);
+                throw new Exceptions.SystemException("Can't join url : " + url, ex);
             }
         }
 

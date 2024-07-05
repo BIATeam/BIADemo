@@ -15,10 +15,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Hangfire.Dashboard;
     using Hangfire.Dashboard.JobLogs;
     using Hangfire.PostgreSql;
+    using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using Microsoft.OpenApi.Models;
     using StackExchange.Redis;
 
@@ -117,7 +119,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         InvisibilityTimeout = TimeSpan.FromDays(5),
                     };
 
-                    JobStorage.Current = new PostgreSqlStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
                 }
             }
 
@@ -141,7 +143,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
                     }
 
                     if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)

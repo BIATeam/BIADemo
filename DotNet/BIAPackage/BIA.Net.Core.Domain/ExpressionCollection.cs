@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Domain
     /// Expression Collection.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    public class ExpressionCollection<TEntity> : BIADictionary<LambdaExpression>
+    public class ExpressionCollection<TEntity> : BiaDictionary<LambdaExpression>
     {
         /// <summary>
         /// Adds the specified key.
@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Domain
         /// <param name="expression">The expression.</param>
         public void Add<TKey>(string key, Expression<Func<TEntity, TKey>> expression)
         {
-            this.internalDictionary.Add(key, expression);
+            this.InternalDictionary.Add(key, expression);
         }
     }
 }

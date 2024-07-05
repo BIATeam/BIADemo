@@ -4,12 +4,19 @@
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// HangfireDashboardConfiguration.
+    /// </summary>
     public class HangfireDashboardConfiguration
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HangfireDashboardConfiguration"/> class.
+        /// </summary>
+        public HangfireDashboardConfiguration()
+        {
+            this.IsActive = false;
+        }
+
         /// <summary>
         /// Boolean to activate the feature DatabaseHandler.
         /// </summary>
@@ -54,10 +61,5 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Connexion string name for the database.
         /// </summary>
         public string ConnectionStringName { get; set; }
-
-        public HangfireDashboardConfiguration()
-        {
-            this.IsActive = false;
-        }
     }
 }

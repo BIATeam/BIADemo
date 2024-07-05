@@ -4,6 +4,9 @@
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
+    /// <summary>
+    /// ApiFeatures.
+    /// </summary>
     public class ApiFeatures
     {
         /// <summary>

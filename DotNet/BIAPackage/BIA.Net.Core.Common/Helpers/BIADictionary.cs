@@ -1,4 +1,4 @@
-﻿// <copyright file="ExpressionCollection.cs" company="BIA">
+﻿// <copyright file="BiaDictionary.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -13,13 +13,21 @@ namespace BIA.Net.Core.Common
     /// Expression Collection.
     /// </summary>
     /// <typeparam name="TElem">The type of the entity.</typeparam>
-    public class BIADictionary<TElem> : IEnumerable<KeyValuePair<string, TElem>>
+    public class BiaDictionary<TElem> : IEnumerable<KeyValuePair<string, TElem>>
     {
         /// <summary>
         /// The internal dictionary.
         /// </summary>
-        protected readonly Dictionary<string, TElem> internalDictionary
+        private readonly Dictionary<string, TElem> internalDictionary
             = new (StringComparer.InvariantCultureIgnoreCase);
+
+        /// <summary>
+        /// Gets the internal dictionary.
+        /// </summary>
+        /// <value>
+        /// The internal dictionary.
+        /// </value>
+        public Dictionary<string, TElem> InternalDictionary => this.internalDictionary;
 
         /// <summary>
         /// Gets or sets the <see cref="TElem"/> with the specified key.
@@ -44,7 +52,7 @@ namespace BIA.Net.Core.Common
         /// Adds the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
-        /// <param name="expression">The expression.</param>
+        /// <param name="elem">The element.</param>
         public void Add(string key, TElem elem)
         {
             this.internalDictionary.Add(key, elem);
