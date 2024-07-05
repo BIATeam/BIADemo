@@ -23,12 +23,12 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The SQL on change event handler request.
         /// </summary>
-        private readonly string sqlOnChangeEventHandlerRequest;
+        private readonly SqlCommand sqlOnChangeEventHandlerRequest;
 
         /// <summary>
         /// The SQL read change request.
         /// </summary>
-        private readonly string sqlReadChangeRequest;
+        private readonly SqlCommand sqlReadChangeRequest;
 
         /// <summary>
         /// The filter notifiction infos.
@@ -56,8 +56,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <param name="filterNotifictionInfos">Filter the event action type. If null send all action.</param>
         public DatabaseHandlerRepository(
             string connectionString,
-            string sqlOnChangeEventHandlerRequest,
-            string sqlReadChangeRequest,
+            SqlCommand sqlOnChangeEventHandlerRequest,
+            SqlCommand sqlReadChangeRequest,
             ChangeHandler onChange,
             List<SqlNotificationInfo> filterNotifictionInfos = null)
         {
@@ -87,12 +87,12 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The SQL on change event handler request.
         /// </summary>
-        protected string SqlOnChangeEventHandlerRequest => this.sqlOnChangeEventHandlerRequest;
+        protected SqlCommand SqlOnChangeEventHandlerRequest => this.sqlOnChangeEventHandlerRequest;
 
         /// <summary>
         /// The SQL read change request.
         /// </summary>
-        protected string SqlReadChangeRequest => this.sqlReadChangeRequest;
+        protected SqlCommand SqlReadChangeRequest => this.sqlReadChangeRequest;
 
         /// <summary>
         /// The filter notifiction infos.
@@ -111,7 +111,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.logger.LogInformation(message);
             message = $"{nameof(this.connectionString)} = {this.connectionString}";
             this.logger.LogInformation(message);
-            message = $"{nameof(this.sqlOnChangeEventHandlerRequest)} = {this.sqlOnChangeEventHandlerRequest}";
+            message = $"{nameof(this.sqlOnChangeEventHandlerRequest)} = {this.sqlOnChangeEventHandlerRequest.CommandText}";
             this.logger.LogInformation(message);
             message = $"{nameof(this.sqlReadChangeRequest)} = {this.sqlReadChangeRequest}";
             this.logger.LogInformation(message);
@@ -148,9 +148,11 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                using (SqlCommand command = new (this.sqlOnChangeEventHandlerRequest, connection))
+                this.sqlOnChangeEventHandlerRequest.Connection = connection;
+                using (SqlCommand command = this.sqlOnChangeEventHandlerRequest.Clone())
                 {
                     connection.Open();
+                    command.Connection = connection;
 
                     SqlDependency dependency = new SqlDependency(command);
                     string message = $"{baseLog} dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange)";
@@ -160,7 +162,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
                     if (!this.isFirst)
                     {
-                        if (string.IsNullOrEmpty(this.sqlReadChangeRequest))
+                        if (string.IsNullOrEmpty(this.sqlReadChangeRequest.CommandText))
                         {
                             if (this.IsValidEvent(e) && this.OnChange != null)
                             {
@@ -171,8 +173,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                         }
                         else
                         {
-                            using (SqlCommand selectCommand = new SqlCommand(this.sqlReadChangeRequest, connection))
+                            using (SqlCommand selectCommand = this.sqlReadChangeRequest.Clone())
                             {
+                                selectCommand.Connection = connection;
                                 using (SqlDataReader reader = selectCommand.ExecuteReader())
                                 {
                                     string message1 = $"{baseLog} reader.HasRows = {reader.HasRows}";
