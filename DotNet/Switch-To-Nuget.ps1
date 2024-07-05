@@ -2,9 +2,8 @@ $RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
-function AddBIAPackageToSolution
-{
-    param([string]$layerProject, [string]$layerPackage)
+function AddBIAPackageToSolution {
+	param([string]$layerProject, [string]$layerPackage)
 	
 	$SlnFile = "$SolutionName.sln"
 	$BIAProjectFile = "$RelativePathToBIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
@@ -12,12 +11,11 @@ function AddBIAPackageToSolution
 	
 	# Remove the library from solution
 	dotnet sln $SlnFile remove $BIAProjectFile
-	if ($layerProject -ne "")
-	{
+	if ($layerProject -ne "") {
 		# Remove the library reference
 		dotnet remove $ProjectFile reference $BIAProjectFile
 		# Restore the NuGet package reference
-		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 3.8.*
+		dotnet add $ProjectFile package BIA.Net.Core.$layerPackage -v 3.9.*
 	}
 }
 

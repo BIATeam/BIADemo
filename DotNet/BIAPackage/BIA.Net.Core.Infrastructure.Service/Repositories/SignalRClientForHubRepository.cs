@@ -35,22 +35,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public SignalRClientForHubRepository(IOptions<CommonFeatures> options)
         {
             this.clientForHubConfiguration = options.Value.ClientForHub;
-            if (!this.clientForHubConfiguration.IsActive)
-            {
-                var message = "The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.";
-                throw new BadRequestException(message);
-            }
-
-            if (string.IsNullOrEmpty(this.clientForHubConfiguration.SignalRUrl))
-            {
-                var message = "The ClientForHub feature url is not specify before use ClientForHubRepository. Verify your settings.";
-                throw new BadRequestException(message);
-            }
         }
 
         /// <inheritdoc/>
         public async Task SendMessage(TargetedFeatureDto targetedFeature, string action, string jsonContext = null)
         {
+            this.TestConfig();
             await SafeSendMessage(targetedFeature, action, jsonContext, this.clientForHubConfiguration.SignalRUrl);
         }
 
@@ -165,6 +155,21 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             finally
             {
                 isSendingMessage.Release();
+            }
+        }
+
+        private void TestConfig()
+        {
+            if (this.clientForHubConfiguration?.IsActive != true)
+            {
+                var message = "The ClientForHub feature is not activated before use ClientForHubRepository. Verify your settings.";
+                throw new BadRequestException(message);
+            }
+
+            if (string.IsNullOrEmpty(this.clientForHubConfiguration.SignalRUrl))
+            {
+                var message = "The ClientForHub feature url is not specify before use ClientForHubRepository. Verify your settings.";
+                throw new BadRequestException(message);
             }
         }
     }
