@@ -13,11 +13,18 @@
   left: calc(2.5vw);
 }
 
+.bia-page-remove-margin .bia-page-margin {
+  width: unset;
+  left: unset;
+}
+
 .bia-page-remove-margin {
   margin-left: -35px;
   margin-right: -35px;
   margin-top: -15px;
   margin-bottom: -15px;
+  width: calc(95vw);
+  left: calc(2.5vw);
 }
 
 .bia-advanced-filter {
