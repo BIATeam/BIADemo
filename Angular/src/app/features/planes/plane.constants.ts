@@ -1,5 +1,7 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
+/// BIAToolKit - Begin AncestorTeam
 import { TeamTypeId } from 'src/app/shared/constants';
+/// BIAToolKit - End AncestorTeam
 import { planeFieldsConfiguration } from './model/plane';
 
 // TODO after creation of CRUD Plane : adapt the global configuration
