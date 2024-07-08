@@ -94,7 +94,6 @@ namespace BIA.Net.Core.Common.Helpers
             LOGON32_PROVIDER_WINNT50 = 3,
         }
 
-#pragma warning disable CA1416 // Validate platform compatibility
         /// <summary>
         /// Runs the specified action as the impersonated Windows identity.
         /// </summary>
@@ -104,6 +103,7 @@ namespace BIA.Net.Core.Common.Helpers
         /// <param name="action">The System.Action to run.</param>
         /// <param name="logonType">The type of logon operation to perform (LOGON32_LOGON_NEW_CREDENTIALS by default).</param>
         /// <param name="logonProvider">The logon provider (LOGON32_PROVIDER_DEFAULT by default).</param>
+#pragma warning disable CA1416 // Validate platform compatibility
         public static void RunImpersonated(
             string domainName,
             string userName,

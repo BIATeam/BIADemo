@@ -7,7 +7,7 @@
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
     <Description>Domain Dto layer classes for BIA.Net Queue Framework</Description>
-    <Copyright>Copyright © BIA 2021</Copyright>
+    <Copyright>Copyright © BIA 2024</Copyright>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
   </PropertyGroup>

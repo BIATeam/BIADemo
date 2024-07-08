@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2021</Copyright>
+    <Copyright>Copyright © TheBIADevCompany 2024</Copyright>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 

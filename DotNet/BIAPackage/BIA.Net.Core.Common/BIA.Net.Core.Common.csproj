@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.8.0</Version>
+    <Version>3.9.0</Version>
     <Description>Common classes for BIA.Net Core Framework</Description>
-    <Copyright>Copyright © BIA 2021</Copyright>
+    <Copyright>Copyright © BIA 2024</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
