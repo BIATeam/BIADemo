@@ -25,6 +25,8 @@ export class Plane extends BaseDto {
   siteId: number;
   connectingAirports: OptionDto[];
   planeType: OptionDto | null;
+  similarTypes: OptionDto[];
+  currentAirport: OptionDto | null;
   /// BIAToolKit - End Properties
 }
 
@@ -122,5 +124,18 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       }
     ),
     /// BIAToolKit - End Block connectingAirports
+    /// BIAToolKit - Begin Block currentAirport
+    Object.assign(
+      new BiaFieldConfig('currentAirport', 'plane.currentAirport'),
+      {
+        type: PropType.OneToMany,
+      }
+    ),
+    /// BIAToolKit - End Block currentAirport
+    /// BIAToolKit - Begin Block similarTypes
+    Object.assign(new BiaFieldConfig('similarTypes', 'plane.similarTypes'), {
+      type: PropType.ManyToMany,
+    }),
+    /// BIAToolKit - End Block similarTypes
   ],
 };

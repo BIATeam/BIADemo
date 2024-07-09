@@ -93,14 +93,14 @@ export class BiaMessageService {
     });
   }
 
-  showErrorDetail(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
+  showErrorDetail(detailValue: string, life = undefined) {
     const summaryValue = this.translateService.instant('bia.error');
     this.messageService.add({
       key: 'bia',
       severity: 'error',
       summary: summaryValue,
       detail: detailValue,
-      life: undefined,
+      life: life,
       sticky: true,
     });
   }

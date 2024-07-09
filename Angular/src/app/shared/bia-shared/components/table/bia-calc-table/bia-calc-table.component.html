@@ -1,4 +1,7 @@
-<form [formGroup]="form" class="bia-calc-form">
+<form
+  *ngIf="(authService.hasToken$ | async) === true"
+  [formGroup]="form"
+  class="bia-calc-form">
   <p-table
     *ngIf="configuration"
     #dt
