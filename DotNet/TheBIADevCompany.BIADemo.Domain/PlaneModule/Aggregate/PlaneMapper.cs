@@ -40,6 +40,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
+                    { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
+                    { HeaderName.SimilarType, plane => plane.SimilarType.Select(x => x.Title).OrderBy(x => x) },
                 };
             }
         }
@@ -72,6 +74,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             // Mapping relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
+            entity.CurrentAirportId = dto.CurrentAirport?.Id;
+
             // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
             if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
             {
@@ -89,6 +93,25 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     entity.ConnectingPlaneAirports.Add(new PlaneAirport
                     { AirportId = airportDto.Id, PlaneId = dto.Id });
+                }
+            }
+
+            if (dto.SimilarTypes != null && dto.SimilarTypes?.Any() == true)
+            {
+                foreach (var planeTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var similarType = entity.SimilarType.FirstOrDefault(x => x.Id == planeTypeDto.Id);
+                    if (similarType != null)
+                    {
+                        entity.SimilarType.Remove(similarType);
+                    }
+                }
+
+                entity.SimilarPlaneType = entity.SimilarPlaneType ?? new List<PlanePlaneType>();
+                foreach (var planeTypeDto in dto.SimilarTypes.Where(w => w.DtoState == DtoState.Added))
+                {
+                    entity.SimilarPlaneType.Add(new PlanePlaneType
+                    { PlaneTypeId = planeTypeDto.Id, PlaneId = dto.Id });
                 }
             }
         }
@@ -120,11 +143,24 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 }
                 : null,
 
+                CurrentAirport = entity.CurrentAirport != null ? new OptionDto
+                {
+                    Id = entity.CurrentAirport.Id,
+                    Display = entity.CurrentAirport.Name,
+                }
+                : null,
+
                 // Mapping relationship *-* : ICollection<Airports>
                 ConnectingAirports = entity.ConnectingAirports.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
                     Display = ca.Name,
+                }).OrderBy(x => x.Display).ToList(),
+
+                SimilarTypes = entity.SimilarType.Select(ca => new OptionDto
+                {
+                    Id = ca.Id,
+                    Display = ca.Title,
                 }).OrderBy(x => x.Display).ToList(),
             };
         }
@@ -198,6 +234,16 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                         if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.EstimatedPrice));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.CurrentAirport, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.CurrentAirport?.Display));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.SimilarType, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVList(x.SimilarTypes));
                         }
                     }
                 }
@@ -283,6 +329,16 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             /// Header Name ConnectingAirports.
             /// </summary>
             public const string ConnectingAirports = "connectingAirports";
+
+            /// <summary>
+            /// Header Name PlaneType.
+            /// </summary>
+            public const string SimilarType = "similarType";
+
+            /// <summary>
+            /// Header Name ConnectingAirports.
+            /// </summary>
+            public const string CurrentAirport = "currentAirport";
         }
     }
 }
