@@ -8,12 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BIA.Net.Core.Common" Version="3.9.*" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
   </ItemGroup>
 
 </Project>
