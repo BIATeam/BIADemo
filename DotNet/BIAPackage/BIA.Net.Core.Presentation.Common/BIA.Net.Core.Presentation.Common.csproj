@@ -22,12 +22,12 @@
   <ItemGroup>
     <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.4" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.20.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.7" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
