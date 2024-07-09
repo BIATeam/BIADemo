@@ -13,11 +13,12 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
     public class BiaDtoFieldAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaDtoFieldAttribute"/> class.
+        /// Initializes a new instance of the <see cref="BiaDtoFieldAttribute" /> class.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="required">if set to <c>true</c> [required].</param>
         /// <param name="isParent">if set to <c>true</c> [is parent].</param>
+        /// <param name="itemType">Type of the item.</param>
         public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false, string itemType = null)
         {
             this.Type = type;

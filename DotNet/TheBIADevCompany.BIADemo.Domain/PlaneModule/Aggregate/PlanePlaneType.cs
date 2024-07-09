@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="PlaneAirport.cs" company="TheBIADevCompany">
+// <copyright file="PlanePlaneType.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 

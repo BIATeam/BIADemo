@@ -29,7 +29,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// </summary>
         public DateTime? CertificationDate { get; set; }
 
-
         /// <summary>
         /// Gets or sets the list of planes using the airport. Direct access.
         /// </summary>
