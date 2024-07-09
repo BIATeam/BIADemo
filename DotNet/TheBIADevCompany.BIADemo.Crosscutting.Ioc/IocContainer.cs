@@ -128,6 +128,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
 
             // End BIADemo
+
             // BIAToolKit - Begin Dependency 2
             // BIAToolKit - End Dependency 2
         }
