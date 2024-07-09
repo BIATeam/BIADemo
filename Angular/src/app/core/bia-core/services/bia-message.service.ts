@@ -100,7 +100,8 @@ export class BiaMessageService {
       severity: 'error',
       summary: summaryValue,
       detail: detailValue,
-      life: life,
+      life: undefined,
+      sticky: true,
     });
   }
 

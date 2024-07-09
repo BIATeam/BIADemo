@@ -348,6 +348,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 var exceptions = new List<Exception>();
 
+                if (!canAdd && userDtos.Exists(u => u.DtoState == DtoState.Added))
+                {
+                    strBldr.AppendLine("No permission to add users.");
+                    nbError++;
+                }
+
+                if (!canUpdate && userDtos.Exists(u => u.DtoState == DtoState.Modified))
+                {
+                    strBldr.AppendLine("No permission to update users.");
+                    nbError++;
+                }
+
+                if (userDtos.Exists(u => u.DtoState == DtoState.Deleted))
+                {
+                    strBldr.AppendLine("No permission to delete users.");
+                    nbError++;
+                }
+
                 foreach (UserDto userDto in userDtos)
                 {
                     try
