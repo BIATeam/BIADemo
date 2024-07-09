@@ -45,10 +45,10 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     /* BIAToolKit - Begin Option */
     let cpt = 0;
     // BIAToolKit - Begin Option PlaneType
-    let planeType = cpt++;
+    const planeType = cpt++;
     // BIAToolKit - End Option PlaneType
     // BIAToolKit - Begin Option Airport
-    let airport = cpt++;
+    const airport = cpt++;
     // BIAToolKit - End Option Airport
 
     this.dictOptionDtos$ = combineLatest([

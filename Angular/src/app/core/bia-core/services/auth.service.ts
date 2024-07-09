@@ -40,6 +40,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       )
     );
 
+  public hasToken$: Observable<boolean> = this.authInfo$.pipe(
+    map((authInfo: AuthInfo) => authInfo?.token?.length > 0 === true)
+  );
+
   constructor(
     injector: Injector,
     protected biaMessageService: BiaMessageService,
