@@ -97,5 +97,25 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the plane type id.
         /// </summary>
         public int? PlaneTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current airport.
+        /// </summary>
+        public virtual Airport CurrentAirport { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current airport id.
+        /// </summary>
+        public int? CurrentAirportId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of similar plane type. Direct access.
+        /// </summary>
+        public ICollection<PlaneType> SimilarTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of similar plane type. Via the jointure table.
+        /// </summary>
+        public ICollection<PlanePlaneType> SimilarPlaneType { get; set; }
     }
 }
