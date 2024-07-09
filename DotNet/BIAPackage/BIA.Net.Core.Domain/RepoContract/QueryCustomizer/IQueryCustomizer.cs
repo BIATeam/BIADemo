@@ -6,13 +6,17 @@ namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
 {
     using System.Linq;
 
+    /// <summary>
+    /// IQueryCustomizer.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public interface IQueryCustomizer<TEntity>
     {
         /// <summary>
         /// Add custom close where or other before the Where (use for count).
         /// </summary>
         /// <param name="objectSet">Query to add includes.</param>
-        /// <param name="mode">context mode to use the query.</param>
+        /// <param name="queryMode">context mode to use the query.</param>
         /// <returns>>Query with the includes.</returns>
         public IQueryable<TEntity> CustomizeBefore(IQueryable<TEntity> objectSet, string queryMode);
 
@@ -20,7 +24,7 @@ namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
         /// Add the include or other in the query after the automatique Where (not use for count).
         /// </summary>
         /// <param name="objectSet">Query to add includes.</param>
-        /// <param name="mode">context mode to use the query.</param>
+        /// <param name="queryMode">context mode to use the query.</param>
         /// <returns>>Query with the includes.</returns>
         public IQueryable<TEntity> CustomizeAfter(IQueryable<TEntity> objectSet, string queryMode);
     }

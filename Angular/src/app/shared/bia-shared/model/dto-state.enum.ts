@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum DtoState {
   /**
    * The DTO is unchanged.
@@ -14,5 +15,9 @@ export enum DtoState {
   /**
    * The DTO is marked to be deleted in the context.
    */
-  Deleted = 3
+  Deleted = 3,
+  /**
+   * The DTO is a new choice and marked to be added to the context.
+   */
+  AddedNewChoice = 4,
 }

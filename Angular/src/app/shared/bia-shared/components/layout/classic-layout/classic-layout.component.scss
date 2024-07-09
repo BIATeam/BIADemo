@@ -13,6 +13,10 @@
   background-attachment: scroll;
 }
 
-:host ::ng-deep p-breadcrumb .p-menuitem-link[target="undefined"] {
+:host ::ng-deep p-breadcrumb .p-menuitem-link[target='undefined'] {
   cursor: default !important;
+}
+
+:host ::ng-deep .p-toast-detail {
+  white-space: pre-line;
 }

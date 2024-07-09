@@ -1,65 +1,108 @@
-<div class="flex-1 flex-column" [style.display]="fullscreenMode ? 'none' : 'flex'">
+<div
+  class="flex-1 flex-column"
+  [style.display]="fullscreenMode ? 'none' : 'flex'"
+  style="width: calc(100vw)">
   <!-- topbar -->
 
-  <div class="topbar flex justify-content-between align-content-between">
+  <div
+    class="topbar flex justify-content-between align-content-between flex-wrap">
     <div class="logos flex justify-content-center">
       <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
         <span *ngIf="!first" class="flex align-self-center separator"></span>
-        <img class="flex align-self-center" src="{{ logo }}" />
+        <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
       </ng-template>
     </div>
     <bia-ie-warning *ngIf="isIE"></bia-ie-warning>
-    <div class="controls flex flex-row">
-      <ng-template ngFor let-teamTypeSelector let-first="first" [ngForOf]="teamTypeSelectors">
-        <bia-classic-team-selector [teamTypeId]="teamTypeSelector"></bia-classic-team-selector>
+    <div class="controls flex flex-row flex-wrap">
+      <ng-template
+        ngFor
+        let-teamTypeSelector
+        let-first="first"
+        [ngForOf]="teamTypeSelectors">
+        <bia-classic-team-selector
+          [teamType]="teamTypeSelector"></bia-classic-team-selector>
         <span class="flex align-self-center separator"></span>
       </ng-template>
+    </div>
+    <div class="controls flex flex-row">
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <bia-online-offline-icon></bia-online-offline-icon>
-      <i class="pi pi-refresh app-icon-header bia-pointer" (click)="refresh()"
-        pTooltip="{{ 'bia.refresh' | translate }}" tooltipPosition="bottom"></i>
-      <i class="pi pi-window-maximize app-full-screen app-icon-header bia-pointer" (click)="toggleFullscreenMode()"
-        pTooltip="{{ 'bia.fullscreen' | translate }}" tooltipPosition="left"></i>
+      <i
+        class="pi pi-refresh app-icon-header bia-pointer"
+        (click)="refresh()"
+        pTooltip="{{ 'bia.refresh' | translate }}"
+        tooltipPosition="bottom"></i>
+      <i
+        class="pi pi-window-maximize app-full-screen app-icon-header bia-pointer"
+        (click)="toggleFullscreenMode()"
+        pTooltip="{{ 'bia.fullscreen' | translate }}"
+        tooltipPosition="left"></i>
     </div>
   </div>
 
   <!-- mainbar -->
-  <div *ngIf="(layoutService.mainBarHidden$ | async) === false" class="mainbar mat-elevation-z2 bia-relative"
+  <div
+    *ngIf="(layoutService.mainBarHidden$ | async) === false"
+    class="mainbar mat-elevation-z2 bia-relative"
     [ngClass]="cssClassEnv">
-    <ng-template let-mainBarPortal [ngIf]="layoutService.mainBarPortal$ | async" [ngIfElse]="classicMainBar">
+    <ng-template
+      let-mainBarPortal
+      [ngIf]="layoutService.mainBarPortal$ | async"
+      [ngIfElse]="classicMainBar">
       <ng-template [cdkPortalOutlet]="mainBarPortal"></ng-template>
     </ng-template>
   </div>
 </div>
-<i *ngIf="fullscreenMode" class="pi pi-window-minimize fullscreen-exit bia-mat-tiny-fab bia-pointer"
+<i
+  *ngIf="fullscreenMode"
+  class="pi pi-window-minimize fullscreen-exit bia-mat-tiny-fab bia-pointer"
   (click)="toggleFullscreenMode()"></i>
 
 <ng-template #classicMainBar>
   <p-menubar [model]="navMenuItems">
     <ng-template pTemplate="start">
       <a class="project-title" routerLink="/">
-        <div class="flex flex-row align-items-center align-content-center align-self-stretch" >
-          <img class="app-logo" src="{{ urlAppIcon }}" />
-          <span>{{ appTitle }}<span class="project-version">&nbsp;v{{ version }}</span></span>
+        <div
+          class="flex flex-row align-items-center align-content-center align-self-stretch">
+          <img alt="appicon" class="app-logo" src="{{ urlAppIcon }}" />
+          <span
+            >{{ appTitle
+            }}<span class="project-version">&nbsp;v{{ version }}</span></span
+          >
         </div>
       </a>
     </ng-template>
     <ng-template pTemplate="end">
-      <div class="action flex flex-row gap-3" style="display: inline-flex" >
+      <div class="action flex flex-row gap-3" style="display: inline-flex">
         <ng-container *ngIf="enableNotifications">
           <span class="notifications">
-            <i class="pi pi-bell bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.notifications' | translate }}"
-              tooltipPosition="left" [routerLink]="['/notifications']"></i>
-            <ng-container *ngIf="unreadNotificationCount$ | async as unreadNotificationCount">
-              <div *ngIf="unreadNotificationCount > 0" class="notification-count">
+            <i
+              class="pi pi-bell bia-mat-tiny-fab bia-pointer"
+              pTooltip="{{ 'bia.notifications' | translate }}"
+              tooltipPosition="left"
+              [routerLink]="['/notifications']"></i>
+            <ng-container
+              *ngIf="
+                unreadNotificationCount$ | async as unreadNotificationCount
+              ">
+              <div
+                *ngIf="unreadNotificationCount > 0"
+                class="notification-count">
                 {{ unreadNotificationCount$ | async }}
               </div>
             </ng-container>
           </span>
         </ng-container>
-        <i *ngIf="reportUrl" class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
-          pTooltip="{{ 'bia.report' | translate }}" tooltipPosition="left" (click)="openReport()"></i>
-        <i *ngIf="helpUrl" class="pi pi-question-circle bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.help' | translate }}"
+        <i
+          *ngIf="reportUrl"
+          class="pi pi-chart-bar bia-mat-tiny-fab bia-pointer"
+          pTooltip="{{ 'bia.report' | translate }}"
+          tooltipPosition="left"
+          (click)="openReport()"></i>
+        <i
+          *ngIf="helpUrl"
+          class="pi pi-question-circle bia-mat-tiny-fab bia-pointer"
+          pTooltip="{{ 'bia.help' | translate }}"
           (click)="openHelp()"></i>
       </div>
     </ng-template>
@@ -68,40 +111,58 @@
 
 <p-toast key="bia" #toast>
   <ng-template let-message pTemplate="message">
-    <div class="flex flex-column flex-1" style="max-width:100%;">
+    <div class="flex flex-column flex-1" style="max-width: 100%">
       <div class="flex flex-row">
         <ng-container [ngSwitch]="message.severity">
           <ng-container *ngSwitchCase="'success'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted [object Object]"
+            <span
+              class="ng-tns-c191-8 p-toast-message-icon pi pi-check ng-star-inserted [object Object]"
               ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchCase="'warn'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted [object Object]"
+            <span
+              class="ng-tns-c191-8 p-toast-message-icon pi pi-exclamation-triangle ng-star-inserted [object Object]"
               ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchCase="'error'">
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted [object Object]"
+            <span
+              class="ng-tns-c191-8 p-toast-message-icon pi pi-times-circle ng-star-inserted [object Object]"
               ng-reflect-ng-></span>
           </ng-container>
           <ng-container *ngSwitchDefault>
-            <span class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted [object Object]"
+            <span
+              class="ng-tns-c191-8 p-toast-message-icon pi pi-info-circle ng-star-inserted [object Object]"
               ng-reflect-ng-></span>
           </ng-container>
         </ng-container>
-        <div class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
-          (click)="message.data?.notification?.type?.id === NotificationType.Task || onNotificationClick(message)">
+        <div
+          class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
+          (click)="
+            message.data?.notification?.type?.id === notificationType.Task ||
+              onNotificationClick(message)
+          ">
           <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
           <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
         </div>
       </div>
-      <div *ngIf="message.data?.notification?.type?.id === NotificationType.Task" class="notification-actions flex flex-row justify-content-between align-content-between"
-        >
-        <button pButton [label]="message.data?.notification?.data.display | translate"
-          (click)="onNotificationClick(message)" class="p-button-primary"></button>
-        <button pButton label="{{'bia.ignore' | translate}}" (click)="onIgnoreClick(message)"
+      <div
+        *ngIf="message.data?.notification?.type?.id === notificationType.Task"
+        class="notification-actions flex flex-row justify-content-between align-content-between">
+        <button
+          pButton
+          [label]="message.data?.notification?.data.display | translate"
+          (click)="onNotificationClick(message)"
+          class="p-button-primary"></button>
+        <button
+          pButton
+          label="{{ 'bia.ignore' | translate }}"
+          (click)="onIgnoreClick(message)"
           class="p-button-secondary"></button>
       </div>
-      <bia-notification-team-warning [notification]="message.data?.notification"></bia-notification-team-warning>
+      <bia-notification-team-warning
+        [notification]="
+          message.data?.notification
+        "></bia-notification-team-warning>
     </div>
   </ng-template>
 </p-toast>

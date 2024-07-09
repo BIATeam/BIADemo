@@ -1,5 +1,15 @@
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { DtoState } from './dto-state.enum';
 
-export interface OptionDto extends BaseDto {
+export class OptionDto extends BaseDto {
   display: string;
+
+  constructor(id: any, display: string, dtoState: DtoState) {
+    super(id, dtoState);
+    this.display = display;
+  }
+
+  displayItemName(): string {
+    return this.display;
+  }
 }

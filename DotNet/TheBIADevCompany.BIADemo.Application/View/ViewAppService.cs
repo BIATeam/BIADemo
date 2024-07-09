@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -28,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// The logger.
@@ -45,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
         public ViewAppService(ITGenericRepository<View, int> repository, IPrincipal principal, ILogger<ViewAppService> logger, IViewQueryCustomizer queryCustomizer)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
             this.logger = logger;
             this.Repository.QueryCustomizer = queryCustomizer;
         }
@@ -60,16 +61,22 @@ namespace TheBIADevCompany.BIADemo.Application.View
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
-                    filter: view => view.ViewType == ViewType.System || view.ViewType == ViewType.Team || (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                    filter: view =>
+                        view.ViewType == ViewType.System ||
+                        view.ViewType == ViewType.Team ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
             else
             {
+                UserDataDto userData = this.principal.GetUserData<UserDataDto>();
+
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
                     filter: view =>
-                    (view.ViewType == ViewType.System) ||
-                    (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
-                    (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
+                        (view.ViewType == ViewType.System) ||
+                        (view.ViewType == ViewType.Team && view.ViewTeams.Any(viewTeam => userData.CurrentTeams.Select(ct => ct.TeamId).Contains(viewTeam.Team.Id) &&
+                                                                                          viewTeam.Team.Members.Any(member => member.UserId == currentUserId))) ||
+                        (view.ViewType == ViewType.User && view.ViewUsers.Any(viewUser => viewUser.UserId == currentUserId)));
             }
         }
 
@@ -84,7 +91,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
             if (entity.ViewType != ViewType.Team)
             {
-                this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
+                var message = "Trying to delete the wrong view type: " + entity.ViewType;
+                this.logger.LogWarning(message);
                 throw new BusinessException("Wrong view type: " + entity.ViewType);
             }
 
@@ -109,14 +117,16 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
             if (entity.ViewType != ViewType.User)
             {
-                this.logger.LogWarning("Trying to delete the wrong view type: " + entity.ViewType);
+                var message = "Trying to delete the wrong view type: " + entity.ViewType;
+                this.logger.LogWarning(message);
                 throw new BusinessException("Wrong view type: " + entity.ViewType);
             }
 
             var currentUserId = this.principal.GetUserId();
             if (entity.ViewUsers.All(a => a.UserId != currentUserId))
             {
-                this.logger.LogWarning($"The user {currentUserId} is trying to delete the view {id} of an other user.");
+                var message = $"The user {currentUserId} is trying to delete the view {id} of an other user.";
+                this.logger.LogWarning(message);
                 throw new BusinessException("Can't delete the view of other users !");
             }
 
@@ -130,7 +140,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
             var entity = await this.Repository.GetEntityAsync(id: dto.Id, queryMode: QueryCustomMode.ModeUpdateViewUsers);
             if (entity == null)
             {
-                this.logger.LogWarning($"View with id {dto.Id} not found.");
+                var message = $"View with id {dto.Id} not found.";
+                this.logger.LogWarning(message);
                 throw new ElementNotFoundException();
             }
 
@@ -204,13 +215,16 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 View entity = await this.Repository.GetEntityAsync(dto.Id, queryMode: QueryCustomMode.ModeUpdateViewTeams);
                 if (entity == null)
                 {
-                    this.logger.LogWarning($"View with id {dto.Id} not found.");
-                    throw new ElementNotFoundException();
+                    var message = $"View with id {dto.Id} not found.";
+                    this.logger.LogWarning(message);
+                    throw new ElementNotFoundException(message);
                 }
 
                 if (entity.ViewType != ViewType.Team)
                 {
-                    throw new BusinessException("Wrong view type: " + entity.ViewType);
+                    var message = "Wrong view type: " + entity.ViewType;
+                    this.logger.LogWarning(message);
+                    throw new BusinessException(message);
                 }
 
                 IEnumerable<ViewDto> entities = await this.GetAllAsync();
@@ -307,7 +321,8 @@ namespace TheBIADevCompany.BIADemo.Application.View
                 var currentUserId = this.principal.GetUserId();
                 if (entity.ViewType == ViewType.User && entity.ViewUsers.All(a => a.UserId != currentUserId))
                 {
-                    this.logger.LogWarning($"The user {currentUserId} is trying to update the view {dto.Id} of an other user.");
+                    var message = $"The user {currentUserId} is trying to update the view {dto.Id} of an other user.";
+                    this.logger.LogWarning(message);
                     throw new BusinessException("Can't update the view of other users !");
                 }
 
@@ -333,8 +348,9 @@ namespace TheBIADevCompany.BIADemo.Application.View
 
                 if (entity.ViewType != ViewType.Team)
                 {
-                    this.logger.LogWarning("Wrong view type: " + entity.ViewType);
-                    throw new BusinessException("Wrong view type: " + entity.ViewType);
+                    var message = "Wrong view type: " + entity.ViewType;
+                    this.logger.LogWarning(message);
+                    throw new BusinessException(message);
                 }
 
                 Func<ViewTeam, bool> keysPredicate = x => x.ViewId == dto.ViewId && x.TeamId == dto.TeamId;

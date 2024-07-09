@@ -4,13 +4,16 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.RepoContract;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// Task to wake up.
@@ -21,12 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <summary>
         /// the front webiApi repository.
         /// </summary>
-        private readonly IBIADemoWebApiRepository webApiRepository;
-
-        /// <summary>
-        /// the front app repository.
-        /// </summary>
-        private readonly IBIADemoAppRepository appRepository;
+        private readonly IWakeUpWebApps wakeUpWebApps;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WakeUpTask" /> class.
@@ -35,11 +33,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <param name="logger">logger.</param>
         /// <param name="webApiRepository">the front webiApi repository.</param>
         /// <param name="appRepository">The application repository.</param>
-        public WakeUpTask(IConfiguration configuration, ILogger<WakeUpTask> logger, IBIADemoWebApiRepository webApiRepository, IBIADemoAppRepository appRepository)
+        /// <param name="wakeUpWebApps">The WebApps to wake up.</param>
+        public WakeUpTask(IConfiguration configuration, ILogger<WakeUpTask> logger, IWakeUpWebApps wakeUpWebApps)
             : base(configuration, logger)
         {
-            this.webApiRepository = webApiRepository;
-            this.appRepository = appRepository;
+            this.wakeUpWebApps = wakeUpWebApps;
         }
 
         /// <summary>
@@ -48,21 +46,21 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <returns>The <see cref="Task"/> representing the operation to perform.</returns>
         protected override async Task RunMonitoredTask()
         {
-            Task<(bool IsSuccessStatusCode, string ReasonPhrase)> wakeUpWebApi = this.webApiRepository.WakeUp();
-            Task<(bool IsSuccessStatusCode, string ReasonPhrase)> wakeUpApp = this.appRepository.WakeUp();
-            await Task.WhenAll(wakeUpWebApi);
+            List<Task<(bool IsSuccessStatusCode, string ReasonPhrase)>> wakeUpWebAppTasks = this.wakeUpWebApps.WakeUp();
 
-            string error = string.Empty;
+            await Task.WhenAll(wakeUpWebAppTasks);
 
-            if (!wakeUpWebApi.Result.IsSuccessStatusCode)
+            StringBuilder bld = new ();
+
+            foreach (var (isSuccessStatusCode, reasonPhrase) in wakeUpWebAppTasks.Select(t => t.Result))
             {
-                error = error + "Error when wakeUp WebApi : " + wakeUpWebApi.Result.ReasonPhrase + ". ";
+                if (!isSuccessStatusCode)
+                {
+                    bld.Append("Error when wakeUp : " + reasonPhrase + ". ");
+                }
             }
 
-            if (!wakeUpApp.Result.IsSuccessStatusCode)
-            {
-                error = error + "Error when wakeUp App : " + wakeUpApp.Result.ReasonPhrase + ". ";
-            }
+            string error = bld.ToString();
 
             if (!string.IsNullOrEmpty(error))
             {

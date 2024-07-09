@@ -34,10 +34,10 @@ namespace TheBIADevCompany.BIADemo.Application.Common
         /// <param name="principal">The user principal.</param>
         public SearchExpressionService(IPrincipal principal)
         {
-            this.userId = (principal as BIAClaimsPrincipal).GetUserId();
-            this.userDataDto = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
+            this.userId = (principal as BiaClaimsPrincipal).GetUserId();
+            this.userDataDto = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
 
-            this.Dictionary = new BIADictionary<SearchExpressionItem>
+            this.Dictionary = new BiaDictionary<SearchExpressionItem>
             {
                  { "[Me]", new SearchExpressionItem() { EntityType = typeof(User), Expression = (Expression<Func<User, bool>>)(t => t.Id == this.userId) } },
                  { "[MyRole]", new SearchExpressionItem() { EntityType = typeof(Role), Expression = (Expression<Func<Role, bool>>)(t => this.userDataDto.CurrentTeams.Any(team => team.CurrentRoleIds.Any(id => t.Id == id))) } },
@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.Common
         /// <summary>
         /// Dictionnary of the expression.
         /// </summary>
-        public BIADictionary<SearchExpressionItem> Dictionary { get; private set; }
+        public BiaDictionary<SearchExpressionItem> Dictionary { get; private set; }
 
         /// <summary>
         /// Search Expression item.

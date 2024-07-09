@@ -76,16 +76,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            try
-            {
-                var (results, total) = await this.notificationService.GetRangeAsync(filters);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-                return this.Ok(results);
-            }
-            catch (Exception e)
-            {
-                return this.StatusCode(500, "Internal server error " + e.Message);
-            }
+            var (results, total) = await this.notificationService.GetRangeAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -100,16 +93,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
-            try
-            {
-                var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-                return this.Ok(results);
-            }
-            catch (Exception e)
-            {
-                return this.StatusCode(500, "Internal server error " + e.Message);
-            }
+            var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -132,10 +118,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -170,10 +152,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -215,10 +193,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -247,10 +221,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -281,10 +251,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -323,10 +289,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -363,10 +325,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -382,7 +340,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetUnreadIds()
         {
-            int userId = (this.principal as BIAClaimsPrincipal).GetUserId();
+            int userId = (this.principal as BiaClaimsPrincipal).GetUserId();
             try
             {
                 var dto = await this.notificationService.GetUnreadIds(userId);
@@ -391,10 +349,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -407,7 +361,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.notificationService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Notifications{BiaConstants.Csv.Extension}");
         }
     }
 }

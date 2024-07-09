@@ -10,6 +10,10 @@
         }
       }
     }
+    td,
+    th {
+      text-wrap: nowrap;
+    }
   }
 }
 
@@ -30,8 +34,19 @@ table {
   top: 2px;
 }
 
-.p-sortable-column[aria-sort="none"] {
-    p-sorticon {
-      display: none;
+.bia-column-double,
+.bia-column-float,
+.bia-column-currency,
+.bia-column-number {
+  text-align: right !important;
+}
+
+.p-sortable-column[aria-sort='none'] {
+  p-sorticon {
+    display: none;
   }
+}
+
+::ng-deep .p-datatable.singleSort .p-sortable-column .p-sortable-column-badge {
+  display: none;
 }

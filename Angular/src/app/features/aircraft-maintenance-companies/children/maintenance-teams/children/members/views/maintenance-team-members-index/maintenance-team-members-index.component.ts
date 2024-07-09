@@ -6,25 +6,37 @@ import { MaintenanceTeamService } from '../../../../services/maintenance-team.se
 
 @Component({
   selector: 'app-maintenance-team-members-index',
-  templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
-  styleUrls: ['../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss']
+  templateUrl:
+    '../../../../../../../../shared/bia-shared/feature-templates/members/views/members-index/members-index.component.html',
+  styleUrls: [
+    '../../../../../../../../shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component.scss',
+  ],
 })
-export class MaintenanceTeamMembersIndexComponent extends MembersIndexComponent implements OnInit {
+export class MaintenanceTeamMembersIndexComponent
+  extends MembersIndexComponent
+  implements OnInit
+{
   constructor(
     injector: Injector,
-    public maintenanceTeamService: MaintenanceTeamService,
+    public maintenanceTeamService: MaintenanceTeamService
   ) {
     super(injector);
   }
 
   ngOnInit() {
-    this.teamTypeId=TeamTypeId.MaintenanceTeam;
+    this.teamTypeId = TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
   }
-  
+
   protected setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.MaintenanceTeam_Member_Update);
-    this.canDelete = this.authService.hasPermission(Permission.MaintenanceTeam_Member_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.MaintenanceTeam_Member_Create);
+    this.canEdit = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Member_Update
+    );
+    this.canDelete = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Member_Delete
+    );
+    this.canAdd = this.authService.hasPermission(
+      Permission.MaintenanceTeam_Member_Create
+    );
   }
 }

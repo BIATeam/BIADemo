@@ -5,30 +5,11 @@ import { NotificationSignalRService } from './services/notification-signalr.serv
 import { reducers } from './store/notification.state';
 import { NotificationsEffects } from './store/notifications-effects';
 
-
 @NgModule({
   imports: [
     StoreModule.forFeature('domain-notifications', reducers),
     EffectsModule.forFeature([NotificationsEffects]),
   ],
-  providers: [NotificationSignalRService]
+  providers: [NotificationSignalRService],
 })
-export class NotificationModule { }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export class NotificationModule {}

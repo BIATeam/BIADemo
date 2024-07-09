@@ -6,10 +6,9 @@ import { from, Observable } from 'rxjs';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaNgxLoggerServerService extends NGXLoggerServerService {
-
   constructor(
     protected keycloakService: KeycloakService,
     protected httpBackend: HttpBackend,
@@ -19,9 +18,15 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
     super(httpBackend, ngZone);
   }
 
-  protected override alterHttpRequest(httpRequest: HttpRequest<any>): HttpRequest<any> | Observable<HttpRequest<any>> {
+  protected override alterHttpRequest(
+    httpRequest: HttpRequest<any>
+  ): HttpRequest<any> | Observable<HttpRequest<any>> {
     if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
-      return from(this.keycloakService.getToken().then((token) => this.addToken(httpRequest, token)));
+      return from(
+        this.keycloakService
+          .getToken()
+          .then(token => this.addToken(httpRequest, token))
+      );
     } else {
       return super.alterHttpRequest(httpRequest);
     }
@@ -31,8 +36,9 @@ export class BiaNgxLoggerServerService extends NGXLoggerServerService {
     return request.clone({
       withCredentials: false,
       setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }

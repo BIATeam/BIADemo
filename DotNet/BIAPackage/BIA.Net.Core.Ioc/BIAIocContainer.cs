@@ -1,22 +1,29 @@
-// <copyright file="IocContainer.cs" company="BIA">
+// <copyright file="BiaIocContainer.cs" company="BIA">
 //  Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.IocContainer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Reflection;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data.Repositories;
+    using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using BIA.Net.Core.Ioc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// The IoC Container.
     /// </summary>
-    public static class BIAIocContainer
+    public static class BiaIocContainer
     {
         /// <summary>
         /// The method used to register all instances.
@@ -46,6 +53,13 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // Domain
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("BIA.Net.Core.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
+            foreach (var type in derivedTypes)
+            {
+                collection.AddScoped(type);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -85,6 +99,32 @@ namespace BIA.Net.Core.IocContainer
             }
 
             collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
+
+            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+        }
+
+        /// <summary>
+        /// Creates the HTTP client handler.
+        /// </summary>
+        /// <param name="biaNetSection">The bia net section.</param>
+        /// <returns>HttpClientHandler object.</returns>
+        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
+        {
+            HttpClientHandler httpClientHandler = new HttpClientHandler
+            {
+                UseDefaultCredentials = useDefaultCredentials,
+                AllowAutoRedirect = false,
+                UseProxy = false,
+            };
+
+            if (biaNetSection?.Security?.DisableTlsVerify == true)
+            {
+#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
+            }
+
+            return httpClientHandler;
         }
     }
 }

@@ -17,15 +17,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AircraftMaintenanceCompaniesEffects } from './store/aircraft-maintenance-companies-effects';
 import { FeatureAircraftMaintenanceCompaniesStore } from './store/aircraft-maintenance-company.state';
-import { AircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from './aircraft-maintenance-company.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.AircraftMaintenanceCompany_List_Access,
-      InjectComponent: AircraftMaintenanceCompaniesIndexComponent
+      injectComponent: AircraftMaintenanceCompaniesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,10 +38,15 @@ export let ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Create,
           title: 'aircraftMaintenanceCompany.add',
-          InjectComponent: AircraftMaintenanceCompanyNewComponent,
-          dynamicComponent : () => (AircraftMaintenanceCompanyCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          injectComponent: AircraftMaintenanceCompanyNewComponent,
+          dynamicComponent: () =>
+            aircraftMaintenanceCompanyCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (AircraftMaintenanceCompanyCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -58,10 +63,13 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'app.members',
               canNavigate: true,
-              permission: Permission.AircraftMaintenanceCompany_Member_List_Access
+              permission:
+                Permission.AircraftMaintenanceCompany_Member_List_Access,
             },
             loadChildren: () =>
-              import('./children/members/aircraft-maintenance-company-member.module').then((m) => m.AircraftMaintenanceCompanyMemberModule)
+              import(
+                './children/members/aircraft-maintenance-company-member.module'
+              ).then(m => m.AircraftMaintenanceCompanyMemberModule),
           },
           {
             path: 'edit',
@@ -70,10 +78,15 @@ export let ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Update,
               title: 'aircraftMaintenanceCompany.edit',
-              InjectComponent: AircraftMaintenanceCompanyEditComponent,
-              dynamicComponent : () => (AircraftMaintenanceCompanyCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              injectComponent: AircraftMaintenanceCompanyEditComponent,
+              dynamicComponent: () =>
+                aircraftMaintenanceCompanyCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (AircraftMaintenanceCompanyCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: aircraftMaintenanceCompanyCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
@@ -81,21 +94,23 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'aircraftMaintenanceCompany.maintenanceTeams',
               canNavigate: true,
-              permission: Permission.MaintenanceTeam_List_Access
+              permission: Permission.MaintenanceTeam_List_Access,
             },
             loadChildren: () =>
-              import('./children/maintenance-teams/maintenance-team.module').then((m) => m.MaintenanceTeamModule)
+              import(
+                './children/maintenance-teams/maintenance-team.module'
+              ).then(m => m.MaintenanceTeamModule),
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -114,13 +129,13 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(AircraftMaintenanceCompanyCRUDConfiguration.storeKey, FeatureAircraftMaintenanceCompaniesStore.reducers),
+    StoreModule.forFeature(
+      aircraftMaintenanceCompanyCRUDConfiguration.storeKey,
+      FeatureAircraftMaintenanceCompaniesStore.reducers
+    ),
     EffectsModule.forFeature([AircraftMaintenanceCompaniesEffects]),
     // TODO after creation of CRUD Team AircraftMaintenanceCompany : select the optioDto dommain module requiered for link
     // Domain Modules:
-  ]
+  ],
 })
-
-export class AircraftMaintenanceCompanyModule {
-}
-
+export class AircraftMaintenanceCompanyModule {}

@@ -3,6 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration.CommonFeature
 {
+    /// <summary>
+    /// CommonFeatures.
+    /// </summary>
     public class CommonFeatures
     {
         /// <summary>

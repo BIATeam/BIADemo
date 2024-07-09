@@ -17,19 +17,38 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// Applies the query order.
         /// </summary>
         /// <typeparam name="TEntity">Entity Type.</typeparam>
+        /// <typeparam name="TKey">Entity key.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="order">The order.</param>
         /// <returns>Query where order added.</returns>
         public static IQueryable<TEntity> ApplyQueryOrder<TEntity, TKey>(this IQueryable<TEntity> source, QueryOrder<TEntity> order)
             where TEntity : class, IEntity<TKey>
         {
-            source = order.GetOrderByList.Aggregate(source, (current, item) => Queryable.OrderBy(current, (dynamic)item));
+            foreach (var orderItem in order.GetOrderByList)
+            {
+                if (orderItem.Ascending)
+                {
+                    source = Queryable.OrderBy(source, (dynamic)orderItem.Expression);
+                }
+                else
+                {
+                    source = Queryable.OrderByDescending(source, (dynamic)orderItem.Expression);
+                }
+            }
 
-            source = order.GetOrderByDescendingList.Aggregate(source, (current, item) => Queryable.OrderByDescending(current, (dynamic)item));
+            foreach (var orderItem in order.GetThenByList)
+            {
+                if (orderItem.Ascending)
+                {
+                    source = Queryable.ThenBy((IOrderedQueryable<TEntity>)source, (dynamic)orderItem.Expression);
+                }
+                else
+                {
+                    source = Queryable.ThenByDescending((IOrderedQueryable<TEntity>)source, (dynamic)orderItem.Expression);
+                }
+            }
 
-            source = order.GetThenByList.Aggregate(source, (current, item) => Queryable.ThenBy((IOrderedQueryable<TEntity>)current, (dynamic)item));
-
-            return order.GetThenByDescendingList.Aggregate(source, (current, item) => Queryable.ThenByDescending((IOrderedQueryable<TEntity>)current, (dynamic)item));
+            return source;
         }
     }
 }

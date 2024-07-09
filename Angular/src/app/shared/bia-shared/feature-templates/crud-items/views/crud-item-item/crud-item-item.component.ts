@@ -7,20 +7,23 @@ import { CrudItemService } from '../../services/crud-item.service';
 @Component({
   selector: 'bia-cruditem-item',
   templateUrl: './crud-item-item.component.html',
-  styleUrls: ['./crud-item-item.component.scss']
+  styleUrls: ['./crud-item-item.component.scss'],
 })
-export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
+export class CrudItemItemComponent<CrudItem extends BaseDto>
+  implements OnInit, OnDestroy
+{
   protected sub = new Subscription();
   protected route: ActivatedRoute;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>,
-  ) { 
+    public crudItemService: CrudItemService<CrudItem>
+  ) {
     this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
   }
 
   ngOnInit() {
-    this.crudItemService.currentCrudItemId = this.route.snapshot.params.crudItemId;
+    this.crudItemService.currentCrudItemId =
+      this.route.snapshot.params.crudItemId;
     // TODO redefine in plane
     /*
     this.sub.add
@@ -37,8 +40,6 @@ export class CrudItemItemComponent<CrudItem extends BaseDto> implements OnInit, 
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.crudItemService.clearCurrent();
   }
 }

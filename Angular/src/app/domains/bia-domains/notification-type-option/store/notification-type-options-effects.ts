@@ -14,17 +14,27 @@ import { NotificationTypeOptionDas } from '../services/notification-type-option-
 export class NotificationTypeOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainNotificationTypeOptionsActions.loadAll) /* When action is dispatched */,
+      ofType(
+        DomainNotificationTypeOptionsActions.loadAll
+      ) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the NotificationTypes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'NotificationTypes Reducers' will take care of the rest */
       switchMap(() =>
         this.notificationTypeDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((notificationTypes) => DomainNotificationTypeOptionsActions.loadAllSuccess({ notificationTypes: notificationTypes?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(DomainNotificationTypeOptionsActions.failure({ error: err }));
+          map(notificationTypes =>
+            DomainNotificationTypeOptionsActions.loadAllSuccess({
+              notificationTypes: notificationTypes?.sort((a, b) =>
+                a.display.localeCompare(b.display)
+              ),
+            })
+          ),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(
+              DomainNotificationTypeOptionsActions.failure({ error: err })
+            );
           })
         )
       )
@@ -35,12 +45,12 @@ export class NotificationTypeOptionsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(load),
-      pluck('id'),
+      map(x => x?.id),
       switchMap((id) =>
         this.notificationTypeDas.get({ id: id }).pipe(
           map((notificationType) => loadSuccess({ notificationType })),
           catchError((err) => {
-            this.biaMessageService.showError();
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(failure({ error: err }));
           })
         )
@@ -53,5 +63,5 @@ export class NotificationTypeOptionsEffects {
     private actions$: Actions,
     private notificationTypeDas: NotificationTypeOptionDas,
     private biaMessageService: BiaMessageService
-  ) { }
+  ) {}
 }

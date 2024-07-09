@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
 {
     using System;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
     /// <summary>
     /// The DTO used to represent a plane.
@@ -16,11 +17,13 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the Manufacturer's Serial Number.
         /// </summary>
+        [BiaDtoField(Required = true)]
         public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the first flight date.
         /// </summary>
+        [BiaDtoField(Type = "date&time", Required = false)]
         public DateTime? CertificationDate { get; set; }
     }
 }

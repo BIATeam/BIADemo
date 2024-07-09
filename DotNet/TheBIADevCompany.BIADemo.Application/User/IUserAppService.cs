@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -72,6 +73,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users);
 
         /// <summary>
+        /// Add a list of users in a group in AD.
+        /// </summary>
+        /// <param name="userDto">The list of users to add.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto);
+
+        /// <summary>
         /// Remove a user in a group in AD.
         /// </summary>
         /// <param name="id">The identifier of the user to remove.</param>
@@ -98,6 +106,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// </summary>
         /// <returns>List of dommain keys.</returns>
         Task<List<string>> GetAllLdapUsersDomains();
+
+        /// <summary>
+        /// Saves list of users.
+        /// </summary>
+        /// <param name="userDtos">List of users dto.</param>
+        /// <returns>Error message.</returns>
+        Task<string> SaveAsync(List<UserDto> userDtos);
 
         /// <summary>
         /// Selects the default language.

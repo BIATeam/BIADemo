@@ -6,7 +6,7 @@ import { DomainNotificationTypeOptionsActions } from './notification-type-option
 // This adapter will allow is to manipulate notificationTypes (mostly CRUD operations)
 export const notificationTypeOptionsAdapter = createEntityAdapter<OptionDto>({
   selectId: (notificationType: OptionDto) => notificationType.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -20,36 +20,23 @@ export const notificationTypeOptionsAdapter = createEntityAdapter<OptionDto>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<OptionDto> {
-  // additional props here
-}
+export type State = EntityState<OptionDto>;
 
-export const INIT_STATE: State = notificationTypeOptionsAdapter.getInitialState({
-  // additional props default values here
-});
+export const INIT_STATE: State = notificationTypeOptionsAdapter.getInitialState(
+  {
+    // additional props default values here
+  }
+);
 
 export const notificationTypeOptionReducers = createReducer<State>(
   INIT_STATE,
-  on(DomainNotificationTypeOptionsActions.loadAllSuccess, (state, { notificationTypes }) => notificationTypeOptionsAdapter.setAll(notificationTypes, state)),
+  on(
+    DomainNotificationTypeOptionsActions.loadAllSuccess,
+    (state, { notificationTypes }) =>
+      notificationTypeOptionsAdapter.setAll(notificationTypes, state)
+  )
   // on(loadSuccess, (state, { notificationType }) => notificationTypeOptionsAdapter.upsertOne(notificationType, state))
 );
 
-export const getNotificationTypeOptionById = (id: number) => (state: State) => state.entities[id];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const getNotificationTypeOptionById = (id: number) => (state: State) =>
+  state.entities[id];

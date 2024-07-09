@@ -1,9 +1,12 @@
-<form [formGroup]="form" class="bia-calc-form">
+<form
+  *ngIf="(authService.hasToken$ | async) === true"
+  [formGroup]="form"
+  class="bia-calc-form">
   <p-table
     *ngIf="configuration"
     #dt
     [autoLayout]="true"
-    [reorderableColumns]="true"
+    [reorderableColumns]="reorderableColumns"
     [columns]="displayedColumns"
     [value]="elements"
     [paginator]="paginator"
@@ -20,94 +23,157 @@
     [sortOrder]="sortOrderValue"
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
+    [styleClass]="
+      table?.multiSortMeta?.length > 1
+        ? 'p-datatable-striped multiSort'
+        : 'p-datatable-striped singleSort'
+    "
+    sortMode="multiple"
+    [scrollHeight]="scrollHeightValue"
+    [scrollable]="isScrollable"
     editMode="row"
-    dataKey="id"
-    styleClass="p-datatable-striped"
-  >
-    <!-- HEADER -->
+    dataKey="id">
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th class="bia-table-select-col" *ngIf="canSelectElement === true">
+        <th
+          class="bia-table-select-col"
+          *ngIf="canSelectElement === true"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          [frozen]="isSelectFrozen">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
-          <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
+          <th
+            *ngIf="col?.isSortable === true"
+            [pSortableColumn]="col.field"
+            pReorderableColumn
+            [style.min-width]="col.minWidth"
+            [alignFrozen]="col.alignFrozen"
+            pFrozenColumn
+            [frozen]="col.isFrozen">
             <span class="nowrap">
               <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
                 <i
                   class="{{ col?.icon }} bia-column-icon"
                   pTooltip="{{ col?.header | translate }}"
-                  tooltipPosition="top"
-                ></i>
+                  tooltipPosition="top"></i>
               </ng-container>
-              <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+              <ng-template #HeaderNoIcon>
+                {{ col?.header | translate }}</ng-template
+              >
               <p-sortIcon [field]="col.field"></p-sortIcon>
             </span>
           </th>
-          <th *ngIf="col?.isSortable !== true" pReorderableColumn>
+          <th
+            *ngIf="col?.isSortable !== true"
+            pReorderableColumn
+            [style.min-width]="col.minWidth"
+            [alignFrozen]="col.alignFrozen"
+            pFrozenColumn
+            [frozen]="col.isFrozen">
             <span class="nowrap">
               <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
                 <i
                   class="{{ col?.icon }} bia-column-icon"
                   pTooltip="{{ col?.header | translate }}"
-                  tooltipPosition="top"
-                ></i>
+                  tooltipPosition="top"></i>
               </ng-container>
-              <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+              <ng-template #HeaderNoIcon>
+                {{ col?.header | translate }}</ng-template
+              >
             </span>
           </th>
         </ng-container>
       </tr>
       <tr *ngIf="showColSearch === true" class="searchTR">
-        <th *ngIf="canSelectElement === true"></th>
-        <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
-          <bia-table-filter [col]="col" [table]="dt"> </bia-table-filter>
+        <th
+          *ngIf="canSelectElement === true"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          [frozen]="isSelectFrozen"></th>
+        <th
+          *ngFor="let col of columns"
+          [ngSwitch]="col.field"
+          pReorderableColumn
+          [style.min-width]="col.minWidth"
+          [alignFrozen]="col.alignFrozen"
+          pFrozenColumn
+          [frozen]="col.isFrozen">
+          <bia-table-filter [field]="col" [table]="dt"> </bia-table-filter>
         </th>
       </tr>
     </ng-template>
-    <!-- BODY -->
-    <ng-template pTemplate="body" let-rowData let-columns="columns" let-editing="editing" let-ri="rowIndex">
+    <ng-template
+      pTemplate="body"
+      let-rowData
+      let-columns="columns"
+      let-editing="editing"
+      let-ri="rowIndex">
       <tr
         class="bia-selectable-row"
         [pSelectableRow]="isFooter(rowData) !== true ? rowData : null"
         [pEditableRow]="rowData"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()"
-      >
+        (keyup.escape)="cancel()">
         <!-- FIRST COLUMN WITH CHECKBOX -->
-        <td *ngIf="canSelectElement === true">
-          <p-tableCheckbox *ngIf="rowData.id > 0" [value]="rowData"></p-tableCheckbox>
+        <td
+          *ngIf="canSelectElement === true"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          [frozen]="isSelectFrozen">
+          <p-tableCheckbox
+            *ngIf="rowData.id > 0"
+            [value]="rowData"></p-tableCheckbox>
         </td>
         <!-- OTHER COLUMNS -->
-        <td (click)="initEditableRow(rowData)" *ngFor="let col of columns">
+        <td
+          *ngFor="let col of columns"
+          [class]="'bia-column-' + col.typeLowerCase"
+          (click)="initEditableRow(rowData)"
+          [style.min-width]="col.minWidth"
+          [alignFrozen]="col.alignFrozen"
+          pFrozenColumn
+          [frozen]="col.isFrozen">
           <p-cellEditor>
             <ng-template pTemplate="input">
-              <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable === true">
+              <ng-template
+                [ngIf]="col.isEditable === true || col.isOnlyUpdatable === true"
+                [ngIfElse]="isNotEditable">
                 <bia-table-input
                   [field]="col"
                   [form]="form"
                   [dictOptionDtos]="dictOptionDtos"
                   (valueChange)="onChange()"
-                  (complexInput)="onComplexInput($event)"
-                >
+                  (complexInput)="onComplexInput($event)">
                   <ng-template pTemplate="specificInput">
                     <ng-container
-                      *ngTemplateOutlet="specificInputTemplate; context: { field: col, form: form }"
-                    ></ng-container>
+                      *ngTemplateOutlet="
+                        specificInputTemplate;
+                        context: { field: col, form: form }
+                      "></ng-container>
                   </ng-template>
                 </bia-table-input>
               </ng-template>
               <ng-template #isNotEditable>
                 <ng-container *ngIf="isFooter(rowData) !== true">
-                  <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
+                  <bia-table-output
+                    [field]="col"
+                    [data]="getCellData(rowData, col)">
                     <ng-template pTemplate="specificOutput">
                       <ng-container
                         *ngTemplateOutlet="
                           specificOutputTemplate;
-                          context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
-                        "
-                      ></ng-container>
+                          context: {
+                            rowData: rowData,
+                            field: col,
+                            data: getCellData(rowData, col),
+                          }
+                        "></ng-container>
                     </ng-template>
                   </bia-table-output>
                 </ng-container>
@@ -116,14 +182,19 @@
             <!-- OUTPUT -->
             <ng-template pTemplate="output">
               <ng-template [ngIf]="isFooter(rowData) !== true">
-                <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
+                <bia-table-output
+                  [field]="col"
+                  [data]="getCellData(rowData, col)">
                   <ng-template pTemplate="specificOutput">
                     <ng-container
                       *ngTemplateOutlet="
                         specificOutputTemplate;
-                        context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
-                      "
-                    ></ng-container>
+                        context: {
+                          rowData: rowData,
+                          field: col,
+                          data: getCellData(rowData, col),
+                        }
+                      "></ng-container>
                   </ng-template>
                 </bia-table-output>
               </ng-template>
@@ -137,39 +208,60 @@
         class="bia-selectable-row"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()"
-      >
-        <td (click)="initEditableRow(footerRowData)" *ngIf="canSelectElement === true">
+        (keyup.escape)="cancel()">
+        <td
+          (click)="initEditableRow(footerRowData)"
+          *ngIf="canSelectElement === true"
+          [style.width]="widthSelect"
+          [alignFrozen]="alignFrozenSelect"
+          pFrozenColumn
+          [frozen]="isSelectFrozen">
           <i class="pi pi-plus"></i>
         </td>
-        <td (click)="initEditableRow(footerRowData)" *ngFor="let col of columns">
+        <td
+          (click)="initEditableRow(footerRowData)"
+          *ngFor="let col of columns"
+          [style.min-width]="col.minWidth"
+          [alignFrozen]="col.alignFrozen"
+          pFrozenColumn
+          [frozen]="col.isFrozen">
           <!-- <p-cellEditor> -->
           <ng-container *ngIf="editFooter === true">
-            <ng-template [ngIf]="col.isEditable === true" [ngIfElse]="isNotEditable">
+            <ng-template
+              [ngIf]="
+                col.isEditable === true || col.isOnlyInitializable === true
+              "
+              [ngIfElse]="isNotEditable">
               <bia-table-input
                 [field]="col"
                 [form]="form"
                 [dictOptionDtos]="dictOptionDtos"
                 (valueChange)="onChange()"
-                (complexInput)="onComplexInput($event)"
-              >
+                (complexInput)="onComplexInput($event)">
                 <ng-template pTemplate="specificInput">
                   <ng-container
-                    *ngTemplateOutlet="specificInputTemplate; context: { field: col, form: form }"
-                  ></ng-container>
+                    *ngTemplateOutlet="
+                      specificInputTemplate;
+                      context: { field: col, form: form }
+                    "></ng-container>
                 </ng-template>
               </bia-table-input>
             </ng-template>
             <ng-template #isNotEditable>
               <ng-container>
-                <bia-table-output [field]="col" [data]="getCellData(footerRowData, col)">
+                <bia-table-output
+                  [field]="col"
+                  [data]="getCellData(footerRowData, col)">
                   <ng-template pTemplate="specificOutput">
                     <ng-container
                       *ngTemplateOutlet="
                         specificOutputTemplate;
-                        context: { rowData: footerRowData, field: col, data: getCellData(footerRowData, col) }
-                      "
-                    ></ng-container>
+                        context: {
+                          rowData: footerRowData,
+                          field: col,
+                          data: getCellData(footerRowData, col),
+                        }
+                      "></ng-container>
                   </ng-template>
                 </bia-table-output>
               </ng-container>

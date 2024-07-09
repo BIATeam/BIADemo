@@ -7,7 +7,7 @@ import { MaintenanceTeam } from '../model/maintenance-team';
 // This adapter will allow is to manipulate maintenanceTeams (mostly CRUD operations)
 export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
   selectId: (maintenanceTeam: MaintenanceTeam) => maintenanceTeam.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -41,25 +41,36 @@ export const INIT_STATE: State = maintenanceTeamsAdapter.getInitialState({
 
 export const maintenanceTeamReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureMaintenanceTeamsActions.loadAllByPost, (state, { event }) => {
+  on(FeatureMaintenanceTeamsActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureMaintenanceTeamsActions.load, (state) => {
+  on(FeatureMaintenanceTeamsActions.load, state => {
     return { ...state, loadingGet: true };
   }),
-  on(FeatureMaintenanceTeamsActions.loadAllByPostSuccess, (state, { result, event }) => {
-    const stateUpdated = maintenanceTeamsAdapter.setAll(result.data, state);
-    stateUpdated.totalCount = result.totalCount;
-    stateUpdated.lastLazyLoadEvent = event;
-    stateUpdated.loadingGetAll = false;
-    return stateUpdated;
-  }),
-  on(FeatureMaintenanceTeamsActions.loadSuccess, (state, { maintenanceTeam }) => {
-    return { ...state, currentMaintenanceTeam: maintenanceTeam, loadingGet: false };
-  }),
-  on(FeatureMaintenanceTeamsActions.failure, (state, { error }) => {
+  on(
+    FeatureMaintenanceTeamsActions.loadAllByPostSuccess,
+    (state, { result, event }) => {
+      const stateUpdated = maintenanceTeamsAdapter.setAll(result.data, state);
+      stateUpdated.totalCount = result.totalCount;
+      stateUpdated.lastLazyLoadEvent = event;
+      stateUpdated.loadingGetAll = false;
+      return stateUpdated;
+    }
+  ),
+  on(
+    FeatureMaintenanceTeamsActions.loadSuccess,
+    (state, { maintenanceTeam }) => {
+      return {
+        ...state,
+        currentMaintenanceTeam: maintenanceTeam,
+        loadingGet: false,
+      };
+    }
+  ),
+  on(FeatureMaintenanceTeamsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getMaintenanceTeamById = (id: number) => (state: State) => state.entities[id];
+export const getMaintenanceTeamById = (id: number) => (state: State) =>
+  state.entities[id];

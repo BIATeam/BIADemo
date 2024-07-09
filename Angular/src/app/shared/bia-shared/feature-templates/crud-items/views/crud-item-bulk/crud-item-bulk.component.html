@@ -1,0 +1,20 @@
+<bia-form
+  [hidden]="true"
+  [fields]="crudConfiguration.fieldsConfig.columns"
+  [dictOptionDtos]="
+    crudItemService.optionsService.dictOptionDtos$ | async
+  "></bia-form>
+
+<bia-crud-item-bulk-form
+  [bulkData]="bulkData"
+  [crudConfiguration]="crudConfiguration"
+  [appSettings]="this.biaTranslationService.appSettings$ | async"
+  [canAdd]="canAdd"
+  [canDelete]="canDelete"
+  [canEdit]="canEdit"
+  [bulkParam]="crudItemBulkService.bulkParam"
+  (save)="onSave($event)"
+  (cancel)="onCancel()"
+  (fileSelected)="onFileSelected($event)"
+  (changeBulkParam)="onChangeBulkParam($event)">
+</bia-crud-item-bulk-form>

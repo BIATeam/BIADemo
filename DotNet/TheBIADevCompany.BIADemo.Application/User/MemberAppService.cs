@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The claims principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberAppService"/> class.
@@ -38,11 +38,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="userContext">The user context.</param>
-        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal, UserContext userContext)
+        public MemberAppService(ITGenericRepository<Member, int> repository, IPrincipal principal)
             : base(repository)
         {
-            this.principal = principal as BIAClaimsPrincipal;
-            this.userContext = userContext;
+            this.principal = principal as BiaClaimsPrincipal;
 
             // Include already add with the mapper MemberMapper
             // this.Repository.QueryCustomizer = queryCustomizer
@@ -123,11 +122,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
             StringBuilder csv = new StringBuilder();
             records.ForEach(line =>
                     {
-                        csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                        csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                     });
 
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
+            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+            var buffer = Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaders ?? new List<string>())}\r\n{csv}");
             return buffer;
         }
     }

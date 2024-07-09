@@ -5,9 +5,12 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
@@ -17,9 +20,8 @@ import { Member } from '../../model/member';
   selector: 'bia-member-form-edit',
   templateUrl: './member-form-edit.component.html',
   styleUrls: ['./member-form-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
 export class MemberFormEditComponent implements OnChanges {
   @Input() member: Member = <Member>{};
   @Input() roleOptions: OptionDto[];
@@ -34,11 +36,12 @@ export class MemberFormEditComponent implements OnChanges {
 
   constructor(
     public formBuilder: UntypedFormBuilder,
-    public translateService: TranslateService) {
+    public translateService: TranslateService
+  ) {
     this.initForm();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.member) {
       this.form.reset();
       if (this.member) {
@@ -69,12 +72,18 @@ export class MemberFormEditComponent implements OnChanges {
     if (this.form.valid) {
       const member: Member = <Member>this.form.value;
       member.id = member.id > 0 ? member.id : 0;
-      member.roles = BiaOptionService.Differential(member.roles, this.member?.roles);
-      member.user = {...member.user};
+      member.roles = BiaOptionService.differential(
+        member.roles,
+        this.member?.roles
+      );
+      member.user = new OptionDto(
+        member.user.id,
+        member.user.display,
+        member.user.dtoState
+      );
 
       this.save.emit(member);
       this.form.reset();
     }
   }
 }
-

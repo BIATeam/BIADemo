@@ -17,15 +17,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { AirportsEffects } from './store/airports-effects';
 import { FeatureAirportsStore } from './store/airport.state';
-import { AirportCRUDConfiguration } from './airport.constants';
+import { airportCRUDConfiguration } from './airport.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Airport_List_Access,
-      InjectComponent: AirportsIndexComponent
+      injectComponent: AirportsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,10 +38,15 @@ export let ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Airport_Create,
           title: 'airport.add',
-          InjectComponent: AirportNewComponent,
-          dynamicComponent : () => (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          injectComponent: AirportNewComponent,
+          dynamicComponent: () =>
+            airportCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: airportCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -60,22 +65,27 @@ export let ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Airport_Update,
               title: 'airport.edit',
-              InjectComponent: AirportEditComponent,
-              dynamicComponent : () => (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              injectComponent: AirportEditComponent,
+              dynamicComponent: () =>
+                airportCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (AirportCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: airportCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -94,13 +104,13 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(AirportCRUDConfiguration.storeKey, FeatureAirportsStore.reducers),
+    StoreModule.forFeature(
+      airportCRUDConfiguration.storeKey,
+      FeatureAirportsStore.reducers
+    ),
     EffectsModule.forFeature([AirportsEffects]),
     // TODO after creation of CRUD Airport : select the optioDto dommain module requiered for link
     // Domain Modules:
-  ]
+  ],
 })
-
-export class AirportModule {
-}
-
+export class AirportModule {}

@@ -7,14 +7,12 @@ import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/a
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaInjectExternalService implements OnDestroy {
   protected sub = new Subscription();
 
-  constructor(
-    private store: Store<AppState>
-  ) {}
+  constructor(private store: Store<AppState>) {}
 
   public init() {
     this.initInjector();
@@ -30,13 +28,14 @@ export class BiaInjectExternalService implements OnDestroy {
     const appSettings$ = this.getAppSettings();
 
     this.sub.add(
-      appSettings$.subscribe((appSettings) => {
-          //       
-        if (appSettings)
-        {
-          if (appSettings.environment.urlsAdditionalJS && appSettings.environment.urlsAdditionalJS.length >0)
-          {
-            let externalJs = appSettings.environment.urlsAdditionalJS;
+      appSettings$.subscribe(appSettings => {
+        //
+        if (appSettings) {
+          if (
+            appSettings.environment.urlsAdditionalJS &&
+            appSettings.environment.urlsAdditionalJS.length > 0
+          ) {
+            const externalJs = appSettings.environment.urlsAdditionalJS;
             externalJs.forEach(scriptPath => {
               const d = document;
               const g = d.createElement('script');
@@ -44,34 +43,36 @@ export class BiaInjectExternalService implements OnDestroy {
               g.type = 'text/javascript';
               g.async = true;
               g.src = scriptPath;
-    
+
               if (s.parentNode) {
                 s.parentNode.insertBefore(g, s);
-              }       
+              }
             });
           }
 
-          if (appSettings.environment.urlsAdditionalCSS && appSettings.environment.urlsAdditionalCSS.length >0)
-          {
-            let externalCss = appSettings.environment.urlsAdditionalCSS;
+          if (
+            appSettings.environment.urlsAdditionalCSS &&
+            appSettings.environment.urlsAdditionalCSS.length > 0
+          ) {
+            const externalCss = appSettings.environment.urlsAdditionalCSS;
             externalCss.forEach(stylePath => {
               const d = document;
               const g = d.createElement('link');
               const s = d.getElementsByTagName('link')[0];
-              g.rel = 'stylesheet'
-              g.type = 'text/css'
+              g.rel = 'stylesheet';
+              g.type = 'text/css';
               g.href = stylePath;
-    
+
               if (s.parentNode) {
                 s.parentNode.insertBefore(g, s);
-              }       
+              }
             });
           }
         }
-      }
-    ));
+      })
+    );
   }
   private getAppSettings(): Observable<AppSettings | null> {
-    return this.store.select(getAppSettings).pipe(filter((envConf) => !!envConf));
+    return this.store.select(getAppSettings).pipe(filter(envConf => !!envConf));
   }
 }

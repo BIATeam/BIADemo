@@ -1,5 +1,6 @@
-<div class="header flex flex-row justify-content-between align-content-between" >
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
+<div class="header flex flex-row justify-content-between align-content-between">
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <ng-container *ngIf="showBtnFilter">
       <button
         type="button"
@@ -8,42 +9,63 @@
         *ngIf="showFilter === false && hasFilter === false"
         pButton
         (click)="toggleFilter()"
-        pTooltip="{{ 'msg.showFilters' | translate }}"
-      ></button>
+        pTooltip="{{ 'msg.showFilters' | translate }}"></button>
       <button
         type="button"
         icon="pi pi-filter"
         *ngIf="showFilter === false && hasFilter === true"
         pButton
-        pBadge severity="warning" style="overflow: visible"
+        pBadge
+        severity="warning"
+        style="overflow: visible"
         (click)="toggleFilter()"
-        pTooltip="{{ 'msg.showFilters' | translate }}"
-      ></button>
+        pTooltip="{{ 'msg.showFilters' | translate }}"></button>
     </ng-container>
     <button
       pButton
       [disabled]="nbSelectedElements === 0"
       *ngIf="canDelete"
       label="{{ 'bia.delete' | translate }}"
-      (click)="onDelete()"
-    ></button>
+      (click)="onDelete()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
   </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <h1>{{ headerTitle }}</h1>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
-  <div class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch" >
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
     <button
       pButton
       class="p-button-outlined"
       label="{{ 'bia.back' | translate }}"
       (click)="onBack()"
-      *ngIf="canBack"
-    ></button>
+      *ngIf="canBack"></button>
     <ng-container *ngTemplateOutlet="actionOnListTemplate"></ng-container>
-    <button pButton *ngIf="canExportCSV" class="p-button-outlined" label="CSV" (click)="exportCSV.emit()"></button>
-    <button pButton *ngIf="canAdd" label="{{ 'bia.add' | translate }}" (click)="onCreate()"></button>
+    <button
+      pButton
+      *ngIf="canExportCSV"
+      class="p-button-outlined"
+      label="CSV"
+      (click)="exportCSV.emit()"></button>
+    <button
+      pButton
+      *ngIf="displayBulkButton()"
+      class="p-button-outlined"
+      label="{{ 'bia.export' | translate }}"
+      (click)="fullExportCSV.emit()"></button>
+    <button
+      pButton
+      *ngIf="displayBulkButton()"
+      class="p-button-outlined"
+      label="{{ 'bia.import' | translate }}"
+      (click)="bulk.next()"></button>
+    <button
+      pButton
+      *ngIf="canAdd"
+      label="{{ 'bia.add' | translate }}"
+      (click)="onCreate()"></button>
   </div>
 </div>
 <p-confirmDialog></p-confirmDialog>

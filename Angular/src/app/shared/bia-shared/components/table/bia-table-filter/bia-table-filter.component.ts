@@ -5,38 +5,51 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  ViewEncapsulation,
   // Output,
 } from '@angular/core';
-import { FilterMetadata } from 'primeng/api';
+import { TranslateService } from '@ngx-translate/core';
+import { FilterMatchMode, FilterMetadata, SelectItem } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { BiaFieldConfig, PropType} from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFieldConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { TableHelperService } from '../../../services/table-helper.service';
+import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
   selector: 'bia-table-filter',
   templateUrl: './bia-table-filter.component.html',
   styleUrls: ['./bia-table-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  encapsulation: ViewEncapsulation.None,
 })
-
-export class BiaTableFilterComponent implements OnInit, OnDestroy {
-  @Input() col: BiaFieldConfig;
+export class BiaTableFilterComponent
+  extends BiaFieldBaseComponent
+  implements OnInit, OnDestroy
+{
   @Input() table: Table;
 
   // @Output() valueChange = new EventEmitter<void>();
   // @Output() complexInput = new EventEmitter<boolean>();
 
+  public columnFilterType = '';
+  protected matchModeOptions: SelectItem[] | undefined = undefined;
   protected sub = new Subscription();
-  
+
   constructor(
-    public biaTranslationService: BiaTranslationService
-    ) {
-    
+    public biaTranslationService: BiaTranslationService,
+    private translateService: TranslateService,
+    private tableHelperService: TableHelperService
+  ) {
+    super(biaTranslationService);
   }
-  
+
   ngOnInit() {
-    this.initFieldConfiguration();
+    this.initFiterConfiguration();
   }
 
   ngOnDestroy() {
@@ -45,73 +58,124 @@ export class BiaTableFilterComponent implements OnInit, OnDestroy {
     }
   }
 
-  isArrayFilter(col: BiaFieldConfig)
-  {
+  isArrayFilter(col: BiaFieldConfig) {
     let valueInArray = false;
-    if (this.table && this.table.filters && Array.isArray(this.table.filters[col.field]))
-    {
+    if (
+      this.table &&
+      this.table.filters &&
+      Array.isArray(this.table.filters[col.field])
+    ) {
       (this.table.filters[col.field] as FilterMetadata[]).forEach(element => {
-        if (element.value != undefined)
-        {
-          valueInArray =true;
+        if (!this.tableHelperService.isEmptyFilter(element)) {
+          valueInArray = true;
         }
       });
     }
     return valueInArray;
   }
 
-  isArraySimple(col: BiaFieldConfig)
-  {
-    if (this.table)
-    {
-      if (this.table.filters && (this.table.filters[col.field] as FilterMetadata) && 'value' in (this.table.filters[col.field] as FilterMetadata))
-      {
-        return (this.table.filters[col.field] as FilterMetadata)['value'] != undefined
+  isArraySimple(col: BiaFieldConfig) {
+    if (this.table) {
+      if (this.table.filters) {
+        const filter: FilterMetadata = this.table.filters[
+          col.field
+        ] as FilterMetadata;
+        if (filter) {
+          return !this.tableHelperService.isEmptyFilter(filter);
+        }
       }
     }
-    return false; 
+    return false;
   }
 
-  setSimpleFilter(value:any, col: BiaFieldConfig)
-  {
-    this.table.filter(value, col.field, col.filterMode)
+  setSimpleFilter(value: any, col: BiaFieldConfig) {
+    this.table.filter(value, col.field, col.filterMode);
   }
 
-  private initFieldConfiguration() {
-    if (
-      this.col.type == PropType.DateTime
-      ||
-      this.col.type == PropType.Date
-      ||
-      this.col.type == PropType.Time
-      ||
-      this.col.type == PropType.TimeOnly
-      ||
-      this.col.type == PropType.TimeSecOnly
-    )
-    {
-      this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-        let field = this.col.clone();
-        switch (field.type)
-        {
-          case PropType.DateTime :
-            field.formatDate = dateFormat.dateTimeFormat;
-            break;
-          case PropType.Date :
-            field.formatDate = dateFormat.dateFormat;
-            break;
-          case PropType.Time :
-            field.formatDate = dateFormat.timeFormat;
-            break;
-          case PropType.TimeOnly :
-            field.formatDate = dateFormat.timeFormat;
-            break;
-          case PropType.TimeSecOnly :
-            field.formatDate = dateFormat.timeFormatSec;
-            break;
-        }
-        this.col = field;
-      }));
+  private initFiterConfiguration() {
+    this.initFieldConfiguration();
+    if (this.field.type == PropType.Number) {
+      this.columnFilterType = 'numeric';
+      this.generateMatchModeOptions(this.filterMatchModeOptions.numeric);
+    } else if (this.field.type == PropType.Boolean) {
+      this.columnFilterType = 'boolean';
+    } else if (
+      this.field.type == PropType.DateTime ||
+      this.field.type == PropType.Date
+    ) {
+      this.generateMatchModeOptions(this.filterMatchModeOptions.date);
+      this.columnFilterType = 'date';
+    } else if (
+      this.field.type == PropType.Time ||
+      this.field.type == PropType.TimeOnly ||
+      this.field.type == PropType.TimeSecOnly
+    ) {
+      this.generateMatchModeOptions(this.filterMatchModeOptions.date);
+      this.columnFilterType = 'text';
+    } else {
+      this.generateMatchModeOptions(this.filterMatchModeOptions.text);
+      this.columnFilterType = 'text';
     }
+  }
+  filterMatchModeOptions = {
+    text: [
+      FilterMatchMode.STARTS_WITH,
+      'notStartsWith',
+      FilterMatchMode.CONTAINS,
+      FilterMatchMode.NOT_CONTAINS,
+      FilterMatchMode.ENDS_WITH,
+      'notEndsWith',
+      FilterMatchMode.EQUALS,
+      FilterMatchMode.NOT_EQUALS,
+    ],
+    numeric: [
+      FilterMatchMode.EQUALS,
+      FilterMatchMode.NOT_EQUALS,
+      FilterMatchMode.LESS_THAN,
+      FilterMatchMode.LESS_THAN_OR_EQUAL_TO,
+      FilterMatchMode.GREATER_THAN,
+      FilterMatchMode.GREATER_THAN_OR_EQUAL_TO,
+    ],
+    date: [
+      FilterMatchMode.DATE_IS,
+      FilterMatchMode.DATE_IS_NOT,
+      FilterMatchMode.DATE_BEFORE,
+      FilterMatchMode.DATE_AFTER,
+    ],
+  };
+  generateMatchModeOptions(option: string[]) {
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.matchModeOptions = option?.map((key: string) => {
+          return {
+            label: this.translateService.instant('primeng.' + key),
+            value: key,
+          };
+        });
+        if (this.field.isRequired === false) {
+          this.matchModeOptions.push(
+            {
+              label: this.translateService.instant('primeng.empty'),
+              value: 'empty',
+            },
+            {
+              label: this.translateService.instant('primeng.notEmpty'),
+              value: 'notEmpty',
+            }
+          );
+        }
+        this.resetColumnFilter();
+      })
+    );
+  }
+
+  // use to force the refresh du to langage conflict. PrimeNg issue #14273
+  showColumnFilter = true;
+  resetColumnFilter() {
+    this.showColumnFilter = false;
+
+    setTimeout(() => {
+      this.showColumnFilter = true;
+    });
   }
 }

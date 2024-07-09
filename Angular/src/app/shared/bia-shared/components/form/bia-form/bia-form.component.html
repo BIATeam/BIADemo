@@ -1,25 +1,33 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <ng-container *ngFor="let field of fields">
-    <div class="flex flex-row align-items-center">
-      <div class="app-field-container" >
-        <ng-template [ngIf]="field.isEditable === true" [ngIfElse]="isNotEditable">
+    <div
+      *ngIf="field.isVisible === true"
+      class="flex flex-row align-items-center">
+      <div class="app-field-container">
+        <ng-template
+          [ngIf]="field.isEditable === true"
+          [ngIfElse]="isNotEditable">
           <bia-input
             [field]="field"
             [form]="form"
-            [dictOptionDtos]="dictOptionDtos"
-          >
-          <ng-template pTemplate="specificInput">
-            <ng-container *ngTemplateOutlet="specificInputTemplate;context: { field: field, form: form }" ></ng-container>
-          </ng-template>
+            [dictOptionDtos]="dictOptionDtos">
+            <ng-template pTemplate="specificInput">
+              <ng-container
+                *ngTemplateOutlet="
+                  specificInputTemplate;
+                  context: { field: field, form: form }
+                "></ng-container>
+            </ng-template>
           </bia-input>
         </ng-template>
         <ng-template #isNotEditable>
-          <bia-output
-          [field]="field"
-          [data]="getCellData(field)"
-          >
+          <bia-output [field]="field" [data]="getCellData(field)">
             <ng-template pTemplate="specificOutput">
-              <ng-container *ngTemplateOutlet="specificOutputTemplate;context: { field: field, data: getCellData(field) }" ></ng-container>
+              <ng-container
+                *ngTemplateOutlet="
+                  specificOutputTemplate;
+                  context: { field: field, data: getCellData(field) }
+                "></ng-container>
             </ng-template>
           </bia-output>
         </ng-template>
@@ -27,13 +35,16 @@
     </div>
   </ng-container>
   <div class="flex flex-row align-content-end justify-content-end gap-3">
-    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+    <button
+      pButton
+      label="{{ 'bia.save' | translate }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
     <button
       pButton
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
-      (click)="onCancel()"
-    ></button>
+      (click)="onCancel()"></button>
   </div>
 </form>

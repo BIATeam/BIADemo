@@ -21,15 +21,29 @@ export class TeamOptionsEffects {
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Teams Reducers' will take care of the rest */
       switchMap(() =>
-        this.teamDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((teams) => DomainTeamOptionsActions.loadAllSuccess({ teams: teams?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
-              this.biaMessageService.showError();
-            }
-            return of(DomainTeamOptionsActions.failure({ error: err }));
+        this.teamDas
+          .getList({
+            endpoint: 'allOptions',
+            offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
-        )
+          .pipe(
+            map(teams =>
+              DomainTeamOptionsActions.loadAllSuccess({
+                teams: teams?.sort((a, b) =>
+                  a.display.localeCompare(b.display)
+                ),
+              })
+            ),
+            catchError(err => {
+              if (
+                BiaOnlineOfflineService.isModeEnabled !== true ||
+                BiaOnlineOfflineService.isServerAvailable(err) === true
+              ) {
+                this.biaMessageService.showErrorHttpResponse(err);
+              }
+              return of(DomainTeamOptionsActions.failure({ error: err }));
+            })
+          )
       )
     )
   );

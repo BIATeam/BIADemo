@@ -6,34 +6,40 @@ import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templat
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  templateUrl: '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: ['../../../crud-items/views/crud-item-item/crud-item-item.component.scss']
+  selector: 'bia-members-item',
+  templateUrl:
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
 })
-export class MemberItemComponent extends CrudItemItemComponent<Member> implements OnInit {
+export class MemberItemComponent
+  extends CrudItemItemComponent<Member>
+  implements OnInit
+{
   protected layoutService: BiaClassicLayoutService;
   protected memberService: MemberService;
 
-  constructor(
-    protected injector: Injector,
-  ) {
+  constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
-    this.layoutService = injector.get<BiaClassicLayoutService>(BiaClassicLayoutService);
+    this.layoutService = injector.get<BiaClassicLayoutService>(
+      BiaClassicLayoutService
+    );
     this.memberService = injector.get<MemberService>(MemberService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.sub.add
-      (
-        this.memberService.crudItem$.subscribe((member) => {
-          // TODO after creation of CRUD Member : set the field of the item to display in the breadcrump
-          if (member?.user?.display) {
-            this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = member.user.display;
-            });
-            this.layoutService.refreshBreadcrumb();
-          }
-        })
-      );
+    this.sub.add(
+      this.memberService.crudItem$.subscribe(member => {
+        // TODO after creation of CRUD Member : set the field of the item to display in the breadcrump
+        if (member?.user?.display) {
+          this.route.data.pipe(first()).subscribe(routeData => {
+            (routeData as any)['breadcrumb'] = member.user.display;
+          });
+          this.layoutService.refreshBreadcrumb();
+        }
+      })
+    );
   }
 }

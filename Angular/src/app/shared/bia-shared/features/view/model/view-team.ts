@@ -1,5 +1,5 @@
 export interface ViewTeam {
-    teamId: number;
-    teamTitle: string;
-    isDefault: boolean;
+  teamId: number;
+  teamTitle: string;
+  isDefault: boolean;
 }

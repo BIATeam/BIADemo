@@ -3,17 +3,20 @@ import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NavigationService {
-  constructor() {}
-
-  public filterNavByRole(authInfo: AuthInfo, biaNavigation: BiaNavigation[]): BiaNavigation[] {
+  public filterNavByRole(
+    authInfo: AuthInfo,
+    biaNavigation: BiaNavigation[]
+  ): BiaNavigation[] {
     const biaNavigationFiltered = new Array<BiaNavigation>();
-    biaNavigation.forEach((element: BiaNavigation, index: number) => {
+    biaNavigation.forEach((element: BiaNavigation) => {
       const found =
         !element.permissions ||
-        element.permissions.some((r) => authInfo?.uncryptedToken?.permissions?.indexOf(r) >= 0);
+        element.permissions.some(
+          r => authInfo?.uncryptedToken?.permissions?.indexOf(r) >= 0
+        );
       if (found) {
         biaNavigationFiltered.push(element);
         if (element.children) {

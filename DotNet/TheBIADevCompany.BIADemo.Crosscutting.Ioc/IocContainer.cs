@@ -5,27 +5,36 @@
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
+    using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
+    using BIA.Net.Core.Ioc;
     using BIA.Net.Core.IocContainer;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
+    // BIAToolKit - Begin Dependency 1
+    // BIAToolKit - End Dependency 1
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Application.Job;
+
+    // BIAToolKit - Begin Partial Dependency 1 Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
 
+    // BIAToolKit - End Partial Dependency 1 Plane
     // End BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -36,6 +45,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
@@ -49,9 +59,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// </summary>
         /// <param name="collection">The collection of service.</param>
         /// <param name="configuration">The application configuration.</param>
+        /// <param name="isApi">true if it's an API, false if it's a Worker.</param>
         /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
         /// specific ones in IocContainerTest.</param>
-        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
+        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isApi, bool isUnitTest = false)
         {
             if (configuration == null && !isUnitTest)
             {
@@ -61,11 +72,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaNetSection biaNetSection = new BiaNetSection();
             configuration?.GetSection("BiaNet").Bind(biaNetSection);
 
-            BIAIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
+            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
             ConfigureDomainContainer(collection);
-            ConfigureApplicationContainer(collection);
+            ConfigureApplicationContainer(collection, isApi);
 
             if (!isUnitTest)
             {
@@ -82,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             throw new NotImplementedException();
         }
 
-        private static void ConfigureApplicationContainer(IServiceCollection collection)
+        private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
             // Application Layer
             collection.AddTransient<ITeamAppService, TeamAppService>();
@@ -92,18 +103,34 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserAppService, UserAppService>();
             collection.AddTransient<IViewAppService, ViewAppService>();
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            collection.AddTransient<IAuthAppService, AuthAppService>();
+
+            if (isApi)
+            {
+                collection.AddTransient<IAuthAppService, AuthAppService>();
+            }
 
             // Begin BIADemo
             collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
             collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
+
+            // BIAToolKit - Begin Partial Dependency 2 Plane
             collection.AddTransient<IPlaneAppService, PlaneAppService>();
+
+            // BIAToolKit - End Partial Dependency 2 Plane
             collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
+
+            // BIAToolKit - Begin Partial Dependency 2 Airport
             collection.AddTransient<IAirportAppService, AirportAppService>();
+
+            // BIAToolKit - End Partial Dependency 2 Airport
+            collection.AddTransient<IEngineAppService, EngineAppService>();
             collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
             collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
 
             // End BIADemo
+
+            // BIAToolKit - Begin Dependency 2
+            // BIAToolKit - End Dependency 2
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
@@ -114,6 +141,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
             collection.AddTransient<INotificationDomainService, NotificationDomainService>();
             collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
+
+            Type templateType = typeof(BaseMapper<,,>);
+            Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
+            List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
+            foreach (var type in derivedTypes)
+            {
+                collection.AddScoped(type);
+            }
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -152,6 +187,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
             collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
             collection.AddSingleton<AuditFeature>();
+
+            // Begin BIADemo
+            collection.AddTransient<IEngineRepository, EngineRepository>();
+
+            // End BIADemo
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
@@ -160,10 +200,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
-
-            collection.AddHttpClient<IBIADemoWebApiRepository, BIADemoWebApiRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
-
-            collection.AddHttpClient<IBIADemoAppRepository, BIADemoAppRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 

@@ -1,4 +1,11 @@
-export const APP_SUPPORTED_TRANSLATIONS = ['es-ES', 'fr-FR', 'en-GB', 'es-MX', 'en-US'];
+/* eslint-disable @typescript-eslint/naming-convention */
+export const APP_SUPPORTED_TRANSLATIONS = [
+  'es-ES',
+  'fr-FR',
+  'en-GB',
+  'es-MX',
+  'en-US',
+];
 // English is default value (see translation.defaultLanguage in i18n) so we do not add it manualy.
 export const APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY = [1];
 export const DEFAULT_PAGE_SIZE = 10;
@@ -15,7 +22,7 @@ export const TABLE_FILTER_GLOBAL = 'global|';
 export enum ViewType {
   System = 0,
   Team = 1,
-  User = 2
+  User = 2,
 }
 
 export enum RoleMode {
@@ -39,17 +46,20 @@ export enum TeamTypeId {
   All = 0,
   Root = 1,
   Site = 2,
-  // Begin BIADemo  
+  // Begin BIADemo
   AircraftMaintenanceCompany = 3,
   MaintenanceTeam = 4,
   // End BIADemo
 }
 
-let TeamTypeRightPrefixe :{ key: TeamTypeId; value: string; }[] = [ 
-  {key: TeamTypeId.Site, value: "Site"},
-// Begin BIADemo
-  {key: TeamTypeId.AircraftMaintenanceCompany, value: "AircraftMaintenanceCompany"},
-  {key: TeamTypeId.MaintenanceTeam, value: "MaintenanceTeam"},
-// End BIADemo
+const TeamTypeRightPrefixe: { key: TeamTypeId; value: string }[] = [
+  { key: TeamTypeId.Site, value: 'Site' },
+  // Begin BIADemo
+  {
+    key: TeamTypeId.AircraftMaintenanceCompany,
+    value: 'AircraftMaintenanceCompany',
+  },
+  { key: TeamTypeId.MaintenanceTeam, value: 'MaintenanceTeam' },
+  // End BIADemo
 ];
-export {TeamTypeRightPrefixe};
+export { TeamTypeRightPrefixe };

@@ -1,0 +1,51 @@
+<!doctype html>
+<head>
+  <link rel="stylesheet" href="./css/error.css" />
+</head>
+<title>Broken link</title>
+<style>
+  h1 {
+    text-align: center;
+    font-size: 50px;
+  }
+  body {
+    font:
+      20px Helvetica,
+      sans-serif;
+    color: #333;
+  }
+  article {
+    display: block;
+    text-align: left;
+    width: 80%;
+    margin: 0 auto;
+  }
+</style>
+
+<div
+  id="MyError"
+  style="text-align: center; padding: 30px"
+  class="dialogContainer">
+  <article>
+    <h1 class="logobar">
+      <img src="./Division.gif" alt="Digital Manufacturing logo" />
+    </h1>
+
+    <h1 class="animated infinite pulse">
+      <span id="titleError">Internal Server Error</span>
+      <span id="numError">500</span>
+    </h1>
+    <h2 id="descError">
+      Sorry, we had some technical issue. Please contact your Helpdesk if this
+      page is displayed again.
+    </h2>
+    <h2>Go to <a href="javascript:history.back()">previous page</a></h2>
+    <br />
+    <div id="myBarBorder" class="w3-border">
+      <div id="myBar" class="logobar" style="width: 15%"></div>
+    </div>
+  </article>
+</div>
+
+<!-- Use a relative url to not be load in ajax-->
+<script src="./script/error.js"></script>

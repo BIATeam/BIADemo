@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { MaintenanceTeam } from '../../model/maintenance-team';
-import { MaintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
@@ -11,9 +11,9 @@ import { MaintenanceTeamService } from '../../services/maintenance-team.service'
 export class MaintenanceTeamEditComponent extends CrudItemEditComponent<MaintenanceTeam> {
   constructor(
     protected injector: Injector,
-    public maintenanceTeamService: MaintenanceTeamService,
+    public maintenanceTeamService: MaintenanceTeamService
   ) {
     super(injector, maintenanceTeamService);
-    this.crudConfiguration = MaintenanceTeamCRUDConfiguration;
+    this.crudConfiguration = maintenanceTeamCRUDConfiguration;
   }
 }

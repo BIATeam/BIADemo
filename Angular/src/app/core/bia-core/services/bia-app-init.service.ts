@@ -5,8 +5,11 @@ import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settin
 import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
 import { allEnvironments } from 'src/environments/all-environments';
-import { KeycloakEvent, KeycloakEventType, KeycloakService } from 'keycloak-angular';
-import { environment } from 'src/environments/environment';
+import {
+  KeycloakEvent,
+  KeycloakEventType,
+  KeycloakService,
+} from 'keycloak-angular';
 import { AuthService } from './auth.service';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
@@ -20,7 +23,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 // const STORAGE_KEYCLOAK_IDTOKEN = 'KeyCloak_IdToken';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaAppInitService implements OnDestroy {
   protected sub = new Subscription();
@@ -30,10 +33,11 @@ export class BiaAppInitService implements OnDestroy {
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
     protected keycloakService: KeycloakService,
-    protected appSettingsService: AppSettingsService) { }
+    protected appSettingsService: AppSettingsService
+  ) {}
 
   public initAuth() {
-    return new Promise<void>((resolve) => {
+    return new Promise<void>(resolve => {
       this.store.dispatch(DomainAppSettingsActions.loadAll());
       this.getObsAppSettings()
         .pipe(
@@ -44,7 +48,8 @@ export class BiaAppInitService implements OnDestroy {
               return this.getObsAuthInfo();
             }
           })
-        ).subscribe(() => {
+        )
+        .subscribe(() => {
           if (allEnvironments.enableNotifications === true) {
             this.notificationSignalRService.initialize();
           }
@@ -55,7 +60,6 @@ export class BiaAppInitService implements OnDestroy {
   }
 
   protected initKeycloack(appSettings: AppSettings): Observable<AuthInfo> {
-
     this.initEventKeycloakLogin();
     const obs$: Observable<AuthInfo> = this.initEventKeycloakSuccess();
 
@@ -74,11 +78,12 @@ export class BiaAppInitService implements OnDestroy {
         onLoad: 'check-sso',
         // checkLoginIframe: false,
         enableLogging: isDevMode(),
-        silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+        silentCheckSsoRedirectUri:
+          window.location.origin + '/assets/bia/html/silent-check-sso.html',
         // token: token ?? undefined,
         // refreshToken: refreshToken ?? undefined,
         // idToken: idToken ?? undefined,
-      }
+      },
     });
 
     return obs$;
@@ -86,29 +91,40 @@ export class BiaAppInitService implements OnDestroy {
 
   protected initEventKeycloakSuccess(): Observable<AuthInfo> {
     return this.keycloakService.keycloakEvents$.asObservable().pipe(
-      filter((keycloakEvent: KeycloakEvent) => keycloakEvent?.type == KeycloakEventType.OnAuthSuccess || keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
+      filter(
+        (keycloakEvent: KeycloakEvent) =>
+          keycloakEvent?.type == KeycloakEventType.OnAuthSuccess ||
+          keycloakEvent?.type == KeycloakEventType.OnAuthRefreshSuccess
       ),
       first(),
       switchMap(() => {
         return this.getObsAuthInfo();
-      }));
+      })
+    );
   }
 
   protected initEventKeycloakLogin(): void {
-    this.sub.add(this.keycloakService.keycloakEvents$.asObservable().subscribe(async (keycloakEvent: KeycloakEvent) => {
-      if (keycloakEvent?.type == KeycloakEventType.OnAuthLogout ||
-        keycloakEvent?.type == KeycloakEventType.OnReady ||
-        keycloakEvent?.type == KeycloakEventType.OnTokenExpired) {
-        this.keycloakService.isLoggedIn().then((isLoggedIn) => {
-          if (isLoggedIn !== true) {
-            this.keycloakService.login({
-              redirectUri: window.location.href,
-              idpHint: this.appSettingsService.appSettings?.keycloak?.configuration?.idpHint,
-              // scope: 'offline_access',
+    this.sub.add(
+      this.keycloakService.keycloakEvents$
+        .asObservable()
+        .subscribe(async (keycloakEvent: KeycloakEvent) => {
+          if (
+            keycloakEvent?.type == KeycloakEventType.OnAuthLogout ||
+            keycloakEvent?.type == KeycloakEventType.OnReady ||
+            keycloakEvent?.type == KeycloakEventType.OnTokenExpired
+          ) {
+            this.keycloakService.isLoggedIn().then(isLoggedIn => {
+              if (isLoggedIn !== true) {
+                this.keycloakService.login({
+                  redirectUri: window.location.href,
+                  idpHint:
+                    this.appSettingsService.appSettings?.keycloak?.configuration
+                      ?.idpHint,
+                  // scope: 'offline_access',
+                });
+              }
             });
-          }
-        });
-      } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
+          } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
 
         const token = await this.keycloakService.getToken();
         localStorage.setItem(STORAGE_KEYCLOAK_TOKEN, token);
@@ -119,27 +135,35 @@ export class BiaAppInitService implements OnDestroy {
         const idToken = await this.keycloakService.getKeycloakInstance().idToken;
         localStorage.setItem(STORAGE_KEYCLOAK_IDTOKEN, idToken ?? '');
       }*/
-
-    }));
+        })
+    );
   }
 
   protected getObsAuthInfo(): Observable<AuthInfo> {
-    return this.authService.login().pipe(first(), catchError((error) => this.catchError(error)));
+    console.info('Login from app init.');
+    return this.authService.login().pipe(
+      first(),
+      catchError(error => this.catchError(error))
+    );
   }
 
   protected getObsAppSettings(): Observable<AppSettings | null> {
-    return this.store.select(getAppSettings)
-      .pipe(
-        filter(appSettings => !!appSettings && appSettings.environment?.type?.length > 0),
-        first(),
-        catchError((error) => this.catchError(error)));
+    return this.store.select(getAppSettings).pipe(
+      filter(
+        appSettings =>
+          !!appSettings && appSettings.environment?.type?.length > 0
+      ),
+      first(),
+      catchError(error => this.catchError(error))
+    );
   }
 
   protected catchError(error: any) {
     if (!isDevMode()) {
-      window.location.href = environment.urlErrorPage + '?num=' + error.status;
+      window.location.href =
+        allEnvironments.urlErrorPage + '?num=' + error.status;
     }
-    return throwError(error);
+    return throwError(() => error);
   }
 
   ngOnDestroy() {

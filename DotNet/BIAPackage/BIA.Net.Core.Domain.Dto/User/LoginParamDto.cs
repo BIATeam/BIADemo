@@ -4,12 +4,9 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
+    /// <summary>
+    /// LoginParamDto.
+    /// </summary>
     public class LoginParamDto
     {
         /// <summary>

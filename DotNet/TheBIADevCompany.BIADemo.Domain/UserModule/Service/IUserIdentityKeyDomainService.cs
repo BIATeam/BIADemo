@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -42,6 +43,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="user">The user.</param>
         /// <returns>The database identity key.</returns>
         string GetDatabaseIdentityKey(User user);
+
+        /// <summary>
+        /// Gets the userDto identity key.
+        /// </summary>
+        /// <param name="user">The user dto.</param>
+        /// <returns>The userDto identity key.</returns>
+        string GetDtoIdentityKey(UserDto user);
 
         /// <summary>
         /// Gets the directory identity key.

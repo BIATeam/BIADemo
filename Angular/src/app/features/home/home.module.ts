@@ -8,12 +8,12 @@ export const HOME_ROUTES: Routes = [
   {
     path: '',
     component: HomeIndexComponent,
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({
   declarations: [HomeIndexComponent],
-  imports: [SharedModule, TranslateModule.forChild(), RouterModule]
+  imports: [SharedModule, TranslateModule.forChild(), RouterModule],
 })
-export class HomeModule { }
+export class HomeModule {}

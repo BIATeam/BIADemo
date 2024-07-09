@@ -3,17 +3,21 @@
 // </copyright>
 namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Infrastructure;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Newtonsoft.Json;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site;
     using TheBIADevCompany.BIADemo.Test.Data;
 
@@ -202,16 +206,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             #endregion Setup additional context
 
             // Check GetAll behavior (used when displaying the list of available sites).
-            PagingFilterFormatDto<SiteAdvancedFilterDto> filter = new PagingFilterFormatDto<SiteAdvancedFilterDto>()
+            PagingFilterFormatDto filter = new PagingFilterFormatDto()
             {
                 Filters = null,
-                AdvancedFilter = new SiteAdvancedFilterDto() { UserId = 1 },
+                AdvancedFilter = JsonConvert.SerializeObject(new TeamAdvancedFilterDto() { UserId = 1 }),
             };
             ObjectResult response = this.controller.GetAll(filter).Result as ObjectResult;
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            IEnumerable<SiteInfoDto> listSites = response.Value as IEnumerable<SiteInfoDto>;
+            IEnumerable<SiteDto> listSites = response.Value as IEnumerable<SiteDto>;
             Assert.IsNotNull(listSites);
             Assert.AreEqual(1, listSites.Count());
 
@@ -220,7 +224,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.OK, response.StatusCode);
 
-            SiteInfoDto selectedSiteInfo = response.Value as SiteInfoDto;
+            SiteDto selectedSiteInfo = response.Value as SiteDto;
             Assert.IsNotNull(selectedSiteInfo);
             Assert.AreEqual(DataConstants.DefaultSitesTitles[0], selectedSiteInfo.Title);
             Assert.AreEqual(1, selectedSiteInfo.Id);
@@ -273,7 +277,15 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
                 Title = siteTitle,
             };
 
-            IStatusCodeActionResult statusResponse = this.controller.Add(newSite).Result as IStatusCodeActionResult;
+            IStatusCodeActionResult statusResponse = null;
+            try
+            {
+                statusResponse = this.controller.Add(newSite).Result as IStatusCodeActionResult;
+            }
+            catch (Exception)
+            {
+                statusResponse = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
 
             Assert.IsNotNull(statusResponse);
             Assert.AreEqual((int)expectedResult, statusResponse.StatusCode);
@@ -301,7 +313,16 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Controllers.Site
             this.InitController();
 
             // Try to add null site: it shall fail.
-            IStatusCodeActionResult response = this.controller.Add(null).Result as IStatusCodeActionResult;
+            IStatusCodeActionResult response = null;
+            try
+            {
+                response = this.controller.Add(null).Result as IStatusCodeActionResult;
+            }
+            catch (Exception)
+            {
+                response = new StatusCodeResult(StatusCodes.Status500InternalServerError);
+            }
+
             Assert.IsNotNull(response);
             Assert.AreEqual((int)HttpStatusCode.InternalServerError, response.StatusCode);
             Assert.AreEqual(0, this.DbMock.CountSites());

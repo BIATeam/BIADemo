@@ -9,8 +9,12 @@ import { PermissionGuard } from 'src/app/core/bia-core/guards/permission.guard';
 import { PlaneItemComponent } from './views/plane-item/plane-item.component';
 import { PopupLayoutComponent } from 'src/app/shared/bia-shared/components/layout/popup-layout/popup-layout.component';
 import { FullPageLayoutComponent } from 'src/app/shared/bia-shared/components/layout/fullpage-layout/fullpage-layout.component';
+// BIAToolKit - Begin Option Airport
 import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
+// BIAToolKit - End Option Airport
+// BIAToolKit - Begin Option PlaneType
 import { PlaneTypeOptionModule } from 'src/app/domains/plane-type-option/plane-type-option.module';
+// BIAToolKit - End Option PlaneType
 import { PlaneTableComponent } from './components/plane-table/plane-table.component';
 import { CrudItemModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item.module';
 import { PlaneEditComponent } from './views/plane-edit/plane-edit.component';
@@ -19,15 +23,17 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { PlanesEffects } from './store/planes-effects';
 import { FeaturePlanesStore } from './store/plane.state';
-import { PlaneCRUDConfiguration } from './plane.constants';
+import { planeCRUDConfiguration } from './plane.constants';
+import { PlaneBulkComponent } from './views/plane-bulk/plane-bulk.component';
+import { CrudItemBulkModule } from 'src/app/shared/bia-shared/feature-templates/crud-items/crud-item-bulk.module';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Plane_List_Access,
-      InjectComponent: PlanesIndexComponent
+      injectComponent: PlanesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -40,10 +46,38 @@ export let ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Plane_Create,
           title: 'plane.add',
-          InjectComponent: PlaneNewComponent,
-          dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          injectComponent: PlaneNewComponent,
+          dynamicComponent: () =>
+            planeCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: planeCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
+        canActivate: [PermissionGuard],
+      },
+      {
+        path: 'bulk',
+        data: {
+          breadcrumb: 'plane.import',
+          canNavigate: false,
+          style: {
+            minWidth: '80vw',
+            maxWidth: '80vw',
+            maxHeight: '80vh',
+          },
+          permission: Permission.Plane_Save,
+          title: 'plane.import',
+          injectComponent: PlaneBulkComponent,
+          dynamicComponent: () =>
+            planeCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
+        },
+        component: planeCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -62,22 +96,41 @@ export let ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Plane_Update,
               title: 'plane.edit',
-              InjectComponent: PlaneEditComponent,
-              dynamicComponent : () => (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              injectComponent: PlaneEditComponent,
+              dynamicComponent: () =>
+                planeCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (PlaneCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: planeCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+          /// BIAToolKit - Begin Child Engine
+          {
+            path: 'engines',
+            data: {
+              breadcrumb: 'app.engines',
+              canNavigate: true,
+              permission: Permission.Engine_List_Access,
+            },
+            loadChildren: () =>
+              import('./children/engines/engine.module').then(
+                m => m.EngineModule
+              ),
+          },
+          /// BIAToolKit - End Child Engine
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -91,20 +144,26 @@ export let ROUTES: Routes = [
     PlaneEditComponent,
     // [Calc] : Used only for calc it is possible to delete unsed commponent files (components/...-table)).
     PlaneTableComponent,
+    PlaneBulkComponent,
   ],
   imports: [
     SharedModule,
     CrudItemModule,
+    CrudItemBulkModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(PlaneCRUDConfiguration.storeKey, FeaturePlanesStore.reducers),
+    StoreModule.forFeature(
+      planeCRUDConfiguration.storeKey,
+      FeaturePlanesStore.reducers
+    ),
     EffectsModule.forFeature([PlanesEffects]),
     // TODO after creation of CRUD Plane : select the optioDto dommain module requiered for link
     // Domain Modules:
+    // BIAToolKit - Begin Option Airport
     AirportOptionModule,
+    // BIAToolKit - End Option Airport
+    // BIAToolKit - Begin Option PlaneType
     PlaneTypeOptionModule,
-  ]
+    // BIAToolKit - End Option PlaneType
+  ],
 })
-
-export class PlaneModule {
-}
-
+export class PlaneModule {}

@@ -44,41 +44,10 @@
       ]
     },
     "Roles": [
-      //{
-      //  "Label": "Admin",
-      //  "Type": "Fake"
-      //}
       {
-        "Label": "User",
-        "Type": "Synchro",
-        "LdapGroups": [
-          {
-            "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
-            "LdapName": "EU\\P_LPS_DM_EU_BIADemo_User",
-            "Domain": "DOMAIN_BIA_1"
-          }//,
-          //{
-          //  "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_3", "DOMAIN_BIA_SRV" ],
-          //  "LdapName": "DOMAIN_BIA_SRV\\PREFIX-APP_BIADemo_INT_User",
-          //  "ContainsOnlyUsers": true,
-          //  "Domain": "DOMAIN_BIA_SRV"
-          //}
-        ]
-      },
-      {
-        "Label": "Admin",
-        "Type": "Ldap",
-        "LdapGroups": [
-          {
-            "RecursiveGroupsOfDomains": [ "DOMAIN_BIA_1", "DOMAIN_BIA_2" ],
-            "LdapName": "EU\\P_LPS_DM_EU_BIADemo_Admin",
-            "Domain": "DOMAIN_BIA_1"
-          }
-        ]
+        "Label": "Service",
+        "Type": "Fake"
       }
-    ],
-    "UserProfile": {
-      "url": "http://intdm/DMIndex/UserProfile/GetUserProfile"
-    }
+    ]
   }
 }

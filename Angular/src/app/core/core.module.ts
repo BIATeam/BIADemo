@@ -15,23 +15,30 @@ import { BiaTranslationService } from './bia-core/services/bia-translation.servi
 import { BiaOnlineOfflineService } from './bia-core/services/bia-online-offline.service';
 import { biaOnlineOfflineInterceptor } from './bia-core/interceptors/bia-online-offline.interceptor';
 import { AppDB } from './bia-core/db';
-const ONLINEOFFLINE = [BiaOnlineOfflineService, biaOnlineOfflineInterceptor, AppDB];
+const ONLINEOFFLINE = [
+  BiaOnlineOfflineService,
+  biaOnlineOfflineInterceptor,
+  AppDB,
+];
 // End BIADemo
 
 @NgModule({
   imports: [RouterModule, BiaCoreModule],
   // Begin BIADemo
-  providers: [
-    ...ONLINEOFFLINE,
-  ]
+  providers: [...ONLINEOFFLINE],
   // End BIADemo
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
 export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule, biaTranslation: BiaTranslationService) {
+  constructor(
+    @Optional() @SkipSelf() parentModule: CoreModule,
+    biaTranslation: BiaTranslationService
+  ) {
     if (parentModule) {
-      throw new Error('CoreModule is already loaded. Import it in the AppModule only');
+      throw new Error(
+        'CoreModule is already loaded. Import it in the AppModule only'
+      );
     }
     biaTranslation.registerLocaleData(biaLocaleEn);
     biaTranslation.registerLocaleData(biaLocaleFr);

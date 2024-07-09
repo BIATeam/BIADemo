@@ -1,4 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy, Injector } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  Injector,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/state';
@@ -11,33 +18,38 @@ import { CrudConfig } from '../../model/crud-config';
 @Component({
   selector: 'bia-crud-item-edit',
   templateUrl: './crud-item-edit.component.html',
-  styleUrls: ['./crud-item-edit.component.scss']
+  styleUrls: ['./crud-item-edit.component.scss'],
 })
-export class CrudItemEditComponent<CrudItem extends BaseDto> implements OnInit, OnDestroy {
+export class CrudItemEditComponent<CrudItem extends BaseDto>
+  implements OnInit, OnDestroy
+{
   @Output() displayChange = new EventEmitter<boolean>();
   protected sub = new Subscription();
-  public crudConfiguration : CrudConfig;
+  public crudConfiguration: CrudConfig;
 
   protected store: Store<AppState>;
   protected router: Router;
   protected activatedRoute: ActivatedRoute;
   protected biaTranslationService: BiaTranslationService;
-  
-  constructor(
 
+  constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>,
-  ) { 
+    public crudItemService: CrudItemService<CrudItem>
+  ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
     this.activatedRoute = this.injector.get<ActivatedRoute>(ActivatedRoute);
-    this.biaTranslationService = this.injector.get<BiaTranslationService>(BiaTranslationService);
+    this.biaTranslationService = this.injector.get<BiaTranslationService>(
+      BiaTranslationService
+    );
   }
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.crudItemService.optionsService.loadAllOptions(this.crudConfiguration.optionFilter);
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.crudItemService.optionsService.loadAllOptions(
+          this.crudConfiguration.optionFilter
+        );
       })
     );
   }

@@ -29,7 +29,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Notification_List_Access,
-      InjectComponent: NotificationsIndexComponent
+      injectComponent: NotificationsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -42,7 +42,7 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Notification_Create,
           title: 'notification.add',
-          InjectComponent: NotificationNewComponent,
+          injectComponent: NotificationNewComponent,
         },
         component: PopupLayoutComponent,
         // component: FullPageLayoutComponent,
@@ -64,7 +64,7 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Notification_Update,
               title: 'notification.edit',
-              InjectComponent: NotificationEditComponent,
+              injectComponent: NotificationEditComponent,
             },
             // component: PopupLayoutComponent,
             component: FullPageLayoutComponent,
@@ -77,7 +77,7 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Notification_Read,
               title: 'notification.detail',
-              InjectComponent: NotificationDetailComponent,
+              injectComponent: NotificationDetailComponent,
             },
             component: PopupLayoutComponent,
             // component: FullPageLayoutComponent,
@@ -86,13 +86,13 @@ const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -120,8 +120,6 @@ const ROUTES: Routes = [
     LanguageOptionModule,
     RoleOptionModule,
     TeamOptionModule,
-  ]
+  ],
 })
-export class NotificationModule {
-}
-
+export class NotificationModule {}

@@ -3,6 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Domain.RepoContract.QueryCustomizer
 {
+    /// <summary>
+    /// QueryMode.
+    /// </summary>
     public static class QueryMode
     {
         /// <summary>

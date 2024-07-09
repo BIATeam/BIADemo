@@ -18,7 +18,6 @@ import { Team } from '../../team/model/team';
  */
 @Injectable()
 export class NotificationSignalRService {
-
   private targetedFeature: TargetedFeature;
   private myTeams: Team[];
 
@@ -31,8 +30,8 @@ export class NotificationSignalRService {
     private store: Store<AppState>,
     private signalRService: BiaSignalRService,
     private authService: AuthService,
-    private messageService: BiaMessageService) {
-  }
+    private messageService: BiaMessageService
+  ) {}
 
   /**
    * Initialize SignalR communication.
@@ -43,51 +42,75 @@ export class NotificationSignalRService {
       this.myTeams = teams;
     });
 
-    this.signalRService.addMethod('notification-addUnread', (args) => {
+    this.signalRService.addMethod('notification-addUnread', args => {
       const notification: Notification = JSON.parse(args);
       notification.data = JSON.parse(notification.jData);
-      if (this.IsInMyDisplay(notification)) {
+      if (this.isInMyDisplay(notification)) {
         this.messageService.showNotification(notification);
-        this.store.dispatch(DomainNotificationsActions.addUnreadNotification({ id: notification.id }));
+        this.store.dispatch(
+          DomainNotificationsActions.addUnreadNotification({
+            id: notification.id,
+          })
+        );
       }
     });
 
-    this.signalRService.addMethod('notification-removeUnread', (id) => {
-      console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
+    this.signalRService.addMethod('notification-removeUnread', id => {
+      console.log(
+        '%c [Notification] Notification Count',
+        'color: green; font-weight: bold'
+      );
       const idNum: number = +id;
-      this.store.dispatch(DomainNotificationsActions.removeUnreadNotification({ id: idNum }));
+      this.store.dispatch(
+        DomainNotificationsActions.removeUnreadNotification({ id: idNum })
+      );
     });
 
-    this.signalRService.addMethod('notification-removeSeveralUnread', (args) => {
+    this.signalRService.addMethod('notification-removeSeveralUnread', args => {
       const ids: number[] = JSON.parse(args);
-      console.log('%c [Notification] Notification Count', 'color: green; font-weight: bold');
-      ids.forEach(idNum => this.store.dispatch(DomainNotificationsActions.removeUnreadNotification({ id: idNum })));
+      console.log(
+        '%c [Notification] Notification Count',
+        'color: green; font-weight: bold'
+      );
+      ids.forEach(idNum =>
+        this.store.dispatch(
+          DomainNotificationsActions.removeUnreadNotification({ id: idNum })
+        )
+      );
     });
 
     this.targetedFeature = { featureName: 'notification-domain' };
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private IsInMyDisplay(notification: Notification) {
+  private isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
-    const okUser: Boolean = !notification.notifiedUsers || notification.notifiedUsers.length === 0 ||
-      (notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id));
+    const okUser: boolean =
+      !notification.notifiedUsers ||
+      notification.notifiedUsers.length === 0 ||
+      notification.notifiedUsers.some(u => u.id === additionalInfo.userInfo.id);
 
     // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
-    const okTeam: Boolean = !notification.notifiedTeams || notification.notifiedTeams.length === 0 ||
-      (notification.notifiedTeams.some(notifiedTeam => this.myTeams.some(myTeam => {
-        if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
-          if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
-            return notifiedTeam.roles.some(notifiedRole => myTeam.roles.some(myRole => myRole.id === notifiedRole.id))
+    const okTeam: boolean =
+      !notification.notifiedTeams ||
+      notification.notifiedTeams.length === 0 ||
+      notification.notifiedTeams.some(notifiedTeam =>
+        this.myTeams.some(myTeam => {
+          if (myTeam.id === notifiedTeam.team.id || notifiedTeam.team.id == 0) {
+            if (notifiedTeam.roles && notifiedTeam.roles.length > 0) {
+              return notifiedTeam.roles.some(notifiedRole =>
+                myTeam.roles.some(myRole => myRole.id === notifiedRole.id)
+              );
+            }
+            return true;
+          } else {
+            return false;
           }
-          return true;
-        } else {
-          return false;
-        }
-      })));
+        })
+      );
 
     return okUser && okTeam;
   }

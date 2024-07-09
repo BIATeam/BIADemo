@@ -17,7 +17,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.Site_Member_List_Access,
-      InjectComponent: SiteMembersIndexComponent
+      injectComponent: SiteMembersIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -30,7 +30,7 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Site_Member_Create,
           title: 'member.add',
-          InjectComponent: SiteMemberNewComponent,
+          injectComponent: SiteMemberNewComponent,
         },
         component: PopupLayoutComponent,
         // component: FullPageLayoutComponent,
@@ -52,7 +52,7 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Site_Member_Update,
               title: 'member.manage',
-              InjectComponent: SiteMemberEditComponent,
+              injectComponent: SiteMemberEditComponent,
             },
             component: PopupLayoutComponent,
             // component: FullPageLayoutComponent,
@@ -61,13 +61,13 @@ const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -77,12 +77,6 @@ const ROUTES: Routes = [
     SiteMemberNewComponent,
     SiteMemberEditComponent,
   ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-    MemberModule,
-  ]
+  imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule],
 })
-export class SiteMemberModule {
-}
-
+export class SiteMemberModule {}

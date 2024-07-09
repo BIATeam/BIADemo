@@ -5,16 +5,15 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 @Component({
   selector: 'bia-background-task-read-only',
   templateUrl: './background-task-read-only.component.html',
-  styleUrls: ['./background-task-read-only.component.scss']
+  styleUrls: ['./background-task-read-only.component.scss'],
 })
 export class BackgroundTaskReadOnlyComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';
 
   private sub = new Subscription();
-  public url : string;
+  public url: string;
 
-  constructor(private biaTranslationService: BiaTranslationService) {
-  }
+  constructor(private biaTranslationService: BiaTranslationService) {}
 
   ngOnInit() {
     this.sub.add(

@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -19,6 +20,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     /// </summary>
     public class UserMapper : BaseMapper<UserDto, User, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context.</param>
+        public UserMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <summary>
         /// Gets or sets the collection used for expressions to access fields.
         /// </summary>
@@ -35,6 +45,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <summary>
         /// Create a user DTO from an entity.
@@ -60,9 +75,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(UserDto dto, User entity, string mapperMode, IUnitOfWork context)
         {
-            if (mapperMode == "Roles" && dto.Roles?.Any() == true)
+            if ((mapperMode == "RolesInit" || mapperMode == "Roles") && dto.Roles?.Any() == true)
             {
-                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var userRoleDto in dto.Roles.Where(x => x.DtoState == DtoState.Deleted || mapperMode == "RolesInit"))
                 {
                     var userRole = entity.Roles.FirstOrDefault(x => x.Id == userRoleDto.Id);
                     if (userRole != null)
@@ -92,6 +107,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
+                        if (string.Equals(headerName, HeaderName.Id, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.Id));
+                        }
+
                         if (string.Equals(headerName, HeaderName.LastName, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVString(x.LastName));

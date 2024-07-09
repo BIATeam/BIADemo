@@ -2,6 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 #define UseHubForClientInMember
+#define UseHubForClientInUser
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
@@ -10,11 +11,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -22,10 +26,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInMember
     using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.Options;
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;
 
@@ -39,6 +45,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         private readonly IMemberAppService memberService;
 
+        /// <summary>
+        /// The member application service.
+        /// </summary>
+        private readonly IUserAppService userService;
+
+        /// <summary>
+        /// The user context for message translation.
+        /// </summary>
+        private readonly UserContext userContext;
+
 #if UseHubForClientInMember
         /// <summary>
         /// the client for hub (signalR) service.
@@ -49,14 +65,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// Initializes a new instance of the <see cref="MembersController"/> class.
         /// </summary>
+        /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
+        /// <param name="userContext">The user context.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInMember
         public MembersController(
-            IMemberAppService memberService, ITeamAppService teamAppService, IClientForHubRepository clientForHubService)
+            IUserAppService userService,
+            IMemberAppService memberService,
+            ITeamAppService teamAppService,
+            UserContext userContext,
+            IClientForHubRepository clientForHubService)
 #else
-        public MembersController(IMemberAppService memberService, ITeamAppService teamAppService)
+        public MembersController(
+            IUserAppService userService,
+            IMemberAppService memberService,
+            ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
         {
@@ -64,6 +89,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             this.clientForHubService = clientForHubService;
 #endif
             this.memberService = memberService;
+            this.userService = userService;
+            this.userContext = userContext;
         }
 
         /// <summary>
@@ -89,16 +116,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 return this.StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            try
-            {
-                var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
-                this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
-                return this.Ok(results);
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error ");
-            }
+            var (results, total) = await this.memberService.GetRangeByTeamAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
         }
 
         /// <summary>
@@ -133,10 +153,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -146,7 +162,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <returns>The result of the creation.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> Add([FromBody] MemberDto dto)
@@ -156,6 +174,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                 if (!this.IsAuthorizeForTeam(dto.TeamId, Rights.Members.CreateSuffix).Result)
                 {
                     return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                // Specific Code to add user if required
+                var addUserResult = await this.AddUserIfRequired(dto);
+                if (addUserResult != null)
+                {
+                    return addUserResult;
                 }
 
                 var createdDto = await this.memberService.AddAsync(dto);
@@ -168,9 +193,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.ValidationProblem();
             }
-            catch (Exception)
+            catch (InvalidOperationException)
             {
-                return this.StatusCode(500, "Internal server error");
+                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContext.LanguageId));
             }
         }
 
@@ -218,10 +243,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.ValidationProblem();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -250,6 +271,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     return this.StatusCode(StatusCodes.Status403Forbidden);
                 }
 
+                // Specific Code to add user if required
+                var addUserResult = await this.AddUserIfRequired(dto);
+                if (addUserResult != null)
+                {
+                    return addUserResult;
+                }
+
                 var updatedDto = await this.memberService.UpdateAsync(dto);
 #if UseHubForClientInMember
                 await this.clientForHubService.SendTargetedMessage(updatedDto.TeamId.ToString(), "members", "refresh-members");
@@ -263,10 +291,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -307,10 +331,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -357,10 +377,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -412,10 +428,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -433,8 +445,41 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
 
             var buffer = await this.memberService.ExportCSV(filters);
-            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BIAConstants.Csv.Extension}";
+            string fileName = $"Members-{DateTime.Now:MM-dd-yyyy-HH-mm}{BiaConstants.Csv.Extension}";
             return this.File(buffer, "text/csv;charset=utf-8", fileName);
+        }
+
+        private async Task<IActionResult> AddUserIfRequired(MemberDto dto)
+        {
+            if (dto.User.DtoState == DtoState.AddedNewChoice)
+            {
+                var existingUser = await this.userService.GetUserInfoAsync(dto.User.Display);
+                if (existingUser != null && existingUser.IsActive)
+                {
+                    dto.User.Id = existingUser.Id;
+                    return null;
+                }
+
+                if (!this.IsAuthorize(Rights.Users.Add))
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                UserDto userDto = new UserDto();
+                userDto.Login = dto.User.Display;
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(userDto);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                if (result.Errors.Any())
+                {
+                    return this.StatusCode(StatusCodes.Status303SeeOther, result.Errors);
+                }
+
+                dto.User = result.UsersAddedDtos.FirstOrDefault();
+            }
+
+            return null;
         }
     }
 }

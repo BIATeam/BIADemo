@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
         /// </summary>
         /// <returns>The JWT if authenticated.</returns>
         [HttpGet("ping")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public IActionResult Ping()
         {
             return this.Ok(System.Net.Dns.GetHostName() + " Ping OK : " + DateTime.Now);

@@ -5,18 +5,18 @@ export const environment = {
   reportUrl: '',
   apiUrlDynamic: {
     oldValue: 'biademo',
-    newValue: 'biademo-api'
+    newValue: 'biademo-api',
   },
   apiUrl: '/api',
   hubUrl: '/HubForClients',
-  urlErrorPage: 'http://localhost/static/error.htm',
   useXhrWithCred: false,
   production: true,
   logging: {
     conf: {
       serverLoggingUrl: '/api/logs',
       level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR
-    }
-  }
+      serverLogLevel: NgxLoggerLevel.ERROR,
+      withCredentials: true,
+    },
+  },
 };

@@ -11,17 +11,19 @@ import { catchError } from 'rxjs/operators';
 import { BiaOnlineOfflineService } from '../services/bia-online-offline.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaOnlineOfflineInterceptor implements HttpInterceptor {
+  constructor(protected biaOnlineOfflineService: BiaOnlineOfflineService) {}
 
-  constructor(protected biaOnlineOfflineService: BiaOnlineOfflineService) { }
-
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
-      catchError((error) => {
+      catchError(error => {
         this.biaOnlineOfflineService.manageHttpErrorResponse(request, error);
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
@@ -30,5 +32,5 @@ export class BiaOnlineOfflineInterceptor implements HttpInterceptor {
 export const biaOnlineOfflineInterceptor = {
   provide: HTTP_INTERCEPTORS,
   useClass: BiaOnlineOfflineInterceptor,
-  multi: true
+  multi: true,
 };

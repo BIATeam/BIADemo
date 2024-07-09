@@ -2,7 +2,12 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 70vh, rgb(255, 255, 255)), url('../../../assets/bia/bg-default.jpg');
+  background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.1) 70vh,
+      rgb(255, 255, 255)
+    ),
+    url('../../../assets/bia/img/bg-default.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: scroll;
@@ -22,6 +27,7 @@ h1 {
   font-size: 36px;
   font-weight: 200;
 }
-h1, h4 {
+h1,
+h4 {
   color: white;
 }

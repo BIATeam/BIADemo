@@ -1,11 +1,22 @@
-import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { View } from '../../model/view';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormGroup,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'bia-view-form',
   templateUrl: './view-form.component.html',
-  styleUrls: ['./view-form.component.scss']
+  styleUrls: ['./view-form.component.scss'],
 })
 export class ViewFormComponent implements OnChanges {
   @Input() view: View = <View>{};
@@ -37,7 +48,7 @@ export class ViewFormComponent implements OnChanges {
     this.form = this.formBuilder.group({
       id: [this.view.id],
       name: [this.view.name, Validators.required],
-      description: [this.view.description]
+      description: [this.view.description],
     });
   }
 

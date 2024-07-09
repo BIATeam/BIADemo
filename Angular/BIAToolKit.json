@@ -1,0 +1,78 @@
+[
+  {
+    "Feature": "planes",
+    "Type": "CRUD",
+    "FeatureName": "Plane",
+    "FeatureNamePlural": "Planes",
+    "ZipName": "feature-planes.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\planes\\*"],
+      "Exclude": ["src\\app\\features\\planes\\children\\engines\\*"]
+    },
+    "Children": ["Engines"],
+    "Options": ["Airport", "PlaneType"],
+    "Partial": [
+      "src\\app\\app-routing.module.ts",
+      "src\\app\\shared\\navigation.ts",
+      "src\\app\\shared\\permission.ts"
+    ]
+  },
+  {
+    "Feature": "planes-full-code",
+    "Type": "CRUD",
+    "FeatureName": "Plane",
+    "FeatureNamePlural": "Planes",
+    "ZipName": "feature-planes-full-code.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\planes-full-code\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "airport-option",
+    "Type": "Option",
+    "FeatureName": "Airport",
+    "FeatureNamePlural": "Airports",
+    "ZipName": "domain-airport-option.zip",
+    "Relation": "many-to-many",
+    "Contains": {
+      "Include": ["src\\app\\domains\\airport-option\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "plane-type-option",
+    "Type": "Option",
+    "FeatureName": "PlaneType",
+    "FeatureNamePlural": "PlanesTypes",
+    "ZipName": "domain-plane-type-option.zip",
+    "Relation": "one-to-many",
+    "Contains": {
+      "Include": ["src\\app\\domains\\plane-type-option\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  },
+  {
+    "Feature": "aircraft-maintenance-companies",
+    "Type": "Team",
+    "FeatureName": "AircraftMaintenanceCompany",
+    "FeatureNamePlural": "AircraftMaintenanceCompanies",
+    "ZipName": "aircraft-maintenance-companies.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\aircraft-maintenance-companies\\*"],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": []
+  }
+]

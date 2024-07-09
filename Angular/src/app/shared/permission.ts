@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum Permission {
   Background_Task_Admin = 'Background_Task_Admin',
   Background_Task_Read_Only = 'Background_Task_Read_Only',
-  
+
   // Begin BIADemo
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
@@ -12,6 +13,10 @@ export enum Permission {
   Notification_Delete = 'Notification_Delete',
   Notification_Read = 'Notification_Read',
   Notification_Update = 'Notification_Update',
+
+  /// BIAToolKit - Begin Permission
+  /// BIAToolKit - End Permission
+
   // Begin BIADemo
   AircraftMaintenanceCompany_Create = 'AircraftMaintenanceCompany_Create',
   AircraftMaintenanceCompany_Delete = 'AircraftMaintenanceCompany_Delete',
@@ -39,18 +44,26 @@ export enum Permission {
   MaintenanceTeam_Member_Create = 'MaintenanceTeam_Member_Create',
   MaintenanceTeam_Member_List_Access = 'MaintenanceTeam_Member_List_Access',
 
+  /// BIAToolKit - Begin Partial Permission Plane
   Plane_Create = 'Plane_Create',
   Plane_Delete = 'Plane_Delete',
   Plane_List_Access = 'Plane_List_Access',
   Plane_Read = 'Plane_Read',
   Plane_Save = 'Plane_Save',
   Plane_Update = 'Plane_Update',
+  /// BIAToolKit - End Partial Permission Plane
   Airport_Create = 'Airport_Create',
   Airport_Delete = 'Airport_Delete',
   Airport_List_Access = 'Airport_List_Access',
   Airport_Read = 'Airport_Read',
   Airport_Save = 'Airport_Save',
   Airport_Update = 'Airport_Update',
+  Engine_Create = 'Engine_Create',
+  Engine_Delete = 'Engine_Delete',
+  Engine_List_Access = 'Engine_List_Access',
+  Engine_Read = 'Engine_Read',
+  Engine_Save = 'Engine_Save',
+  Engine_Update = 'Engine_Update',
   PlaneType_Create = 'PlaneType_Create',
   PlaneType_Delete = 'PlaneType_Delete',
   PlaneType_List_Access = 'PlaneType_List_Access',
@@ -72,12 +85,13 @@ export enum Permission {
 
   User_Add = 'User_Add',
   User_Delete = 'User_Delete',
+  User_Save = 'User_Save',
   User_List = 'User_List',
   User_ListAD = 'User_ListAD',
   User_List_Access = 'User_List_Access',
   User_Sync = 'User_Sync',
   User_UpdateRoles = 'User_UpdateRoles',
-  
+
   LdapDomains_List = 'LdapDomains_List',
   View_List = 'View_List',
   View_AddUserView = 'View_Add_UserView',
@@ -88,5 +102,5 @@ export enum Permission {
   View_DeleteTeamView = 'View_Delete_TeamView',
   View_SetDefaultUserView = 'View_Set_Default_UserView',
   View_SetDefaultTeamViewSuffix = '_View_Set_Default_TeamView',
-  View_AssignToTeamSuffix = '_View_Assign_To_Team'
+  View_AssignToTeamSuffix = '_View_Assign_To_Team',
 }

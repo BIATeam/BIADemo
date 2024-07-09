@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { TranslateLoader,  TranslateStore } from '@ngx-translate/core';
+import { TranslateLoader, TranslateStore } from '@ngx-translate/core';
 import * as deepmerge from 'deepmerge';
 import { map } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ export class BiaTranslateHttpLoader implements TranslateLoader {
 
   public getTranslation(lang: string) {
     return this.http.get(`${this.prefix}${lang}${this.suffix}`).pipe(
-      map((translation) => {
+      map(translation => {
         const previousTranslations = this.store.translations[lang];
         if (previousTranslations) {
           return deepmerge.default(previousTranslations, translation);

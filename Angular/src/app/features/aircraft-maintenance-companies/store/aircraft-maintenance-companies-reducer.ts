@@ -5,10 +5,12 @@ import { LazyLoadEvent } from 'primeng/api';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 
 // This adapter will allow is to manipulate aircraftMaintenanceCompanies (mostly CRUD operations)
-export const aircraftMaintenanceCompaniesAdapter = createEntityAdapter<AircraftMaintenanceCompany>({
-  selectId: (aircraftMaintenanceCompany: AircraftMaintenanceCompany) => aircraftMaintenanceCompany.id,
-  sortComparer: false
-});
+export const aircraftMaintenanceCompaniesAdapter =
+  createEntityAdapter<AircraftMaintenanceCompany>({
+    selectId: (aircraftMaintenanceCompany: AircraftMaintenanceCompany) =>
+      aircraftMaintenanceCompany.id,
+    sortComparer: false,
+  });
 
 // -----------------------------------------
 // The shape of EntityState
@@ -30,36 +32,52 @@ export interface State extends EntityState<AircraftMaintenanceCompany> {
   loadingGetAll: boolean;
 }
 
-export const INIT_STATE: State = aircraftMaintenanceCompaniesAdapter.getInitialState({
-  // additional props default values here
-  totalCount: 0,
-  currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
-  loadingGet: false,
-  loadingGetAll: false,
-});
+export const INIT_STATE: State =
+  aircraftMaintenanceCompaniesAdapter.getInitialState({
+    // additional props default values here
+    totalCount: 0,
+    currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
+    lastLazyLoadEvent: <LazyLoadEvent>{},
+    loadingGet: false,
+    loadingGetAll: false,
+  });
 
 export const aircraftMaintenanceCompanyReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost, (state, { event }) => {
+  on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureAircraftMaintenanceCompaniesActions.load, (state) => {
+  on(FeatureAircraftMaintenanceCompaniesActions.load, state => {
     return { ...state, loadingGet: true };
   }),
-  on(FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess, (state, { result, event }) => {
-    const stateUpdated = aircraftMaintenanceCompaniesAdapter.setAll(result.data, state);
-    stateUpdated.totalCount = result.totalCount;
-    stateUpdated.lastLazyLoadEvent = event;
-    stateUpdated.loadingGetAll = false;
-    return stateUpdated;
-  }),
-  on(FeatureAircraftMaintenanceCompaniesActions.loadSuccess, (state, { aircraftMaintenanceCompany }) => {
-    return { ...state, currentAircraftMaintenanceCompany: aircraftMaintenanceCompany, loadingGet: false };
-  }),
-  on(FeatureAircraftMaintenanceCompaniesActions.failure, (state, { error }) => {
+  on(
+    FeatureAircraftMaintenanceCompaniesActions.loadAllByPostSuccess,
+    (state, { result, event }) => {
+      const stateUpdated = aircraftMaintenanceCompaniesAdapter.setAll(
+        result.data,
+        state
+      );
+      stateUpdated.totalCount = result.totalCount;
+      stateUpdated.lastLazyLoadEvent = event;
+      stateUpdated.loadingGetAll = false;
+      return stateUpdated;
+    }
+  ),
+  on(
+    FeatureAircraftMaintenanceCompaniesActions.loadSuccess,
+    (state, { aircraftMaintenanceCompany }) => {
+      return {
+        ...state,
+        currentAircraftMaintenanceCompany: aircraftMaintenanceCompany,
+        loadingGet: false,
+      };
+    }
+  ),
+  on(FeatureAircraftMaintenanceCompaniesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getAircraftMaintenanceCompanyById = (id: number) => (state: State) => state.entities[id];
+export const getAircraftMaintenanceCompanyById =
+  (id: number) => (state: State) =>
+    state.entities[id];

@@ -1,4 +1,8 @@
-import { BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFieldConfig,
+  PropType,
+  BiaFieldsConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
@@ -16,15 +20,15 @@ export class Members {
 }
 
 // TODO after creation of CRUD Member : adapt the field configuration
-export const MemberFieldsConfiguration : BiaFieldsConfig =
-{
+export const memberFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('user', 'member.user'), {
       isRequired: true,
-      type: PropType.OneToMany
+      type: PropType.OneToMany,
+      isEditableChoice: true,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
-      type: PropType.ManyToMany
-    })
-  ]
-}
+      type: PropType.ManyToMany,
+    }),
+  ],
+};

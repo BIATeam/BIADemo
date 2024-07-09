@@ -8,7 +8,6 @@ export class BiaErrorHandler implements ErrorHandler {
 
   constructor(private injector: Injector) {
     this.logger = this.injector.get<NGXLogger>(NGXLogger);
-    this.logger.setWithCredentialsOptionValue(true);
   }
 
   handleError(error: Error | HttpErrorResponse) {

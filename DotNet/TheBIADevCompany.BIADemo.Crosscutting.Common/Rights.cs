@@ -4,9 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 {
-    using System.Collections.Generic;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-
     /// <summary>
     /// The list of all rights.
     /// </summary>
@@ -109,6 +106,42 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         }
 
         /// <summary>
+        /// The planes rights.
+        /// </summary>
+        public static class Engines
+        {
+            /// <summary>
+            /// The right to access to the list of planes.
+            /// </summary>
+            public const string ListAccess = "Engine_List_Access";
+
+            /// <summary>
+            /// The right to create planes.
+            /// </summary>
+            public const string Create = "Engine_Create";
+
+            /// <summary>
+            /// The right to read planes.
+            /// </summary>
+            public const string Read = "Engine_Read";
+
+            /// <summary>
+            /// The right to update planes.
+            /// </summary>
+            public const string Update = "Engine_Update";
+
+            /// <summary>
+            /// The right to delete planes.
+            /// </summary>
+            public const string Delete = "Engine_Delete";
+
+            /// <summary>
+            /// The right to save planes.
+            /// </summary>
+            public const string Save = "Engine_Save";
+        }
+
+        /// <summary>
         /// The maintenance team rights.
         /// </summary>
         public static class MaintenanceTeams
@@ -117,11 +150,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The right to access to the list of maintenance team.
             /// </summary>
             public const string ListAccess = "MaintenanceTeam_List_Access";
-
-            /// <summary>
-            /// The right to view all maintenance team for current aircraft maintenance companies.
-            /// </summary>
-            public const string ListViewAll = "MaintenanceTeam_List_View_All";
 
             /// <summary>
             /// The right to create maintenance team.
@@ -148,6 +176,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "MaintenanceTeam_Save";
         }
+
+        // BIAToolKit - Begin Partial Rights Plane
 
         /// <summary>
         /// The planes rights.
@@ -184,6 +214,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Plane_Save";
         }
+
+        // BIAToolKit - End Partial Rights Plane
 
         /// <summary>
         /// The planes rights.
@@ -226,6 +258,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "PlaneType_Save";
         }
 
+        // BIAToolKit - Begin Partial Rights Airport
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -266,6 +300,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Airport_Save";
         }
+
+        // BIAToolKit - End Partial Rights Airport
 
         /// <summary>
         /// The Hangfire rights.
@@ -426,6 +462,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Delete = "User_Delete";
 
             /// <summary>
+            /// The right to delete users.
+            /// </summary>
+            public const string Save = "User_Save";
+
+            /// <summary>
             /// The right to synchronize users.
             /// </summary>
             public const string Sync = "User_Sync";
@@ -533,5 +574,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Options = "NotificationType_Options";
         }
+
+        // BIAToolKit - Begin Rights
+        // BIAToolKit - End Rights
     }
 }

@@ -5,17 +5,15 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
-    using System.Net.Http;
     using System.Security.Principal;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
-    using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.CookiePolicy;
@@ -79,8 +77,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BIAClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
-            services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString()));
+            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString(), this.biaNetSection.Cultures));
 
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
@@ -89,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             // End BIA Standard service
 
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration);
+            IocContainer.ConfigureContainer(services, this.configuration, true);
         }
 
         /// <summary>
@@ -107,6 +105,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             else
             {
                 app.UseHsts();
+                app.ConfigureApiExceptionHandler();
             }
 
             if (!string.IsNullOrEmpty(this.biaNetSection.Security?.Audience))
@@ -119,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithExposedHeaders(BIAConstants.HttpHeaders.TotalCount));
+                    .WithExposedHeaders(BiaConstants.HttpHeaders.TotalCount));
             }
 
             app.UseResponseCompression();
@@ -134,7 +133,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
-            app.UseBiaApiFeatures<AuditFeature>(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
+            app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }
 }

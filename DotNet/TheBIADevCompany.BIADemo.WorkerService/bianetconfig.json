@@ -16,6 +16,7 @@
     "WorkerFeatures": {
       "HangfireServer": {
         "IsActive": true,
+        "LogsVisibleInDashboard": true,
         "ServerName": "BIADemo",
         "ConnectionStringName": "BIADemoDatabase"
       },
@@ -40,6 +41,80 @@
       "Issuer": "BIADemoApi",
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
-    }
+    },
+    "Permissions": [
+      {
+        "Names": [ "Team_Access_All", "Team_Options" ],
+        "Roles": [ "Service" ]
+      }
+    ],
+    "Cultures": [
+      {
+        "Label": "English",
+        "Code": "en-GB",
+        "AcceptedCodes": [ "en-GB", "default", "en" ],
+        "IsDefaultForCountryCodes": [ "GB" ],
+        "DateFormat": "dd/MM/yyyy",
+        "TimeFormat": "HH:mm",
+        "TimeFormatSec": "HH:mm:ss",
+        "LanguageCode": "en",
+        "LanguageId": "1"
+      },
+      {
+        "Label": "English US",
+        "Code": "en-US",
+        "AcceptedCodes": [ "en-US" ],
+        "IsDefaultForCountryCodes": [ "US" ],
+        "DateFormat": "MM/dd/yyyy",
+        "TimeFormat": "h:mm a",
+        "TimeFormatSec": "h:mm:ss a",
+        "LanguageCode": "en",
+        "LanguageId": "1"
+      },
+      {
+        "Label": "Deutsh",
+        "Code": "de-DE",
+        "AcceptedCodes": [ "de-DE", "de" ],
+        "IsDefaultForCountryCodes": [ "DE" ],
+        "DateFormat": "dd.MM.yyyy",
+        "TimeFormat": "HH:mm",
+        "TimeFormatSec": "HH:mm:ss a",
+        "LanguageCode": "en",
+        "LanguageId": "4"
+      },
+      {
+        "Label": "Española",
+        "Code": "es-ES",
+        "AcceptedCodes": [ "es-ES", "es" ],
+        "IsDefaultForCountryCodes": [ "ES" ],
+        "DateFormat": "dd/MM/yyyy",
+        "TimeFormat": "H:mm",
+        "TimeFormatSec": "H:mm:ss",
+        "LanguageCode": "es",
+        "LanguageId": "3"
+      },
+      {
+        "Label": "Española MX",
+        "Code": "es-MX",
+        "AcceptedCodes": [ "es-MX" ],
+        "IsDefaultForCountryCodes": [ "MX" ],
+        "DateFormat": "dd/MM/yyyy",
+        "TimeFormat": "hh:mm a",
+        "TimeFormatSec": "hh:mm:ss a",
+        "LanguageCode": "es",
+        "LanguageId": "3"
+      },
+      {
+        "Label": "Français",
+        "Code": "fr-FR",
+        "AcceptedCodes": [ "fr-FR", "fr" ],
+        "IsDefaultForCountryCodes": [ "FR", "MA" ],
+        "DateFormat": "dd/MM/yyyy",
+        "TimeFormat": "HH:mm",
+        "TimeFormatSec": "HH:mm:ss",
+        "LanguageCode": "fr",
+        "LanguageId": "2"
+      }
+    ]
   }
 }

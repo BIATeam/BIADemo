@@ -17,15 +17,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MaintenanceTeamsEffects } from './store/maintenance-teams-effects';
 import { FeatureMaintenanceTeamsStore } from './store/maintenance-team.state';
-import { MaintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
+import { maintenanceTeamCRUDConfiguration } from './maintenance-team.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_List_Access,
-      InjectComponent: MaintenanceTeamsIndexComponent
+      injectComponent: MaintenanceTeamsIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -38,10 +38,15 @@ export let ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Create,
           title: 'maintenanceTeam.add',
-          InjectComponent: MaintenanceTeamNewComponent,
-          dynamicComponent : () => (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          injectComponent: MaintenanceTeamNewComponent,
+          dynamicComponent: () =>
+            maintenanceTeamCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: maintenanceTeamCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -58,10 +63,12 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'app.members',
               canNavigate: true,
-              permission: Permission.MaintenanceTeam_Member_List_Access
+              permission: Permission.MaintenanceTeam_Member_List_Access,
             },
             loadChildren: () =>
-              import('./children/members/maintenance-team-member.module').then((m) => m.MaintenanceTeamMemberModule)
+              import('./children/members/maintenance-team-member.module').then(
+                m => m.MaintenanceTeamMemberModule
+              ),
           },
           {
             path: 'edit',
@@ -70,22 +77,27 @@ export let ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Update,
               title: 'maintenanceTeam.edit',
-              InjectComponent: MaintenanceTeamEditComponent,
-              dynamicComponent : () => (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              injectComponent: MaintenanceTeamEditComponent,
+              dynamicComponent: () =>
+                maintenanceTeamCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (MaintenanceTeamCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: maintenanceTeamCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -104,13 +116,13 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(MaintenanceTeamCRUDConfiguration.storeKey, FeatureMaintenanceTeamsStore.reducers),
+    StoreModule.forFeature(
+      maintenanceTeamCRUDConfiguration.storeKey,
+      FeatureMaintenanceTeamsStore.reducers
+    ),
     EffectsModule.forFeature([MaintenanceTeamsEffects]),
     // TODO after creation of CRUD Team MaintenanceTeam : select the optioDto dommain module requiered for link
     // Domain Modules:
-  ]
+  ],
 })
-
-export class MaintenanceTeamModule {
-}
-
+export class MaintenanceTeamModule {}

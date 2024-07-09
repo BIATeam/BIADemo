@@ -7,7 +7,7 @@ import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.se
   selector: 'bia-classic-footer',
   templateUrl: './classic-footer.component.html',
   styleUrls: ['./classic-footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClassicFooterComponent {
   @Input() companyName: string;

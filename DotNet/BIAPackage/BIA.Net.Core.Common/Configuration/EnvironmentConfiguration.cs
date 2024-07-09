@@ -3,10 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// EnvironmentConfiguration.
+    /// </summary>
     public class EnvironmentConfiguration
     {
         /// <summary>
@@ -14,12 +13,36 @@ namespace BIA.Net.Core.Common.Configuration
         /// </summary>
         public string Type { get; set; }
 
+        /// <summary>
+        /// Gets or sets the URL matomo.
+        /// </summary>
+        /// <value>
+        /// The URL matomo.
+        /// </value>
         public string UrlMatomo { get; set; }
 
+        /// <summary>
+        /// Gets or sets the site identifier matomo.
+        /// </summary>
+        /// <value>
+        /// The site identifier matomo.
+        /// </value>
         public string SiteIdMatomo { get; set; }
 
+        /// <summary>
+        /// Gets or sets the urls additional js.
+        /// </summary>
+        /// <value>
+        /// The urls additional js.
+        /// </value>
         public string[] UrlsAdditionalJS { get; set; }
 
+        /// <summary>
+        /// Gets or sets the urls additional CSS.
+        /// </summary>
+        /// <value>
+        /// The urls additional CSS.
+        /// </value>
         public string[] UrlsAdditionalCSS { get; set; }
     }
 }

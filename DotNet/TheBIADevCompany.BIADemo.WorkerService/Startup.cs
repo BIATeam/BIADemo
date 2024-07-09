@@ -9,24 +9,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Claims;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
-    using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Presentation.Common.Authentication;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.CookiePolicy;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
@@ -89,9 +81,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 {
                     var claims = new List<Claim> { new Claim(ClaimTypes.Name, Environment.UserName) };
                     var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
-                    return new BIAClaimsPrincipal(new ClaimsPrincipal(userIdentity));
+                    return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
                 });
-            services.AddTransient<UserContext>(provider => new UserContext("en-GB"));
+            services.AddTransient<UserContext>(provider => new UserContext("en-GB", this.biaNetSection.Cultures));
 
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
@@ -114,7 +106,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // End BIADemo
 
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration);
+            IocContainer.ConfigureContainer(services, this.configuration, false);
         }
     }
 }

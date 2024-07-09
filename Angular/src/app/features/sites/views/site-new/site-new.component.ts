@@ -2,18 +2,18 @@ import { Component, Injector } from '@angular/core';
 import { Site } from '../../model/site';
 import { CrudItemNewComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-new/crud-item-new.component';
 import { SiteService } from '../../services/site.service';
-import { SiteCRUDConfiguration } from '../../site.constants';
+import { siteCRUDConfiguration } from '../../site.constants';
 
 @Component({
   selector: 'app-site-new',
   templateUrl: './site-new.component.html',
 })
-export class SiteNewComponent extends CrudItemNewComponent<Site>  {
-   constructor(
+export class SiteNewComponent extends CrudItemNewComponent<Site> {
+  constructor(
     protected injector: Injector,
-    public siteService: SiteService,
+    public siteService: SiteService
   ) {
-     super(injector, siteService);
-     this.crudConfiguration = SiteCRUDConfiguration;
-   }
+    super(injector, siteService);
+    this.crudConfiguration = siteCRUDConfiguration;
+  }
 }

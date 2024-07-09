@@ -28,8 +28,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration)
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
-            "SELECT RowVersion FROM [dbo].[Planes]",
-            "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
+            new SqlCommand("SELECT RowVersion FROM [dbo].[Planes]"),
+            new SqlCommand("SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"),
             r => PlaneChange(r))
         {
         }

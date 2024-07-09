@@ -1,24 +1,22 @@
 $primaryColor: #00839b;
 $primaryDarkColor: #00536d;
 $primaryLightColor: #e0f0f3;
-$accentColor:  #072948;
+$accentColor: #072948;
 $accentDarkColor: #020f21;
 $accentLightColor: #e1e5e9;
 $accentTextColor: #ffffff;
-$primaryLightestColor: #ECEFF1;
+$primaryLightestColor: #eceff1;
 $primaryMenuTextColor: $primaryColor;
-$primaryTextColor:#ffffff;
-
-
+$primaryTextColor: #ffffff;
 
 $biaBgColor: #fafafa;
 $biaBgHoverColor: rgba(0, 0, 0, 0.04);
-$biaFgTextColor: rgba(0,0,0,.87);
+$biaFgTextColor: rgba(0, 0, 0, 0.87);
 $biaBorderColor: #d7d7d7;
 $biaTitleColor: #666666;
-$biaBgRowSelected:#E5F2F5;
-$biaBorderRowSelected: #7CBFCC;
-$biaTabColor: #1B998B;
+$biaBgRowOdd: #f0f0f0;
+$biaBgRowSelected: #dcecef;
+$biaTabColor: #1b998b;
 
 @import '../sass/theme/theme-light/_variables';
 @import '../sass/theme/_compact';

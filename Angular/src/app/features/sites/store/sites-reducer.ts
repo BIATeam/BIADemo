@@ -7,7 +7,7 @@ import { Site } from '../model/site';
 // This adapter will allow is to manipulate sites (mostly CRUD operations)
 export const sitesAdapter = createEntityAdapter<Site>({
   selectId: (site: Site) => site.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -41,10 +41,10 @@ export const INIT_STATE: State = sitesAdapter.getInitialState({
 
 export const siteReducers = createReducer<State>(
   INIT_STATE,
-  on(FeatureSitesActions.loadAllByPost, (state, { event }) => {
+  on(FeatureSitesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeatureSitesActions.load, (state) => {
+  on(FeatureSitesActions.load, state => {
     return { ...state, loadingGet: true };
   }),
   on(FeatureSitesActions.loadAllByPostSuccess, (state, { result, event }) => {
@@ -57,9 +57,9 @@ export const siteReducers = createReducer<State>(
   on(FeatureSitesActions.loadSuccess, (state, { site }) => {
     return { ...state, currentSite: site, loadingGet: false };
   }),
-  on(FeatureSitesActions.failure, (state, { error }) => {
+  on(FeatureSitesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
 export const getSiteById = (id: number) => (state: State) => state.entities[id];

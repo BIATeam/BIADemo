@@ -16,11 +16,13 @@ export class LdapDomainsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DomainLdapDomainsActions.loadAll) /* When action is dispatched */,
-      switchMap((action) => {
+      switchMap(() => {
         return this.ldapDomainDas.getAll().pipe(
-          map((ldapDomains) => DomainLdapDomainsActions.loadAllSuccess({ ldapDomains })),
-          catchError((err) => {
-            this.biaMessageService.showError();
+          map(ldapDomains =>
+            DomainLdapDomainsActions.loadAllSuccess({ ldapDomains })
+          ),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainLdapDomainsActions.failure({ error: err }));
           })
         );

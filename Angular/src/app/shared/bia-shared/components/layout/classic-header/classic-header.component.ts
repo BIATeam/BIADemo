@@ -1,4 +1,13 @@
-import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 import { Platform } from '@angular/cdk/platform';
 import { MenuItem, Message } from 'primeng/api';
@@ -12,16 +21,24 @@ import { AppState } from 'src/app/store/state';
 import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
 import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import {
+  BiaTranslationService,
+  STORAGE_CULTURE_KEY,
+} from 'src/app/core/bia-core/services/bia-translation.service';
 import { allEnvironments } from 'src/environments/all-environments';
 import { Toast } from 'primeng/toast';
-import { Notification, NotificationData, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
+import {
+  Notification,
+  NotificationData,
+  NotificationType,
+} from 'src/app/domains/bia-domains/notification/model/notification';
+import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
 
 @Component({
   selector: 'bia-classic-header',
   templateUrl: './classic-header.component.html',
   styleUrls: ['./classic-header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClassicHeaderComponent implements OnInit, OnDestroy {
   @Input()
@@ -65,10 +82,10 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   unreadNotificationCount$: Observable<number>;
 
-  teamTypeSelectors: number[];
+  teamTypeSelectors: any[];
 
   @ViewChild('toast', { static: true }) toast: Toast;
-  NotificationType = NotificationType;
+  notificationType = NotificationType;
 
   constructor(
     public layoutService: BiaClassicLayoutService,
@@ -78,15 +95,20 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     public biaTranslationService: BiaTranslationService,
     private router: Router
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.teamTypeSelectors = allEnvironments.teams.filter(t => t.inHeader === true).map(t => t.teamTypeId);
+    this.teamTypeSelectors = allEnvironments.teams.filter(
+      t => t.inHeader === true
+    );
 
     if (allEnvironments.enableNotifications === true) {
-      this.unreadNotificationCount$ = this.store.select(getUnreadNotificationCount);
-      this.store.dispatch(DomainNotificationsActions.loadUnreadNotificationIds());
+      this.unreadNotificationCount$ = this.store.select(
+        getUnreadNotificationCount
+      );
+      this.store.dispatch(
+        DomainNotificationsActions.loadUnreadNotificationIds()
+      );
     }
     this.sub.add(
       this.biaTranslationService.appSettings$.subscribe(appSettings => {
@@ -105,18 +127,21 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   onNotificationClick(message: Message) {
     if (message.data?.notification) {
-      let notification : Notification = message.data.notification;
-      let data : NotificationData = notification.data;
+      const notification: Notification = message.data.notification;
+      const data: NotificationData = notification.data;
       if (data?.route) {
         if (data?.teams) {
           // Auto-switch to teams related to this notification
-          data.teams.forEach((team) => {
+          data.teams.forEach(team => {
             this.authService.changeCurrentTeamId(team.teamTypeId, team.team.id);
-            if (team.roles)
-            {
-              this.authService.changeCurrentRoleIds(team.teamTypeId, team.team.id, team.roles.map(r => r.id));
+            if (team.roles) {
+              this.authService.changeCurrentRoleIds(
+                team.teamTypeId,
+                team.team.id,
+                team.roles.map(r => r.id)
+              );
             }
-          })
+          });
         }
         this.router.navigate(data.route);
       } else if (notification.id) {
@@ -136,7 +161,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
-      this.store.dispatch(DomainNotificationsActions.setAsRead({ id: message.data.notification.id }))
+      this.store.dispatch(
+        DomainNotificationsActions.setAsRead({
+          id: message.data.notification.id,
+        })
+      );
     }
   }
 
@@ -152,7 +181,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
+    const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
+    const theme = localStorage.getItem(STORAGE_THEME_KEY);
     localStorage.clear();
+    if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
+    if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
     sessionStorage.clear();
     location.reload();
   }
@@ -175,9 +208,9 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
 
   buildNavigation() {
     const translationKeys = new Array<string>();
-    this.navigations.forEach((menu) => {
+    this.navigations.forEach(menu => {
       if (menu.children) {
-        menu.children.forEach((child) => {
+        menu.children.forEach(child => {
           translationKeys.push(child.labelKey);
         });
       }
@@ -185,35 +218,34 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     });
 
     this.navMenuItems = [];
-    this.navigations.forEach((menu) => {
+    this.navigations.forEach(menu => {
       const childrenMenuItem: MenuItem[] = [];
       if (menu.children) {
-        menu.children.forEach((child) => {
+        menu.children.forEach(child => {
           childrenMenuItem.push({
-            id:child.labelKey,
-            routerLink: child.path
+            id: child.labelKey,
+            routerLink: child.path,
           });
         });
       }
       this.navMenuItems.push({
         id: menu.labelKey,
         routerLink: menu.path,
-        items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined
+        items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined,
       });
     });
 
     this.sub.add(
-      this.translateService.stream(translationKeys).subscribe((translations) => {
+      this.translateService.stream(translationKeys).subscribe(translations => {
         this.processMenuTranslation(this.navMenuItems, translations);
       })
     );
   }
-  processMenuTranslation( children:MenuItem[], translations:any){
-    for (let item of children){
-        if(item.separator)
-          continue;
-      item.label = item.id == undefined? '---' :translations[item.id];
-      if(item.items){
+  processMenuTranslation(children: MenuItem[], translations: any) {
+    for (const item of children) {
+      if (item.separator) continue;
+      item.label = item.id == undefined ? '---' : translations[item.id];
+      if (item.items) {
         this.processMenuTranslation(item.items, translations);
       }
     }
@@ -231,19 +263,20 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
       'bia.languages',
       'bia.theme',
       'bia.themeLight',
-      'bia.themeDark'
+      'bia.themeDark',
     ];
     this.sub.add(
-      this.translateService.stream(translationKeys).subscribe((translations) => {
+      this.translateService.stream(translationKeys).subscribe(translations => {
         const menuItemLang: MenuItem[] = [];
 
         if (this.supportedLangs) {
-          this.supportedLangs.forEach((lang) => {
+          this.supportedLangs.forEach(lang => {
             menuItemLang.push({
-              label: translations['bia.lang.' + lang.split('-')[1].toLowerCase()],
+              label:
+                translations['bia.lang.' + lang.split('-')[1].toLowerCase()],
               command: () => {
                 this.onChangeLanguage(lang);
-              }
+              },
             });
           });
         }
@@ -260,7 +293,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
               [
                 {
                   label: translations['bia.languages'],
-                  items: menuItemLang
+                  items: menuItemLang,
                 },
                 {
                   label: translations['bia.theme'],
@@ -269,19 +302,19 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
                       label: translations['bia.themeLight'],
                       command: () => {
                         this.onChangeTheme(THEME_LIGHT);
-                      }
+                      },
                     },
                     {
                       label: translations['bia.themeDark'],
                       command: () => {
                         this.onChangeTheme(THEME_DARK);
-                      }
-                    }
-                  ]
-                }
-              ]
-            ]
-          }
+                      },
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
         ];
       })
     );

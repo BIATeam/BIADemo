@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { Observable, timer } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 
@@ -9,20 +15,24 @@ import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.servic
       <ng-template [ngTemplateOutlet]="picture"></ng-template>
     </div>
     <ng-template #picture>
-      <ng-container *ngIf="(showSpinner$ | async) !== null" [ngSwitch]="themeService.isCurrentThemeDark$ | async">
+      <ng-container
+        *ngIf="(showSpinner$ | async) !== null"
+        [ngSwitch]="themeService.isCurrentThemeDark$ | async">
         <picture *ngSwitchCase="true">
-          <source type="image/webp" srcset="assets/bia/spinner_light.webp" />
-          <img src="assets/bia/spinner_light.gif" />
+          <source
+            type="image/webp"
+            srcset="assets/bia/img/spinner_light.webp" />
+          <img src="assets/bia/img/spinner_light.gif" />
         </picture>
         <picture *ngSwitchCase="false">
-          <source type="image/webp" srcset="assets/bia/spinner.webp" />
-          <img src="assets/bia/spinner.gif" />
+          <source type="image/webp" srcset="assets/bia/img/spinner.webp" />
+          <img src="assets/bia/img/spinner.gif" />
         </picture>
       </ng-container>
     </ng-template>
   `,
   styleUrls: ['./spinner.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpinnerComponent implements OnInit {
   @Input()
@@ -37,7 +47,10 @@ export class SpinnerComponent implements OnInit {
 
   showSpinner$: Observable<any>;
 
-  constructor(private elementRef: ElementRef<HTMLElement>, public themeService: BiaThemeService) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>,
+    public themeService: BiaThemeService
+  ) {}
 
   ngOnInit() {
     this.showSpinner$ = timer(this.showAfter);

@@ -3,26 +3,33 @@
   flex: 1;
 }
 
-.bia-page-margin
-{
+.bia-page-margin {
   padding-left: 35px;
   padding-right: 35px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   min-width: 10px;
+  width: calc(95vw);
+  left: calc(2.5vw);
 }
 
-.bia-page-remove-margin
-{
+.bia-page-remove-margin .bia-page-margin {
+  width: unset;
+  left: unset;
+}
+
+.bia-page-remove-margin {
   margin-left: -35px;
   margin-right: -35px;
   margin-top: -15px;
   margin-bottom: -15px;
+  width: calc(95vw);
+  left: calc(2.5vw);
 }
 
 .bia-advanced-filter {
   padding-bottom: 15px;
-  >button {
+  > button {
     position: absolute;
   }
   .pi pi-clear {
@@ -61,5 +68,3 @@
 i.bia-pointer:before {
   cursor: pointer;
 }
-
-

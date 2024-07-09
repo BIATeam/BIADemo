@@ -7,20 +7,21 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
-    using BIA.Net.Core.Common.Configuration.CommonFeature;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
-    using BIA.Net.Core.Presentation.Common.Authentication;
+    using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
-    using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Hangfire;
     using Hangfire.Dashboard;
+    using Hangfire.Dashboard.JobLogs;
     using Hangfire.PostgreSql;
+    using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using Microsoft.OpenApi.Models;
+    using StackExchange.Redis;
 
     /// <summary>
     /// Add the standard service.
@@ -39,6 +40,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
             ApiFeatures apiFeatures,
             IConfiguration configuration)
         {
+            var biaNetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
+
+            // Authentication
+            services.ConfigureAuthentication(biaNetSection);
+
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
             {
@@ -59,7 +66,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
                     };
                     var securityRequirement = new OpenApiSecurityRequirement
                     {
-                        { apiScheme, new[] { "Bearer" } }
+                        { apiScheme, new[] { "Bearer" } },
                     };
 
                     a.SwaggerDoc("BIAApi", new OpenApiInfo { Title = "BIAApi", Version = "v1.0" });
@@ -81,16 +88,16 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 {
                     if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
-                        services.AddSignalR().AddRedis(apiFeatures.HubForClients.RedisConnectionString);
+                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
                     }
                     else
                     {
-                        services.AddSignalR().AddRedis(
+                        services.AddSignalR().AddStackExchangeRedis(
                             apiFeatures.HubForClients.RedisConnectionString,
-                        redisOptions =>
-                        {
-                            redisOptions.Configuration.ChannelPrefix = apiFeatures.HubForClients.RedisChannelPrefix;
-                        });
+                            redisOptions =>
+                            {
+                                redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
+                            });
                     }
                 }
             }
@@ -111,13 +118,13 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         InvisibilityTimeout = TimeSpan.FromDays(5),
                     };
 
-                    JobStorage.Current = new PostgreSqlStorage(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime);
+                    JobStorage.Current = new PostgreSqlStorage(new NpgsqlConnectionFactory(configuration.GetConnectionString(apiFeatures.DelegateJobToWorker.ConnectionStringName), optionsTime, null), optionsTime);
                 }
             }
 
             if (apiFeatures.HangfireDashboard.IsActive)
             {
-                services.AddHangfire(config =>
+                services.AddHangfire((config) =>
                 {
                     string dbEngine = configuration.GetDBEngine(apiFeatures.HangfireDashboard.ConnectionStringName);
                     if (dbEngine.ToLower().Equals("sqlserver"))
@@ -135,7 +142,13 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
                         config.UseSimpleAssemblyNameTypeSerializer()
                               .UseRecommendedSerializerSettings()
-                              .UsePostgreSqlStorage(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName), optionsTime);
+                              .UsePostgreSqlStorage(options => options.UseNpgsqlConnection(configuration.GetConnectionString(apiFeatures.HangfireDashboard.ConnectionStringName)), optionsTime);
+                    }
+
+                    if (apiFeatures.HangfireDashboard.LogsVisibleInDashboard)
+                    {
+                        // Log in hangfire dashboard
+                        config.UseDashboardJobLogs(apiFeatures.HangfireDashboard.LogFiles);
                     }
                 });
             }
@@ -143,9 +156,17 @@ namespace BIA.Net.Core.Presentation.Api.Features
             return services;
         }
 
-        public static IApplicationBuilder UseBiaApiFeatures<AuditFeature>(
+        /// <summary>
+        /// Use Bia Api Features.
+        /// </summary>
+        /// <param name="app">the application builder.</param>
+        /// <param name="apiFeatures">the Api feature.</param>
+        /// <param name="hangfireServerAuthorizations">authorization for hangfire dashboard.</param>
+        /// <returns>the application builder with bia feature.</returns>
+        public static IApplicationBuilder UseBiaApiFeatures(
             [NotNull] this IApplicationBuilder app,
-            ApiFeatures apiFeatures, HangfireDashboardAuthorizations hangfireServerAuthorizations) where AuditFeature : IAuditFeature
+            ApiFeatures apiFeatures,
+            HangfireDashboardAuthorizations hangfireServerAuthorizations)
         {
             app.UseEndpoints(endpoints =>
             {
@@ -170,7 +191,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
             }
 
             // Hangfire Server
-            if (apiFeatures.HangfireDashboard.IsActive == true)
+            if (apiFeatures.HangfireDashboard.IsActive)
             {
                 app.UseHangfireDashboardCustomOptions(new HangfireDashboardCustomOptions
                 {
@@ -178,12 +199,12 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 });
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
-                    Authorization = hangfireServerAuthorizations.Authorization
+                    Authorization = hangfireServerAuthorizations.Authorization,
                 });
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions
                 {
                     IsReadOnlyFunc = (DashboardContext context) => true,
-                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly
+                    Authorization = hangfireServerAuthorizations.AuthorizationReadOnly,
                 });
             }
 

@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="distributedCache">The distributed cache.</param>
-        public RemotePlaneRepository(HttpClient httpClient, IConfiguration configuration, ILogger<WebApiRepository> logger, IBiaDistributedCache distributedCache)
+        public RemotePlaneRepository(HttpClient httpClient, IConfiguration configuration, ILogger<RemotePlaneRepository> logger, IBiaDistributedCache distributedCache)
              : base(httpClient, logger, distributedCache)
         {
 #pragma warning disable S125 // Sections of code should not be commented out
@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <inheritdoc />
         protected override async Task<string> GetBearerTokenAsync()
         {
-            var result = await this.GetAsync<AuthInfoDto<UserDataDto, AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
+            var result = await this.GetAsync<AuthInfoDto<AdditionalInfoDto>>($"{this.baseAddress}{this.urlLogin}");
             return result.Result?.Token;
         }
     }

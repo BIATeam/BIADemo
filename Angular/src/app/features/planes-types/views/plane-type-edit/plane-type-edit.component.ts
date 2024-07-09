@@ -1,6 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { PlaneType } from '../../model/plane-type';
-import { PlaneTypeCRUDConfiguration } from '../../plane-type.constants';
+import { planeTypeCRUDConfiguration } from '../../plane-type.constants';
 import { CrudItemEditComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-edit/crud-item-edit.component';
 import { PlaneTypeService } from '../../services/plane-type.service';
 
@@ -11,9 +11,9 @@ import { PlaneTypeService } from '../../services/plane-type.service';
 export class PlaneTypeEditComponent extends CrudItemEditComponent<PlaneType> {
   constructor(
     protected injector: Injector,
-    public planeTypeService: PlaneTypeService,
+    public planeTypeService: PlaneTypeService
   ) {
     super(injector, planeTypeService);
-    this.crudConfiguration = PlaneTypeCRUDConfiguration;
+    this.crudConfiguration = planeTypeCRUDConfiguration;
   }
 }

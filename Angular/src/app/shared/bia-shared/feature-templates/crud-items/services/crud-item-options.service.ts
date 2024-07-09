@@ -3,16 +3,15 @@ import { Observable } from 'rxjs';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class CrudItemOptionsService {
-    dictOptionDtos$: Observable<DictOptionDto[]>;
+  dictOptionDtos$: Observable<DictOptionDto[]>;
 
-    constructor(
-        // protected store: Store<AppState>,
-    ) {
-        // TODO redefine in plane 
-        /*
+  constructor() {
+    // protected store: Store<AppState>,
+    // TODO redefine in plane
+    /*
         this.crudItemTypeOptions$ = this.store.select(getAllCrudItemTypeOptions);
         this.airportOptions$ = this.store.select(getAllAirportOptions);
 
@@ -27,13 +26,14 @@ export class CrudItemOptionsService {
             )
         );
         */
-    }
+  }
 
-    loadAllOptions(optionFilter: any) {
-        // TODO redefine in plane 
-        /*
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  loadAllOptions(optionFilter: any) {
+    // TODO redefine in plane
+    /*
         this.store.dispatch(DomainCrudItemTypeOptionsActions .loadAll());
         this.store.dispatch(DomainAirportOptionsActions.loadAll());
         */
-    }
+  }
 }

@@ -3,7 +3,7 @@ import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-compan
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AircraftMaintenanceCompanyDas extends AbstractDas<AircraftMaintenanceCompany> {
   constructor(injector: Injector) {

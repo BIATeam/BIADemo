@@ -1,9 +1,13 @@
 import * as fromMembers from './members-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
-import { MemberCRUDConfiguration } from '../member.constants';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
+import { memberCRUDConfiguration } from '../member.constants';
 
-export namespace FeatureMembersStore
-{
+export namespace FeatureMembersStore {
   export interface MembersState {
     members: fromMembers.State;
   }
@@ -11,7 +15,7 @@ export namespace FeatureMembersStore
   /** Provide reducers with AoT-compilation compliance */
   export function reducers(state: MembersState | undefined, action: Action) {
     return combineReducers({
-      members: fromMembers.memberReducers
+      members: fromMembers.memberReducers,
     })(state, action);
   }
 
@@ -20,43 +24,43 @@ export namespace FeatureMembersStore
    * This is used for selecting feature states that are loaded eagerly or lazily.
    */
 
-  export const getMembersState = createFeatureSelector<MembersState>(MemberCRUDConfiguration.storeKey);
+  export const getMembersState = createFeatureSelector<MembersState>(
+    memberCRUDConfiguration.storeKey
+  );
 
   export const getMembersEntitiesState = createSelector(
     getMembersState,
-    (state) => state.members
+    state => state.members
   );
 
   export const getMembersTotalCount = createSelector(
     getMembersEntitiesState,
-    (state) => state.totalCount
+    state => state.totalCount
   );
 
   export const getCurrentMember = createSelector(
     getMembersEntitiesState,
-    (state) => state.currentMember
+    state => state.currentMember
   );
 
   export const getLastLazyLoadEvent = createSelector(
     getMembersEntitiesState,
-    (state) => state.lastLazyLoadEvent
+    state => state.lastLazyLoadEvent
   );
 
   export const getMemberLoadingGet = createSelector(
     getMembersEntitiesState,
-    (state) => state.loadingGet
+    state => state.loadingGet
   );
 
   export const getMemberLoadingGetAll = createSelector(
     getMembersEntitiesState,
-    (state) => state.loadingGetAll
+    state => state.loadingGetAll
   );
 
-  export const { selectAll: getAllMembers } = fromMembers.membersAdapter.getSelectors(getMembersEntitiesState);
+  export const { selectAll: getAllMembers } =
+    fromMembers.membersAdapter.getSelectors(getMembersEntitiesState);
 
   export const getMemberById = (id: number) =>
-    createSelector(
-      getMembersEntitiesState,
-      fromMembers.getMemberById(id)
-    );
+    createSelector(getMembersEntitiesState, fromMembers.getMemberById(id));
 }

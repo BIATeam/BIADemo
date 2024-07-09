@@ -6,9 +6,12 @@ namespace BIA.Net.Core.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Principal;
     using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
@@ -18,11 +21,114 @@ namespace BIA.Net.Core.Domain
     /// </summary>
     /// <typeparam name="TDto">The DTO type.</typeparam>
     /// <typeparam name="TEntity">The entity type.</typeparam>
+    /// <typeparam name="TKey">The type of the key.</typeparam>
     public abstract class BaseMapper<TDto, TEntity, TKey> : BaseEntityMapper<TEntity>
         where TDto : BaseDto<TKey>
         where TEntity : class, IEntity<TKey>
     {
-        public UserContext UserContext { get; set; }
+        /// <summary>
+        /// CSVs the string.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns>A string for a string cell.</returns>
+        public static string CSVString(string x)
+        {
+            return "\"=\"\"" + x?.Replace("\"", "\"\"\"\"") + "\"\"\"";
+        }
+
+        /// <summary>
+        /// CSVs the list.
+        /// </summary>
+        /// <param name="x">The x.</param>
+        /// <returns>A string for a list cell.</returns>
+        public static string CSVList(ICollection<OptionDto> x)
+        {
+            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
+        }
+
+        /// <summary>
+        /// CSVs the date.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date cell.</returns>
+        public static string CSVDate(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd");
+        }
+
+        /// <summary>
+        /// CSVs the time.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTime(DateTime? x)
+        {
+            return x?.ToString("HH:mm");
+        }
+
+        /// <summary>
+        /// CSVs the time.
+        /// </summary>
+        /// <param name="x">The TimeSpan.</param>
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTime(TimeSpan? x)
+        {
+            return x?.ToString("HH:mm");
+        }
+
+        /// <summary>
+        /// CSVs the time.
+        /// </summary>
+        /// <param name="x">The string.</param>
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTime(string x)
+        {
+            return x;
+        }
+
+        /// <summary>
+        /// CSVs the date time.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date and time cell.</returns>
+        public static string CSVDateTime(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd HH:mm");
+        }
+
+        /// <summary>
+        /// CSVs the bool.
+        /// </summary>
+        /// <param name="x">if set to <c>true</c> [x].</param>
+        /// <returns>A string for a bool cell.</returns>
+        public static string CSVBool(bool x)
+        {
+            return x ? "X" : string.Empty;
+        }
+
+        /// <summary>
+        /// CSVs the number.
+        /// </summary>
+        /// <typeparam name="T">The type of number.</typeparam>
+        /// <param name="x">The number.</param>
+        /// <returns>A string for a number cell.</returns>
+        public static string CSVNumber<T>(T? x)
+            where T : struct, IFormattable
+        {
+            return x.HasValue ? x.Value.ToString(null, CultureInfo.InvariantCulture) : string.Empty;
+        }
+
+        /// <summary>
+        /// CSVs the number.
+        /// </summary>
+        /// <typeparam name="T">The type of number.</typeparam>
+        /// <param name="x">The number.</param>
+        /// <returns>A string for a number cell.</returns>
+        public static string CSVNumber<T>(T x)
+            where T : IFormattable
+        {
+            return x.ToString(null, CultureInfo.InvariantCulture);
+        }
 
         /// <summary>
         /// Create an entity from a DTO.
@@ -113,12 +219,13 @@ namespace BIA.Net.Core.Domain
         /// <returns>The array of includes.</returns>
         public virtual Expression<Func<TEntity, object>>[] IncludesBeforeDelete()
         {
-            return null;
+            return Array.Empty<Expression<Func<TEntity, object>>>();
         }
 
         /// <summary>
         /// Defining the includes to use in the update method when updating related entities.
         /// </summary>
+        /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>The array of includes.</returns>
         public virtual Expression<Func<TEntity, object>>[] IncludesForUpdate(string mapperMode)
         {
@@ -131,7 +238,7 @@ namespace BIA.Net.Core.Domain
         /// <returns>The array of includes.</returns>
         public virtual Expression<Func<TEntity, object>>[] IncludesForUpdate()
         {
-            return null;
+            return Array.Empty<Expression<Func<TEntity, object>>>();
         }
 
         /// <summary>
@@ -153,51 +260,6 @@ namespace BIA.Net.Core.Domain
         public virtual Func<TDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             throw new NotImplementedException("This mapper is not build to generate records, or the implementation of DtoToRecord is missing.");
-        }
-
-        public static string CSVString(string x)
-        {
-            return "\"=\"\"" + x?.Replace("\"", "\"\"\"\"") + "\"\"\"";
-        }
-
-        public static string CSVList(ICollection<OptionDto> x)
-        {
-            return CSVString(string.Join(" - ", x?.Select(ca => ca.Display).ToList()));
-        }
-
-        public static string CSVDate(DateTime? x)
-        {
-            return x?.ToString("yyyy-MM-dd");
-        }
-
-        public static string CSVTime(DateTime? x)
-        {
-            return x?.ToString("hh:mm");
-        }
-
-        public static string CSVTime(TimeSpan? x)
-        {
-            return x?.ToString("hh:mm");
-        }
-
-        public static string CSVTime(string x)
-        {
-            return x;
-        }
-
-        public static string CSVDateTime(DateTime? x)
-        {
-            return x?.ToString("yyyy-MM-dd hh:mm");
-        }
-
-        public static string CSVBool(bool x)
-        {
-            return x ? "X" : string.Empty;
-        }
-
-        public static string CSVNumber(int x)
-        {
-            return x.ToString();
         }
     }
 }

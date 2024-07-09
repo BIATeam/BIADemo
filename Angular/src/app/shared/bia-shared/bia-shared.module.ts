@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // PrimeNG Modules
-// import { AccordionModule } from 'primeng/accordion';
+import { AccordionModule } from 'primeng/accordion';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { BadgeModule } from 'primeng/badge';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -21,7 +21,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 // import { EditorModule } from 'primeng/editor';
-// Warning it requiered to install Quill package: 
+// Warning it requiered to install Quill package:
 //    - npm install quill
 // And modify angular.json to add quill css and js :
 // "styles": [
@@ -34,10 +34,10 @@ import { DropdownModule } from 'primeng/dropdown';
 // "scripts": [
 //+   "node_modules/quill/dist/quill.js"
 // ],
-  
+
 import { FieldsetModule } from 'primeng/fieldset';
 // import { FullCalendarModule } from 'primeng/fullcalendar';
-// Warning it requiered to install Fullcalandar package: 
+// Warning it requiered to install Fullcalandar package:
 //    - npm install @fullcalendar/core
 //    - npm install @fullcalendar/daygrid
 //    - npm install @fullcalendar/interaction
@@ -73,7 +73,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 // import { ToolbarModule } from 'primeng/toolbar';
 // import { TooltipModule } from 'primeng/tooltip';
-// import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadModule } from 'primeng/fileupload';
 
 // PrimeNG Services
 import { MessageService } from 'primeng/api';
@@ -122,56 +122,59 @@ import { BiaTableInputComponent } from './components/table/bia-table-input/bia-t
 import { BiaTableOutputComponent } from './components/table/bia-table-output/bia-table-output.component';
 import { BiaOutputComponent } from './components/form/bia-output/bia-output.component';
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { TeamAdvancedFilterComponent } from './components/team-advanced-filter/team-advanced-filter.component';
+import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
 
 const PRIMENG_MODULES = [
-//  AccordionModule,
+  AccordionModule,
   AutoCompleteModule,
   BadgeModule,
   BreadcrumbModule,
   ButtonModule,
   CalendarModule,
   CheckboxModule,
-//  ChipsModule,
-//  CodeHighlighterModule,
+  //  ChipsModule,
+  //  CodeHighlighterModule,
   ConfirmDialogModule,
-//  ContextMenuModule,
+  //  ContextMenuModule,
   DialogModule,
   DropdownModule,
-//  EditorModule,
+  //  EditorModule,
   FieldsetModule,
-//  FullCalendarModule,
-//  InputMaskModule,
+  //  FullCalendarModule,
+  //  InputMaskModule,
   InputSwitchModule,
   InputTextModule,
   InputTextareaModule,
   InputNumberModule,
   ListboxModule,
   MegaMenuModule,
-//  MenuModule,
+  //  MenuModule,
   MenubarModule,
-//  MessageModule,
-//  MessagesModule,
+  //  MessageModule,
+  //  MessagesModule,
   MultiSelectModule,
-//  PaginatorModule,
-//  PanelModule,
-//  PanelMenuModule,
-//  ProgressBarModule,
+  //  PaginatorModule,
+  //  PanelModule,
+  //  PanelMenuModule,
+  //  ProgressBarModule,
   RadioButtonModule,
-//  ScrollPanelModule,
-//  SelectButtonModule,
-//  SlideMenuModule,
-//  SliderModule,
-//  SpinnerModule,
-//  SplitButtonModule,
+  //  ScrollPanelModule,
+  //  SelectButtonModule,
+  //  SlideMenuModule,
+  //  SliderModule,
+  //  SpinnerModule,
+  //  SplitButtonModule,
   TableModule,
-//  TabMenuModule,
+  //  TabMenuModule,
   TabViewModule,
-//  TieredMenuModule,
+  //  TieredMenuModule,
   ToastModule,
   ToggleButtonModule,
-//  ToolbarModule,
-//  TooltipModule,
-//  FileUploadModule,
+  //  ToolbarModule,
+  //  TooltipModule,
+  FileUploadModule,
 ];
 
 const MODULES = [
@@ -184,7 +187,6 @@ const MODULES = [
   TeamModule,
 ];
 
-
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
@@ -195,6 +197,7 @@ const COMPONENTS = [
   IeWarningComponent,
   BiaTableComponent,
   BiaTableFilterComponent,
+  BiaFieldBaseComponent,
   BiaFormComponent,
   BiaInputComponent,
   BiaOutputComponent,
@@ -210,15 +213,15 @@ const COMPONENTS = [
   BiaOnlineOfflineIconComponent,
   NotificationTeamWarningComponent,
   HangfireContainerComponent,
+  TeamAdvancedFilterComponent,
 ];
-
 
 const VIEW_COMPONENTS = [
   ViewListComponent,
   ViewDialogComponent,
   ViewTeamTableComponent,
   ViewUserTableComponent,
-  ViewFormComponent
+  ViewFormComponent,
 ];
 
 const PIPES = [
@@ -228,24 +231,34 @@ const PIPES = [
   FormatValuePipe,
   SafeUrlPipe,
   IsNotCurrentTeamPipe,
-  TeamListPipe
+  TeamListPipe,
 ];
 
-const VIEW_IMPORTS = [StoreModule.forFeature('views', reducers), EffectsModule.forFeature([ViewsEffects])];
+const VIEW_IMPORTS = [
+  StoreModule.forFeature('views', reducers),
+  EffectsModule.forFeature([ViewsEffects]),
+];
 
 const NOTIFICATION_IMPORTS = [
   StoreModule.forFeature('domain-notifications', notificationReducers),
-  EffectsModule.forFeature([NotificationsEffects])
+  EffectsModule.forFeature([NotificationsEffects]),
 ];
 
+const TEAM_ADVANCED_FILTER_IMPORTS = [UserOptionModule];
 const SERVICES = [MessageService];
 
 @NgModule({
-  imports: [...PRIMENG_MODULES, ...MODULES, ...VIEW_IMPORTS, ...NOTIFICATION_IMPORTS],
+  imports: [
+    ...PRIMENG_MODULES,
+    ...MODULES,
+    ...VIEW_IMPORTS,
+    ...NOTIFICATION_IMPORTS,
+    ...TEAM_ADVANCED_FILTER_IMPORTS,
+  ],
   declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
   exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...PIPES],
-  providers: [...SERVICES]
+  providers: [...SERVICES],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
-export class BiaSharedModule { }
+export class BiaSharedModule {}

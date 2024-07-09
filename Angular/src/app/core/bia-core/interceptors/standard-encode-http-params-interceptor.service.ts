@@ -4,7 +4,7 @@ import {
   HttpEvent,
   HttpHandler,
   HttpParams,
-  HTTP_INTERCEPTORS
+  HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StandardEncoder } from './standard-encoder';
@@ -14,8 +14,14 @@ import { Injectable } from '@angular/core';
 // Because dot.NET interpret '+' as space
 @Injectable()
 export class StandardEncodeHttpParamsInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const params = new HttpParams({ encoder: new StandardEncoder(), fromString: req.params.toString() });
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    const params = new HttpParams({
+      encoder: new StandardEncoder(),
+      fromString: req.params.toString(),
+    });
     return next.handle(req.clone({ params }));
   }
 }
@@ -23,5 +29,5 @@ export class StandardEncodeHttpParamsInterceptor implements HttpInterceptor {
 export const standardEncodeHttpParamsInterceptor = {
   provide: HTTP_INTERCEPTORS,
   useClass: StandardEncodeHttpParamsInterceptor,
-  multi: true
+  multi: true,
 };

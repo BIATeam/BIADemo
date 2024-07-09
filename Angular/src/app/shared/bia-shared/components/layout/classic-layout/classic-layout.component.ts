@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, OnDestroy, HostBinding } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  HostBinding,
+} from '@angular/core';
 import { BiaClassicLayoutService } from './bia-classic-layout.service';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -7,9 +14,13 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaNavigation } from '../../../model/bia-navigation';
-import { ROUTE_DATA_CAN_NAVIGATE, ROUTE_DATA_BREADCRUMB, APP_SUPPORTED_TRANSLATIONS, ROUTE_DATA_NO_MARGIN } from 'src/app/shared/constants';
+import {
+  ROUTE_DATA_CAN_NAVIGATE,
+  ROUTE_DATA_BREADCRUMB,
+  APP_SUPPORTED_TRANSLATIONS,
+  ROUTE_DATA_NO_MARGIN,
+} from 'src/app/shared/constants';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'bia-classic-layout',
@@ -17,7 +28,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./classic-layout.component.scss'],
   providers: [BiaClassicLayoutService],
   // In order to avoid change detections issues in custom footer / mainBar, stay default here
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
 export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;
@@ -26,7 +37,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() menus: BiaNavigation[];
   @Input() username?: string;
   @Input() headerLogos: string[];
-  @Input() footerLogo = 'assets/bia/Footer.png';
+  @Input() footerLogo = 'assets/bia/img/Footer.png';
   @Input() supportedLangs = APP_SUPPORTED_TRANSLATIONS;
   @Input() allowThemeChange = true;
   @Input() companyName = 'BIA';
@@ -43,19 +54,25 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     public layoutService: BiaClassicLayoutService,
     private translateService: TranslateService,
     private router: Router,
-    private activatedRoute: ActivatedRoute,
-  ) { }
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.setNoMargin(this.activatedRoute);
-    this.sub.add(this.translateService.stream('bia.languages').subscribe(() => this.updateMenuItems()));
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-      this.setNoMargin(this.activatedRoute);
-      this.updateMenuItems();
-    });
+    this.sub.add(
+      this.translateService
+        .stream('bia.languages')
+        .subscribe(() => this.updateMenuItems())
+    );
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.setNoMargin(this.activatedRoute);
+        this.updateMenuItems();
+      });
 
     this.sub.add(
-      this.layoutService.breadcrumbRefresh$.subscribe((val) => {
+      this.layoutService.breadcrumbRefresh$.subscribe(() => {
         this.setNoMargin(this.activatedRoute);
         this.updateMenuItems();
       })
@@ -95,7 +112,9 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     }
 
     for (const child of children) {
-      const routeURL: string = child.snapshot.url.map((segment) => segment.path).join('/');
+      const routeURL: string = child.snapshot.url
+        .map(segment => segment.path)
+        .join('/');
       if (routeURL !== '') {
         url += `/${routeURL}`;
       }
@@ -103,7 +122,10 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
       const label = child.snapshot.data[ROUTE_DATA_BREADCRUMB];
       if (label) {
         if (child.snapshot.data[ROUTE_DATA_CAN_NAVIGATE] === true) {
-          breadcrumbs.push({ label: this.translateService.instant(label), routerLink: [url] });
+          breadcrumbs.push({
+            label: this.translateService.instant(label),
+            routerLink: [url],
+          });
         } else {
           breadcrumbs.push({ label: this.translateService.instant(label) });
         }
@@ -114,7 +136,6 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   }
 
   private setNoMargin(activatedRoute: ActivatedRoute, firstPass = true) {
-
     if (firstPass) {
       this.noMargin = false;
     }

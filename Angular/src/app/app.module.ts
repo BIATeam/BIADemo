@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { LOCALE_ID, NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateLoader, TranslateModule, TranslateStore } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateStore,
+} from '@ngx-translate/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
@@ -11,19 +15,16 @@ import { EffectsModule } from '@ngrx/effects';
 import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { environment } from 'src/environments/environment';
 import { HomeModule } from './features/home/home.module';
-import { APP_SUPPORTED_TRANSLATIONS } from './shared/constants';
 import { BiaErrorHandler } from './core/bia-core/shared/bia-error-handler';
-import { getInitialLang } from './core/bia-core/services/bia-translation.service';
+import { getCurrentCulture } from './core/bia-core/services/bia-translation.service';
 import { BiaTranslateHttpLoader } from './core/bia-core/services/bia-translate-http-loader';
 import { ROOT_REDUCERS, metaReducers } from './store/state';
 import { BiaSignalRService } from './core/bia-core/services/bia-signalr.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { buildSpecificModules } from './build-specifics/bia-build-specifics';
 import { BiaEnvironmentService } from './core/bia-core/services/bia-environment.service';
-import { DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { BiaNgxLoggerServerService } from './core/bia-core/services/bia-ngx-logger-server.service';
-
-export const getLocaleId = () => getInitialLang(APP_SUPPORTED_TRANSLATIONS);
 
 export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
   return new BiaTranslateHttpLoader(http, store, './assets/i18n/app/');
@@ -32,21 +33,20 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    LoggerModule.forRoot(
-      BiaEnvironmentService.getLoggingConf(),
-      {
-        serverProvider: {
-          provide: TOKEN_LOGGER_SERVER_SERVICE, useClass: BiaNgxLoggerServerService
-        }
-      }),
+    LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: BiaNgxLoggerServerService,
+      },
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: false,
-        strictActionImmutability: false
-      }
+        strictActionImmutability: false,
+      },
     }) /* Initialise the Central Store with Application's main reducer*/,
     buildSpecificModules,
     EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
@@ -55,8 +55,8 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient, TranslateStore]
-      }
+        deps: [HttpClient, TranslateStore],
+      },
     }),
     CoreModule,
     HomeModule,
@@ -64,15 +64,17 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
       enabled: environment.production,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
-    })
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   providers: [
     DatePipe,
-    { provide: LOCALE_ID, useFactory: getLocaleId },
+    CurrencyPipe,
+    DecimalPipe,
+    { provide: LOCALE_ID, useFactory: getCurrentCulture },
     { provide: ErrorHandler, useClass: BiaErrorHandler },
-    BiaSignalRService
+    BiaSignalRService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -3,10 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration.CommonFeature
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// AuditConfiguration.
+    /// </summary>
     public class AuditConfiguration
     {
         /// <summary>

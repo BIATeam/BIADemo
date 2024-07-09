@@ -1,1 +1,1 @@
-export const QUERY_STRING_VIEW: string = 'view';
+export const QUERY_STRING_VIEW = 'view';

@@ -1,33 +1,43 @@
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+Import-Module $scriptPath/Library-BIA-BIATemplate.psm1
+
 # $oldName = Read-Host "old project name ?"
 $oldName = 'BIADemo'
 # $newName = Read-Host "new project name ?"
 $newName = 'BIATemplate'
 
-$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$jsonFileName = 'BIAToolKit.json'
+$docsFolder = '.bia'
+
 $newPath = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$scriptPath\..\..\$newName\DotNet")
 $oldPath = Resolve-Path -Path "$scriptPath\..\..\$oldName\DotNet"
 
 Write-Host "old name: " $oldName
 Write-Host "new name: " $newName
 
-# Returns all line numbers containing the value passed as a parameter.
-function GetLineNumber($pattern, $file) {
-  $LineNumber = Select-String -Path $file -Pattern $pattern | Select-Object -ExpandProperty LineNumber
-  return $LineNumber
+###### ###### ###### Specific Functions ###### ###### ######
+function ReplaceProjectName {
+  param (
+    [string]$oldName,
+    [string]$newName
+  )
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $file = $_.FullName
+    $oldContent = [System.IO.File]::ReadAllText($file);
+    $newContent = $oldContent.Replace($oldName, $newName);
+    if ($oldContent -ne $newContent) {
+	  
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Replace in $fileRel" -Verbose
+	  
+      [System.IO.File]::WriteAllText($file, $newContent)
+    }
+  }
 }
 
-# Deletes a set of lines whose number is between $start and $end.
-function DeleteLine($start, $end, $file) {
-  $i = 0
-  $start--
-  $end--
-  $fileRel = Resolve-Path -Path "$file" -Relative
-  Write-Verbose "Delete lines $start to $end in file $fileRel" -Verbose
-  (Get-Content $file) | Where-Object {
-	(($i -ne $start - 1 -or $_.Trim() -ne '') -and 
-    ($i -lt $start -or $i -gt $end))
-    $i++
-  } | set-content $file
+# Deletes comment // Except BIADemo 
+function RemoveCommentExceptBIADemo {
+  ReplaceProjectName -oldName "// Except BIADemo " -newName ""
 }
 
 # Deletes lines between // Begin BIADemo and // End BIADemo 
@@ -45,6 +55,9 @@ function RemoveCodeExample {
     $lineBegin += $ends
   
     if ($lineBegin -and $lineBegin.Length -gt 0) {
+
+      Write-Host "Delete BIADemo code for file $file"
+
       $lineBegin = $lineBegin | Sort-Object
       for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
         $start = [int]$lineBegin[$i - 1]
@@ -53,11 +66,6 @@ function RemoveCodeExample {
       }
     }
   }
-}
-
-# Deletes comment // Except BIADemo 
-function RemoveCommentExceptBIADemo {
-  ReplaceProjectName -oldName "// Except BIADemo " -newName ""
 }
 
 function RemoveBIADemoOnlyFiles {
@@ -89,104 +97,7 @@ function RemoveEmptyFolder {
   }
 }
 
-function RenameFile {
-  param (
-    [string]$oldName,
-    [string]$newName
-  )
-  Get-ChildItem -File -Recurse | ForEach-Object { if ($_.Name -ne $_.Name.replace($oldName, $newName)) { Rename-Item -Path $_.PSPath -NewName $_.Name.replace($oldName, $newName) } }
-}
-
-function RenameFolder {
-  param (
-    [string]$oldName,
-    [string]$newName
-  )
-  Get-ChildItem -Directory -Recurse | ForEach-Object { if ($_.Name -ne $_.Name.replace($oldName, $newName)) { Rename-Item -Path $_.PSPath -NewName $_.Name.replace($oldName, $newName) } }
-}
-
-function RemoveItemFolder {
-  param (
-    [string]$path
-  )
-  if (Test-Path $path) {
-    $fileRel = Resolve-Path -Path "$path" -Relative
-    Write-Verbose "Delete $fileRel" -Verbose
-    Remove-Item $path -Recurse -Force -Confirm:$false
-  }
-  else {
-    Write-Host "Error $path not found"
-  }
-}
-
-function ReplaceProjectName {
-  param (
-    [string]$oldName,
-    [string]$newName
-  )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
-    $file = $_.FullName
-    $oldContent = [System.IO.File]::ReadAllText($file);
-    $newContent = $oldContent.Replace($oldName, $newName);
-    if ($oldContent -ne $newContent) {
-	  
-      $fileRel = Resolve-Path -Path "$file" -Relative
-      Write-Verbose "Replace in $fileRel" -Verbose
-	  
-      [System.IO.File]::WriteAllText($file, $newContent)
-    }
-  }
-}
-
-function ReplaceInScript {
-  param (
-    [string]$oldName,
-    [string]$newName
-  )
-  Get-ChildItem -File -Recurse -include *.ps1 | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
-    $file = $_.FullName
-    $oldContent = [System.IO.File]::ReadAllText($file);
-    $newContent = $oldContent.Replace($oldName, $newName);
-    if ($oldContent -ne $newContent) {
-	  
-      $fileRel = Resolve-Path -Path "$file" -Relative
-      Write-Verbose "Replace in $fileRel" -Verbose
-	  
-      [System.IO.File]::WriteAllText($file, $newContent)
-    }
-  }
-}
-
-function RemoveFolder {
-  param (
-    [string]$path
-  )
-  if (Test-Path $path) {
-    Write-Host "delete " $path " folder"
-    Remove-Item $path -Recurse -Force -Confirm:$false
-  }
-}
-
-function CopyModel {
-  param (
-    [string]$modelName,
-    [string]$folderpath,
-    [string]$fileName
-  )
-  $destinationFolder = '.\docs\' + $modelName + '\' + $folderpath
-  If (!(Test-Path -path $destinationFolder)) { New-Item -ItemType Directory -Path $destinationFolder }
-  $destinationFile = $destinationFolder + '\' + $fileName
-  $sourceFile = '.\' + $folderpath + '\' + $fileName
-  Copy-Item -path $sourceFile -Destination $destinationFile
-
-  $searchWord = '// BIADemo only'
-  $starts = GetLineNumber -pattern $searchWord -file $destinationFile
-  if ($starts -eq 1) {
-    DeleteLine -start 1 -end 1 -file $destinationFile
-  }
-}
-
-
+###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
@@ -199,15 +110,12 @@ Set-Location -Path $newPath
 
 Write-Host "Zip plane"
 
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Presentation.Api\Controllers\Plane' 'PlanesController.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'PlaneAppService.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Application\Plane' 'IPlaneAppService.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'PlaneMapper.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain\PlaneModule\Aggregate' 'Plane.cs'
-CopyModel 'crud-planes' 'TheBIADevCompany.BIADemo.Domain.Dto\Plane' 'PlaneDto.cs'
-
-compress-archive -path '.\docs\crud-planes\*' -destinationpath '.\docs\crud-planes.zip' -compressionlevel optimal
-Remove-Item '.\docs\crud-planes' -Recurse -Force -Confirm:$false
+# Read Json settings to generate archive
+$myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
+ForEach ($settings in $myJson) {
+  GenerateZipArchive -settings $settings -settingsName $jsonFileName -oldPath $oldPath -newPath $newPath
+}
+Copy-Item -Path "$oldPath\$jsonFileName" -Destination "$newPath\$docsFolder\$jsonFileName" -Force
 
 Write-Host "Remove .vs"
 RemoveItemFolder -path '.vs'
@@ -287,7 +195,7 @@ Set-Location -Path $scriptPath
 # }
 
 # Write-Host "   Zip files."
-# compress-archive -path $targetDir -destinationpath '..\BIADemo\Docs\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip' -compressionlevel optimal -Force
+# compress-archive -path $targetDir -destinationpath "..\BIADemo\$docsFolder\Templates\VX.Y.Z\BIA.DotNetTemplate.X.Y.Z.zip" -compressionlevel optimal -Force
 # RemoveItemFolder -path 'Tmp'
 
 write-host "finish"

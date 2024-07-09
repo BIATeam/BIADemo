@@ -26,9 +26,9 @@
 .bia-table-controller-container {
   padding-top: 10px;
   padding-right: 20px;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 .bia-column-filter-icon {
@@ -40,7 +40,7 @@
   padding-right: 5px;
 }
 
-.bia-table-controller-container .p-float-label{
+.bia-table-controller-container .p-float-label {
   margin-top: -10px;
 }
 

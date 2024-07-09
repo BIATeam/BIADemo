@@ -11,29 +11,24 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserOptionsService extends CrudItemOptionsService {
-    roleOptions$: Observable<OptionDto[]>;
+  roleOptions$: Observable<OptionDto[]>;
 
-    constructor(
-        private store: Store<AppState>,
-    ) {
-        super();
-        // TODO after creation of CRUD User : get all requiered option dto use in Table calc and create and edit form
-        this.roleOptions$ = this.store.select(getAllRoleOptions);
+  constructor(private store: Store<AppState>) {
+    super();
+    // TODO after creation of CRUD User : get all requiered option dto use in Table calc and create and edit form
+    this.roleOptions$ = this.store.select(getAllRoleOptions);
 
-        this.dictOptionDtos$ = combineLatest([this.roleOptions$]).pipe(
-            map(
-                (options) =>
-                <DictOptionDto[]>[
-                    new DictOptionDto('roles', options[0]),
-                ]
-            )
-        );
-    }
+    this.dictOptionDtos$ = combineLatest([this.roleOptions$]).pipe(
+      map(options => <DictOptionDto[]>[new DictOptionDto('roles', options[0])])
+    );
+  }
 
-    loadAllOptions() {
-        this.store.dispatch(DomainRoleOptionsActions.loadAll({teamTypeId:TeamTypeId.Root}));
-    }
+  loadAllOptions() {
+    this.store.dispatch(
+      DomainRoleOptionsActions.loadAll({ teamTypeId: TeamTypeId.Root })
+    );
+  }
 }

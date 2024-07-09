@@ -8,31 +8,38 @@ import { AppState } from 'src/app/store/state';
 import { AirportService } from '../../services/airport.service';
 
 @Component({
-  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
+  selector: 'app-airports-item',
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
 })
-export class AirportItemComponent extends CrudItemItemComponent<Airport> implements OnInit {
-  constructor(protected store: Store<AppState>,
+export class AirportItemComponent
+  extends CrudItemItemComponent<Airport>
+  implements OnInit
+{
+  constructor(
+    protected store: Store<AppState>,
     protected injector: Injector,
     public airportService: AirportService,
-    protected layoutService: BiaClassicLayoutService,
+    protected layoutService: BiaClassicLayoutService
   ) {
     super(injector, airportService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.sub.add
-      (
-        this.airportService.crudItem$.subscribe((airport) => {
-          // TODO after creation of CRUD Airport : set the field of the item to display in the breadcrump
-          if (airport?.name) {
-            this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = airport.name;
-            });
-            this.layoutService.refreshBreadcrumb();
-          }
-        })
-      );
+    this.sub.add(
+      this.airportService.crudItem$.subscribe(airport => {
+        // TODO after creation of CRUD Airport : set the field of the item to display in the breadcrump
+        if (airport?.name) {
+          this.route.data.pipe(first()).subscribe(routeData => {
+            (routeData as any)['breadcrumb'] = airport.name;
+          });
+          this.layoutService.refreshBreadcrumb();
+        }
+      })
+    );
   }
 }

@@ -1,5 +1,10 @@
 import * as fromPlanes from './planes-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { storeKey } from '../plane.constants';
 
 export interface PlanesState {
@@ -9,7 +14,7 @@ export interface PlanesState {
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: PlanesState | undefined, action: Action) {
   return combineReducers({
-    planes: fromPlanes.planeReducers
+    planes: fromPlanes.planeReducers,
   })(state, action);
 }
 
@@ -22,38 +27,36 @@ export const getPlanesState = createFeatureSelector<PlanesState>(storeKey);
 
 export const getPlanesEntitiesState = createSelector(
   getPlanesState,
-  (state) => state.planes
+  state => state.planes
 );
 
 export const getPlanesTotalCount = createSelector(
   getPlanesEntitiesState,
-  (state) => state.totalCount
+  state => state.totalCount
 );
 
 export const getCurrentPlane = createSelector(
   getPlanesEntitiesState,
-  (state) => state.currentPlane
+  state => state.currentPlane
 );
 
 export const getLastLazyLoadEvent = createSelector(
   getPlanesEntitiesState,
-  (state) => state.lastLazyLoadEvent
+  state => state.lastLazyLoadEvent
 );
 
 export const getPlaneLoadingGet = createSelector(
   getPlanesEntitiesState,
-  (state) => state.loadingGet
+  state => state.loadingGet
 );
 
 export const getPlaneLoadingGetAll = createSelector(
   getPlanesEntitiesState,
-  (state) => state.loadingGetAll
+  state => state.loadingGetAll
 );
 
-export const { selectAll: getAllPlanes } = fromPlanes.planesAdapter.getSelectors(getPlanesEntitiesState);
+export const { selectAll: getAllPlanes } =
+  fromPlanes.planesAdapter.getSelectors(getPlanesEntitiesState);
 
 export const getPlaneById = (id: number) =>
-  createSelector(
-    getPlanesEntitiesState,
-    fromPlanes.getPlaneById(id)
-  );
+  createSelector(getPlanesEntitiesState, fromPlanes.getPlaneById(id));

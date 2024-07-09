@@ -17,7 +17,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.MaintenanceTeam_Member_List_Access,
-      InjectComponent: MaintenanceTeamMembersIndexComponent
+      injectComponent: MaintenanceTeamMembersIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -30,7 +30,7 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.MaintenanceTeam_Member_Create,
           title: 'member.add',
-          InjectComponent: MaintenanceTeamMemberNewComponent,
+          injectComponent: MaintenanceTeamMemberNewComponent,
         },
         component: PopupLayoutComponent,
         // component: FullPageLayoutComponent,
@@ -52,7 +52,7 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.MaintenanceTeam_Member_Update,
               title: 'member.manage',
-              InjectComponent: MaintenanceTeamMemberEditComponent,
+              injectComponent: MaintenanceTeamMemberEditComponent,
             },
             component: PopupLayoutComponent,
             // component: FullPageLayoutComponent,
@@ -61,13 +61,13 @@ const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -77,12 +77,6 @@ const ROUTES: Routes = [
     MaintenanceTeamMemberNewComponent,
     MaintenanceTeamMemberEditComponent,
   ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-    MemberModule,
-  ]
+  imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule],
 })
-export class MaintenanceTeamMemberModule {
-}
-
+export class MaintenanceTeamMemberModule {}

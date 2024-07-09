@@ -2,7 +2,7 @@
   *ngIf="configuration"
   #dt
   [autoLayout]="true"
-  [reorderableColumns]="true"
+  [reorderableColumns]="reorderableColumns"
   [columns]="displayedColumns"
   [value]="elements"
   [paginator]="paginator"
@@ -19,62 +19,116 @@
   [sortOrder]="sortOrderValue"
   (onStateSave)="onStateSave($event)"
   (selectionChange)="onSelectionChange()"
-  styleClass="p-datatable-striped"
->
+  [styleClass]="
+    table?.multiSortMeta?.length > 1
+      ? 'p-datatable-striped multiSort'
+      : 'p-datatable-striped singleSort'
+  "
+  sortMode="multiple"
+  [scrollHeight]="scrollHeightValue"
+  [scrollable]="isScrollable">
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th class="bia-table-select-col" *ngIf="canSelectElement">
+      <th
+        class="bia-table-select-col"
+        *ngIf="canSelectElement === true"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
         <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
       </th>
       <ng-container *ngFor="let col of columns">
-        <th *ngIf="col?.isSortable === true" [pSortableColumn]="col.field" pReorderableColumn>
+        <th
+          *ngIf="col?.isSortable === true"
+          [pSortableColumn]="col.field"
+          pReorderableColumn
+          [style.min-width]="col.minWidth"
+          [alignFrozen]="col.alignFrozen"
+          pFrozenColumn
+          [frozen]="col.isFrozen">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
                 class="{{ col?.icon }} bia-column-icon"
                 pTooltip="{{ col?.header | translate }}"
-                tooltipPosition="top"
-              ></i>
+                tooltipPosition="top"></i>
             </ng-container>
-            <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+            <ng-template #HeaderNoIcon>
+              {{ col?.header | translate }}</ng-template
+            >
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </span>
         </th>
-        <th *ngIf="col?.isSortable !== true" pReorderableColumn>
+        <th
+          *ngIf="col?.isSortable !== true"
+          pReorderableColumn
+          [style.min-width]="col.minWidth"
+          [alignFrozen]="col.alignFrozen"
+          pFrozenColumn
+          [frozen]="col.isFrozen">
           <span class="nowrap">
             <ng-container *ngIf="!!col?.icon; else HeaderNoIcon">
               <i
                 class="{{ col?.icon }} bia-column-icon"
                 pTooltip="{{ col?.header | translate }}"
-                tooltipPosition="top"
-              ></i>
+                tooltipPosition="top"></i>
             </ng-container>
-            <ng-template #HeaderNoIcon> {{ col?.header | translate }}</ng-template>
+            <ng-template #HeaderNoIcon>
+              {{ col?.header | translate }}</ng-template
+            >
           </span>
         </th>
       </ng-container>
     </tr>
-    <tr *ngIf="showColSearch" class="searchTR">
-      <th *ngIf="canSelectElement"></th>
-      <th *ngFor="let col of columns" [ngSwitch]="col.field" pReorderableColumn>
-        <bia-table-filter [col]="col" [table]="dt"> </bia-table-filter>
+    <tr *ngIf="showColSearch === true" class="searchTR">
+      <th
+        *ngIf="canSelectElement === true"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen"></th>
+      <th
+        *ngFor="let col of columns"
+        [ngSwitch]="col.field"
+        pReorderableColumn
+        [style.min-width]="col.minWidth"
+        [alignFrozen]="col.alignFrozen"
+        pFrozenColumn
+        [frozen]="col.isFrozen">
+        <bia-table-filter [field]="col" [table]="dt"> </bia-table-filter>
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-columns="columns">
     <tr [pSelectableRow]="rowData">
-      <td *ngIf="canSelectElement">
+      <td
+        *ngIf="canSelectElement === true"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
         <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
       </td>
-      <td (click)="clickElementData(rowData)" *ngFor="let col of columns">
+      <td
+        *ngFor="let col of columns"
+        [class]="'bia-column-' + col.typeLowerCase"
+        (click)="clickElementData(rowData)"
+        [style.min-width]="col.minWidth"
+        [alignFrozen]="col.alignFrozen"
+        pFrozenColumn
+        [frozen]="col.isFrozen">
         <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
           <ng-template pTemplate="specificOutput">
             <ng-container
               *ngTemplateOutlet="
                 specificOutputTemplate;
-                context: { rowData: rowData, field: col, data: getCellData(rowData, col) }
-              "
-            ></ng-container>
+                context: {
+                  rowData: rowData,
+                  field: col,
+                  data: getCellData(rowData, col),
+                }
+              "></ng-container>
           </ng-template>
         </bia-table-output>
       </td>

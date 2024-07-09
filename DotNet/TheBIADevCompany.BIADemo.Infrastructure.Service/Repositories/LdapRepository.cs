@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="ldapRepositoryHelper">The ldap helper.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
         public LdapRepository(
-            ILogger<GenericLdapRepository<UserFromDirectory>> logger,
+            ILogger<LdapRepository> logger,
             IOptions<BiaNetSection> configuration,
             ILdapRepositoryHelper ldapRepositoryHelper,
             IUserIdentityKeyDomainService userIdentityKeyDomainService)

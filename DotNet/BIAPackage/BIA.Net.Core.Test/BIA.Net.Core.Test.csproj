@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<Version>3.8.0</Version>
+		<TargetFramework>net8.0</TargetFramework>
+		<Version>3.9.0</Version>
 		<Authors>BIA Team</Authors>
 		<Company>BIA</Company>
 		<Description>Unit test classes for BIA.Net Core Framework</Description>
-		<Copyright>Copyright © BIA 2021</Copyright>
+		<Copyright>Copyright © BIA 2024</Copyright>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<PackageIcon>LogoBIA.png</PackageIcon>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.23" />
-		<PackageReference Include="Moq" Version="4.20.69" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.7" />
+		<PackageReference Include="Moq" Version="4.20.70" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
 	</ItemGroup>
 
 	<ItemGroup>

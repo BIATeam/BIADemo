@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2021</Copyright>
+    <Copyright>Copyright © TheBIADevCompany 2024</Copyright>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
@@ -17,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Audit.NET.SqlServer" Version="21.1.0" />
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Data" Version="3.8.*" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.23">
+    <PackageReference Include="Audit.NET.SqlServer" Version="25.0.7" />
+    <PackageReference Include="BIA.Net.Core.Infrastructure.Data" Version="3.9.*" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

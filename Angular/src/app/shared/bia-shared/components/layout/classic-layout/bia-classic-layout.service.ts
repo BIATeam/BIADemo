@@ -1,11 +1,17 @@
-import { ComponentPortal, ComponentType, Portal, TemplatePortal } from '@angular/cdk/portal';
+/* eslint-disable deprecation/deprecation */
+import {
+  ComponentPortal,
+  ComponentType,
+  Portal,
+  TemplatePortal,
+} from '@angular/cdk/portal';
 import {
   Injectable,
   Injector,
   TemplateRef,
   ComponentFactoryResolver,
   InjectionToken,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -38,7 +44,13 @@ export class BiaClassicLayoutService {
       this.footerPortal.next(null);
       return;
     }
-    return this.setPortal(this.footerPortal, componentOrTemplateRef, injector, componentFactoryResolver, data);
+    return this.setPortal(
+      this.footerPortal,
+      componentOrTemplateRef,
+      injector,
+      componentFactoryResolver,
+      data
+    );
   }
 
   changeMainBar<T, D>(
@@ -51,7 +63,13 @@ export class BiaClassicLayoutService {
       this.mainBarPortal.next(null);
       return;
     }
-    return this.setPortal(this.mainBarPortal, componentOrTemplateRef, injector, componentFactoryResolver, data);
+    return this.setPortal(
+      this.mainBarPortal,
+      componentOrTemplateRef,
+      injector,
+      componentFactoryResolver,
+      data
+    );
   }
 
   hideMainBar() {
@@ -91,22 +109,30 @@ export class BiaClassicLayoutService {
   ) {
     let portal;
     if (componentOrTemplateRef instanceof TemplateRef) {
-      portal = new TemplatePortal<T>(componentOrTemplateRef, <ViewContainerRef>{});
+      portal = new TemplatePortal<T>(
+        componentOrTemplateRef,
+        <ViewContainerRef>{}
+      );
     } else {
       let finalInjector = injector;
       if (data) {
-        const injectionTokens = new WeakMap<any, any>([[BIA_LAYOUT_DATA, data]]);
+        const injectionTokens = new WeakMap<any, any>([
+          [BIA_LAYOUT_DATA, data],
+        ]);
         if (injector !== undefined) {
           // finalInjector = new PortalInjector(injector, injectionTokens);
           finalInjector = Injector.create({
             parent: injector,
-            providers: [
-                { provide: injectionTokens, useValue: data }
-            ]
-        });
+            providers: [{ provide: injectionTokens, useValue: data }],
+          });
         }
       }
-      portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector, componentFactoryResolver);
+      portal = new ComponentPortal(
+        componentOrTemplateRef,
+        null,
+        finalInjector,
+        componentFactoryResolver
+      );
     }
     portalSubject.next(portal);
     return portal;

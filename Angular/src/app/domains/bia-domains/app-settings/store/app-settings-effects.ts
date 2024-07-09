@@ -17,29 +17,37 @@ export class AppSettingsEffects {
     this.actions$.pipe(
       ofType(DomainAppSettingsActions.loadAll),
       switchMap(() =>
-        this.appSettingsDas
-          .get()
-          .pipe(
-            map((appSettings) => {
-              if (BiaOnlineOfflineService.isModeEnabled === true) {
-                localStorage.setItem(STORAGE_APPSETTINGS_KEY, JSON.stringify(appSettings));
+        this.appSettingsDas.get().pipe(
+          map(appSettings => {
+            if (BiaOnlineOfflineService.isModeEnabled === true) {
+              localStorage.setItem(
+                STORAGE_APPSETTINGS_KEY,
+                JSON.stringify(appSettings)
+              );
+            }
+            this.appSettingsService.appSettings = appSettings;
+            return DomainAppSettingsActions.loadAllSuccess({ appSettings });
+          }),
+          catchError(err => {
+            if (
+              BiaOnlineOfflineService.isModeEnabled === true &&
+              BiaOnlineOfflineService.isServerAvailable(err) !== true
+            ) {
+              const json: string | null = localStorage.getItem(
+                STORAGE_APPSETTINGS_KEY
+              );
+              if (json) {
+                const appSettings = <AppSettings>JSON.parse(json);
+                this.appSettingsService.appSettings = appSettings;
+                return of(
+                  DomainAppSettingsActions.loadAllSuccess({ appSettings })
+                );
               }
-              this.appSettingsService.appSettings = appSettings;
-              return DomainAppSettingsActions.loadAllSuccess({ appSettings });
-            }),
-            catchError((err) => {
-              if (BiaOnlineOfflineService.isModeEnabled === true && BiaOnlineOfflineService.isServerAvailable(err) !== true) {
-                const json: string | null = localStorage.getItem(STORAGE_APPSETTINGS_KEY);
-                if (json) {
-                  const appSettings = <AppSettings>JSON.parse(json);
-                  this.appSettingsService.appSettings = appSettings;
-                  return of(DomainAppSettingsActions.loadAllSuccess({ appSettings }));
-                }
-              }
-              this.biaMessageService.showError();
-              return of(DomainAppSettingsActions.failure({ error: err }));
-            })
-          )
+            }
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(DomainAppSettingsActions.failure({ error: err }));
+          })
+        )
       )
     )
   );
@@ -49,5 +57,5 @@ export class AppSettingsEffects {
     private appSettingsDas: AppSettingsDas,
     private biaMessageService: BiaMessageService,
     private appSettingsService: AppSettingsService
-  ) { }
+  ) {}
 }

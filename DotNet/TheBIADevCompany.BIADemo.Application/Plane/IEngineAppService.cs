@@ -1,0 +1,30 @@
+// BIADemo only
+// <copyright file="IEngineAppService.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Application.Plane
+{
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+
+    /// <summary>
+    /// The interface defining the application service for plane.
+    /// </summary>
+    public interface IEngineAppService : ICrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto>
+    {
+        /// <summary>
+        /// Checks engine to be maintained asynchronous.
+        /// </summary>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        Task CheckToBeMaintainedAsync();
+
+        /// <summary>
+        /// Launches the job manually (example).
+        /// </summary>
+        void LaunchJobManuallyExample();
+    }
+}

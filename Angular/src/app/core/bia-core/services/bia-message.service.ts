@@ -1,31 +1,44 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslateService } from '@ngx-translate/core';
-import { Notification, NotificationType } from 'src/app/domains/bia-domains/notification/model/notification';
+import {
+  Notification,
+  NotificationType,
+} from 'src/app/domains/bia-domains/notification/model/notification';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 const MESSAGE_LIFE_DEFAULT = 3000;
 const NOTIFICATION_LIFE_DEFAULT = 10000;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaMessageService {
-  constructor(private translateService: TranslateService, private messageService: MessageService) { }
+  constructor(
+    private translateService: TranslateService,
+    private messageService: MessageService
+  ) {}
 
   showAddSuccess() {
     this.showSuccess(this.translateService.instant('biaMsg.addElementSuccess'));
   }
 
   showUpdateSuccess() {
-    this.showSuccess(this.translateService.instant('biaMsg.updateElementSuccess'));
+    this.showSuccess(
+      this.translateService.instant('biaMsg.updateElementSuccess')
+    );
   }
 
   showDeleteSuccess() {
-    this.showSuccess(this.translateService.instant('biaMsg.deleteElementSuccess'));
+    this.showSuccess(
+      this.translateService.instant('biaMsg.deleteElementSuccess')
+    );
   }
 
   showSyncSuccess() {
-    this.showSuccess(this.translateService.instant('biaMsg.syncElementSuccess'));
+    this.showSuccess(
+      this.translateService.instant('biaMsg.syncElementSuccess')
+    );
   }
 
   showError() {
@@ -33,8 +46,18 @@ export class BiaMessageService {
       key: 'bia',
       severity: 'error',
       summary: this.translateService.instant('bia.error'),
-      detail: this.translateService.instant('biaMsg.errorOccurredWhileProccessing')
+      detail: this.translateService.instant(
+        'biaMsg.errorOccurredWhileProccessing'
+      ),
     });
+  }
+
+  showErrorHttpResponse(err: HttpErrorResponse) {
+    if (err.status == HttpStatusCode.UnprocessableEntity) {
+      this.showErrorDetail(err.error, undefined);
+    } else {
+      this.showError();
+    }
   }
 
   showSuccess(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
@@ -44,23 +67,42 @@ export class BiaMessageService {
       severity: 'success',
       summary: summaryValue,
       detail: detailValue,
-      life: life
+      life: life,
     });
   }
 
   showInfo(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
     const summaryValue = this.translateService.instant('bia.info');
-    this.messageService.add({ key: 'bia', severity: 'info', summary: summaryValue, detail: detailValue, life: life });
+    this.messageService.add({
+      key: 'bia',
+      severity: 'info',
+      summary: summaryValue,
+      detail: detailValue,
+      life: life,
+    });
   }
 
   showWarning(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
     const summaryValue = this.translateService.instant('bia.warning');
-    this.messageService.add({ key: 'bia', severity: 'warn', summary: summaryValue, detail: detailValue, life: life });
+    this.messageService.add({
+      key: 'bia',
+      severity: 'warn',
+      summary: summaryValue,
+      detail: detailValue,
+      life: life,
+    });
   }
 
-  showErrorDetail(detailValue: string, life = MESSAGE_LIFE_DEFAULT) {
+  showErrorDetail(detailValue: string, life = undefined) {
     const summaryValue = this.translateService.instant('bia.error');
-    this.messageService.add({ key: 'bia', severity: 'error', summary: summaryValue, detail: detailValue, life: life });
+    this.messageService.add({
+      key: 'bia',
+      severity: 'error',
+      summary: summaryValue,
+      detail: detailValue,
+      life: life,
+      sticky: true,
+    });
   }
 
   showNotification(notification: Notification) {
@@ -94,7 +136,7 @@ export class BiaMessageService {
       detail: this.translateService.instant(notification.description),
       data: data,
       life: sticky ? undefined : NOTIFICATION_LIFE_DEFAULT,
-      sticky
+      sticky,
     });
   }
 

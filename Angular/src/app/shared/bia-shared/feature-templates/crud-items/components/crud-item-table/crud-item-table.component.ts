@@ -7,13 +7,21 @@ import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.serv
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
 
 @Component({
   selector: 'bia-crud-item-table',
-  templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
-export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTableComponent implements OnChanges {
+export class CrudItemTableComponent<CrudItem extends BaseDto>
+  extends BiaCalcTableComponent
+  implements OnChanges
+{
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
@@ -27,40 +35,75 @@ export class CrudItemTableComponent<CrudItem extends BaseDto> extends BiaCalcTab
     this.form = this.formBuilder.group(this.formFields());
   }
   protected formFields() {
-      let fields : {[key:string]: any} = {id: [this.element.id]};
-      for (let col of this.configuration.columns) {
-        if (col.validators && col.validators.length > 0) {
-          fields[col.field] = [this.element[col.field as keyof CrudItem], col.validators];
-        } else if (col.isRequired) {
-          fields[col.field] = [this.element[col.field as keyof CrudItem], Validators.required];
-        } else {
-          fields[col.field] = [this.element[col.field as keyof CrudItem]];
-        }
+    const fields: { [key: string]: any } = { id: [this.element.id] };
+    for (const col of this.configuration.columns) {
+      if (col.validators && col.validators.length > 0) {
+        fields[col.field] = [
+          this.element[col.field as keyof CrudItem],
+          col.validators,
+        ];
+      } else if (col.isRequired) {
+        fields[col.field] = [
+          this.element[col.field as keyof CrudItem],
+          Validators.required,
+        ];
+      } else {
+        fields[col.field] = [this.element[col.field as keyof CrudItem]];
       }
-      return fields;
+    }
+    return fields;
   }
 
   onSubmit() {
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
       crudItem.id = crudItem.id > 0 ? crudItem.id : 0;
-      for (let col of this.configuration.columns) {
-        switch(col.type)
-        {
+      for (const col of this.configuration.columns) {
+        switch (col.type) {
           case PropType.Boolean:
-            Reflect.set(crudItem, col.field, crudItem[col.field as keyof CrudItem] ? crudItem[col.field as keyof CrudItem] : false);
+            Reflect.set(
+              crudItem,
+              col.field,
+              crudItem[col.field as keyof CrudItem]
+                ? crudItem[col.field as keyof CrudItem]
+                : false
+            );
             break;
           case PropType.ManyToMany:
-            Reflect.set(crudItem, col.field, BiaOptionService.Differential(
-              Reflect.get(crudItem, col.field) as BaseDto [], 
-              this.element?Reflect.get(this.element, col.field):undefined));
+            Reflect.set(
+              crudItem,
+              col.field,
+              BiaOptionService.differential(
+                Reflect.get(crudItem, col.field) as BaseDto[],
+                this.element ? Reflect.get(this.element, col.field) : undefined
+              )
+            );
             break;
           case PropType.OneToMany:
-            Reflect.set(crudItem, col.field, BiaOptionService.Clone(crudItem[col.field as keyof CrudItem]));
+            if (
+              col.isEditableChoice &&
+              typeof crudItem[col.field as keyof CrudItem] === 'string'
+            ) {
+              Reflect.set(
+                crudItem,
+                col.field,
+                new OptionDto(
+                  0,
+                  crudItem[col.field as keyof CrudItem] as string,
+                  DtoState.AddedNewChoice
+                )
+              );
+            } else {
+              Reflect.set(
+                crudItem,
+                col.field,
+                BiaOptionService.clone(crudItem[col.field as keyof CrudItem])
+              );
+            }
             break;
-          }        
+        }
       }
-      
+
       this.save.emit(crudItem);
       this.form.reset();
     }

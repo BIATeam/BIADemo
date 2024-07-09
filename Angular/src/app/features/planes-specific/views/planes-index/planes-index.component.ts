@@ -1,6 +1,6 @@
 import { Component, Injector, ViewChild } from '@angular/core';
 import { Plane } from '../../model/plane';
-import { PlaneCRUDConfiguration } from '../../plane.constants';
+import { planeCRUDConfiguration } from '../../plane.constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
@@ -10,20 +10,19 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 @Component({
   selector: 'app-planes-index',
   templateUrl: './planes-index.component.html',
-  styleUrls: ['./planes-index.component.scss']
+  styleUrls: ['./planes-index.component.scss'],
 })
-
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
-
-  @ViewChild(PlaneTableComponent, { static: false }) crudItemTableComponent: PlaneTableComponent;
+  @ViewChild(PlaneTableComponent, { static: false })
+  crudItemTableComponent: PlaneTableComponent;
 
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
-    protected authService: AuthService,
+    protected authService: AuthService
   ) {
     super(injector, planeService);
-    this.crudConfiguration = PlaneCRUDConfiguration;
+    this.crudConfiguration = planeCRUDConfiguration;
   }
 
   protected setPermissions() {

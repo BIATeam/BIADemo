@@ -7,7 +7,7 @@ import { Plane } from '../model/plane';
 // This adapter will allow is to manipulate planes (mostly CRUD operations)
 export const planesAdapter = createEntityAdapter<Plane>({
   selectId: (plane: Plane) => plane.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 // -----------------------------------------
@@ -41,10 +41,10 @@ export const INIT_STATE: State = planesAdapter.getInitialState({
 
 export const planeReducers = createReducer<State>(
   INIT_STATE,
-  on(FeaturePlanesActions.loadAllByPost, (state, { event }) => {
+  on(FeaturePlanesActions.loadAllByPost, state => {
     return { ...state, loadingGetAll: true };
   }),
-  on(FeaturePlanesActions.load, (state) => {
+  on(FeaturePlanesActions.load, state => {
     return { ...state, loadingGet: true };
   }),
   on(FeaturePlanesActions.loadAllByPostSuccess, (state, { result, event }) => {
@@ -57,9 +57,10 @@ export const planeReducers = createReducer<State>(
   on(FeaturePlanesActions.loadSuccess, (state, { plane }) => {
     return { ...state, currentPlane: plane, loadingGet: false };
   }),
-  on(FeaturePlanesActions.failure, (state, { error }) => {
+  on(FeaturePlanesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
+  })
 );
 
-export const getPlaneById = (id: number) => (state: State) => state.entities[id];
+export const getPlaneById = (id: number) => (state: State) =>
+  state.entities[id];

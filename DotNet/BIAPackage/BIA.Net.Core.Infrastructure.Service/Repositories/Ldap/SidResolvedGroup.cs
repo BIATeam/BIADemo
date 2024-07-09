@@ -8,18 +8,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
     using System.Collections.Generic;
     using System.Text;
 
-    [Serializable]
-    public class GroupDomainSid
-    {
-        public string Domain { get; set; }
-
-        public string Sid { get; set; }
-    }
-
+    /// <summary>
+    /// Sid Resolved Group.
+    /// </summary>
     [Serializable]
     public class SidResolvedGroup : SidResolvedItem
     {
-        public List<GroupDomainSid> MembersGroupSid;
-        public List<string> MembersUserSid;
+        /// <summary>
+        /// Members Group Sid.
+        /// </summary>
+        public List<GroupDomainSid> MembersGroupSid { get; set; }
+
+        /// <summary>
+        /// Members User Sid.
+        /// </summary>
+        public List<string> MembersUserSid { get; set; }
     }
 }

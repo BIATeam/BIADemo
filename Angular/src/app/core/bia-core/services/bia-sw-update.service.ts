@@ -3,11 +3,9 @@ import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
 import { filter, map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class BiaSwUpdateService {
-
   private _newVersionAvailable: boolean;
   public get newVersionAvailable(): boolean {
     return this._newVersionAvailable;
@@ -45,7 +43,7 @@ export class BiaSwUpdateService {
         type: 'UPDATE_AVAILABLE',
         current: evt.currentVersion,
         available: evt.latestVersion,
-      })));
+      }))
+    );
   }
-
 }

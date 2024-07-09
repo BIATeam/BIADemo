@@ -1,4 +1,3 @@
-
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/state';
@@ -14,7 +13,7 @@ import { UserFilter } from '../../model/user-filter';
 @Component({
   selector: 'bia-user-add-from-directory-dialog',
   templateUrl: './user-add-from-directory-dialog.component.html',
-  styleUrls: ['./user-add-from-directory-dialog.component.scss']
+  styleUrls: ['./user-add-from-directory-dialog.component.scss'],
 })
 export class UserAddFromLdapComponent implements OnInit {
   _display = false;
@@ -40,7 +39,11 @@ export class UserAddFromLdapComponent implements OnInit {
   }
 
   onSubmitted(userToCreates: UserFromDirectory[]) {
-    this.store.dispatch(FeatureUsersFromDirectoryActions.addFromDirectory({ usersFromDirectory: userToCreates }));
+    this.store.dispatch(
+      FeatureUsersFromDirectoryActions.addFromDirectory({
+        usersFromDirectory: userToCreates,
+      })
+    );
     this.close();
   }
 
@@ -53,6 +56,8 @@ export class UserAddFromLdapComponent implements OnInit {
   }
 
   onSearchUsers(userFilter: UserFilter) {
-    this.store.dispatch(FeatureUsersFromDirectoryActions.loadAllByFilter({ userFilter }));
+    this.store.dispatch(
+      FeatureUsersFromDirectoryActions.loadAllByFilter({ userFilter })
+    );
   }
 }

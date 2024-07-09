@@ -17,17 +17,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { SitesEffects } from './store/sites-effects';
 import { FeatureSitesStore } from './store/site.state';
-import { SiteCRUDConfiguration } from './site.constants';
-import { SiteFilterComponent } from './components/site-filter/site-filter.component';
-import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { siteCRUDConfiguration } from './site.constants';
 
-export let ROUTES: Routes = [
+export const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
       permission: Permission.Site_List_Access,
-      InjectComponent: SitesIndexComponent
+      injectComponent: SitesIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -40,10 +38,15 @@ export let ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.Site_Create,
           title: 'site.add',
-          InjectComponent: SiteNewComponent,
-          dynamicComponent : () => (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+          injectComponent: SiteNewComponent,
+          dynamicComponent: () =>
+            siteCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
         },
-        component: (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+        component: siteCRUDConfiguration.usePopup
+          ? PopupLayoutComponent
+          : FullPageLayoutComponent,
         canActivate: [PermissionGuard],
       },
       {
@@ -62,16 +65,21 @@ export let ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.Site_Update,
               title: 'site.edit',
-              InjectComponent: SiteEditComponent,
-              dynamicComponent : () => (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+              injectComponent: SiteEditComponent,
+              dynamicComponent: () =>
+                siteCRUDConfiguration.usePopup
+                  ? PopupLayoutComponent
+                  : FullPageLayoutComponent,
             },
-            component: (SiteCRUDConfiguration.usePopup) ? PopupLayoutComponent : FullPageLayoutComponent,
+            component: siteCRUDConfiguration.usePopup
+              ? PopupLayoutComponent
+              : FullPageLayoutComponent,
             canActivate: [PermissionGuard],
           },
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
           // Custo for teams
           {
@@ -79,23 +87,24 @@ export let ROUTES: Routes = [
             data: {
               breadcrumb: 'app.members',
               canNavigate: true,
-              permission: Permission.Site_Member_List_Access
+              permission: Permission.Site_Member_List_Access,
             },
             loadChildren: () =>
-              import('./children/members/site-member.module').then((m) => m.SiteMemberModule)
+              import('./children/members/site-member.module').then(
+                m => m.SiteMemberModule
+              ),
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   declarations: [
     SiteItemComponent,
     SitesIndexComponent,
-    SiteFilterComponent,
     // [Calc] : NOT used for calc (3 lines).
     // it is possible to delete unsed commponent files (views/..-new + views/..-edit + components/...-form).
     SiteFormComponent,
@@ -108,13 +117,12 @@ export let ROUTES: Routes = [
     SharedModule,
     CrudItemModule,
     RouterModule.forChild(ROUTES),
-    StoreModule.forFeature(SiteCRUDConfiguration.storeKey, FeatureSitesStore.reducers),
+    StoreModule.forFeature(
+      siteCRUDConfiguration.storeKey,
+      FeatureSitesStore.reducers
+    ),
     EffectsModule.forFeature([SitesEffects]),
     // Domain Modules:
-    UserOptionModule,
-  ]
+  ],
 })
-
-export class SiteModule {
-}
-
+export class SiteModule {}

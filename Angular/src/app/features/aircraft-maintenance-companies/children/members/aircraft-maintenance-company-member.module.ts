@@ -17,7 +17,7 @@ const ROUTES: Routes = [
     data: {
       breadcrumb: null,
       permission: Permission.AircraftMaintenanceCompany_Member_List_Access,
-      InjectComponent: AircraftMaintenanceCompanyMembersIndexComponent
+      injectComponent: AircraftMaintenanceCompanyMembersIndexComponent,
     },
     component: FullPageLayoutComponent,
     canActivate: [PermissionGuard],
@@ -30,7 +30,7 @@ const ROUTES: Routes = [
           canNavigate: false,
           permission: Permission.AircraftMaintenanceCompany_Member_Create,
           title: 'member.add',
-          InjectComponent: AircraftMaintenanceCompanyMemberNewComponent,
+          injectComponent: AircraftMaintenanceCompanyMemberNewComponent,
         },
         component: PopupLayoutComponent,
         // component: FullPageLayoutComponent,
@@ -52,7 +52,7 @@ const ROUTES: Routes = [
               canNavigate: true,
               permission: Permission.AircraftMaintenanceCompany_Member_Update,
               title: 'member.manage',
-              InjectComponent: AircraftMaintenanceCompanyMemberEditComponent,
+              injectComponent: AircraftMaintenanceCompanyMemberEditComponent,
             },
             component: PopupLayoutComponent,
             // component: FullPageLayoutComponent,
@@ -61,13 +61,13 @@ const ROUTES: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'edit'
+            redirectTo: 'edit',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -77,12 +77,6 @@ const ROUTES: Routes = [
     AircraftMaintenanceCompanyMemberNewComponent,
     AircraftMaintenanceCompanyMemberEditComponent,
   ],
-  imports: [
-    SharedModule,
-    RouterModule.forChild(ROUTES),
-    MemberModule,
-  ]
+  imports: [SharedModule, RouterModule.forChild(ROUTES), MemberModule],
 })
-export class AircraftMaintenanceCompanyMemberModule {
-}
-
+export class AircraftMaintenanceCompanyMemberModule {}

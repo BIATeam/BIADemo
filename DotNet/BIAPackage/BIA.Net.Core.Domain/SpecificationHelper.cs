@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
@@ -24,15 +25,17 @@ namespace BIA.Net.Core.Domain
         /// Add the specifications of the lazy load.
         /// </summary>
         /// <typeparam name="TEntity">The entity type to filter with.</typeparam>
+        /// <typeparam name="TKey">The type of the key.</typeparam>
+        /// <typeparam name="TMapper">The type of the mapper.</typeparam>
         /// <param name="specification">The specification to update.</param>
-        /// <param name="whereClauses">
-        /// The dictionary containing the expressions to access the property to filter on.
-        /// </param>
+        /// <param name="matcher">The matcher.</param>
         /// <param name="dto">The lazy DTO.</param>
-        /// <returns>The specification updated.</returns>
+        /// <returns>
+        /// The specification updated.
+        /// </returns>
         public static Specification<TEntity> GetLazyLoad<TEntity, TKey, TMapper>(Specification<TEntity> specification, TMapper matcher, LazyLoadDto dto)
         where TEntity : class, IEntity<TKey>, new()
-        where TMapper : BaseEntityMapper<TEntity>, new()
+        where TMapper : BaseEntityMapper<TEntity>
         {
             ExpressionCollection<TEntity> whereClauses = matcher.ExpressionCollection;
 
@@ -71,9 +74,23 @@ namespace BIA.Net.Core.Domain
             return specification;
         }
 
-        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value) where TEntity : class, IEntity<TKey>, new()
+        /// <summary>
+        /// Determines whether [is collection type] [the specified value type].
+        /// </summary>
+        /// <param name="valueType">Type of the value.</param>
+        /// <returns>
+        ///   <c>true</c> if [is collection type] [the specified value type]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsCollectionType(Type valueType)
         {
-            if (value["value"] == null)
+            return (valueType.Name.Length > 11 && valueType.Name.Substring(0, 11) == "IEnumerable")
+                || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
+        }
+
+        private static void AddSpecByValue<TEntity, TKey>(ref Specification<TEntity> specification, ExpressionCollection<TEntity> whereClauses, ref Specification<TEntity> globalFilterSpecification, string key, Dictionary<string, object> value)
+            where TEntity : class, IEntity<TKey>, new()
+        {
+            if (value["value"] == null && value["matchMode"]?.ToString() != "empty" && value["matchMode"]?.ToString() != "notEmpty")
             {
                 return;
             }
@@ -98,7 +115,7 @@ namespace BIA.Net.Core.Domain
                 matchingCriteria = LazyDynamicFilterExpression<TEntity>(
                     expression,
                     value["matchMode"].ToString(),
-                    value["value"].ToString());
+                    value["value"]?.ToString());
 
                 if (isGlobal)
                 {
@@ -145,7 +162,6 @@ namespace BIA.Net.Core.Domain
         /// <param name="expression">The expression used to get the property.</param>
         /// <param name="criteria">The matching criteria.</param>
         /// <param name="value">The value to filter with.</param>
-        /// <param name="valueType">The property type.</param>
         /// <returns>The expression created dynamically.</returns>
         private static Expression<Func<TEntity, bool>>
             LazyDynamicFilterExpression<TEntity>(
@@ -157,7 +173,6 @@ namespace BIA.Net.Core.Domain
             var expressionBody = expression.Body;
 
             Expression binaryExpression;
-            var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
 
             switch (criteria.ToLower())
             {
@@ -173,7 +188,8 @@ namespace BIA.Net.Core.Domain
                 case "dateafter":
                     try
                     {
-                        object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(value);
+                        var culture = new CultureInfo("en-US");
+                        object valueFormated = TypeDescriptor.GetConverter(expressionBody.Type).ConvertFromString(null, culture, value);
                         switch (criteria.ToLower())
                         {
                             case "gt":
@@ -220,6 +236,30 @@ namespace BIA.Net.Core.Domain
 
                     break;
 
+                case "empty":
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody));
+                    }
+                    else
+                    {
+                        binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+                    }
+
+                    break;
+
+                case "notempty":
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody);
+                    }
+                    else
+                    {
+                        binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+                    }
+
+                    break;
+
                 case "contains":
                     binaryExpression = ComputeExpression(expressionBody, "Contains", value);
                     break;
@@ -232,8 +272,16 @@ namespace BIA.Net.Core.Domain
                     binaryExpression = ComputeExpression(expressionBody, "StartsWith", value);
                     break;
 
+                case "notstartswith":
+                    binaryExpression = Expression.Not(ComputeExpression(expressionBody, "StartsWith", value));
+                    break;
+
                 case "endswith":
                     binaryExpression = ComputeExpression(expressionBody, "EndsWith", value);
+                    break;
+
+                case "notendswith":
+                    binaryExpression = Expression.Not(ComputeExpression(expressionBody, "EndsWith", value));
                     break;
 
                 default:
@@ -248,7 +296,6 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             MethodInfo method;
             Expression binaryExpression;
-            var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
             if (IsCollectionType(expressionBody.Type))
             {
                 valueExpression = Expression.Constant(value);
@@ -265,6 +312,7 @@ namespace BIA.Net.Core.Domain
                 method = typeof(string).GetMethod(filterFonction, new[] { typeof(string) });
                 if (expressionBody.Type != typeof(string))
                 {
+                    var methodToString = expressionBody.Type.GetMethod("ToString", Type.EmptyTypes);
                     expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
                 }
 
@@ -272,6 +320,7 @@ namespace BIA.Net.Core.Domain
             }
 
             return binaryExpression;
+#pragma warning disable S125 // Sections of code should not be commented out
 
             // PostgreSQL : use like function only to do search action with no case sensitive => Contains is case sensitive with database without database CI
             // if (IsCollectionType(valueType))
@@ -281,7 +330,6 @@ namespace BIA.Net.Core.Domain
             //    ParameterExpression pe = Expression.Parameter(typeof(string), "a");
             //    var predicate = Expression.Call(pe, method ?? throw new InvalidOperationException(), valueExpression);
             //    var predicateExpr = Expression.Lambda<Func<string, bool>>(predicate, pe);
-
             //    binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody, predicateExpr);
             // }
             // else
@@ -290,77 +338,12 @@ namespace BIA.Net.Core.Domain
             //    {
             //        expressionBody = Expression.Call(expressionBody, methodToString ?? throw new InvalidOperationException());
             //    }
-
+            //
             //    binaryExpression = Expression.Call(typeof(NpgsqlDbFunctionsExtensions), nameof(NpgsqlDbFunctionsExtensions.ILike),
             //        Type.EmptyTypes, Expression.Property(null, typeof(EF), nameof(EF.Functions)),
             //        expressionBody, Expression.Constant($"%{valueFormated}%"));
             // }
-        }
-
-        public static bool IsCollectionType(Type valueType)
-        {
-            return (valueType.Name.Length > 11 && valueType.Name.Substring(0, 11) == "IEnumerable")
-                || (valueType.Name.Length > 18 && valueType.Name.Substring(0, 18) == "IOrderedEnumerable");
-        }
-
-        /// <summary>
-        /// Convert the filter string to the type of the property to filter on. This method needs to
-        /// be expanded to include all appropriate use cases when needed.
-        /// </summary>
-        /// <param name="value">The filter string.</param>
-        /// <param name="type">The property type.</param>
-        /// <returns>The filter in the good type.</returns>
-        private static object AsType(string value, Type type)
-        {
-            var filter = value;
-            if (value.StartsWith("'") && value.EndsWith("'"))
-            {
-                filter = value.Substring(1, value.Length - 2);
-            }
-
-            if (value.StartsWith("\"") && value.EndsWith("\""))
-            {
-                filter = value.Substring(1, value.Length - 2);
-            }
-
-            if (type == typeof(string))
-            {
-                return filter;
-            }
-
-            if (type == typeof(DateTime) || type == typeof(DateTime?))
-            {
-                return DateTime.Parse(filter);
-            }
-
-            if (type == typeof(int) || type == typeof(int?))
-            {
-                return int.Parse(filter);
-            }
-
-            if (type == typeof(long) || type == typeof(long?))
-            {
-                return long.Parse(filter);
-            }
-
-            if (type == typeof(short) || type == typeof(short?))
-            {
-                return short.Parse(filter);
-            }
-
-            if (type == typeof(byte) || type == typeof(byte?))
-            {
-                return byte.Parse(filter);
-            }
-
-            if (type == typeof(bool) || type == typeof(bool?))
-            {
-                return bool.Parse(filter);
-            }
-
-            throw new ArgumentException("NSG.PrimeNG.LazyLoading.Helpers.AsType: " +
-                                        "A filter was attempted for a field with value '" + value + "' and type '" +
-                                        type + "' however this type is not currently supported");
+#pragma warning restore S125 // Sections of code should not be commented out
         }
     }
 }

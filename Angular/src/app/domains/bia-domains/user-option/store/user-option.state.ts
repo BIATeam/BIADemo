@@ -1,5 +1,10 @@
 import * as fromUserOptions from './user-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 
 export interface UserOptionsState {
   userOptions: fromUserOptions.State;
@@ -8,7 +13,7 @@ export interface UserOptionsState {
 /** Provide reducers with AoT-compilation compliance */
 export function reducers(state: UserOptionsState | undefined, action: Action) {
   return combineReducers({
-    userOptions: fromUserOptions.userOptionReducers
+    userOptions: fromUserOptions.userOptionReducers,
   })(state, action);
 }
 
@@ -17,16 +22,17 @@ export function reducers(state: UserOptionsState | undefined, action: Action) {
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getUsersState = createFeatureSelector<UserOptionsState>('domain-user-options');
+export const getUsersState = createFeatureSelector<UserOptionsState>(
+  'domain-user-options'
+);
 
 export const getUserOptionsEntitiesState = createSelector(
   getUsersState,
-  (state) => state.userOptions
+  state => state.userOptions
 );
 
-export const { selectAll: getAllUserOptions } = fromUserOptions.userOptionsAdapter.getSelectors(
-  getUserOptionsEntitiesState
-);
+export const { selectAll: getAllUserOptions } =
+  fromUserOptions.userOptionsAdapter.getSelectors(getUserOptionsEntitiesState);
 
 export const getUserOptionById = (id: number) =>
   createSelector(
@@ -36,20 +42,5 @@ export const getUserOptionById = (id: number) =>
 
 export const getLastUsersAdded = createSelector(
   getUserOptionsEntitiesState,
-  (state) => state.lastUsersAdded
+  state => state.lastUsersAdded
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

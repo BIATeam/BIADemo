@@ -14,6 +14,14 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
     public class DistributedCacheConfiguration
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DistributedCacheConfiguration"/> class.
+        /// </summary>
+        public DistributedCacheConfiguration()
+        {
+            this.IsActive = false;
+        }
+
+        /// <summary>
         /// Boolean to activate the feature HubForClients.
         /// </summary>
         public bool IsActive { get; set; }
@@ -23,11 +31,10 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// </summary>
         public string ConnectionStringName { get; set; }
 
-        public DistributedCacheConfiguration()
-        {
-            this.IsActive = false;
-        }
-
+        /// <summary>
+        /// Activates the specified connection string name.
+        /// </summary>
+        /// <param name="connectionStringName">Name of the connection string.</param>
         public void Activate(string connectionStringName)
         {
             this.IsActive = true;

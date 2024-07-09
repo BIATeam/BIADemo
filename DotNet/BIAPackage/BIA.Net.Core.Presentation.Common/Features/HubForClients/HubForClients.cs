@@ -8,8 +8,19 @@ namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
     using Microsoft.AspNetCore.SignalR;
     using Newtonsoft.Json;
 
+    /// <summary>
+    /// HubForClients.
+    /// </summary>
+    /// <seealso cref="Microsoft.AspNetCore.SignalR.Hub" />
     public class HubForClients : Hub
     {
+        /// <summary>
+        /// Sends the message.
+        /// </summary>
+        /// <param name="sTargetedFeature">The targeted feature.</param>
+        /// <param name="action">The action.</param>
+        /// <param name="jsonContext">The json context.</param>
+        /// <returns>Task.</returns>
         public async Task SendMessage(string sTargetedFeature, string action, string jsonContext)
         {
             TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
@@ -23,6 +34,11 @@ namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
             }
         }
 
+        /// <summary>
+        /// Joins the group.
+        /// </summary>
+        /// <param name="sTargetedFeature">The targeted feature.</param>
+        /// <returns>Task.</returns>
         public Task JoinGroup(string sTargetedFeature)
         {
             TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);
@@ -36,6 +52,11 @@ namespace BIA.Net.Core.Presentation.Common.Features.HubForClients
             }
         }
 
+        /// <summary>
+        /// Leaves the group.
+        /// </summary>
+        /// <param name="sTargetedFeature">The s targeted feature.</param>
+        /// <returns>Task.</returns>
         public Task LeaveGroup(string sTargetedFeature)
         {
             TargetedFeatureDto targetedFeature = JsonConvert.DeserializeObject<TargetedFeatureDto>(sTargetedFeature);

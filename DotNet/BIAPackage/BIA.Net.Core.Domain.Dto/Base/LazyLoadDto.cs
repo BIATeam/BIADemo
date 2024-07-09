@@ -34,6 +34,11 @@ namespace BIA.Net.Core.Domain.Dto.Base
         public int? SortOrder { get; set; }
 
         /// <summary>
+        /// Gets or sets the multi sort metas.
+        /// </summary>
+        public List<SortMeta> MultiSortMeta { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of columns filters.
         /// </summary>
         public Dictionary<string, JsonElement> Filters { get; set; }
@@ -51,6 +56,7 @@ namespace BIA.Net.Core.Domain.Dto.Base
         {
             var trace = new StringBuilder("record:[");
             trace.AppendFormat("first: {0}, rows: {1}, ", this.First, this.Rows);
+            trace.AppendFormat("MultiSortMeta: {0}, ", this.MultiSortMeta);
             trace.AppendFormat("sortField: {0}, sortOrder: {1}, ", this.SortField, this.SortOrder);
             trace.AppendFormat("filters: {0}, ", this.Filters);
             trace.AppendFormat("globalFilter: {0}]", this.GlobalFilter);

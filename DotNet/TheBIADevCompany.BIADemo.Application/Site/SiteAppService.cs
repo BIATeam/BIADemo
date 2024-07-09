@@ -14,15 +14,17 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for site.
     /// </summary>
-    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto<SiteAdvancedFilterDto>, SiteMapper>, ISiteAppService
+    public class SiteAppService : CrudAppServiceBase<SiteDto, Site, int, PagingFilterFormatDto, SiteMapper>, ISiteAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SiteAppService"/> class.
@@ -32,32 +34,13 @@ namespace TheBIADevCompany.BIADemo.Application.Site
         public SiteAppService(ITGenericRepository<Site, int> repository, IPrincipal principal)
             : base(repository)
         {
-            var userData = (principal as BIAClaimsPrincipal).GetUserData<UserDataDto>();
-            int currentId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
-
-            IEnumerable<string> currentUserPermissions = (principal as BIAClaimsPrincipal).GetUserPermissions();
-            bool accessAll = currentUserPermissions?.Any(x => x == Rights.Teams.AccessAll) == true;
-            int userId = (principal as BIAClaimsPrincipal).GetUserId();
-
             this.FiltersContext.Add(
                 AccessMode.Read,
-                new DirectSpecification<Site>(p => accessAll || p.Members.Any(m => m.UserId == userId)));
+                TeamAppService.ReadSpecification<Site>(TeamTypeId.Site, principal));
 
             this.FiltersContext.Add(
                 AccessMode.Update,
-                new DirectSpecification<Site>(p => p.Id == currentId));
-        }
-
-        /// <inheritdoc cref="ISiteAppService.GetRangeWithMembersAsync"/>
-        public async Task<(IEnumerable<SiteInfoDto> Sites, int Total)> GetRangeWithMembersAsync(PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
-        {
-            return await this.GetRangeAsync<SiteInfoDto, SiteInfoMapper, PagingFilterFormatDto<SiteAdvancedFilterDto>>(filters: filters, specification: SiteSpecification.SearchGetAll(filters));
-        }
-
-        /// <inheritdoc cref="ISiteAppService.GetWithMembersAsync"/>
-        public async Task<SiteInfoDto> GetWithMembersAsync(int id)
-        {
-            return await this.GetAsync<SiteInfoDto, SiteInfoMapper>(id: id);
+                TeamAppService.UpdateSpecification<Site>(TeamTypeId.Site, principal));
         }
     }
 }

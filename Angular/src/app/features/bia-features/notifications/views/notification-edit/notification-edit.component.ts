@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Subscription } from 'rxjs';
@@ -12,7 +18,7 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 @Component({
   selector: 'bia-notification-edit',
   templateUrl: './notification-edit.component.html',
-  styleUrls: ['./notification-edit.component.scss']
+  styleUrls: ['./notification-edit.component.scss'],
 })
 export class NotificationEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
@@ -24,13 +30,13 @@ export class NotificationEditComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     public notificationOptionsService: NotificationOptionsService,
     public notificationService: NotificationService,
-    private biaTranslationService: BiaTranslationService,
-  ) { }
+    private biaTranslationService: BiaTranslationService
+  ) {}
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.notificationOptionsService.loadAllOptions();
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.notificationOptionsService.loadAllOptions();
       })
     );
   }
@@ -42,7 +48,9 @@ export class NotificationEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmitted(notificationToUpdate: Notification) {
-    this.store.dispatch(FeatureNotificationsActions.update({ notification: notificationToUpdate }));
+    this.store.dispatch(
+      FeatureNotificationsActions.update({ notification: notificationToUpdate })
+    );
     this.router.navigate(['../../'], { relativeTo: this.activatedRoute });
   }
 

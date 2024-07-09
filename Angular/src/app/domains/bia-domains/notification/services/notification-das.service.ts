@@ -4,7 +4,7 @@ import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service
 import { Notification } from '../model/notification';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationDas extends AbstractDas<Notification> {
   constructor(injector: Injector) {
@@ -19,21 +19,3 @@ export class NotificationDas extends AbstractDas<Notification> {
     return this.http.put(`${this.route}setAsRead/${id}`, {});
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

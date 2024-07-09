@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
-import { catchError, map, pluck, switchMap, withLatestFrom, concatMap } from 'rxjs/operators';
+import {
+  catchError,
+  map,
+  switchMap,
+  withLatestFrom,
+  concatMap,
+} from 'rxjs/operators';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { FeatureAirportsActions } from './airports-actions';
 import { Store } from '@ngrx/store';
 import { FeatureAirportsStore } from './airport.state';
 import { Airport } from '../model/airport';
-import { AirportCRUDConfiguration } from '../airport.constants';
+import { airportCRUDConfiguration } from '../airport.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
@@ -24,12 +30,17 @@ export class AirportsEffects {
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.loadAllByPost),
-      pluck('event'),
-      switchMap((event) =>
+      map(x => x?.event),
+      switchMap(event =>
         this.airportDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Airport[]>) => FeatureAirportsActions.loadAllByPostSuccess({ result: result, event: event })),
-          catchError((err) => {
-            this.biaMessageService.showError();
+          map((result: DataResult<Airport[]>) =>
+            FeatureAirportsActions.loadAllByPostSuccess({
+              result: result,
+              event: event,
+            })
+          ),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         )
@@ -40,12 +51,12 @@ export class AirportsEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.load),
-      pluck('id'),
-      switchMap((id) => {
+      map(x => x?.id),
+      switchMap(id => {
         return this.airportDas.get({ id: id }).pipe(
-          map((airport) => FeatureAirportsActions.loadSuccess({ airport })),
-          catchError((err) => {
-            this.biaMessageService.showError();
+          map(airport => FeatureAirportsActions.loadSuccess({ airport })),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureAirportsActions.failure({ error: err }));
           })
         );
@@ -56,23 +67,36 @@ export class AirportsEffects {
   create$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.create),
-      pluck('airport'),
-      concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)))),
+      map(x => x?.airport),
+      concatMap(airport =>
+        of(airport).pipe(
+          withLatestFrom(
+            this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([airport, event]) => {
-        return this.airportDas.post({ item: airport, offlineMode: AirportCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showAddSuccess();
-            if (AirportCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAirportsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAirportsActions.failure({ error: err }));
+        return this.airportDas
+          .post({
+            item: airport,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showAddSuccess();
+              if (airportCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAirportsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureAirportsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -80,23 +104,37 @@ export class AirportsEffects {
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.update),
-      pluck('airport'),
-      concatMap((airport) => of(airport).pipe(withLatestFrom(this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)))),
+      map(x => x?.airport),
+      concatMap(airport =>
+        of(airport).pipe(
+          withLatestFrom(
+            this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([airport, event]) => {
-        return this.airportDas.put({ item: airport, id: airport.id, offlineMode: AirportCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showUpdateSuccess();
-            if (AirportCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAirportsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAirportsActions.failure({ error: err }));
+        return this.airportDas
+          .put({
+            item: airport,
+            id: airport.id,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showUpdateSuccess();
+              if (airportCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAirportsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureAirportsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -104,23 +142,36 @@ export class AirportsEffects {
   destroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.remove),
-      pluck('id'),
-      concatMap((id: number) => of(id).pipe(withLatestFrom(this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)))),
+      map(x => x?.id),
+      concatMap((id: number) =>
+        of(id).pipe(
+          withLatestFrom(
+            this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([id, event]) => {
-        return this.airportDas.delete({ id: id, offlineMode: AirportCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (AirportCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAirportsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAirportsActions.failure({ error: err }));
+        return this.airportDas
+          .delete({
+            id: id,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (airportCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAirportsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureAirportsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );
@@ -128,23 +179,36 @@ export class AirportsEffects {
   multiDestroy$ = createEffect(() =>
     this.actions$.pipe(
       ofType(FeatureAirportsActions.multiRemove),
-      pluck('ids'),
-      concatMap((ids: number[]) => of(ids).pipe(withLatestFrom(this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)))),
+      map(x => x?.ids),
+      concatMap((ids: number[]) =>
+        of(ids).pipe(
+          withLatestFrom(
+            this.store.select(FeatureAirportsStore.getLastLazyLoadEvent)
+          )
+        )
+      ),
       switchMap(([ids, event]) => {
-        return this.airportDas.deletes({ ids: ids, offlineMode: AirportCRUDConfiguration.useOfflineMode }).pipe(
-          map(() => {
-            this.biaMessageService.showDeleteSuccess();
-            if (AirportCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureAirportsActions.loadAllByPost({ event: <LazyLoadEvent>event });
-            }
-          }),
-          catchError((err) => {
-            this.biaMessageService.showError();
-            return of(FeatureAirportsActions.failure({ error: err }));
+        return this.airportDas
+          .deletes({
+            ids: ids,
+            offlineMode: airportCRUDConfiguration.useOfflineMode,
           })
-        );
+          .pipe(
+            map(() => {
+              this.biaMessageService.showDeleteSuccess();
+              if (airportCRUDConfiguration.useSignalR) {
+                return biaSuccessWaitRefreshSignalR();
+              } else {
+                return FeatureAirportsActions.loadAllByPost({
+                  event: <LazyLoadEvent>event,
+                });
+              }
+            }),
+            catchError(err => {
+              this.biaMessageService.showErrorHttpResponse(err);
+              return of(FeatureAirportsActions.failure({ error: err }));
+            })
+          );
       })
     )
   );

@@ -2,9 +2,10 @@
   "app": {
     "members": "Miembros",
     "sites": "Sitios",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "aircraft-maintenance-companies": "Empresas de mantenimiento de aeronaves",
     "airports": "Aeropuertos",
+    "engines": "Motor",
     "examples": "Ejemplos",
     "hangfire": "Hangfire",
     "planes": "Planos",
@@ -14,15 +15,17 @@
     "planesSpecific": "Planos (Specific)",
     "planesTypes": "Tipos de planos",
     "sites": "Aerolíneas",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "teams": "Equipos",
     "users": "Usuarios",
     "notifications": "Notificaciones"
   },
-  "Begin BIADemo" : "To remove in project from here",
+  "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Añadir empresa de mantenimiento de aeronaves",
+    "admins": "Administradores",
     "edit": "Editar empresa de mantenimiento de aeronaves",
+    "filterMember": "Usuario miembro",
     "goto": "Ver empresa",
     "listOf": "Lista de empresas de mantenimiento de aeronaves",
     "maintenanceTeams": "Equipos de mantenimiento",
@@ -30,14 +33,27 @@
   },
   "airport": {
     "add": "Añadir aeropuerto",
-    "city" : "Ciudad",
+    "city": "Ciudad",
     "edit": "Editar aeropuerto",
     "listOf": "Lista de aeropuertos",
-    "name" : "Nombre"
+    "name": "Nombre"
+  },
+  "engine": {
+    "add": "Añadir motor",
+    "edit": "Editar motor",
+    "lastMaintenanceDate": "Última fecha de mantenimiento",
+    "listOf": "Lista de motors",
+    "plane": "Plano",
+    "power": "Fuerza",
+    "reference": "Referencia",
+    "syncTime": "Tiempo de sincronización"
   },
   "maintenanceTeam": {
     "add": "Añadir equipo de mantenimiento",
+    "admins": "Administradores",
     "edit": "Editar equipo de mantenimiento",
+    "filterMember": "Usuario miembro",
+    "headerLabel": "Equipo de mantenimiento",
     "listOf": "Lista de equipos de mantenimiento",
     "title": "Name"
   },
@@ -47,11 +63,16 @@
     "connectingAirports": "Aeropuertos de conexión",
     "deliveryDate": "Fecha de entrega",
     "edit": "Editar plano",
+    "engines": "motors",
+    "estimatedPrice": "Precio estimado",
+    "fuelLevel": "Nivel de combustible",
     "isActive": "Activo",
+    "import": "Importar planos",
     "lastFlightDate": "Última fecha de vuelo",
     "listOf": "Lista de planos",
     "msn": "Msn",
     "planeType": "Tipos de planos",
+    "probability": "Oportunidad",
     "site": "Aerolínea",
     "syncTime": "Tiempo de sincronización"
   },
@@ -62,7 +83,7 @@
     "listOf": "Lista de tipos de planos",
     "title": "Título"
   },
-  "End BIADemo" : "To remove in project up to here",
+  "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Añadir miembro",
     "listOf": "Lista de miembros",
@@ -80,21 +101,22 @@
     "admins": "Administradores",
     "edit": "Editar sitios",
     "listOf": "Lista de sitios",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "add": "Añadir aerolínea",
     "edit": "Editar aerolínea",
     "listOf": "Lista de aerolíneas",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "filterMember": "Usuario miembro",
     "title": "Title"
   },
-  "translation": 
-  {  
-    "defaultLanguage" :"Defecto (Inglesa)"
+  "translation": {
+    "defaultLanguage": "Defecto (Inglesa)"
   },
   "user": {
     "add": "Añadir usuario",
+    "edit": "Editar usuario",
     "firstName": "Nombre",
+    "import": "Importar usuarios",
     "lastName": "Apellido",
     "listOf": "Lista de usuarios",
     "login": "Login",

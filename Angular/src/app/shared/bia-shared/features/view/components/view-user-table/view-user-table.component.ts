@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { View } from '../../model/view';
 import { Table } from 'primeng/table';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
@@ -30,12 +38,16 @@ export class ViewUserTableComponent implements OnChanges {
   @ViewChild('viewUserTable', { static: false }) table: Table;
 
   @Output() delete = new EventEmitter<number>();
-  @Output() setDefault = new EventEmitter<{ viewId: number; isDefault: boolean }>();
+  @Output() setDefault = new EventEmitter<{
+    viewId: number;
+    isDefault: boolean;
+  }>();
   @Output() viewSelect = new EventEmitter<View>();
 
-  constructor( 
+  constructor(
     private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService) {}
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
@@ -43,13 +55,12 @@ export class ViewUserTableComponent implements OnChanges {
 
   onDeleteView(viewId: number) {
     const confirmation: Confirmation = {
-      ...this.biaDialogService.getDeleteConfirmation("view-user-confirm"),
+      ...this.biaDialogService.getDeleteConfirmation('view-user-confirm'),
       accept: () => {
         this.delete.emit(viewId);
-      }
+      },
     };
     this.confirmationService.confirm(confirmation);
-    
   }
 
   onSetDefaultView(viewId: number, isDefault: boolean) {
@@ -61,13 +72,19 @@ export class ViewUserTableComponent implements OnChanges {
   }
 
   showDefineDefault() {
-    return !(this.viewSelected && this.viewSelected.isUserDefault === true && this.canSetDefault === true);
+    return !(
+      this.viewSelected &&
+      this.viewSelected.isUserDefault === true &&
+      this.canSetDefault === true
+    );
   }
 
   private onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
       if (this.viewSelected && this.viewSelected.id > 0 && this.views) {
-        this.viewSelected = this.views.filter((x) => x.id === this.viewSelected.id)[0];
+        this.viewSelected = this.views.filter(
+          x => x.id === this.viewSelected.id
+        )[0];
       } else {
         this.viewSelected = {} as View;
       }

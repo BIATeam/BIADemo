@@ -70,7 +70,9 @@ namespace TheBIADevCompany.BIADemo.Test.Tests
         public void TestMethod()
         {
             // Code your test here.
+#pragma warning disable S2701 // Literal boolean values should not be used in assertions
             Assert.IsTrue(true);
+#pragma warning restore S2701 // Literal boolean values should not be used in assertions
         }
 
         /// <summary>

@@ -2,9 +2,10 @@
   "app": {
     "members": "Members",
     "sites": "Sites",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "aircraft-maintenance-companies": "Aircraft maintenance companies",
     "airports": "Airports",
+    "engines": "Engines",
     "examples": "Examples",
     "hangfire": "Hangfire",
     "planes": "Planes",
@@ -19,10 +20,12 @@
     "users": "Users",
     "notifications": "Notifications"
   },
-  "Begin BIADemo" : "To remove in project from here",
+  "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Add aircraft maintenance company",
+    "admins": "Administrators",
     "edit": "Edit aircraft maintenance company",
+    "filterMember": "Member user",
     "goto": "View Company",
     "listOf": "List of aircraft maintenance companies",
     "maintenanceTeams": "Maintenance teams",
@@ -30,14 +33,27 @@
   },
   "airport": {
     "add": "Add airport",
-    "city" : "City",
+    "city": "City",
     "edit": "Edit airport",
     "listOf": "List of airports",
-    "name" : "Name"
+    "name": "Name"
+  },
+  "engine": {
+    "add": "Add engine",
+    "edit": "Edit engine",
+    "lastMaintenanceDate": "Last maintenance date",
+    "listOf": "List of engines",
+    "plane": "Plane",
+    "power": "Power",
+    "reference": "Reference",
+    "syncTime": "Synchronization time"
   },
   "maintenanceTeam": {
     "add": "Add maintenance team",
+    "admins": "Administrators",
     "edit": "Edit maintenance team",
+    "filterMember": "Member user",
+    "headerLabel": "Maintenance team",
     "listOf": "List of maintenance teams",
     "title": "Name"
   },
@@ -47,11 +63,16 @@
     "connectingAirports": "Connecting Airports",
     "deliveryDate": "Delivery Date",
     "edit": "Edit plane",
+    "engines": "Engines",
+    "estimatedPrice": "Estimated price",
+    "fuelLevel": "Fuel level",
     "isActive": "Active",
+    "import": "Import planes",
     "lastFlightDate": "Last flight date",
     "listOf": "List of planes",
     "msn": "Msn",
     "planeType": "Plane Type",
+    "probability": "Probability",
     "site": "Airline",
     "syncTime": "Synchronization time"
   },
@@ -60,9 +81,9 @@
     "certificationDate": "Certification date",
     "edit": "Edit type of planes",
     "listOf": "List of types of planes",
-    "title" : "Title"
+    "title": "Title"
   },
-  "End BIADemo" : "To remove in project up to here",
+  "End BIADemo": "To remove in project up to here",
   "member": {
     "add": "Add member",
     "listOf": "List of members",
@@ -80,21 +101,22 @@
     "admins": "Administrators",
     "edit": "Edit site",
     "listOf": "List of sites",
-    "Begin BIADemo" : "To remove in project from here",
+    "Begin BIADemo": "To remove in project from here",
     "add": "Add airline",
     "edit": "Edit airline",
     "listOf": "List of airlines",
-    "End BIADemo" : "To remove in project up to here",
+    "End BIADemo": "To remove in project up to here",
     "filterMember": "Member user",
     "title": "Title"
   },
-  "translation": 
-  {  
-    "defaultLanguage" :"Default (English)"
+  "translation": {
+    "defaultLanguage": "Default (English)"
   },
   "user": {
     "add": "Add user",
+    "edit": "Edit user",
     "firstName": "First Name",
+    "import": "Import users",
     "lastName": "Last Name",
     "listOf": "List of users",
     "login": "Login",

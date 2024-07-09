@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used to manage site.
@@ -41,5 +42,20 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the title.
         /// </summary>
         public string ParentTeamTitle { get; set; }
+
+        /// <summary>
+        /// Gets or sets if team is updatable by the user.
+        /// </summary>
+        public bool CanUpdate { get; set; }
+
+        /// <summary>
+        /// Gets or sets if user can access list member.
+        /// </summary>
+        public bool CanMemberListAccess { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of admin.
+        /// </summary>
+        public IEnumerable<OptionDto> Admins { get; set; }
     }
 }

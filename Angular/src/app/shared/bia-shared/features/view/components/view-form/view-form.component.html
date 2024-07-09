@@ -1,23 +1,31 @@
-<form (submit)="onSubmit()" class="flex flex-row justify-content-around align-items-end align-content-end"  [formGroup]="form">
-  <div class="flex-1" style="max-width:22%;">
+<form
+  (submit)="onSubmit()"
+  class="flex flex-row justify-content-around align-items-end align-content-end"
+  [formGroup]="form">
+  <div class="flex-1" style="max-width: 22%">
     <span class="p-float-label">
       <input formControlName="name" type="text" pInputText maxlength="50" />
       <label>{{ 'bia.views.name' | translate }}</label>
     </span>
   </div>
-  <div class="flex-1" style="max-width:70%;">
+  <div class="flex-1" style="max-width: 70%">
     <span class="p-float-label">
-      <input formControlName="description" type="text" pInputText maxlength="500" />
+      <input
+        formControlName="description"
+        type="text"
+        pInputText
+        maxlength="500" />
       <label>{{ 'bia.views.description' | translate }}</label>
     </span>
   </div>
-  <div class="flex-1" style="max-width:8%;">
+  <div class="flex-1" style="max-width: 8%">
     <button
       flex
       pButton
-      label="{{ isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate) }}"
+      label="{{
+        isAdd === true ? ('bia.add' | translate) : ('bia.save' | translate)
+      }}"
       type="submit"
-      [disabled]="!form.valid"
-    ></button>
+      [disabled]="!form.valid"></button>
   </div>
 </form>

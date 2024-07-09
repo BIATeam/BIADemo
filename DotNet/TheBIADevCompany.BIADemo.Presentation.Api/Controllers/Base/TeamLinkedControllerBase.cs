@@ -8,12 +8,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Application.View;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
@@ -61,15 +60,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
-            string prefixedRight = string.Empty;
-            if (TeamTypeRightPrefixe.Mapping.TryGetValue(teamTypeId, out prefixedRight))
+            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
+            if (config != null)
             {
-                if (!this.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == prefixedRight + roleSuffix))
+                if (!this.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == config.RightPrefix + roleSuffix))
                 {
                     return false;
                 }
 
-                var userData = new BIAClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
+                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
                 if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
                 {
                     return false;

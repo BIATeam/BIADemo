@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -47,6 +48,18 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="user">the user.</param>
         /// <returns>Return the Identity Key.</returns>
         public string GetDatabaseIdentityKey(User user)
+        {
+            return user.Login;
+        }
+
+        /// <summary>
+        /// Gets the Identity Key to compare with UserDto.
+        /// It is use to specify the unique identifier that is compare during the authentication process.
+        /// If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+        /// </summary>
+        /// <param name="user">the user.</param>
+        /// <returns>Return the Identity Key.</returns>
+        public string GetDtoIdentityKey(UserDto user)
         {
             return user.Login;
         }

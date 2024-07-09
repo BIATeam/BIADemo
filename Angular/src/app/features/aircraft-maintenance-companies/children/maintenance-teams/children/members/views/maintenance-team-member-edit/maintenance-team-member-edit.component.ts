@@ -5,18 +5,22 @@ import { TeamTypeId } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-maintenance-team-member-edit',
-  templateUrl: '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
+  templateUrl:
+    '../../../../../../../../shared/bia-shared/feature-templates/members/views/member-edit/member-edit.component.html',
 })
-export class MaintenanceTeamMemberEditComponent extends MemberEditComponent implements OnInit {
+export class MaintenanceTeamMemberEditComponent
+  extends MemberEditComponent
+  implements OnInit
+{
   constructor(
     injector: Injector,
-    public maintenanceTeamService: MaintenanceTeamService,
-  ) { 
+    public maintenanceTeamService: MaintenanceTeamService
+  ) {
     super(injector);
   }
 
   ngOnInit() {
-    this.teamTypeId=TeamTypeId.MaintenanceTeam;
+    this.teamTypeId = TeamTypeId.MaintenanceTeam;
     super.ngOnInit();
   }
 }

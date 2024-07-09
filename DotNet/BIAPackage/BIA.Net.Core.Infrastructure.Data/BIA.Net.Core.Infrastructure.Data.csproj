@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Copyright>Copyright © BIA 2021</Copyright>
+    <TargetFramework>net8.0</TargetFramework>
+    <Copyright>Copyright © BIA 2024</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.8.0</Version>
+    <Version>3.9.0</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>
@@ -13,11 +13,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Core" Version="21.1.0" />
-    <PackageReference Include="EFCore.BulkExtensions" Version="6.5.6" />
-    <PackageReference Include="Hangfire" Version="1.8.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.23" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.23" />
+    <PackageReference Include="Audit.EntityFramework.Core" Version="25.0.7" />
+    <PackageReference Include="Hangfire" Version="1.8.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>

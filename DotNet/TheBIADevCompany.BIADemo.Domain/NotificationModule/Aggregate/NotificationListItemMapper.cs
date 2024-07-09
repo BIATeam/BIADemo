@@ -16,12 +16,22 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for user.
     /// </summary>
     public class NotificationListItemMapper : BaseMapper<NotificationListItemDto, Notification, int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationListItemMapper"/> class.
+        /// </summary>
+        /// <param name="userContext">the user context.</param>
+        public NotificationListItemMapper(UserContext userContext)
+        {
+            this.UserContext = userContext;
+        }
+
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Notification> ExpressionCollection
         {
@@ -34,12 +44,17 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                     { HeaderName.CreatedDate, notification => notification.CreatedDate },
                     { HeaderName.Type, notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { HeaderName.Read, notification => notification.Read },
-                    { HeaderName.CreatedBy, notification => notification.CreatedBy.FirstName + notification.CreatedBy.LastName + " (" + notification.CreatedBy.Login + ")" },
+                    { HeaderName.CreatedBy, notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
                     { HeaderName.NotifiedTeams, notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
-                    { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.FirstName + " " + x.User.LastName + " (" + x.User.Login + ")").OrderBy(x => x) },
+                    { HeaderName.NotifiedUsers, notification => notification.NotifiedUsers.Select(x => x.User.LastName + " " + x.User.FirstName + " (" + x.User.Login + ")").OrderBy(x => x) },
                 };
             }
         }
+
+        /// <summary>
+        /// The user context langage and culture.
+        /// </summary>
+        private UserContext UserContext { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<Notification, NotificationListItemDto>> EntityToDto(string mapperMode)
@@ -55,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 CreatedBy = entity.CreatedBy != null ? new OptionDto
                 {
                     Id = entity.CreatedBy.Id,
-                    Display = entity.CreatedBy.FirstName + " " + entity.CreatedBy.LastName + " (" + entity.CreatedBy.Login + ")",
+                    Display = entity.CreatedBy.Display(),
                 }
                 : null,
 
@@ -77,7 +92,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
                 NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto
                 {
                     Id = nu.User.Id,
-                    Display = nu.User.FirstName + " " + nu.User.LastName + " (" + nu.User.Login + ")",
+                    Display = nu.User.Display(),
                 }).ToList(),
             };
         }

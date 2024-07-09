@@ -1,4 +1,4 @@
-// <copyright file="INotificationRepository.cs" company="BIA">
+// <copyright file="INotification.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -23,6 +23,11 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null);
 
+        /// <summary>
+        /// Creates the notification.
+        /// </summary>
+        /// <param name="notification">The notification.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task CreateNotification(NotificationDto notification);
     }
 }

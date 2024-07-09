@@ -15,9 +15,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     /// <summary>
     /// Store object in distributed with the IDistributedCache service.
     /// </summary>
-#pragma warning disable S101 // Types should be named in PascalCase
     public class BiaDistributedCache : IBiaDistributedCache
-#pragma warning restore S101 // Types should be named in PascalCase
     {
         private readonly IDistributedCache distibutedCache;
 
@@ -37,6 +35,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task Add<T>(string key, T item, double cacheDurationInMinute)
         {
             byte[] encodedItemResolve = this.ObjectToByteArray(item);
@@ -45,6 +44,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             await this.distibutedCache.SetAsync(key, encodedItemResolve, options);
         }
 
+        /// <inheritdoc/>
         public async Task<T> Get<T>(string key)
         {
             byte[] encodedItemResolve = await this.distibutedCache.GetAsync(key);
@@ -56,6 +56,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             return default(T);
         }
 
+        /// <inheritdoc/>
         public async Task Remove(string key)
         {
             try
@@ -74,7 +75,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// </summary>
         private byte[] ObjectToByteArray<T>(T obj)
         {
-            if (obj == null)
+            if (object.Equals(obj, default(T)))
             {
                 return new byte[0];
             }

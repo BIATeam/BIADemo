@@ -1,8 +1,19 @@
-import { AfterViewInit, ComponentRef, HostBinding, OnInit, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  ComponentRef,
+  HostBinding,
+  OnInit,
+  ViewContainerRef,
+} from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { Component } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  NavigationEnd,
+  Router,
+} from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.service';
@@ -11,17 +22,19 @@ import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.
   selector: 'bia-full-page-layout',
   templateUrl: './fullpage-layout.component.html',
 })
-export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FullPageLayoutComponent
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild('dynamic', {
-    read: ViewContainerRef
-  }) viewContainerRef: ViewContainerRef;
+    read: ViewContainerRef,
+  })
+  viewContainerRef: ViewContainerRef;
 
   constructor(
     public activatedRoute: ActivatedRoute,
     private router: Router,
     private serviceInjector: BiaInjectorService
-  ) {
-  }
+  ) {}
 
   public $displayPageComponent: BehaviorSubject<boolean>;
   public displayPageComponent: boolean;
@@ -32,11 +45,11 @@ export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit
     this.$displayPageComponent = new BehaviorSubject<boolean>(true);
     this.displayPageComponent = true;
     this.checkVisibility();
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.checkVisibility();
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.checkVisibility();
+      });
   }
 
   checkVisibility() {
@@ -59,16 +72,22 @@ export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit
   ngAfterViewInit() {
     this.$displayPageComponent.subscribe(() => {
       const snapshot = this.activatedRoute.snapshot;
-      if (this.$displayPageComponent.value && this.dynamicComponent === undefined) {
+      if (
+        this.$displayPageComponent.value &&
+        this.dynamicComponent === undefined
+      ) {
         setTimeout(() => {
-          this.dynamicComponent = this.serviceInjector.addDynamicComponent(this.viewContainerRef, snapshot.data['InjectComponent']);
+          this.dynamicComponent = this.serviceInjector.addDynamicComponent(
+            this.viewContainerRef,
+            snapshot.data['injectComponent']
+          );
         }, 0);
       } else {
         if (this.dynamicComponent !== undefined) {
           if (this.$displayPageComponent.value) {
-            this.dynamicComponent.instance.OnDisplay();
+            this.dynamicComponent.instance.onDisplay();
           } else {
-            this.dynamicComponent.instance.OnHide();
+            this.dynamicComponent.instance.onHide();
           }
         }
         // if( this.dynamicComponent !== undefined ) this.dynamicComponent.destroy();
@@ -80,5 +99,4 @@ export class FullPageLayoutComponent implements OnInit, OnDestroy, AfterViewInit
       this.dynamicComponent.destroy();
     }
   }
-
 }

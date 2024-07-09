@@ -5,46 +5,52 @@ export const NAVIGATION: BiaNavigation[] = [
   {
     labelKey: 'app.users',
     permissions: [Permission.User_List_Access],
-    path: ['/users']
+    path: ['/users'],
   },
   {
     labelKey: 'app.sites',
     permissions: [Permission.Site_List_Access],
-    path: ['/sites']
+    path: ['/sites'],
   },
+  /// BIAToolKit - Begin Navigation
+  /// BIAToolKit - End Navigation
   // Begin BIADemo
   {
     labelKey: 'app.examples',
-    permissions: [Permission.Plane_List_Access, 
-      Permission.AircraftMaintenanceCompany_List_Access ,
-      Permission.Hangfire_Access ],
+    permissions: [
+      Permission.Plane_List_Access,
+      Permission.AircraftMaintenanceCompany_List_Access,
+      Permission.Hangfire_Access,
+    ],
     children: [
       {
         labelKey: 'app.aircraft-maintenance-companies',
         permissions: [Permission.AircraftMaintenanceCompany_List_Access],
-        path: ['/examples/aircraft-maintenance-companies']
+        path: ['/examples/aircraft-maintenance-companies'],
       },
+      /// BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',
         permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes']
+        path: ['/examples/planes'],
       },
+      /// BIAToolKit - End Partial Navigation Plane
       {
         labelKey: 'app.planesFullCode',
         permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-full-code']
+        path: ['/examples/planes-full-code'],
       },
       {
         labelKey: 'app.planesSpecific',
         permissions: [Permission.Plane_List_Access],
-        path: ['/examples/planes-specific']
+        path: ['/examples/planes-specific'],
       },
       {
         labelKey: 'app.hangfire',
         permissions: [Permission.Hangfire_Access],
-        path: ['/examples/hangfire']
+        path: ['/examples/hangfire'],
       },
-    ]
+    ],
   },
   // End BIADemo
   {
@@ -61,26 +67,25 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'bia.backgroundTaskAdmin',
         permissions: [Permission.Background_Task_Admin],
-        path: ['/backgroundtask/admin']
+        path: ['/backgroundtask/admin'],
       },
       {
         labelKey: 'bia.backgroundTaskReadOnly',
         permissions: [Permission.Background_Task_Read_Only],
-        path: ['/backgroundtask/readonly']
+        path: ['/backgroundtask/readonly'],
       },
       // Begin BIADemo
       {
         labelKey: 'app.airports',
         permissions: [Permission.Airport_List_Access],
-        path: ['/examples/airports']
+        path: ['/examples/airports'],
       },
       {
         labelKey: 'app.planesTypes',
         permissions: [Permission.PlaneType_List_Access],
-        path: ['/examples/planes-types']
-      }
+        path: ['/examples/planes-types'],
+      },
       // End BIADemo
-    ]
+    ],
   },
-
 ];

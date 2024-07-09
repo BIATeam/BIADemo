@@ -21,10 +21,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationTypeDomainService(ITGenericRepository<NotificationType, int> repository, UserContext userContext)
+        public NotificationTypeDomainService(ITGenericRepository<NotificationType, int> repository)
             : base(repository)
         {
-            this.userContext = userContext;
         }
 
         /// <summary>

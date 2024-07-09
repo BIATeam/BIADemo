@@ -16,6 +16,8 @@
     "ApiFeatures": {
       "HangfireDashboard": {
         "IsActive": true,
+        "LogsVisibleInDashboard": true,
+        "LogFiles": "C:\\Logs\\BIADemo\\${shortdate}_TheBIADevCompany.BIADemo_WorkerService${hangfire-jobid}.log",
         "DashboardAdmin": true,
         "DashboardAdminPermission": "Background_Task_Admin",
         "DashboardReadOnly": true,
@@ -122,24 +124,15 @@
       }
     ],
     "Permissions": [
-      {
-        "Names": [ "Admin" ],
-        "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_Admin" ],
-        "Roles": [ "Site_Admin" ]
-      },
+      // BIAToolKit - Begin Config
+      // BIAToolKit - End Config
       // Begin BIADemo
-      {
-        "Names": [ "Pilot" ],
-        "Roles": [ "Pilot" ]
-      },
       // Hangfire
       {
         "Names": [ "Hangfire_Run_Worker", "Hangfire_Access" ],
         "Roles": [ "Admin", "Site_Admin", "Site_Member" ]
       },
+      // BIAToolKit - Begin Partial Config Plane
       // Plane
       {
         "Names": [ "Plane_List_Access", "Plane_Read" ],
@@ -153,13 +146,31 @@
         "Names": [ "Plane_Create", "Plane_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      // BIAToolKit - End Partial Config Plane
+      // Engine
+      {
+        "Names": [ "Engine_List_Access", "Engine_Read" ],
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      {
+        "Names": [ "Engine_Update", "Engine_Save" ],
+        "Roles": [ "Site_Admin" ]
+      },
+      {
+        "Names": [ "Engine_Create", "Engine_Delete" ],
+        "Roles": [ "Site_Admin" ]
+      },
       // Aircraft Maintenance Company
       {
         "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],
         "Roles": [ "Admin" ]
       },
       {
-        "Names": [ "AircraftMaintenanceCompany_List_Access", "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
+        "Names": [ "AircraftMaintenanceCompany_List_Access" ],
+        "Roles": [ "Admin", "AircraftMaintenanceCompany_MemberOfOne" ]
+      },
+      {
+        "Names": [ "AircraftMaintenanceCompany_Read", "AircraftMaintenanceCompany_Member_List_Access" ],
         "Roles": [ "Admin", "AircraftMaintenanceCompany_Member" ]
       },
       {
@@ -173,28 +184,25 @@
       // Maintenance Team
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
-        "Roles": [ "Admin", "Supervisor" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */ ]
       },
       {
-        "Names": [ "MaintenanceTeam_List_Access", "MaintenanceTeam_Read" ],
-        "Roles": [ "AircraftMaintenanceCompany_Member" ]
+        "Names": [ "MaintenanceTeam_List_Access" ],
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_MemberOfOne" ]
       },
       {
-        "Names": [ "MaintenanceTeam_Member_List_Access" ],
-        "Roles": [ "Admin", "Supervisor", "MaintenanceTeam_Member" ]
-      },
-      {
-        "Names": [ "MaintenanceTeam_List_View_All" ],
-        "Roles": [ "Admin", "Supervisor" ]
+        "Names": [ "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_Member" ]
       },
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
-        "Roles": [ "Admin", "Supervisor", "Team_Leader" ]
+        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
       },
+      // BIAToolKit - Begin Partial Config Airport
       // Airport
       {
         "Name": "Airport_Options",
@@ -204,6 +212,7 @@
         "Names": [ "Airport_List_Access", "Airport_Create", "Airport_Read", "Airport_Update", "Airport_Delete", "Airport_Save" ],
         "Roles": [ "Admin" ]
       },
+      // BIAToolKit - End Partial Config Airport
       // PlaneType
       {
         "Name": "PlaneType_Options",

@@ -1,6 +1,16 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { getAllNotifications, getNotificationsTotalCount, getNotificationLoadingGetAll } from '../../store/notification.state';
+import {
+  getAllNotifications,
+  getNotificationsTotalCount,
+  getNotificationLoadingGetAll,
+} from '../../store/notification.state';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
 import { Observable, Subscription } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
@@ -16,7 +26,7 @@ import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationDas } from '../../services/notification-das.service';
-import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
 import { TranslateService } from '@ngx-translate/core';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Permission } from 'src/app/shared/permission';
@@ -32,7 +42,7 @@ import { TableHelperService } from 'src/app/shared/bia-shared/services/table-hel
 @Component({
   selector: 'bia-notifications-index',
   templateUrl: './notifications-index.component.html',
-  styleUrls: ['./notifications-index.component.scss']
+  styleUrls: ['./notifications-index.component.scss'],
 })
 export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useSignalR = true;
@@ -40,7 +50,8 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   useRefreshAtLanguageChange = true;
 
   @HostBinding('class') classes = 'bia-flex';
-  @ViewChild(BiaTableComponent, { static: false }) notificationListComponent: BiaTableComponent;
+  @ViewChild(BiaTableComponent, { static: false })
+  notificationListComponent: BiaTableComponent;
   private sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
@@ -51,7 +62,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   selectedNotifications: NotificationListItem[];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
-  canEdit = false;
+  canRead = false;
   canDelete = false;
   canAdd = false;
   tableConfiguration: BiaFieldsConfig;
@@ -74,8 +85,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     private notificationsSignalRService: NotificationsSignalRService,
     public notificationOptionsService: NotificationOptionsService,
     private tableHelperService: TableHelperService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.parentIds = [];
@@ -91,14 +101,18 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.notifications$ = this.store.select(getAllNotifications);
     this.totalCount$ = this.store.select(getNotificationsTotalCount);
     this.loading$ = this.store.select(getNotificationLoadingGetAll);
-    this.OnDisplay();
+    this.onDisplay();
 
     if (this.useRefreshAtLanguageChange) {
       // Reload data if language change.
       this.sub.add(
-        this.biaTranslationService.currentCulture$.pipe(skip(1)).subscribe(event => {
-          this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata());
-        })
+        this.biaTranslationService.currentCulture$
+          .pipe(skip(1))
+          .subscribe(() => {
+            this.onLoadLazy(
+              this.notificationListComponent.getLazyLoadMetadata()
+            );
+          })
       );
     }
   }
@@ -107,14 +121,13 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     if (this.sub) {
       this.sub.unsubscribe();
     }
-    this.OnHide();
+    this.onHide();
   }
 
-  OnDisplay() {
+  onDisplay() {
     if (this.useView) {
       this.store.dispatch(loadAllView());
     }
-
 
     if (this.useSignalR) {
       this.notificationsSignalRService.initialize();
@@ -122,7 +135,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     }
   }
 
-  OnHide() {
+  onHide() {
     if (this.useSignalR) {
       NotificationsEffects.useSignalR = false;
       this.notificationsSignalRService.destroy();
@@ -133,25 +146,19 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.router.navigate(['./create'], { relativeTo: this.activatedRoute });
   }
 
-  onEdit(notificationId: number) {
-    this.router.navigate(['./' + notificationId + '/edit'], { relativeTo: this.activatedRoute });
-  }
-
   onDetail(notificationId: number) {
-    this.router.navigate(['./' + notificationId + '/detail'], { relativeTo: this.activatedRoute });
-
-    // this.store.select(getNotificationById(notificationId)).pipe(first()).subscribe(notif => {
-    //   if (notif && !notif.read) {
-    //     // refresh the list to see readed
-    //     setTimeout(() => this.onLoadLazy(this.notificationListComponent.getLazyLoadMetadata()), 500)
-    //   }
-    // }
-    // )
+    this.router.navigate(['./' + notificationId + '/detail'], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   onDelete() {
     if (this.selectedNotifications && this.canDelete) {
-      this.store.dispatch(FeatureNotificationsActions.multiRemove({ ids: this.selectedNotifications.map((x) => x.id) }));
+      this.store.dispatch(
+        FeatureNotificationsActions.multiRemove({
+          ids: this.selectedNotifications.map(x => x.id),
+        })
+      );
     }
   }
 
@@ -164,9 +171,16 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   }
 
   onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
-    const pagingAndFilter: PagingFilterFormatDto = { parentIds: this.parentIds, ...lazyLoadEvent };
-    this.store.dispatch(FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter }));
-    this.hasColumnFilter= this.tableHelperService.hasFilter(this.notificationListComponent, true);
+    const pagingAndFilter: PagingFilterFormatDto = {
+      parentIds: this.parentIds,
+      ...lazyLoadEvent,
+    };
+    this.store.dispatch(
+      FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter })
+    );
+    this.hasColumnFilter = this.tableHelperService.hasFilter(
+      this.notificationListComponent
+    );
   }
 
   searchGlobalChanged(value: string) {
@@ -187,53 +201,78 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
 
   onExportCSV() {
     const columns: { [key: string]: string } = {};
-    this.notificationListComponent.getPrimeNgTable().columns?.map((x: BiaFieldConfig) => (columns[x.field] = this.translateService.instant(x.header)));
+    this.notificationListComponent
+      .getPrimeNgTable()
+      .columns?.map(
+        (x: BiaFieldConfig) =>
+          (columns[x.field] = this.translateService.instant(x.header))
+      );
     const columnsAndFilter: PagingFilterFormatDto = {
-      parentIds: this.parentIds, columns: columns, ...this.notificationListComponent.getLazyLoadMetadata()
+      parentIds: this.parentIds,
+      columns: columns,
+      ...this.notificationListComponent.getLazyLoadMetadata(),
     };
-    this.notificationDas.getFile(columnsAndFilter).subscribe((data) => {
-      FileSaver.saveAs(data, this.translateService.instant('app.notifications') + '.csv');
+    this.notificationDas.getFile(columnsAndFilter).subscribe(data => {
+      saveAs(
+        data,
+        this.translateService.instant('notification.listOf') + '.csv'
+      );
     });
   }
 
   private setPermissions() {
-    this.canEdit = this.authService.hasPermission(Permission.Notification_Update);
-    this.canDelete = this.authService.hasPermission(Permission.Notification_Delete);
-    this.canAdd = this.authService.hasPermission(Permission.Notification_Create);
+    this.canRead = this.authService.hasPermission(Permission.Notification_Read);
+    this.canDelete = this.authService.hasPermission(
+      Permission.Notification_Delete
+    );
+    this.canAdd = this.authService.hasPermission(
+      Permission.Notification_Create
+    );
   }
 
   private initTableConfiguration() {
-    this.sub.add(this.biaTranslationService.currentCultureDateFormat$.subscribe((dateFormat) => {
-      this.tableConfiguration = {
-        columns: [
-          new BiaFieldConfig('titleTranslated', 'notification.title'),
-          new BiaFieldConfig('descriptionTranslated', 'notification.description'),
-          Object.assign(new BiaFieldConfig('type', 'notification.type.title'), {
-            type: PropType.OneToMany,
-          }),
-          Object.assign(new BiaFieldConfig('read', 'notification.read'), {
-            isSearchable: false,
-            type: PropType.Boolean
-          }),
-          Object.assign(new BiaFieldConfig('createdDate', 'notification.createdDate'), {
+    this.tableConfiguration = {
+      columns: [
+        new BiaFieldConfig('titleTranslated', 'notification.title'),
+        new BiaFieldConfig('descriptionTranslated', 'notification.description'),
+        Object.assign(new BiaFieldConfig('type', 'notification.type.title'), {
+          type: PropType.OneToMany,
+        }),
+        Object.assign(new BiaFieldConfig('read', 'notification.read'), {
+          isSearchable: false,
+          type: PropType.Boolean,
+        }),
+        Object.assign(
+          new BiaFieldConfig('createdDate', 'notification.createdDate'),
+          {
             type: PropType.Date,
-            formatDate: dateFormat.dateFormat
-          }),
-          Object.assign(new BiaFieldConfig('createdBy', 'notification.createdBy'), {
-            type: PropType.OneToMany
-          }),
-          Object.assign(new BiaFieldConfig('notifiedUsers', 'notification.notifiedUsers'), {
-            type: PropType.ManyToMany
-          }),
-          Object.assign(new BiaFieldConfig('notifiedTeams', 'notification.notifiedTeams'), {
-            type: PropType.ManyToMany
-          }),
-          new BiaFieldConfig('jData', 'notification.jData'),
-        ]
-      };
+          }
+        ),
+        Object.assign(
+          new BiaFieldConfig('createdBy', 'notification.createdBy'),
+          {
+            type: PropType.OneToMany,
+          }
+        ),
+        Object.assign(
+          new BiaFieldConfig('notifiedUsers', 'notification.notifiedUsers'),
+          {
+            type: PropType.ManyToMany,
+          }
+        ),
+        Object.assign(
+          new BiaFieldConfig('notifiedTeams', 'notification.notifiedTeams'),
+          {
+            type: PropType.ManyToMany,
+          }
+        ),
+        new BiaFieldConfig('jData', 'notification.jData'),
+      ],
+    };
 
-      this.columns = this.tableConfiguration.columns.map((col) => <KeyValuePair>{ key: col.field, value: col.header });
-      this.displayedColumns = [...this.columns];
-    }));
+    this.columns = this.tableConfiguration.columns.map(
+      col => <KeyValuePair>{ key: col.field, value: col.header }
+    );
+    this.displayedColumns = [...this.columns];
   }
 }

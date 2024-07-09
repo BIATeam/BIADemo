@@ -1,14 +1,23 @@
 import * as fromNotificationTypeOptions from './notification-type-options-reducer';
-import { Action, combineReducers, createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  Action,
+  combineReducers,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 
 export interface NotificationTypeOptionsState {
   notificationTypeOptions: fromNotificationTypeOptions.State;
 }
 
 /** Provide reducers with AoT-compilation compliance */
-export function reducers(state: NotificationTypeOptionsState | undefined, action: Action) {
+export function reducers(
+  state: NotificationTypeOptionsState | undefined,
+  action: Action
+) {
   return combineReducers({
-    notificationTypeOptions: fromNotificationTypeOptions.notificationTypeOptionReducers
+    notificationTypeOptions:
+      fromNotificationTypeOptions.notificationTypeOptionReducers,
   })(state, action);
 }
 
@@ -17,37 +26,23 @@ export function reducers(state: NotificationTypeOptionsState | undefined, action
  * This is used for selecting feature states that are loaded eagerly or lazily.
  */
 
-export const getNotificationTypesState = createFeatureSelector<NotificationTypeOptionsState>('domain-notification-type-options');
+export const getNotificationTypesState =
+  createFeatureSelector<NotificationTypeOptionsState>(
+    'domain-notification-type-options'
+  );
 
 export const getNotificationTypeOptionsEntitiesState = createSelector(
   getNotificationTypesState,
-  (state) => state.notificationTypeOptions
+  state => state.notificationTypeOptions
 );
 
-export const { selectAll: getAllNotificationTypeOptions } = fromNotificationTypeOptions.notificationTypeOptionsAdapter.getSelectors(
-  getNotificationTypeOptionsEntitiesState
-);
+export const { selectAll: getAllNotificationTypeOptions } =
+  fromNotificationTypeOptions.notificationTypeOptionsAdapter.getSelectors(
+    getNotificationTypeOptionsEntitiesState
+  );
 
 export const getNotificationTypeOptionById = (id: number) =>
   createSelector(
     getNotificationTypeOptionsEntitiesState,
     fromNotificationTypeOptions.getNotificationTypeOptionById(id)
   );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

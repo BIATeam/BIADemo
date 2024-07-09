@@ -3,10 +3,9 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// LdapDomain.
+    /// </summary>
     public class LdapDomain
     {
         /// <summary>

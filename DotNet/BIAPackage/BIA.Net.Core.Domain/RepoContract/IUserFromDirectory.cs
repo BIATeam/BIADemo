@@ -1,10 +1,12 @@
 ﻿// <copyright file="IUserFromDirectory.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
+
 namespace BIA.Net.Core.Domain.RepoContract
 {
-    using System;
-
+    /// <summary>
+    /// Interface User From Directory.
+    /// </summary>
     public interface IUserFromDirectory
     {
         /// <summary>

@@ -17,17 +17,21 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Decrypt the token.
         /// </summary>
-        /// <param name="token"></param>
-        /// <param name="secretKey"></param>
-        /// <returns></returns>
+        /// <param name="token">The token.</param>
+        /// <param name="secretKey">The secret key.</param>
+        /// <returns>The principal.</returns>
         ClaimsPrincipal GetPrincipalFromToken(string token, string secretKey);
 
         /// <summary>
         /// Generate the identity for a user.
         /// </summary>
+        /// <typeparam name="TUserDataDto">The type of the user data dto.</typeparam>
         /// <param name="tokenDto">The token data.</param>
-        /// <returns></returns>
-        ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto) where TUserDataDto : UserDataDto;
+        /// <returns>
+        /// The identity.
+        /// </returns>
+        ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
+            where TUserDataDto : UserDataDto;
 
         /// <summary>
         /// Generate an encoded JWT.
@@ -39,7 +43,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <summary>
         /// Generate a JWT.
         /// </summary>
-        /// <typeparam name="TUserDataDto">Type of the user data </typeparam>
+        /// <typeparam name="TUserDataDto">Type of the user data. </typeparam>
         /// <typeparam name="TAdditionalInfoDto">Type of the additionnal infos.</typeparam>
         /// <param name="tokenDto">The token not uncrypted.</param>
         /// <param name="additionalInfos">Additionnal Info for front.</param>
@@ -47,7 +51,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// The additional information we want to let visible in the token.
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns></param>
         /// <returns>The JWT as string.</returns>
-        Task<AuthInfoDto<TUserDataDto, TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
+        Task<AuthInfoDto<TAdditionalInfoDto>> GenerateAuthInfoAsync<TUserDataDto, TAdditionalInfoDto>(TokenDto<TUserDataDto> tokenDto, TAdditionalInfoDto additionalInfos, LoginParamDto loginParam)
             where TUserDataDto : UserDataDto
             where TAdditionalInfoDto : AdditionalInfoDto;
     }

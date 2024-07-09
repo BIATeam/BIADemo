@@ -1,0 +1,99 @@
+<div>
+  <div>
+    <bia-table-header
+      [headerTitle]="'engine.listOf' | translate"
+      [canAdd]="canAdd && !crudConfiguration.useCalcMode"
+      [canDelete]="canDelete"
+      [canExportCSV]="true"
+      (create)="onCreate()"
+      (exportCSV)="onExportCSV('engine.listOf')"
+      (delete)="onDelete()"
+      [selectedElements]="selectedCrudItems"></bia-table-header>
+    <bia-table-controller
+      [defaultPageSize]="defaultPageSize"
+      [length]="totalCount$ | async"
+      [columns]="columns"
+      [columnToDisplays]="displayedColumns"
+      (displayedColumnsChange)="displayedColumnsChanged($event)"
+      (filter)="searchGlobalChanged($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+      (toggleSearch)="onToggleSearch()"
+      (viewChange)="onViewChange($event)"
+      [tableStateKey]="tableStateKey"
+      [tableState]="tableState"
+      [defaultViewPref]="defaultViewPref"
+      [useViewTeamWithTypeId]="useViewTeamWithTypeId"
+      [hasColumnFilter]="hasColumnFilter">
+      <ng-template pTemplate="customControl">
+        <div class="flex flex-row gap-3 bia-table-controller-container">
+          <i
+            class="pi pi-table bia-pointer"
+            [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
+            (click)="useCalcModeChange(!crudConfiguration.useCalcMode)"
+            pTooltip="{{ 'bia.useCalcMode' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-eye bia-pointer"
+            [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
+            (click)="useViewChange(!crudConfiguration.useView)"
+            pTooltip="{{ 'bia.useView' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-sync bia-pointer"
+            [class]="crudConfiguration.useSignalR ? 'enable' : 'disabled'"
+            (click)="useSignalRChange(!crudConfiguration.useSignalR)"
+            pTooltip="{{ 'bia.useSignalR' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-clone bia-pointer"
+            [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
+            (click)="usePopupChange(!crudConfiguration.usePopup)"
+            pTooltip="{{ 'bia.usePopup' | translate }}"
+            tooltipPosition="top"></i>
+        </div>
+      </ng-template>
+    </bia-table-controller>
+    <bia-table
+      *ngIf="!crudConfiguration.useCalcMode"
+      [elements]="crudItems$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
+      [pageSize]="pageSize"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canClickRow]="canEdit"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (clickRowId)="onClickRow($event)"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"></bia-table>
+    <app-engine-table
+      *ngIf="crudConfiguration.useCalcMode"
+      [elements]="crudItems$ | async"
+      [dictOptionDtos]="engineService.optionsService.dictOptionDtos$ | async"
+      [totalRecord]="totalCount$ | async"
+      [columnToDisplays]="displayedColumns"
+      [reorderableColumns]="reorderableColumns"
+      [pageSize]="pageSize"
+      [configuration]="crudConfiguration.fieldsConfig"
+      [showColSearch]="showColSearch"
+      [globalSearchValue]="globalSearchValue"
+      [canEdit]="canEdit"
+      [canAdd]="canAdd"
+      [canSelectElement]="canDelete"
+      [loading]="loading$ | async"
+      (loadLazy)="onLoadLazy($event)"
+      [viewPreference]="viewPreference"
+      [tableStateKey]="tableStateKey"
+      (selectedElementsChanged)="onSelectedElementsChanged($event)"
+      [sortFieldValue]="sortFieldValue"
+      (stateSave)="onStateSave($event)"
+      (save)="onSave($event)"></app-engine-table>
+  </div>
+</div>

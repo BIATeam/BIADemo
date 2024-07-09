@@ -1,31 +1,40 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
   <div class="flex flex-row justify-content-center">
-    <div class="app-field-container flex-1" style="max-width:90%;">
+    <div class="app-field-container flex-1" style="max-width: 90%">
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-multiSelect
-              defaultLabel="&nbsp;"
               [options]="userOptions"
               formControlName="users"
               optionLabel="display"
               datakey="id"
-              [virtualScroll]="true"
               [style]="{ width: '100%' }"
               appendTo="body"
-            ></p-multiSelect>
-            <label><span class="bia-star-mandatory">*</span>{{ 'member.user' | translate }}</label>
+              scrollHeight="50vh"></p-multiSelect>
+            <label
+              ><span class="bia-star-mandatory">*</span
+              >{{ 'member.user' | translate }}</label
+            >
           </span>
         </div>
-        <div class="app-field-container flex-1" style="max-width:10%;" *ngIf="canAddFromDirectory">
-          <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-sm p-button-rounded p-button-text align-right"
+        <div
+          class="app-field-container flex-1"
+          style="max-width: 10%"
+          *ngIf="canAddFromDirectory">
+          <button
+            pButton
+            pRipple
+            type="button"
+            icon="pi pi-plus"
+            class="p-button-sm p-button-rounded p-button-text align-right"
             (click)="addUserFromDirectory()"></button>
         </div>
       </div>
     </div>
   </div>
   <div class="flex flex-row justify-content-center">
-    <div class="app-field-container flex-1" style="max-width:90%;">
+    <div class="app-field-container flex-1" style="max-width: 90%">
       <label>{{ 'member.roles' | translate }}:</label>
       <p-listbox
         [options]="roleOptions"
@@ -34,20 +43,25 @@
         multiple="multiple"
         checkbox="checkbox"
         optionLabel="display"
-        [style]="{ width: '100%' }"
-      >
+        [style]="{ width: '100%' }">
       </p-listbox>
     </div>
   </div>
-  <div class="flex flex-row gap-1 justify-content-end" >
-    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+  <div class="flex flex-row gap-1 justify-content-end">
+    <button
+      pButton
+      label="{{ 'bia.save' | translate }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
     <button
       pButton
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-secondary"
-      (click)="onCancel()"
-    ></button>
+      (click)="onCancel()"></button>
   </div>
 </form>
-<bia-user-add-from-directory-dialog [(display)]="displayUserAddFromDirectoryDialog"></bia-user-add-from-directory-dialog>
+<bia-user-add-from-directory-dialog
+  [(display)]="
+    displayUserAddFromDirectoryDialog
+  "></bia-user-add-from-directory-dialog>

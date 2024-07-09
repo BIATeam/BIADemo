@@ -18,6 +18,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage sites.
@@ -59,11 +61,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = Rights.Sites.ListAccess)]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<SiteAdvancedFilterDto> filters)
+        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.siteService.GetRangeWithMembersAsync(filters);
+            var (results, total) = await this.siteService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
 
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
 
             return this.Ok(results);
         }
@@ -88,16 +90,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
 
             try
             {
-                var dto = await this.siteService.GetWithMembersAsync(id);
+                var dto = await this.siteService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -121,11 +119,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                // BE CAREFULL on messages in output consol because the exception not always contains the error in case of inheritance.
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -161,10 +154,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -193,10 +182,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -230,10 +215,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -269,10 +250,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
+        }
+
+        /// <summary>
+        /// Generates a csv file according to the filters.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csv")]
+        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        {
+            byte[] buffer = await this.siteService.GetCsvAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BiaConstants.Csv.Extension}");
         }
     }
 }

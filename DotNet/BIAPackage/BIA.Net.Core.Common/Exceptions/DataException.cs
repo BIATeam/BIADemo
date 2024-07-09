@@ -10,7 +10,6 @@ namespace BIA.Net.Core.Common.Exceptions
     /// <summary>
     /// The data exception.
     /// </summary>
-    [Serializable]
     public class DataException : Exception
     {
         /// <summary>
@@ -36,16 +35,6 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <param name="exception">The exception.</param>
         public DataException(string message, Exception exception)
             : base(message, exception)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataException"/> class.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
-        protected DataException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
         {
         }
     }

@@ -48,15 +48,13 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,
-            INotificationQueryCustomizer queryCustomizer,
-            UserContext userContext)
+            INotificationQueryCustomizer queryCustomizer)
             : base(repository)
         {
-            this.userContext = userContext;
             this.Repository.QueryCustomizer = queryCustomizer;
             this.clientForHubService = clientForHubService;
-            this.userId = (principal as BIAClaimsPrincipal).GetUserId();
-            bool isTeamAccesAll = (principal as BIAClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
+            this.userId = (principal as BiaClaimsPrincipal).GetUserId();
+            bool isTeamAccesAll = (principal as BiaClaimsPrincipal).GetUserPermissions().Any(x => x == Rights.Teams.AccessAll);
 
             this.FiltersContext.Add(
                  AccessMode.Read,

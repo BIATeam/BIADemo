@@ -1,7 +1,9 @@
-<div class="bia-table-controller-container"> 
+<div class="bia-table-controller-container">
   <div class="result">
     <strong>{{
-      length | i18nPlural: resultMessageMapping:translateService.currentLang | translate: { length: length }
+      length
+        | i18nPlural: resultMessageMapping : translateService.currentLang
+        | translate: { length: length }
     }}</strong>
   </div>
   <div>
@@ -11,20 +13,19 @@
       [(ngModel)]="pageSize"
       (onChange)="onPageSizeChange()"
       [style]="{ 'min-width': 'initial' }"
-      scrollHeight="50vh"
-    ></p-dropdown>
+      scrollHeight="50vh"></p-dropdown>
   </div>
   <div>
     <span>{{ 'bia.display' | translate }} </span>
     <p-multiSelect
-      defaultLabel="{{ 'bia.select' | translate }}"
       [options]="listedColumns"
+      optionLabel="label"
+      optionValue="value"
       [(ngModel)]="displayedColumns"
       (onChange)="onChangeSelectColumn()"
       autoWidth="false"
       [style]="{ width: '300px' }"
-      scrollHeight="50vh"
-    ></p-multiSelect>
+      scrollHeight="50vh"></p-multiSelect>
   </div>
   <div *ngIf="tableStateKey">
     <span>{{ 'bia.views.view' | translate }} : </span>
@@ -35,17 +36,30 @@
       [useViewTeamWithTypeId]="useViewTeamWithTypeId"
       [displayedColumns]="displayedColumns"
       [columns]="columns"
-      (viewChange)="onViewChange($event)"
-    ></bia-view-list>
+      (viewChange)="onViewChange($event)"></bia-view-list>
   </div>
   <div>
     <ng-container *ngTemplateOutlet="customControlTemplate"></ng-container>
   </div>
-  <div class="p-float-label" style="margin-top: -15px;">
-    <input id="bia-input-search" pInputText type="text" [formControl]="filterCtrl" [value]="globalFilter" />
+  <div class="p-float-label" style="margin-top: -15px">
+    <input
+      id="bia-input-search"
+      pInputText
+      type="text"
+      [formControl]="filterCtrl"
+      [value]="globalFilter" />
     <label for="name">{{ 'bia.search' | translate }}</label>
     <i class="pi pi-search bia-pointer"></i>
   </div>
-  <div class="pi pi-filter bia-pointer bia-column-filter-icon" (click)="onToggleSearch()" *ngIf="hasColumnFilter === false"></div>
-  <div class="pi pi-filter bia-pointer bia-column-filter-icon" (click)="onToggleSearch()" pBadge severity="warning" style="overflow: visible" *ngIf="hasColumnFilter === true"></div>
+  <div
+    class="pi pi-filter bia-pointer bia-column-filter-icon"
+    (click)="onToggleSearch()"
+    *ngIf="hasColumnFilter === false"></div>
+  <div
+    class="pi pi-filter bia-pointer bia-column-filter-icon"
+    (click)="onToggleSearch()"
+    pBadge
+    severity="warning"
+    style="overflow: visible"
+    *ngIf="hasColumnFilter === true"></div>
 </div>

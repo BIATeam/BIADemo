@@ -5,6 +5,7 @@
     "Begin BIADemo": "To remove in project from here",
     "aircraft-maintenance-companies": "Entreprises de maintenance aéronautique",
     "airports": "Aéroports",
+    "engines": "Moteurs",
     "examples": "Exemples",
     "hangfire": "Hangfire",
     "planes": "Avions",
@@ -22,7 +23,9 @@
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
     "add": "Ajouter entreprise de maintenance aéronautique",
+    "admins": "Administrateurs",
     "edit": "Editer entreprise de maintenance aéronautique",
+    "filterMember": "Utilisateur membre",
     "goto": "Voir Entreprise",
     "listOf": "Liste des entreprises de maintenance aéronautique",
     "maintenanceTeams": "Equipes de maintenance",
@@ -35,9 +38,22 @@
     "listOf": "Listes des aéroports",
     "name": "Nom"
   },
+  "engine": {
+    "add": "Ajouter moteur",
+    "edit": "Editer moteur",
+    "lastMaintenanceDate": "Date de la dernière maintenance",
+    "listOf": "Liste des moteurs",
+    "plane": "Avion",
+    "power": "Puissance",
+    "reference": "Reference",
+    "syncTime": "Heure de synchronisation"
+  },
   "maintenanceTeam": {
     "add": "Ajouter équipe de maintenance",
+    "admins": "Administrateurs",
     "edit": "Editer équipe de maintenance",
+    "filterMember": "Utilisateur membre",
+    "headerLabel": "Equipe de maintenance",
     "listOf": "Liste des équipes de maintenance",
     "title": "Nom"
   },
@@ -47,11 +63,16 @@
     "connectingAirports": "Aéroports de connection",
     "deliveryDate": "Date de livraison",
     "edit": "Modifier avion",
+    "engines": "Moteurs",
+    "estimatedPrice": "Prix estimé",
+    "fuelLevel": "Niveau de carburant",
+    "import": "Importer avions",
     "isActive": "Actif",
     "lastFlightDate": "Date du dernier vol",
     "listOf": "Liste des avions",
     "msn": "Msn",
     "planeType": "Type d'avions",
+    "probability": "Probabilité",
     "site": "Compagnie aérienne",
     "syncTime": "Heure de synchronisation"
   },
@@ -88,13 +109,14 @@
     "filterMember": "Utilisateur membre",
     "title": "Titre"
   },
-  "translation": 
-  {  
-    "defaultLanguage" :"Defaut (Anglais)"
+  "translation": {
+    "defaultLanguage": "Defaut (Anglais)"
   },
   "user": {
     "add": "Ajouter utilisateur",
+    "edit": "Modifier utilisateur",
     "firstName": "Prénom",
+    "import": "Importer utilisateurs",
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
     "login": "Login",

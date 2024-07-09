@@ -28,19 +28,36 @@ export function initializeApp(appInitService: BiaAppInitService) {
   };
 }
 
-const MODULES = [HttpClientModule, TeamModule, AppSettingsModule, ServiceWorkerModule, KeycloakAngularModule];
+const MODULES = [
+  HttpClientModule,
+  TeamModule,
+  AppSettingsModule,
+  ServiceWorkerModule,
+  KeycloakAngularModule,
+];
 
 /* Warning: the order matters */
-const INTERCEPTORS = [standardEncodeHttpParamsInterceptor, biaXhrWithCredInterceptor, biaTokenInterceptor];
+const INTERCEPTORS = [
+  standardEncodeHttpParamsInterceptor,
+  biaXhrWithCredInterceptor,
+  biaTokenInterceptor,
+];
 
-const SERVICES = [BiaAppInitService, MessageService, AuthService, BiaThemeService, BiaTranslationService, NotificationSignalRService];
+const SERVICES = [
+  BiaAppInitService,
+  MessageService,
+  AuthService,
+  BiaThemeService,
+  BiaTranslationService,
+  NotificationSignalRService,
+];
 
 const BASE_HREF = [
   {
     provide: APP_BASE_HREF,
     useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
-    deps: [PlatformLocation]
-  }
+    deps: [PlatformLocation],
+  },
 ];
 
 @NgModule({
@@ -50,15 +67,22 @@ const BASE_HREF = [
     ...INTERCEPTORS,
     ...SERVICES,
     ...BASE_HREF,
-    { provide: APP_INITIALIZER, useFactory: initializeApp, deps: [BiaAppInitService], multi: true }
-  ]
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [BiaAppInitService],
+      multi: true,
+    },
+  ],
 })
 
 // https://medium.com/@benmohamehdi/angular-best-practices-coremodule-vs-sharedmodule-25f6721aa2ef
 export class BiaCoreModule {
   constructor(@Optional() @SkipSelf() parentModule: BiaCoreModule) {
     if (parentModule) {
-      throw new Error('BiaCoreModule is already loaded. Import it in the AppModule only');
+      throw new Error(
+        'BiaCoreModule is already loaded. Import it in the AppModule only'
+      );
     }
   }
 }

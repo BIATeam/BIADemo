@@ -9,18 +9,17 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { HangfireEffects } from './store/hangfire-effects';
 
-
 const ROUTES: Routes = [
   {
     path: '',
     data: {
       breadcrumb: null,
-      permission: Permission.Notification_List_Access
+      permission: Permission.Notification_List_Access,
     },
     component: HangfireIndexComponent,
-    canActivate: [PermissionGuard]
+    canActivate: [PermissionGuard],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
@@ -31,6 +30,6 @@ const ROUTES: Routes = [
     StoreModule.forFeature('hangfire', reducers),
     EffectsModule.forFeature([HangfireEffects]),
   ],
-  providers: []
+  providers: [],
 })
-export class HangfireModule { }
+export class HangfireModule {}

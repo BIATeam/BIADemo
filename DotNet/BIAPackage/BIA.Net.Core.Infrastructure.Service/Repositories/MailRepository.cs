@@ -33,17 +33,24 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.configuration = configuration.Value;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Send Notification.
+        /// </summary>
+        /// <param name="subject">the subject.</param>
+        /// <param name="bodyText">the body of the notification.</param>
+        /// <param name="tos">list of destinator.</param>
+        /// <param name="ccs">list of copy.</param>
+        /// <returns>the async task.</returns>
         public async Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null)
         {
             MimeMessage messageToSend = new ()
             {
-                Subject = subject?.Trim()
+                Subject = subject?.Trim(),
             };
 
             messageToSend.From.Add(new MailboxAddress(this.configuration.EmailConfiguration.From, this.configuration.EmailConfiguration.From));
 
-            if (tos != null && tos?.Any() == true)
+            if (tos?.Any() == true)
             {
                 foreach (string to in tos)
                 {
@@ -51,7 +58,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 }
             }
 
-            if (ccs != null && ccs?.Any() == true)
+            if (ccs?.Any() == true)
             {
                 foreach (string cc in ccs)
                 {

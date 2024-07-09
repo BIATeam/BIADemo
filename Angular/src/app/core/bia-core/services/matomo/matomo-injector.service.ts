@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 /**
  * Access to the global window variable.
  */
-declare var window: {
+declare let window: {
   [key: string]: any;
   prototype: Window;
   new (): Window;
@@ -15,7 +15,7 @@ declare var window: {
  * @export
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatomoInjector {
   /**

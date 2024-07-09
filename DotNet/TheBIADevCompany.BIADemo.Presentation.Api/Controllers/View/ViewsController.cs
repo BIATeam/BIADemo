@@ -95,10 +95,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.ValidationProblem();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -132,10 +128,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.BadRequest();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -167,10 +159,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -224,10 +212,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.ValidationProblem();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -260,10 +244,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             catch (BusinessException)
             {
                 return this.BadRequest();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -302,10 +282,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -343,10 +319,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -374,10 +346,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.View
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
     }

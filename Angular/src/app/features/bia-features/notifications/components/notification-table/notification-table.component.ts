@@ -6,14 +6,20 @@ import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.se
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
 import { Notification } from '../../model/notification';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Component({
   selector: 'bia-notification-table',
-  templateUrl: '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../../shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
-export class NotificationTableComponent extends BiaCalcTableComponent implements OnChanges {
-
+export class NotificationTableComponent
+  extends BiaCalcTableComponent
+  implements OnChanges
+{
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,
@@ -38,14 +44,21 @@ export class NotificationTableComponent extends BiaCalcTableComponent implements
     });
   }
 
-    onSubmit() {
+  onSubmit() {
     if (this.form.valid) {
       const notification: Notification = <Notification>this.form.value;
       notification.id = notification.id > 0 ? notification.id : 0;
       notification.read = notification.read ? notification.read : false;
-      notification.createdBy = BiaOptionService.Clone(notification.createdBy);
-      notification.notifiedUsers = BiaOptionService.Differential(notification.notifiedUsers, this.element?.notifiedUsers);
-      notification.type = { ...notification.type };
+      notification.createdBy = BiaOptionService.clone(notification.createdBy);
+      notification.notifiedUsers = BiaOptionService.differential(
+        notification.notifiedUsers,
+        this.element?.notifiedUsers
+      );
+      notification.type = new OptionDto(
+        notification.type.id,
+        notification.type.display,
+        notification.type.dtoState
+      );
       this.save.emit(notification);
       this.form.reset();
     }

@@ -13,9 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInPlane
     using BIA.Net.Core.Domain.RepoContract;
 #endif
@@ -26,9 +24,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInPlane
     using Microsoft.AspNetCore.SignalR;
+    using Microsoft.Extensions.Logging;
 #endif
     using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
@@ -44,27 +45,46 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// </summary>
         private readonly IPlaneAppService planeService;
 
+        /// <summary>
+        /// The claims principal.
+        /// </summary>
+        private readonly BiaClaimsPrincipal principal;
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        private readonly ILogger<PlanesController> logger;
+
 #if UseHubForClientInPlane
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PlanesController"/> class.
+        /// Initializes a new instance of the <see cref="PlanesController" /> class.
         /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="principal">The principal.</param>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInPlane
         public PlanesController(
-            IPlaneAppService planeService, IClientForHubRepository clientForHubService)
+            ILogger<PlanesController> logger,
+            IPrincipal principal,
+            IPlaneAppService planeService,
+            IClientForHubRepository clientForHubService)
 #else
-        public PlanesController(IPlaneAppService planeService)
+        public PlanesController(
+            ILogger<PlanesController> logger,
+            IPrincipal principal,
+            IPlaneAppService planeService)
 #endif
         {
 #if UseHubForClientInPlane
             this.clientForHubService = clientForHubService;
 #endif
             this.planeService = planeService;
+            this.principal = principal as BiaClaimsPrincipal;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -80,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.planeService.GetRangeAsync(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -111,10 +131,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -133,17 +149,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.planeService.AddAsync(dto);
 #if UseHubForClientInPlane
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "planes", "refresh-planes");
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -170,7 +185,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.planeService.UpdateAsync(dto);
 #if UseHubForClientInPlane
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "planes", "refresh-planes");
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -181,10 +199,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -210,17 +224,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var deletedDto = await this.planeService.RemoveAsync(id);
 #if UseHubForClientInPlane
+                // BIAToolKit - Begin Parent siteId
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "planes", "refresh-planes");
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -247,20 +260,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var deletedDtos = await this.planeService.RemoveAsync(ids);
 
 #if UseHubForClientInPlane
+                // BIAToolKit - Begin Parent siteId
                 deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
+
+                // BIAToolKit - End Parent siteId
 #endif
                 return this.Ok();
             }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -273,6 +285,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = Rights.Planes.Save)]
         public async Task<IActionResult> Save(IEnumerable<PlaneDto> dtos)
@@ -285,14 +298,34 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var savedDtos = await this.planeService.SaveAsync(dtoList);
+                var saveSafeReturn = await this.planeService.SaveSafeAsync(
+                    dtos: dtoList,
+                    principal: this.principal,
+                    rightAdd: Rights.Planes.Create,
+                    rightUpdate: Rights.Planes.Update,
+                    rightDelete: Rights.Planes.Delete);
 #if UseHubForClientInPlane
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                // BIAToolKit - Begin Parent siteId
+                saveSafeReturn.DtosSaved.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
+
+                // BIAToolKit - End Parent siteId
 #endif
-                return this.Ok();
+                if (saveSafeReturn.AggregateException != null)
+                {
+                    this.logger.LogError(message: saveSafeReturn.ErrorMessage, exception: saveSafeReturn.AggregateException);
+                }
+
+                if (!string.IsNullOrEmpty(saveSafeReturn.ErrorMessage))
+                {
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, saveSafeReturn.ErrorMessage);
+                }
+                else
+                {
+                    return this.Ok();
+                }
             }
             catch (ArgumentNullException)
             {
@@ -301,10 +334,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -317,7 +346,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
 
         /// <summary>
@@ -348,80 +377,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             catch (ArgumentNullException)
             {
                 return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpPut("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Update)]
-        public async Task<IActionResult> UpdateBulkAsync([FromBody] IEnumerable<PlaneDto> dtos)
-        {
-            // JSON test swagger. Adapt Id.
-            // [{ "id":50236,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":100,"siteId":1,"planeType":{ "id":1} },{ "id":50237,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":200,"siteId":1,"planeType":{ "id":1} },{ "id":50238,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":300,"siteId":1,"planeType":{ "id":1} },{ "id":50239,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":400,"siteId":1,"planeType":{ "id":1} },{ "id":50240,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":500,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.UpdateBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
-        }
-
-        /// <summary>
-        /// Adds planes.
-        /// </summary>
-        /// <param name="dtos">List of planes.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        [HttpDelete("bulk")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Delete)]
-        public async Task<IActionResult> RemoveBulkAsync([FromBody] IEnumerable<PlaneDto> dtos)
-        {
-            // JSON test swagger. Adapt Id.
-            // [{ "id":50236,"msn":"BULK1","isActive":true,"lastFlightDate":"2022-04-17T15:21:28.997Z","deliveryDate":"2021-04-17T15:21:28.997Z","capacity":100,"siteId":1,"planeType":{ "id":1} },{ "id":50237,"msn":"BULK2","isActive":true,"lastFlightDate":"2022-04-18T15:21:28.997Z","deliveryDate":"2021-04-18T15:21:28.997Z","capacity":200,"siteId":1,"planeType":{ "id":1} },{ "id":50238,"msn":"BULK3","isActive":true,"lastFlightDate":"2022-04-19T15:21:28.997Z","deliveryDate":"2021-04-19T15:21:28.997Z","capacity":300,"siteId":1,"planeType":{ "id":1} },{ "id":50239,"msn":"BULK4","isActive":true,"lastFlightDate":"2022-04-20T15:21:28.997Z","deliveryDate":"2021-04-20T15:21:28.997Z","capacity":400,"siteId":1,"planeType":{ "id":1} },{ "id":50240,"msn":"BULK5","isActive":true,"lastFlightDate":"2022-04-21T15:21:28.997Z","deliveryDate":"2021-04-21T15:21:28.997Z","capacity":500,"siteId":1,"planeType":{ "id":1} }]
-            var dtoList = dtos.ToList();
-            if (!dtoList.Any())
-            {
-                return this.BadRequest();
-            }
-
-            try
-            {
-                await this.planeService.RemoveBulkAsync(dtoList);
-                return this.Ok();
-            }
-            catch (ArgumentNullException)
-            {
-                return this.ValidationProblem();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
     }

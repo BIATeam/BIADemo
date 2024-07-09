@@ -7,7 +7,7 @@ import { appSettingsReducers } from './store/app-settings-reducer';
 @NgModule({
   imports: [
     StoreModule.forFeature('bia-domain-app-settings', appSettingsReducers),
-    EffectsModule.forFeature([AppSettingsEffects])
-  ]
+    EffectsModule.forFeature([AppSettingsEffects]),
+  ],
 })
 export class AppSettingsModule {}

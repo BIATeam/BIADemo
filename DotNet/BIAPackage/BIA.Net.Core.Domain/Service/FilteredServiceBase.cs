@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -68,7 +68,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -79,7 +79,7 @@ namespace BIA.Net.Core.Domain.Service
                 mapper,
                 filters);
 
-            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1);
+            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 
             var results = await this.Repository.GetRangeResultAsync(
                 mapper.EntityToDto(mapperMode),
@@ -124,7 +124,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
@@ -172,7 +172,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = null,
             string mapperMode = null,
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
@@ -214,7 +214,7 @@ namespace BIA.Net.Core.Domain.Service
             string queryMode = QueryMode.ReadList,
             string mapperMode = "Csv",
             bool isReadOnlyMode = false)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
@@ -238,11 +238,11 @@ namespace BIA.Net.Core.Domain.Service
             StringBuilder csv = new ();
             records.ForEach(line =>
             {
-                csv.AppendLine(string.Join(BIAConstants.Csv.Separator, line));
+                csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
             });
 
-            string csvSep = $"sep={BIAConstants.Csv.Separator}\n";
-            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BIAConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
+            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace BIA.Net.Core.Domain.Service
             string mapperMode = MapperMode.Item,
             bool isReadOnlyMode = false)
 
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
@@ -300,7 +300,7 @@ namespace BIA.Net.Core.Domain.Service
         public virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dto != null)
@@ -331,7 +331,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dto != null)
@@ -369,7 +369,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
@@ -403,7 +403,7 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtos = new List<TOtherDto>();
@@ -416,6 +416,154 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// Save several entity with its identifier safe asynchronous.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of the other dto.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of the other mapper.</typeparam>
+        /// <param name="dtos">The dtos.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="rightAdd">The right add.</param>
+        /// <param name="rightUpdate">The right update.</param>
+        /// <param name="rightDelete">The right delete.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <returns>SaveSafeReturn struct.</returns>
+        public virtual async Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+            IEnumerable<TOtherDto> dtos,
+            BiaClaimsPrincipal principal,
+            string rightAdd,
+            string rightUpdate,
+            string rightDelete,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            StringBuilder strBldr = new StringBuilder();
+            var exceptions = new List<Exception>();
+
+            int nbAdded = 0;
+            int nbUpdated = 0;
+            int nbDeleted = 0;
+            int nbError = 0;
+            SaveSafeReturn<TOtherDto> saveSafeReturn = new ();
+
+            bool canAdd = true;
+            bool canUpdate = true;
+            bool canDelete = true;
+            if (principal != null)
+            {
+                IEnumerable<string> currentUserPermissions = principal.GetUserPermissions();
+                canAdd = rightAdd == null || currentUserPermissions?.Any(x => x == rightAdd) == true;
+                canUpdate = rightUpdate == null || currentUserPermissions?.Any(x => x == rightUpdate) == true;
+                canDelete = rightUpdate == null || currentUserPermissions?.Any(x => x == rightDelete) == true;
+            }
+
+            if (!canAdd && dtos.Any(u => u.DtoState == DtoState.Added))
+            {
+                strBldr.AppendLine("No permission to add users.");
+                nbError++;
+            }
+
+            if (!canUpdate && dtos.Any(u => u.DtoState == DtoState.Modified))
+            {
+                strBldr.AppendLine("No permission to update users.");
+                nbError++;
+            }
+
+            if (!canDelete && dtos.Any(u => u.DtoState == DtoState.Deleted))
+            {
+                strBldr.AppendLine("No permission to delete users.");
+                nbError++;
+            }
+
+            saveSafeReturn.DtosSaved = new List<TOtherDto>();
+            var dtoList = dtos.ToList();
+            if (dtoList.Any())
+            {
+                foreach (var dto in dtoList)
+                {
+                    try
+                    {
+                        TOtherDto returnDto = null;
+
+                        switch (dto.DtoState)
+                        {
+                            case DtoState.Added:
+                                if (canAdd)
+                                {
+                                    returnDto = await this.AddAsync<TOtherDto, TOtherMapper>(
+                                        dto,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbAdded++;
+                                }
+
+                                break;
+
+                            case DtoState.Modified:
+                                if (canUpdate)
+                                {
+                                    returnDto = await this.UpdateAsync<TOtherDto, TOtherMapper>(
+                                        dto,
+                                        accessMode: accessMode ?? AccessMode.Update,
+                                        queryMode: queryMode ?? QueryMode.Update,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbUpdated++;
+                                }
+
+                                break;
+
+                            case DtoState.Deleted:
+                                if (canDelete)
+                                {
+                                    returnDto = await this.RemoveAsync<TOtherDto, TOtherMapper>(
+                                        dto.Id,
+                                        accessMode: accessMode ?? AccessMode.Delete,
+                                        queryMode: queryMode ?? QueryMode.Delete,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbDeleted++;
+                                }
+
+                                break;
+                        }
+
+                        if (returnDto != null)
+                        {
+                            saveSafeReturn.DtosSaved.Add(returnDto);
+                        }
+                    }
+                    catch (ElementNotFoundException ex)
+                    {
+                        strBldr.AppendLine("Element " + dto.Id + " not exist or not authorized.");
+                        exceptions.Add(ex);
+                        this.Repository.UnitOfWork.Reset();
+                        nbError++;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                        this.Repository.UnitOfWork.Reset();
+                        nbError++;
+                    }
+                }
+            }
+
+            if (nbError > 0)
+            {
+                strBldr.Insert(0, $"Added: {nbAdded}, Updated: {nbUpdated}, Deleted: {nbDeleted}, Error{(nbError > 1 ? "s" : null)}: {nbError}{Environment.NewLine}");
+                saveSafeReturn.ErrorMessage = strBldr.ToString();
+                saveSafeReturn.AggregateException = new AggregateException(exceptions);
+            }
+
+            return saveSafeReturn;
+        }
+
+        /// <summary>
         /// Save several entity with its identifier.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
@@ -424,13 +572,15 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <returns>The saved DTOs.</returns>
+        /// <returns>
+        /// The saved DTOs.
+        /// </returns>
         public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             var dtoList = dtos.ToList();
@@ -466,10 +616,11 @@ namespace BIA.Net.Core.Domain.Service
             string accessMode = null,
             string queryMode = null,
             string mapperMode = null)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherDto returnDto = dto;
+
             switch (dto.DtoState)
             {
                 case DtoState.Added:
@@ -509,81 +660,63 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="dtoList">The list of element to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
             if (dtoList != null)
             {
-                var entity = new List<TEntity>();
+                List<TEntity> entities = dtoList.AsParallel().Select(item =>
+                    {
+                        var converted = new TEntity();
+                        TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                        mapper.DtoToEntity(item, converted);
+                        return converted;
+                    }).ToList();
 
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.AddBulkAsync(entity);
+                await this.Repository.UnitOfWork.AddBulkAsync(entities);
             }
         }
 
         /// <summary>
-        /// Update quickly hudge number of element.
+        /// Update quickly hudge number of element. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtoList">The list of element to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.UpdateBulkAsync(entity);
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Remove quickly hudge number of element.
+        /// Remove quickly hudge number of element. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtoList">The list of element to remove.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
+#pragma warning restore S1133 // Deprecated code should be removed
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
-            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>, new()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dtoList != null)
-            {
-                var entity = new List<TEntity>();
-
-                foreach (var item in dtoList)
-                {
-                    var converted = new TEntity();
-                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                    mapper.DtoToEntity(item, converted);
-                    entity.Add(converted);
-                }
-
-                await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Delete quickly hudge number of element by id.
+        /// Delete quickly hudge number of element by id. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
@@ -591,15 +724,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
+#pragma warning restore S1133 // Deprecated code should be removed
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            var entity = await this.Repository.GetAllEntityAsync(specification: this.GetFilterSpecification(accessMode, this.FiltersContext), filter: x => idList.Contains(x.Id), queryMode: queryMode);
-            if (entity == null)
-            {
-                throw new ElementNotFoundException();
-            }
-
-            await this.Repository.UnitOfWork.RemoveBulkAsync(entity);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -608,9 +740,29 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="collection">The expression collection of entity.</param>
         /// <param name="orderMember">The order member.</param>
         /// <param name="ascending">If set to <c>true</c> [ascending].</param>
+        /// <param name="multiSortMeta">multi Sort Meta.</param>
         /// <returns>The paging order.</returns>
-        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending)
+        protected virtual QueryOrder<TEntity> GetQueryOrder(ExpressionCollection<TEntity> collection, string orderMember, bool ascending, List<SortMeta> multiSortMeta = null)
         {
+            if (multiSortMeta?.Any() == true)
+            {
+                bool multiSort = false;
+                var multiOrder = new QueryOrder<TEntity>();
+                foreach (var sortMeta in multiSortMeta)
+                {
+                    if (!string.IsNullOrWhiteSpace(sortMeta.Field) && collection.ContainsKey(sortMeta.Field))
+                    {
+                        multiSort = true;
+                        multiOrder.GetByExpression(collection[sortMeta.Field], sortMeta.Order == 1);
+                    }
+                }
+
+                if (multiSort)
+                {
+                    return multiOrder;
+                }
+            }
+
             if (string.IsNullOrWhiteSpace(orderMember) || !collection.ContainsKey(orderMember))
             {
                 return new QueryOrder<TEntity>().OrderBy(entity => entity.Id);

@@ -8,11 +8,13 @@ import { Member } from '../../model/member';
 
 @Component({
   selector: 'bia-member-table',
-  templateUrl: '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
-  styleUrls: ['../../../../components/table/bia-calc-table/bia-calc-table.component.scss']
+  templateUrl:
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.html',
+  styleUrls: [
+    '../../../../components/table/bia-calc-table/bia-calc-table.component.scss',
+  ],
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {
-
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

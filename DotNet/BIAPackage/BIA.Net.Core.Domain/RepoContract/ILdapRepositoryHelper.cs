@@ -4,10 +4,9 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// ILdapRepositoryHelper.
+    /// </summary>
     public interface ILdapRepositoryHelper
     {
     }

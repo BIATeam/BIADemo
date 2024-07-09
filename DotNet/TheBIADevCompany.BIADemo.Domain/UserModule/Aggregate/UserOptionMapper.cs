@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                Display = entity.Display(),
             };
         }
     }

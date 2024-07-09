@@ -26,6 +26,11 @@ namespace BIA.Net.Core.Common.Configuration.WorkerFeature
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Boolean to render visible logs in dashboard.
+        /// </summary>
+        public bool LogsVisibleInDashboard { get; set; }
+
+        /// <summary>
         /// Hangfire name of the server.
         /// </summary>
         public string ServerName { get; set; }

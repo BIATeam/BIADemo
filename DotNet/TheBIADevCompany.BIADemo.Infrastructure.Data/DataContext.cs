@@ -30,14 +30,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-    public class DataContext : BIADataContext
+    public class DataContext : BiaDataContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataContext(DbContextOptions<DataContext> options, ILogger<BIADataContext> logger)
+        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger)
             : base(options, logger)
         {
         }
@@ -138,6 +138,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// Gets or sets the Plane DBSet.
         /// </summary>
         public DbSet<PlaneType> PlanesTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the engines.
+        /// </summary>
+        public DbSet<Engine> Engines { get; set; }
 
         // End BIADemo
 

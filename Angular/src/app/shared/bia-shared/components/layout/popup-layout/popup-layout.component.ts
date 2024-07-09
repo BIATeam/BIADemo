@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -13,15 +13,18 @@ import { BiaInjectorService } from 'src/app/core/bia-core/services/bia-injector.
 
 @Component({
   selector: 'bia-popup-layout',
-  templateUrl: './popup-layout.component.html'
+  templateUrl: './popup-layout.component.html',
 })
 export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('dynamic', {
-    read: ViewContainerRef
+    read: ViewContainerRef,
   })
   viewContainerRef: ViewContainerRef;
 
-  constructor(public activatedRoute: ActivatedRoute, private serviceInjector: BiaInjectorService) {}
+  constructor(
+    public activatedRoute: ActivatedRoute,
+    private serviceInjector: BiaInjectorService
+  ) {}
   protected dynamicComponent: ComponentRef<any>;
 
   popupTitle: string;
@@ -37,16 +40,14 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
     if (snapshot.data['style']) {
       this.style = snapshot.data['style'];
     }
-    this.maximizable = true;
-    if (snapshot.data['maximizable']) {
-      this.maximizable = snapshot.data['maximizable'];
-    }
+
+    this.maximizable = snapshot.data['maximizable'] ?? true;
   }
   ngAfterViewInit() {
     setTimeout(() => {
       this.dynamicComponent = this.serviceInjector.addDynamicComponent(
         this.viewContainerRef,
-        this.activatedRoute.snapshot.data['InjectComponent']
+        this.activatedRoute.snapshot.data['injectComponent']
       );
     }, 0);
   }

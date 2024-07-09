@@ -5,9 +5,13 @@ import {
   Input,
   OnChanges,
   Output,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { LdapDomain } from 'src/app/domains/bia-domains/ldap-domain/model/ldap-domain';
 import { UserFromDirectory } from '../../model/user-from-directory';
 import { UserFilter } from '../../model/user-filter';
@@ -17,7 +21,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
   selector: 'bia-user-from-directory-form',
   templateUrl: './user-from-directory-form.component.html',
   styleUrls: ['./user-from-directory-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFromLdapFormComponent implements OnChanges {
   @Output() searchUsers = new EventEmitter<UserFilter>();
@@ -32,7 +36,10 @@ export class UserFromLdapFormComponent implements OnChanges {
   form: UntypedFormGroup;
   useKeycloak = false;
 
-  constructor(public formBuilder: UntypedFormBuilder, appSettingsService: AppSettingsService) {
+  constructor(
+    public formBuilder: UntypedFormBuilder,
+    appSettingsService: AppSettingsService
+  ) {
     this.initForm();
     this.useKeycloak = appSettingsService.appSettings?.keycloak?.isActive;
   }
@@ -49,7 +56,7 @@ export class UserFromLdapFormComponent implements OnChanges {
     this.form = this.formBuilder.group({
       selectedUsers: [this.selectedUsers, Validators.required],
       domains: [this.domains],
-      returnSize: this.returnSizeOptions[0]
+      returnSize: this.returnSizeOptions[0],
     });
   }
 
@@ -67,14 +74,16 @@ export class UserFromLdapFormComponent implements OnChanges {
 
   reset() {
     this.selectedDomain = '';
-    this.form.reset({returnSize:this.returnSizeOptions[0]});
+    this.form.reset({ returnSize: this.returnSizeOptions[0] });
   }
 
   onSearchUsers(event: any) {
     const userFiter: UserFilter = {
       filter: event.query,
       ldapName: this.selectedDomain,
-      returnSize: this.form.value.returnSize ? this.form.value.returnSize : this.returnSizeOptions[0]
+      returnSize: this.form.value.returnSize
+        ? this.form.value.returnSize
+        : this.returnSizeOptions[0],
     };
     this.searchUsers.emit(userFiter);
   }

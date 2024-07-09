@@ -1,7 +1,7 @@
 // <copyright file="UsersController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-
+#define UseHubForClientInUser
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
     using System;
@@ -14,6 +14,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
+#if UseHubForClientInUser
+    using BIA.Net.Core.Domain.RepoContract;
+#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -34,6 +37,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         private readonly IUserAppService userService;
 
+#if UseHubForClientInUser
+        private readonly IClientForHubRepository clientForHubService;
+#endif
+
         /// <summary>
         /// The configuration of the BiaNet section.
         /// </summary>
@@ -44,8 +51,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
+        /// <param name="clientForHubService">The hub for client.</param>
+#if UseHubForClientInUser
+        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubRepository clientForHubService)
+#else
         public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration)
+#endif
         {
+#if UseHubForClientInUser
+            this.clientForHubService = clientForHubService;
+#endif
             this.userService = userService;
             this.configuration = configuration.Value;
         }
@@ -78,7 +93,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.userService.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters);
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, total.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
@@ -113,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             int resultCount = results.Count();
 
-            this.HttpContext.Response.Headers.Add(BIAConstants.HttpHeaders.TotalCount, resultCount.ToString());
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, resultCount.ToString());
 
             return this.Ok(results);
         }
@@ -145,9 +160,38 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 return this.NotFound();
             }
-            catch (Exception)
+        }
+
+        /// <summary>
+        /// Add a User.
+        /// </summary>
+        /// <param name="dto">The User DTO.</param>
+        /// <returns>The result of the creation.</returns>
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = Rights.Users.Add)]
+        public async Task<IActionResult> Add([FromBody] UserDto dto)
+        {
+            try
             {
-                return this.StatusCode(500, "Internal server error");
+                ResultAddUsersFromDirectoryDto result = await this.userService.AddByIdentityKeyAsync(dto);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                if (result.Errors.Any())
+                {
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, result.Errors);
+                }
+
+                return this.Ok(result.UsersAddedDtos);
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
             }
         }
 
@@ -163,6 +207,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public async Task<IActionResult> Add([FromBody] IEnumerable<UserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
+#if UseHubForClientInUser
+            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
             if (result.Errors.Any())
             {
                 return this.StatusCode(303, result.Errors);
@@ -194,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 var updatedDto = await this.userService.UpdateAsync<UserDto, UserMapper>(dto, mapperMode: "Roles");
 #if UseHubForClientInUser
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "users", "refresh-users");
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -205,10 +252,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
 
@@ -282,7 +325,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
                     sb.Append(error);
                 }
             }
-
+#if UseHubForClientInUser
+            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
             var errors = sb.ToString();
             if (!string.IsNullOrEmpty(errors))
             {
@@ -290,6 +335,51 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
 
             return this.Ok();
+        }
+
+        /// <summary>
+        /// Saves list of users.
+        /// </summary>
+        /// <param name="dtos">The dtos.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        [HttpPost("save")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [Authorize(Roles = Rights.Users.Save)]
+        public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
+        {
+            var dtoList = dtos.ToList();
+            if (!dtoList.Any())
+            {
+                return this.BadRequest();
+            }
+
+            try
+            {
+                string errorMessage = await this.userService.SaveAsync(dtoList);
+#if UseHubForClientInUser
+                _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
+                if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, errorMessage);
+                }
+                else
+                {
+                    return this.Ok();
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                return this.ValidationProblem();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
         }
 
         /// <summary>
@@ -302,15 +392,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.Sync)]
         public async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
-            try
-            {
-                await this.userService.SynchronizeWithADAsync(fullSynchro);
-            }
-            catch (Exception)
-            {
-                return this.Problem("Error during synchronize. Retry Synchronize.");
-            }
-
+            await this.userService.SynchronizeWithADAsync(fullSynchro);
+#if UseHubForClientInUser
+            _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
+#endif
             return this.Ok();
         }
 
@@ -324,7 +409,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.userService.GetCsvAsync(filters);
-            return this.File(buffer, BIAConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BIAConstants.Csv.Extension}");
+            return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Planes{BiaConstants.Csv.Extension}");
         }
     }
 }

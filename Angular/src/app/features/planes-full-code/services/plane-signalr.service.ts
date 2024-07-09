@@ -17,7 +17,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
  * - Call the 'initialize()' method on it, so that dependency injection is truly performed
  */
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlanesSignalRService {
   private targetedFeature: TargetedFeature;
@@ -27,29 +27,47 @@ export class PlanesSignalRService {
    * @param store the store.
    * @param signalRService the service managing the SignalR connection.
    */
-  constructor(private store: Store<AppState>, private signalRService: BiaSignalRService, private authService: AuthService) {
-  }
+  constructor(
+    private store: Store<AppState>,
+    private signalRService: BiaSignalRService,
+    private authService: AuthService
+  ) {}
 
   /**
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
   initialize() {
-    console.log('%c [Planes] Register SignalR : refresh-planes', 'color: purple; font-weight: bold');
+    console.log(
+      '%c [Planes] Register SignalR : refresh-planes',
+      'color: purple; font-weight: bold'
+    );
     this.signalRService.addMethod('refresh-planes', () => {
-      this.store.select(getLastLazyLoadEvent).pipe(first()).subscribe(
-        (event) => {
-          console.log('%c [Planes] RefreshSuccess', 'color: green; font-weight: bold');
-          this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event }));
-        }
-      );
+      this.store
+        .select(getLastLazyLoadEvent)
+        .pipe(first())
+        .subscribe(event => {
+          console.log(
+            '%c [Planes] RefreshSuccess',
+            'color: green; font-weight: bold'
+          );
+          this.store.dispatch(
+            FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event })
+          );
+        });
     });
-    this.targetedFeature = {parentKey: this.authService.getCurrentTeamId(TeamTypeId.Site).toString() , featureName : 'planes'};
+    this.targetedFeature = {
+      parentKey: this.authService.getCurrentTeamId(TeamTypeId.Site).toString(),
+      featureName: 'planes',
+    };
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
   destroy() {
-    console.log('%c [Planes] Unregister SignalR : refresh-planes', 'color: purple; font-weight: bold');
+    console.log(
+      '%c [Planes] Unregister SignalR : refresh-planes',
+      'color: purple; font-weight: bold'
+    );
     this.signalRService.removeMethod('refresh-planes');
     this.signalRService.leaveGroup(this.targetedFeature);
   }

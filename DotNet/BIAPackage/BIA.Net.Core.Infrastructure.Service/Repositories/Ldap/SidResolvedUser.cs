@@ -5,12 +5,17 @@
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
 
+    /// <summary>
+    /// SidResolvedUser.
+    /// </summary>
+    /// <typeparam name="TUserFromDirectory">type for user from directory.</typeparam>
     [Serializable]
     public class SidResolvedUser<TUserFromDirectory> : SidResolvedItem
     {
-        public TUserFromDirectory user;
+        /// <summary>
+        /// the user.
+        /// </summary>
+        public TUserFromDirectory User { get; set; }
     }
 }

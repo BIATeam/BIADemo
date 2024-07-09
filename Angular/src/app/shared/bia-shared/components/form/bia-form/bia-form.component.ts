@@ -10,24 +10,31 @@ import {
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
-import { BiaFieldConfig, PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFieldConfig,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-form',
   templateUrl: './bia-form.component.html',
   styleUrls: ['./bia-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
 })
-
-export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
+export class BiaFormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterContentInit
+{
   @Input() element: any = {};
   @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
@@ -41,11 +48,9 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   protected sub = new Subscription();
 
   constructor(
-      public formBuilder: UntypedFormBuilder,
-      // protected authService: AuthService
-    ) {
-    
-  }
+    public formBuilder: UntypedFormBuilder
+    // protected authService: AuthService
+  ) {}
 
   ngOnInit() {
     this.initForm();
@@ -57,19 +62,19 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
     }
   }
   ngAfterContentInit() {
-    this.templates.forEach((item) => {
-        switch(item.getType()) {
-          /*case 'specificInput':
-            this.specificInputTemplate = item.template;
-          break;*/
-          case 'specificInput':
-            this.specificInputTemplate = item.template;
+    this.templates.forEach(item => {
+      switch (item.getType()) {
+        /*case 'specificInput':
+          this.specificInputTemplate = item.template;
+        break;*/
+        case 'specificInput':
+          this.specificInputTemplate = item.template;
           break;
-        }
+      }
     });
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     if (this.element && this.form) {
       this.form.reset();
       if (this.element) {
@@ -78,23 +83,43 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
     }
   }
 
+  public checkObject(obj: any): { element: any; errorMessages: string[] } {
+    this.form.reset();
+    if (obj) {
+      this.form.patchValue({ ...obj });
+    }
+
+    const errorMessages: string[] = [];
+
+    if (this.form.invalid) {
+      Object.keys(this.form.controls).forEach(controlName => {
+        const controlErrors = this.form.controls[controlName].errors;
+        if (controlErrors != null) {
+          errorMessages.push(
+            `${controlName}: ${JSON.stringify(controlErrors)}`
+          );
+        }
+      });
+    }
+    const element = this.getElement();
+    return { element, errorMessages };
+  }
+
   protected initForm() {
     this.form = this.formBuilder.group(this.formFields());
   }
   protected formFields() {
-      let fields : {[key:string]: any} = {id: [this.element.id]};
-      for (let col of this.fields) {
-        if (col.validators && col.validators.length > 0) {
-          fields[col.field] = [this.element[col.field], col.validators];
-        } else if (col.isRequired) {
-          fields[col.field] = [this.element[col.field], Validators.required];
-        }
-        else
-        {
-          fields[col.field] = [this.element[col.field]];
-        }
+    const fields: { [key: string]: any } = { id: [this.element.id] };
+    for (const col of this.fields) {
+      if (col.validators && col.validators.length > 0) {
+        fields[col.field] = [this.element[col.field], col.validators];
+      } else if (col.isRequired) {
+        fields[col.field] = [this.element[col.field], Validators.required];
+      } else {
+        fields[col.field] = [this.element[col.field]];
       }
-      return fields;
+    }
+    return fields;
   }
 
   onCancel() {
@@ -104,42 +129,56 @@ export class BiaFormComponent implements OnInit, OnDestroy, OnChanges, AfterCont
 
   onSubmit() {
     if (this.form.valid) {
-      const element: any = this.form.value;
-      element.id = element.id > 0 ? element.id : 0;
-      for (let col of this.fields) {
-        switch(col.type)
-        {
-          case PropType.Boolean:
-            Reflect.set(element, col.field, element[col.field] ? element[col.field] : false);
-            break;
-          case PropType.ManyToMany:
-            Reflect.set(element, col.field, BiaOptionService.Differential(
-              Reflect.get(element, col.field), 
-              this.element?Reflect.get(this.element, col.field):undefined));
-            break;
-          case PropType.OneToMany:
-            Reflect.set(element, col.field, BiaOptionService.Clone(element[col.field]));
-            break;
-          }        
-      }
-      
+      const element: any = this.getElement();
       this.save.emit(element);
       this.form.reset();
     }
   }
+  public getElement() {
+    const element: any = this.form.value;
+    element.id = element.id > 0 ? element.id : 0;
+    for (const col of this.fields) {
+      switch (col.type) {
+        case PropType.Boolean:
+          Reflect.set(
+            element,
+            col.field,
+            element[col.field] ? element[col.field] : false
+          );
+          break;
+        case PropType.ManyToMany:
+          Reflect.set(
+            element,
+            col.field,
+            BiaOptionService.differential(
+              Reflect.get(element, col.field),
+              this.element ? Reflect.get(this.element, col.field) : undefined
+            )
+          );
+          break;
+        case PropType.OneToMany:
+          Reflect.set(
+            element,
+            col.field,
+            BiaOptionService.clone(element[col.field])
+          );
+          break;
+      }
+    }
+    return element;
+  }
+
   getCellData(field: any): any {
     const nestedProperties: string[] = field.field.split('.');
     let value: any = this.element;
     for (const prop of nestedProperties) {
-      if(value == null)
-      {
+      if (value == null) {
         return null;
       }
-      
+
       value = value[prop];
     }
- 
+
     return value;
   }
 }
-

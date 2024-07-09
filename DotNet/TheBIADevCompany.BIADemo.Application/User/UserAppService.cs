@@ -7,9 +7,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
+    using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -19,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
@@ -54,6 +58,11 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IUserIdentityKeyDomainService userIdentityKeyDomainService;
 
         /// <summary>
+        /// The claims principal.
+        /// </summary>
+        private readonly BiaClaimsPrincipal principal;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService" /> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
@@ -61,27 +70,27 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <param name="configuration">The configuration of the BiaNet section.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="userContext">The user context.</param>
         /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="userIdentityKeyDomainService">The user Identity Key Domain Service.</param>
+        /// <param name="principal">The principal.</param>
         public UserAppService(
             ITGenericRepository<User, int> repository,
             IUserSynchronizeDomainService userSynchronizeDomainService,
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
             ILogger<UserAppService> logger,
-            UserContext userContext,
             IIdentityProviderRepository identityProviderRepository,
-            IUserIdentityKeyDomainService userIdentityKeyDomainService)
+            IUserIdentityKeyDomainService userIdentityKeyDomainService,
+            IPrincipal principal)
             : base(repository)
         {
             this.userSynchronizeDomainService = userSynchronizeDomainService;
             this.configuration = configuration.Value;
             this.userDirectoryHelper = userDirectoryHelper;
             this.logger = logger;
-            this.userContext = userContext;
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
+            this.principal = principal as BiaClaimsPrincipal;
             this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<User>(u => u.IsActive));
         }
 
@@ -169,6 +178,26 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return userFromDirectories.Select(UserFromDirectoryMapper.EntityToDto());
         }
 
+        /// <inheritdoc cref="IUserAppService.AddByIdentityKeyAsync"/>
+        public async Task<ResultAddUsersFromDirectoryDto> AddByIdentityKeyAsync(UserDto userDto)
+        {
+            UserFromDirectoryDto userFromDirectoryDto = new UserFromDirectoryDto();
+            userFromDirectoryDto.IdentityKey = this.userIdentityKeyDomainService.GetDtoIdentityKey(userDto);
+            List<UserFromDirectoryDto> users = new List<UserFromDirectoryDto>();
+            users.Add(userFromDirectoryDto);
+            var result = await this.AddFromDirectory(users);
+            if (result.UsersAddedDtos.Count > 0)
+            {
+                foreach (var user in result.UsersAddedDtos)
+                {
+                    userDto.Id = user.Id;
+                    await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "RolesInit");
+                }
+            }
+
+            return result;
+        }
+
         /// <inheritdoc cref="IUserAppService.AddFromDirectory"/>
         public async Task<ResultAddUsersFromDirectoryDto> AddFromDirectory(IEnumerable<UserFromDirectoryDto> users)
         {
@@ -206,15 +235,24 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
                         UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
-
-                        var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
-
-                        if (addedUser != null)
+                        if (userFormDirectory != null)
                         {
-                            usersAdded.Add(addedUser);
-                        }
+                            var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
 
-                        await this.Repository.UnitOfWork.CommitAsync();
+                            if (addedUser != null)
+                            {
+                                usersAdded.Add(addedUser);
+                                await this.Repository.UnitOfWork.CommitAsync();
+                            }
+                            else
+                            {
+                                result.Errors.Add(userFormDirectoryDto.DisplayName);
+                            }
+                        }
+                        else
+                        {
+                            result.Errors.Add(userFormDirectoryDto.IdentityKey);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -238,7 +276,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         public async Task<string> RemoveInGroupAsync(int id)
         {
             var ldapGroups = this.userDirectoryHelper.GetLdapGroupsForRole("User");
-            var user = await this.Repository.GetEntityAsync(id: id);
+            var user = await this.Repository.GetEntityAsync(id: id, includes: [x => x.Roles]);
             if (ldapGroups != null && ldapGroups.Count > 0)
             {
                 if (user == null)
@@ -246,7 +284,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     return "User not found in database";
                 }
 
-                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { DisplayName = user.FirstName + " " + user.LastName + "(" + user.Login + ")", IdentityKey = this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user) } }, "User");
+                List<UserFromDirectoryDto> notRemovedUser = await this.userDirectoryHelper.RemoveUsersInGroup(new List<UserFromDirectoryDto>() { new UserFromDirectoryDto() { DisplayName = user.Display(), IdentityKey = this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user) } }, "User");
 
                 try
                 {
@@ -291,6 +329,87 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 // this.Repository.Update(entity)
                 await this.Repository.UnitOfWork.CommitAsync();
             }
+        }
+
+        /// <inheritdoc cref="IUserAppService.SaveAsync"/>
+        public async Task<string> SaveAsync(List<UserDto> userDtos)
+        {
+            StringBuilder strBldr = new StringBuilder();
+
+            int nbAdded = default;
+            int nbUpdated = default;
+            int nbError = default;
+
+            if (userDtos?.Any() == true)
+            {
+                IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
+                bool canAdd = currentUserPermissions?.Any(x => x == Rights.Users.Add) == true;
+                bool canUpdate = currentUserPermissions?.Any(x => x == Rights.Users.UpdateRoles) == true;
+
+                var exceptions = new List<Exception>();
+
+                if (!canAdd && userDtos.Exists(u => u.DtoState == DtoState.Added))
+                {
+                    strBldr.AppendLine("No permission to add users.");
+                    nbError++;
+                }
+
+                if (!canUpdate && userDtos.Exists(u => u.DtoState == DtoState.Modified))
+                {
+                    strBldr.AppendLine("No permission to update users.");
+                    nbError++;
+                }
+
+                if (userDtos.Exists(u => u.DtoState == DtoState.Deleted))
+                {
+                    strBldr.AppendLine("No permission to delete users.");
+                    nbError++;
+                }
+
+                foreach (UserDto userDto in userDtos)
+                {
+                    try
+                    {
+                        if (canAdd && userDto.DtoState == DtoState.Added)
+                        {
+                            ResultAddUsersFromDirectoryDto result = await this.AddByIdentityKeyAsync(userDto);
+                            this.Repository.UnitOfWork.Reset();
+
+                            if (result?.Errors?.Any() == true)
+                            {
+                                result.Errors.ForEach(error => strBldr.AppendLine(error));
+                                nbError++;
+                            }
+                            else if (result?.UsersAddedDtos?.Any() == true)
+                            {
+                                nbAdded++;
+                            }
+                        }
+                        else if (canUpdate && userDto.DtoState == DtoState.Modified)
+                        {
+                            await this.UpdateAsync<UserDto, UserMapper>(userDto, mapperMode: "Roles");
+                            this.Repository.UnitOfWork.Reset();
+                            nbUpdated++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                        nbError++;
+                    }
+                }
+
+                if (nbError > 0)
+                {
+                    strBldr.Insert(0, $"Added: {nbAdded}, Updated: {nbUpdated}, Error{(nbError > 1 ? "s" : null)}: {nbError}{Environment.NewLine}");
+                    string errorMessage = strBldr.ToString();
+                    var aggregateException = new AggregateException(exceptions);
+                    this.logger.LogError(message: errorMessage, exception: aggregateException);
+                    return errorMessage;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <summary>
         /// The principal.
         /// </summary>
-        private readonly BIAClaimsPrincipal claimsPrincipal;
+        private readonly BiaClaimsPrincipal claimsPrincipal;
 
         /// <summary>
         /// The JWT factory.
@@ -128,7 +128,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IIdentityProviderRepository identityProviderRepository)
         {
             this.jwtFactory = jwtFactory;
-            this.claimsPrincipal = principal as BIAClaimsPrincipal;
+            this.claimsPrincipal = principal as BiaClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
             this.userAppService = userAppService;
             this.teamAppService = teamAppService;
@@ -149,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// <returns>
         /// AuthInfo.
         /// </returns>
-        public async Task<AuthInfoDto<UserDataDto, AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
             // Check inputs parameter
             this.CheckIsAuthenticated();
@@ -183,6 +183,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get global roles
             List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
+            List<int> roleIds = new List<int>();
+            foreach (var role in globalRoles)
+            {
+                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                {
+                    roleIds.Add((int)roleId);
+                }
+            }
 
             // If the user has no role
             if (globalRoles == null || globalRoles?.Any() != true)
@@ -255,6 +263,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
             {
                 allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
+                foreach (var role in fineGrainedRoles)
+                {
+                    if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                    {
+                        roleIds.Add((int)roleId);
+                    }
+                }
 
                 // translate roles in permission
                 List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
@@ -279,7 +294,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             this.userAppService.SelectDefaultLanguage(userInfo);
 
-            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, Permissions = userPermissions, UserData = userData };
+            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, RoleIds = roleIds, Permissions = userPermissions, UserData = userData };
 
             UserProfileDto userProfile = null;
             if (userProfileTask != null)
@@ -291,10 +306,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AdditionalInfoDto additionnalInfo = null;
             if (loginParam.AdditionalInfos)
             {
-                additionnalInfo = new AdditionalInfoDto { UserInfo = userInfo, UserProfile = userProfile, Teams = allTeams.ToList() };
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
+                    tc.Parents == null
+                    ||
+                    tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
+
+                additionnalInfo = new AdditionalInfoDto
+                {
+                    UserInfo = userInfo, UserProfile = userProfile,
+                    Teams = allTeamsFilteredByCurrentParent,
+                };
             }
 
-            AuthInfoDto<UserDataDto, AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
 
             return authInfo;
         }
@@ -378,15 +402,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // get user rights
             if (loginParam.TeamsConfig != null)
             {
-                foreach (TeamConfigDto teamConfig in loginParam.TeamsConfig)
+                foreach (TeamConfigDto loginTeamConfig in loginParam.TeamsConfig)
                 {
-                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId) : null;
-                    if (teamLogin == null && teamConfig.InHeader)
+                    CurrentTeamDto teamLogin = loginParam.CurrentTeamLogins != null ? Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == loginTeamConfig.TeamTypeId) : null;
+                    if (teamLogin == null && loginTeamConfig.InHeader)
                     {
                         // if it is in header we select the default one with default roles.
                         teamLogin = new CurrentTeamDto
                         {
-                            TeamTypeId = teamConfig.TeamTypeId,
+                            TeamTypeId = loginTeamConfig.TeamTypeId,
                             TeamId = 0,
                             UseDefaultRoles = true,
                             CurrentRoleIds = { },
@@ -470,25 +494,29 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             // add the sites roles (filter if singleRole mode is used)
                             allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
 
+                            foreach (var teamConfig in TeamConfig.Config)
+                            {
+                                if (currentTeam.TeamTypeId == teamConfig.TeamTypeId)
+                                {
+                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberSuffix);
+                                }
+
+                                if (teamConfig.Parents != null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId && t.ParentTeamId == currentTeam.TeamId))
+                                {
+                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                                }
+                            }
+
                             // add computed roles (can be customized)
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.Site)
-                            {
-                                allRoles.Add(Constants.Role.SiteMember);
-                            }
-
-                            // Begin BIADemo
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.AircraftMaintenanceCompany)
-                            {
-                                allRoles.Add(Constants.Role.AircraftMaintenanceCompanyMember);
-                            }
-
-                            if (currentTeam.TeamTypeId == (int)TeamTypeId.MaintenanceTeam)
-                            {
-                                allRoles.Add(Constants.Role.MaintenanceTeamMember);
-                            }
-
-                            // End BIADemo
                         }
+                    }
+                }
+
+                foreach (var teamConfig in TeamConfig.Config)
+                {
+                    if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
+                    {
+                        allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
                     }
                 }
             }

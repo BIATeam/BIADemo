@@ -1,87 +1,148 @@
 <form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
-  <div class="flex flex-row justify-content-center flex-1"  style="max-width:100%;">
-    <div class="flex flex-column flex-1" style="max-width:50%;">
+  <div
+    class="flex flex-row justify-content-center flex-1"
+    style="max-width: 100%">
+    <div class="flex flex-column flex-1" style="max-width: 50%">
       <p-fieldset legend="{{ 'bia.translation.translatedFields' | translate }}">
         <p-tabView>
           <p-tabPanel header="{{ 'translation.defaultLanguage' | translate }}">
             <div class="flex flex-row justify-content-center">
-              <div class="app-field-container flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width: 90%">
                 <span class="p-float-label">
-                  <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%"/>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+                  <input
+                    formControlName="title"
+                    type="text"
+                    pInputText
+                    maxlength="64"
+                    style="width: 100%" />
+                  <label
+                    ><span class="bia-star-mandatory">*</span
+                    >{{ 'notification.title' | translate }}</label
+                  >
                 </span>
               </div>
             </div>
             <div class="flex flex-row justify-content-center">
-              <div class="app-field-container flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width: 90%">
                 <span class="p-float-label">
-                  <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%"/>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+                  <input
+                    formControlName="description"
+                    type="text"
+                    pInputText
+                    maxlength="256"
+                    style="width: 100%" />
+                  <label
+                    ><span class="bia-star-mandatory">*</span
+                    >{{ 'notification.description' | translate }}</label
+                  >
                 </span>
               </div>
             </div>
-            <div class="flex flex-row gap-1 justify-content-end" >
-              <button pButton type="button" label="{{ 'bia.translation.addAll' | translate }}" (click)="addAllTranslation()" [disabled]="!missingTranslation"></button>
+            <div class="flex flex-row gap-1 justify-content-end">
+              <button
+                pButton
+                type="button"
+                label="{{ 'bia.translation.addAll' | translate }}"
+                (click)="addAllTranslation()"
+                [disabled]="!missingTranslation"></button>
             </div>
           </p-tabPanel>
-          <ng-container formArrayName="notificationTranslations" *ngFor="let item of notificationTranslations['controls']; let i = index;">
+          <ng-container
+            formArrayName="notificationTranslations"
+            *ngFor="
+              let item of notificationTranslations['controls'];
+              let i = index
+            ">
             <p-tabPanel [header]="labelTranslation(item.value.languageId)">
               <div [formGroupName]="i">
                 <input formControlName="languageId" type="hidden" />
                 <div class="flex flex-row justify-content-center">
-                  <div class="app-field-container flex-1" style="max-width:90%;">
+                  <div
+                    class="app-field-container flex-1"
+                    style="max-width: 90%">
                     <span class="p-float-label">
-                      <input formControlName="title" type="text" pInputText maxlength="64" style ="width:100%" (change)="changeTranslation(i)"/>
-                      <label><span class="bia-star-mandatory">*</span>{{ 'notification.title' | translate }}</label>
+                      <input
+                        formControlName="title"
+                        type="text"
+                        pInputText
+                        maxlength="64"
+                        style="width: 100%"
+                        (change)="changeTranslation(i)" />
+                      <label
+                        ><span class="bia-star-mandatory">*</span
+                        >{{ 'notification.title' | translate }}</label
+                      >
                     </span>
                   </div>
                 </div>
                 <div class="flex flex-row justify-content-center">
-                  <div class="app-field-container flex-1" style="max-width:90%;">
+                  <div
+                    class="app-field-container flex-1"
+                    style="max-width: 90%">
                     <span class="p-float-label">
-                      <input formControlName="description" type="text" pInputText maxlength="256" style ="width:100%" (change)="changeTranslation(i)"/>
-                      <label><span class="bia-star-mandatory">*</span>{{ 'notification.description' | translate }}</label>
+                      <input
+                        formControlName="description"
+                        type="text"
+                        pInputText
+                        maxlength="256"
+                        style="width: 100%"
+                        (change)="changeTranslation(i)" />
+                      <label
+                        ><span class="bia-star-mandatory">*</span
+                        >{{ 'notification.description' | translate }}</label
+                      >
                     </span>
                   </div>
                 </div>
               </div>
-              <div class="flex flex-row gap-1 justify-content-end" >
-                <button pButton type="button" label="{{ 'bia.translation.delete' | translate }}" (click)="removeTranslation(i)"></button>
+              <div class="flex flex-row gap-1 justify-content-end">
+                <button
+                  pButton
+                  type="button"
+                  label="{{ 'bia.translation.delete' | translate }}"
+                  (click)="removeTranslation(i)"></button>
               </div>
             </p-tabPanel>
           </ng-container>
           <p-tabPanel header="+" *ngIf="missingLanguageOptions?.length > 0">
-            <ng-template pTemplate = "header">
+            <ng-template pTemplate="header">
               <i class="pi pi-plus"></i>
             </ng-template>
             <div class="flex flex-row justify-content-center">
-              <div class="app-field-container flex-1" style="max-width:90%;">
+              <div class="app-field-container flex-1" style="max-width: 90%">
                 <span class="p-float-label">
                   <p-dropdown
-                      [options]="missingLanguageOptions"
-                      placeholder="&nbsp;"
-                      formControlName="languageToAdd"
-                      optionLabel="display"
-                      datakey="id"
-                      [style]="{ width: '100%' }"
-                      (onChange)= "onSelectionLanguage()"
-                    >
-                    </p-dropdown>
-                  <label><span class="bia-star-mandatory">*</span>{{ 'bia.translation.language' | translate }}</label>
+                    [options]="missingLanguageOptions"
+                    placeholder="&nbsp;"
+                    formControlName="languageToAdd"
+                    optionLabel="display"
+                    datakey="id"
+                    [style]="{ width: '100%' }"
+                    (onChange)="onSelectionLanguage()">
+                  </p-dropdown>
+                  <label
+                    ><span class="bia-star-mandatory">*</span
+                    >{{ 'bia.translation.language' | translate }}</label
+                  >
                 </span>
               </div>
             </div>
 
-            <div class="flex flex-row gap-1 justify-content-end" >
-              <button class="ui-button-secondary" pButton type="button" label="{{ 'bia.translation.add' | translate }}" (click)="addTranslation()" [disabled]="!selectionLanguage"></button>
+            <div class="flex flex-row gap-1 justify-content-end">
+              <button
+                class="ui-button-secondary"
+                pButton
+                type="button"
+                label="{{ 'bia.translation.add' | translate }}"
+                (click)="addTranslation()"
+                [disabled]="!selectionLanguage"></button>
             </div>
-            
           </p-tabPanel>
         </p-tabView>
       </p-fieldset>
 
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-dropdown
               [options]="notificationTypeOptions"
@@ -89,20 +150,25 @@
               formControlName="type"
               optionLabel="display"
               datakey="id"
-              [style]="{ width: '100%' }"
-            >
+              [style]="{ width: '100%' }">
             </p-dropdown>
-            <label><span class="bia-star-mandatory">*</span>{{ 'notification.type.title' | translate }}</label>
+            <label
+              ><span class="bia-star-mandatory">*</span
+              >{{ 'notification.type.title' | translate }}</label
+            >
           </span>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
-          <p-checkbox binary="true" formControlName="read" label="{{ 'notification.read' | translate }}"></p-checkbox>
+        <div class="app-field-container flex-1" style="max-width: 90%">
+          <p-checkbox
+            binary="true"
+            formControlName="read"
+            label="{{ 'notification.read' | translate }}"></p-checkbox>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-calendar
               biaLocale
@@ -110,33 +176,42 @@
               placeholder="&nbsp;"
               [showButtonBar]="true"
               dateFormat="yy-mm-dd"
-              [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
-            ></p-calendar>
-            <label><span class="bia-star-mandatory">*</span>{{ 'notification.createdDate' | translate }}</label>
+              [style]="{ width: '100%' }"
+              [inputStyle]="{ width: '100%' }"></p-calendar>
+            <label
+              ><span class="bia-star-mandatory">*</span
+              >{{ 'notification.createdDate' | translate }}</label
+            >
           </span>
         </div>
       </div>
     </div>
-    <div class="flex flex-column flex-1" style="max-width:50%;">
+    <div class="flex flex-column flex-1" style="max-width: 50%">
       <div class="flex flex-row justify-content-center">
-        <div class="flex-1" style="max-width:100%;">
+        <div class="flex-1" style="max-width: 100%">
           <p-fieldset legend="{{ 'notification.notifiedTeams' | translate }}">
-            <p-table [value]="notifiedTeams.controls" [responsive]="true" styleClass="p-datatable-striped">
+            <p-table
+              [value]="notifiedTeams.controls"
+              [responsive]="true"
+              styleClass="p-datatable-striped">
               <ng-template pTemplate="header">
-                  <tr>
-                      <th>Team</th>
-                      <th>Roles</th>
-                      <th>          
-                        <i class="pi pi-plus bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.add' | translate }}"
-                        tooltipPosition="left" (click)="addNewRow()"></i>
-                      </th>
-                  </tr>
+                <tr>
+                  <th>Team</th>
+                  <th>Roles</th>
+                  <th>
+                    <i
+                      class="pi pi-plus bia-mat-tiny-fab bia-pointer"
+                      pTooltip="{{ 'bia.add' | translate }}"
+                      tooltipPosition="left"
+                      (click)="addNewRow()"></i>
+                  </th>
+                </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                <ng-container formArrayName="notifiedTeams">  
-                  <tr [formGroupName]="rowIndex">  
-                      <td>
-                       <p-celleditor>
+                <ng-container formArrayName="notifiedTeams">
+                  <tr [formGroupName]="rowIndex">
+                    <td>
+                      <p-celleditor>
                         <p-dropdown
                           [options]="teamOptions"
                           placeholder="&nbsp;"
@@ -144,37 +219,36 @@
                           optionLabel="display"
                           datakey="id"
                           [style]="{ width: '100%' }"
-                          [showClear]="true"
-                        ></p-dropdown>
+                          [showClear]="true"></p-dropdown>
                       </p-celleditor>
-                      </td>  
-                      <td>  
-                        <p-celleditor>
+                    </td>
+                    <td>
+                      <p-celleditor>
                         <p-multiSelect
-                          defaultLabel="&nbsp;"
                           [options]="roleOptions"
                           formControlName="roles"
                           optionLabel="display"
                           datakey="id"
-                          [virtualScroll]="true"
                           [style]="{ width: '100%' }"
-                          appendTo="body"
-                        ></p-multiSelect>
+                          appendTo="body"></p-multiSelect>
                       </p-celleditor>
-                      </td>   
-                      <td>  
-                        <i class="pi pi-trash bia-mat-tiny-fab bia-pointer" pTooltip="{{ 'bia.delete' | translate }}"
-                        tooltipPosition="left" (click)="onDeleteRow(rowIndex)"></i>
-                      </td>  
-                  </tr>  
-                </ng-container> 
+                    </td>
+                    <td>
+                      <i
+                        class="pi pi-trash bia-mat-tiny-fab bia-pointer"
+                        pTooltip="{{ 'bia.delete' | translate }}"
+                        tooltipPosition="left"
+                        (click)="onDeleteRow(rowIndex)"></i>
+                    </td>
+                  </tr>
+                </ng-container>
               </ng-template>
             </p-table>
           </p-fieldset>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-dropdown
               [options]="userOptions"
@@ -183,54 +257,60 @@
               optionLabel="display"
               datakey="id"
               [style]="{ width: '100%' }"
-              [showClear]="true"
-            ></p-dropdown>
+              [showClear]="true"></p-dropdown>
             <label>{{ 'notification.createdBy' | translate }}</label>
           </span>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
-        <div class="app-field-container flex-1" style="max-width:90%;">
+        <div class="app-field-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-multiSelect
-              defaultLabel="&nbsp;"
               [options]="userOptions"
               formControlName="notifiedUsers"
               optionLabel="display"
               datakey="id"
-              [virtualScroll]="true"
-              [style]="{ width: '100%' }"
-            ></p-multiSelect>
+              [style]="{ width: '100%' }"></p-multiSelect>
             <label>{{ 'notification.notifiedUsers' | translate }}</label>
           </span>
         </div>
       </div>
       <div class="flex flex-row justify-content-center">
-        <div class="flex-1" style="max-width:90%;">
+        <div class="flex-1" style="max-width: 90%">
           <!-- <span class="p-float-label">
             <textarea formControlName="jData" type="text" pInputText maxlength="64" style ="width:100%" rows="5" pInputTextarea>
             </textarea>
             <label>{{ 'notification.jData' | translate }}</label>
           </span> -->
-          <span style="left: 5px; top: -20px;font-size: 12px;color: #00839b;">{{ 'notification.jData' | translate }}</span>
+          <span
+            style="left: 5px; top: -20px; font-size: 12px; color: #00839b"
+            >{{ 'notification.jData' | translate }}</span
+          >
           <span class="p-float-label">
-              <textarea formControlName="jData" rows="5" [cols]="60" autoResize="autoResize" pInputTextarea style="width: 100%;"></textarea>
+            <textarea
+              formControlName="jData"
+              rows="5"
+              [cols]="60"
+              autoResize="autoResize"
+              pInputTextarea
+              style="width: 100%"></textarea>
           </span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="flex flex-row gap-1 justify-content-end" >
-    <button pButton label="{{ 'bia.save' | translate }}" type="submit" [disabled]="!form.valid"></button>
+  <div class="flex flex-row gap-1 justify-content-end">
+    <button
+      pButton
+      label="{{ 'bia.save' | translate }}"
+      type="submit"
+      [disabled]="!form.valid"></button>
     <button
       pButton
       label="{{ 'bia.cancel' | translate }}"
       type="button"
       class="p-button-outlined"
-      (click)="onCancel()"
-    ></button>
+      (click)="onCancel()"></button>
   </div>
-
 </form>
-

@@ -3,7 +3,7 @@ import { Site } from '../model/site';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SiteDas extends AbstractDas<Site> {
   constructor(injector: Injector) {

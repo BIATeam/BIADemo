@@ -19,6 +19,16 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     public class BiaHybridCache : IBiaHybridCache
     {
         /// <summary>
+        /// The local cache.
+        /// </summary>
+        private readonly IBiaLocalCache localCache;
+
+        /// <summary>
+        /// The distributed cache.
+        /// </summary>
+        private readonly IBiaDistributedCache distributedCache;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BiaHybridCache"/> class.
         /// </summary>
         /// <param name="localCache">The local cache.</param>
@@ -29,16 +39,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             this.distributedCache = distributedCache;
             this.DefaultCacheMode = CacheMode.Local;
         }
-
-        /// <summary>
-        /// The local cache.
-        /// </summary>
-        private readonly IBiaLocalCache localCache;
-
-        /// <summary>
-        /// The distributed cache.
-        /// </summary>
-        private readonly IBiaDistributedCache distributedCache;
 
         /// <summary>
         /// Mode for the cache.
@@ -104,10 +104,11 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             await this.localCache.Add(key, item, cacheDurationInMinute);
         }
 
+        /// <inheritdoc/>
         public async Task<T> GetAllSources<T>(string key)
         {
             T item = await this.GetLocal<T>(key);
-            if (item != null)
+            if (!object.Equals(item, default(T)))
             {
                 return item;
             }
@@ -115,6 +116,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             return await this.GetDistibuted<T>(key);
         }
 
+        /// <inheritdoc/>
         public async Task<T> GetDefaultMode<T>(string key)
         {
             if (this.DefaultCacheMode == CacheMode.Local)
@@ -127,22 +129,26 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             }
         }
 
+        /// <inheritdoc/>
         public async Task<T> GetDistibuted<T>(string key)
         {
             return await this.distributedCache.Get<T>(key);
         }
 
+        /// <inheritdoc/>
         public async Task<T> GetLocal<T>(string key)
         {
             return await this.localCache.Get<T>(key);
         }
 
+        /// <inheritdoc/>
         public async Task RemoveAllSources(string key)
         {
             await this.RemoveLocal(key);
             await this.RemoveDistributed(key);
         }
 
+        /// <inheritdoc/>
         public async Task RemoveDefaultMode(string key)
         {
             if (this.DefaultCacheMode == CacheMode.Local)
@@ -155,11 +161,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             }
         }
 
+        /// <inheritdoc/>
         public async Task RemoveDistributed(string key)
         {
             await this.distributedCache.Remove(key);
         }
 
+        /// <inheritdoc/>
         public async Task RemoveLocal(string key)
         {
             await this.localCache.Remove(key);

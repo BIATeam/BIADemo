@@ -3,7 +3,7 @@ import { Member } from '../model/member';
 import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MemberDas extends AbstractDas<Member> {
   constructor(injector: Injector) {

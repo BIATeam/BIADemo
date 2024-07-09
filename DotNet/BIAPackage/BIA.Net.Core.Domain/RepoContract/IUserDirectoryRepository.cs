@@ -66,7 +66,7 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="sid">The sid.</param>
         /// <param name="domain">The domain.</param>
         /// <returns>The list of roles.</returns>
-        Task<List<string>> GetUserRolesAsync(BIAClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain);
+        Task<List<string>> GetUserRolesAsync(BiaClaimsPrincipal claimsPrincipal, UserInfoDto userInfoDto, string sid, string domain);
 
         /// <summary>
         /// Resolves the user by sid.

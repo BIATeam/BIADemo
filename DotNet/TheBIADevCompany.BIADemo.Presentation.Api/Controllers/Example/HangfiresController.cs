@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {
-        private readonly BIAClaimsPrincipal principal;
+        private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         public HangfiresController(
             IPrincipal principal)
         {
-            this.principal = principal as BIAClaimsPrincipal;
+            this.principal = principal as BiaClaimsPrincipal;
         }
 
         /// <summary>
@@ -65,10 +65,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             {
                 return this.NotFound();
             }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
-            }
         }
 
         /// <summary>
@@ -89,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
                 var client = new BackgroundJobClient();
                 client.Create<BiaDemoTestHangfireService>(x => x.RandomReviewPlane(teamId, this.principal.GetUserData<UserDataDto>().GetCurrentTeam((int)TeamTypeId.Site), this.principal.GetUserId(), null), new EnqueuedState());
 
-                return this.Ok("Operation being processed in background...");
+                return this.Ok();
             }
             catch (ArgumentNullException)
             {
@@ -98,10 +94,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
-            }
-            catch (Exception)
-            {
-                return this.StatusCode(500, "Internal server error");
             }
         }
     }

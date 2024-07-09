@@ -13,11 +13,15 @@ import {
   closeViewDialog,
   updateUserView,
   assignViewToTeam,
-  updateTeamView
+  updateTeamView,
 } from '../../store/views-actions';
 import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
 import { map, tap } from 'rxjs/operators';
-import { TeamTypeId, TeamTypeRightPrefixe, ViewType } from 'src/app/shared/constants';
+import {
+  TeamTypeId,
+  TeamTypeRightPrefixe,
+  ViewType,
+} from 'src/app/shared/constants';
 import { TeamView } from '../../model/team-view';
 import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
@@ -33,7 +37,7 @@ import { Team } from 'src/app/domains/bia-domains/team/model/team';
   selector: 'bia-view-dialog',
   templateUrl: './view-dialog.component.html',
   styleUrls: ['./view-dialog.component.scss'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
 })
 export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
@@ -61,7 +65,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private authService: AuthService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -77,24 +81,42 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.store
         .select(getDisplayViewDialog)
-        .subscribe((tableStateKeySelected) => (this.display = this.tableStateKey === tableStateKeySelected))
+        .subscribe(
+          tableStateKeySelected =>
+            (this.display = this.tableStateKey === tableStateKeySelected)
+        )
     );
   }
 
   private initViews() {
     this.views$ = this.store
       .pipe(select(getAllViews))
-      .pipe(map((views) => views.filter((view) => view.tableId === this.tableStateKey)));
+      .pipe(
+        map(views => views.filter(view => view.tableId === this.tableStateKey))
+      );
   }
 
   private initViewTeams() {
-    this.viewTeams$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.Team)));
+    this.viewTeams$ = this.views$.pipe(
+      map(views => views.filter(view => view.viewType === ViewType.Team))
+    );
   }
 
   private initViewUsers() {
-    let currentTeamId = (this.useViewTeamWithTypeId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
-    this.viewUsers$ = this.views$.pipe(map((views) => views.filter((view) => view.viewType === ViewType.User 
-    || (view.viewType === ViewType.Team && view.viewTeams.some(t => t.teamId == currentTeamId)))));
+    const currentTeamId =
+      this.useViewTeamWithTypeId == null
+        ? -1
+        : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
+    this.viewUsers$ = this.views$.pipe(
+      map(views =>
+        views.filter(
+          view =>
+            view.viewType === ViewType.User ||
+            (view.viewType === ViewType.Team &&
+              view.viewTeams.some(t => t.teamId == currentTeamId))
+        )
+      )
+    );
   }
 
   ngOnDestroy() {
@@ -104,14 +126,13 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   initTeams() {
-    let currentTeamId = (this.useViewTeamWithTypeId == null) ? -1 : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
+    const currentTeamId =
+      this.useViewTeamWithTypeId == null
+        ? -1
+        : this.authService.getCurrentTeamId(this.useViewTeamWithTypeId);
     this.teams$ = this.store.select(getAllTeams).pipe(
-      map((teams) =>
-        teams.filter(
-          (team) => currentTeamId == team.id
-        )
-      ),
-      tap((teams) => {
+      map(teams => teams.filter(team => currentTeamId == team.id)),
+      tap(teams => {
         if (teams.length === 1) {
           this.teamSelected = teams[0];
         }
@@ -134,17 +155,21 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   onDeleteUserView(viewId: number) {
-      this.userViewSelected = <View>{};
-      this.store.dispatch(removeUserView({ id: viewId }));
+    this.userViewSelected = <View>{};
+    this.store.dispatch(removeUserView({ id: viewId }));
   }
 
   onDeleteTeamView(viewId: number) {
-      this.teamViewSelected = <View>{};
-      this.store.dispatch(removeTeamView({ id: viewId }));
+    this.teamViewSelected = <View>{};
+    this.store.dispatch(removeTeamView({ id: viewId }));
   }
 
   onSetDefaultUserView(event: { viewId: number; isDefault: boolean }) {
-    const defaultView: DefaultView = { id: event.viewId, isDefault: event.isDefault, tableId: this.tableStateKey };
+    const defaultView: DefaultView = {
+      id: event.viewId,
+      isDefault: event.isDefault,
+      tableId: this.tableStateKey,
+    };
     this.store.dispatch(setDefaultUserView(defaultView));
   }
 
@@ -154,7 +179,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
         id: event.viewId,
         isDefault: event.isDefault,
         tableId: this.tableStateKey,
-        teamId: this.teamSelected.id
+        teamId: this.teamSelected.id,
       };
       this.store.dispatch(setDefaultTeamView(defaultView));
     }
@@ -162,7 +187,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onSaveUserView(view: View) {
     if (view) {
-      const json = this.GetViewPreference();
+      const json = this.getViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
@@ -177,7 +202,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onSaveTeamView(view: TeamView) {
     if (view && this.teamSelected) {
-      const json = this.GetViewPreference();
+      const json = this.getViewPreference();
       if (json) {
         view.preference = json;
         view.tableId = this.tableStateKey;
@@ -199,7 +224,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.teamViewSelected = view;
   }
 
-  private GetViewPreference(): string | null {
+  private getViewPreference(): string | null {
     let stateString = sessionStorage.getItem(this.tableStateKey);
     if (stateString) {
       const state = JSON.parse(stateString);
@@ -213,7 +238,12 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   canSetUserView() {
-    return this.canAddUserView || this.canDeleteUserView || this.canSetDefaultUserView || this.canUpdateUserView;
+    return (
+      this.canAddUserView ||
+      this.canDeleteUserView ||
+      this.canSetDefaultUserView ||
+      this.canUpdateUserView
+    );
   }
 
   canSetTeamView() {
@@ -226,18 +256,37 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   private setPermissions() {
-    if (this.useViewTeamWithTypeId != null)
-    {
-      var teamTypeRightPrefixe = TeamTypeRightPrefixe.find(t => t.key == this.useViewTeamWithTypeId)?.value;
-      this.canAddTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix);
-      this.canUpdateTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix);
-      this.canSetDefaultTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix);
-      this.canAssignTeamView = this.authService.hasPermission(teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix);
-      this.canDeleteTeamView = this.authService.hasPermission(Permission.View_DeleteTeamView);
+    if (this.useViewTeamWithTypeId != null) {
+      const teamTypeRightPrefixe = TeamTypeRightPrefixe.find(
+        t => t.key == this.useViewTeamWithTypeId
+      )?.value;
+      this.canAddTeamView = this.authService.hasPermission(
+        teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix
+      );
+      this.canUpdateTeamView = this.authService.hasPermission(
+        teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix
+      );
+      this.canSetDefaultTeamView = this.authService.hasPermission(
+        teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix
+      );
+      this.canAssignTeamView = this.authService.hasPermission(
+        teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix
+      );
+      this.canDeleteTeamView = this.authService.hasPermission(
+        Permission.View_DeleteTeamView
+      );
     }
-    this.canAddUserView = this.authService.hasPermission(Permission.View_AddUserView);
-    this.canUpdateUserView = this.authService.hasPermission(Permission.View_UpdateUserView);
-    this.canDeleteUserView = this.authService.hasPermission(Permission.View_DeleteUserView);
-    this.canSetDefaultUserView = this.authService.hasPermission(Permission.View_SetDefaultUserView);
+    this.canAddUserView = this.authService.hasPermission(
+      Permission.View_AddUserView
+    );
+    this.canUpdateUserView = this.authService.hasPermission(
+      Permission.View_UpdateUserView
+    );
+    this.canDeleteUserView = this.authService.hasPermission(
+      Permission.View_DeleteUserView
+    );
+    this.canSetDefaultUserView = this.authService.hasPermission(
+      Permission.View_SetDefaultUserView
+    );
   }
 }

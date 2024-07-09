@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
+import { parse } from 'date-fns';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DateHelperService {
-  constructor() { }
-
   public static isDate(value: any): boolean {
     const regex = /(\d{4})-(\d{2})-(\d{2})T/;
     if (typeof value === 'string' && value.match(regex)) {
@@ -41,5 +40,41 @@ export class DateHelperService {
         date.getSeconds()
       )
     );
+  }
+
+  public static isValidDate(d: Date): boolean {
+    return !isNaN(d.getTime());
+  }
+
+  public static parseDate(
+    dateString: string,
+    dateFormat: string | null = null,
+    timeFormat: string | null = null
+  ): Date {
+    const timePattern = /:/;
+
+    dateString = dateString.replace('  ', ' ').trim();
+
+    // Attempt to parse the date directly
+    let parsedDate = new Date(dateString);
+    if (!isNaN(parsedDate.getTime())) {
+      // If there is no time, add it to avoid delay in the conversion
+      if (!timePattern.test(dateString)) {
+        dateString += ' 00:00';
+        parsedDate = new Date(dateString);
+      }
+      return parsedDate;
+    }
+
+    // Handle custom format if provided
+    if (dateFormat != null) {
+      let format = dateFormat;
+      if (timePattern.test(dateString)) {
+        format = dateFormat + ' ' + timeFormat;
+      }
+      return parse(dateString, format, new Date());
+    }
+
+    return <Date>{};
   }
 }

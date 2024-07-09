@@ -15,21 +15,37 @@ import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-onli
 export class AirportOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainAirportOptionsActions.loadAll) /* When action is dispatched */,
+      ofType(
+        DomainAirportOptionsActions.loadAll
+      ) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Airports Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Airports Reducers' will take care of the rest */
       switchMap(() =>
-        this.airportDas.getList({ endpoint: 'allOptions', offlineMode: BiaOnlineOfflineService.isModeEnabled }).pipe(
-          map((airports) => DomainAirportOptionsActions.loadAllSuccess({ airports: airports?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            if (BiaOnlineOfflineService.isModeEnabled !== true || BiaOnlineOfflineService.isServerAvailable(err) === true) {
-              this.biaMessageService.showError();
-            }
-            return of(DomainAirportOptionsActions.failure({ error: err }));
+        this.airportDas
+          .getList({
+            endpoint: 'allOptions',
+            offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
-        )
+          .pipe(
+            map(airports =>
+              DomainAirportOptionsActions.loadAllSuccess({
+                airports: airports?.sort((a, b) =>
+                  a.display.localeCompare(b.display)
+                ),
+              })
+            ),
+            catchError(err => {
+              if (
+                BiaOnlineOfflineService.isModeEnabled !== true ||
+                BiaOnlineOfflineService.isServerAvailable(err) === true
+              ) {
+                this.biaMessageService.showErrorHttpResponse(err);
+              }
+              return of(DomainAirportOptionsActions.failure({ error: err }));
+            })
+          )
       )
     )
   );
@@ -38,5 +54,5 @@ export class AirportOptionsEffects {
     private actions$: Actions,
     private airportDas: AirportOptionDas,
     private biaMessageService: BiaMessageService
-  ) { }
+  ) {}
 }

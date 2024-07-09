@@ -11,9 +11,9 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-plane-new',
   templateUrl: './plane-new.component.html',
-  styleUrls: ['./plane-new.component.scss']
+  styleUrls: ['./plane-new.component.scss'],
 })
-export class PlaneNewComponent implements OnInit, OnDestroy  {
+export class PlaneNewComponent implements OnInit, OnDestroy {
   private sub = new Subscription();
 
   constructor(
@@ -21,14 +21,13 @@ export class PlaneNewComponent implements OnInit, OnDestroy  {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     public planeOptionsService: PlaneOptionsService,
-    private biaTranslationService: BiaTranslationService,
-
+    private biaTranslationService: BiaTranslationService
   ) {}
 
   ngOnInit() {
     this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(event => {
-          this.planeOptionsService.loadAllOptions();
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.planeOptionsService.loadAllOptions();
       })
     );
   }

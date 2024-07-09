@@ -5,68 +5,38 @@
 namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Principal;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for site.
     /// </summary>
-    public class SiteMapper : BaseMapper<SiteDto, Site, int>
+    public class SiteMapper : TTeamMapper<SiteDto, Site>
     {
         /// <summary>
-        /// Gets or sets the collection used for expressions to access fields.
+        /// Initializes a new instance of the <see cref="SiteMapper"/> class.
         /// </summary>
-        public override ExpressionCollection<Site> ExpressionCollection
+        /// <param name="principal">The principal.</param>
+        public SiteMapper(IPrincipal principal)
+            : base(principal)
         {
-            get
-            {
-                return new ExpressionCollection<Site>
-                {
-                    { "Id", site => site.Id },
-                    { "Title", site => site.Title },
-                };
-            }
         }
 
         /// <summary>
-        /// Create a site DTO from a entity.
+        /// Precise the Id of the type of team.
         /// </summary>
-        /// <returns>The site DTO.</returns>
-        public override Expression<Func<Site, SiteDto>> EntityToDto()
+        public override int TeamType
         {
-            return entity => new SiteDto { Id = entity.Id, Title = entity.Title };
-        }
-
-        /// <summary>
-        /// Create a site DTO from a entity.
-        /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns>
-        /// The site DTO.
-        /// </returns>
-        public Expression<Func<Site, SiteDto>> EntityToDto(int userId)
-        {
-            return entity => new SiteDto { Id = entity.Id, Title = entity.Title, IsDefault = entity.Members.Any(member => member.UserId == userId && member.IsDefault) };
-        }
-
-        /// <summary>
-        /// Create a site entity from a DTO.
-        /// </summary>
-        /// <param name="dto">The site DTO.</param>
-        /// <param name="entity">The entity to update.</param>
-        public override void DtoToEntity(SiteDto dto, Site entity)
-        {
-            if (entity == null)
-            {
-                entity = new Site();
-            }
-
-            entity.Id = dto.Id;
-            entity.Title = dto.Title;
-            entity.TeamTypeId = (int)TeamTypeId.Site;
+            get { return (int)TeamTypeId.Site; }
         }
     }
 }

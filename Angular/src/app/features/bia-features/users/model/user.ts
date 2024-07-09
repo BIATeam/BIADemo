@@ -1,4 +1,8 @@
-import { BiaFieldConfig, PropType, BiaFieldsConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import {
+  BiaFieldConfig,
+  PropType,
+  BiaFieldsConfig,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
@@ -14,8 +18,7 @@ export interface User extends BaseDto {
 }
 
 // TODO after creation of CRUD User : adapt the field configuration
-export const UserFieldsConfiguration : BiaFieldsConfig =
-{
+export const userFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
       isEditable: false,
@@ -25,9 +28,10 @@ export const UserFieldsConfiguration : BiaFieldsConfig =
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
       isEditable: false,
+      isOnlyInitializable: true,
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,
-    })
-  ]
-}
+    }),
+  ],
+};

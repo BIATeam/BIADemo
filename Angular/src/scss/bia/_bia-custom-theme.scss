@@ -19,8 +19,7 @@ bia-classic-header {
   .mainbar {
     background-color: $biaMainBarColor;
     .project-title {
-      @if ($is-dark)
-      {
+      @if ($is-dark) {
         color: white;
       } @else {
         color: $biaAccentColor;
@@ -31,18 +30,20 @@ bia-classic-header {
       text-decoration: underline;
     }
 
-    .p-menubar{
+    .p-menubar {
       padding: 0px;
     }
-    
   }
 }
 
 // classic-layout-theme
 bia-classic-layout {
   .content {
-    background-image: linear-gradient(rgba($biaBgColor, 0.6), rgba($biaBgColor, 0.6)),
-      url('~/assets/bia/bg-default.jpg');
+    background-image: linear-gradient(
+        rgba($biaBgColor, 0.6),
+        rgba($biaBgColor, 0.6)
+      ),
+      url('~/assets/bia/img/bg-default.jpg');
   }
 
   &.no-margin {
@@ -91,25 +92,29 @@ bia-table-controller {
 
 // For table calc mode
 .bia-calc-form {
-  p-celleditor, tfoot {
+  p-celleditor,
+  tfoot {
     input {
       width: 100%;
     }
     .p-inputtext {
-      padding:0!important;
+      padding: 0 !important;
     }
     .p-multiselect-label {
-      padding:0!important;
+      padding: 0 !important;
     }
   }
-  .p-datatable-tbody,.p-datatable-tfoot{
+  .p-datatable-tbody,
+  .p-datatable-tfoot {
     td {
-      position: relative;
       .bia-star-mandatory {
         position: absolute;
       }
     }
-  } 
+    td:not(.p-frozen-column) {
+      position: relative;
+    }
+  }
 }
 
 // For view

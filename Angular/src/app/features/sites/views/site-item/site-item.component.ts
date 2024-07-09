@@ -8,30 +8,37 @@ import { AppState } from 'src/app/store/state';
 import { SiteService } from '../../services/site.service';
 
 @Component({
-  templateUrl: '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
-  styleUrls: ['../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss']
+  selector: 'app-sites-item',
+  templateUrl:
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+  styleUrls: [
+    '../../../../shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+  ],
 })
-export class SiteItemComponent extends CrudItemItemComponent<Site> implements OnInit {
-  constructor(protected store: Store<AppState>,
+export class SiteItemComponent
+  extends CrudItemItemComponent<Site>
+  implements OnInit
+{
+  constructor(
+    protected store: Store<AppState>,
     protected injector: Injector,
     public siteService: SiteService,
-    protected layoutService: BiaClassicLayoutService,
+    protected layoutService: BiaClassicLayoutService
   ) {
     super(injector, siteService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.sub.add
-      (
-        this.siteService.crudItem$.subscribe((site) => {
-          if (site?.title) {
-            this.route.data.pipe(first()).subscribe(routeData => {
-              (routeData as any)['breadcrumb'] = site.title;
-            });
-            this.layoutService.refreshBreadcrumb();
-          }
-        })
-      );
+    this.sub.add(
+      this.siteService.crudItem$.subscribe(site => {
+        if (site?.title) {
+          this.route.data.pipe(first()).subscribe(routeData => {
+            (routeData as any)['breadcrumb'] = site.title;
+          });
+          this.layoutService.refreshBreadcrumb();
+        }
+      })
+    );
   }
 }

@@ -1,8 +1,9 @@
-﻿// <copyright file="BIADataContext.cs" company="BIA">
+﻿// <copyright file="BiaDataContext.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Data;
@@ -11,25 +12,27 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
-    using EFCore.BulkExtensions;
     using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Storage;
     using Microsoft.Extensions.Logging;
 
-    public class BIADataContext : DbContext, IQueryableUnitOfWork
+    /// <summary>
+    /// Bia Data Context.
+    /// </summary>
+    public class BiaDataContext : DbContext, IQueryableUnitOfWork
     {
         /// <summary>
         /// The current logger.
         /// </summary>
-        private readonly ILogger<BIADataContext> logger;
+        private readonly ILogger<BiaDataContext> logger;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataContext"/> class.
+        /// Initializes a new instance of the <see cref="BiaDataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public BIADataContext(DbContextOptions options, ILogger<BIADataContext> logger)
+        public BiaDataContext(DbContextOptions options, ILogger<BiaDataContext> logger)
             : base(options)
         {
             this.logger = logger;
@@ -111,39 +114,53 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task AddBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            await this.BulkInsertAsync(items?.ToList());
+            if (this.Database.ProviderName.EndsWith(".SqlServer"))
+            {
+                SqlServerBulkHelper.Insert(this, items?.ToList());
+            }
+            else
+            {
+                throw new NotImplementedException("this.Database.ProviderName: " + this.Database.ProviderName);
+            }
         }
 
         /// <summary>
-        /// Bulk function to update entities.
+        /// Bulk function to update entities. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to update.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task UpdateBulkAsync<TEntity>(IEnumerable<TEntity> items)
+            where TEntity : class
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkUpdateAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Bulk function to delete entities.
+        /// Bulk function to delete entities. Obsolete in V3.9.0.
         /// </summary>
         /// <typeparam name="TEntity">The entity type.</typeparam>
         /// <param name="items">List of the items to delete.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items) where TEntity : class
+#pragma warning disable S1133 // Deprecated code should be removed
+        [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
+#pragma warning restore S1133 // Deprecated code should be removed
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task RemoveBulkAsync<TEntity>(IEnumerable<TEntity> items)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            where TEntity : class
         {
-            using (IDbContextTransaction transaction = this.Database.BeginTransaction())
-            {
-                await this.BulkDeleteAsync(items?.ToList(), new BulkConfig { UseTempDB = true });
-                await transaction.CommitAsync();
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -179,11 +196,19 @@ namespace BIA.Net.Core.Infrastructure.Data
             this.Entry(item).State = EntityState.Modified;
         }
 
+        /// <summary>
+        /// OnModelCreating.
+        /// </summary>
+        /// <param name="modelBuilder">the model Builder.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
         }
 
+        /// <summary>
+        /// OnEndModelCreating.
+        /// </summary>
+        /// <param name="modelBuilder">the model Builder.</param>
         protected void OnEndModelCreating(ModelBuilder modelBuilder)
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);

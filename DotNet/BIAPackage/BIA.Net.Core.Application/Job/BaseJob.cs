@@ -5,9 +5,7 @@
 namespace BIA.Net.Core.Application.Job
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Helpers;
     using Hangfire;
     using Hangfire.Storage;
     using Microsoft.Extensions.Configuration;
@@ -24,6 +22,18 @@ namespace BIA.Net.Core.Application.Job
         private readonly string projectName;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BaseJob"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="logger">The logger.</param>
+        protected BaseJob(IConfiguration configuration, ILogger logger)
+        {
+            this.Configuration = configuration;
+            this.Logger = logger;
+            this.projectName = this.Configuration["Project:Name"];
+        }
+
+        /// <summary>
         /// The logger.
         /// </summary>
         protected ILogger Logger { get; }
@@ -34,36 +44,27 @@ namespace BIA.Net.Core.Application.Job
         protected IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseJob"/> class.
-        /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="logger">The logger.</param>
-        public BaseJob(IConfiguration configuration, ILogger logger)
-        {
-            this.Configuration = configuration;
-            this.Logger = logger;
-            this.projectName = this.Configuration["Project:Name"];
-        }
-
-        /// <summary>
         /// Execute the purpose of this job.
         /// </summary>
-        /// <returns>The <see cref="Task"/> representing the operation to perform.</returns>
         public void Run()
         {
             string taskName = this.GetType().Name;
-            this.Logger.LogInformation("{time}: Begin {taskName}", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
+            string message = "{time}: Begin {taskName}";
+            this.Logger.LogInformation(message, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
             try
             {
                 Task t = Task.Run(() => this.RunMonitoredTask());
                 t.Wait();
-                this.Logger.LogInformation("Task {id} Status: {status}", t.Id, t.Status);
-                this.Logger.LogInformation("{time}: End {taskName} with Success.", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
+                message = "Task {id} Status: {status}";
+                this.Logger.LogInformation(message, t.Id, t.Status);
+                message = "{time}: End {taskName} with Success.";
+                this.Logger.LogInformation(message, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "{time}: End {taskName} with Fail.", DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
-                throw;
+                message = "{time}: End {taskName} with Fail.";
+                this.Logger.LogError(ex, message, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), taskName);
+                throw new Common.Exceptions.JobException("Job Run Failed", ex);
             }
             finally
             {
@@ -78,13 +79,13 @@ namespace BIA.Net.Core.Application.Job
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         protected virtual async Task RunMonitoredTask()
         {
-            throw new Exception($"Method RunMonitoredTask should be define in {this.GetType().Name}.");
+            throw new Common.Exceptions.JobException($"Method RunMonitoredTask should be define in {this.GetType().Name}.");
         }
 
         /// <summary>
         /// Log details about every recurring job.
         /// </summary>
-        private void LogAllJobsDetails()
+        protected void LogAllJobsDetails()
         {
             using (var connection = JobStorage.Current.GetConnection())
             {
@@ -112,11 +113,12 @@ namespace BIA.Net.Core.Application.Job
         {
             using (var connection = JobStorage.Current.GetConnection())
             {
-                var job = connection.GetRecurringJobs().FirstOrDefault(j => j.Id.Equals(id));
+                var job = connection.GetRecurringJobs().Find(j => j.Id.Equals(id));
 
                 if (job == null)
                 {
-                    this.Logger.LogInformation($"No recurring job '{id}'.");
+                    string message = $"No recurring job '{id}'.";
+                    this.Logger.LogInformation(message);
                 }
                 else
                 {
@@ -133,17 +135,19 @@ namespace BIA.Net.Core.Application.Job
         {
             if (!job.NextExecution.HasValue)
             {
-                this.Logger.LogInformation($"Job '{job.Id}' has not been scheduled yet. Check again later.");
+                string message = $"Job '{job.Id}' has not been scheduled yet. Check again later.";
+                this.Logger.LogInformation(message);
             }
             else
             {
-                this.Logger.LogInformation($"Job '{job.Id}':{Environment.NewLine}" +
+                string message = $"Job '{job.Id}':{Environment.NewLine}" +
                     $"- Created at: {job.CreatedAt?.ToLocalTime()}{Environment.NewLine}" +
                     $"- CRON: {job.Cron}{Environment.NewLine}" +
                     $"- Error: {job.Error}{Environment.NewLine}" +
                     $"- LastExecution: {job.LastExecution?.ToLocalTime()}{Environment.NewLine}" +
                     $"- Next execution: {job.NextExecution.Value.ToLocalTime()}{Environment.NewLine}" +
-                    $"- Queue: {job.Queue}");
+                    $"- Queue: {job.Queue}";
+                this.Logger.LogInformation(message);
             }
         }
     }

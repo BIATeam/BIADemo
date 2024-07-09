@@ -1,15 +1,24 @@
+/* eslint-disable deprecation/deprecation */
 import { ALT, CONTROL, SHIFT } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { fromEvent, Subject, Subscription, Observable } from 'rxjs';
-import { buffer, debounceTime, exhaustMap, filter, map, startWith, take } from 'rxjs/operators';
+import {
+  buffer,
+  debounceTime,
+  exhaustMap,
+  filter,
+  map,
+  startWith,
+  take,
+} from 'rxjs/operators';
 
 export const MIN_SIZE = 3;
 export const MAX_DELAY_BETWEEN_KEYS_MS = 40;
 export type BiaBarcodeMatcher<T> = (barcode: string) => T;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BiaBarcodeScannerService implements OnDestroy {
   private rawBarcodeScan = new Subject<string>();
@@ -22,9 +31,11 @@ export class BiaBarcodeScannerService implements OnDestroy {
   private matchers: [BiaBarcodeMatcher<any>, Subject<any>][] = [];
 
   constructor(@Inject(DOCUMENT) document: any, zone: NgZone) {
-    const keyDownUniq$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(filter((evt) => !evt.repeat));
+    const keyDownUniq$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+      filter(evt => !evt.repeat)
+    );
     const barcodeScan$ = keyDownUniq$.pipe(
-      exhaustMap((e) =>
+      exhaustMap(e =>
         keyDownUniq$.pipe(
           startWith(e),
           buffer(
@@ -36,24 +47,24 @@ export class BiaBarcodeScannerService implements OnDestroy {
           take(1)
         )
       ),
-      map((events) =>
+      map(events =>
         // We could filter at the beginning, but it may interfere with debounceTime
-        events.filter((evt) => {
+        events.filter(evt => {
           const code = evt.which || evt.keyCode;
           return [SHIFT, CONTROL, ALT].indexOf(code) === -1;
         })
       ),
-      filter((events) => events.length >= MIN_SIZE),
-      map((events) => this.processEventsToCode(events))
+      filter(events => events.length >= MIN_SIZE),
+      map(events => this.processEventsToCode(events))
     );
     // Avoid global angular tick every keydown
     zone.runOutsideAngular(() => {
-      this.sub = barcodeScan$.subscribe((barcode) => {
+      this.sub = barcodeScan$.subscribe(barcode => {
         zone.run(() => {
           this.rawBarcodeScan.next(barcode);
           for (const [matcherFn, subject] of this.matchers) {
             const res = matcherFn(barcode);
-            if (!!res) {
+            if (res) {
               subject.next(res);
               // Stop at first match. One scan => One match
               return;
@@ -74,8 +85,8 @@ export class BiaBarcodeScannerService implements OnDestroy {
   onBarcodeMatch<T>(matcherFn: BiaBarcodeMatcher<T>) {
     const subject = new Subject<NonNullable<T>>();
     this.matchers.push([matcherFn, subject]);
-    return new Observable<NonNullable<T>>((observer) => {
-      const sub = subject.subscribe((v) => observer.next(v));
+    return new Observable<NonNullable<T>>(observer => {
+      const sub = subject.subscribe(v => observer.next(v));
       return () => {
         const idx = this.matchers.findIndex(([fn]) => matcherFn === fn);
         this.matchers.splice(idx, 1);

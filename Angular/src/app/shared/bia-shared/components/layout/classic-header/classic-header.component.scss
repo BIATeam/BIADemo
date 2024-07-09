@@ -5,10 +5,9 @@
 }
 
 .topbar {
-  height: 35px;
+  min-height: 35px;
   color: white !important;
 }
-
 
 .logos,
 .controls {
@@ -22,10 +21,13 @@
 }
 
 .mainbar {
-  box-shadow: 0 1px 10px #0000001f, 0 4px 5px #00000024, 0 2px 4px -1px #0003;
+  box-shadow:
+    0 1px 10px #0000001f,
+    0 4px 5px #00000024,
+    0 2px 4px -1px #0003;
   // Warning any change to this area will affect custom main bar
   min-height: 70px;
-  z-index: 1;
+  z-index: 3;
   // ----
   nav {
     .nav-button {
@@ -79,7 +81,8 @@
     margin-right: 0.5em;
     // https://codepen.io/sosuke/pen/Pjoqqp
     // hexa: #f8a92b
-    filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg) brightness(98%) contrast(98%);
+    filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
+      brightness(98%) contrast(98%);
   }
 
   &.env-dev {
@@ -135,7 +138,12 @@
 bia-notification-team-warning {
   padding-top: 16px;
 }
+
 :host ::ng-deep {
+  // adjust height in topbar at minimu (35px)
+  .p-megamenu-root-list > .p-menuitem > .p-menuitem-content > .p-menuitem-link {
+    padding: 0px;
+  }
   bia-online-offline-icon {
     i {
       margin-left: 8px;
@@ -146,7 +154,7 @@ bia-notification-team-warning {
   }
   .separator {
     font-size: xxx-large;
-    margin-right: 12px;
+    margin-right: 5px;
   }
   .p-component {
     border-width: 0px !important;
@@ -162,9 +170,9 @@ bia-notification-team-warning {
     }
   }
   p-megamenu {
-    margin-left: -12px;
     .p-megamenu {
-      padding: 0;
+      padding-bottom: 0;
+      padding-top: 0;
     }
 
     .p-state-active {

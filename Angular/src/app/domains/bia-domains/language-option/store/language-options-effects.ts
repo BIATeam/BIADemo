@@ -14,16 +14,24 @@ import { LanguageOptionDas } from '../services/language-option-das.service';
 export class LanguageOptionsEffects {
   loadAll$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(DomainLanguageOptionsActions.loadAll) /* When action is dispatched */,
+      ofType(
+        DomainLanguageOptionsActions.loadAll
+      ) /* When action is dispatched */,
       /* startWith(loadAll()), */
       /* Hit the Languages Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Languages Reducers' will take care of the rest */
       switchMap(() =>
         this.languageDas.getList({ endpoint: 'allOptions' }).pipe(
-          map((languages) => DomainLanguageOptionsActions.loadAllSuccess({ languages: languages?.sort((a, b) => a.display.localeCompare(b.display)) })),
-          catchError((err) => {
-            this.biaMessageService.showError();
+          map(languages =>
+            DomainLanguageOptionsActions.loadAllSuccess({
+              languages: languages?.sort((a, b) =>
+                a.display.localeCompare(b.display)
+              ),
+            })
+          ),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
             return of(DomainLanguageOptionsActions.failure({ error: err }));
           })
         )
