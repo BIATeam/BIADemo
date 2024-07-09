@@ -18,11 +18,12 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         /// <param name="type">The type.</param>
         /// <param name="required">if set to <c>true</c> [required].</param>
         /// <param name="isParent">if set to <c>true</c> [is parent].</param>
-        public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false)
+        public BiaDtoFieldAttribute(string type = null, bool required = false, bool isParent = false, string itemType = null)
         {
             this.Type = type;
             this.Required = required;
             this.IsParent = isParent;
+            this.ItemType = itemType;
         }
 
         /// <summary>
@@ -39,5 +40,10 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
         /// "Block generation" field value.
         /// </summary>
         public bool IsParent { get; set; }
+
+        /// <summary>
+        /// "Item type" field value.
+        /// </summary>
+        public string ItemType { get; set; }
     }
 }

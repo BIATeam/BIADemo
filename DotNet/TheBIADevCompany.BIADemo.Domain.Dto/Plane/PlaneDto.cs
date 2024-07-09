@@ -80,11 +80,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the list of connecting airports.
         /// </summary>
+        [BiaDtoField(ItemType = "Airport")]
         public ICollection<OptionDto> ConnectingAirports { get; set; }
 
         /// <summary>
         /// Gets or sets the  plane type title.
         /// </summary>
+        [BiaDtoField(ItemType = "PlaneType")]
         public OptionDto PlaneType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of connecting airports.
+        /// </summary>
+        [BiaDtoField(ItemType = "PlaneType")]
+        public ICollection<OptionDto> SimilarTypes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the  plane type title.
+        /// </summary>
+        [BiaDtoField(ItemType = "Airport")]
+        public OptionDto CurrentAirport { get; set; }
     }
 }
