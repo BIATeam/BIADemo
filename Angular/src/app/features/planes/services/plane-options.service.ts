@@ -43,6 +43,14 @@ export class PlaneOptionsService extends CrudItemOptionsService {
     // BIAToolKit - End Option Airport
 
     /* BIAToolKit - Begin Option */
+    let cpt = 0;
+    // BIAToolKit - Begin Option PlaneType
+    let planeType = cpt++;
+    // BIAToolKit - End Option PlaneType
+    // BIAToolKit - Begin Option Airport
+    let airport = cpt++;
+    // BIAToolKit - End Option Airport
+
     this.dictOptionDtos$ = combineLatest([
       // BIAToolKit - Begin Option PlaneType
       this.planeTypeOptions$,
@@ -52,14 +60,19 @@ export class PlaneOptionsService extends CrudItemOptionsService {
       // BIAToolKit - End Option Airport
     ]).pipe(
       map(options => {
-        let cpt = 0;
         return <DictOptionDto[]>[
-          // BIAToolKit - Begin Option PlaneType
-          new DictOptionDto('planeType', options[cpt++]),
-          // BIAToolKit - End Option PlaneType
-          // BIAToolKit - Begin Option Airport
-          new DictOptionDto('connectingAirports', options[cpt++]),
-          // BIAToolKit - End Option Airport
+          // BIAToolKit - Begin OptionField Airport connectingAirports
+          new DictOptionDto('connectingAirports', options[airport]),
+          // BIAToolKit - End OptionField Airport connectingAirports
+          // BIAToolKit - Begin OptionField PlaneType planeType
+          new DictOptionDto('planeType', options[planeType]),
+          // BIAToolKit - End OptionField PlaneType planeType
+          // BIAToolKit - Begin OptionField PlaneType similarType
+          new DictOptionDto('similarType', options[planeType]),
+          // BIAToolKit - End OptionField PlaneType similarType
+          // BIAToolKit - Begin OptionField Airport currentAirport
+          new DictOptionDto('currentAirport', options[airport]),
+          // BIAToolKit - End OptionField Airport currentAirport
         ];
       })
     );
