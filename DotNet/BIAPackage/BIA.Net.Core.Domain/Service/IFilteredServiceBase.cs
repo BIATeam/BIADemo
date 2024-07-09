@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.Specification;
@@ -207,6 +208,32 @@ namespace BIA.Net.Core.Domain.Service
         [Obsolete(message: "RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning restore S1133 // Deprecated code should be removed
         Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = "Delete", string queryMode = "Delete");
+
+        /// <summary>
+        /// Save several entity with its identifier safe asynchronous.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of the other dto.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of the other mapper.</typeparam>
+        /// <param name="dtos">The dtos.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="rightAdd">The right add.</param>
+        /// <param name="rightUpdate">The right update.</param>
+        /// <param name="rightDelete">The right delete.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <returns>SaveSafeReturn struct.</returns>
+        Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+            IEnumerable<TOtherDto> dtos,
+            BiaClaimsPrincipal principal,
+            string rightAdd,
+            string rightUpdate,
+            string rightDelete,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new();
 
         /// <summary>
         /// Save several entity with its identifier.

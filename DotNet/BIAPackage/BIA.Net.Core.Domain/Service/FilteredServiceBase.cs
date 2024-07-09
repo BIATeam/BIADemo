@@ -14,7 +14,7 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -416,6 +416,154 @@ namespace BIA.Net.Core.Domain.Service
         }
 
         /// <summary>
+        /// Save several entity with its identifier safe asynchronous.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of the other dto.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of the other mapper.</typeparam>
+        /// <param name="dtos">The dtos.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="rightAdd">The right add.</param>
+        /// <param name="rightUpdate">The right update.</param>
+        /// <param name="rightDelete">The right delete.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <returns>SaveSafeReturn struct.</returns>
+        public virtual async Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+            IEnumerable<TOtherDto> dtos,
+            BiaClaimsPrincipal principal,
+            string rightAdd,
+            string rightUpdate,
+            string rightDelete,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null)
+            where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
+            where TOtherDto : BaseDto<TKey>, new()
+        {
+            StringBuilder strBldr = new StringBuilder();
+            var exceptions = new List<Exception>();
+
+            int nbAdded = 0;
+            int nbUpdated = 0;
+            int nbDeleted = 0;
+            int nbError = 0;
+            SaveSafeReturn<TOtherDto> saveSafeReturn = new ();
+
+            bool canAdd = true;
+            bool canUpdate = true;
+            bool canDelete = true;
+            if (principal != null)
+            {
+                IEnumerable<string> currentUserPermissions = principal.GetUserPermissions();
+                canAdd = rightAdd == null || currentUserPermissions?.Any(x => x == rightAdd) == true;
+                canUpdate = rightUpdate == null || currentUserPermissions?.Any(x => x == rightUpdate) == true;
+                canDelete = rightUpdate == null || currentUserPermissions?.Any(x => x == rightDelete) == true;
+            }
+
+            if (!canAdd && dtos.Any(u => u.DtoState == DtoState.Added))
+            {
+                strBldr.AppendLine("No permission to add users.");
+                nbError++;
+            }
+
+            if (!canUpdate && dtos.Any(u => u.DtoState == DtoState.Modified))
+            {
+                strBldr.AppendLine("No permission to update users.");
+                nbError++;
+            }
+
+            if (!canDelete && dtos.Any(u => u.DtoState == DtoState.Deleted))
+            {
+                strBldr.AppendLine("No permission to delete users.");
+                nbError++;
+            }
+
+            saveSafeReturn.DtosSaved = new List<TOtherDto>();
+            var dtoList = dtos.ToList();
+            if (dtoList.Any())
+            {
+                foreach (var dto in dtoList)
+                {
+                    try
+                    {
+                        TOtherDto returnDto = null;
+
+                        switch (dto.DtoState)
+                        {
+                            case DtoState.Added:
+                                if (canAdd)
+                                {
+                                    returnDto = await this.AddAsync<TOtherDto, TOtherMapper>(
+                                        dto,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbAdded++;
+                                }
+
+                                break;
+
+                            case DtoState.Modified:
+                                if (canUpdate)
+                                {
+                                    returnDto = await this.UpdateAsync<TOtherDto, TOtherMapper>(
+                                        dto,
+                                        accessMode: accessMode ?? AccessMode.Update,
+                                        queryMode: queryMode ?? QueryMode.Update,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbUpdated++;
+                                }
+
+                                break;
+
+                            case DtoState.Deleted:
+                                if (canDelete)
+                                {
+                                    returnDto = await this.RemoveAsync<TOtherDto, TOtherMapper>(
+                                        dto.Id,
+                                        accessMode: accessMode ?? AccessMode.Delete,
+                                        queryMode: queryMode ?? QueryMode.Delete,
+                                        mapperMode: mapperMode);
+                                    this.Repository.UnitOfWork.Reset();
+                                    nbDeleted++;
+                                }
+
+                                break;
+                        }
+
+                        if (returnDto != null)
+                        {
+                            saveSafeReturn.DtosSaved.Add(returnDto);
+                        }
+                    }
+                    catch (ElementNotFoundException ex)
+                    {
+                        strBldr.AppendLine("Element " + dto.Id + " not exist or not authorized.");
+                        exceptions.Add(ex);
+                        this.Repository.UnitOfWork.Reset();
+                        nbError++;
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                        this.Repository.UnitOfWork.Reset();
+                        nbError++;
+                    }
+                }
+            }
+
+            if (nbError > 0)
+            {
+                strBldr.Insert(0, $"Added: {nbAdded}, Updated: {nbUpdated}, Deleted: {nbDeleted}, Error{(nbError > 1 ? "s" : null)}: {nbError}{Environment.NewLine}");
+                saveSafeReturn.ErrorMessage = strBldr.ToString();
+                saveSafeReturn.AggregateException = new AggregateException(exceptions);
+            }
+
+            return saveSafeReturn;
+        }
+
+        /// <summary>
         /// Save several entity with its identifier.
         /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
@@ -424,7 +572,9 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
-        /// <returns>The saved DTOs.</returns>
+        /// <returns>
+        /// The saved DTOs.
+        /// </returns>
         public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             string accessMode = null,
@@ -470,6 +620,7 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
         {
             TOtherDto returnDto = dto;
+
             switch (dto.DtoState)
             {
                 case DtoState.Added:

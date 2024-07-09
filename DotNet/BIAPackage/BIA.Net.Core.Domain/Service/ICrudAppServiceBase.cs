@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Domain.Service
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
@@ -218,6 +219,30 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTO.</returns>
         Task<List<TDto>> RemoveAsync(List<TKey> ids, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete, string mapperMode = null);
+
+        /// <summary>
+        /// Save several entity with its identifier safe asynchronous.
+        /// </summary>
+        /// <typeparam name="TOtherDto">The type of the other dto.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of the other mapper.</typeparam>
+        /// <param name="dtos">The dtos.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="rightAdd">The right add.</param>
+        /// <param name="rightUpdate">The right update.</param>
+        /// <param name="rightDelete">The right delete.</param>
+        /// <param name="accessMode">The access mode.</param>
+        /// <param name="queryMode">The query mode.</param>
+        /// <param name="mapperMode">The mapper mode.</param>
+        /// <returns>SaveSafeReturn struct.</returns>
+        Task<SaveSafeReturn<TDto>> SaveSafeAsync(
+            IEnumerable<TDto> dtos,
+            BiaClaimsPrincipal principal,
+            string rightAdd,
+            string rightUpdate,
+            string rightDelete,
+            string accessMode = null,
+            string queryMode = null,
+            string mapperMode = null);
 
         /// <summary>
         /// Save the DTO in DB regarding to theirs state.
