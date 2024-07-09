@@ -44,6 +44,7 @@ export class UsersIndexComponent
     this.canEdit = this.authService.hasPermission(Permission.User_UpdateRoles);
     this.canDelete = this.authService.hasPermission(Permission.User_Delete);
     this.canAdd = this.authService.hasPermission(Permission.User_Add);
+    this.canSave = this.authService.hasPermission(Permission.User_Save);
   }
   ngOnInit() {
     super.ngOnInit();

@@ -85,6 +85,7 @@ export enum Permission {
 
   User_Add = 'User_Add',
   User_Delete = 'User_Delete',
+  User_Save = 'User_Save',
   User_List = 'User_List',
   User_ListAD = 'User_ListAD',
   User_List_Access = 'User_List_Access',

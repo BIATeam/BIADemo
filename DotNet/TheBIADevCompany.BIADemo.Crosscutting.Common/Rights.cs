@@ -462,6 +462,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Delete = "User_Delete";
 
             /// <summary>
+            /// The right to delete users.
+            /// </summary>
+            public const string Save = "User_Save";
+
+            /// <summary>
             /// The right to synchronize users.
             /// </summary>
             public const string Sync = "User_Sync";

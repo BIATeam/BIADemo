@@ -67,7 +67,7 @@ export const ROUTES: Routes = [
             maxWidth: '80vw',
             maxHeight: '80vh',
           },
-          permission: Permission.Plane_Create,
+          permission: Permission.Plane_Save,
           title: 'plane.import',
           injectComponent: PlaneBulkComponent,
           dynamicComponent: () =>

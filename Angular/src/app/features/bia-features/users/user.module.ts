@@ -45,7 +45,7 @@ export const ROUTES: Routes = [
             maxWidth: '80vw',
             maxHeight: '80vh',
           },
-          permission: Permission.User_Add,
+          permission: Permission.User_Save,
           title: 'user.import',
           injectComponent: UserBulkComponent,
           dynamicComponent: () =>

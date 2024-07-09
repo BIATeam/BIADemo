@@ -5,7 +5,7 @@
       [canAdd]="canAdd"
       [canDelete]="canDelete"
       [canEdit]="canEdit"
-      [canBulk]="crudConfiguration.useBulk"
+      [canBulk]="canSave && crudConfiguration.useBulk"
       [canExportCSV]="true"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('user.listOf')"

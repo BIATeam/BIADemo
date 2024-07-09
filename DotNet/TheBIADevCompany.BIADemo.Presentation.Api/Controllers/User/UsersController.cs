@@ -348,7 +348,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        [Authorize(Roles = Rights.Users.Delete + "," + Rights.Users.UpdateRoles + "," + Rights.Users.Add)]
+        [Authorize(Roles = Rights.Users.Save)]
         public async Task<IActionResult> Save(IEnumerable<UserDto> dtos)
         {
             var dtoList = dtos.ToList();
