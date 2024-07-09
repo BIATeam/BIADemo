@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                     { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
-                    { HeaderName.SimilarType, plane => plane.SimilarType.Select(x => x.Title).OrderBy(x => x) },
+                    { HeaderName.SimilarType, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
                 };
             }
         }
@@ -100,10 +100,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 foreach (var planeTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var similarType = entity.SimilarType.FirstOrDefault(x => x.Id == planeTypeDto.Id);
+                    var similarType = entity.SimilarTypes.FirstOrDefault(x => x.Id == planeTypeDto.Id);
                     if (similarType != null)
                     {
-                        entity.SimilarType.Remove(similarType);
+                        entity.SimilarTypes.Remove(similarType);
                     }
                 }
 
@@ -157,7 +157,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     Display = ca.Name,
                 }).OrderBy(x => x.Display).ToList(),
 
-                SimilarTypes = entity.SimilarType.Select(ca => new OptionDto
+                SimilarTypes = entity.SimilarTypes.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
                     Display = ca.Title,

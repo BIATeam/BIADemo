@@ -111,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the list of similar plane type. Direct access.
         /// </summary>
-        public ICollection<PlaneType> SimilarType { get; set; }
+        public ICollection<PlaneType> SimilarTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the list of similar plane type. Via the jointure table.

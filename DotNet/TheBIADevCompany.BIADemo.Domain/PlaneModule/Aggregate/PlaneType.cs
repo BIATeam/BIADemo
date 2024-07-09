@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the list of planes using the airport. Direct access.
         /// </summary>
-        public ICollection<Plane> ClientPlanesTypes { get; set; }
+        public ICollection<Plane> ClientPlanes { get; set; }
 
         /// <summary>
         /// Gets or sets the list of planes using the airport. Via the jointure table.
