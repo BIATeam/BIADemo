@@ -7,6 +7,10 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq.Expressions;
+    using System.Runtime.CompilerServices;
+    using System.Runtime.Serialization;
+    using System.Runtime.Serialization.Formatters.Binary;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Serialization;
@@ -19,6 +23,8 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
     /// </summary>
     internal static class RabbitMQHelper
     {
+        private static BinaryFormatter formatter = new BinaryFormatter();
+
         /// <summary>
         /// Send Message to a specific endpoint.
         /// </summary>
@@ -45,6 +51,8 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                         routingKey: topic.RoutingKey,
                         basicProperties: null,
                         body: bytes);
+                }
+            }
 
             return true;
         }
@@ -77,9 +85,11 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                 using MemoryStream stream = new MemoryStream(body);
                 XmlSerializer xmlSerializer = new(body.GetType());
                 if (xmlSerializer.Deserialize(stream) is T result)
-                    {
+                        {
                             action.Invoke(result);
                         }
+#pragma warning restore SYSLIB0011 // Type or member is obsolete
+                    }
                 };
 
                 channel.QueueBind(
@@ -98,4 +108,5 @@ namespace BIA.Net.Queue.Infrastructure.Service.Helpers
                 }
             }
         }
+    }
 }
