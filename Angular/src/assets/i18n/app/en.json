@@ -61,6 +61,7 @@
     "add": "Add plane",
     "capacity": "Capacity",
     "connectingAirports": "Connecting Airports",
+    "currentAirport": "Current Airport",
     "deliveryDate": "Delivery Date",
     "edit": "Edit plane",
     "engines": "Engines",
@@ -73,6 +74,7 @@
     "msn": "Msn",
     "planeType": "Plane Type",
     "probability": "Probability",
+    "similarTypes": "Similar Planes Types",
     "site": "Airline",
     "syncTime": "Synchronization time"
   },
