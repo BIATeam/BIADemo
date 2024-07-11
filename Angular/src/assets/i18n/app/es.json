@@ -61,6 +61,7 @@
     "add": "Añadir plano",
     "capacity": "Capacidad",
     "connectingAirports": "Aeropuertos de conexión",
+    "currentAirport": "Aeropuerto actual",
     "deliveryDate": "Fecha de entrega",
     "edit": "Editar plano",
     "engines": "motors",
@@ -73,6 +74,7 @@
     "msn": "Msn",
     "planeType": "Tipos de planos",
     "probability": "Oportunidad",
+    "similarTypes": "Tipos de planos similares",
     "site": "Aerolínea",
     "syncTime": "Tiempo de sincronización"
   },

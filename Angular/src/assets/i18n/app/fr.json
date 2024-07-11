@@ -61,6 +61,7 @@
     "add": "Ajouter avion",
     "capacity": "Capacité",
     "connectingAirports": "Aéroports de connection",
+    "currentAirport": "Aéroport courant",
     "deliveryDate": "Date de livraison",
     "edit": "Modifier avion",
     "engines": "Moteurs",
@@ -73,6 +74,7 @@
     "msn": "Msn",
     "planeType": "Type d'avions",
     "probability": "Probabilité",
+    "similarTypes": "Types d'avions similaires",
     "site": "Compagnie aérienne",
     "syncTime": "Heure de synchronisation"
   },
