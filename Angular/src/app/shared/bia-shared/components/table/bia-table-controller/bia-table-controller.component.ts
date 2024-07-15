@@ -86,7 +86,7 @@ export class BiaTableControllerComponent
   defaultDisplayedColumns: string[];
   firstChange = true;
 
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(public translateService: TranslateService) {}
 
@@ -156,7 +156,7 @@ export class BiaTableControllerComponent
     return this.viewListComponent?.getCurrentViewName();
   }
 
-  private onColumnsChange(changes: SimpleChanges) {
+  protected onColumnsChange(changes: SimpleChanges) {
     if (
       this.firstChange === true &&
       this.columns &&
