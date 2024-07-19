@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
+import {
+  combineLatest,
+  /* BIAToolKit - Begin Option */
+  Observable,
+  /* BIAToolKit - End Option */
+} from 'rxjs';
+import { map } from 'rxjs/operators';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 /* BIAToolKit - Begin Option */
 import { Store } from '@ngrx/store';
-import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
-import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { AppState } from 'src/app/store/state';
 /* BIAToolKit - End Option */
 // BIAToolKit - Begin Option Airport
@@ -44,6 +49,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
 
     /* BIAToolKit - Begin Option */
     let cpt = 0;
+    /* BIAToolKit - End Option */
     // BIAToolKit - Begin Option PlaneType
     const planeType = cpt++;
     // BIAToolKit - End Option PlaneType
@@ -76,7 +82,6 @@ export class PlaneOptionsService extends CrudItemOptionsService {
         ];
       })
     );
-    /* BIAToolKit - End Option */
   }
 
   /* BIAToolKit - Begin Option */

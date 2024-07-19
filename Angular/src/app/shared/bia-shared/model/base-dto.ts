@@ -8,8 +8,4 @@ export class BaseDto {
     this.id = id;
     this.dtoState = dtoState;
   }
-
-  displayItemName(): string {
-    return this.id.toString();
-  }
 }
