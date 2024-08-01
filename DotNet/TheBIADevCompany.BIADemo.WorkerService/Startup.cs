@@ -64,7 +64,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
 
             // End BIADemo
+
+            // BIAToolKit - Begin ModelFirst
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
+
+            // BIAToolKit - End ModelFirst
         }
 
         /// <summary>

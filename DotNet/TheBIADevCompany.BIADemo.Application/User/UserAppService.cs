@@ -112,7 +112,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userFromDirectory != null)
             {
                 User user = new User();
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
+                this.userSynchronizeDomainService.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
                 if (!func(user))

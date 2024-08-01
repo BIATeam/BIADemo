@@ -39,11 +39,15 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .ConfigureServices((hostingContext, services) =>
                 {
                     IConfiguration configuration = hostingContext.Configuration;
+
+                    // BIAToolKit - Begin ModelFirst
                     services.AddDbContext<DataContext>(options =>
                     {
                         options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
                     });
                     services.AddHostedService<DeployDBService>();
+
+                    // BIAToolKit - End ModelFirst
 
                     // Comment those lines if you do not use hangfire
                     services.AddHangfireServer(hfOptions =>

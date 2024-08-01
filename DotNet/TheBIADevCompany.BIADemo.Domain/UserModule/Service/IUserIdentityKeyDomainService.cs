@@ -8,7 +8,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+
+    // BIAToolKit - End ModelFirst
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -16,6 +20,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public interface IUserIdentityKeyDomainService
     {
+        // BIAToolKit - Begin ModelFirst
+
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
@@ -31,13 +37,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         Expression<Func<User, bool>> CheckDatabaseIdentityKey(List<string> identityKeys);
 
         /// <summary>
-        /// Checks the directory identity key.
-        /// </summary>
-        /// <param name="identityKey">The identity key.</param>
-        /// <returns>The checks the directory identity key.</returns>
-        Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey);
-
-        /// <summary>
         /// Gets the database identity key.
         /// </summary>
         /// <param name="user">The user.</param>
@@ -50,6 +49,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="user">The user dto.</param>
         /// <returns>The userDto identity key.</returns>
         string GetDtoIdentityKey(UserDto user);
+
+        // BIAToolKit - End ModelFirst
+
+        /// <summary>
+        /// Checks the directory identity key.
+        /// </summary>
+        /// <param name="identityKey">The identity key.</param>
+        /// <returns>The checks the directory identity key.</returns>
+        Expression<Func<UserFromDirectory, bool>> CheckDirectoryIdentityKey(string identityKey);
 
         /// <summary>
         /// Gets the directory identity key.

@@ -16,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public class UserIdentityKeyDomainService : IUserIdentityKeyDomainService
     {
+        // BIAToolKit - Begin ModelFirst
         // -------------------------------- DataBase EntityKey --------------------------------------
 
         /// <summary>
@@ -65,6 +66,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         }
 
         // -------------------------------- Directory EntityKey --------------------------------------
+        // BIAToolKit - End ModelFirst
 
         /// <summary>
         /// Check the Identity Key from the User in database.

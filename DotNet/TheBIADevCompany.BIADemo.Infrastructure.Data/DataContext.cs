@@ -26,10 +26,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
+    // BIAToolKit - Begin ModelFirst
+
     /// <summary>
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
+
+    // BIAToolKit - End ModelFirst
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -41,6 +45,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             : base(options, logger)
         {
         }
+
+        // BIAToolKit - Begin ModelFirst
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
@@ -112,6 +118,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
+        // BIAToolKit - End ModelFirst
+
         // Begin BIADemo
 
         /// <summary>
@@ -152,12 +160,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
 
+            // BIAToolKit - Begin ModelFirst
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             NotificationModelBuilder.CreateModel(modelBuilder);
             AuditModelBuilder.CreateModel(modelBuilder);
+
+            // BIAToolKit - End ModelFirst
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);

@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Reflection;
     using Audit.Core;
@@ -24,29 +25,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
-    // BIAToolKit - Begin Dependency 1
-    // BIAToolKit - End Dependency 1
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Application.Job;
-
-    // BIAToolKit - Begin Partial Dependency 1 Plane
-    using TheBIADevCompany.BIADemo.Application.Plane;
-
-    // BIAToolKit - End Partial Dependency 1 Plane
-    // End BIADemo
-    using TheBIADevCompany.BIADemo.Application.Site;
-    using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Application.View;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
@@ -95,52 +77,25 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
-            // Application Layer
-            collection.AddTransient<ITeamAppService, TeamAppService>();
-            collection.AddTransient<ISiteAppService, SiteAppService>();
-            collection.AddTransient<IMemberAppService, MemberAppService>();
-            collection.AddTransient<IRoleAppService, RoleAppService>();
-            collection.AddTransient<IUserAppService, UserAppService>();
-            collection.AddTransient<IViewAppService, ViewAppService>();
-            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Application",
+                excludedServiceNames: new List<string>() { "AuthAppService", "AuthApiAppService" });
 
             if (isApi)
             {
-                collection.AddTransient<IAuthAppService, AuthAppService>();
+                RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Application",
+                includedServiceNames: new List<string>() { "AuthAppService", "AuthApiAppService" });
             }
 
-            // Begin BIADemo
-            collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
-            collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
-
-            // BIAToolKit - Begin Partial Dependency 2 Plane
-            collection.AddTransient<IPlaneAppService, PlaneAppService>();
-
-            // BIAToolKit - End Partial Dependency 2 Plane
-            collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
-
-            // BIAToolKit - Begin Partial Dependency 2 Airport
-            collection.AddTransient<IAirportAppService, AirportAppService>();
-
-            // BIAToolKit - End Partial Dependency 2 Airport
-            collection.AddTransient<IEngineAppService, EngineAppService>();
-            collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
-            collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
-
-            // End BIADemo
-
-            // BIAToolKit - Begin Dependency 2
-            // BIAToolKit - End Dependency 2
+            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
-            // Domain Layer
-            collection.AddTransient<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
-            collection.AddTransient<IUserPermissionDomainService, UserPermissionDomainService>();
-            collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
-            collection.AddTransient<INotificationDomainService, NotificationDomainService>();
-            collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
+            RegisterServicesFromAssembly(collection: collection, assemblyName: "TheBIADevCompany.BIADemo.Domain");
 
             Type templateType = typeof(BaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
@@ -183,27 +138,28 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 },
                 contextLifetime: ServiceLifetime.Transient);
 
-            collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
-            collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
-            collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
+            RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
+                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain");
+
+            // BIAToolKit - Begin ModelFirst
             collection.AddSingleton<AuditFeature>();
 
-            // Begin BIADemo
-            collection.AddTransient<IEngineRepository, EngineRepository>();
-
-            // End BIADemo
+            // BIAToolKit - End ModelFirst
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
         {
-            // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+
+            // BIAToolKit - Begin ModelFirst
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
-
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+            // BIAToolKit - End ModelFirst
 
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
@@ -233,6 +189,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             return httpClientHandler;
+        }
+
+        private static void RegisterServicesFromAssembly(
+            IServiceCollection collection,
+            string assemblyName,
+            string interfaceAssemblyName = null,
+            IEnumerable<string> excludedServiceNames = null,
+            IEnumerable<string> includedServiceNames = null)
+        {
+            Assembly classAssembly = Assembly.Load(assemblyName);
+            Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
+
+            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
+            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
+
+            IEnumerable<(Type classType, Type interfaceType)> mappings = from classType in classTypes
+                                                                         join interfaceType in interfaceTypes
+                                                                         on "I" + classType.Name equals interfaceType.Name
+                                                                         where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
+                                                                               (includedServiceNames == null || includedServiceNames.Contains(classType.Name))
+                                                                         select (classType, interfaceType);
+
+            foreach (var (classType, interfaceType) in mappings)
+            {
+                collection.AddTransient(interfaceType, classType);
+            }
         }
     }
 }
