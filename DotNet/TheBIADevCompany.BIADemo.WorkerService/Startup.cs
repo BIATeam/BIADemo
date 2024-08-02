@@ -20,8 +20,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
+    // BIAToolKit - End ModelFirst
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 

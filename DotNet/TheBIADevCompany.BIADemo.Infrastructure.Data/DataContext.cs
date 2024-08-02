@@ -4,11 +4,15 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
+    // BIAToolKit - Begin ModelFirst
     using Audit.EntityFramework;
+
+    // BIAToolKit - End ModelFirst
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
+    // BIAToolKit - Begin ModelFirst
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
@@ -25,8 +29,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
-
-    // BIAToolKit - Begin ModelFirst
 
     /// <summary>
     /// The database context.

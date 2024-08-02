@@ -28,7 +28,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+
+    // BIAToolKit - End ModelFirst
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>

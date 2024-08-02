@@ -79,7 +79,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            ITeamAppService teamAppService,
             ILogger<AuthApiAppService> logger,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
@@ -93,13 +92,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
         }
 
-        /// <summary>
-        /// Logins the on teams asynchronous.
-        /// </summary>
-        /// <param name="loginParam">The login parameter.</param>
-        /// <returns>
-        /// AuthInfo.
-        /// </returns>
+        /// <inheritdoc cref="IAuthApiAppService.LoginAsync"/>
         public async Task<string> LoginAsync()
         {
             this.CheckIsAuthenticated();

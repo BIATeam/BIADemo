@@ -8,7 +8,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
+
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+
+    // BIAToolKit - End ModelFirst
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
