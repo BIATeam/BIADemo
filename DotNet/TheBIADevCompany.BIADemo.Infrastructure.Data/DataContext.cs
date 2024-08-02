@@ -12,27 +12,32 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
-    // BIAToolKit - Begin ModelFirst
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
+    // BIAToolKit - End ModelFirst
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
+    // BIAToolKit - Begin ModelFirst
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
+    // BIAToolKit - End ModelFirst
+
     /// <summary>
     /// The database context.
     /// </summary>
+    // BIAToolKit - Begin ModelFirst
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
 
     // BIAToolKit - End ModelFirst
