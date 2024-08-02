@@ -14,12 +14,12 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
             // Do nothing. Used to create the DbContext through IoC.
         }
 
-        // BIAToolKit - Begin ModelFirst
+        // BIAToolKit - Begin AppFeature
         #region Sites methods
 
         /// <inheritdoc cref="IDataSites.CountSites"/>
@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 
         #endregion Users methods
 
-        // BIAToolKit - End ModelFirst
+        // BIAToolKit - End AppFeature
         // Begin BIADemo
         #region Planes methods
 
@@ -192,10 +192,10 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="AbstractMockEntityFramework{TDbContext}.InitDefaultData" />
         public override void InitDefaultData()
         {
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             this.InitDefaultSites();
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
 
             // Begin BIADemo
             this.InitDefaultPlanes();

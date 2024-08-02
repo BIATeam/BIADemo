@@ -29,10 +29,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
@@ -147,10 +147,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain");
 
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             collection.AddSingleton<AuditFeature>();
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
         }
 
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
@@ -158,12 +158,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
 
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
 
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));

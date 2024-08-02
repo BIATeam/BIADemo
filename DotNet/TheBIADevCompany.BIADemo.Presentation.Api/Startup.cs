@@ -24,10 +24,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
 
     /// <summary>
     /// The startup class.
@@ -136,10 +136,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

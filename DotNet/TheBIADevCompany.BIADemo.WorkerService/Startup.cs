@@ -21,10 +21,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
@@ -68,10 +68,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
             // End BIADemo
 
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
         }
 
         /// <summary>

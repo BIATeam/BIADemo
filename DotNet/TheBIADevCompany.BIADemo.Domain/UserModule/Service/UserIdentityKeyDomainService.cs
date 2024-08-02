@@ -9,10 +9,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
 
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public class UserIdentityKeyDomainService : IUserIdentityKeyDomainService
     {
-        // BIAToolKit - Begin ModelFirst
+        // BIAToolKit - Begin AppFeature
         // -------------------------------- DataBase EntityKey --------------------------------------
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         }
 
         // -------------------------------- Directory EntityKey --------------------------------------
-        // BIAToolKit - End ModelFirst
+        // BIAToolKit - End AppFeature
 
         /// <summary>
         /// Check the Identity Key from the User in database.

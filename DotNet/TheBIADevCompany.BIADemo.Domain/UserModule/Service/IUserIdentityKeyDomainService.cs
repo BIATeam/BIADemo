@@ -9,10 +9,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
 
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public interface IUserIdentityKeyDomainService
     {
-        // BIAToolKit - Begin ModelFirst
+        // BIAToolKit - Begin AppFeature
 
         /// <summary>
         /// Checks the database identity key.
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <returns>The userDto identity key.</returns>
         string GetDtoIdentityKey(UserDto user);
 
-        // BIAToolKit - End ModelFirst
+        // BIAToolKit - End AppFeature
 
         /// <summary>
         /// Checks the directory identity key.

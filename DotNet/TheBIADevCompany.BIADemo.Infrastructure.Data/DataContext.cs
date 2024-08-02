@@ -4,10 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using Audit.EntityFramework;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
@@ -16,31 +16,31 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
 
     /// <summary>
     /// The database context.
     /// </summary>
-    // BIAToolKit - Begin ModelFirst
+    // BIAToolKit - Begin AppFeature
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
 
-    // BIAToolKit - End ModelFirst
+    // BIAToolKit - End AppFeature
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         {
         }
 
-        // BIAToolKit - Begin ModelFirst
+        // BIAToolKit - Begin AppFeature
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
@@ -125,7 +125,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
-        // BIAToolKit - End ModelFirst
+        // BIAToolKit - End AppFeature
 
         // Begin BIADemo
 
@@ -167,7 +167,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
 
-            // BIAToolKit - Begin ModelFirst
+            // BIAToolKit - Begin AppFeature
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
@@ -175,7 +175,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             NotificationModelBuilder.CreateModel(modelBuilder);
             AuditModelBuilder.CreateModel(modelBuilder);
 
-            // BIAToolKit - End ModelFirst
+            // BIAToolKit - End AppFeature
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
