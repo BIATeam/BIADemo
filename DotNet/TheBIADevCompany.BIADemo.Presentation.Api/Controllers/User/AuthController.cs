@@ -52,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             {
                 TeamsConfig = new TeamConfigDto[]
                 {
-                    // this config is requerierd to simulate default site with swagger.
+                    // this config is required to simulate default site with swagger.
                     // it should correspond to the Front config (allEnvironments.Teams)
                     new TeamConfigDto { TeamTypeId = (int)TeamTypeId.Site, RoleMode = RoleMode.AllRoles, InHeader = true },
 
