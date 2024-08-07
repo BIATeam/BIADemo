@@ -8,8 +8,4 @@ export class OptionDto extends BaseDto {
     super(id, dtoState);
     this.display = display;
   }
-
-  displayItemName(): string {
-    return this.display;
-  }
 }

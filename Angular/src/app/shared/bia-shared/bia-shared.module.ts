@@ -256,7 +256,13 @@ const SERVICES = [MessageService];
     ...TEAM_ADVANCED_FILTER_IMPORTS,
   ],
   declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
-  exports: [...PRIMENG_MODULES, ...MODULES, ...COMPONENTS, ...PIPES],
+  exports: [
+    ...PRIMENG_MODULES,
+    ...MODULES,
+    ...COMPONENTS,
+    ...VIEW_COMPONENTS,
+    ...PIPES,
+  ],
   providers: [...SERVICES],
 })
 

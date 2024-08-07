@@ -17,11 +17,11 @@
       <ng-template
         ngFor
         let-teamTypeSelector
-        let-first="first"
+        let-last="last"
         [ngForOf]="teamTypeSelectors">
         <bia-classic-team-selector
           [teamType]="teamTypeSelector"></bia-classic-team-selector>
-        <span class="flex align-self-center separator"></span>
+        <span *ngIf="!last" class="flex align-self-center separator"></span>
       </ng-template>
     </div>
     <div class="controls flex flex-row">
