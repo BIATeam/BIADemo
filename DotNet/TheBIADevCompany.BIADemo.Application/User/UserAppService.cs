@@ -216,7 +216,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
-                        Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                        Display = entity.LastName + " " + entity.FirstName + " (" + entity.Login + ")",
                     }).ToList();
                 }
                 catch (Exception ex)
@@ -265,7 +265,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 result.UsersAddedDtos = usersAdded.Select(entity => new OptionDto
                 {
                     Id = entity.Id,
-                    Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                    Display = entity.LastName + " " + entity.FirstName + " (" + entity.Login + ")",
                 }).ToList();
             }
 
