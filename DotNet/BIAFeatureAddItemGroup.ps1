@@ -1,0 +1,55 @@
+$parentDirectory = Split-Path -Parent $PSScriptRoot
+$csprojFiles = Get-ChildItem -Path $parentDirectory -Filter "TheBIADevCompany*.csproj" -Recurse
+
+foreach ($file in $csprojFiles) {
+    [xml]$content = Get-Content -Path $file.FullName
+
+    $nodeToFind = $content.Project.ItemGroup | Where-Object { $_.Label -eq "Bia_ItemGroup_BIA_FRONT_FEATURE" }
+
+    $newNode = New-Object System.Xml.XmlDocument
+    $newNode.LoadXml(@'
+    <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
+    <!--BIADEMO-->
+<Compile Remove="**\*Aircraft*.cs" />
+<Compile Remove="**\*Airport*.cs" />
+<Compile Remove="**\*BiaDemo*.cs" />
+<Compile Remove="**\*Engine*.cs" />
+<Compile Remove="**\*Example*.cs" />
+<Compile Remove="**\*Plane*.cs" />
+<Compile Remove="**\*HangfiresController*.cs" />
+<!--BIATEMPLATE-->
+<Compile Remove="**\*Audit*.cs" />
+<Compile Remove="**\*Error*.cs" />
+<Compile Remove="**\*IdentityProvider*.cs" />
+<Compile Remove="**\*LogsController*.cs" />
+<Compile Remove="**\*Mapper*.cs" />
+<Compile Remove="**\*Member*.cs" />
+<Compile Remove="**\*ModelBuilder*.cs" />
+<Compile Remove="**\*Notification*.cs" />
+<Compile Remove="**\*Query*.cs" />
+<Compile Remove="**\*Role*.cs" /> <!--Not for Common--> 
+<Compile Remove="**\*SearchExpressionService*.cs" />
+<Compile Remove="**\*Site*.cs" />
+<Compile Remove="**\*Synchronize*.cs" />
+<Compile Remove="**\*Team*.cs" />
+<Compile Remove="**\*Translation*.cs" />
+<Compile Remove="**\*User*.cs" />
+<Compile Remove="**\*View*.cs" />
+<!--BIADOMAIN-->
+<!-- <Compile Remove="**\User.cs" />
+<Compile Remove="**\UserExtensions.cs" />
+<Compile Remove="**\UserSelectBuilder.cs" />
+<Compile Remove="**\UserSpecification.cs" />
+<Compile Remove="**\IUserProfileRepository.cs" /> -->
+</ItemGroup>
+'@)
+
+    if ($nodeToFind) {
+        $nodeToFind.ParentNode.ReplaceChild($content.ImportNode($newNode.DocumentElement, $true), $nodeToFind)
+    }
+    else {
+        $content.Project.AppendChild($content.ImportNode($newNode.DocumentElement, $true));
+    }
+
+    $content.Save($file.FullName)
+}
