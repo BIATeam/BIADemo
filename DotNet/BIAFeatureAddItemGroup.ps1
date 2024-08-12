@@ -6,8 +6,7 @@ foreach ($file in $csprojFiles) {
 
     $nodeToFind = $content.Project.ItemGroup | Where-Object { $_.Label -eq "Bia_ItemGroup_BIA_FRONT_FEATURE" }
 
-    $newNode = New-Object System.Xml.XmlDocument
-    $newNode.LoadXml(@'
+    $data = @'
     <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
     <!--BIADEMO-->
 <Compile Remove="**\*Aircraft*.cs" />
@@ -27,23 +26,35 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*ModelBuilder*.cs" />
 <Compile Remove="**\*Notification*.cs" />
 <Compile Remove="**\*Query*.cs" />
-<Compile Remove="**\*Role*.cs" /> 
 <Compile Remove="**\*SearchExpressionService*.cs" />
 <Compile Remove="**\*Site*.cs" />
 <Compile Remove="**\*Synchronize*.cs" />
 <Compile Remove="**\*Team*.cs" />
 <Compile Remove="**\*Translation*.cs" />
-<Compile Remove="**\*User*.cs" />
 <Compile Remove="**\*View*.cs" />
-<!--BIADOMAIN-->
-<!-- <Compile Remove="**\User.cs" />
-<Compile Remove="**\UserExtensions.cs" />
-<Compile Remove="**\UserSelectBuilder.cs" />
-<Compile Remove="**\UserSpecification.cs" />
-<Compile Remove="**\IUserProfileRepository.cs" /> -->
-</ItemGroup>
-'@)
+'@
 
+    if (-not $file.FullName.EndsWith('.Common.csproj')) {
+        $data += '<Compile Remove="**\*Role*.cs" />'
+    }
+
+    if ($file.FullName.EndsWith('.Domain.csproj')) {
+        $data += '<Compile Remove="**\User.cs" />
+        <Compile Remove="**\UserExtensions.cs" />
+        <Compile Remove="**\UserSelectBuilder.cs" />
+        <Compile Remove="**\UserSpecification.cs" />
+        <Compile Remove="**\IUserProfileRepository.cs" />'
+    }
+    else {
+        $data += '<Compile Remove="**\*User*.cs" />'
+    }
+
+    $data += '</ItemGroup>'
+
+
+    $newNode = New-Object System.Xml.XmlDocument
+    $newNode.LoadXml($data);
+    
     if ($nodeToFind) {
         $nodeToFind.ParentNode.ReplaceChild($content.ImportNode($newNode.DocumentElement, $true), $nodeToFind)
     }
@@ -51,15 +62,15 @@ foreach ($file in $csprojFiles) {
         $content.Project.AppendChild($content.ImportNode($newNode.DocumentElement, $true));
     }
 
-    # $content.Save($file.FullName)
+    $content.Save($file.FullName)
 
-    $Settings = New-Object System.Xml.XmlWriterSettings
-    $Settings.Indent = $true
-    $Settings.OmitXmlDeclaration = $true
-    $Settings.Encoding = [System.Text.Encoding]::UTF8
+    # $Settings = New-Object System.Xml.XmlWriterSettings
+    # $Settings.Indent = $true
+    # $Settings.OmitXmlDeclaration = $true
+    # $Settings.Encoding = [System.Text.Encoding]::UTF8
 
-    $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
-    $content.Save($Writer)
-    $Writer.Flush()
-    $Writer.Close()
+    # $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
+    # $content.Save($Writer)
+    # $Writer.Flush()
+    # $Writer.Close()
 }

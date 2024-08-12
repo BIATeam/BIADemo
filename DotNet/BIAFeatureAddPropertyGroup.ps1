@@ -39,15 +39,15 @@ foreach ($file in $csprojFiles) {
     
     $nodeToFind.DefineConstants = '$(DefineConstants);' + $features_list
     
-    # $content.Save($file.FullName)
+    $content.Save($file.FullName)
 
-    $Settings = New-Object System.Xml.XmlWriterSettings
-    $Settings.Indent = $true
-    $Settings.OmitXmlDeclaration = $true
-    $Settings.Encoding = [System.Text.Encoding]::UTF8
+    # $Settings = New-Object System.Xml.XmlWriterSettings
+    # $Settings.Indent = $true
+    # $Settings.OmitXmlDeclaration = $true
+    # $Settings.Encoding = [System.Text.Encoding]::UTF8
 
-    $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
-    $content.Save($Writer)
-    $Writer.Flush()
-    $Writer.Close()
+    # $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
+    # $content.Save($Writer)
+    # $Writer.Flush()
+    # $Writer.Close()
 }
