@@ -27,7 +27,7 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*ModelBuilder*.cs" />
 <Compile Remove="**\*Notification*.cs" />
 <Compile Remove="**\*Query*.cs" />
-<Compile Remove="**\*Role*.cs" /> <!--Not for Common--> 
+<Compile Remove="**\*Role*.cs" /> 
 <Compile Remove="**\*SearchExpressionService*.cs" />
 <Compile Remove="**\*Site*.cs" />
 <Compile Remove="**\*Synchronize*.cs" />
@@ -51,5 +51,15 @@ foreach ($file in $csprojFiles) {
         $content.Project.AppendChild($content.ImportNode($newNode.DocumentElement, $true));
     }
 
-    $content.Save($file.FullName)
+    # $content.Save($file.FullName)
+
+    $Settings = New-Object System.Xml.XmlWriterSettings
+    $Settings.Indent = $true
+    $Settings.OmitXmlDeclaration = $true
+    $Settings.Encoding = [System.Text.Encoding]::UTF8
+
+    $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
+    $content.Save($Writer)
+    $Writer.Flush()
+    $Writer.Close()
 }
