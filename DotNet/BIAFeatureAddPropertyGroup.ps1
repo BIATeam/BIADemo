@@ -29,11 +29,25 @@ foreach ($file in $csprojFiles) {
 
     $nodeToFind = $content.Project.PropertyGroup | Where-Object { $_.Condition -eq '''$(Configuration)|$(Platform)''==''Debug|AnyCPU''' }
 
-    if ($null -ne $nodeToFind.Condition) {
-        $nodeToFind = $content.Project.CreateElement("PropertyGroup")
+    if ($null -eq $nodeToFind) {
+        $nodeToFind = $content.CreateElement("PropertyGroup")
         $nodeToFind.SetAttribute('Condition', '''$(Configuration)|$(Platform)''==''Debug|AnyCPU''')
+        $defineConstants = $content.CreateElement("DefineConstants")
+        $nodeToFind.AppendChild($defineConstants)
+        $content.Project.AppendChild($nodeToFind)
     }
     
     $nodeToFind.DefineConstants = '$(DefineConstants);' + $features_list
-    $content.Save($file.FullName)
+    
+    # $content.Save($file.FullName)
+
+    $Settings = New-Object System.Xml.XmlWriterSettings
+    $Settings.Indent = $true
+    $Settings.OmitXmlDeclaration = $true
+    $Settings.Encoding = [System.Text.Encoding]::UTF8
+
+    $Writer = [System.Xml.XmlWriter]::Create($file.FullName, $Settings)
+    $content.Save($Writer)
+    $Writer.Flush()
+    $Writer.Close()
 }
