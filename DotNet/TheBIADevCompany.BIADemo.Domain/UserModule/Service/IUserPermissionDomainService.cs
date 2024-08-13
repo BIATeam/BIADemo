@@ -18,6 +18,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="roles">The list of roles.</param>
         /// <param name="lightToken">if true select only lightToken permission.</param>
         /// <returns>The list of rights.</returns>
-        List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken);
+        List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false);
     }
 }

@@ -25,14 +25,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
-
-    // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-
-    // BIAToolKit - End AppFeature
+#endif
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
@@ -84,14 +83,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { "AuthAppService", "AuthApiAppService" });
+                excludedServiceNames: new List<string>() { nameof(AuthAppService) });
 
             if (isApi)
             {
                 RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { "AuthAppService", "AuthApiAppService" });
+                includedServiceNames: new List<string>() { nameof(AuthAppService) });
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
@@ -146,29 +145,27 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain");
-
-            // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
             collection.AddSingleton<AuditFeature>();
-
-            // BIAToolKit - End AppFeature
+#endif
         }
 
+#pragma warning disable S1172 // Unused method parameters should be removed
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
+#pragma warning restore S1172 // Unused method parameters should be removed
         {
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
+#if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
-
-            // BIAToolKit - Begin AppFeature
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
             collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
-
-            // BIAToolKit - End AppFeature
 
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
+#endif
         }
 
         /// <summary>
@@ -176,7 +173,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
         /// <returns>HttpClientHandler object.</returns>
+#pragma warning disable S1144 // Unused private types or members should be removed
         private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
+#pragma warning restore S1144 // Unused private types or members should be removed
         {
             HttpClientHandler httpClientHandler = new HttpClientHandler
             {

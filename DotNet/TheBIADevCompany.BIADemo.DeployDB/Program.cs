@@ -40,14 +40,11 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
 
-                    // BIAToolKit - Begin AppFeature
                     services.AddDbContext<DataContext>(options =>
                     {
                         options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
                     });
                     services.AddHostedService<DeployDBService>();
-
-                    // BIAToolKit - End AppFeature
 
                     // Comment those lines if you do not use hangfire
                     services.AddHangfireServer(hfOptions =>
@@ -62,16 +59,15 @@ namespace TheBIADevCompany.BIADemo.DeployDB
 
                         // Initialize here the recuring jobs
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
-
-                        // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
                         RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
-                        // BIAToolKit - End AppFeature
                         // Begin BIADemo
                         RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
                         RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
 
                         // End BIADemo
+#endif
                     });
                 })
                 .ConfigureLogging((hostingContext, logging) =>

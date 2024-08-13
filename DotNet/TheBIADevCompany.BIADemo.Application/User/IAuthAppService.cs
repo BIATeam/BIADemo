@@ -12,11 +12,21 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public interface IAuthAppService
     {
+#if BIA_SERVICE_API
+        /// <summary>
+        /// Logins.
+        /// </summary>
+        /// <returns>The JWT.</returns>
+        Task<string> LoginAsync();
+#endif
+
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Logins the on teams asynchronous.
         /// </summary>
         /// <param name="loginParam">The login parameter.</param>
         /// <returns>AuthInfo.</returns>
         Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam);
+#endif
     }
 }

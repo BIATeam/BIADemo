@@ -21,14 +21,14 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 
-    // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
-    // BIAToolKit - End AppFeature
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
     // End BIADemo
+#endif
 
     /// <summary>
     /// The startup class.
@@ -63,15 +63,13 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="host">The host.</param>
         public static void Configure(IHost host)
         {
+#if BIA_FRONT_FEATURE
             // Begin BIADemo
             PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
 
             // End BIADemo
-
-            // BIAToolKit - Begin AppFeature
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
-
-            // BIAToolKit - End AppFeature
+#endif
         }
 
         /// <summary>
@@ -98,19 +96,23 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 this.biaNetSection.WorkerFeatures,
                 this.configuration,
                 new List<DatabaseHandlerRepository>()
-                    {
-                        // Add here all the Handler repository.
+                {
+                    // Add here all the Handler repository.
+#if BIA_FRONT_FEATURE
                         // Begin BIADemo
                         new PlaneHandlerRepository(this.configuration),
 
                         // End BIADemo
-                    });
+#endif
+                });
 
             // End BIA Standard service
+#if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
 
             // End BIADemo
+#endif
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, false);

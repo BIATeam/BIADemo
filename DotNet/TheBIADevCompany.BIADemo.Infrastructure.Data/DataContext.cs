@@ -4,43 +4,37 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
-    // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
-
-    // BIAToolKit - End AppFeature
+#endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-
+#if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
-    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
-    // BIAToolKit - End AppFeature
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    // BIAToolKit - Begin AppFeature
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
-
-    // BIAToolKit - End AppFeature
+#endif
 
     /// <summary>
     /// The database context.
     /// </summary>
-    // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-
-    // BIAToolKit - End AppFeature
+#endif
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -53,8 +47,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         {
         }
 
-        // BIAToolKit - Begin AppFeature
-
+#if BIA_FRONT_FEATURE
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
@@ -125,8 +118,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<NotificationTypeTranslation> NotificationTypeTranslations { get; set; }
 
-        // BIAToolKit - End AppFeature
-
         // Begin BIADemo
 
         /// <summary>
@@ -160,6 +151,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Engine> Engines { get; set; }
 
         // End BIADemo
+#endif
 
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -167,7 +159,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
 
-            // BIAToolKit - Begin AppFeature
+#if BIA_FRONT_FEATURE
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);
@@ -175,13 +167,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             NotificationModelBuilder.CreateModel(modelBuilder);
             AuditModelBuilder.CreateModel(modelBuilder);
 
-            // BIAToolKit - End AppFeature
-
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
+#endif
             this.OnEndModelCreating(modelBuilder);
         }
     }

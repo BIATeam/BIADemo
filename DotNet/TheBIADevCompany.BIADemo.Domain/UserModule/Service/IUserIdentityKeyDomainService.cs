@@ -8,11 +8,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
-
-    // BIAToolKit - Begin AppFeature
+    #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-
-    // BIAToolKit - End AppFeature
+    #endif
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -20,8 +18,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     /// </summary>
     public interface IUserIdentityKeyDomainService
     {
-        // BIAToolKit - Begin AppFeature
-
+        #if BIA_FRONT_FEATURE
         /// <summary>
         /// Checks the database identity key.
         /// </summary>
@@ -49,8 +46,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// <param name="user">The user dto.</param>
         /// <returns>The userDto identity key.</returns>
         string GetDtoIdentityKey(UserDto user);
-
-        // BIAToolKit - End AppFeature
+        #endif
 
         /// <summary>
         /// Checks the directory identity key.
