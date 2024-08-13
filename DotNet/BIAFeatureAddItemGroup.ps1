@@ -33,25 +33,21 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*Team*.cs" />
 <Compile Remove="**\*Translation*.cs" />
 <Compile Remove="**\*View*.cs" />
+<Compile Remove="**\Role.cs" />
+<Compile Remove="**\RoleAppService.cs" />
+<Compile Remove="**\IRoleAppService.cs" />
+<Compile Remove="**\RolesController.cs" />
+<Compile Remove="**\User.cs" />
+<Compile Remove="**\UsersController.cs" />
+<Compile Remove="**\UserAppService.cs" />
+<Compile Remove="**\IUserAppService.cs" />
+<Compile Remove="**\UserExtensions.cs" />
+<Compile Remove="**\UserSelectBuilder.cs" />
+<Compile Remove="**\UserSpecification.cs" />
+<Compile Remove="**\IUserProfileRepository.cs" />
+<Compile Remove="**\UserProfileRepository.cs" />
+</ItemGroup>
 '@
-
-    if (-not $file.FullName.EndsWith('.Common.csproj')) {
-        $data += '<Compile Remove="**\*Role*.cs" />'
-    }
-
-    if ($file.FullName.EndsWith('.Domain.csproj')) {
-        $data += '<Compile Remove="**\User.cs" />
-        <Compile Remove="**\UserExtensions.cs" />
-        <Compile Remove="**\UserSelectBuilder.cs" />
-        <Compile Remove="**\UserSpecification.cs" />
-        <Compile Remove="**\IUserProfileRepository.cs" />'
-    }
-    else {
-        $data += '<Compile Remove="**\*User*.cs" />'
-    }
-
-    $data += '</ItemGroup>'
-
 
     $newNode = New-Object System.Xml.XmlDocument
     $newNode.LoadXml($data);
