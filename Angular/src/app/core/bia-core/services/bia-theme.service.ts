@@ -1,4 +1,10 @@
-import { Injectable, Renderer2, RendererFactory2, Inject } from '@angular/core';
+import {
+  Injectable,
+  Renderer2,
+  RendererFactory2,
+  Inject,
+  OnDestroy,
+} from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,10 +16,17 @@ const DEFAULT_THEME = THEME_LIGHT;
 @Injectable({
   providedIn: 'root',
 })
-export class BiaThemeService {
+export class BiaThemeService implements OnDestroy {
   private renderer: Renderer2;
   private document: Document;
   private currentTheme = new BehaviorSubject<string | undefined>(undefined);
+  private browserDarkThemeQuery = window.matchMedia(
+    '(prefers-color-scheme: dark)'
+  );
+  private browserLightThemeQuery = window.matchMedia(
+    '(prefers-color-scheme: light)'
+  );
+  private browserThemeChangeListener: () => void;
 
   isCurrentThemeDark$ = this.currentTheme.pipe(
     map(currentTheme => currentTheme && /dark/.test(currentTheme))
@@ -25,13 +38,15 @@ export class BiaThemeService {
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
     this.document = document;
-    let theme;
-    try {
-      theme = localStorage.getItem(STORAGE_THEME_KEY) || DEFAULT_THEME;
-    } catch {
-      theme = DEFAULT_THEME;
-    }
-    this.applyTheme(theme);
+    this.changeTheme(localStorage.getItem(STORAGE_THEME_KEY) || DEFAULT_THEME);
+
+    this.enableBrowserThemeChangeDetection(theme => {
+      console.log(theme);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.stopBrowserThemeChangeListener();
   }
 
   getThemeSelected(): string | null {
@@ -53,6 +68,25 @@ export class BiaThemeService {
     } catch (err) {
       console.error(err);
     }
+  }
+
+  applyBrowserTheme() {
+    this.changeTheme(this.getBrowserTheme() || DEFAULT_THEME);
+  }
+
+  enableBrowserThemeChangeDetection(
+    onBrowserThemeChange: (theme: string | undefined) => void
+  ) {
+    const browserTheme = this.getBrowserTheme();
+    if (browserTheme) {
+      this.changeTheme(browserTheme);
+    }
+
+    this.startBrowserThemeChangeListener(onBrowserThemeChange);
+  }
+
+  disableBrowserThemeChangeDetection() {
+    this.stopBrowserThemeChangeListener();
   }
 
   private applyTheme(theme: string, oldTheme?: string) {
@@ -81,5 +115,37 @@ export class BiaThemeService {
 
     themeDarkLink.disabled = theme === THEME_LIGHT;
     //layoutDarkLink.disabled = theme === THEME_LIGHT;
+  }
+
+  private getBrowserTheme(): string | null {
+    if (this.browserDarkThemeQuery.matches) {
+      return 'dark';
+    }
+    if (this.browserLightThemeQuery.matches) {
+      return 'light';
+    }
+    return null;
+  }
+
+  private startBrowserThemeChangeListener(
+    onBrowserThemeChange: (theme: string | undefined) => void
+  ) {
+    // Set listener
+    this.browserThemeChangeListener = () => {
+      this.applyBrowserTheme();
+      onBrowserThemeChange(this.currentTheme.value);
+    };
+    // Subscribe listener to browser theme change event
+    this.browserDarkThemeQuery.addEventListener(
+      'change',
+      this.browserThemeChangeListener
+    );
+  }
+
+  private stopBrowserThemeChangeListener() {
+    this.browserDarkThemeQuery.removeEventListener(
+      'change',
+      this.browserThemeChangeListener
+    );
   }
 }
