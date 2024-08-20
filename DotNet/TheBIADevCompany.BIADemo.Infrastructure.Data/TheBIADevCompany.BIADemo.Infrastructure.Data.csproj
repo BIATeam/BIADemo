@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <PackageReference Include="Audit.NET.SqlServer" Version="25.0.7" />
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Data" Version="3.9.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
@@ -30,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
