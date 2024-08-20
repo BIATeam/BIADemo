@@ -44,7 +44,8 @@
               "src/assets",
               "src/config.json",
               "src/web.config",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/ngsw-worker.js"
             ],
             "styles": [
               "node_modules/primeng/resources/primeng.min.css",
