@@ -1,4 +1,5 @@
-$parentDirectory = Split-Path -Parent $PSScriptRoot
+$parentDirectory = Split-Path (Split-Path -Parent $PSScriptRoot)
+$parentDirectory = Join-Path -Path $parentDirectory -ChildPath "DotNet"
 $csprojFiles = Get-ChildItem -Path $parentDirectory -Filter "TheBIADevCompany*.csproj" -Recurse
 
 foreach ($file in $csprojFiles) {

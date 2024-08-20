@@ -25,7 +25,8 @@ $features_list = $selected_features -join ';'
 
 Write-Host "You have chosen the following features: $features_list"
 
-$parentDirectory = Split-Path -Parent $PSScriptRoot
+$parentDirectory = Split-Path (Split-Path -Parent $PSScriptRoot)
+$parentDirectory = Join-Path -Path $parentDirectory -ChildPath "DotNet"
 $csprojFiles = Get-ChildItem -Path $parentDirectory -Filter "TheBIADevCompany*.csproj" -Recurse
 
 foreach ($file in $csprojFiles) {
