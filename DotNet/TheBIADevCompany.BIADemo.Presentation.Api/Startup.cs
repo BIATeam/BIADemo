@@ -72,7 +72,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.Secure = CookieSecurePolicy.Always;
-                options.HttpOnly = HttpOnlyPolicy.None;
+                options.HttpOnly = HttpOnlyPolicy.Always;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
             // Used to get a unique identifier for each HTTP request and track it.
