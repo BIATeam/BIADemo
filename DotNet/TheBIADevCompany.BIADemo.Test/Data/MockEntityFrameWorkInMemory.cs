@@ -9,13 +9,11 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Linq;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
-
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
@@ -39,8 +37,8 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         {
             // Do nothing. Used to create the DbContext through IoC.
         }
-
 #if BIA_FRONT_FEATURE
+
         #region Sites methods
 
         /// <inheritdoc cref="IDataSites.CountSites"/>

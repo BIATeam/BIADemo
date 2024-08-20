@@ -46,8 +46,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             : base(options, logger)
         {
         }
-
 #if BIA_FRONT_FEATURE
+
         /// <summary>
         /// Gets or sets the Plane DBSet.
         /// </summary>
@@ -158,8 +158,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         {
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
-
 #if BIA_FRONT_FEATURE
+
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
             UserModelBuilder.CreateModel(modelBuilder);

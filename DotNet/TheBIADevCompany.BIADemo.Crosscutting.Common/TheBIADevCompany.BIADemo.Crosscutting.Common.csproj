@@ -11,7 +11,7 @@
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);BIA_FRONT_FEATURE</DefineConstants>
+    <DefineConstants>$(DefineConstants);BIA_SERVICE_API;BIA_FRONT_FEATURE</DefineConstants>
   </PropertyGroup>
   <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
     <!--BIADEMO-->

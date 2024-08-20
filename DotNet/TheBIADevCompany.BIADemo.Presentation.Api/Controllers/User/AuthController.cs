@@ -34,8 +34,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             this.authService = authService;
         }
-
 #if BIA_FRONT_FEATURE
+
         /// <summary>
         /// The login action.
         /// </summary>
@@ -117,6 +117,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         }
 #endif
 #if BIA_SERVICE_API
+
         /// <summary>
         /// The login action.
         /// </summary>

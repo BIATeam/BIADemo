@@ -57,8 +57,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The domain section in the BiaNet configuration.
         /// </summary>
         private readonly IEnumerable<LdapDomain> ldapDomains;
-
 #if BIA_FRONT_FEATURE
+
         /// <summary>
         /// The role section in the BiaNet configuration.
         /// </summary>
@@ -136,8 +136,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
         }
-
 #if BIA_SERVICE_API
+
         /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
         public async Task<string> LoginAsync()
         {
@@ -176,8 +176,8 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return authInfo?.Token;
         }
 #endif
-
 #if BIA_FRONT_FEATURE
+
         /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
         public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
         {
@@ -362,7 +362,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             return domain;
         }
-
 #if BIA_FRONT_FEATURE
 
         /// <summary>

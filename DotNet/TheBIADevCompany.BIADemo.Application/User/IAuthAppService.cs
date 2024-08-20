@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public interface IAuthAppService
     {
 #if BIA_SERVICE_API
+
         /// <summary>
         /// Logins.
         /// </summary>

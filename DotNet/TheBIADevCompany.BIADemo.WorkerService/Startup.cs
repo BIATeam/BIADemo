@@ -20,7 +20,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
