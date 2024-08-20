@@ -196,7 +196,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             // Get Global Roles
             List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo);
-            List<int> roleIds = this.GetRoleIds(globalRoles);
+            List<int> roleIds = GetRoleIds(globalRoles);
 
             // Fill UserInfo
             userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
@@ -223,7 +223,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 // Get Fine Grained Roles
                 List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
-                List<int> fineGrainedRoleIds = this.GetRoleIds(fineGrainedRoles);
+                List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
                 roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
 
                 // Translate Roles in Permissions
@@ -257,6 +257,25 @@ namespace TheBIADevCompany.BIADemo.Application.User
             AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
 
             return authInfo;
+        }
+
+        /// <summary>
+        /// Gets the role ids.
+        /// </summary>
+        /// <param name="roles">The roles.</param>
+        /// <returns>Role ids.</returns>
+        private static List<int> GetRoleIds(List<string> roles)
+        {
+            List<int> roleIds = new List<int>();
+            foreach (string role in roles)
+            {
+                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                {
+                    roleIds.Add((int)roleId);
+                }
+            }
+
+            return roleIds;
         }
 #endif
 
@@ -363,25 +382,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             return domain;
         }
 #if BIA_FRONT_FEATURE
-
-        /// <summary>
-        /// Gets the role ids.
-        /// </summary>
-        /// <param name="roles">The roles.</param>
-        /// <returns>Role ids.</returns>
-        private List<int> GetRoleIds(List<string> roles)
-        {
-            List<int> roleIds = new List<int>();
-            foreach (string role in roles)
-            {
-                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
-                {
-                    roleIds.Add((int)roleId);
-                }
-            }
-
-            return roleIds;
-        }
 
         /// <summary>
         /// Gets the user information.
