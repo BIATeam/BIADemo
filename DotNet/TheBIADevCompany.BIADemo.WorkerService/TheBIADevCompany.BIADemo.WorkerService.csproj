@@ -80,7 +80,18 @@
     <Compile Remove="**\*Team*.cs" />
     <Compile Remove="**\*Translation*.cs" />
     <Compile Remove="**\*View*.cs" />
-    <Compile Remove="**\*Role*.cs" />
-    <Compile Remove="**\*User*.cs" />
+    <Compile Remove="**\Role.cs" />
+    <Compile Remove="**\RoleAppService.cs" />
+    <Compile Remove="**\IRoleAppService.cs" />
+    <Compile Remove="**\RolesController.cs" />
+    <Compile Remove="**\User.cs" />
+    <Compile Remove="**\UsersController.cs" />
+    <Compile Remove="**\UserAppService.cs" />
+    <Compile Remove="**\IUserAppService.cs" />
+    <Compile Remove="**\UserExtensions.cs" />
+    <Compile Remove="**\UserSelectBuilder.cs" />
+    <Compile Remove="**\UserSpecification.cs" />
+    <Compile Remove="**\IUserProfileRepository.cs" />
+    <Compile Remove="**\UserProfileRepository.cs" />
   </ItemGroup>
 </Project>
