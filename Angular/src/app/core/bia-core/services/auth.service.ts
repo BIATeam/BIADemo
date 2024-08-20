@@ -22,7 +22,6 @@ import { HttpStatusCode } from '@angular/common/http';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
-const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -353,13 +352,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           this.isInLogin = false;
           this.authInfoSubject.next(authInfo);
 
-          if (BiaOnlineOfflineService.isModeEnabled === true) {
-            localStorage.setItem(
-              STORAGE_AUTHINFO_KEY,
-              JSON.stringify(authInfo)
-            );
-          }
-
           this.store.dispatch(
             DomainTeamsActions.loadAllSuccess({
               teams: authInfo.additionalInfos.teams,
@@ -373,20 +365,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
               allEnvironments.urlErrorPage + '?num=' + err.status;
           }
 
-          this.shouldRefreshToken = false;
-          let authInfo: AuthInfo = <AuthInfo>{};
-
-          if (
-            BiaOnlineOfflineService.isModeEnabled === true &&
-            BiaOnlineOfflineService.isServerAvailable(err) !== true
-          ) {
-            const jsonAuthInfo: string | null =
-              localStorage.getItem(STORAGE_AUTHINFO_KEY);
-            if (jsonAuthInfo) {
-              authInfo = JSON.parse(jsonAuthInfo);
-            }
-          }
-
+          this.shouldRefreshToken = true;
+          this.isInLogin = false;
+          const authInfo: AuthInfo = <AuthInfo>{};
           this.authInfoSubject.next(authInfo);
           this.store.dispatch(
             DomainTeamsActions.loadAllSuccess({

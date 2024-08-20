@@ -191,6 +191,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
         {
             List<TUserFromDirectory> usersInfo = new List<TUserFromDirectory>();
+
+            // Sanitize unsafe characters from search value to avoid LDAP injections
+            // See : https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html
+            const string rgxPattern = @"[\\ #+<>,;""=*()]";
+            search = Regex.Replace(search, rgxPattern, string.Empty);
+
             if (string.IsNullOrEmpty(search))
             {
                 return usersInfo;
