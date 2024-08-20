@@ -5,7 +5,6 @@
 namespace BIA.Net.Core.Application.Authentication
 {
     using System;
-    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
@@ -100,26 +99,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <inheritdoc cref="IJwtFactory.GenerateEncodedTokenAsync"/>
         public async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity)
         {
-            var claims = identity.Claims.ToList();
-            claims.AddRange(new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, identity.Name),
-                new Claim(JwtRegisteredClaimNames.Jti, await this.jwt.JtiGenerator()),
-                new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
-            });
-
-            // Create the JWT security token and encode it.
-            var jwtSecurity = new JwtSecurityToken(
-                issuer: this.jwt.Issuer,
-                audience: this.jwt.Audience,
-                claims: claims,
-                notBefore: this.jwt.NotBefore,
-                expires: this.jwt.Expiration,
-                signingCredentials: this.SigningCredentials);
-
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtSecurity);
-
-            return encodedJwt;
+            return await this.GenerateEncodedTokenAsync(identity, null);
         }
 
         /// <inheritdoc cref="IJwtFactory.GenerateAuthInfoAsync"/>
@@ -135,7 +115,7 @@ namespace BIA.Net.Core.Application.Authentication
 
             var response = new AuthInfoDto<TAdditionalInfoDto>
             {
-                Token = await this.GenerateEncodedTokenAsync(claimsIdentity),
+                Token = await this.GenerateEncodedTokenAsync(claimsIdentity, additionalInfos),
                 AdditionalInfos = !loginParam.AdditionalInfos ? null : additionalInfos,
             };
 
@@ -154,10 +134,7 @@ namespace BIA.Net.Core.Application.Authentication
         /// <param name="options">The JWT options to check.</param>
         private static void ThrowIfInvalidOptions(Jwt options)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
 
             if (options.ValidFor <= TimeSpan.Zero)
             {
@@ -175,5 +152,38 @@ namespace BIA.Net.Core.Application.Authentication
           => (long)Math.Round((date.ToUniversalTime() -
                                DateTimeOffset.UnixEpoch)
                               .TotalSeconds);
+
+        private async Task<string> GenerateEncodedTokenAsync(ClaimsIdentity identity, AdditionalInfoDto additionalInfos)
+        {
+            var claims = identity.Claims.ToList();
+            claims.AddRange(
+            [
+                new (JwtRegisteredClaimNames.Sub, identity.Name),
+                new (JwtRegisteredClaimNames.Jti, await this.jwt.JtiGenerator()),
+                new (JwtRegisteredClaimNames.Iat, ToUnixEpochDate(this.jwt.IssuedAt).ToString(), ClaimValueTypes.Integer64),
+            ]);
+
+            if (additionalInfos != null)
+            {
+                claims.AddRange(
+                [
+                    new (ClaimTypes.GivenName, additionalInfos.UserInfo.FirstName),
+                    new (ClaimTypes.Surname, additionalInfos.UserInfo.LastName),
+                ]);
+            }
+
+            // Create the JWT security token and encode it.
+            var jwtSecurity = new JwtSecurityToken(
+                issuer: this.jwt.Issuer,
+                audience: this.jwt.Audience,
+                claims: claims,
+                notBefore: this.jwt.NotBefore,
+                expires: this.jwt.Expiration,
+                signingCredentials: this.SigningCredentials);
+
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwtSecurity);
+
+            return encodedJwt;
+        }
     }
 }

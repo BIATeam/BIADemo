@@ -324,7 +324,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <summary>
-        /// Check if UserInDb is requiered.
+        /// Check if UserInDb is required.
         /// </summary>
         /// <returns>True if user in db is in configuration file.</returns>
         public bool UseUserRole()

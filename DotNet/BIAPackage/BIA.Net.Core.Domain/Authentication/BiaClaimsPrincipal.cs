@@ -68,6 +68,24 @@ namespace BIA.Net.Core.Domain.Authentication
         }
 
         /// <summary>
+        /// Get the user first name in the claims.
+        /// </summary>
+        /// <returns>The user first name (given name).</returns>
+        public virtual string GetUserFirstName()
+        {
+            return this.GetClaimValue(ClaimTypes.GivenName);
+        }
+
+        /// <summary>
+        /// Get the user last name in the claims.
+        /// </summary>
+        /// <returns>The user last name (surname).</returns>
+        public virtual string GetUserLastName()
+        {
+            return this.GetClaimValue(ClaimTypes.Surname);
+        }
+
+        /// <summary>
         /// Gets list of groups where the user is a member.
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
