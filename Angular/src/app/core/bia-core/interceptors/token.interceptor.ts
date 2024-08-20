@@ -86,8 +86,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError(error => {
         if (
           error instanceof HttpErrorResponse &&
-          (error.status === HttpStatusCodeCustom.FailedConnection ||
-            error.status === HttpStatusCode.Unauthorized ||
+          (error.status === HttpStatusCode.Unauthorized ||
             error.status === HttpStatusCodeCustom.InvalidToken)
         ) {
           return this.handle401Error(request, next);
