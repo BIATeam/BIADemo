@@ -69,11 +69,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IRoleAppService roleAppService;
 
         /// <summary>
-        /// The user profile repository.
-        /// </summary>
-        private readonly IUserProfileRepository userProfileRepository;
-
-        /// <summary>
         /// The helper used for AD.
         /// </summary>
         private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
@@ -121,7 +116,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             ITeamAppService teamAppService,
             ILogger<AuthAppService> logger,
             IRoleAppService roleAppService,
-            IUserProfileRepository userProfileRepository,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
@@ -134,7 +128,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.teamAppService = teamAppService;
             this.logger = logger;
             this.roleAppService = roleAppService;
-            this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
             this.rolesConfiguration = biaNetconfiguration.Value.Roles;
@@ -154,13 +147,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
             // Check inputs parameter
             this.CheckIsAuthenticated();
             this.GetIdentityKey(out string identityKey, out string sid, out string login);
-
-            // Get user profil async
-            Task<UserProfileDto> userProfileTask = null;
-            if (loginParam.AdditionalInfos)
-            {
-                userProfileTask = this.userProfileRepository.GetAsync(identityKey);
-            }
 
             // Get userInfo if needed (it requires an user in database)
             UserInfoDto userInfo = null;
@@ -296,13 +282,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
             TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, RoleIds = roleIds, Permissions = userPermissions, UserData = userData };
 
-            UserProfileDto userProfile = null;
-            if (userProfileTask != null)
-            {
-                userProfile = await userProfileTask;
-                userProfile ??= new UserProfileDto { Theme = Constants.DefaultValues.Theme };
-            }
-
             AdditionalInfoDto additionnalInfo = null;
             if (loginParam.AdditionalInfos)
             {
@@ -313,7 +292,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 
                 additionnalInfo = new AdditionalInfoDto
                 {
-                    UserInfo = userInfo, UserProfile = userProfile,
+                    UserInfo = userInfo,
                     Teams = allTeamsFilteredByCurrentParent,
                 };
             }
