@@ -26,19 +26,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     u.LastName.Contains(filter) || u.FirstName.Contains(filter) || u.Login.Contains(filter));
             }
 
-            specification &= SearchActive();
-
-            return specification;
-        }
-
-        /// <summary>
-        /// Search users that are active and DAIEnable.
-        /// </summary>
-        /// <returns>The specification.</returns>
-        public static Specification<User> SearchActive()
-        {
-            Specification<User> specification = new TrueSpecification<User>();
-
             specification &= new DirectSpecification<User>(u => u.IsActive);
 
             return specification;

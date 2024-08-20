@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
             Specification<User> specification = null;
             if (!string.IsNullOrEmpty(filter))
@@ -103,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 specification = UserSpecification.Search(filter);
             }
 
-            return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            return await this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
