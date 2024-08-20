@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
 import { AuthInfo } from '../../model/auth-info';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
 import {
   BiaTranslationService,
@@ -55,7 +54,6 @@ export class LayoutComponent implements OnInit {
     public biaTranslationService: BiaTranslationService,
     private navigationService: NavigationService,
     private authService: AuthService,
-    private biaThemeService: BiaThemeService,
     // private notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {}
@@ -90,7 +88,6 @@ export class LayoutComponent implements OnInit {
           this.setLanguage();
           this.setUserName(authInfo);
           this.filterNavByRole(authInfo);
-          this.setTheme(authInfo);
         }
         this.isLoadingUserInfo = false;
       }
@@ -119,20 +116,6 @@ export class LayoutComponent implements OnInit {
   private filterNavByRole(authInfo: AuthInfo) {
     if (authInfo) {
       this.menus = this.navigationService.filterNavByRole(authInfo, NAVIGATION);
-    }
-  }
-
-  private setTheme(authInfo: AuthInfo) {
-    if (
-      !this.biaThemeService.getThemeSelected() &&
-      authInfo &&
-      authInfo.additionalInfos &&
-      authInfo.additionalInfos.userProfile &&
-      authInfo.additionalInfos.userProfile.theme
-    ) {
-      this.biaThemeService.changeTheme(
-        authInfo.additionalInfos.userProfile.theme.toLowerCase()
-      );
     }
   }
 }

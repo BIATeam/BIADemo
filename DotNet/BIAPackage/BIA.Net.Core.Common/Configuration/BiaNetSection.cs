@@ -70,11 +70,6 @@ namespace BIA.Net.Core.Common.Configuration
         public IEnumerable<Permission> Permissions { get; set; }
 
         /// <summary>
-        /// Gets or sets the user profile configuration.
-        /// </summary>
-        public UserProfile UserProfile { get; set; }
-
-        /// <summary>
         /// Gets or sets the cultures configuration.
         /// </summary>
         public IEnumerable<Culture> Cultures { get; set; }
