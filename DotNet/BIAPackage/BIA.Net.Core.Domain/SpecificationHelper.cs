@@ -171,7 +171,7 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
             var expressionBody = expression.Body;
-            var genericArgumentType = expression.Type.GenericTypeArguments.FirstOrDefault() ?? typeof(string);
+            var genericArgumentType = expressionBody.Type.GenericTypeArguments.FirstOrDefault() ?? typeof(string);
 
             Expression binaryExpression;
 
