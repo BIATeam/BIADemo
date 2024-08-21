@@ -12,7 +12,7 @@
         [headerTitle]="'site.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
         [canExportCSV]="true"
-        [canDelete]="false"
+        [canDelete]="canDelete"
         (create)="onCreate()"
         (exportCSV)="onExportCSV('site.listOf')"
         (delete)="onDelete()"
@@ -23,11 +23,6 @@
         (openFilter)="onOpenFilter()">
         <!-- // Custo for teams -->
         <ng-template pTemplate="actionOnSelected">
-          <button
-            pButton
-            [disabled]="!canDelete || selectedCrudItems?.length !== 1"
-            label="{{ 'bia.delete' | translate }}"
-            (click)="onDelete(this.selectedCrudItems[0].id)"></button>
           <button
             pButton
             [disabled]="!canEdit || selectedCrudItems?.length !== 1"

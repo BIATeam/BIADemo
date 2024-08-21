@@ -23,8 +23,7 @@
     </ng-container>
     <button
       pButton
-      [disabled]="nbSelectedElements === 0"
-      *ngIf="canDelete"
+      [disabled]="!canDelete || nbSelectedElements === 0"
       label="{{ 'bia.delete' | translate }}"
       (click)="onDelete()"></button>
     <ng-container *ngTemplateOutlet="actionOnSelectedTemplate"></ng-container>
