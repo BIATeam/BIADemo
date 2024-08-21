@@ -111,9 +111,12 @@
         pFrozenColumn
         [frozen]="isSelectFrozen">
         <ng-container *ngIf="rowData.id > 0">
-          <p-tableCheckbox
-            *ngIf="canSelectMultipleElement === true; else selectSingleElement"
-            [value]="rowData"></p-tableCheckbox>
+          <ng-template
+            #selectMultipleElement
+            [ngIf]="canSelectMultipleElement === true"
+            [ngIfElse]="selectSingleElement">
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </ng-template>
           <ng-template #selectSingleElement>
             <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
           </ng-template>
