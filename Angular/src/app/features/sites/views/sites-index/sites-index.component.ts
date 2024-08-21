@@ -68,4 +68,9 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
       this.siteService.currentCrudItemId = crudItems[0].id;
     }
   }
+
+  onDelete(): void {
+    super.onDelete();
+    this.authService.reLogin();
+  }
 }
