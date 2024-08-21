@@ -380,6 +380,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       ) {
         this.clickElementId(rowData.id);
       }
+      if (this.canSelectElement && !this.canSelectMultipleElement) {
+        this.table.reset();
+      }
     }
   }
 
