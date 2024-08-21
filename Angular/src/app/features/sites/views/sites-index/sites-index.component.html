@@ -103,7 +103,8 @@
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"></bia-table>
+        (stateSave)="onStateSave($event)"
+        [canSelectMultipleElement]="false"></bia-table>
       <app-site-table
         *ngIf="crudConfiguration.useCalcMode"
         [elements]="crudItems$ | async"
