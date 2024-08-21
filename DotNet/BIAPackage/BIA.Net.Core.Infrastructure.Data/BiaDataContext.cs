@@ -209,7 +209,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// OnEndModelCreating.
         /// </summary>
         /// <param name="modelBuilder">the model Builder.</param>
-        protected void OnEndModelCreating(ModelBuilder modelBuilder)
+        protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);
         }

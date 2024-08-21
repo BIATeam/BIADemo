@@ -38,7 +38,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// <inheritdoc/>
         public async Task Add<T>(string key, T item, double cacheDurationInMinute)
         {
-            byte[] encodedItemResolve = this.ObjectToByteArray(item);
+            byte[] encodedItemResolve = ObjectToByteArray(item);
             var options = new DistributedCacheEntryOptions()
                 .SetAbsoluteExpiration(TimeSpan.FromMinutes(cacheDurationInMinute));
             await this.distibutedCache.SetAsync(key, encodedItemResolve, options);
@@ -50,7 +50,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
             byte[] encodedItemResolve = await this.distibutedCache.GetAsync(key);
             if (encodedItemResolve != null && encodedItemResolve.Length > 0)
             {
-                return this.ByteArrayToObject<T>(encodedItemResolve);
+                return ByteArrayToObject<T>(encodedItemResolve);
             }
 
             return default(T);
@@ -73,7 +73,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// <summary>
         /// Convert an object to a Byte Array, using Protobuf.
         /// </summary>
-        private byte[] ObjectToByteArray<T>(T obj)
+        private static byte[] ObjectToByteArray<T>(T obj)
         {
             if (object.Equals(obj, default(T)))
             {
@@ -90,7 +90,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
         /// <summary>
         /// Convert a byte array to an Object of T, using Protobuf.
         /// </summary>
-        private T ByteArrayToObject<T>(byte[] arrBytes)
+        private static T ByteArrayToObject<T>(byte[] arrBytes)
         {
             using var stream = new MemoryStream();
 

@@ -462,7 +462,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="x">key1.</param>
         /// <param name="y">key2.</param>
         /// <returns>true if equals.</returns>
-        protected bool Compare(TKey x, TKey y)
+        protected virtual bool Compare(TKey x, TKey y)
         {
             return EqualityComparer<TKey>.Default.Equals(x, y);
         }
@@ -610,7 +610,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="expression">The expression.</param>
         /// <exception cref="System.ArgumentNullException">expression.</exception>
-        protected void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)
+        protected virtual void CheckArgument<TResult>(Expression<Func<TEntity, TResult>> expression)
         {
             if (expression == null)
             {

@@ -196,7 +196,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// <typeparam name="T">Type of return.</typeparam>
         /// <param name="res">The resource.</param>
         /// <returns>object T.</returns>
-        protected T DeserializeIfRequired<T>(string res)
+        protected virtual T DeserializeIfRequired<T>(string res)
         {
             T content;
             if (typeof(T) == typeof(string))
@@ -233,7 +233,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         /// </summary>
         /// <param name="token">The token.</param>
         /// <returns>The DateTimeOffset.</returns>
-        protected DateTimeOffset GetJwtTokenExpirationDate(string token)
+        protected virtual DateTimeOffset GetJwtTokenExpirationDate(string token)
         {
             DateTimeOffset expirationDate = default;
 
