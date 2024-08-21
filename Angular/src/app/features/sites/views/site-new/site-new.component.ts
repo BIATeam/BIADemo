@@ -13,7 +13,7 @@ export class SiteNewComponent extends CrudItemNewComponent<Site> {
   constructor(
     protected injector: Injector,
     public siteService: SiteService,
-    private authService: AuthService
+    protected authService: AuthService
   ) {
     super(injector, siteService);
     this.crudConfiguration = siteCRUDConfiguration;
