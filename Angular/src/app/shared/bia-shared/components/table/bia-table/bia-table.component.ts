@@ -420,7 +420,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         this.canSelectMultipleElement === false &&
         !(selectedElements instanceof Array)
       ) {
-        selectedElements = [selectedElements];
+        selectedElements = selectedElements ? [selectedElements] : [];
       }
       this.selectedElementsChanged.next(selectedElements);
     }, 0);
