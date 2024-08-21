@@ -88,7 +88,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   // specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
-  private _selectedElements: any[] = [];
+  protected _selectedElements: any[] = [];
   get selectedElements(): any[] {
     return this._selectedElements;
   }
