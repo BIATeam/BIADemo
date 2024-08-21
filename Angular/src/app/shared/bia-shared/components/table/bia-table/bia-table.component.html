@@ -26,7 +26,8 @@
   "
   sortMode="multiple"
   [scrollHeight]="scrollHeightValue"
-  [scrollable]="isScrollable">
+  [scrollable]="isScrollable"
+  [(selection)]="selectedElements">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th

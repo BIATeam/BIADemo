@@ -32,7 +32,8 @@
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
     editMode="row"
-    dataKey="id">
+    dataKey="id"
+    [(selection)]="selectedElements">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th

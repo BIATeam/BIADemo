@@ -88,16 +88,12 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   // specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
+  private _selectedElements: any[] = [];
   get selectedElements(): any[] {
-    if (this.table) {
-      return this.table.selection as any[];
-    }
-    return [];
+    return this._selectedElements;
   }
   set selectedElements(value: any[]) {
-    if (this.table) {
-      this.table.selection = value;
-    }
+    this._selectedElements = value;
   }
 
   displayedColumns: BiaFieldConfig[];
@@ -379,6 +375,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         Object.prototype.hasOwnProperty.call(rowData, 'id') === true
       ) {
         this.clickElementId(rowData.id);
+      }
+
+      if (this.canSelectElement && !this.canSelectMultipleElement) {
+        this.selectedElements = [];
       }
     }
   }
