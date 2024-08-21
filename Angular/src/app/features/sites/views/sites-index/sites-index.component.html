@@ -11,8 +11,8 @@
       <bia-table-header
         [headerTitle]="'site.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-        [canExportCSV]="true"
         [canDelete]="canDelete"
+        [canExportCSV]="true"
         (create)="onCreate()"
         (exportCSV)="onExportCSV('site.listOf')"
         (delete)="onDelete()"
