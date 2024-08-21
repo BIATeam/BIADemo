@@ -37,12 +37,13 @@
       <tr>
         <th
           class="bia-table-select-col"
-          *ngIf="canSelectElement === true && canSelectMultipleElement"
+          *ngIf="canSelectElement === true"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          <p-tableHeaderCheckbox
+            *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
           <th
