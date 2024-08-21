@@ -171,6 +171,7 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
             var expressionBody = expression.Body;
+            var genericArgumentType = expression.Type.GenericTypeArguments.FirstOrDefault() ?? typeof(string);
 
             Expression binaryExpression;
 
@@ -239,7 +240,7 @@ namespace BIA.Net.Core.Domain
                 case "empty":
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody));
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { genericArgumentType }, expressionBody));
                     }
                     else
                     {
@@ -251,7 +252,7 @@ namespace BIA.Net.Core.Domain
                 case "notempty":
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody);
+                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { genericArgumentType }, expressionBody);
                     }
                     else
                     {
