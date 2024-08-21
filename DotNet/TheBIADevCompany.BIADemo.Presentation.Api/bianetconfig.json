@@ -268,12 +268,8 @@
       },
       // Site
       {
-        "Names": [ "Site_Access_All", "Site_Create", "Site_Save" ],
+        "Names": [ "Site_Access_All", "Site_Create", "Site_Update", "Site_Delete", "Site_Save" ],
         "Roles": [ "Admin" ]
-      },
-      {
-        "Names": [ "Site_Update", "Site_Delete" ],
-        "Roles": [ "Site_Admin" ]
       },
       {
         "Names": [ "Site_List_Access", "Site_Read", "Site_Member_List_Access" ],
