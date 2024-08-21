@@ -31,7 +31,7 @@
     <tr>
       <th
         class="bia-table-select-col"
-        *ngIf="canSelectElement === true"
+        *ngIf="canSelectElement === true && canSelectMultipleElement"
         [style.width]="widthSelect"
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
@@ -108,7 +108,14 @@
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen">
-        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        <ng-container *ngIf="rowData.id > 0">
+          <p-tableCheckbox
+            *ngIf="canSelectMultipleElement === true; else selectSingleElement"
+            [value]="rowData"></p-tableCheckbox>
+          <ng-template #selectSingleElement>
+            <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+          </ng-template>
+        </ng-container>
       </td>
       <td
         *ngFor="let col of columns"

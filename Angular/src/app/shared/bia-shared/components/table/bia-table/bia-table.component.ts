@@ -61,6 +61,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() scrollHeightValue = 'calc( 100vh - 450px)';
   @Input() isScrollable = true;
   @Input() frozeSelectColumn = false;
+  @Input() canSelectMultipleElement = true;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -413,10 +414,16 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   onSelectionChange() {
-    setTimeout(
-      () => this.selectedElementsChanged.next(this.selectedElements),
-      0
-    );
+    setTimeout(() => {
+      let selectedElements = this.selectedElements;
+      if (
+        this.canSelectMultipleElement === false &&
+        !(selectedElements instanceof Array)
+      ) {
+        selectedElements = [selectedElements];
+      }
+      this.selectedElementsChanged.next(selectedElements);
+    }, 0);
   }
 
   onStateSave(state: TableState) {

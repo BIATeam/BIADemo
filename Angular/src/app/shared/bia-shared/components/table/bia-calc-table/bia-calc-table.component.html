@@ -37,7 +37,7 @@
       <tr>
         <th
           class="bia-table-select-col"
-          *ngIf="canSelectElement === true"
+          *ngIf="canSelectElement === true && canSelectMultipleElement"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
@@ -119,16 +119,24 @@
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
         (keyup.escape)="cancel()">
-        <!-- FIRST COLUMN WITH CHECKBOX -->
+        <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
         <td
           *ngIf="canSelectElement === true"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableCheckbox
-            *ngIf="rowData.id > 0"
-            [value]="rowData"></p-tableCheckbox>
+          <ng-container *ngIf="rowData.id > 0">
+            <p-tableCheckbox
+              *ngIf="
+                canSelectMultipleElement === true;
+                else selectSingleElement
+              "
+              [value]="rowData"></p-tableCheckbox>
+            <ng-template #selectSingleElement>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </ng-template>
+          </ng-container>
         </td>
         <!-- OTHER COLUMNS -->
         <td
