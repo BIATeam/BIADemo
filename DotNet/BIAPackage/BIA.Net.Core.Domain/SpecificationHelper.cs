@@ -171,6 +171,7 @@ namespace BIA.Net.Core.Domain
             ConstantExpression valueExpression;
             ParameterExpression parameterExpression = expression.Parameters.FirstOrDefault();
             var expressionBody = expression.Body;
+            var expressionBodyGenericArgumentType = expressionBody.Type.GenericTypeArguments.FirstOrDefault() ?? typeof(string);
 
             Expression binaryExpression;
 
@@ -237,25 +238,39 @@ namespace BIA.Net.Core.Domain
                     break;
 
                 case "empty":
+                    var isNull = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody));
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { expressionBodyGenericArgumentType }, expressionBody));
+                    }
+                    else if (expressionBody.Type == typeof(string))
+                    {
+                        var isEmpty = Expression.Equal(expressionBody, Expression.Constant(string.Empty, typeof(string)));
+                        binaryExpression = Expression.OrElse(isNull, isEmpty);
                     }
                     else
                     {
-                        binaryExpression = Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type));
+                        binaryExpression = isNull;
                     }
 
                     break;
 
                 case "notempty":
+                    var isNotNull = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { typeof(string) }, expressionBody);
+                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { expressionBodyGenericArgumentType }, expressionBody);
+                    }
+                    else if (expressionBody.Type == typeof(string))
+                    {
+                        var isNotEmpty = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(string.Empty, typeof(string))));
+                        binaryExpression = Expression.AndAlso(isNotNull, isNotEmpty);
                     }
                     else
                     {
-                        binaryExpression = Expression.Not(Expression.Equal(expressionBody, Expression.Constant(null, expressionBody.Type)));
+                        binaryExpression = isNotNull;
                     }
 
                     break;

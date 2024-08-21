@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
                     { HeaderName.CurrentAirport, plane => plane.CurrentAirport != null ? plane.CurrentAirport.Name : null },
-                    { HeaderName.SimilarType, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
+                    { HeaderName.SimilarTypes, plane => plane.SimilarTypes.Select(x => x.Title).OrderBy(x => x) },
                 };
             }
         }
@@ -241,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                             records.Add(CSVString(x.CurrentAirport?.Display));
                         }
 
-                        if (string.Equals(headerName, HeaderName.SimilarType, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.SimilarTypes, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVList(x.SimilarTypes));
                         }
@@ -331,12 +331,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             public const string ConnectingAirports = "connectingAirports";
 
             /// <summary>
-            /// Header Name PlaneType.
+            /// Header Name SimilarTypes.
             /// </summary>
-            public const string SimilarType = "similarType";
+            public const string SimilarTypes = "similarTypes";
 
             /// <summary>
-            /// Header Name ConnectingAirports.
+            /// Header Name CurrentAirport.
             /// </summary>
             public const string CurrentAirport = "currentAirport";
         }
