@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Domain
                 case "empty":
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { genericArgumentType }, expressionBody));
+                        binaryExpression = Expression.Not(Expression.Call(typeof(Enumerable), "Any", new[] { expressionBodyGenericArgumentType }, expressionBody));
                     }
                     else
                     {
@@ -252,7 +252,7 @@ namespace BIA.Net.Core.Domain
                 case "notempty":
                     if (IsCollectionType(expressionBody.Type))
                     {
-                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { genericArgumentType }, expressionBody);
+                        binaryExpression = Expression.Call(typeof(Enumerable), "Any", new[] { expressionBodyGenericArgumentType }, expressionBody);
                     }
                     else
                     {
