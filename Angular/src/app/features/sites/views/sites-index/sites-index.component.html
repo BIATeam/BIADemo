@@ -11,8 +11,8 @@
       <bia-table-header
         [headerTitle]="'site.listOf' | translate"
         [canAdd]="canAdd && !crudConfiguration.useCalcMode"
-        [canDelete]="canDelete"
         [canExportCSV]="true"
+        [canDelete]="false"
         (create)="onCreate()"
         (exportCSV)="onExportCSV('site.listOf')"
         (delete)="onDelete()"
@@ -25,8 +25,12 @@
         <ng-template pTemplate="actionOnSelected">
           <button
             pButton
-            [disabled]="selectedCrudItems?.length !== 1"
-            *ngIf="canEdit"
+            [disabled]="!canDelete || selectedCrudItems?.length !== 1"
+            label="{{ 'bia.delete' | translate }}"
+            (click)="onDelete(this.selectedCrudItems[0].id)"></button>
+          <button
+            pButton
+            [disabled]="!canEdit || selectedCrudItems?.length !== 1"
             class="p-button-outlined"
             label="{{ 'site.edit' | translate }}"
             (click)="onEdit(this.selectedCrudItems[0].id)"></button>
