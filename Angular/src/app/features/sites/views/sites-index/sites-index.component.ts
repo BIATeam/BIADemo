@@ -61,4 +61,16 @@ export class SitesIndexComponent extends CrudItemsIndexComponent<Site> {
       });
     }
   }
+
+  onSelectedElementsChanged(crudItems: Site[]) {
+    super.onSelectedElementsChanged(crudItems);
+    if (crudItems.length === 1) {
+      this.siteService.currentCrudItemId = crudItems[0].id;
+    }
+  }
+
+  onDelete(): void {
+    super.onDelete();
+    this.authService.reLogin();
+  }
 }
