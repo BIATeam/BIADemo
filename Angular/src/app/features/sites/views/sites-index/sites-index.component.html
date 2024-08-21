@@ -37,10 +37,10 @@
           <button
             pButton
             [disabled]="
+              !canViewMembers ||
               selectedCrudItems?.length !== 1 ||
               !selectedCrudItems[0].canMemberListAccess
             "
-            *ngIf="canViewMembers"
             class="p-button-outlined"
             label="{{ 'app.members' | translate }}"
             (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
