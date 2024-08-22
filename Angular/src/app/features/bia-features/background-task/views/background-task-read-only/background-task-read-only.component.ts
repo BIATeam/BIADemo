@@ -10,10 +10,10 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 export class BackgroundTaskReadOnlyComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';
 
-  private sub = new Subscription();
+  protected sub = new Subscription();
   public url: string;
 
-  constructor(private biaTranslationService: BiaTranslationService) {}
+  constructor(protected biaTranslationService: BiaTranslationService) {}
 
   ngOnInit() {
     this.sub.add(

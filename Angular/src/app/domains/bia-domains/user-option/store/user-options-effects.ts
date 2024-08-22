@@ -80,8 +80,8 @@ export class UserOptionsEffects {
   */
 
   constructor(
-    private actions$: Actions,
-    private userDas: UserOptionDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected userDas: UserOptionDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

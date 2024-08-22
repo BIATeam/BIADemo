@@ -47,7 +47,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     injector: Injector,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     protected biaSwUpdateService: BiaSwUpdateService
   ) {
     super(injector, 'Auth');
@@ -254,7 +254,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
-  private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
+  protected setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     teamId = +teamId;
     const loginParam = this.getLoginParameters();
     let teamsLogin = loginParam.currentTeamLogins;
@@ -297,7 +297,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
-  private setCurrentRoleIds(
+  protected setCurrentRoleIds(
     teamTypeId: number,
     teamId: number,
     roleIds: number[]

@@ -13,9 +13,9 @@ import {
 })
 export class FormatValuePipe implements PipeTransform {
   constructor(
-    private datePipe: DatePipe,
-    private currencyPipe: CurrencyPipe,
-    private decimalPipe: DecimalPipe
+    protected datePipe: DatePipe,
+    protected currencyPipe: CurrencyPipe,
+    protected decimalPipe: DecimalPipe
   ) {}
   transform(value: any, col: BiaFieldConfig): string | null {
     if (value === null || value === undefined) {

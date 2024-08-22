@@ -42,8 +42,8 @@ export class BiaTableFilterComponent
 
   constructor(
     public biaTranslationService: BiaTranslationService,
-    private translateService: TranslateService,
-    private tableHelperService: TableHelperService
+    protected translateService: TranslateService,
+    protected tableHelperService: TableHelperService
   ) {
     super(biaTranslationService);
   }
@@ -92,7 +92,7 @@ export class BiaTableFilterComponent
     this.table.filter(value, col.field, col.filterMode);
   }
 
-  private initFiterConfiguration() {
+  protected initFiterConfiguration() {
     this.initFieldConfiguration();
     if (this.field.type == PropType.Number) {
       this.columnFilterType = 'numeric';

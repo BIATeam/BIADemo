@@ -17,11 +17,11 @@ export class BiaMatomoService implements OnDestroy {
   protected sub = new Subscription();
 
   constructor(
-    private router: Router,
-    private authService: AuthService,
-    private matomoInjector: MatomoInjector,
-    private matomoTracker: MatomoTracker,
-    private store: Store<AppState>
+    protected router: Router,
+    protected authService: AuthService,
+    protected matomoInjector: MatomoInjector,
+    protected matomoTracker: MatomoTracker,
+    protected store: Store<AppState>
   ) {}
 
   public init() {
@@ -35,7 +35,7 @@ export class BiaMatomoService implements OnDestroy {
     }
   }
 
-  private initMatomoInjector() {
+  protected initMatomoInjector() {
     const appSettings$ = this.getAppSettings();
 
     this.sub.add(
@@ -59,7 +59,7 @@ export class BiaMatomoService implements OnDestroy {
     );
   }
 
-  private initMatomoTracker() {
+  protected initMatomoTracker() {
     this.sub.add(
       this.router.events
         .pipe(
@@ -73,7 +73,7 @@ export class BiaMatomoService implements OnDestroy {
     );
   }
 
-  private getAppSettings(): Observable<AppSettings | null> {
+  protected getAppSettings(): Observable<AppSettings | null> {
     return this.store.select(getAppSettings).pipe(filter(envConf => !!envConf));
   }
 }

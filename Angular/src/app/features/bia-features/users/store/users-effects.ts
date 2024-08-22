@@ -271,9 +271,9 @@ export class UsersEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private userDas: UserDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    protected actions$: Actions,
+    protected userDas: UserDas,
+    protected biaMessageService: BiaMessageService,
+    protected store: Store<AppState>
   ) {}
 }

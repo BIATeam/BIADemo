@@ -32,8 +32,8 @@ export class FullPageLayoutComponent
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    private router: Router,
-    private serviceInjector: BiaInjectorService
+    protected router: Router,
+    protected serviceInjector: BiaInjectorService
   ) {}
 
   public $displayPageComponent: BehaviorSubject<boolean>;

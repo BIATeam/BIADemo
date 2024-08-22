@@ -98,7 +98,7 @@ export class CrudItemBulkFormComponent {
     this.initForm();
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       useCurrentView: [this.bulkParam.useCurrentView, Validators.required],
       dateFormat: [this.bulkParam.dateFormat, Validators.required],

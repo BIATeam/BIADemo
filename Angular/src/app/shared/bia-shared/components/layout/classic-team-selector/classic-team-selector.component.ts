@@ -48,7 +48,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   singleRoleMode: boolean;
   multiRoleMode: boolean;
 
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   unreadNotificationCount$: Observable<number>;
 
@@ -57,8 +57,8 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     public auth: AuthService,
     public translateService: TranslateService,
     public biaTranslationService: BiaTranslationService,
-    private authService: AuthService,
-    private store: Store<AppState>,
+    protected authService: AuthService,
+    protected store: Store<AppState>,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {}
 
@@ -125,7 +125,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initDropdownTeam() {
+  protected initDropdownTeam() {
     this.displayTeamList = false;
     const currentTeamId = this.authService
       .getUncryptedToken()
