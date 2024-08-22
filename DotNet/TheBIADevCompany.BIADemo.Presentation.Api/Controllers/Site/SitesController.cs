@@ -260,7 +260,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.siteService.GetCsvAsync(filters);
+            byte[] buffer = await this.siteService.GetCsvAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BiaConstants.Csv.Extension}");
         }
     }
