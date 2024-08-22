@@ -49,9 +49,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
     }),
     /// BIAToolKit - End Block msn
     /// BIAToolKit - Begin Block manufacturer
-    Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
-      validators: [Validators.required, Validators.maxLength(64)],
-    }),
+    Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {}),
     /// BIAToolKit - End Block manufacturer
     /// BIAToolKit - Begin Block isActive
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
@@ -66,6 +64,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       isSearchable: true,
       isSortable: false,
       type: PropType.Boolean,
+      validators: [Validators.required],
     }),
     /// BIAToolKit - End Block isMaintenance
     /// BIAToolKit - Begin Block firstFlightDate
@@ -74,6 +73,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       {
         isRequired: true,
         type: PropType.DateTime,
+        validators: [Validators.required],
       }
     ),
     /// BIAToolKit - End Block firstFlightDate
@@ -96,6 +96,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       {
         isRequired: true,
         type: PropType.Date,
+        validators: [Validators.required],
       }
     ),
     /// BIAToolKit - End Block nextMaintenanceDate
@@ -110,6 +111,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       {
         isRequired: true,
         type: PropType.TimeSecOnly,
+        validators: [Validators.required],
       }
     ),
     /// BIAToolKit - End Block syncFlightDataTime
@@ -125,7 +127,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
     Object.assign(new BiaFieldConfig('motorsCount', 'plane.motorsCount'), {
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
-      validators: [Validators.required, Validators.min(1)],
     }),
     /// BIAToolKit - End Block motorsCount
     /// BIAToolKit - Begin Block totalFlightHours
@@ -140,6 +141,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
           minFractionDigits: 6,
           maxFractionDigits: 6,
         }),
+        validators: [Validators.required, Validators.min(0)],
       }
     ),
     /// BIAToolKit - End Block totalFlightHours
@@ -164,7 +166,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
         minFractionDigits: 2,
         maxFractionDigits: 2,
       }),
-      validators: [Validators.min(0), Validators.max(100)],
+      validators: [Validators.required, Validators.min(0)],
     }),
     /// BIAToolKit - End Block fuelCapacity
     /// BIAToolKit - Begin Block fuelLevel
@@ -190,7 +192,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
         maxFractionDigits: 2,
         currency: 'EUR',
       }),
-      validators: [Validators.min(0)],
+      validators: [Validators.required, Validators.min(0)],
     }),
     /// BIAToolKit - End Block originalPrice
     /// BIAToolKit - Begin Block estimatedPrice
@@ -225,6 +227,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       {
         isRequired: true,
         type: PropType.OneToMany,
+        validators: [Validators.required],
       }
     ),
     /// BIAToolKit - End Block currentAirport
@@ -234,6 +237,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       {
         isRequired: true,
         type: PropType.ManyToMany,
+        validators: [Validators.required],
       }
     ),
     /// BIAToolKit - End Block connectingAirports
