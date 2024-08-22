@@ -11,8 +11,8 @@ export interface DataItem {
   providedIn: 'root',
 })
 export class AppDB extends Dexie {
-  public httpRequests!: Table<HttpRequestItem, number>;
-  public datas!: Table<DataItem, string>;
+  httpRequests!: Table<HttpRequestItem, number>;
+  datas!: Table<DataItem, string>;
 
   constructor() {
     super('biaDemoDB');

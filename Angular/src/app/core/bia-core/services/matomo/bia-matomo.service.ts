@@ -24,7 +24,7 @@ export class BiaMatomoService implements OnDestroy {
     protected store: Store<AppState>
   ) {}
 
-  public init() {
+  init() {
     this.initMatomoInjector();
     this.initMatomoTracker();
   }

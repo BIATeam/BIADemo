@@ -22,7 +22,7 @@ export abstract class AbstractDas<
     super(injector, endpoint);
   }
 
-  public static buildRoute(endpoint: string): string {
+  static buildRoute(endpoint: string): string {
     return GenericDas.buildRoute(endpoint);
   }
 

@@ -5,7 +5,7 @@ import { parse } from 'date-fns';
   providedIn: 'root',
 })
 export class DateHelperService {
-  public static isDate(value: any): boolean {
+  static isDate(value: any): boolean {
     const regex = /(\d{4})-(\d{2})-(\d{2})T/;
     if (typeof value === 'string' && value.match(regex)) {
       const date = Date.parse(value);
@@ -14,7 +14,7 @@ export class DateHelperService {
     return false;
   }
 
-  public static fillDate<TOut>(data: TOut) {
+  static fillDate<TOut>(data: TOut) {
     if (data) {
       Object.keys(data).forEach((key: string) => {
         const value = (data as any)[key];
@@ -29,7 +29,7 @@ export class DateHelperService {
     }
   }
 
-  public static toUtc(date: Date): Date {
+  static toUtc(date: Date): Date {
     return new Date(
       Date.UTC(
         date.getFullYear(),
@@ -42,11 +42,11 @@ export class DateHelperService {
     );
   }
 
-  public static isValidDate(d: Date): boolean {
+  static isValidDate(d: Date): boolean {
     return !isNaN(d.getTime());
   }
 
-  public static parseDate(
+  static parseDate(
     dateString: string,
     dateFormat: string | null = null,
     timeFormat: string | null = null

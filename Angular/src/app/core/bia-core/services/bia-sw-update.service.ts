@@ -7,7 +7,7 @@ import { filter, map } from 'rxjs/operators';
 })
 export class BiaSwUpdateService {
   protected _newVersionAvailable: boolean;
-  public get newVersionAvailable(): boolean {
+  get newVersionAvailable(): boolean {
     return this._newVersionAvailable;
   }
 
@@ -15,7 +15,7 @@ export class BiaSwUpdateService {
     this.init();
   }
 
-  public init() {
+  init() {
     if (this.swUpdate?.isEnabled === true) {
       const updatesAvailable$ = this.getUpdatesAvailable();
       updatesAvailable$.subscribe(async () => {
@@ -24,19 +24,19 @@ export class BiaSwUpdateService {
     }
   }
 
-  public async checkForUpdate() {
+  async checkForUpdate() {
     if (this.swUpdate?.isEnabled === true) {
       await this.swUpdate.checkForUpdate();
     }
   }
 
-  public async activateUpdate() {
+  async activateUpdate() {
     if (this.swUpdate?.isEnabled === true) {
       await this.swUpdate.activateUpdate();
     }
   }
 
-  public getUpdatesAvailable() {
+  getUpdatesAvailable() {
     return this.swUpdate.versionUpdates.pipe(
       filter((evt): evt is VersionReadyEvent => evt.type === 'VERSION_READY'),
       map(evt => ({

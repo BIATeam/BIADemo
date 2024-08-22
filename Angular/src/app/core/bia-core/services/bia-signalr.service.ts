@@ -33,7 +33,7 @@ export class BiaSignalRService {
   /**
    * Constructor.
    */
-  public constructor() {
+  constructor() {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(BiaEnvironmentService.getHubUrl())
       .build();
@@ -46,10 +46,7 @@ export class BiaSignalRService {
     this.targetedFeatures = [];
   }
 
-  public addMethod(
-    methodName: string,
-    newMethod: (...args: any[]) => void
-  ): void {
+  addMethod(methodName: string, newMethod: (...args: any[]) => void): void {
     this.hubConnection.on(methodName, newMethod);
     if (this.methods.indexOf(methodName) < 0) {
       this.methods.push(methodName);
@@ -59,7 +56,7 @@ export class BiaSignalRService {
       this.startConnection();
     }
   }
-  public removeMethod(methodName: string): void {
+  removeMethod(methodName: string): void {
     this.hubConnection.off(methodName);
     if (this.methods.indexOf(methodName) > -1) {
       this.methods.splice(this.methods.indexOf(methodName), 1);
@@ -74,7 +71,7 @@ export class BiaSignalRService {
     }, 500);
   }
 
-  public joinGroup(targetedFeature: TargetedFeature) {
+  joinGroup(targetedFeature: TargetedFeature) {
     if (this.targetedFeatures.indexOf(targetedFeature) === -1) {
       this.targetedFeatures.push(targetedFeature);
     }
@@ -100,7 +97,7 @@ export class BiaSignalRService {
       });
   }
 
-  public leaveGroup(targetedFeature: TargetedFeature) {
+  leaveGroup(targetedFeature: TargetedFeature) {
     const index = this.targetedFeatures.indexOf(targetedFeature);
     if (index > -1) {
       this.targetedFeatures.slice(index);

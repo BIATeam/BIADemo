@@ -8,7 +8,7 @@ import { Confirmation } from 'primeng/api';
 export class BiaDialogService {
   constructor(protected translateService: TranslateService) {}
 
-  public getDeleteConfirmation(key?: string): Confirmation {
+  getDeleteConfirmation(key?: string): Confirmation {
     const translates = this.translateService.instant([
       'biaMsg.confirmDelete',
       'bia.confirm',

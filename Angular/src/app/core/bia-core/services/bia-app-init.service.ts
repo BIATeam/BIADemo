@@ -36,7 +36,7 @@ export class BiaAppInitService implements OnDestroy {
     protected appSettingsService: AppSettingsService
   ) {}
 
-  public initAuth() {
+  initAuth() {
     return new Promise<void>(resolve => {
       this.store.dispatch(DomainAppSettingsActions.loadAll());
       this.getObsAppSettings()

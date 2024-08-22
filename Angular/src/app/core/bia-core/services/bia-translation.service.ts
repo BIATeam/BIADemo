@@ -66,11 +66,11 @@ export class BiaTranslationService {
   protected lazyTranslateServices: TranslateService[] = [];
   protected cultureSubject: BehaviorSubject<string | null> =
     new BehaviorSubject<string | null>(getCurrentCulture());
-  public currentCulture$: Observable<string | null> =
+  currentCulture$: Observable<string | null> =
     this.cultureSubject.asObservable();
-  public appSettings$: Observable<AppSettings | null> =
+  appSettings$: Observable<AppSettings | null> =
     this.store.select(getAppSettings);
-  public currentCultureDateFormat$: Observable<DateFormat> = combineLatest([
+  currentCultureDateFormat$: Observable<DateFormat> = combineLatest([
     this.currentCulture$,
     this.appSettings$,
   ]).pipe(
@@ -78,7 +78,7 @@ export class BiaTranslationService {
       this.getDateFormatByCulture(currentCulture, appSettings)
     )
   );
-  public languageId$: Observable<number> = combineLatest([
+  languageId$: Observable<number> = combineLatest([
     this.currentCulture$,
     this.appSettings$,
   ])

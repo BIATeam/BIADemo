@@ -27,11 +27,11 @@ const STORAGE_RELOADED_KEY = 'isReloaded';
   providedIn: 'root',
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
-  public shouldRefreshToken = false;
+  shouldRefreshToken = false;
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo> =
     new BehaviorSubject<AuthInfo>(new AuthInfo());
-  public authInfo$: Observable<AuthInfo> = this.authInfoSubject
+  authInfo$: Observable<AuthInfo> = this.authInfoSubject
     .asObservable()
     .pipe(
       filter(
@@ -39,7 +39,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       )
     );
 
-  public hasToken$: Observable<boolean> = this.authInfo$.pipe(
+  hasToken$: Observable<boolean> = this.authInfo$.pipe(
     map((authInfo: AuthInfo) => authInfo?.token?.length > 0 === true)
   );
 
@@ -79,12 +79,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
-  public logout() {
+  logout() {
     this.authInfoSubject.next(new AuthInfo());
   }
 
   protected isInLogin = false;
-  public login(): Observable<AuthInfo> {
+  login(): Observable<AuthInfo> {
     if (this.isInLogin) {
       console.info('isInLogin');
       return this.authInfo$.pipe(skip(1), take(1));
@@ -103,11 +103,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public hasPermission(permission: string): boolean {
+  hasPermission(permission: string): boolean {
     return this.checkPermission(this.authInfoSubject.value, permission);
   }
 
-  public hasPermissionObs(permission: string): Observable<boolean> {
+  hasPermissionObs(permission: string): Observable<boolean> {
     if (!permission) {
       return of(true);
     }
@@ -126,7 +126,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     );
   }
 
-  public getToken(): string {
+  getToken(): string {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
       return authInfo.token;
@@ -134,7 +134,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return '';
   }
 
-  public getUncryptedToken(): Token {
+  getUncryptedToken(): Token {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
       return authInfo.uncryptedToken;
@@ -142,7 +142,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return <Token>{};
   }
 
-  public decodeToken(token: string): Token {
+  decodeToken(token: string): Token {
     const jsonDecodedToken: string = atob(token.split('.')[1]);
     const objDecodedToken: any = JSON.parse(jsonDecodedToken);
 
@@ -168,7 +168,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return decodedToken;
   }
 
-  public getAdditionalInfos(): AdditionalInfos {
+  getAdditionalInfos(): AdditionalInfos {
     const authInfo = this.authInfoSubject.value;
     if (authInfo) {
       return authInfo.additionalInfos;
@@ -176,7 +176,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return <AdditionalInfos>{};
   }
 
-  public getLoginParameters(): LoginParamDto {
+  getLoginParameters(): LoginParamDto {
     const value = sessionStorage.getItem(STORAGE_LOGINPARAM_KEY);
     if (value) {
       const loginParam: LoginParamDto = <LoginParamDto>JSON.parse(value);
@@ -200,17 +200,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     };
   }
 
-  public setLoginParameters(loginParam: LoginParamDto) {
+  setLoginParameters(loginParam: LoginParamDto) {
     sessionStorage.setItem(STORAGE_LOGINPARAM_KEY, JSON.stringify(loginParam));
   }
-  public getCurrentTeams(
-    teamTypeIds: TeamTypeId[]
-  ): CurrentTeamDto[] | undefined {
+  getCurrentTeams(teamTypeIds: TeamTypeId[]): CurrentTeamDto[] | undefined {
     const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.filter(i => teamTypeIds.indexOf(i.teamTypeId) > -1);
   }
 
-  public getCurrentTeamIds(teamTypeId: TeamTypeId[]): number[] {
+  getCurrentTeamIds(teamTypeId: TeamTypeId[]): number[] {
     const team = this.getCurrentTeams(teamTypeId);
     if (team) {
       return team.map(t => t.teamId);
@@ -218,12 +216,12 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return [];
   }
 
-  public getCurrentTeam(teamTypeId: TeamTypeId): CurrentTeamDto | undefined {
+  getCurrentTeam(teamTypeId: TeamTypeId): CurrentTeamDto | undefined {
     const teamsLogin = this.getLoginParameters().currentTeamLogins;
     return teamsLogin.find(i => i.teamTypeId === teamTypeId);
   }
 
-  public getCurrentTeamId(teamTypeId: TeamTypeId): number {
+  getCurrentTeamId(teamTypeId: TeamTypeId): number {
     const team = this.getCurrentTeam(teamTypeId);
     if (team) {
       return team.teamId;
@@ -231,20 +229,20 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return -1;
   }
 
-  public getCurrentRoleIds(teamTypeId: number): number[] {
+  getCurrentRoleIds(teamTypeId: number): number[] {
     const team = this.getCurrentTeam(teamTypeId);
     if (team) {
       return team.currentRoleIds;
     }
     return [];
   }
-  public changeCurrentTeamId(teamTypeId: number, teamId: number) {
+  changeCurrentTeamId(teamTypeId: number, teamId: number) {
     if (this.setCurrentTeamId(teamTypeId, teamId)) {
       this.reLogin();
     }
   }
 
-  public reLogin() {
+  reLogin() {
     if (!this.isInLogin) {
       this.shouldRefreshToken = true;
       this.authInfoSubject.next(new AuthInfo());
@@ -287,11 +285,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return false;
   }
 
-  public changeCurrentRoleIds(
-    teamTypeId: number,
-    teamId: number,
-    roleIds: number[]
-  ) {
+  changeCurrentRoleIds(teamTypeId: number, teamId: number, roleIds: number[]) {
     if (this.setCurrentRoleIds(teamTypeId, teamId, roleIds)) {
       this.reLogin();
     }
@@ -324,7 +318,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return false;
   }
 
-  public getFrontEndVersion(): Observable<string> {
+  getFrontEndVersion(): Observable<string> {
     return this.http.get<string>(`${this.route}frontEndVersion`);
   }
 
@@ -380,7 +374,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       );
   }
 
-  public getLightToken() {
+  getLightToken() {
     const loginParam = this.getLoginParameters();
     loginParam.lightToken = true;
     return this.http

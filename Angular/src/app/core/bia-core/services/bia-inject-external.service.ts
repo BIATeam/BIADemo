@@ -14,7 +14,7 @@ export class BiaInjectExternalService implements OnDestroy {
 
   constructor(protected store: Store<AppState>) {}
 
-  public init() {
+  init() {
     this.initInjector();
   }
 

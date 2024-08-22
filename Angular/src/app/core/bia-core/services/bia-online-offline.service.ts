@@ -43,16 +43,16 @@ enum HTTPMethod {
 export class BiaOnlineOfflineService implements OnDestroy {
   protected serverAvailableSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  public serverAvailable$: Observable<boolean> =
+  serverAvailable$: Observable<boolean> =
     this.serverAvailableSubject.asObservable();
   protected syncCompletedSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  public syncCompleted$: Observable<boolean> =
+  syncCompleted$: Observable<boolean> =
     this.syncCompletedSubject.asObservable();
-  public static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
+  static readonly httpHeaderRetry: string = 'X-HttpRequest-Retry';
   protected sub = new Subscription();
   protected static _IsModeEnabled = false;
-  public static get isModeEnabled() {
+  static get isModeEnabled() {
     return BiaOnlineOfflineService._IsModeEnabled;
   }
 
@@ -74,7 +74,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
     }
   }
 
-  public static isServerAvailable(error: any) {
+  static isServerAvailable(error: any) {
     return (
       error instanceof HttpErrorResponse &&
       !(
@@ -85,7 +85,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
     );
   }
 
-  public static addHttpHeaderRetry(options?: HttpOptions) {
+  static addHttpHeaderRetry(options?: HttpOptions) {
     if (options) {
       if (options.headers) {
         options.headers = (<HttpHeaders>options.headers).append(
@@ -110,7 +110,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
     return options;
   }
 
-  public manageHttpErrorResponse(
+  manageHttpErrorResponse(
     httpRequest: HttpRequest<any>,
     httpErrorResponse: HttpErrorResponse
   ) {

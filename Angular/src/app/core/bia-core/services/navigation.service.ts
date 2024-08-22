@@ -6,7 +6,7 @@ import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
   providedIn: 'root',
 })
 export class NavigationService {
-  public filterNavByRole(
+  filterNavByRole(
     authInfo: AuthInfo,
     biaNavigation: BiaNavigation[]
   ): BiaNavigation[] {
