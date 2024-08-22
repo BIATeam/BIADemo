@@ -13,7 +13,7 @@ import { HttpStatusCode } from '@angular/common/http';
 export class PermissionGuard {
   constructor(
     protected authService: AuthService,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    @Inject(APP_BASE_HREF) protected baseHref: string
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
