@@ -76,7 +76,16 @@
     "probability": "Oportunidad",
     "similarTypes": "Tipos de planos similares",
     "site": "Aerolínea",
-    "syncTime": "Tiempo de sincronización"
+    "syncTime": "Tiempo de sincronización",
+    "manufacturer": "Fabricante",
+    "isMaintenance": "Mantenimiento",
+    "firstFlightDate": "Fecha del primer vuelo",
+    "nextMaintenanceDate": "Próxima fecha de mantenimiento",
+    "syncFlightDataTime": "Hora de sincronización de datos de vuelo",
+    "motorsCount": "Número de motores",
+    "totalFlightHours": "Horas totales de vuelo",
+    "fuelCapacity": "Capacidad de combustible",
+    "originalPrice": "Precio original"
   },
   "planeType": {
     "add": "Añadir tipos de planos",

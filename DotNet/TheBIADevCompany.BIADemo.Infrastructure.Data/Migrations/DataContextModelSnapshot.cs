@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -530,19 +530,41 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<decimal?>("EstimatedPrice")
                         .HasColumnType("Money");
 
+                    b.Property<DateTime>("FirstFlightDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("FuelCapacity")
+                        .HasColumnType("real");
+
                     b.Property<float?>("FuelLevel")
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsMaintenance")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastFlightDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Manufacturer")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("MotorsCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Msn")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("NextMaintenanceDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("Money");
 
                     b.Property<int?>("PlaneTypeId")
                         .HasColumnType("int");
@@ -558,8 +580,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("SyncFlightDataTime")
+                        .HasColumnType("time");
+
                     b.Property<TimeSpan?>("SyncTime")
                         .HasColumnType("time");
+
+                    b.Property<double>("TotalFlightHours")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

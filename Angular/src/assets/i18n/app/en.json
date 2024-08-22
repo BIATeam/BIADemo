@@ -76,7 +76,16 @@
     "probability": "Probability",
     "similarTypes": "Similar Planes Types",
     "site": "Airline",
-    "syncTime": "Synchronization time"
+    "syncTime": "Synchronization time",
+    "manufacturer": "Manufacturer",
+    "isMaintenance": "Maintenance",
+    "firstFlightDate": "First flight date",
+    "nextMaintenanceDate": "Next maintenance date",
+    "syncFlightDataTime": "Flight data sync time",
+    "motorsCount": "Motors count",
+    "totalFlightHours": "Total flight hours",
+    "fuelCapacity": "Fuel capacity",
+    "originalPrice": "Original price"
   },
   "planeType": {
     "add": "Add type of planes",

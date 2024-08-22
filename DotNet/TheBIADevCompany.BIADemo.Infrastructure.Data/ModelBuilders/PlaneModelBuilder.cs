@@ -36,13 +36,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().Property(p => p.PlaneTypeId).IsRequired(false); // relationship 0..1-*
             modelBuilder.Entity<Plane>().Property(p => p.CurrentAirportId).IsRequired(false); // relationship 0..1-*
             modelBuilder.Entity<Plane>().Property(p => p.Msn).IsRequired().HasMaxLength(64);
+            modelBuilder.Entity<Plane>().Property(p => p.Manufacturer).IsRequired(false).HasMaxLength(64);
             modelBuilder.Entity<Plane>().Property(p => p.IsActive).IsRequired();
+            modelBuilder.Entity<Plane>().Property(p => p.IsMaintenance).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.FirstFlightDate).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.LastFlightDate).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.DeliveryDate).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.NextMaintenanceDate).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.SyncTime).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.SyncFlightDataTime).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.Capacity).IsRequired();
+            modelBuilder.Entity<Plane>().Property(p => p.MotorsCount).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.TotalFlightHours).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.Probability).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.FuelCapacity).IsRequired();
             modelBuilder.Entity<Plane>().Property(p => p.FuelLevel).IsRequired(false);
+            modelBuilder.Entity<Plane>().Property(p => p.OriginalPrice).IsRequired().HasColumnType("Money");
             modelBuilder.Entity<Plane>().Property(p => p.EstimatedPrice).IsRequired(false).HasColumnType("Money");
             modelBuilder.Entity<Plane>().HasOne(x => x.CurrentAirport).WithMany().HasForeignKey(x => x.CurrentAirportId);
             modelBuilder.Entity<Plane>().HasOne(x => x.PlaneType).WithMany().HasForeignKey(x => x.PlaneTypeId);

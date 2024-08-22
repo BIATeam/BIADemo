@@ -30,13 +30,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     { HeaderName.Id, plane => plane.Id },
                     { HeaderName.Msn, plane => plane.Msn },
+                    { HeaderName.Manufacturer, plane => plane.Manufacturer },
                     { HeaderName.IsActive, plane => plane.IsActive },
+                    { HeaderName.IsMaintenance, plane => plane.IsMaintenance },
+                    { HeaderName.FirstFlightDate, plane => plane.FirstFlightDate },
                     { HeaderName.LastFlightDate, plane => plane.LastFlightDate },
                     { HeaderName.DeliveryDate, plane => plane.DeliveryDate },
+                    { HeaderName.NextMaintenanceDate, plane => plane.NextMaintenanceDate },
                     { HeaderName.SyncTime, plane => plane.SyncTime },
+                    { HeaderName.SyncFlightDataTime, plane => plane.SyncFlightDataTime },
                     { HeaderName.Capacity, plane => plane.Capacity },
+                    { HeaderName.MotorsCount, plane => plane.MotorsCount },
+                    { HeaderName.TotalFlightHours, plane => plane.TotalFlightHours },
                     { HeaderName.Probability, plane => plane.Probability },
+                    { HeaderName.FuelCapacity, plane => plane.FuelCapacity },
                     { HeaderName.FuelLevel, plane => plane.FuelLevel },
+                    { HeaderName.OriginalPrice, plane => plane.OriginalPrice },
                     { HeaderName.EstimatedPrice, plane => plane.EstimatedPrice },
                     { HeaderName.PlaneType, plane => plane.PlaneType != null ? plane.PlaneType.Title : null },
                     { HeaderName.ConnectingAirports, plane => plane.ConnectingAirports.Select(x => x.Name).OrderBy(x => x) },
@@ -56,13 +65,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 
             entity.Id = dto.Id;
             entity.Msn = dto.Msn;
+            entity.Manufacturer = dto.Manufacturer;
             entity.IsActive = dto.IsActive;
+            entity.IsMaintenance = dto.IsMaintenance;
+            entity.FirstFlightDate = dto.FirstFlightDate;
             entity.LastFlightDate = dto.LastFlightDate;
             entity.DeliveryDate = dto.DeliveryDate;
+            entity.NextMaintenanceDate = dto.NextMaintenanceDate;
             entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
+            entity.SyncFlightDataTime = TimeSpan.Parse(dto.SyncFlightDataTime, new CultureInfo("en-US"));
             entity.Capacity = dto.Capacity;
+            entity.MotorsCount = dto.MotorsCount;
+            entity.TotalFlightHours = dto.TotalFlightHours;
             entity.Probability = dto.Probability;
+            entity.FuelCapacity = dto.FuelCapacity;
             entity.FuelLevel = dto.FuelLevel;
+            entity.OriginalPrice = dto.OriginalPrice;
             entity.EstimatedPrice = dto.EstimatedPrice;
 
             // Mapping relationship 1-* : Site
@@ -123,13 +141,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             {
                 Id = entity.Id,
                 Msn = entity.Msn,
+                Manufacturer = entity.Manufacturer,
                 IsActive = entity.IsActive,
+                IsMaintenance = entity.IsMaintenance,
+                FirstFlightDate = entity.FirstFlightDate,
                 LastFlightDate = entity.LastFlightDate,
                 DeliveryDate = entity.DeliveryDate,
+                NextMaintenanceDate = entity.NextMaintenanceDate,
                 SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
+                SyncFlightDataTime = entity.SyncFlightDataTime.ToString(@"hh\:mm\:ss"),
                 Capacity = entity.Capacity,
+                MotorsCount = entity.MotorsCount,
+                TotalFlightHours = entity.TotalFlightHours,
                 Probability = entity.Probability,
+                FuelCapacity = entity.FuelCapacity,
                 FuelLevel = entity.FuelLevel,
+                OriginalPrice = entity.OriginalPrice,
                 EstimatedPrice = entity.EstimatedPrice,
 
                 // Mapping relationship 1-* : Site
@@ -186,9 +213,24 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                             records.Add(CSVString(x.Msn));
                         }
 
+                        if (string.Equals(headerName, HeaderName.Manufacturer, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.Manufacturer));
+                        }
+
                         if (string.Equals(headerName, HeaderName.IsActive, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVBool(x.IsActive));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.IsMaintenance, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVBool(x.IsMaintenance.GetValueOrDefault()));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.FirstFlightDate, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDateTime(x.FirstFlightDate));
                         }
 
                         if (string.Equals(headerName, HeaderName.LastFlightDate, StringComparison.OrdinalIgnoreCase))
@@ -201,14 +243,29 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                             records.Add(CSVDate(x.DeliveryDate));
                         }
 
+                        if (string.Equals(headerName, HeaderName.NextMaintenanceDate, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVDate(x.NextMaintenanceDate));
+                        }
+
                         if (string.Equals(headerName, HeaderName.SyncTime, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVTime(x.SyncTime));
                         }
 
+                        if (string.Equals(headerName, HeaderName.SyncFlightDataTime, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVTime(x.SyncFlightDataTime));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Capacity, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.Capacity));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.MotorsCount, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.MotorsCount));
                         }
 
                         if (string.Equals(headerName, HeaderName.PlaneType, StringComparison.OrdinalIgnoreCase))
@@ -221,14 +278,29 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                             records.Add(CSVList(x.ConnectingAirports));
                         }
 
+                        if (string.Equals(headerName, HeaderName.TotalFlightHours, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.TotalFlightHours));
+                        }
+
                         if (string.Equals(headerName, HeaderName.Probability, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.Probability));
                         }
 
+                        if (string.Equals(headerName, HeaderName.FuelCapacity, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.FuelCapacity));
+                        }
+
                         if (string.Equals(headerName, HeaderName.FuelLevel, StringComparison.OrdinalIgnoreCase))
                         {
                             records.Add(CSVNumber(x.FuelLevel));
+                        }
+
+                        if (string.Equals(headerName, HeaderName.OriginalPrice, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVNumber(x.OriginalPrice));
                         }
 
                         if (string.Equals(headerName, HeaderName.EstimatedPrice, StringComparison.OrdinalIgnoreCase))
@@ -281,9 +353,24 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             public const string Msn = "msn";
 
             /// <summary>
+            /// Header Name Manufacturer.
+            /// </summary>
+            public const string Manufacturer = "manufacturer";
+
+            /// <summary>
             /// Header Name IsActive.
             /// </summary>
             public const string IsActive = "isActive";
+
+            /// <summary>
+            /// Header Name IsMaintenance.
+            /// </summary>
+            public const string IsMaintenance = "isMaintenance";
+
+            /// <summary>
+            /// Header Name FirstFlightDate.
+            /// </summary>
+            public const string FirstFlightDate = "firstFlightDate";
 
             /// <summary>
             /// Header Name LastFlightDate.
@@ -296,9 +383,19 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             public const string DeliveryDate = "deliveryDate";
 
             /// <summary>
+            /// Header Name NextMaintenanceDate.
+            /// </summary>
+            public const string NextMaintenanceDate = "nextMaintenanceDate";
+
+            /// <summary>
             /// Header Name SyncTime.
             /// </summary>
             public const string SyncTime = "syncTime";
+
+            /// <summary>
+            /// Header Name SyncFlightDataTime.
+            /// </summary>
+            public const string SyncFlightDataTime = "syncFlightDataTime";
 
             /// <summary>
             /// Header Name Capacity.
@@ -306,14 +403,34 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             public const string Capacity = "capacity";
 
             /// <summary>
+            /// Header Name MotorsCount.
+            /// </summary>
+            public const string MotorsCount = "motorsCount";
+
+            /// <summary>
+            /// Header Name TotalFlightHours.
+            /// </summary>
+            public const string TotalFlightHours = "totalFlightHours";
+
+            /// <summary>
             /// Header Name Propability.
             /// </summary>
             public const string Probability = "probability";
 
             /// <summary>
+            /// Header Name Fuel Capacity.
+            /// </summary>
+            public const string FuelCapacity = "fuelCapacity";
+
+            /// <summary>
             /// Header Name Fuel Level.
             /// </summary>
             public const string FuelLevel = "fuelLevel";
+
+            /// <summary>
+            /// Header Name Original Price.
+            /// </summary>
+            public const string OriginalPrice = "originalPrice";
 
             /// <summary>
             /// Header Name Estimated Price.
