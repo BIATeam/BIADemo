@@ -23,8 +23,8 @@ export class TokenInterceptor implements HttpInterceptor {
   protected isRefreshing = false;
 
   constructor(
-    public authService: AuthService,
-    public keycloakService: KeycloakService,
+    protected authService: AuthService,
+    protected keycloakService: KeycloakService,
     protected appSettingsService: AppSettingsService
   ) {}
 
