@@ -18,7 +18,7 @@ import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templa
 })
 export class UserService extends CrudItemService<User> {
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public dasService: UserDas,
     public signalRService: CrudItemSignalRService<User>,
     public optionsService: UserOptionsService,
@@ -28,63 +28,63 @@ export class UserService extends CrudItemService<User> {
     super(dasService, signalRService, optionsService);
   }
 
-  public getParentIds(): any[] {
+  getParentIds(): any[] {
     // TODO after creation of CRUD User : adapt the parent Key tothe context. It can be null if root crud
     // return this.authService.getCurrentTeamId(TeamTypeId.Site);
     return [];
   }
 
-  public getFeatureName() {
+  getFeatureName() {
     return userCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<User[]> = this.store.select(
+  crudItems$: Observable<User[]> = this.store.select(
     FeatureUsersStore.getAllUsers
   );
-  public totalCount$: Observable<number> = this.store.select(
+  totalCount$: Observable<number> = this.store.select(
     FeatureUsersStore.getUsersTotalCount
   );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
+  loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureUsersStore.getUserLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
     FeatureUsersStore.getLastLazyLoadEvent
   );
 
-  public crudItem$: Observable<User> = this.store.select(
+  crudItem$: Observable<User> = this.store.select(
     FeatureUsersStore.getCurrentUser
   );
-  public loadingGet$: Observable<boolean> = this.store.select(
+  loadingGet$: Observable<boolean> = this.store.select(
     FeatureUsersStore.getUserLoadingGet
   );
 
-  public load(id: any) {
+  load(id: any) {
     this.store.dispatch(FeatureUsersActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  loadAllByPost(event: LazyLoadEvent) {
     this.store.dispatch(FeatureUsersActions.loadAllByPost({ event }));
   }
-  public create(crudItem: User) {
+  create(crudItem: User) {
     // TODO after creation of CRUD User : map parent Key on the corresponding field
     // crudItem.siteId = this.getParentIds()[0],
     this.store.dispatch(FeatureUsersActions.create({ user: crudItem }));
   }
-  public update(crudItem: User) {
+  update(crudItem: User) {
     this.store.dispatch(FeatureUsersActions.update({ user: crudItem }));
   }
-  public save(crudItems: User[]) {
+  save(crudItems: User[]) {
     this.store.dispatch(FeatureUsersActions.save({ users: crudItems }));
   }
-  public remove(id: any) {
+  remove(id: any) {
     this.store.dispatch(FeatureUsersActions.remove({ id }));
   }
-  public multiRemove(ids: any[]) {
+  multiRemove(ids: any[]) {
     this.store.dispatch(FeatureUsersActions.multiRemove({ ids }));
   }
-  public clearAll() {
+  clearAll() {
     this.store.dispatch(FeatureUsersActions.clearAll());
   }
-  public clearCurrent() {
+  clearCurrent() {
     this._currentCrudItem = <User>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureUsersActions.clearCurrent());

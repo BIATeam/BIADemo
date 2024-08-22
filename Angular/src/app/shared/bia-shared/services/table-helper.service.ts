@@ -7,7 +7,7 @@ import { BiaTableComponent } from '../components/table/bia-table/bia-table.compo
   providedIn: 'root',
 })
 export class TableHelperService {
-  public hasFilter(biaTableComponent: BiaTableComponent): boolean {
+  hasFilter(biaTableComponent: BiaTableComponent): boolean {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }
@@ -22,7 +22,7 @@ export class TableHelperService {
     }
   }
 
-  public isNullUndefEmptyFilters(
+  isNullUndefEmptyFilters(
     filters: { [s: string]: FilterMetadata | FilterMetadata[] | undefined },
     ignoreGlobalFilter: boolean
   ): boolean {
@@ -59,15 +59,15 @@ export class TableHelperService {
     return true;
   }
 
-  public isSimpleFilter(filter: FilterMetadata | FilterMetadata[] | undefined) {
+  isSimpleFilter(filter: FilterMetadata | FilterMetadata[] | undefined) {
     return !Array.isArray(filter);
   }
 
-  private isNullUndefEmptyStr(obj: any): boolean {
+  protected isNullUndefEmptyStr(obj: any): boolean {
     return obj === null || obj === undefined || obj === '';
   }
 
-  public isEmptyFilter(obj: FilterMetadata): boolean {
+  isEmptyFilter(obj: FilterMetadata): boolean {
     return (
       obj === null ||
       obj === undefined ||
@@ -77,7 +77,7 @@ export class TableHelperService {
     );
   }
 
-  public cleanFilter(element: FilterMetadata) {
+  cleanFilter(element: FilterMetadata) {
     const elemCopy = { ...(element as FilterMetadata) };
     if (element.matchMode === 'empty' || element.matchMode === 'notEmpty') {
       elemCopy.value = null;

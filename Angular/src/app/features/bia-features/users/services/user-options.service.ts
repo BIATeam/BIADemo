@@ -16,7 +16,7 @@ import { AppState } from 'src/app/store/state';
 export class UserOptionsService extends CrudItemOptionsService {
   roleOptions$: Observable<OptionDto[]>;
 
-  constructor(private store: Store<AppState>) {
+  constructor(protected store: Store<AppState>) {
     super();
     // TODO after creation of CRUD User : get all requiered option dto use in Table calc and create and edit form
     this.roleOptions$ = this.store.select(getAllRoleOptions);

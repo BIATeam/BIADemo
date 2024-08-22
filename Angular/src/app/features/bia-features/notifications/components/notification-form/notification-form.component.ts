@@ -43,10 +43,10 @@ export class NotificationFormComponent implements OnChanges {
   form: UntypedFormGroup;
   notificationTranslations: UntypedFormArray;
   missingLanguageOptions: OptionDto[];
-  public missingTranslation = false;
+  missingTranslation = false;
   protected selectionLanguage = false;
 
-  constructor(public formBuilder: UntypedFormBuilder) {
+  constructor(protected formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 
@@ -83,7 +83,7 @@ export class NotificationFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     const group: any = {
       id: [this.notification.id],
       title: [this.notification.title, Validators.required],
@@ -110,7 +110,7 @@ export class NotificationFormComponent implements OnChanges {
   /**
    * Returns the FormGroup as a Table Row
    */
-  private createNotifiedTeams(): UntypedFormGroup {
+  protected createNotifiedTeams(): UntypedFormGroup {
     return this.formBuilder.group({
       team: [null, Validators.required],
       roles: [],
@@ -193,7 +193,7 @@ export class NotificationFormComponent implements OnChanges {
     this.computeMissingTranslation();
   }
 
-  private computeMissingTranslation() {
+  protected computeMissingTranslation() {
     this.missingLanguageOptions = this.languageOptions.filter(
       lo =>
         !this.notificationTranslations.value.find(
@@ -250,7 +250,7 @@ export class NotificationFormComponent implements OnChanges {
     console.log(item);
   }
 
-  public static differentialTranslation<T extends BaseDto>(
+  static differentialTranslation<T extends BaseDto>(
     newList: T[],
     oldList: T[]
   ) {
@@ -279,7 +279,7 @@ export class NotificationFormComponent implements OnChanges {
     return differential;
   }
 
-  public static differentialNotificationTeam(
+  static differentialNotificationTeam(
     newList: NotificationTeam[],
     oldList: NotificationTeam[]
   ) {

@@ -13,18 +13,18 @@ import { FeatureNotificationsActions } from '../store/notifications-actions';
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private store: Store<AppState>) {
+  constructor(protected store: Store<AppState>) {
     this.initSub();
     this.loading$ = this.store.select(getNotificationLoadingGet);
     this.notification$ = this.store.select(getCurrentNotification);
   }
-  private _currentNotification: Notification;
-  private _currentNotificationId: number;
-  private sub = new Subscription();
-  public loading$: Observable<boolean>;
-  public notification$: Observable<Notification>;
+  protected _currentNotification: Notification;
+  protected _currentNotificationId: number;
+  protected sub = new Subscription();
+  loading$: Observable<boolean>;
+  notification$: Observable<Notification>;
 
-  public get currentNotification() {
+  get currentNotification() {
     if (this._currentNotification?.id === this._currentNotificationId) {
       return this._currentNotification;
     } else {
@@ -32,15 +32,15 @@ export class NotificationService {
     }
   }
 
-  public get currentNotificationId(): number {
+  get currentNotificationId(): number {
     return this._currentNotificationId;
   }
-  public set currentNotificationId(id: number) {
+  set currentNotificationId(id: number) {
     this._currentNotificationId = Number(id);
     this.store.dispatch(FeatureNotificationsActions.load({ id: id }));
   }
 
-  public get currentNotificationData(): string {
+  get currentNotificationData(): string {
     return this._currentNotification.jData;
   }
 

@@ -105,8 +105,8 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   protected defaultColumns: string[];
 
   constructor(
-    public authService: AuthService,
-    public translateService: TranslateService
+    protected authService: AuthService,
+    protected translateService: TranslateService
   ) {}
 
   ngAfterContentInit() {
@@ -310,7 +310,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  private firstViewPreferenceApply = false;
+  protected firstViewPreferenceApply = false;
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {

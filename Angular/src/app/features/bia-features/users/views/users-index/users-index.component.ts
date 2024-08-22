@@ -28,7 +28,7 @@ export class UsersIndexComponent
 
   constructor(
     protected injector: Injector,
-    public userService: UserService,
+    protected userService: UserService,
     protected authService: AuthService,
     protected appSettingsService: AppSettingsService
   ) {

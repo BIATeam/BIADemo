@@ -35,8 +35,8 @@ export class MemberFormEditComponent implements OnChanges {
   displayUserAddFromDirectoryDialog = false;
 
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    public translateService: TranslateService
+    protected formBuilder: UntypedFormBuilder,
+    protected translateService: TranslateService
   ) {
     this.initForm();
   }
@@ -50,7 +50,7 @@ export class MemberFormEditComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       id: [this.member.id],
       user: [this.member.user, Validators.required],

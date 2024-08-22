@@ -5,5 +5,5 @@ import { AppSettings } from '../model/app-settings';
   providedIn: 'root',
 })
 export class AppSettingsService {
-  public appSettings: AppSettings;
+  appSettings: AppSettings;
 }

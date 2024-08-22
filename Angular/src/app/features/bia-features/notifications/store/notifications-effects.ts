@@ -205,9 +205,9 @@ export class NotificationsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private notificationDas: NotificationDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    protected actions$: Actions,
+    protected notificationDas: NotificationDas,
+    protected biaMessageService: BiaMessageService,
+    protected store: Store<AppState>
   ) {}
 }

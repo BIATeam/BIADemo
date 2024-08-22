@@ -17,7 +17,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy
 {
   protected sub = new Subscription();
-  public crudConfiguration: CrudConfig;
+  crudConfiguration: CrudConfig;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -25,7 +25,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   protected biaTranslationService: BiaTranslationService;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    protected crudItemService: CrudItemService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);

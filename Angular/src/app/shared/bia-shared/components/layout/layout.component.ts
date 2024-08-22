@@ -51,11 +51,11 @@ export class LayoutComponent implements OnInit {
   supportedLangs = APP_SUPPORTED_TRANSLATIONS;
 
   constructor(
-    public biaTranslationService: BiaTranslationService,
-    private navigationService: NavigationService,
-    private authService: AuthService,
-    // private notificationSignalRService: NotificationSignalRService,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    protected biaTranslationService: BiaTranslationService,
+    protected navigationService: NavigationService,
+    protected authService: AuthService,
+    // protected notificationSignalRService: NotificationSignalRService,
+    @Inject(APP_BASE_HREF) protected baseHref: string
   ) {}
 
   ngOnInit() {
@@ -66,7 +66,7 @@ export class LayoutComponent implements OnInit {
     this.initHeaderLogos();
   }
 
-  private initHeaderLogos() {
+  protected initHeaderLogos() {
     this.headerLogos = [
       'assets/bia/img/Company.png',
       `assets/bia/img/Division.gif`,
@@ -80,7 +80,7 @@ export class LayoutComponent implements OnInit {
     });*/
   }
 
-  private setAllParamByUserInfo() {
+  protected setAllParamByUserInfo() {
     this.isLoadingUserInfo = true;
     this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
       if (authInfo && authInfo.token !== '') {
@@ -94,7 +94,7 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  private setUserName(authInfo: AuthInfo) {
+  protected setUserName(authInfo: AuthInfo) {
     if (
       authInfo &&
       authInfo.additionalInfos &&
@@ -108,12 +108,12 @@ export class LayoutComponent implements OnInit {
     }
   }
 
-  private setLanguage() {
+  protected setLanguage() {
     const langSelected: string | null = getCurrentCulture();
     this.biaTranslationService.loadAndChangeLanguage(langSelected);
   }
 
-  private filterNavByRole(authInfo: AuthInfo) {
+  protected filterNavByRole(authInfo: AuthInfo) {
     if (authInfo) {
       this.menus = this.navigationService.filterNavByRole(authInfo, NAVIGATION);
     }

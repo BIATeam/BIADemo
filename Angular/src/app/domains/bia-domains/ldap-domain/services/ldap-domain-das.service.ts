@@ -10,12 +10,12 @@ import { LdapDomainService } from './ldap-domain.service';
 export class LdapDomainDas extends AbstractDas<LdapDomain> {
   constructor(
     injector: Injector,
-    private ldapDomainService: LdapDomainService
+    protected ldapDomainService: LdapDomainService
   ) {
     super(injector, 'ldapDomains');
   }
 
-  public getAll(): Observable<Array<LdapDomain>> {
+  getAll(): Observable<Array<LdapDomain>> {
     return this.ldapDomainService.formatDisplayNameFromObs(
       this.http.get<Array<LdapDomain>>(this.route)
     );

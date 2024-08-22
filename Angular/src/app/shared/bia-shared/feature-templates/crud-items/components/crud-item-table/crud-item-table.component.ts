@@ -23,15 +23,15 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
   implements OnChanges
 {
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    public authService: AuthService,
-    public biaMessageService: BiaMessageService,
-    public translateService: TranslateService
+    protected formBuilder: UntypedFormBuilder,
+    protected authService: AuthService,
+    protected biaMessageService: BiaMessageService,
+    protected translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
   }
 
-  public initForm() {
+  initForm() {
     this.form = this.formBuilder.group(this.formFields());
   }
   protected formFields() {

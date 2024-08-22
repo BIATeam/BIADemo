@@ -139,7 +139,7 @@ export class BiaFieldConfig {
     this.displayFormat = null;
   }
 
-  public clone(): BiaFieldConfig {
+  clone(): BiaFieldConfig {
     return Object.assign(
       new BiaFieldConfig(this.field, this.header, this.maxlength),
       {

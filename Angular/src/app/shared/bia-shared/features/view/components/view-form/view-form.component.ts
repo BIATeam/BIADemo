@@ -26,7 +26,7 @@ export class ViewFormComponent implements OnChanges {
   form: UntypedFormGroup;
   isAdd = true;
 
-  constructor(public formBuilder: UntypedFormBuilder) {
+  constructor(protected formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 
@@ -44,7 +44,7 @@ export class ViewFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       id: [this.view.id],
       name: [this.view.name, Validators.required],

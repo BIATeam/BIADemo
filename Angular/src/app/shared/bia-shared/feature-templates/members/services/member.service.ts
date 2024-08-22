@@ -18,7 +18,7 @@ import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templa
 })
 export class MemberService extends CrudItemService<Member> {
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public dasService: MemberDas,
     public signalRService: CrudItemSignalRService<Member>,
     public optionsService: MemberOptionsService,
@@ -30,67 +30,67 @@ export class MemberService extends CrudItemService<Member> {
 
   teamTypeId: number;
 
-  public getParentIds(): any[] {
+  getParentIds(): any[] {
     // TODO after creation of CRUD Member : adapt the parent Key tothe context. It can be null if root crud
     return [this.authService.getCurrentTeamId(this.teamTypeId)];
   }
 
-  public getFeatureName() {
+  getFeatureName() {
     return memberCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<Member[]> = this.store.select(
+  crudItems$: Observable<Member[]> = this.store.select(
     FeatureMembersStore.getAllMembers
   );
-  public totalCount$: Observable<number> = this.store.select(
+  totalCount$: Observable<number> = this.store.select(
     FeatureMembersStore.getMembersTotalCount
   );
-  public loadingGetAll$: Observable<boolean> = this.store.select(
+  loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureMembersStore.getMemberLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
     FeatureMembersStore.getLastLazyLoadEvent
   );
 
-  public crudItem$: Observable<Member> = this.store.select(
+  crudItem$: Observable<Member> = this.store.select(
     FeatureMembersStore.getCurrentMember
   );
-  public loadingGet$: Observable<boolean> = this.store.select(
+  loadingGet$: Observable<boolean> = this.store.select(
     FeatureMembersStore.getMemberLoadingGet
   );
 
-  public load(id: any) {
+  load(id: any) {
     this.store.dispatch(FeatureMembersActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  loadAllByPost(event: LazyLoadEvent) {
     this.store.dispatch(FeatureMembersActions.loadAllByPost({ event }));
   }
-  public create(crudItem: Member) {
+  create(crudItem: Member) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
     (crudItem.teamId = this.getParentIds()[0]),
       this.store.dispatch(FeatureMembersActions.create({ member: crudItem }));
   }
-  public createMulti(membersToCreate: Members) {
+  createMulti(membersToCreate: Members) {
     // TODO after creation of CRUD Member : map parent Key on the corresponding field
     (membersToCreate.teamId = this.getParentIds()[0]),
       this.store.dispatch(
         FeatureMembersActions.createMulti({ members: membersToCreate })
       );
   }
-  public update(crudItem: Member) {
+  update(crudItem: Member) {
     (crudItem.teamId = this.getParentIds()[0]),
       this.store.dispatch(FeatureMembersActions.update({ member: crudItem }));
   }
-  public remove(id: any) {
+  remove(id: any) {
     this.store.dispatch(FeatureMembersActions.remove({ id }));
   }
-  public multiRemove(ids: any[]) {
+  multiRemove(ids: any[]) {
     this.store.dispatch(FeatureMembersActions.multiRemove({ ids }));
   }
-  public clearAll() {
+  clearAll() {
     this.store.dispatch(FeatureMembersActions.clearAll());
   }
-  public clearCurrent() {
+  clearCurrent() {
     this._currentCrudItem = <Member>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeatureMembersActions.clearCurrent());

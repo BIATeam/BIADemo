@@ -36,14 +36,14 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
   form: UntypedFormGroup;
 
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    private viewContainerRef: ViewContainerRef,
+    protected formBuilder: UntypedFormBuilder,
+    protected viewContainerRef: ViewContainerRef,
     protected store: Store<AppState>
   ) {
     this.initForm();
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       userSelected: null,
     });
@@ -55,7 +55,7 @@ export class TeamAdvancedFilterComponent implements OnInit, OnChanges {
     this.initUsers();
   }
 
-  private initUsers() {
+  protected initUsers() {
     this.store.dispatch(DomainUserOptionsActions.loadAll());
     this.userOptions$ = this.store.select(getAllUserOptions);
   }

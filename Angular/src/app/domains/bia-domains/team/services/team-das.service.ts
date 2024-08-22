@@ -10,14 +10,14 @@ export class TeamDas extends AbstractDas<Team> {
     super(injector, 'Teams');
   }
 
-  public setDefaultTeam(teamTypeId: number, teamId: number) {
+  setDefaultTeam(teamTypeId: number, teamId: number) {
     const route = AbstractDas.buildRoute(
       `Teams/TeamType/${teamTypeId}/setDefault/${teamId}`
     );
     return this.http.put(route, null);
   }
 
-  public setDefaultRoles(teamId: number, roleIds: number[]) {
+  setDefaultRoles(teamId: number, roleIds: number[]) {
     const route = AbstractDas.buildRoute(
       `Teams/Team/${teamId}/setDefaultRoles`
     );

@@ -16,10 +16,10 @@ import { Member } from '../../model/member';
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    public authService: AuthService,
-    public biaMessageService: BiaMessageService,
-    public translateService: TranslateService
+    protected formBuilder: UntypedFormBuilder,
+    protected authService: AuthService,
+    protected biaMessageService: BiaMessageService,
+    protected translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
   }

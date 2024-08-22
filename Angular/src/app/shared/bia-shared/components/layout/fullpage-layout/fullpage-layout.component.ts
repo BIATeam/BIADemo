@@ -31,13 +31,13 @@ export class FullPageLayoutComponent
   viewContainerRef: ViewContainerRef;
 
   constructor(
-    public activatedRoute: ActivatedRoute,
-    private router: Router,
-    private serviceInjector: BiaInjectorService
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected serviceInjector: BiaInjectorService
   ) {}
 
-  public $displayPageComponent: BehaviorSubject<boolean>;
-  public displayPageComponent: boolean;
+  $displayPageComponent: BehaviorSubject<boolean>;
+  displayPageComponent: boolean;
   protected dynamicComponent: ComponentRef<any>;
   @HostBinding('class.bia-flex') flex = false;
 

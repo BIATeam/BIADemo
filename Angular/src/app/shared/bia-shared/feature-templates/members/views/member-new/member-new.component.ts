@@ -20,10 +20,10 @@ export class MemberNewComponent
 
   canAddFromDirectory = false;
 
-  public memberService: MemberService;
-  private authService: AuthService;
+  memberService: MemberService;
+  protected authService: AuthService;
 
-  public members: Members;
+  members: Members;
 
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));

@@ -17,8 +17,8 @@ export class MemberEditComponent
   teamTypeId: number;
   canAddFromDirectory = false;
 
-  public memberService: MemberService;
-  private authService: AuthService;
+  memberService: MemberService;
+  protected authService: AuthService;
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = memberCRUDConfiguration;

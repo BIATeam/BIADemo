@@ -25,7 +25,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 {
   @Output() displayChange = new EventEmitter<boolean>();
   protected sub = new Subscription();
-  public crudConfiguration: CrudConfig;
+  crudConfiguration: CrudConfig;
 
   protected store: Store<AppState>;
   protected router: Router;
@@ -34,7 +34,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    protected crudItemService: CrudItemService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);

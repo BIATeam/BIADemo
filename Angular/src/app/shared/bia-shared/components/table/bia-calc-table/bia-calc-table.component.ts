@@ -30,24 +30,24 @@ export class BiaCalcTableComponent
   @Output() save = new EventEmitter<any>();
   @Input() dictOptionDtos: DictOptionDto[];
 
-  public formId: string;
-  public form: UntypedFormGroup;
-  public element: any = {};
-  public hasChanged = false;
+  formId: string;
+  form: UntypedFormGroup;
+  element: any = {};
+  hasChanged = false;
   protected currentRow: HTMLElement;
   protected currentInput: HTMLElement;
   protected sub = new Subscription();
   protected isInComplexInput = false;
-  public footerRowData: any;
-  public editFooter = false;
+  footerRowData: any;
+  editFooter = false;
 
   specificInputTemplate: TemplateRef<any>;
 
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    public authService: AuthService,
-    public biaMessageService: BiaMessageService,
-    public translateService: TranslateService
+    protected formBuilder: UntypedFormBuilder,
+    protected authService: AuthService,
+    protected biaMessageService: BiaMessageService,
+    protected translateService: TranslateService
   ) {
     super(authService, translateService);
   }
@@ -70,11 +70,11 @@ export class BiaCalcTableComponent
     this.addFooterEmptyObject();
   }
 
-  public getOptionDto(key: string) {
+  getOptionDto(key: string) {
     return this.dictOptionDtos.filter(x => x.key === key)[0]?.value;
   }
 
-  public onElementsChange(changes: SimpleChanges) {
+  onElementsChange(changes: SimpleChanges) {
     super.onElementsChange(changes);
     if (changes.elements && this.table) {
       //if (this.elements && this.canAdd === true) {
@@ -83,25 +83,25 @@ export class BiaCalcTableComponent
     }
   }
 
-  public addFooterEmptyObject() {
+  addFooterEmptyObject() {
     if (this.canAdd === true) {
       this.footerRowData = { id: 0 };
     }
   }
 
-  public initForm() {
+  initForm() {
     throw new Error('initForm not Implemented');
   }
 
-  public isFooter(element: any) {
+  isFooter(element: any) {
     return element.id === 0;
   }
 
-  public onChange() {
+  onChange() {
     this.hasChanged = true;
   }
 
-  public initEditableRow(rowData: any) {
+  initEditableRow(rowData: any) {
     if (
       (this.canEdit === true || this.canAdd === true) &&
       (!rowData ||
@@ -126,7 +126,7 @@ export class BiaCalcTableComponent
       }
     }
   }
-  public initRowEdit(rowData: any) {
+  initRowEdit(rowData: any) {
     if (rowData) {
       this.element = rowData;
       if (rowData.id === 0) {
@@ -144,24 +144,24 @@ export class BiaCalcTableComponent
     }
   }
 
-  public onSave() {
+  onSave() {
     if (this.hasChanged === true) {
       this.onSubmit();
       this.hasChanged = false;
     }
   }
 
-  public cancel() {
+  cancel() {
     this.hasChanged = false;
     this.form.reset();
     this.table.editingRowKeys = {};
   }
 
-  public onSubmit() {
+  onSubmit() {
     throw new Error('onSubmit not Implemented');
   }
 
-  public onFocusout() {
+  onFocusout() {
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
     if (this.isInComplexInput === false) {
@@ -179,7 +179,7 @@ export class BiaCalcTableComponent
     }
   }
 
-  public onComplexInput(isIn: boolean) {
+  onComplexInput(isIn: boolean) {
     if (isIn) {
       this.isInComplexInput = true;
       this.currentRow = this.getParentComponent(
@@ -202,7 +202,7 @@ export class BiaCalcTableComponent
     }
   }
 
-  public getParentComponent(
+  getParentComponent(
     el: Element | null,
     parentClassName: string
   ): HTMLElement | null {
@@ -218,7 +218,7 @@ export class BiaCalcTableComponent
     return null;
   }
 
-  public formatDisplayName(objs: any[]): string {
+  formatDisplayName(objs: any[]): string {
     return objs?.map(x => x.display)?.join(', ');
   }
 }

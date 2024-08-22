@@ -44,7 +44,7 @@ export class CrudItemBulkService<T extends BaseDto> {
   protected tmpBulkDataErrors: TmpBulkDataError<T>[] = [];
   protected crudItemService: CrudItemService<T>;
   protected crudConfig: CrudConfig;
-  public bulkParam = <BulkParam>{
+  bulkParam = <BulkParam>{
     useCurrentView: false,
     dateFormat: 'dd/MM/yyyy',
     timeFormat: 'HH:mm',
@@ -52,7 +52,7 @@ export class CrudItemBulkService<T extends BaseDto> {
 
   constructor(protected translateService: TranslateService) {}
 
-  public init(
+  init(
     form: BiaFormComponent,
     crudConfig: CrudConfig,
     crudItemService: CrudItemService<T>
@@ -62,7 +62,7 @@ export class CrudItemBulkService<T extends BaseDto> {
     this.form = form;
   }
 
-  public uploadCsv(files: FileList): Observable<BulkData<T>> {
+  uploadCsv(files: FileList): Observable<BulkData<T>> {
     this.initBulkData();
     const file = files.item(0);
 

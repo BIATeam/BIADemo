@@ -94,11 +94,11 @@ export class CrudItemBulkFormComponent {
   @Output() fileSelected = new EventEmitter<any>();
   @Output() changeBulkParam = new EventEmitter<BulkParam>();
 
-  constructor(public formBuilder: UntypedFormBuilder) {
+  constructor(protected formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       useCurrentView: [this.bulkParam.useCurrentView, Validators.required],
       dateFormat: [this.bulkParam.dateFormat, Validators.required],

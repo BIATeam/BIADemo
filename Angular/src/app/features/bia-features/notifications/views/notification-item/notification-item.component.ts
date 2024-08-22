@@ -17,14 +17,14 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 })
 export class NotificationItemComponent implements OnInit, OnDestroy {
   notification$: Observable<Notification>;
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(
-    private store: Store<AppState>,
-    private route: ActivatedRoute,
-    public notificationService: NotificationService,
-    private layoutService: BiaClassicLayoutService,
-    private biaTranslationService: BiaTranslationService
+    protected store: Store<AppState>,
+    protected route: ActivatedRoute,
+    protected notificationService: NotificationService,
+    protected layoutService: BiaClassicLayoutService,
+    protected biaTranslationService: BiaTranslationService
   ) {}
 
   ngOnInit() {

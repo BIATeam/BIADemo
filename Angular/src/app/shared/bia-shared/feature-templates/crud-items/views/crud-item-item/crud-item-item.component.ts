@@ -16,7 +16,7 @@ export class CrudItemItemComponent<CrudItem extends BaseDto>
   protected route: ActivatedRoute;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    protected crudItemService: CrudItemService<CrudItem>
   ) {
     this.route = this.injector.get<ActivatedRoute>(ActivatedRoute);
   }

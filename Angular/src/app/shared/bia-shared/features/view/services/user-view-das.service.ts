@@ -11,7 +11,7 @@ export class UserViewDas extends AbstractDas<View> {
     super(injector, 'Views/UserViews');
   }
 
-  public setDefaultView(defaultView: DefaultView) {
+  setDefaultView(defaultView: DefaultView) {
     return this.http.put<DefaultView>(
       `${this.route}${defaultView.id}/setDefault`,
       defaultView

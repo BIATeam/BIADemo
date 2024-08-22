@@ -13,11 +13,11 @@ export class ViewDas extends AbstractDas<View> {
     super(injector, 'Views');
   }
 
-  public getAll(): Observable<Array<View>> {
+  getAll(): Observable<Array<View>> {
     return this.http.get<Array<View>>(`${this.route}`);
   }
 
-  public assignViewToTeam(assignViewToTeam: AssignViewToTeam) {
+  assignViewToTeam(assignViewToTeam: AssignViewToTeam) {
     return this.http.put(
       `${this.route}${assignViewToTeam.viewId}/AssignViewToTeam`,
       assignViewToTeam

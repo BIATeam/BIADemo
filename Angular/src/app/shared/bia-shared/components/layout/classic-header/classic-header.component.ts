@@ -74,7 +74,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   isIE = this.platform.TRIDENT;
   urlAppIcon = allEnvironments.urlAppIcon;
   cssClassEnv: string;
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   topBarMenuItems: any; // MenuItem[]; // bug v9 primeNG
   navMenuItems: MenuItem[];
@@ -88,13 +88,13 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   notificationType = NotificationType;
 
   constructor(
-    public layoutService: BiaClassicLayoutService,
-    public authService: AuthService,
-    public translateService: TranslateService,
-    private platform: Platform,
-    private store: Store<AppState>,
-    public biaTranslationService: BiaTranslationService,
-    private router: Router
+    protected layoutService: BiaClassicLayoutService,
+    protected authService: AuthService,
+    protected translateService: TranslateService,
+    protected platform: Platform,
+    protected store: Store<AppState>,
+    protected biaTranslationService: BiaTranslationService,
+    protected router: Router
   ) {}
 
   ngOnInit() {
@@ -157,7 +157,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     this.removeMessage(message, true);
   }
 
-  private removeMessage(message: Message, setRead = false) {
+  protected removeMessage(message: Message, setRead = false) {
     this.toast.messages?.splice(this.toast.messages?.indexOf(message), 1);
 
     if (setRead && message.data?.notification?.id > 0) {
@@ -198,11 +198,11 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     window.open(this.reportUrl, 'blank');
   }
 
-  private onChangeTheme(theme: string) {
+  protected onChangeTheme(theme: string) {
     this.theme.emit(theme);
   }
 
-  private onChangeLanguage(lang: string) {
+  protected onChangeLanguage(lang: string) {
     this.language.emit(lang);
   }
 

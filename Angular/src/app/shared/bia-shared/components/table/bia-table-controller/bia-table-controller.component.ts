@@ -88,7 +88,7 @@ export class BiaTableControllerComponent
 
   protected sub = new Subscription();
 
-  constructor(public translateService: TranslateService) {}
+  constructor(protected translateService: TranslateService) {}
 
   ngAfterContentInit() {
     this.templates.forEach(item => {
@@ -152,7 +152,7 @@ export class BiaTableControllerComponent
     setTimeout(() => this.viewChange.emit(event));
   }
 
-  public getSelectedViewName(): string | null {
+  getSelectedViewName(): string | null {
     return this.viewListComponent?.getCurrentViewName();
   }
 
@@ -181,7 +181,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  private initFilterCtrl() {
+  protected initFilterCtrl() {
     this.sub.add(
       this.filterCtrl.valueChanges.subscribe(filterValue => {
         this.filter.emit(filterValue.trim().toLowerCase());
@@ -189,11 +189,11 @@ export class BiaTableControllerComponent
     );
   }
 
-  private initPageSize() {
+  protected initPageSize() {
     this.pageSize = this.defaultPageSize;
   }
 
-  private updateDisplayedPageSizeOptions() {
+  protected updateDisplayedPageSizeOptions() {
     if (this.pageSizeOptions) {
       const displayedPageSizeOptions = this.pageSizeOptions.sort(
         (a, b) => a - b
@@ -209,7 +209,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  private setControlByViewState(stateString: string) {
+  protected setControlByViewState(stateString: string) {
     const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
     this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
     const newDisplayColumns = state.columnOrder ? state.columnOrder : [];

@@ -37,7 +37,7 @@ export class UserFromLdapFormComponent implements OnChanges {
   useKeycloak = false;
 
   constructor(
-    public formBuilder: UntypedFormBuilder,
+    protected formBuilder: UntypedFormBuilder,
     appSettingsService: AppSettingsService
   ) {
     this.initForm();
@@ -52,7 +52,7 @@ export class UserFromLdapFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       selectedUsers: [this.selectedUsers, Validators.required],
       domains: [this.domains],

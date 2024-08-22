@@ -11,7 +11,7 @@ export class UserFromDirectoryDas extends AbstractDas<UserFromDirectory> {
     super(injector, 'users');
   }
 
-  public getAllByFilter(
+  getAllByFilter(
     filter: string,
     ldapName: string,
     returnSize: number

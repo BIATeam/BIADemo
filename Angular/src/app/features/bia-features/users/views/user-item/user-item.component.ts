@@ -22,7 +22,7 @@ export class UserItemComponent
   constructor(
     protected store: Store<AppState>,
     protected injector: Injector,
-    public userService: UserService,
+    protected userService: UserService,
     protected layoutService: BiaClassicLayoutService
   ) {
     super(injector, userService);

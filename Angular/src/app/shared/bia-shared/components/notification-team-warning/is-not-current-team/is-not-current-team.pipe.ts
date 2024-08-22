@@ -6,7 +6,7 @@ import { Notification } from 'src/app/domains/bia-domains/notification/model/not
   name: 'isNotCurrentTeam',
 })
 export class IsNotCurrentTeamPipe implements PipeTransform {
-  constructor(public auth: AuthService) {}
+  constructor(protected auth: AuthService) {}
 
   transform(notification: Notification): any {
     if (!notification?.data.teams) {

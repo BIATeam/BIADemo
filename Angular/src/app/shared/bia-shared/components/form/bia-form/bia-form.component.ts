@@ -48,7 +48,7 @@ export class BiaFormComponent
   protected sub = new Subscription();
 
   constructor(
-    public formBuilder: UntypedFormBuilder
+    protected formBuilder: UntypedFormBuilder
     // protected authService: AuthService
   ) {}
 
@@ -83,7 +83,7 @@ export class BiaFormComponent
     }
   }
 
-  public checkObject(obj: any): { element: any; errorMessages: string[] } {
+  checkObject(obj: any): { element: any; errorMessages: string[] } {
     this.form.reset();
     if (obj) {
       this.form.patchValue({ ...obj });
@@ -134,7 +134,7 @@ export class BiaFormComponent
       this.form.reset();
     }
   }
-  public getElement() {
+  getElement() {
     const element: any = this.form.value;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {

@@ -40,7 +40,7 @@ import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/component
 export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy
 {
-  public crudConfiguration: CrudConfig;
+  crudConfiguration: CrudConfig;
   useRefreshAtLanguageChange = false;
 
   @HostBinding('class') classes = 'bia-flex';
@@ -50,7 +50,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
-  public get crudItemListComponent() {
+  get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
     }
@@ -85,15 +85,15 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   protected store: Store<AppState>;
   protected router: Router;
-  public activatedRoute: ActivatedRoute;
+  protected activatedRoute: ActivatedRoute;
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
-  private tableHelperService: TableHelperService;
+  protected tableHelperService: TableHelperService;
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    protected crudItemService: CrudItemService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
@@ -166,7 +166,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
   }
 
-  private applyDynamicComponent(routes: Routes | undefined) {
+  protected applyDynamicComponent(routes: Routes | undefined) {
     if (routes) {
       routes.forEach(route => {
         if (route.data && (route.data as any).dynamicComponent) {
@@ -440,7 +440,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.hasAdvancedFilter = false;
   }
 
-  private updateAdvancedFilterByView(viewPreference: string) {
+  protected updateAdvancedFilterByView(viewPreference: string) {
     if (viewPreference) {
       const state = JSON.parse(viewPreference);
       if (state) {

@@ -7,7 +7,7 @@ import { LdapDomain } from '../../ldap-domain/model/ldap-domain';
   providedIn: 'root',
 })
 export class LdapDomainService {
-  public formatDisplayNameFromObs(
+  formatDisplayNameFromObs(
     ldapDomains$: Observable<Array<LdapDomain>>
   ): Observable<Array<LdapDomain>> {
     return ldapDomains$.pipe(
@@ -17,13 +17,13 @@ export class LdapDomainService {
     );
   }
 
-  public formatDisplayNames(ldapDomains: Array<LdapDomain>): Array<LdapDomain> {
+  formatDisplayNames(ldapDomains: Array<LdapDomain>): Array<LdapDomain> {
     return ldapDomains.map((domain: LdapDomain) => {
       return this.formatDisplayName(domain);
     });
   }
 
-  public formatDisplayName(domain: LdapDomain): LdapDomain {
+  formatDisplayName(domain: LdapDomain): LdapDomain {
     domain.displayName = `${domain.name} (${domain.ldapName})`;
     return domain;
   }

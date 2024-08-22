@@ -10,7 +10,7 @@ export class UserDas extends AbstractDas<User> {
     super(injector, 'Users');
   }
 
-  public synchronize() {
+  synchronize() {
     return this.http.get(`${this.route}synchronize`);
   }
 }

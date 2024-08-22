@@ -214,10 +214,10 @@ export class ViewsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private viewDas: ViewDas,
-    private teamViewDas: TeamViewDas,
-    private userViewDas: UserViewDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected viewDas: ViewDas,
+    protected teamViewDas: TeamViewDas,
+    protected userViewDas: UserViewDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

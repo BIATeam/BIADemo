@@ -11,7 +11,7 @@ export class TeamViewDas extends AbstractDas<TeamView> {
     super(injector, 'Views/TeamViews');
   }
 
-  public setDefaultView(defaultView: TeamDefaultView) {
+  setDefaultView(defaultView: TeamDefaultView) {
     return this.http.put<TeamDefaultView>(
       `${this.route}${defaultView.id}/setDefault`,
       defaultView

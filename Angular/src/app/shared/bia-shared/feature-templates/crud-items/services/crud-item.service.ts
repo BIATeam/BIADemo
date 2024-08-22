@@ -11,7 +11,7 @@ import { CrudItemSignalRService } from './crud-item-signalr.service';
   providedIn: 'root',
 })
 export abstract class CrudItemService<CrudItem extends BaseDto> {
-  public siganlRTargetedFeature: TargetedFeature;
+  protected siganlRTargetedFeature: TargetedFeature;
 
   constructor(
     public dasService: AbstractDas<CrudItem>,
@@ -24,40 +24,40 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
-  public getParentIds(): any[] {
+  getParentIds(): any[] {
     return [];
   }
 
-  public getParentKey(): string {
+  getParentKey(): string {
     return this.getParentIds()
       .map(id => id.toString())
       .join('-');
   }
 
-  public getFeatureName() {
+  getFeatureName() {
     return 'crud-items';
   }
-  public getSignalRTargetedFeature() {
+  getSignalRTargetedFeature() {
     return {
       parentKey: this.getParentKey(),
       featureName: this.getFeatureName(),
     };
   }
 
-  public getConsoleLabel() {
+  getConsoleLabel() {
     return this.capitalizeFirstLetter(
       this.getFeatureName().replace(/-./g, x => x[1].toUpperCase())
     );
   }
 
-  public getSignalRRefreshEvent() {
+  getSignalRRefreshEvent() {
     return 'refresh-' + this.getFeatureName();
   }
 
   protected _currentCrudItem: CrudItem;
   protected _currentCrudItemId: any;
 
-  public get currentCrudItem() {
+  get currentCrudItem() {
     if (this._currentCrudItem?.id === this._currentCrudItemId) {
       return this._currentCrudItem;
     } else {
@@ -65,10 +65,10 @@ export abstract class CrudItemService<CrudItem extends BaseDto> {
     }
   }
 
-  public get currentCrudItemId(): any {
+  get currentCrudItemId(): any {
     return this._currentCrudItemId;
   }
-  public set currentCrudItemId(id: any) {
+  set currentCrudItemId(id: any) {
     this._currentCrudItemId = id;
     this.load(id);
   }

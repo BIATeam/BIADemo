@@ -48,18 +48,18 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   singleRoleMode: boolean;
   multiRoleMode: boolean;
 
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   unreadNotificationCount$: Observable<number>;
 
   constructor(
-    public layoutService: BiaClassicLayoutService,
-    public auth: AuthService,
-    public translateService: TranslateService,
-    public biaTranslationService: BiaTranslationService,
-    private authService: AuthService,
-    private store: Store<AppState>,
-    @Inject(APP_BASE_HREF) public baseHref: string
+    protected layoutService: BiaClassicLayoutService,
+    protected auth: AuthService,
+    protected translateService: TranslateService,
+    protected biaTranslationService: BiaTranslationService,
+    protected authService: AuthService,
+    protected store: Store<AppState>,
+    @Inject(APP_BASE_HREF) protected baseHref: string
   ) {}
 
   ngOnInit() {
@@ -125,7 +125,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initDropdownTeam() {
+  protected initDropdownTeam() {
     this.displayTeamList = false;
     const currentTeamId = this.authService
       .getUncryptedToken()

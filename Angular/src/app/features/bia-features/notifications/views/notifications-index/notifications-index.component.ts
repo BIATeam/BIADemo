@@ -52,7 +52,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   @HostBinding('class') classes = 'bia-flex';
   @ViewChild(BiaTableComponent, { static: false })
   notificationListComponent: BiaTableComponent;
-  private sub = new Subscription();
+  protected sub = new Subscription();
   showColSearch = false;
   globalSearchValue = '';
   defaultPageSize = DEFAULT_PAGE_SIZE;
@@ -75,16 +75,16 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
   hasColumnFilter = false;
 
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    public activatedRoute: ActivatedRoute,
-    private authService: AuthService,
-    private notificationDas: NotificationDas,
-    private translateService: TranslateService,
-    private biaTranslationService: BiaTranslationService,
-    private notificationsSignalRService: NotificationsSignalRService,
-    public notificationOptionsService: NotificationOptionsService,
-    private tableHelperService: TableHelperService
+    protected store: Store<AppState>,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
+    protected authService: AuthService,
+    protected notificationDas: NotificationDas,
+    protected translateService: TranslateService,
+    protected biaTranslationService: BiaTranslationService,
+    protected notificationsSignalRService: NotificationsSignalRService,
+    protected notificationOptionsService: NotificationOptionsService,
+    protected tableHelperService: TableHelperService
   ) {}
 
   ngOnInit() {
@@ -220,7 +220,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     });
   }
 
-  private setPermissions() {
+  protected setPermissions() {
     this.canRead = this.authService.hasPermission(Permission.Notification_Read);
     this.canDelete = this.authService.hasPermission(
       Permission.Notification_Delete
@@ -230,7 +230,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initTableConfiguration() {
+  protected initTableConfiguration() {
     this.tableConfiguration = {
       columns: [
         new BiaFieldConfig('titleTranslated', 'notification.title'),

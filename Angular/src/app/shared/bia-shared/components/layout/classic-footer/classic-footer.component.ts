@@ -15,5 +15,5 @@ export class ClassicFooterComponent {
 
   frameworkVersion = FRAMEWORK_VERSION;
 
-  constructor(public layoutService: BiaClassicLayoutService) {}
+  constructor(protected layoutService: BiaClassicLayoutService) {}
 }

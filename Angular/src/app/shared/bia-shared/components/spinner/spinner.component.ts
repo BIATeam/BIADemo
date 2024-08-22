@@ -48,8 +48,8 @@ export class SpinnerComponent implements OnInit {
   showSpinner$: Observable<any>;
 
   constructor(
-    private elementRef: ElementRef<HTMLElement>,
-    public themeService: BiaThemeService
+    protected elementRef: ElementRef<HTMLElement>,
+    protected themeService: BiaThemeService
   ) {}
 
   ngOnInit() {

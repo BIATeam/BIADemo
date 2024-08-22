@@ -90,9 +90,9 @@ export class UsersFromDirectoryEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private userFromDirectoryDas: UserFromDirectoryDas,
-    private biaMessageService: BiaMessageService,
-    private translateService: TranslateService
+    protected actions$: Actions,
+    protected userFromDirectoryDas: UserFromDirectoryDas,
+    protected biaMessageService: BiaMessageService,
+    protected translateService: TranslateService
   ) {}
 }

@@ -8,8 +8,8 @@ import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-onli
   styleUrls: ['./bia-online-offline-icon.component.scss'],
 })
 export class BiaOnlineOfflineIconComponent implements OnInit {
-  public biaOnlineOfflineService: BiaOnlineOfflineService;
-  public serverAvailable$: Observable<boolean>;
+  protected biaOnlineOfflineService: BiaOnlineOfflineService;
+  serverAvailable$: Observable<boolean>;
 
   constructor(injector: Injector) {
     if (BiaOnlineOfflineService.isModeEnabled) {

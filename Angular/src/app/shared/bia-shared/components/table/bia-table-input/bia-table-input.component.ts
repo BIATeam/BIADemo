@@ -53,15 +53,15 @@ export class BiaTableInputComponent
     });
   }
 
-  public onChange() {
+  onChange() {
     this.valueChange.emit();
   }
 
-  public getOptionDto(key: string) {
+  getOptionDto(key: string) {
     return this.dictOptionDtos.filter(x => x.key === key)[0]?.value;
   }
 
-  public onComplexInput(isIn: boolean) {
+  onComplexInput(isIn: boolean) {
     this.complexInput.emit(isIn);
   }
 }

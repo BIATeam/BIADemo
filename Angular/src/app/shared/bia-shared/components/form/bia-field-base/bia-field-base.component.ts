@@ -17,7 +17,7 @@ export class BiaFieldBaseComponent implements OnInit, OnDestroy {
   protected sub = new Subscription();
 
   constructor(
-    public biaTranslationService: BiaTranslationService
+    protected biaTranslationService: BiaTranslationService
     // protected authService: AuthService
   ) {}
 

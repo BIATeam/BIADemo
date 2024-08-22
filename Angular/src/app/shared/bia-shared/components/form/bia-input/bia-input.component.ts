@@ -46,7 +46,7 @@ export class BiaInputComponent
     });
   }
 
-  public getOptionDto(key: string) {
+  getOptionDto(key: string) {
     return this.dictOptionDtos?.filter(x => x.key === key)[0]?.value;
   }
 }

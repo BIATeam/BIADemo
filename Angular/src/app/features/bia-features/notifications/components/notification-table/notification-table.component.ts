@@ -21,16 +21,16 @@ export class NotificationTableComponent
   implements OnChanges
 {
   constructor(
-    public formBuilder: UntypedFormBuilder,
-    public authService: AuthService,
-    public biaMessageService: BiaMessageService,
-    public translateService: TranslateService
+    protected formBuilder: UntypedFormBuilder,
+    protected authService: AuthService,
+    protected biaMessageService: BiaMessageService,
+    protected translateService: TranslateService
   ) {
     super(formBuilder, authService, biaMessageService, translateService);
     this.initForm();
   }
 
-  public initForm() {
+  initForm() {
     this.form = this.formBuilder.group({
       id: [this.element.id], // This field is mandatory. Do not remove it.
       title: [this.element.title, Validators.required],

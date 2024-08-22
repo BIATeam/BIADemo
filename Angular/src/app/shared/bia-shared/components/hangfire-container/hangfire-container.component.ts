@@ -19,10 +19,10 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
   // @ViewChild('iFrame2', { static: false }) iFrame2: ElementRef;
   @ViewChild('hangfireForm', { static: false }) hangfireForm: ElementRef;
 
-  private sub = new Subscription();
-  public token = '';
+  protected sub = new Subscription();
+  protected token = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(protected authService: AuthService) {}
 
   ngOnInit() {
     this.sub.add(
