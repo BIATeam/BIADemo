@@ -389,6 +389,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
       columns: columns,
+      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       ...this.crudItemListComponent.getLazyLoadMetadata(),
     };
     this.crudItemService.dasService
