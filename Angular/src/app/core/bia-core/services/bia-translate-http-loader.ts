@@ -7,11 +7,11 @@ export class BiaTranslateHttpLoader implements TranslateLoader {
   constructor(
     protected http: HttpClient,
     protected store: TranslateStore,
-    public prefix: string,
-    public suffix: string = '.json'
+    protected prefix: string,
+    protected suffix: string = '.json'
   ) {}
 
-  public getTranslation(lang: string) {
+  getTranslation(lang: string) {
     return this.http.get(`${this.prefix}${lang}${this.suffix}`).pipe(
       map(translation => {
         const previousTranslations = this.store.translations[lang];
