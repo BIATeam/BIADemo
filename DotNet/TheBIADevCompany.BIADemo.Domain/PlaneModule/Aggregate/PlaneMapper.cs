@@ -149,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 DeliveryDate = entity.DeliveryDate,
                 NextMaintenanceDate = entity.NextMaintenanceDate,
                 SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
-                SyncFlightDataTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
+                SyncFlightDataTime = entity.SyncFlightDataTime.ToString(@"hh\:mm\:ss"),
                 Capacity = entity.Capacity,
                 MotorsCount = entity.MotorsCount,
                 TotalFlightHours = entity.TotalFlightHours,
