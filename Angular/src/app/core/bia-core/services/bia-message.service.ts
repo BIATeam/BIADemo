@@ -15,8 +15,8 @@ const NOTIFICATION_LIFE_DEFAULT = 10000;
 })
 export class BiaMessageService {
   constructor(
-    private translateService: TranslateService,
-    private messageService: MessageService
+    protected translateService: TranslateService,
+    protected messageService: MessageService
   ) {}
 
   showAddSuccess() {

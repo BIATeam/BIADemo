@@ -22,15 +22,15 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
 })
 export class NotificationEditComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+    protected store: Store<AppState>,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
     public notificationOptionsService: NotificationOptionsService,
     public notificationService: NotificationService,
-    private biaTranslationService: BiaTranslationService
+    protected biaTranslationService: BiaTranslationService
   ) {}
 
   ngOnInit() {

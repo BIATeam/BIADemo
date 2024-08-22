@@ -82,8 +82,8 @@ export class NotificationsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private notificationDas: NotificationDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected notificationDas: NotificationDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

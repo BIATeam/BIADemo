@@ -13,14 +13,14 @@ import { FeatureNotificationsActions } from '../store/notifications-actions';
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private store: Store<AppState>) {
+  constructor(protected store: Store<AppState>) {
     this.initSub();
     this.loading$ = this.store.select(getNotificationLoadingGet);
     this.notification$ = this.store.select(getCurrentNotification);
   }
-  private _currentNotification: Notification;
-  private _currentNotificationId: number;
-  private sub = new Subscription();
+  protected _currentNotification: Notification;
+  protected _currentNotificationId: number;
+  protected sub = new Subscription();
   public loading$: Observable<boolean>;
   public notification$: Observable<Notification>;
 

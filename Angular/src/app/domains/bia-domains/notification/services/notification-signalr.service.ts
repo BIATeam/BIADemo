@@ -18,8 +18,8 @@ import { Team } from '../../team/model/team';
  */
 @Injectable()
 export class NotificationSignalRService {
-  private targetedFeature: TargetedFeature;
-  private myTeams: Team[];
+  protected targetedFeature: TargetedFeature;
+  protected myTeams: Team[];
 
   /**
    * Constructor.
@@ -27,10 +27,10 @@ export class NotificationSignalRService {
    * @param signalRService the service managing the SignalR connection.
    */
   constructor(
-    private store: Store<AppState>,
-    private signalRService: BiaSignalRService,
-    private authService: AuthService,
-    private messageService: BiaMessageService
+    protected store: Store<AppState>,
+    protected signalRService: BiaSignalRService,
+    protected authService: AuthService,
+    protected messageService: BiaMessageService
   ) {}
 
   /**
@@ -83,7 +83,7 @@ export class NotificationSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private isInMyDisplay(notification: Notification) {
+  protected isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers

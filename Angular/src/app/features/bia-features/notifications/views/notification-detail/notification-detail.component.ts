@@ -22,16 +22,16 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 })
 export class NotificationDetailComponent implements OnInit, OnDestroy {
   @Output() displayChange = new EventEmitter<boolean>();
-  private sub = new Subscription();
+  protected sub = new Subscription();
   canEdit: boolean;
   loading$: Observable<boolean>;
   notification$: Observable<Notification | undefined>;
 
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
+    protected store: Store<AppState>,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
+    protected authService: AuthService,
     public notificationService: NotificationService
   ) {}
 

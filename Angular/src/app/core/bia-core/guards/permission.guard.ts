@@ -12,7 +12,7 @@ import { HttpStatusCode } from '@angular/common/http';
 })
 export class PermissionGuard {
   constructor(
-    private authService: AuthService,
+    protected authService: AuthService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {}
 

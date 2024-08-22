@@ -22,8 +22,8 @@ import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
   providedIn: 'root',
 })
 export class NotificationsSignalRService {
-  private targetedFeature: TargetedFeature;
-  private myTeams: Team[];
+  protected targetedFeature: TargetedFeature;
+  protected myTeams: Team[];
 
   /**
    * Constructor.
@@ -31,9 +31,9 @@ export class NotificationsSignalRService {
    * @param signalRService the service managing the SignalR connection.
    */
   constructor(
-    private store: Store<AppState>,
-    private signalRService: BiaSignalRService,
-    private authService: AuthService
+    protected store: Store<AppState>,
+    protected signalRService: BiaSignalRService,
+    protected authService: AuthService
   ) {
     // Do nothing.
   }
@@ -95,7 +95,7 @@ export class NotificationsSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private isInMyDisplay(notification: Notification) {
+  protected isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers

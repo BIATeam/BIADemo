@@ -310,7 +310,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  private firstViewPreferenceApply = false;
+  protected firstViewPreferenceApply = false;
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {

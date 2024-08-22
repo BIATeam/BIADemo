@@ -14,14 +14,14 @@ import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-transl
   styleUrls: ['./notification-new.component.scss'],
 })
 export class NotificationNewComponent implements OnInit, OnDestroy {
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(
-    private store: Store<AppState>,
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
+    protected store: Store<AppState>,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute,
     public notificationOptionsService: NotificationOptionsService,
-    private biaTranslationService: BiaTranslationService
+    protected biaTranslationService: BiaTranslationService
   ) {}
 
   ngOnInit() {

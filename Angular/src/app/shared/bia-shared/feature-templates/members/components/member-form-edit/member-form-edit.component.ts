@@ -50,7 +50,7 @@ export class MemberFormEditComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       id: [this.member.id],
       user: [this.member.user, Validators.required],
