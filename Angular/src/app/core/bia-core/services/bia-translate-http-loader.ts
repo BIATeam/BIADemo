@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators';
 
 export class BiaTranslateHttpLoader implements TranslateLoader {
   constructor(
-    private http: HttpClient,
-    private store: TranslateStore,
+    protected http: HttpClient,
+    protected store: TranslateStore,
     public prefix: string,
     public suffix: string = '.json'
   ) {}

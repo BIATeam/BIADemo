@@ -21,14 +21,14 @@ export type BiaBarcodeMatcher<T> = (barcode: string) => T;
   providedIn: 'root',
 })
 export class BiaBarcodeScannerService implements OnDestroy {
-  private rawBarcodeScan = new Subject<string>();
-  private noMatchScan = new Subject<string>();
+  protected rawBarcodeScan = new Subject<string>();
+  protected noMatchScan = new Subject<string>();
 
   rawBarcodeScan$ = this.rawBarcodeScan.asObservable();
   noMatchScan$ = this.noMatchScan.asObservable();
 
-  private sub: Subscription;
-  private matchers: [BiaBarcodeMatcher<any>, Subject<any>][] = [];
+  protected sub: Subscription;
+  protected matchers: [BiaBarcodeMatcher<any>, Subject<any>][] = [];
 
   constructor(@Inject(DOCUMENT) document: any, zone: NgZone) {
     const keyDownUniq$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
@@ -95,7 +95,7 @@ export class BiaBarcodeScannerService implements OnDestroy {
     });
   }
 
-  private processEventsToCode(events: KeyboardEvent[]) {
+  protected processEventsToCode(events: KeyboardEvent[]) {
     const isKeyence = this.isKeyence(events);
     if (isKeyence) {
       // Remove keyence prefix
@@ -112,7 +112,7 @@ export class BiaBarcodeScannerService implements OnDestroy {
     }, '');
   }
 
-  private isKeyence(events: KeyboardEvent[]) {
+  protected isKeyence(events: KeyboardEvent[]) {
     const code = events[0].which || events[0].keyCode;
     return events[0].ctrlKey && code === 192;
   }

@@ -6,7 +6,7 @@ import { filter, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class BiaSwUpdateService {
-  private _newVersionAvailable: boolean;
+  protected _newVersionAvailable: boolean;
   public get newVersionAvailable(): boolean {
     return this._newVersionAvailable;
   }

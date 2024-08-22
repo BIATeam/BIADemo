@@ -24,11 +24,11 @@ export class BiaSignalRService {
    * without having to redefine every needed event and data structure in the domain.
    */
 
-  private readonly hubConnection: HubConnection;
-  private methods: string[];
-  private isStarting: boolean;
-  private isStarted: boolean;
-  private targetedFeatures: TargetedFeature[];
+  protected readonly hubConnection: HubConnection;
+  protected methods: string[];
+  protected isStarting: boolean;
+  protected isStarted: boolean;
+  protected targetedFeatures: TargetedFeature[];
 
   /**
    * Constructor.
@@ -83,7 +83,7 @@ export class BiaSignalRService {
     }
   }
 
-  private invokeJoinGroup(targetedFeature: TargetedFeature) {
+  protected invokeJoinGroup(targetedFeature: TargetedFeature) {
     this.hubConnection
       .invoke('JoinGroup', JSON.stringify(targetedFeature))
       .then(() => {
@@ -110,7 +110,7 @@ export class BiaSignalRService {
     }
   }
 
-  private invokeLeaveGroup(targetedFeature: TargetedFeature) {
+  protected invokeLeaveGroup(targetedFeature: TargetedFeature) {
     this.hubConnection
       .invoke('LeaveGroup', JSON.stringify(targetedFeature))
       .then(() => {
@@ -130,7 +130,7 @@ export class BiaSignalRService {
   /**
    * Configure the connection behavior.
    */
-  private configureConnection(): void {
+  protected configureConnection(): void {
     this.hubConnection.onclose(async () => {
       if (this.isStarting) {
         console.log(
@@ -153,7 +153,7 @@ export class BiaSignalRService {
   /**
    * Start the SignalR connection.
    */
-  private startConnection(): void {
+  protected startConnection(): void {
     this.hubConnection
       .start()
       .then(() => {

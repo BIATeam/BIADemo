@@ -11,9 +11,9 @@ const DEFAULT_THEME = THEME_LIGHT;
   providedIn: 'root',
 })
 export class BiaThemeService {
-  private renderer: Renderer2;
-  private document: Document;
-  private currentTheme = new BehaviorSubject<string | undefined>(undefined);
+  protected renderer: Renderer2;
+  protected document: Document;
+  protected currentTheme = new BehaviorSubject<string | undefined>(undefined);
 
   isCurrentThemeDark$ = this.currentTheme.pipe(
     map(currentTheme => currentTheme && /dark/.test(currentTheme))
@@ -55,7 +55,7 @@ export class BiaThemeService {
     }
   }
 
-  private applyTheme(theme: string, oldTheme?: string) {
+  protected applyTheme(theme: string, oldTheme?: string) {
     if (oldTheme && oldTheme !== DEFAULT_THEME) {
       this.renderer.removeClass(this.document.body, `${oldTheme}-theme`);
     } else if (theme !== DEFAULT_THEME) {
@@ -65,7 +65,7 @@ export class BiaThemeService {
     this.currentTheme.next(theme);
   }
 
-  private applyPrimeNgTheme(theme: string) {
+  protected applyPrimeNgTheme(theme: string) {
     const themeLightLink: HTMLLinkElement = document.getElementById(
       'theme-light-css'
     ) as HTMLLinkElement;
