@@ -13,10 +13,10 @@ import { BiaMatomoService } from './core/bia-core/services/matomo/bia-matomo.ser
 })
 export class AppComponent implements OnInit {
   constructor(
-    protected biaMatomoService: BiaMatomoService,
-    protected biaExternalJsService: BiaInjectExternalService,
-    protected primeNgConfig: PrimeNGConfig,
-    protected translateService: TranslateService
+    private biaMatomoService: BiaMatomoService,
+    private biaExternalJsService: BiaInjectExternalService,
+    private primeNgConfig: PrimeNGConfig,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
