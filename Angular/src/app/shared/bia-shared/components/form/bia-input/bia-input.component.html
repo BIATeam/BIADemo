@@ -42,10 +42,11 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox
-        binary="true"
-        [formControlName]="field.field"
-        label="{{ field.header | translate }}"></p-checkbox>
+      <p-checkbox binary="true" [formControlName]="field.field"></p-checkbox>
+      <label>
+        <span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>
+        {{ field.header | translate }}
+      </label>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <span class="p-float-label">
