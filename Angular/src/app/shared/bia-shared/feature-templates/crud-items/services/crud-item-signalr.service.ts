@@ -17,7 +17,7 @@ import { BaseDto } from '../../../model/base-dto';
   providedIn: 'root',
 })
 export class CrudItemSignalRService<CrudItem extends BaseDto> {
-  private targetedFeature: TargetedFeature;
+  protected targetedFeature: TargetedFeature;
 
   /**
    * Constructor.

@@ -62,11 +62,10 @@ export interface DateFormat {
   providedIn: 'root',
 })
 export class BiaTranslationService {
-  private translationsLoaded: { [lang: string]: boolean } = {};
-  private lazyTranslateServices: TranslateService[] = [];
-  private cultureSubject: BehaviorSubject<string | null> = new BehaviorSubject<
-    string | null
-  >(getCurrentCulture());
+  protected translationsLoaded: { [lang: string]: boolean } = {};
+  protected lazyTranslateServices: TranslateService[] = [];
+  protected cultureSubject: BehaviorSubject<string | null> =
+    new BehaviorSubject<string | null>(getCurrentCulture());
   public currentCulture$: Observable<string | null> =
     this.cultureSubject.asObservable();
   public appSettings$: Observable<AppSettings | null> =
@@ -92,10 +91,10 @@ export class BiaTranslationService {
     .pipe(skip(1));
 
   constructor(
-    private translate: TranslateService,
+    protected translate: TranslateService,
     @Inject(LOCALE_ID) localeId: string,
-    private store: Store<AppState>,
-    private primeNgConfig: PrimeNGConfig,
+    protected store: Store<AppState>,
+    protected primeNgConfig: PrimeNGConfig,
     protected authService: AuthService
   ) {
     this.currentCultureDateFormat$.subscribe(dateFormat => {
@@ -111,8 +110,8 @@ export class BiaTranslationService {
     this.translate.setTranslation(data[TRANSLATION_LANG_KEY], data, true);
   }
 
-  private currentCulture = 'None';
-  private currentLanguage = 'None';
+  protected currentCulture = 'None';
+  protected currentLanguage = 'None';
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
   // So we need to call getTranslation manually
   // NOTE: Check if it's still usefull
@@ -172,7 +171,7 @@ export class BiaTranslationService {
     this.lazyTranslateServices.push(translateService);
   }
 
-  private loadTranslations(
+  protected loadTranslations(
     translationLoaders$: Observable<any>[],
     lang: string,
     defaultLang?: string
@@ -187,7 +186,7 @@ export class BiaTranslationService {
     );
   }
 
-  private getDateFormatByCulture(
+  protected getDateFormatByCulture(
     code: string | null,
     appSettings: AppSettings | null
   ): DateFormat {
@@ -229,7 +228,7 @@ export class BiaTranslationService {
       timeFormatSec: timeFormatSec,
     };
   }
-  private getLanguageId(
+  protected getLanguageId(
     code: string | null,
     appSettings: AppSettings | null
   ): number {

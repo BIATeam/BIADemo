@@ -21,7 +21,7 @@ export class MemberNewComponent
   canAddFromDirectory = false;
 
   public memberService: MemberService;
-  private authService: AuthService;
+  protected authService: AuthService;
 
   public members: Members;
 

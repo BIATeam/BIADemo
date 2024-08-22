@@ -89,7 +89,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected translateService: TranslateService;
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
-  private tableHelperService: TableHelperService;
+  protected tableHelperService: TableHelperService;
 
   constructor(
     protected injector: Injector,
@@ -166,7 +166,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     }
   }
 
-  private applyDynamicComponent(routes: Routes | undefined) {
+  protected applyDynamicComponent(routes: Routes | undefined) {
     if (routes) {
       routes.forEach(route => {
         if (route.data && (route.data as any).dynamicComponent) {
@@ -389,6 +389,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     const columnsAndFilter: PagingFilterFormatDto = {
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
       columns: columns,
+      advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       ...this.crudItemListComponent.getLazyLoadMetadata(),
     };
     this.crudItemService.dasService
@@ -439,7 +440,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.hasAdvancedFilter = false;
   }
 
-  private updateAdvancedFilterByView(viewPreference: string) {
+  protected updateAdvancedFilterByView(viewPreference: string) {
     if (viewPreference) {
       const state = JSON.parse(viewPreference);
       if (state) {

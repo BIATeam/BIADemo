@@ -51,8 +51,8 @@ export class BiaTableHeaderComponent implements OnChanges, AfterContentInit {
   constructor(
     protected location: Location,
     protected router: Router,
-    private confirmationService: ConfirmationService,
-    private biaDialogService: BiaDialogService
+    protected confirmationService: ConfirmationService,
+    protected biaDialogService: BiaDialogService
   ) {}
 
   ngAfterContentInit() {

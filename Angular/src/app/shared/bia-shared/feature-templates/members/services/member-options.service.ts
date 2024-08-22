@@ -18,7 +18,7 @@ export class MemberOptionsService extends CrudItemOptionsService {
   userOptions$: Observable<OptionDto[]>;
   roleOptions$: Observable<OptionDto[]>;
 
-  constructor(private store: Store<AppState>) {
+  constructor(protected store: Store<AppState>) {
     super();
     // TODO after creation of CRUD Member : get all requiered option dto use in Table calc and create and edit form
     this.userOptions$ = this.store.select(getAllUserOptions);

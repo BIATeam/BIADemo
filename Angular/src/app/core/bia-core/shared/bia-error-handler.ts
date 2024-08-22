@@ -4,9 +4,9 @@ import { NGXLogger } from 'ngx-logger';
 
 @Injectable()
 export class BiaErrorHandler implements ErrorHandler {
-  private logger: NGXLogger;
+  protected logger: NGXLogger;
 
-  constructor(private injector: Injector) {
+  constructor(protected injector: Injector) {
     this.logger = this.injector.get<NGXLogger>(NGXLogger);
   }
 

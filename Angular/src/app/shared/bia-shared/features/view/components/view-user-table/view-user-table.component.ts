@@ -45,8 +45,8 @@ export class ViewUserTableComponent implements OnChanges {
   @Output() viewSelect = new EventEmitter<View>();
 
   constructor(
-    private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService
+    protected biaDialogService: BiaDialogService,
+    protected confirmationService: ConfirmationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -79,7 +79,7 @@ export class ViewUserTableComponent implements OnChanges {
     );
   }
 
-  private onViewsChange(changes: SimpleChanges) {
+  protected onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
       if (this.viewSelected && this.viewSelected.id > 0 && this.views) {
         this.viewSelected = this.views.filter(

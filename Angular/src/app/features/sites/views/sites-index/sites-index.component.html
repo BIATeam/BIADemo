@@ -25,18 +25,17 @@
         <ng-template pTemplate="actionOnSelected">
           <button
             pButton
-            [disabled]="selectedCrudItems?.length !== 1"
-            *ngIf="canEdit"
+            [disabled]="!canEdit || selectedCrudItems?.length !== 1"
             class="p-button-outlined"
             label="{{ 'site.edit' | translate }}"
             (click)="onEdit(this.selectedCrudItems[0].id)"></button>
           <button
             pButton
             [disabled]="
+              !canViewMembers ||
               selectedCrudItems?.length !== 1 ||
               !selectedCrudItems[0].canMemberListAccess
             "
-            *ngIf="canViewMembers"
             class="p-button-outlined"
             label="{{ 'app.members' | translate }}"
             (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
@@ -103,7 +102,8 @@
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"></bia-table>
+        (stateSave)="onStateSave($event)"
+        [canSelectMultipleElement]="false"></bia-table>
       <app-site-table
         *ngIf="crudConfiguration.useCalcMode"
         [elements]="crudItems$ | async"

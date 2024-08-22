@@ -38,19 +38,19 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the "iat" (Issued At) Claim - The "iat" (issued at) claim identifies the
         /// time at which the JWT was issued.
         /// </summary>
-        public DateTime IssuedAt => DateTime.UtcNow;
+        public virtual DateTime IssuedAt => DateTime.UtcNow;
 
         /// <summary>
         /// "jti" (JWT ID) Claim (default ID is a GUID).
         /// </summary>
-        public Func<Task<string>> JtiGenerator =>
+        public virtual Func<Task<string>> JtiGenerator =>
           () => Task.FromResult(Guid.NewGuid().ToString());
 
         /// <summary>
         /// Gets or sets the "nbf" (Not Before) Claim - The "nbf" (not before) claim identifies the
         /// time before which the JWT MUST NOT be accepted for processing.
         /// </summary>
-        public DateTime NotBefore => DateTime.UtcNow;
+        public virtual DateTime NotBefore => DateTime.UtcNow;
 
         /// <summary>
         /// Gets or sets the "sub" (Subject) Claim - The "sub" (subject) claim identifies the

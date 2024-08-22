@@ -18,7 +18,7 @@ export class TranslateFieldPipe extends TranslatePipe implements PipeTransform {
       : '';
   }
 
-  private translateValue(
+  protected translateValue(
     input: any,
     key: string,
     translationkey: string,

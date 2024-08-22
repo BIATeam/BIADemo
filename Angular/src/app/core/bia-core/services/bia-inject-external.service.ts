@@ -12,7 +12,7 @@ import { AppState } from 'src/app/store/state';
 export class BiaInjectExternalService implements OnDestroy {
   protected sub = new Subscription();
 
-  constructor(private store: Store<AppState>) {}
+  constructor(protected store: Store<AppState>) {}
 
   public init() {
     this.initInjector();
@@ -24,7 +24,7 @@ export class BiaInjectExternalService implements OnDestroy {
     }
   }
 
-  private initInjector() {
+  protected initInjector() {
     const appSettings$ = this.getAppSettings();
 
     this.sub.add(
@@ -72,7 +72,7 @@ export class BiaInjectExternalService implements OnDestroy {
       })
     );
   }
-  private getAppSettings(): Observable<AppSettings | null> {
+  protected getAppSettings(): Observable<AppSettings | null> {
     return this.store.select(getAppSettings).pipe(filter(envConf => !!envConf));
   }
 }

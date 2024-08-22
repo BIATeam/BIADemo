@@ -32,7 +32,8 @@
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
     editMode="row"
-    dataKey="id">
+    dataKey="id"
+    [(selection)]="selectedElements">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th
@@ -42,7 +43,8 @@
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          <p-tableHeaderCheckbox
+            *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
           <th
@@ -119,16 +121,24 @@
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
         (keyup.escape)="escape()">
-        <!-- FIRST COLUMN WITH CHECKBOX -->
+        <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
         <td
           *ngIf="canSelectElement === true"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableCheckbox
-            *ngIf="rowData.id > 0"
-            [value]="rowData"></p-tableCheckbox>
+          <ng-container *ngIf="rowData.id > 0">
+            <ng-template
+              #selectMultipleElement
+              [ngIf]="canSelectMultipleElement === true"
+              [ngIfElse]="selectSingleElement">
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </ng-template>
+            <ng-template #selectSingleElement>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </ng-template>
+          </ng-container>
         </td>
         <!-- OTHER COLUMNS -->
         <td

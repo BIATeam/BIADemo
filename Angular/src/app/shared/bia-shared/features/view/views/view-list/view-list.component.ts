@@ -57,7 +57,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   selectedViewName: string | null = null;
   defaultView: number;
   urlView: number | null = null;
-  private sub = new Subscription();
+  protected sub = new Subscription();
   @Input() tableStateKey: string;
   @Input() tableState: string;
   @Input() defaultViewPref: BiaTableState;
@@ -67,11 +67,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public translateService: TranslateService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private tableHelperService: TableHelperService
+    protected authService: AuthService,
+    protected route: ActivatedRoute,
+    protected tableHelperService: TableHelperService
   ) {}
 
   ngOnInit() {
@@ -143,7 +143,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private autoSelectView(tableStateStr: string) {
+  protected autoSelectView(tableStateStr: string) {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
     this.selectedViewName = this.getCurrentViewName();
   }
@@ -162,7 +162,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return viewName;
   }
 
-  private getCorrespondingViewId(preference: string): number {
+  protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
     if (this.defaultViewPref != undefined) {
@@ -200,7 +200,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return currentView;
   }
 
-  private areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
+  protected areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
     return (
       view1.first === view2.first &&
       this.areFilterEgals(view1.filters, view2.filters) &&
@@ -229,7 +229,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private areFilterEgals(
+  protected areFilterEgals(
     filters1: { [s: string]: FilterMetadata | FilterMetadata[] } | undefined,
     filters2: { [s: string]: FilterMetadata | FilterMetadata[] } | undefined
   ): boolean {
@@ -267,7 +267,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  private standardizeFilterMetadata(
+  protected standardizeFilterMetadata(
     filterMetadata: FilterMetadata | FilterMetadata[] | undefined
   ): FilterMetadata[] {
     const standardized: FilterMetadata[] = [];
@@ -296,7 +296,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return standardized;
   }
 
-  private isNullUndefEmptyStr(obj: any): boolean {
+  protected isNullUndefEmptyStr(obj: any): boolean {
     if (this.isValueNullUndefEmptyStr(obj)) {
       return true;
     }
@@ -312,7 +312,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private isValueNullUndefEmptyStr(obj: any): boolean {
+  protected isValueNullUndefEmptyStr(obj: any): boolean {
     return obj === null || obj === undefined || obj === '';
   }
 
@@ -321,7 +321,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateFilterValues(null, true);
   }
 
-  private updateGroupedViews() {
+  protected updateGroupedViews() {
     if (!this.views || !this.translations) {
       return;
     }
@@ -422,7 +422,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   isFirstEmitDone = false;
-  private updateFilterValues(preference: string | null, manualChange: boolean) {
+  protected updateFilterValues(
+    preference: string | null,
+    manualChange: boolean
+  ) {
     //setTimeout(() => {
     if (!manualChange) this.initViewByQueryParam(this.views);
     if (preference && !this.urlView) {
@@ -457,7 +460,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     //});
   }
   /*
-    private saveViewState(stateString: string) {
+    protected saveViewState(stateString: string) {
       if (stateString) {
         const state = JSON.parse(stateString);
         if (state && !state.filters) {
@@ -468,7 +471,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }*/
 
-  private getViewState(): string | null {
+  protected getViewState(): string | null {
     return sessionStorage.getItem(this.tableStateKey);
   }
 

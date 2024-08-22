@@ -60,8 +60,8 @@ export class NotificationTypeOptionsEffects {
   */
 
   constructor(
-    private actions$: Actions,
-    private notificationTypeDas: NotificationTypeOptionDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected notificationTypeDas: NotificationTypeOptionDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

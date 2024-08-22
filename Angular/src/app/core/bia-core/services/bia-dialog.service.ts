@@ -6,7 +6,7 @@ import { Confirmation } from 'primeng/api';
   providedIn: 'root',
 })
 export class BiaDialogService {
-  constructor(private translateService: TranslateService) {}
+  constructor(protected translateService: TranslateService) {}
 
   public getDeleteConfirmation(key?: string): Confirmation {
     const translates = this.translateService.instant([

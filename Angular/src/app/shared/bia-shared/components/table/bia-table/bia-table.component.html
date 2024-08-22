@@ -26,7 +26,8 @@
   "
   sortMode="multiple"
   [scrollHeight]="scrollHeightValue"
-  [scrollable]="isScrollable">
+  [scrollable]="isScrollable"
+  [(selection)]="selectedElements">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th
@@ -36,7 +37,8 @@
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen">
-        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        <p-tableHeaderCheckbox
+          *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
       </th>
       <ng-container *ngFor="let col of columns">
         <th
@@ -108,7 +110,17 @@
         [alignFrozen]="alignFrozenSelect"
         pFrozenColumn
         [frozen]="isSelectFrozen">
-        <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        <ng-container *ngIf="rowData.id > 0">
+          <ng-template
+            #selectMultipleElement
+            [ngIf]="canSelectMultipleElement === true"
+            [ngIfElse]="selectSingleElement">
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </ng-template>
+          <ng-template #selectSingleElement>
+            <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+          </ng-template>
+        </ng-container>
       </td>
       <td
         *ngFor="let col of columns"

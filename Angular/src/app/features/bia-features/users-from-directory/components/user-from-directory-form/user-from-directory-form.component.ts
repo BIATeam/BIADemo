@@ -52,7 +52,7 @@ export class UserFromLdapFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       selectedUsers: [this.selectedUsers, Validators.required],
       domains: [this.domains],

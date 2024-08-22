@@ -97,6 +97,16 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
+        /// CSVs the date time with seconds.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date and time with seconds cell.</returns>
+        public static string CSVDateTimeSeconds(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        /// <summary>
         /// CSVs the bool.
         /// </summary>
         /// <param name="x">if set to <c>true</c> [x].</param>

@@ -10,7 +10,7 @@ import { LdapDomainService } from './ldap-domain.service';
 export class LdapDomainDas extends AbstractDas<LdapDomain> {
   constructor(
     injector: Injector,
-    private ldapDomainService: LdapDomainService
+    protected ldapDomainService: LdapDomainService
   ) {
     super(injector, 'ldapDomains');
   }

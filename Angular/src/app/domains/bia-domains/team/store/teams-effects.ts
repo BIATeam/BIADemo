@@ -48,8 +48,8 @@ export class TeamsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private teamDas: TeamDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected teamDas: TeamDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

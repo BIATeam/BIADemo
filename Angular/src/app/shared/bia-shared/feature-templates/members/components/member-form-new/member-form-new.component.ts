@@ -52,7 +52,7 @@ export class MemberFormNewComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       users: [this.members.users, Validators.required],
       roles: [],

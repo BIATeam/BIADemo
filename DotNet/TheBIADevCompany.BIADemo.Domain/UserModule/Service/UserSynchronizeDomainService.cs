@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                         var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
                         if (userFromDirectory != null)
                         {
-                            this.ResynchronizeUser(user, userFromDirectory);
+                            ResynchronizeUser(user, userFromDirectory);
                         }
                     }
                 }
@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                     else
                     {
-                        this.ResynchronizeUser(user, userFromDirectory);
+                        ResynchronizeUser(user, userFromDirectory);
                     }
                 }
 
@@ -149,7 +149,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             return foundUser;
         }
 
-        private void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
+        private static void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {

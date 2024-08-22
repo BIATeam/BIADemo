@@ -49,8 +49,8 @@ export class TeamOptionsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private teamDas: TeamOptionDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected teamDas: TeamOptionDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

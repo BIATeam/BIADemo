@@ -46,15 +46,15 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   @Input() enableNotifications?: boolean;
 
   menuItems: MenuItem[];
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   constructor(
-    private biaTranslation: BiaTranslationService,
-    private biaTheme: BiaThemeService,
+    protected biaTranslation: BiaTranslationService,
+    protected biaTheme: BiaThemeService,
     public layoutService: BiaClassicLayoutService,
-    private translateService: TranslateService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
+    protected translateService: TranslateService,
+    protected router: Router,
+    protected activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -93,14 +93,14 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     this.biaTheme.changeTheme(theme);
   }
 
-  private updateMenuItems() {
+  protected updateMenuItems() {
     const menuItems = this.createBreadcrumbs(this.activatedRoute.root);
     if (menuItems !== undefined) {
       this.menuItems = menuItems;
     }
   }
 
-  private createBreadcrumbs(
+  protected createBreadcrumbs(
     route: ActivatedRoute,
     url = '',
     breadcrumbs: MenuItem[] = [{ icon: 'pi pi-home', routerLink: ['/'] }]
@@ -135,7 +135,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setNoMargin(activatedRoute: ActivatedRoute, firstPass = true) {
+  protected setNoMargin(activatedRoute: ActivatedRoute, firstPass = true) {
     if (firstPass) {
       this.noMargin = false;
     }

@@ -61,6 +61,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() scrollHeightValue = 'calc( 100vh - 450px)';
   @Input() isScrollable = true;
   @Input() frozeSelectColumn = false;
+  @Input() canSelectMultipleElement = true;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -87,16 +88,12 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   // specificInputTemplate: TemplateRef<any>;
   specificOutputTemplate: TemplateRef<any>;
 
+  protected _selectedElements: any[] = [];
   get selectedElements(): any[] {
-    if (this.table) {
-      return this.table.selection as any[];
-    }
-    return [];
+    return this._selectedElements;
   }
   set selectedElements(value: any[]) {
-    if (this.table) {
-      this.table.selection = value;
-    }
+    this._selectedElements = value;
   }
 
   displayedColumns: BiaFieldConfig[];
@@ -313,7 +310,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  private firstViewPreferenceApply = false;
+  protected firstViewPreferenceApply = false;
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
     if (this.table && this.table.isStateful() && changes.viewPreference) {
@@ -379,6 +376,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       ) {
         this.clickElementId(rowData.id);
       }
+
+      if (this.canSelectElement && !this.canSelectMultipleElement) {
+        this.selectedElements = [];
+      }
     }
   }
 
@@ -413,10 +414,16 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   onSelectionChange() {
-    setTimeout(
-      () => this.selectedElementsChanged.next(this.selectedElements),
-      0
-    );
+    setTimeout(() => {
+      let selectedElements = this.selectedElements;
+      if (
+        this.canSelectMultipleElement === false &&
+        !(selectedElements instanceof Array)
+      ) {
+        selectedElements = selectedElements ? [selectedElements] : [];
+      }
+      this.selectedElementsChanged.next(selectedElements);
+    }, 0);
   }
 
   onStateSave(state: TableState) {

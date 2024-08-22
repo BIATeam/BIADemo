@@ -44,7 +44,7 @@ export class ViewFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
       id: [this.view.id],
       name: [this.view.name, Validators.required],

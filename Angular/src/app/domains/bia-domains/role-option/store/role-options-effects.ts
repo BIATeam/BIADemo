@@ -59,8 +59,8 @@ export class RoleOptionsEffects {
   */
 
   constructor(
-    private actions$: Actions,
-    private roleDas: RoleOptionDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected roleDas: RoleOptionDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

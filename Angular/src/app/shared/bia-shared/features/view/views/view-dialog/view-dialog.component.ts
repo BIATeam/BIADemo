@@ -43,7 +43,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
-  private sub = new Subscription();
+  protected sub = new Subscription();
 
   teams$: Observable<Team[]>;
   views$: Observable<View[]>;
@@ -64,8 +64,8 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   canAssignTeamView = false;
 
   constructor(
-    private store: Store<AppState>,
-    private authService: AuthService
+    protected store: Store<AppState>,
+    protected authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -77,7 +77,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.initViewUsers();
   }
 
-  private initDisplay() {
+  protected initDisplay() {
     this.sub.add(
       this.store
         .select(getDisplayViewDialog)
@@ -88,7 +88,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  private initViews() {
+  protected initViews() {
     this.views$ = this.store
       .pipe(select(getAllViews))
       .pipe(
@@ -96,13 +96,13 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
       );
   }
 
-  private initViewTeams() {
+  protected initViewTeams() {
     this.viewTeams$ = this.views$.pipe(
       map(views => views.filter(view => view.viewType === ViewType.Team))
     );
   }
 
-  private initViewUsers() {
+  protected initViewUsers() {
     const currentTeamId =
       this.useViewTeamWithTypeId == null
         ? -1
@@ -224,7 +224,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     this.teamViewSelected = view;
   }
 
-  private getViewPreference(): string | null {
+  protected getViewPreference(): string | null {
     let stateString = sessionStorage.getItem(this.tableStateKey);
     if (stateString) {
       const state = JSON.parse(stateString);
@@ -255,7 +255,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     );
   }
 
-  private setPermissions() {
+  protected setPermissions() {
     if (this.useViewTeamWithTypeId != null) {
       const teamTypeRightPrefixe = TeamTypeRightPrefixe.find(
         t => t.key == this.useViewTeamWithTypeId

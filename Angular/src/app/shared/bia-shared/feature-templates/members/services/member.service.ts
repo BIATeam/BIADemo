@@ -18,7 +18,7 @@ import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templa
 })
 export class MemberService extends CrudItemService<Member> {
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public dasService: MemberDas,
     public signalRService: CrudItemSignalRService<Member>,
     public optionsService: MemberOptionsService,
