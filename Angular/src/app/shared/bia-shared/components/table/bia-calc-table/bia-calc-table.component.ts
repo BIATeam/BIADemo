@@ -7,6 +7,7 @@ import {
   OnInit,
   TemplateRef,
   AfterContentInit,
+  HostListener,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
@@ -101,6 +102,14 @@ export class BiaCalcTableComponent
     this.hasChanged = true;
   }
 
+  public initEditableRowAndFocus(rowData: any, event: MouseEvent) {
+    this.initEditableRow(rowData);
+    if (event.currentTarget instanceof HTMLElement) {
+      var element = event.currentTarget as HTMLElement;
+      setTimeout(() => this.getChildInput(element)?.focus(), 0);
+    }
+  }
+
   public initEditableRow(rowData: any) {
     if (
       (this.canEdit === true || this.canAdd === true) &&
@@ -148,6 +157,7 @@ export class BiaCalcTableComponent
     if (this.hasChanged === true) {
       this.onSubmit();
       this.hasChanged = false;
+      setTimeout(() => this.escape(), 0);
     }
   }
 
@@ -155,6 +165,18 @@ export class BiaCalcTableComponent
     this.hasChanged = false;
     this.form.reset();
     this.table.editingRowKeys = {};
+    this.editFooter = false;
+  }
+
+  public escape() {
+    this.cancel();
+    this.initEditableRow(null);
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
+    _: KeyboardEvent
+  ) {
+    this.escape();
   }
 
   public onSubmit() {
@@ -186,18 +208,17 @@ export class BiaCalcTableComponent
         document.activeElement,
         'bia-selectable-row'
       ) as HTMLElement;
-      if (this.editFooter === true) {
-        this.currentInput = this.currentRow?.querySelectorAll(
-          '.bia-simple-input'
-        )[0] as HTMLElement;
-      }
+      this.currentInput = document.activeElement as HTMLElement;
     } else {
-      if (this.editFooter === true) {
+      if (
+        // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
+        (this.getParentComponent(
+          document.activeElement,
+          'bia-selectable-row'
+        ) as HTMLElement) !== this.currentRow
+      ) {
         this.currentInput?.focus();
-      } else {
-        this.currentRow?.focus();
       }
-
       this.isInComplexInput = false;
     }
   }
@@ -212,6 +233,27 @@ export class BiaCalcTableComponent
           return el.parentElement;
         } else {
           el = el.parentElement;
+        }
+      }
+    }
+    return null;
+  }
+
+  public getChildInput(el: Element | null): HTMLElement | null {
+    var result: HTMLElement | null = null;
+    if (el) {
+      var children = el.children;
+      for (var i = 0; i < children.length; i++) {
+        var tableChild = children[i];
+        if (tableChild.tagName === 'INPUT') {
+          return tableChild as HTMLElement;
+        } else if (tableChild.tagName === 'P-DROPDOWN') {
+          return tableChild.children[0].children[0] as HTMLElement;
+        } else {
+          result = this.getChildInput(tableChild);
+        }
+        if (result !== null) {
+          return result;
         }
       }
     }

@@ -120,7 +120,7 @@
         [pEditableRow]="rowData"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()">
+        (keyup.escape)="escape()">
         <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
         <td
           *ngIf="canSelectElement === true"
@@ -144,7 +144,7 @@
         <td
           *ngFor="let col of columns"
           [class]="'bia-column-' + col.typeLowerCase"
-          (click)="initEditableRow(rowData)"
+          (click)="initEditableRowAndFocus(rowData, $event)"
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
@@ -218,7 +218,7 @@
         class="bia-selectable-row"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()">
+        (keyup.escape)="escape()">
         <td
           (click)="initEditableRow(footerRowData)"
           *ngIf="canSelectElement === true"
