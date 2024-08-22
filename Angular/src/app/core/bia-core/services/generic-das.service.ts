@@ -72,8 +72,8 @@ export interface DeletesParam extends HttpParam {
 }
 
 export abstract class GenericDas {
-  public http: HttpClient;
-  public route: string;
+  protected http: HttpClient;
+  protected route: string;
   protected matomoTracker: MatomoTracker;
   protected db: AppDB;
   protected baseHref: string;
@@ -91,7 +91,7 @@ export abstract class GenericDas {
     }
   }
 
-  public static buildRoute(endpoint: string): string {
+  static buildRoute(endpoint: string): string {
     let route = '/' + endpoint + '/';
     route = route.replace('//', '/');
     return BiaEnvironmentService.getApiUrl() + route;
