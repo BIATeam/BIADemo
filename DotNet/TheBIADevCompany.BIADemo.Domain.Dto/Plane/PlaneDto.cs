@@ -135,7 +135,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the list of connecting airports.
         /// </summary>
-        [BiaDtoField(ItemType = "Airport")]
+        [BiaDtoField(ItemType = "Airport", Required = true)]
         public ICollection<OptionDto> ConnectingAirports { get; set; }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the current airport title.
         /// </summary>
-        [BiaDtoField(ItemType = "Airport")]
+        [BiaDtoField(ItemType = "Airport", Required = true)]
         public OptionDto CurrentAirport { get; set; }
     }
 }
