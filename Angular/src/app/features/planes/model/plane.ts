@@ -35,7 +35,7 @@ export class Plane extends BaseDto {
   similarTypes: OptionDto[];
   siteId: number;
   connectingAirports: OptionDto[];
-  currentAirport: OptionDto | null;
+  currentAirport: OptionDto;
   /// BIAToolKit - End Properties
 }
 
