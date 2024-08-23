@@ -153,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the current airport id.
         /// </summary>
-        public int? CurrentAirportId { get; set; }
+        public int CurrentAirportId { get; set; }
 
         /// <summary>
         /// Gets or sets the list of similar plane type. Direct access.

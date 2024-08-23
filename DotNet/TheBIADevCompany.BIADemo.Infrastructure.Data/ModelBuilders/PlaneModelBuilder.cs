@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().HasKey(p => p.Id);
             modelBuilder.Entity<Plane>().Property(p => p.SiteId).IsRequired(); // relationship 1-*
             modelBuilder.Entity<Plane>().Property(p => p.PlaneTypeId).IsRequired(false); // relationship 0..1-*
-            modelBuilder.Entity<Plane>().Property(p => p.CurrentAirportId).IsRequired(false); // relationship 0..1-*
+            modelBuilder.Entity<Plane>().Property(p => p.CurrentAirportId).IsRequired(); // relationship 0..1-*
             modelBuilder.Entity<Plane>().Property(p => p.Msn).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<Plane>().Property(p => p.Manufacturer).IsRequired(false).HasMaxLength(64);
             modelBuilder.Entity<Plane>().Property(p => p.IsActive).IsRequired();
@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().Property(p => p.FuelLevel).IsRequired(false);
             modelBuilder.Entity<Plane>().Property(p => p.OriginalPrice).IsRequired().HasColumnType("Money");
             modelBuilder.Entity<Plane>().Property(p => p.EstimatedPrice).IsRequired(false).HasColumnType("Money");
-            modelBuilder.Entity<Plane>().HasOne(x => x.CurrentAirport).WithMany().HasForeignKey(x => x.CurrentAirportId);
+            modelBuilder.Entity<Plane>().HasOne(x => x.CurrentAirport).WithMany().HasForeignKey(x => x.CurrentAirportId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Plane>().HasOne(x => x.PlaneType).WithMany().HasForeignKey(x => x.PlaneTypeId);
             modelBuilder.Entity<Plane>()
                 .HasMany(p => p.ConnectingAirports)

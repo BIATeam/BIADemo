@@ -521,7 +521,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CurrentAirportId")
+                    b.Property<int>("CurrentAirportId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeliveryDate")
@@ -1691,7 +1691,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "CurrentAirport")
                         .WithMany()
-                        .HasForeignKey("CurrentAirportId");
+                        .HasForeignKey("CurrentAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", "PlaneType")
                         .WithMany()

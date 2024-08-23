@@ -92,7 +92,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             // Mapping relationship 0..1-* : PlaneType
             entity.PlaneTypeId = dto.PlaneType?.Id;
 
-            entity.CurrentAirportId = dto.CurrentAirport?.Id;
+            // Mapping relationship 0..1-* : CurrentAirport
+            entity.CurrentAirportId = dto.CurrentAirport.Id;
 
             // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
             if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
