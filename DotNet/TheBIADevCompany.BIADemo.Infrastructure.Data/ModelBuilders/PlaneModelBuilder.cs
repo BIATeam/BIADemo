@@ -57,11 +57,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Plane>().HasOne(x => x.PlaneType).WithMany().HasForeignKey(x => x.PlaneTypeId);
             modelBuilder.Entity<Plane>()
                 .HasMany(p => p.ConnectingAirports)
-                .WithMany(a => a.ClientPlanes)
+                .WithMany()
                 .UsingEntity<PlaneAirport>();
             modelBuilder.Entity<Plane>()
                .HasMany(p => p.SimilarTypes)
-               .WithMany(a => a.ClientPlanes)
+               .WithMany()
                .UsingEntity<PlanePlaneType>();
         }
 

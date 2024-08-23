@@ -28,15 +28,5 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the first flight date.
         /// </summary>
         public DateTime? CertificationDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of planes using the airport. Direct access.
-        /// </summary>
-        public ICollection<Plane> ClientPlanes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the list of planes using the airport. Via the jointure table.
-        /// </summary>
-        public ICollection<PlanePlaneType> ClientPlanePlanesTypes { get; set; }
     }
 }
