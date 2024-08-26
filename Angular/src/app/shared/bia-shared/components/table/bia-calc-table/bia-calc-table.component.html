@@ -1,7 +1,4 @@
-<form
-  *ngIf="(authService.hasToken$ | async) === true"
-  [formGroup]="form"
-  class="bia-calc-form">
+<form [formGroup]="form" class="bia-calc-form">
   <p-table
     *ngIf="configuration"
     #dt
@@ -213,8 +210,9 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="footer" *ngIf="canAdd === true" let-columns>
+    <ng-template pTemplate="footer" let-columns>
       <tr
+        *ngIf="canAdd === true"
         class="bia-selectable-row"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
