@@ -1,4 +1,3 @@
-/* eslint-disable deprecation/deprecation */
 import {
   ComponentPortal,
   ComponentType,
@@ -9,7 +8,6 @@ import {
   Injectable,
   Injector,
   TemplateRef,
-  ComponentFactoryResolver,
   InjectionToken,
   ViewContainerRef,
 } from '@angular/core';
@@ -37,7 +35,6 @@ export class BiaClassicLayoutService {
   changeFooter<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -48,7 +45,6 @@ export class BiaClassicLayoutService {
       this.footerPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -56,7 +52,6 @@ export class BiaClassicLayoutService {
   changeMainBar<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -67,7 +62,6 @@ export class BiaClassicLayoutService {
       this.mainBarPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -104,7 +98,6 @@ export class BiaClassicLayoutService {
     portalSubject: BehaviorSubject<Portal<any> | null>,
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T>,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     let portal;
@@ -127,12 +120,7 @@ export class BiaClassicLayoutService {
           });
         }
       }
-      portal = new ComponentPortal(
-        componentOrTemplateRef,
-        null,
-        finalInjector,
-        componentFactoryResolver
-      );
+      portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector);
     }
     portalSubject.next(portal);
     return portal;
