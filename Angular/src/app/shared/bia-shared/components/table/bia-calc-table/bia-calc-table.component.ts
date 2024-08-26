@@ -1,20 +1,20 @@
 import {
+  AfterContentInit,
   Component,
-  Output,
   EventEmitter,
-  SimpleChanges,
+  HostListener,
   Input,
   OnInit,
+  Output,
+  SimpleChanges,
   TemplateRef,
-  AfterContentInit,
-  HostListener,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
@@ -103,6 +103,10 @@ export class BiaCalcTableComponent
   }
 
   public initEditableRowAndFocus(rowData: any, event: MouseEvent) {
+    if (this.canSelectElement && !this.canSelectMultipleElement) {
+      this.selectedElements = rowData;
+      this.onSelectionChange();
+    }
     this.initEditableRow(rowData);
     if (event.currentTarget instanceof HTMLElement) {
       var element = event.currentTarget as HTMLElement;
