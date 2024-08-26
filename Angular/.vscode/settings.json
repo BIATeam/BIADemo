@@ -2,6 +2,9 @@
   "typescript.tsdk": "node_modules\\typescript\\lib",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
   "i18nJsonEditor.workspaceFolders": [
     { "name": "app", "path": "./src/assets/i18n/app" }
   ],
