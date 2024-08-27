@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.ComponentModel.DataAnnotations;
     using System.Data;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
@@ -94,7 +95,14 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         public void RollbackChanges()
         {
-            this.ChangeTracker.Entries().ToList().ForEach(entry => entry.State = EntityState.Unchanged);
+            try
+            {
+                this.ChangeTracker.Entries().ToList().ForEach(entry => entry.State = EntityState.Unchanged);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Unable to rollback changes");
+            }
         }
 
         /// <summary>
@@ -234,8 +242,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
         protected virtual FrontUserException ManageException(ValidationException validationException)
         {
-            var memberNamesJoined = string.Join(", ", validationException.ValidationResult.MemberNames);
-            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, memberNamesJoined, validationException.ValidationResult.ErrorMessage);
+            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
         }
 
         /// <summary>
@@ -252,7 +259,7 @@ namespace BIA.Net.Core.Infrastructure.Data
                 return entry.State switch
                 {
                     EntityState.Added => new FrontUserException(FrontUserExceptionErrorMessageKey.AddEntity, dbUpdateException, entityTypeName),
-                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.EditEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.ModifyEntity, dbUpdateException, entityTypeName),
                     EntityState.Deleted => new FrontUserException(FrontUserExceptionErrorMessageKey.DeleteEntity, dbUpdateException, entityTypeName),
                     _ => new FrontUserException(dbUpdateException),
                 };
@@ -270,8 +277,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             return sqlException.Number switch
             {
-                208 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound, sqlException),
-                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException),
+                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
                 547 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint, sqlException),
                 2601 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey, sqlException),
                 2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
@@ -279,6 +285,13 @@ namespace BIA.Net.Core.Infrastructure.Data
                 18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
                 _ => new FrontUserException(sqlException)
             };
+        }
+
+        private static string GetColumnNameFromSqlExceptionNullInsert(string sqlExceptionMessage)
+        {
+            string pattern = @"column\s'([^']*)'";
+            Match match = Regex.Match(sqlExceptionMessage, pattern);
+            return match.Success ? match.Groups[1].Value : string.Empty;
         }
     }
 }
