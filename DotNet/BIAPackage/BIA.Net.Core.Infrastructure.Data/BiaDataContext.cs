@@ -1,4 +1,4 @@
-// <copyright file="BiaDataContext.cs" company="BIA">
+﻿// <copyright file="BiaDataContext.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
@@ -10,6 +10,8 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
@@ -73,17 +75,11 @@ namespace BIA.Net.Core.Infrastructure.Data
 
                 return await base.SaveChangesAsync(cancellationToken);
             }
-            catch (ValidationException exception)
+            catch (Exception ex)
             {
-                this.logger.LogError(exception, "An error occured on entity validation.");
+                this.logger.LogError(ex, "An error occured while saving data.");
                 this.RollbackChanges();
-                throw new DataException(exception.Message, exception);
-            }
-            catch (DbUpdateException exception)
-            {
-                this.logger.LogError(exception, "An error occured while saving data.");
-                this.RollbackChanges();
-                throw new DataException("An error occured while saving data.", exception);
+                throw this.ManageException(ex);
             }
         }
 
@@ -213,6 +209,76 @@ namespace BIA.Net.Core.Infrastructure.Data
         protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="exception"/>.
+        /// </summary>
+        /// <param name="exception">The handled <see cref="Exception"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(Exception exception)
+        {
+            return exception.GetBaseException() switch
+            {
+                ValidationException validationEx => this.ManageException(validationEx),
+                DbUpdateException dbUpdateEx => this.ManageException(dbUpdateEx),
+                SqlException sqlEx => this.ManageException(sqlEx),
+                _ => new FrontUserException(exception)
+            };
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="validationException"/>.
+        /// </summary>
+        /// <param name="validationException">The handled <see cref="ValidationException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(ValidationException validationException)
+        {
+            var memberNamesJoined = string.Join(", ", validationException.ValidationResult.MemberNames);
+            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, memberNamesJoined, validationException.ValidationResult.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="dbUpdateException"/>.
+        /// </summary>
+        /// <param name="dbUpdateException">The handled <see cref="DbUpdateException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(DbUpdateException dbUpdateException)
+        {
+            var entry = dbUpdateException.Entries.FirstOrDefault();
+            if (entry != null)
+            {
+                var entityTypeName = entry.Entity.GetType().Name;
+                return entry.State switch
+                {
+                    EntityState.Added => new FrontUserException(FrontUserExceptionErrorMessageKey.AddEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.EditEntity, dbUpdateException, entityTypeName),
+                    EntityState.Deleted => new FrontUserException(FrontUserExceptionErrorMessageKey.DeleteEntity, dbUpdateException, entityTypeName),
+                    _ => new FrontUserException(dbUpdateException),
+                };
+            }
+
+            return new FrontUserException(dbUpdateException);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="sqlException"/>.
+        /// </summary>
+        /// <param name="sqlException">The handled <see cref="SqlException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(SqlException sqlException)
+        {
+            return sqlException.Number switch
+            {
+                208 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound, sqlException),
+                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException),
+                547 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint, sqlException),
+                2601 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey, sqlException),
+                2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
+                4060 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseOpen, sqlException),
+                18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
+                _ => new FrontUserException(sqlException)
+            };
         }
     }
 }
