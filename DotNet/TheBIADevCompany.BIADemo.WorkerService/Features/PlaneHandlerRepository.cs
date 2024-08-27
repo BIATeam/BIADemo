@@ -7,10 +7,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
     using System.Configuration;
-    using System.Data.SqlClient;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
+    using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>

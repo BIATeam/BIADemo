@@ -1,4 +1,4 @@
-﻿// <copyright file="BiaDataContext.cs" company="BIA">
+// <copyright file="BiaDataContext.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Data
@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
+    using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 

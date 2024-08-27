@@ -6,7 +6,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
     using System;
     using System.Collections.Generic;
-    using System.Data.SqlClient;
+    using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 

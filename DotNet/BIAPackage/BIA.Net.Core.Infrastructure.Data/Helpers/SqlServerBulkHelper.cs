@@ -7,10 +7,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
+    using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata;
 
