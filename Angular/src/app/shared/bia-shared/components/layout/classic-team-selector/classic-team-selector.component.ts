@@ -1,26 +1,26 @@
+import { APP_BASE_HREF } from '@angular/common';
 import {
-  Component,
   ChangeDetectionStrategy,
+  Component,
+  Inject,
   Input,
   OnDestroy,
-  Inject,
   OnInit,
 } from '@angular/core';
-import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription, Observable } from 'rxjs';
-import { RoleMode } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { RoleDto } from '../../../model/role';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { allEnvironments } from 'src/environments/all-environments';
-import { APP_BASE_HREF } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
-import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
-import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { getAllTeamsOfType } from 'src/app/domains/bia-domains/team/store/team.state';
+import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
+import { RoleMode } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { allEnvironments } from 'src/environments/all-environments';
 import { AuthInfo } from '../../../model/auth-info';
+import { RoleDto } from '../../../model/role';
+import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 
 @Component({
   selector: 'bia-classic-team-selector',
@@ -189,7 +189,8 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
         ?.userData?.currentTeams?.find(
           t => t.teamTypeId == this.teamType.teamTypeId
         )?.currentRoleIds;
-      const roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
+      var roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
+      roles = roles ? [...roles] : roles;
       const defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if (roles && (this.multiRoleMode || roles.length > 1)) {
         this.currentRoles = roles?.filter(x => currentRoleIds?.includes(x.id));
