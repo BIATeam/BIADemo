@@ -198,6 +198,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             IServiceCollection collection,
             string assemblyName,
             string interfaceAssemblyName = null,
+            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
             IEnumerable<string> excludedServiceNames = null,
             IEnumerable<string> includedServiceNames = null)
         {
@@ -216,7 +217,21 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             foreach (var (classType, interfaceType) in mappings)
             {
-                collection.AddTransient(interfaceType, classType);
+                switch (serviceLifetime)
+                {
+                    case ServiceLifetime.Singleton:
+                        collection.AddSingleton(interfaceType, classType);
+                        break;
+                    case ServiceLifetime.Scoped:
+                        collection.AddScoped(interfaceType, classType);
+                        break;
+                    case ServiceLifetime.Transient:
+                        collection.AddTransient(interfaceType, classType);
+                        break;
+                    default:
+                        collection.AddTransient(interfaceType, classType);
+                        break;
+                }
             }
         }
     }
