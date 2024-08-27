@@ -55,9 +55,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
-        /// <param name="services">The collection of services.</param>
-        public void ConfigureServices(IServiceCollection services)
+        /// <param name="builder">The app's builder.</param>
+        public void ConfigureServices(IHostApplicationBuilder builder)
         {
+            IServiceCollection services = builder.Services;
+
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
@@ -106,8 +108,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             else
             {
                 app.UseHsts();
-                app.ConfigureApiExceptionHandler();
             }
+
+            app.ConfigureApiExceptionHandler(env.IsDevelopment());
 
             if (!string.IsNullOrEmpty(this.biaNetSection.Security?.Audience))
             {

@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         /// Configures the API exception handler.
         /// </summary>
         /// <param name="app">The application.</param>
-        public static void ConfigureApiExceptionHandler(this IApplicationBuilder app)
+        /// <param name="isDevelopment">Indicates if the current host environment is development.</param>
+        public static void ConfigureApiExceptionHandler(this IApplicationBuilder app, bool isDevelopment)
         {
             app.UseExceptionHandler(exceptionHandlerApp =>
             {
@@ -37,11 +39,26 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
                     if (exception != null)
                     {
-                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                        if (exception is FrontUserException frontUserEx)
+                        {
+                            context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                            var errorMessage = frontUserEx.Message;
+                            if (string.IsNullOrEmpty(errorMessage))
+                            {
+                                errorMessage = isDevelopment ? exception.GetBaseException().Message : "Internal server error";
+                            }
 
-                        // We don't communicate sensitive error information to clients.
-                        // Serving errors is a security risk. We just send a simple error message.
-                        await context.Response.WriteAsync("Internal server error");
+                            await context.Response.WriteAsync(string.Format(errorMessage, frontUserEx.ErrorMessageParameters));
+                            return;
+                        }
+
+                        if (!isDevelopment)
+                        {
+                            // We don't communicate sensitive error information to clients.
+                            // Serving errors is a security risk. We just send a simple error message.
+                            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                            await context.Response.WriteAsync("Internal server error");
+                        }
                     }
                 });
             });
