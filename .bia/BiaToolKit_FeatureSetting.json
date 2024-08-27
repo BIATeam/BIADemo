@@ -17,7 +17,7 @@
     "Description": "Add an authentication system for backend to backend exchange",
     "IsSelected": true,
     "Tags": [
-      "BIA_SERVICE_API"
+      "BIA_BACK_TO_BACK_AUTH"
     ]
   },
   {

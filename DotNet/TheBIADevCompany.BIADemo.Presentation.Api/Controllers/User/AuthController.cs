@@ -116,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             return this.Ok(Constants.Application.FrontEndVersion);
         }
 #endif
-#if BIA_SERVICE_API
+#if BIA_BACK_TO_BACK_AUTH
 
         /// <summary>
         /// The login action.

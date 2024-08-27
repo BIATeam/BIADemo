@@ -16,7 +16,7 @@
 		<OutputPath></OutputPath>
 		<DebugType>portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
-		<DefineConstants>TRACE;$(DefineConstants);BIA_SERVICE_API;BIA_FRONT_FEATURE</DefineConstants>
+		<DefineConstants>TRACE;$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

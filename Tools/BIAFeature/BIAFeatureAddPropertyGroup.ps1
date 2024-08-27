@@ -1,6 +1,6 @@
 # $DEPLOYDB_answer = Read-Host "Do you want the feature DEPLOYDB ? (Y/N)"
 # $HANGFIRE_answer = Read-Host "Do you want the feature HANGFIRE ? (Y/N)"
-$SERVICE_API_answer = Read-Host "Do you want the feature SERVICE_API ? (Y/N)"
+$SERVICE_API_answer = Read-Host "Do you want the feature BACK_TO_BACK_AUTH ? (Y/N)"
 $FRONT_FEATURE_answer = Read-Host "Do you want the feature FRONT_FEATURE ? (Y/N)"
 
 $selected_features = @()
@@ -14,7 +14,7 @@ $selected_features = @()
 # }
 
 if ($SERVICE_API_answer -eq 'Y') {
-    $selected_features += 'BIA_SERVICE_API'
+    $selected_features += 'BIA_BACK_TO_BACK_AUTH'
 }
 
 if ($FRONT_FEATURE_answer -eq 'Y') {

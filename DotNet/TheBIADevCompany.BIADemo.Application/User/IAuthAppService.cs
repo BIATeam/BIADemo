@@ -12,7 +12,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// </summary>
     public interface IAuthAppService
     {
-#if BIA_SERVICE_API
+#if BIA_BACK_TO_BACK_AUTH
 
         /// <summary>
         /// Logins.

@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
         }
-#if BIA_SERVICE_API
+#if BIA_BACK_TO_BACK_AUTH
 
         /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
         public async Task<string> LoginAsync()
