@@ -1,4 +1,4 @@
-﻿// <copyright file="BiaClaimsPrincipal.cs" company="BIA">
+﻿// <copyright file="BIAClaimsPrincipal.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 namespace BIA.Net.Core.Domain.Authentication
