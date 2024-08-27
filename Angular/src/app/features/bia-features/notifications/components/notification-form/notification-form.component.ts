@@ -57,7 +57,7 @@ export class NotificationFormComponent implements OnChanges {
         this.form.patchValue({ ...this.notification });
 
         const formArray = new UntypedFormArray([]);
-        this.notification.notifiedTeams.forEach(team => {
+        this.notification.notifiedTeams?.forEach(team => {
           formArray.push(
             this.formBuilder.group({
               team: [team.team, Validators.required],

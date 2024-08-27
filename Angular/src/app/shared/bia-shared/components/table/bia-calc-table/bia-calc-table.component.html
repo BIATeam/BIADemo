@@ -111,9 +111,10 @@
       let-columns="columns"
       let-editing="editing"
       let-ri="rowIndex">
+      <!-- SELECTABLE IF NOT FOOTER -->
       <tr
         class="bia-selectable-row"
-        [pSelectableRow]="isFooter(rowData) !== true ? rowData : null"
+        [pSelectableRow]="rowData?.id !== 0 ? rowData : null"
         [pEditableRow]="rowData"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
@@ -125,6 +126,7 @@
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
+          <!-- ONLY IF NOT FOOTER -->
           <ng-container *ngIf="rowData.id > 0">
             <ng-template
               #selectMultipleElement
@@ -167,7 +169,8 @@
                 </bia-table-input>
               </ng-template>
               <ng-template #isNotEditable>
-                <ng-container *ngIf="isFooter(rowData) !== true">
+                <!-- ONLY IF NOT FOOTER -->
+                <ng-container *ngIf="rowData?.id !== 0">
                   <bia-table-output
                     [field]="col"
                     [data]="getCellData(rowData, col)">
@@ -188,7 +191,8 @@
             </ng-template>
             <!-- OUTPUT -->
             <ng-template pTemplate="output">
-              <ng-template [ngIf]="isFooter(rowData) !== true">
+              <!-- ONLY IF NOT FOOTER -->
+              <ng-template [ngIf]="rowData?.id !== 0">
                 <bia-table-output
                   [field]="col"
                   [data]="getCellData(rowData, col)">
