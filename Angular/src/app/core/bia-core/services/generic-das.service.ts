@@ -1,3 +1,4 @@
+import { APP_BASE_HREF } from '@angular/common';
 import {
   HttpClient,
   HttpHeaders,
@@ -6,16 +7,16 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { catchError, first, map, tap } from 'rxjs/operators';
-import { from, NEVER, Observable, of, throwError } from 'rxjs';
 import { LazyLoadEvent } from 'primeng/api';
+import { from, NEVER, Observable, of, throwError } from 'rxjs';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
-import { DateHelperService } from './date-helper.service';
-import { MatomoTracker } from './matomo/matomo-tracker.service';
-import { BiaOnlineOfflineService } from './bia-online-offline.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { AppDB, DataItem } from '../db';
 import { BiaEnvironmentService } from './bia-environment.service';
-import { APP_BASE_HREF } from '@angular/common';
+import { BiaOnlineOfflineService } from './bia-online-offline.service';
+import { DateHelperService } from './date-helper.service';
+import { MatomoTracker } from './matomo/matomo-tracker.service';
 
 export interface HttpOptions {
   headers?:
@@ -193,6 +194,8 @@ export abstract class GenericDas {
   }
 
   saveItem<TIn, TOut>(param: SaveParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
       param.items.forEach(item => {
@@ -212,6 +215,8 @@ export abstract class GenericDas {
   }
 
   putItem<TIn, TOut>(param: PutParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
@@ -233,6 +238,8 @@ export abstract class GenericDas {
   }
 
   postItem<TIn, TOut>(param: PostParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
