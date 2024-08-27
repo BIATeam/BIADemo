@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
@@ -48,7 +49,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                                 errorMessage = isDevelopment ? exception.GetBaseException().Message : "Internal server error";
                             }
 
-                            await context.Response.WriteAsync(string.Format(errorMessage, frontUserEx.ErrorMessageParameters));
+                            var formatedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
+                            await context.Response.WriteAsync(formatedErrorMessage);
                             return;
                         }
 
