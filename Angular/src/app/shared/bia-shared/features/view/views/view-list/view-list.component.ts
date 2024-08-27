@@ -1,38 +1,38 @@
 import {
   Component,
-  OnInit,
-  OnDestroy,
   EventEmitter,
-  Output,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
-import { FilterMetadata, SelectItemGroup } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
+import { Store, select } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { FilterMetadata, SelectItemGroup } from 'primeng/api';
 import { Subscription, combineLatest } from 'rxjs';
-import { View } from '../../model/view';
+import { map, skip } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 import {
-  ViewType,
   TeamTypeId,
   TeamTypeRightPrefixe,
+  ViewType,
 } from 'src/app/shared/constants';
-import { Store, select } from '@ngrx/store';
+import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
+import { View } from '../../model/view';
+import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import {
   getAllViews,
-  getLastViewChanged,
   getDataLoaded,
+  getLastViewChanged,
 } from '../../store/view.state';
-import { map, skip } from 'rxjs/operators';
 import { openViewDialog } from '../../store/views-actions';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { ActivatedRoute } from '@angular/router';
-import { QUERY_STRING_VIEW } from '../../model/view.constants';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
-import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 const currentView = -1;
 const undefinedView = -2;
@@ -150,7 +150,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
 
   public getCurrentViewName(): string | null {
     let viewName: string | null = null;
-    if (this.selectedView > -1 && this.views.length > 0) {
+    if (this.selectedView > -1 && this.views?.length) {
       this.views.forEach(v => {
         if (v.id === this.selectedView) {
           viewName = v.name;

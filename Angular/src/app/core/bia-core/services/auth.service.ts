@@ -1,24 +1,24 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
-import { map, filter, take, switchMap, catchError, skip } from 'rxjs/operators';
-import { AbstractDas } from './abstract-das.service';
-import {
-  AuthInfo,
-  AdditionalInfos,
-  Token,
-  LoginParamDto,
-  CurrentTeamDto,
-} from 'src/app/shared/bia-shared/model/auth-info';
-import { BiaMessageService } from './bia-message.service';
-import { TranslateService } from '@ngx-translate/core';
-import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
-import { allEnvironments } from 'src/environments/all-environments';
-import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
-import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, NEVER, Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
+import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
+import {
+  AdditionalInfos,
+  AuthInfo,
+  CurrentTeamDto,
+  LoginParamDto,
+  Token,
+} from 'src/app/shared/bia-shared/model/auth-info';
+import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { allEnvironments } from 'src/environments/all-environments';
+import { AbstractDas } from './abstract-das.service';
+import { BiaMessageService } from './bia-message.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
-import { HttpStatusCode } from '@angular/common/http';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
@@ -38,10 +38,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         (authInfo: AuthInfo) => authInfo !== null && authInfo !== undefined
       )
     );
-
-  public hasToken$: Observable<boolean> = this.authInfo$.pipe(
-    map((authInfo: AuthInfo) => authInfo?.token?.length > 0 === true)
-  );
 
   constructor(
     injector: Injector,

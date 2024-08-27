@@ -12,7 +12,7 @@
     {{ data?.display }}
   </ng-container>
   <ng-container *ngSwitchCase="'ManyToMany'">
-    {{ filterDtoState(data) | pluck: 'display' | join: ', ' }}
+    {{ data ? (filterDtoState(data) | pluck: 'display' | join: ', ') : data }}
   </ng-container>
   <ng-container *ngSwitchCase="'Boolean'">
     <i class="pi pi-check" *ngIf="data === true"></i>

@@ -5,39 +5,40 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  getAllNotifications,
-  getNotificationsTotalCount,
-  getNotificationLoadingGetAll,
-} from '../../store/notification.state';
-import { FeatureNotificationsActions } from '../../store/notifications-actions';
-import { Observable, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { saveAs } from 'file-saver';
 import { LazyLoadEvent } from 'primeng/api';
-import { NotificationListItem } from '../../model/notificationListItem';
+import { Observable, Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import {
-  BiaFieldsConfig,
   BiaFieldConfig,
+  BiaFieldsConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NotificationDas } from '../../services/notification-das.service';
-import { saveAs } from 'file-saver';
-import { TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { Permission } from 'src/app/shared/permission';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { NotificationsSignalRService } from '../../services/notification-signalr.service';
-import { NotificationsEffects } from '../../store/notifications-effects';
-import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
-import { NotificationOptionsService } from '../../services/notification-options.service';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { skip } from 'rxjs/operators';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
+import { Permission } from 'src/app/shared/permission';
+import { AppState } from 'src/app/store/state';
+import { NotificationListItem } from '../../model/notificationListItem';
+import { NotificationDas } from '../../services/notification-das.service';
+import { NotificationOptionsService } from '../../services/notification-options.service';
+import { NotificationsSignalRService } from '../../services/notification-signalr.service';
+import {
+  getAllNotifications,
+  getNotificationLoadingGetAll,
+  getNotificationsTotalCount,
+} from '../../store/notification.state';
+import { FeatureNotificationsActions } from '../../store/notifications-actions';
+import { NotificationsEffects } from '../../store/notifications-effects';
 
 @Component({
   selector: 'bia-notifications-index',
@@ -92,7 +93,13 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.sub = new Subscription();
 
     this.initTableConfiguration();
-    this.setPermissions();
+    this.sub.add(
+      this.authService.authInfo$.subscribe((authInfo: AuthInfo) => {
+        if (authInfo && authInfo.token !== '') {
+          this.setPermissions();
+        }
+      })
+    );
     /*this.notifications$ = this.store.select(getAllNotifications).pipe(map(notifications => notifications.map(notification => {
       notification.title = this.translateService.instant(notification.title);
       notification.description = this.translateService.instant(notification.description);
