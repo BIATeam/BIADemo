@@ -32,5 +32,12 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         /// </summary>
         /// <param name="user">The user to deactivate.</param>
         void DeactivateUser(User user);
+
+        /// <summary>
+        /// Updates the user field from directory.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="userDirectory">The user directory.</param>
+        void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory);
     }
 }

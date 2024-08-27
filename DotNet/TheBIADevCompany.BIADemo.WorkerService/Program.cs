@@ -47,10 +47,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 })
                 .ConfigureServices((hostingContext, services) =>
                 {
+#if BIA_FRONT_FEATURE
                     // Begin BIADemo
                     services.AddHostedService<Worker>();
 
                     // End BIADemo
+#endif
                     IConfiguration configuration = hostingContext.Configuration;
                     startup = new Startup(configuration);
                     startup.ConfigureServices(services);

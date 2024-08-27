@@ -97,11 +97,25 @@ function RemoveEmptyFolder {
   }
 }
 
+function CopyBia {
+  param (
+    $oldPath,
+    $newPath
+  )
+  $oldPathParent = Split-Path $oldPath
+  $newPathParent = Split-Path $newPath
+  $oldPath2 = "$oldPathParent\.bia"
+
+  Copy-Item -Path $oldPath2 -Destination $newPathParent -Recurse -Force
+}
+
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
 Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
+
+CopyBia -oldPath $oldPath -newPath $newPath
 
 $biaPackage = $newPath + "\BIAPackage"
 RemoveFolder -path $biaPackage

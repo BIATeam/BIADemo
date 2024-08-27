@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
@@ -11,7 +10,6 @@
     <Configurations>Debug;Release</Configurations>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.7" />
@@ -31,22 +29,18 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Update="web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
   <ItemGroup>
     <None Include="wwwroot\swagger\AutoLoginV3.8.0.js" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="ca-certificates\ca-bundle.crt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -64,5 +58,48 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
+    <!--BIADEMO-->
+    <Compile Remove="**\*Aircraft*.cs" />
+    <Compile Remove="**\*Airport*.cs" />
+    <Compile Remove="**\*BiaDemo*.cs" />
+    <Compile Remove="**\*Engine*.cs" />
+    <Compile Remove="**\*Example*.cs" />
+    <Compile Remove="**\*Plane*.cs" />
+    <Compile Remove="**\*Worker*.cs" />
+    <Compile Remove="**\*HangfiresController*.cs" />
+    <!--BIATEMPLATE-->
+    <Compile Remove="**\*Audit*.cs" />
+    <Compile Remove="**\*Error*.cs" />
+    <Compile Remove="**\*IdentityProvider*.cs" />
+    <Compile Remove="**\*LogsController*.cs" />
+    <Compile Remove="**\*Mapper*.cs" />
+    <Compile Remove="**\*Member*.cs" />
+    <Compile Remove="**\*ModelBuilder*.cs" />
+    <Compile Remove="**\*Notification*.cs" />
+    <Compile Remove="**\*Query*.cs" />
+    <Compile Remove="**\*SearchExpressionService*.cs" />
+    <Compile Remove="**\*Site*.cs" />
+    <Compile Remove="**\*Synchronize*.cs" />
+    <Compile Remove="**\*Team*.cs" />
+    <Compile Remove="**\*Translation*.cs" />
+    <Compile Remove="**\*View*.cs" />
+    <Compile Remove="**\Role.cs" />
+    <Compile Remove="**\RoleAppService.cs" />
+    <Compile Remove="**\IRoleAppService.cs" />
+    <Compile Remove="**\RolesController.cs" />
+    <Compile Remove="**\User.cs" />
+    <Compile Remove="**\UsersController.cs" />
+    <Compile Remove="**\UserAppService.cs" />
+    <Compile Remove="**\IUserAppService.cs" />
+    <Compile Remove="**\UserExtensions.cs" />
+    <Compile Remove="**\UserSelectBuilder.cs" />
+    <Compile Remove="**\UserSpecification.cs" />
+    <Compile Remove="**\IUserProfileRepository.cs" />
+    <Compile Remove="**\UserProfileRepository.cs" />
+    <Compile Remove="**\WakeUpTask.cs" />
+  </ItemGroup>
 </Project>

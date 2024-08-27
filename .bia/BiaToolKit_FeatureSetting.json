@@ -1,0 +1,41 @@
+[
+  {
+    "Id": 1,
+    "DisplayName": "FrontEnd",
+    "Description": "Add the Angular project. On the back end, add the features User, Member, Role, Team, Notification, Translation, Log, Audit",
+    "IsSelected": true,
+    "Tags": [
+      "BIA_FRONT_FEATURE"
+    ],
+    "FoldersToExcludes": [
+      ".*Angular.*$"
+    ]
+  },
+  {
+    "Id": 2,
+    "DisplayName": "BackToBackAuth",
+    "Description": "Add an authentication system for backend to backend exchange",
+    "IsSelected": true,
+    "Tags": [
+      "BIA_BACK_TO_BACK_AUTH"
+    ]
+  },
+  {
+    "Id": 3,
+    "DisplayName": "DeployDb",
+    "Description": "Add the project allowing the deployment of the database",
+    "IsSelected": true,
+    "FoldersToExcludes": [
+      ".*DeployDB$"
+    ]
+  },
+  {
+    "Id": 4,
+    "DisplayName": "WorkerService",
+    "Description": "Add the WorkerService project with Hangfire",
+    "IsSelected": true,
+    "FoldersToExcludes": [
+      ".*WorkerService$"
+    ]
+  }
+]

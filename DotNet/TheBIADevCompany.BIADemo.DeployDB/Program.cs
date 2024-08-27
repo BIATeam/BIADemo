@@ -39,6 +39,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .ConfigureServices((hostingContext, services) =>
                 {
                     IConfiguration configuration = hostingContext.Configuration;
+
                     services.AddDbContext<DataContext>(options =>
                     {
                         options.UseSqlServer(configuration.GetConnectionString("BIADemoDatabase"));
@@ -57,6 +58,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         string projectName = configuration["Project:Name"];
 
                         // Initialize here the recuring jobs
+#if BIA_FRONT_FEATURE
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
                         RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
@@ -65,6 +67,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         RecurringJob.AddOrUpdate<EngineManageTask>($"{projectName}.{typeof(EngineManageTask).Name}", t => t.Run(), Cron.Never);
 
                         // End BIADemo
+#endif
                     });
                 })
                 .ConfigureLogging((hostingContext, logging) =>
