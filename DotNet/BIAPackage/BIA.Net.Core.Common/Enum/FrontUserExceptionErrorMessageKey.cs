@@ -22,9 +22,9 @@
         AddEntity,
 
         /// <summary>
-        /// Message key when errors occurs when editing entity
+        /// Message key when errors occurs when modifying entity
         /// </summary>
-        EditEntity,
+        ModifyEntity,
 
         /// <summary>
         /// Message key when errors occurs when deleting entity

@@ -22,17 +22,16 @@
         {
             return key switch
             {
-                FrontUserExceptionErrorMessageKey.AddEntity => "Adding {0} entity failed",
-                FrontUserExceptionErrorMessageKey.DeleteEntity => "Deleting {0} entity failed",
-                FrontUserExceptionErrorMessageKey.EditEntity => "Edit {0} entity failed",
-                FrontUserExceptionErrorMessageKey.ValidationEntity => "Entity validation failed for following members : {0}\n{1}",
-                FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => "An entity {0} is still linked to other entities",
-                FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => "A similar value exists for the field {0} of entity {1}",
-                FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => "A similar value exists for the field {0} of entity {1}",
-                FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => "Field {0} cannot be NULL in entity {1}",
-                FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => "The object {0} has been not found into the database",
-                FrontUserExceptionErrorMessageKey.DatabaseLoginUser => "Unable to login to the database",
-                FrontUserExceptionErrorMessageKey.DatabaseOpen => "Unable to open the database",
+                FrontUserExceptionErrorMessageKey.AddEntity => "Unable to add {0}.",
+                FrontUserExceptionErrorMessageKey.DeleteEntity => "Unable to delete {0}.",
+                FrontUserExceptionErrorMessageKey.ModifyEntity => "Unable to modify {0}.",
+                FrontUserExceptionErrorMessageKey.ValidationEntity => "{0}",
+                FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => "One or many {0} are linked to dependants entities. Ensure to remove all dependants entities first.",
+                FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => "An entity {0} exists already with these values.",
+                FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => "An entity {0} exists already with these values.",
+                FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => "Field {0} cannot be null in entity {1}.",
+                FrontUserExceptionErrorMessageKey.DatabaseLoginUser => "Unable to login to the database.",
+                FrontUserExceptionErrorMessageKey.DatabaseOpen => "Unable to open the database.",
                 _ => "Internal server error",
             };
         }
