@@ -13,15 +13,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
     public interface IAuthAppService
     {
 #if BIA_BACK_TO_BACK_AUTH
-
         /// <summary>
         /// Logins.
         /// </summary>
         /// <returns>The JWT.</returns>
         Task<string> LoginAsync();
 #endif
-
 #if BIA_FRONT_FEATURE
+
         /// <summary>
         /// Logins the on teams asynchronous.
         /// </summary>
