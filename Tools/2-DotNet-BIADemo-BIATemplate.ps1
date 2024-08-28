@@ -89,7 +89,7 @@ function RemoveEmptyFolder {
     RemoveEmptyFolder $childDirectory.FullName
   }
   $currentChildren = Get-ChildItem -Force -LiteralPath $Path
-  $isEmpty = $currentChildren -eq $null
+  $isEmpty = $null -eq $currentChildren
   if ($isEmpty) {
     $fileRel = Resolve-Path -Path "$Path" -Relative
     Write-Verbose "Removing empty folder '${fileRel}'." -Verbose
@@ -97,11 +97,30 @@ function RemoveEmptyFolder {
   }
 }
 
+function CopyBiaFolder {
+  param (
+    $oldPath,
+    $newPath
+  )
+  if ((Test-Path $oldPath) -and (Test-Path $newPath)) {
+    $oldPathParent = Split-Path $oldPath
+    $newPathParent = Split-Path $newPath
+    $oldPathBia = "$oldPathParent\.bia"
+
+    if (Test-Path $oldPathBia) {
+      Copy-Item -Path $oldPathBia -Destination $newPathParent -Recurse -Force
+    }
+  }
+}
+
+
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
 Write-Host "Copy from $oldPath to $newPath"
 Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
+
+CopyBiaFolder -oldPath $oldPath -newPath $newPath
 
 $biaPackage = $newPath + "\BIAPackage"
 RemoveFolder -path $biaPackage

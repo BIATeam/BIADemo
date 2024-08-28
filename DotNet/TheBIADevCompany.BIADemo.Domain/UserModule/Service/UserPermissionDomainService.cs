@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
         }
 
         /// <inheritdoc cref="IUserPermissionDomainService.TranslateRolesInPermissions"/>
-        public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken)
+        public List<string> TranslateRolesInPermissions(List<string> roles, bool lightToken = false)
         {
             IEnumerable<Permission> rights = default;
 

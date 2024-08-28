@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
-    using System;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -35,6 +34,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             this.authService = authService;
         }
+#if BIA_FRONT_FEATURE
 
         /// <summary>
         /// The login action.
@@ -115,5 +115,37 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         {
             return this.Ok(Constants.Application.FrontEndVersion);
         }
+#endif
+#if BIA_BACK_TO_BACK_AUTH
+
+        /// <summary>
+        /// The login action.
+        /// </summary>
+        /// <returns>The JWT if authenticated.</returns>
+        [HttpGet("token")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetToken()
+        {
+            try
+            {
+                string token = await this.authService.LoginAsync();
+                return this.Ok(token);
+            }
+            catch (UnauthorizedException ex)
+            {
+                return this.Unauthorized(ex.Message);
+            }
+            catch (BadRequestException ex)
+            {
+                return this.BadRequest(ex.Message);
+            }
+            catch (ForbiddenException ex)
+            {
+                return this.Forbid(ex.Message);
+            }
+        }
+#endif
     }
 }

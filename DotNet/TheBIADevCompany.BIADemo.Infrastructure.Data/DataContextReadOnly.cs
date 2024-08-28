@@ -8,15 +8,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
-
-    // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
-
     /// <summary>
     /// The database context.
     /// </summary>

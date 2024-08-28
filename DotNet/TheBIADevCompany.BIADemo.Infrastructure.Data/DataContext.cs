@@ -4,11 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
+#if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
+#endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-
+#if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
@@ -25,11 +27,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
+#endif
 
     /// <summary>
     /// The database context.
     /// </summary>
+#if BIA_FRONT_FEATURE
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
+#endif
     public class DataContext : BiaDataContext
     {
         /// <summary>
@@ -41,6 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             : base(options, logger)
         {
         }
+#if BIA_FRONT_FEATURE
 
         /// <summary>
         /// Gets or sets the Plane DBSet.
@@ -145,12 +151,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<Engine> Engines { get; set; }
 
         // End BIADemo
+#endif
 
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.HasDefaultSchema("dbo")
             base.OnModelCreating(modelBuilder);
+#if BIA_FRONT_FEATURE
 
             TranslationModelBuilder.CreateModel(modelBuilder);
             SiteModelBuilder.CreateSiteModel(modelBuilder);
@@ -164,6 +172,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
 
             // End BIADemo
+#endif
             this.OnEndModelCreating(modelBuilder);
         }
     }

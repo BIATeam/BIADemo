@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                         var userFromDirectory = await this.userDirectoryHelper.ResolveUserByIdentityKey(this.userIdentityKeyDomainService.GetDatabaseIdentityKey(user), fullSynchro);
                         if (userFromDirectory != null)
                         {
-                            ResynchronizeUser(user, userFromDirectory);
+                            this.ResynchronizeUser(user, userFromDirectory);
                         }
                     }
                 }
@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                     }
                     else
                     {
-                        ResynchronizeUser(user, userFromDirectory);
+                        this.ResynchronizeUser(user, userFromDirectory);
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
                 {
                     // Create the missing user
                     User user = new User();
-                    UserFromDirectory.UpdateUserFieldFromDirectory(user, userFormDirectory);
+                    this.UpdateUserFieldFromDirectory(user, userFormDirectory);
                     this.repository.Add(user);
                     return user;
                 }
@@ -149,11 +149,37 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
             return foundUser;
         }
 
-        private static void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
+        /// <summary>
+        /// UpdateUserField with the userFromDirectory object.
+        /// </summary>
+        /// <param name="user">the user object to update.</param>
+        /// <param name="userDirectory">the user from directory object containing values.</param>
+        public void UpdateUserFieldFromDirectory(User user, UserFromDirectory userDirectory)
+        {
+            user.Login = userDirectory.Login?.ToUpper();
+            user.FirstName = userDirectory.FirstName?.Length > 50 ? userDirectory.FirstName?.Substring(0, 50) : userDirectory.FirstName ?? string.Empty;
+            user.LastName = userDirectory.LastName?.Length > 50 ? userDirectory.LastName?.Substring(0, 50) : userDirectory.LastName ?? string.Empty;
+            user.IsActive = true;
+            user.Country = userDirectory.Country?.Length > 10 ? userDirectory.Country?.Substring(0, 10) : userDirectory.Country ?? string.Empty;
+            user.Department = userDirectory.Department?.Length > 50 ? userDirectory.Department?.Substring(0, 50) : userDirectory.Department ?? string.Empty;
+            user.DistinguishedName = userDirectory.DistinguishedName?.Length > 250 ? userDirectory.DistinguishedName?.Substring(0, 250) : userDirectory.DistinguishedName ?? string.Empty;
+            user.Manager = userDirectory.Manager?.Length > 250 ? userDirectory.Manager?.Substring(0, 250) : userDirectory.Manager;
+            user.Email = userDirectory.Email?.Length > 256 ? userDirectory.Email?.Substring(0, 256) : userDirectory.Email ?? string.Empty;
+            user.ExternalCompany = userDirectory.ExternalCompany?.Length > 50 ? userDirectory.ExternalCompany?.Substring(0, 50) : userDirectory.ExternalCompany;
+            user.IsEmployee = userDirectory.IsEmployee;
+            user.IsExternal = userDirectory.IsExternal;
+            user.Company = userDirectory.Company?.Length > 50 ? userDirectory.Company?.Substring(0, 50) : userDirectory.Company ?? string.Empty;
+            user.DaiDate = DateTime.Now;
+            user.Office = userDirectory.Office?.Length > 20 ? userDirectory.Office?.Substring(0, 20) : userDirectory.Office ?? string.Empty;
+            user.Site = userDirectory.Site?.Length > 50 ? userDirectory.Site?.Substring(0, 50) : userDirectory.Site ?? string.Empty;
+            user.SubDepartment = userDirectory.SubDepartment?.Length > 50 ? userDirectory.SubDepartment?.Substring(0, 50) : userDirectory.SubDepartment;
+        }
+
+        private void ResynchronizeUser(User user, UserFromDirectory userFromDirectory)
         {
             if (userFromDirectory != null)
             {
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
+                this.UpdateUserFieldFromDirectory(user, userFromDirectory);
             }
         }
     }

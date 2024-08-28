@@ -4,11 +4,9 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
 {
-    using System;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -19,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     /// <summary>
     /// The API controller used to manage views.
     /// </summary>
-    public class TeamLinkedControllerBase : BiaControllerBase
+    public abstract class TeamLinkedControllerBase : BiaControllerBase
     {
         /// <summary>
         /// The service team.
@@ -30,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// Initializes a new instance of the <see cref="TeamLinkedControllerBase"/> class.
         /// </summary>
         /// <param name="teamAppService">The team service.</param>
-        public TeamLinkedControllerBase(ITeamAppService teamAppService)
+        protected TeamLinkedControllerBase(ITeamAppService teamAppService)
         {
             this.teamAppService = teamAppService;
         }
