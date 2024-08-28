@@ -859,13 +859,13 @@ namespace BIA.Net.Core.Domain.Service
         {
             return frontUserException.ErrorMessageKey switch
             {
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(frontUserException.ErrorMessageKey, null, [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, null, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 _ => frontUserException
             };
         }
