@@ -8,12 +8,16 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.ComponentModel.DataAnnotations;
     using System.Data;
     using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
+    using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
@@ -72,17 +76,11 @@ namespace BIA.Net.Core.Infrastructure.Data
 
                 return await base.SaveChangesAsync(cancellationToken);
             }
-            catch (ValidationException exception)
+            catch (Exception ex)
             {
-                this.logger.LogError(exception, "An error occured on entity validation.");
+                this.logger.LogError(ex, "An error occured while saving data.");
                 this.RollbackChanges();
-                throw new DataException(exception.Message, exception);
-            }
-            catch (DbUpdateException exception)
-            {
-                this.logger.LogError(exception, "An error occured while saving data.");
-                this.RollbackChanges();
-                throw new DataException("An error occured while saving data.", exception);
+                throw this.ManageException(ex);
             }
         }
 
@@ -97,7 +95,35 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// </summary>
         public void RollbackChanges()
         {
-            this.ChangeTracker.Entries().ToList().ForEach(entry => entry.State = EntityState.Unchanged);
+            try
+            {
+                var trackedEntities = this.ChangeTracker.Entries().ToList();
+                foreach (var entity in trackedEntities)
+                {
+                    switch (entity.State)
+                    {
+                        case EntityState.Added:
+                            entity.State = EntityState.Detached;
+                            break;
+
+                        case EntityState.Modified:
+                            entity.CurrentValues.SetValues(entity.OriginalValues);
+                            entity.State = EntityState.Unchanged;
+                            break;
+
+                        case EntityState.Deleted:
+                            entity.State = EntityState.Unchanged;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "Unable to rollback changes");
+            }
         }
 
         /// <summary>
@@ -212,6 +238,81 @@ namespace BIA.Net.Core.Infrastructure.Data
         protected virtual void OnEndModelCreating(ModelBuilder modelBuilder)
         {
             RowVersionBuilder.CreateRowVersion(modelBuilder);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="exception"/>.
+        /// </summary>
+        /// <param name="exception">The handled <see cref="Exception"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(Exception exception)
+        {
+            return exception.GetBaseException() switch
+            {
+                ValidationException validationEx => this.ManageException(validationEx),
+                DbUpdateException dbUpdateEx => this.ManageException(dbUpdateEx),
+                SqlException sqlEx => this.ManageException(sqlEx),
+                _ => new FrontUserException(exception)
+            };
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="validationException"/>.
+        /// </summary>
+        /// <param name="validationException">The handled <see cref="ValidationException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(ValidationException validationException)
+        {
+            return new FrontUserException(FrontUserExceptionErrorMessageKey.ValidationEntity, validationException, validationException.ValidationResult.ErrorMessage);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="dbUpdateException"/>.
+        /// </summary>
+        /// <param name="dbUpdateException">The handled <see cref="DbUpdateException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(DbUpdateException dbUpdateException)
+        {
+            var entry = dbUpdateException.Entries.FirstOrDefault();
+            if (entry != null)
+            {
+                var entityTypeName = entry.Entity.GetType().Name;
+                return entry.State switch
+                {
+                    EntityState.Added => new FrontUserException(FrontUserExceptionErrorMessageKey.AddEntity, dbUpdateException, entityTypeName),
+                    EntityState.Modified => new FrontUserException(FrontUserExceptionErrorMessageKey.ModifyEntity, dbUpdateException, entityTypeName),
+                    EntityState.Deleted => new FrontUserException(FrontUserExceptionErrorMessageKey.DeleteEntity, dbUpdateException, entityTypeName),
+                    _ => new FrontUserException(dbUpdateException),
+                };
+            }
+
+            return new FrontUserException(dbUpdateException);
+        }
+
+        /// <summary>
+        /// Manage the handled <paramref name="sqlException"/>.
+        /// </summary>
+        /// <param name="sqlException">The handled <see cref="SqlException"/>.</param>
+        /// <returns>A <see cref="FrontUserException"/> corresponding to the handled exception.</returns>
+        protected virtual FrontUserException ManageException(SqlException sqlException)
+        {
+            return sqlException.Number switch
+            {
+                515 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert, sqlException, GetColumnNameFromSqlExceptionNullInsert(sqlException.Message)),
+                547 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint, sqlException),
+                2601 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey, sqlException),
+                2627 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint, sqlException),
+                4060 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseOpen, sqlException),
+                18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
+                _ => new FrontUserException(sqlException)
+            };
+        }
+
+        private static string GetColumnNameFromSqlExceptionNullInsert(string sqlExceptionMessage)
+        {
+            string pattern = @"column\s'([^']*)'";
+            Match match = Regex.Match(sqlExceptionMessage, pattern);
+            return match.Success ? match.Groups[1].Value : string.Empty;
         }
     }
 }

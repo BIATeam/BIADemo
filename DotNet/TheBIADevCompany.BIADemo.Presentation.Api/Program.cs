@@ -28,7 +28,7 @@ try
 
     Startup startup = new Startup(builder.Configuration);
 
-    startup.ConfigureServices(builder.Services);
+    startup.ConfigureServices(builder);
 
     WebApplication app = builder.Build();
 
