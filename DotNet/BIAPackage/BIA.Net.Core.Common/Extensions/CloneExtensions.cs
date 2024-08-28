@@ -28,7 +28,7 @@ namespace BIA.Net.Core.Common.Extensions
         public static T? DeepCopy<T>(this T self)
 #nullable disable
         {
-            JsonSerializerSettings jsonSerializerSettings = new()
+            JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.Auto,

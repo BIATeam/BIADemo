@@ -50,6 +50,8 @@
     <Compile Remove="**\UserSelectBuilder.cs" />
     <Compile Remove="**\UserSpecification.cs" />
     <Compile Remove="**\WakeUpTask.cs" />
+    <Compile Remove="**\LanguagesController.cs" />
+    <Compile Remove="**\LdapDomainsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />

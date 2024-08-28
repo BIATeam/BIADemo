@@ -1,7 +1,7 @@
 ﻿// <copyright file="AppSettingsController.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
-namespace BIA.Net.Core.Presentation.Api.Controller
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.Option;

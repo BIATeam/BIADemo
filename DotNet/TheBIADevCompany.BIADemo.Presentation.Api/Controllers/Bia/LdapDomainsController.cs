@@ -1,7 +1,7 @@
 ﻿// <copyright file="LdapDomainsController.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
-namespace BIA.Net.Presentation.Api.Controllers
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using System.Collections.Generic;
     using System.Linq;
