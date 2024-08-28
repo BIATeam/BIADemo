@@ -832,7 +832,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <param name="action">The action to execute.</param>
         /// <returns><typeparamref name="T"/>.</returns>
         /// <exception cref="FrontUserException">Throw into <see cref="FrontUserException"/> when raised.</exception>
-        protected async Task<T> ExecuteWithFrontUserExceptionHandlingAsync<T>(Func<Task<T>> action)
+        protected virtual async Task<T> ExecuteWithFrontUserExceptionHandlingAsync<T>(Func<Task<T>> action)
         {
             try
             {
