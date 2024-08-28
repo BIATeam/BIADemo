@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Presentation.Api.Controller
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Translation;

@@ -414,9 +414,9 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <summary>
-        /// Check if UserInDb is requiered.
+        /// Checks if the rolesConfiguration contains the 'User' role.
         /// </summary>
-        /// <returns>True if user in db is in configuration file.</returns>
+        /// <returns>Return true if the rolesConfiguration contains the 'User' role.</returns>
         private bool UseUserRole()
         {
             return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
