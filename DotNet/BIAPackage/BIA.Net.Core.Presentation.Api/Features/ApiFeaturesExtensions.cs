@@ -5,6 +5,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.IO;
+    using System.Reflection;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
@@ -19,7 +21,6 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Microsoft.OpenApi.Models;
     using StackExchange.Redis;
 
@@ -74,6 +75,9 @@ namespace BIA.Net.Core.Presentation.Api.Features
                         "Bearer",
                         apiScheme);
                     a.AddSecurityRequirement(securityRequirement);
+
+                    string filePath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetEntryAssembly().GetName().Name}.xml");
+                    a.IncludeXmlComments(filePath, true);
                 });
             }
 
