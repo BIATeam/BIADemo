@@ -43,6 +43,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
         private const string KeyPrefixCacheUserSidHistory = "BIAUsersidHistory:";
 
+        private const string KeyPrefixCacheGroupSid = "BIAGroupSid";
+
         /// <summary>
         /// Groups cached.
         /// </summary>
@@ -289,6 +291,46 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 this.logger.LogError(exception, "An error occured while adding the users with GUID : {userIds}", string.Join(',', usersFromDirectory.Select(u => u.DisplayName)));
             }
             return errors;
+        }
+
+        /// <summary>
+        /// Gets the roles LDAP group sids asynchronous.
+        /// </summary>
+        /// <returns>List of <see cref="LdapGroupSid"/></returns>
+        public async Task<List<LdapGroupSid>> GetRolesLdapGroupSidsAsync()
+        {
+            List<LdapGroupSid> groupSids = null;
+
+            List<LdapGroup> ldapGroups = this.configuration?.Roles?.Where(role => role.Type == BiaConstants.RoleType.LdapFromWinIdentity)
+                .SelectMany(role => role.LdapGroups)
+                .Where(ldapGroup => !string.IsNullOrWhiteSpace(ldapGroup.LdapName) && !string.IsNullOrWhiteSpace(ldapGroup.Domain)).ToList();
+
+            if (ldapGroups?.Any() == true)
+            {
+                groupSids = await this.ldapRepositoryHelper.DistributedCache.Get<List<LdapGroupSid>>(KeyPrefixCacheGroupSid);
+
+                if (groupSids?.Any() != true)
+                {
+                    groupSids = new List<LdapGroupSid>();
+
+                    foreach (LdapGroup ldapGroup in ldapGroups)
+                    {
+                        PrincipalContext ctx = await PrepareDomainContext(ldapGroup.Domain);
+
+                        using (var groupPrincipal = GroupPrincipal.FindByIdentity(ctx, IdentityType.Name, ldapGroup.LdapName))
+                        {
+                            if (groupPrincipal != null)
+                            {
+                                groupSids.Add(new LdapGroupSid() { Name = ldapGroup.LdapName, Sid = groupPrincipal.Sid.ToString() });
+                            }
+                        }
+                    }
+
+                    await this.ldapRepositoryHelper.DistributedCache.Add(KeyPrefixCacheGroupSid, groupSids, this.LdapCacheGroupDuration);
+                }
+            }
+
+            return groupSids ?? new List<LdapGroupSid>();
         }
 
         private bool AddUserInGroup(UserFromDirectoryDto user, string roleLabel, List<string> listGroupCacheSidToRemove)
@@ -696,7 +738,8 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 
             if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromWinIdentity || x.Type == BiaConstants.RoleType.LdapFromIdP) == true)
             {
-                memberOfs = claimsPrincipal?.GetGroups(this.configuration)?.OrderBy(x => x)?.ToList() ?? new List<string>();
+                IEnumerable<string> groupNames = await this.GetGroupeNamesAsync(claimsPrincipal, rolesSection);
+                memberOfs = groupNames?.OrderBy(x => x)?.ToList() ?? new List<string>();
             }
 
             if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.IdP) == true)
@@ -784,6 +827,29 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             return role.LdapGroups?
                                 .Any(ldapGroup => memberOfs
                                     .Any(memberOf => System.IO.Path.GetFileName(memberOf).Contains(System.IO.Path.GetFileName(ldapGroup.LdapName), StringComparison.OrdinalIgnoreCase))) == true;
+        }
+
+        /// <summary>
+        /// Gets the groupe names asynchronous.
+        /// </summary>
+        /// <param name="claimsPrincipal">The claims principal.</param>
+        /// <param name="rolesSection">The roles section.</param>
+        /// <returns></returns>
+        private async Task<IEnumerable<string>> GetGroupeNamesAsync(BiaClaimsPrincipal claimsPrincipal, IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection)
+        {
+            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromWinIdentity) == true)
+            {
+                IEnumerable<string> sids = claimsPrincipal?.GetGroupSids();
+                List<LdapGroupSid> LdapGroupSids = await GetRolesLdapGroupSidsAsync();
+
+                return LdapGroupSids.Where(x => sids.Contains(x.Sid)).Select(x => x.Name).Distinct().ToList();
+            }
+            else if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromIdP) == true)
+            {
+                return claimsPrincipal?.GetGroups();
+            }
+
+            return new List<string>();
         }
 
         private async Task<string> GetSidHistory(string sid, string userDomain)

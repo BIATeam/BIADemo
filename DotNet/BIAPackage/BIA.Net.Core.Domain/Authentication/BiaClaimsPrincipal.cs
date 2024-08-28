@@ -91,30 +91,18 @@ namespace BIA.Net.Core.Domain.Authentication
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
         /// <returns>List of groups.</returns>
-        public virtual IEnumerable<string> GetGroups(BiaNetSection biaNetSection = null)
+        public virtual IEnumerable<string> GetGroups()
         {
-            IEnumerable<string> groupNames = default;
+            return this.GetClaimValues(CustomClaimTypes.Group);
+        }
 
-            if (biaNetSection?.Authentication?.Keycloak?.IsActive == true)
-            {
-                groupNames = this.GetClaimValues(CustomClaimTypes.Group);
-            }
-            else
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    WindowsIdentity identity = this.Identity as WindowsIdentity;
-
-                    if (identity?.Groups?.Any() == true)
-                    {
-#pragma warning disable CA1416 // Validate platform compatibility
-                        groupNames = identity.Groups.AsParallel().Select(id => id.Translate(typeof(NTAccount)).Value).ToList();
-#pragma warning restore CA1416 // Validate platform compatibility
-                    }
-                }
-            }
-
-            return groupNames;
+        /// <summary>
+        /// Gets list of sid groups where the user is a member.
+        /// </summary>
+        /// <returns>List of sid groups.</returns>
+        public virtual IEnumerable<string> GetGroupSids()
+        {
+            return this.GetClaimValues(ClaimTypes.GroupSid);
         }
 
         /// <summary>
