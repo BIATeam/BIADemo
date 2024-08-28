@@ -97,7 +97,28 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             try
             {
-                this.ChangeTracker.Entries().ToList().ForEach(entry => entry.State = EntityState.Unchanged);
+                var trackedEntities = this.ChangeTracker.Entries().ToList();
+                foreach (var entity in trackedEntities)
+                {
+                    switch (entity.State)
+                    {
+                        case EntityState.Added:
+                            entity.State = EntityState.Detached;
+                            break;
+
+                        case EntityState.Modified:
+                            entity.CurrentValues.SetValues(entity.OriginalValues);
+                            entity.State = EntityState.Unchanged;
+                            break;
+
+                        case EntityState.Deleted:
+                            entity.State = EntityState.Unchanged;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {
