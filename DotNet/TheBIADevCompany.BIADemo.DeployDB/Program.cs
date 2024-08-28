@@ -55,10 +55,10 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     services.AddHangfire(config =>
                     {
                         config.UseSqlServerStorage(configuration.GetConnectionString("BIADemoDatabase"));
-                        string projectName = configuration["Project:Name"];
 
                         // Initialize here the recuring jobs
 #if BIA_FRONT_FEATURE
+                        string projectName = configuration["Project:Name"];
                         RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
                         RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
 
