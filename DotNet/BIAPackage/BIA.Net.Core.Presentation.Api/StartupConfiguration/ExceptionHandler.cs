@@ -17,6 +17,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
 
@@ -34,6 +35,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         {
             app.UseExceptionHandler(exceptionHandlerApp =>
             {
+                var logger = app.ApplicationServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger(typeof(ExceptionHandler).FullName);
+
                 exceptionHandlerApp.Run(async context =>
                 {
                     var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
@@ -42,6 +47,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     {
                         if (exception is FrontUserException frontUserEx)
                         {
+                            logger.LogWarning(frontUserEx, $"A {nameof(FrontUserException)} has been raised, see details below.");
+
                             context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
                             var errorMessage = frontUserEx.Message;
                             if (string.IsNullOrEmpty(errorMessage))
@@ -54,6 +61,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                             return;
                         }
 
+                        logger.LogError(exception, $"An exception has been raised, see details below.");
                         if (!isDevelopment)
                         {
                             // We don't communicate sensitive error information to clients.
