@@ -89,19 +89,9 @@ namespace BIA.Net.Core.Common
             public const string UserInDB = "UserInDB";
 
             /// <summary>
-            /// identity provider.
+            /// The claims to role.
             /// </summary>
-            public const string IdP = "IdP";
-
-            /// <summary>
-            /// From an LDAP group provided by the identity provider.
-            /// </summary>
-            public const string LdapFromIdP = "LdapFromIdP";
-
-            /// <summary>
-            /// From an LDAP group provided by Windows Identity.
-            /// </summary>
-            public const string LdapFromWinIdentity = "LdapFromWinIdentity";
+            public const string ClaimsToRole = "ClaimsToRole";
 
             /// <summary>
             /// From an LDAP group.

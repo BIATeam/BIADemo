@@ -691,25 +691,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
 
-            List<string> memberOfGroupNames = null;
-            List<string> memberOfGroupSids = null;
-            List<string> claimRoles = null;
-
-            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromIdP) == true)
-            {
-                memberOfGroupNames = claimsPrincipal?.GetGroups()?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            }
-
-            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromWinIdentity) == true)
-            {
-                memberOfGroupSids = claimsPrincipal?.GetGroupSids()?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            }
-
-            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.IdP) == true)
-            {
-                claimRoles = claimsPrincipal?.GetRoles()?.ToList() ?? new List<string>();
-            }
-
             var gobalRoles = new ConcurrentBag<string>();
 
             if (rolesSection != null)
@@ -728,21 +709,9 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             }
                             break;
 
-                        case BiaConstants.RoleType.IdP:
-                            if (claimRoles.Intersect(role.IdpRoles, StringComparer.OrdinalIgnoreCase).Any())
-                            {
-                                return role.Label;
-                            }
-                            break;
-
-                        case BiaConstants.RoleType.LdapFromWinIdentity:
-                            if (CheckIfMemberGroupSid(role, memberOfGroupSids))
-                            {
-                                return role.Label;
-                            }
-                            break;
-                        case BiaConstants.RoleType.LdapFromIdP:
-                            if (CheckIfMemberGroupName(role, memberOfGroupNames))
+                        case BiaConstants.RoleType.ClaimsToRole:
+                            List<string> claimValues = claimsPrincipal.FindAll(role.ClaimType).Select(c => c.Value).ToList();
+                            if (role.ClaimValues.Intersect(claimValues).Any())
                             {
                                 return role.Label;
                             }
@@ -788,20 +757,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
 
             return gobalRoles.ToList();
-        }
-
-        private static bool CheckIfMemberGroupName(Role role, List<string> memberOfs)
-        {
-            return role.LdapGroups?
-                                .Any(ldapGroup => memberOfs
-                                    .Any(memberOf => System.IO.Path.GetFileName(memberOf).Contains(System.IO.Path.GetFileName(ldapGroup.LdapName), StringComparison.OrdinalIgnoreCase))) == true;
-        }
-
-        private static bool CheckIfMemberGroupSid(Role role, List<string> memberOfs)
-        {
-            return role.LdapGroups?
-                                .Any(ldapGroup => !string.IsNullOrWhiteSpace(ldapGroup.Sid) && memberOfs
-                                    .Any(memberOf => memberOf == ldapGroup.Sid)) == true;
         }
 
         private async Task<string> GetSidHistory(string sid, string userDomain)
