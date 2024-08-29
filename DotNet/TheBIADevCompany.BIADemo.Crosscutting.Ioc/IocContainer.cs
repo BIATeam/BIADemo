@@ -6,8 +6,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Http;
     using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
@@ -80,17 +78,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
-            RegisterServicesFromAssembly(
+            BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { nameof(AuthAppService) });
+                excludedServiceNames: new List<string>() { nameof(AuthAppService) },
+                serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
             {
-                RegisterServicesFromAssembly(
+                BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                includedServiceNames: new List<string>() { nameof(AuthAppService) });
+                includedServiceNames: new List<string>() { nameof(AuthAppService) },
+                serviceLifetime: ServiceLifetime.Transient);
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
@@ -98,7 +98,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
-            RegisterServicesFromAssembly(collection: collection, assemblyName: "TheBIADevCompany.BIADemo.Domain");
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
 
             Type templateType = typeof(BaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
@@ -141,7 +144,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 },
                 contextLifetime: ServiceLifetime.Transient);
 
-            RegisterServicesFromAssembly(
+            BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain");
@@ -156,84 +159,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
 #if BIA_FRONT_FEATURE
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<INotification, NotificationRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
 
             // Begin BIADemo
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
 #endif
-        }
-
-        /// <summary>
-        /// Creates the HTTP client handler.
-        /// </summary>
-        /// <param name="biaNetSection">The bia net section.</param>
-        /// <returns>HttpClientHandler object.</returns>
-#pragma warning disable S1144 // Unused private types or members should be removed
-        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
-#pragma warning restore S1144 // Unused private types or members should be removed
-        {
-            HttpClientHandler httpClientHandler = new HttpClientHandler
-            {
-                UseDefaultCredentials = useDefaultCredentials,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            };
-
-            if (biaNetSection?.Security?.DisableTlsVerify == true)
-            {
-#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
-            }
-
-            return httpClientHandler;
-        }
-
-        private static void RegisterServicesFromAssembly(
-            IServiceCollection collection,
-            string assemblyName,
-            string interfaceAssemblyName = null,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
-        {
-            Assembly classAssembly = Assembly.Load(assemblyName);
-            Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
-
-            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
-            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
-
-            IEnumerable<(Type classType, Type interfaceType)> mappings = from classType in classTypes
-                                                                         join interfaceType in interfaceTypes
-                                                                         on "I" + classType.Name equals interfaceType.Name
-                                                                         where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
-                                                                               (includedServiceNames == null || includedServiceNames.Contains(classType.Name))
-                                                                         select (classType, interfaceType);
-
-            foreach (var (classType, interfaceType) in mappings)
-            {
-                switch (serviceLifetime)
-                {
-                    case ServiceLifetime.Singleton:
-                        collection.AddSingleton(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Scoped:
-                        collection.AddScoped(interfaceType, classType);
-                        break;
-                    case ServiceLifetime.Transient:
-                        collection.AddTransient(interfaceType, classType);
-                        break;
-                    default:
-                        collection.AddTransient(interfaceType, classType);
-                        break;
-                }
-            }
         }
     }
 }
