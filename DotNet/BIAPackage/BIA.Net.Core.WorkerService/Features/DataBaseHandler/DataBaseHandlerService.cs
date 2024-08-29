@@ -6,48 +6,43 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Identity.Client;
 
     /// <summary>
     /// DataBaseHandler Service.
     /// </summary>
     public class DataBaseHandlerService : IHostedService
     {
-        /// <summary>
-        /// The service provider.
-        /// </summary>
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<DataBaseHandlerService> logger;
+        private ILogger<DataBaseHandlerService> logger;
 
         /// <summary>
         /// The database handler repositories.
         /// </summary>
-        private readonly List<IDatabaseHandlerRepository> databaseHandlerRepositories;
+        private List<IDatabaseHandlerRepository> databaseHandlerRepositories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBaseHandlerService"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="databaseHandlerRepositories">The database handler repositories.</param>
-        public DataBaseHandlerService(IServiceProvider serviceProvider, List<IDatabaseHandlerRepository> databaseHandlerRepositories)
+        public DataBaseHandlerService(IServiceProvider serviceProvider, ILogger<DataBaseHandlerService> logger, IEnumerable<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
             this.serviceProvider = serviceProvider;
-            this.logger = this.serviceProvider.GetService<ILogger<DataBaseHandlerService>>();
-            this.databaseHandlerRepositories = databaseHandlerRepositories;
+            this.logger = logger;
+            this.databaseHandlerRepositories = databaseHandlerRepositories.ToList();
         }
-
-        /// <summary>
-        /// Gets the service provider.
-        /// </summary>
-        protected IServiceProvider ServiceProvider => this.serviceProvider;
 
         /// <summary>
         /// Gets the service provider.

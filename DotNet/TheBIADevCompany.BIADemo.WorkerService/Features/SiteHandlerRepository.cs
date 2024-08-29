@@ -8,13 +8,14 @@
     using System.Threading.Tasks;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
+    using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     public class NewPlaneHandlerRepository : PollingDatabaseHandlerRepository<Plane, int>
     {
-        public NewPlaneHandlerRepository(IQueryableUnitOfWorkReadOnly dataContext)
-            : base(dataContext, OnPlaneChanged)
+        public NewPlaneHandlerRepository(IServiceProvider serviceProvider)
+            : base(serviceProvider, OnPlaneChanged)
         {
         }
 

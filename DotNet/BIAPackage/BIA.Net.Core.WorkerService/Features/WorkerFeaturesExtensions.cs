@@ -27,21 +27,16 @@ namespace BIA.Net.Core.WorkerService.Features
         /// <param name="services">the service collection.</param>
         /// <param name="workerFeatures">the worker Features.</param>
         /// <param name="configuration">the application configuration.</param>
-        /// <param name="databaseHandlerRepositories">the list of handler repositories.</param>
         /// <returns>the services collection.</returns>
         public static IServiceCollection AddBiaWorkerFeatures(
             [NotNull] this IServiceCollection services,
             WorkerFeatures workerFeatures,
-            IConfiguration configuration,
-            List<IDatabaseHandlerRepository> databaseHandlerRepositories)
+            IConfiguration configuration)
         {
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)
             {
-                services.AddTransient<IHostedService, DataBaseHandlerService>(provider =>
-                {
-                    return new DataBaseHandlerService(provider, databaseHandlerRepositories);
-                });
+                services.AddHostedService<DataBaseHandlerService>();
             }
 
             // Hangfire Server

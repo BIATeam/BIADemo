@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Security.Principal;
     using Audit.EntityFramework;
@@ -95,32 +96,18 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 });
             services.AddTransient<UserContext>(provider => new UserContext("en-GB", this.biaNetSection.Cultures));
 
-            var dbContextOptions = new DbContextOptionsBuilder<DataContext>();
-            dbContextOptions.UseSqlServer(this.configuration.GetConnectionString("BIADemoDatabase"));
-            var dataContextReadOnly = new DataContextReadOnly(dbContextOptions.Options, LoggerFactory.Create(builder => builder.SetMinimumLevel(LogLevel.Information)).CreateLogger<DataContextReadOnly>());
-
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(
                 this.biaNetSection.WorkerFeatures,
-                this.configuration,
-                new List<IDatabaseHandlerRepository>()
-                {
-                    // Add here all the Handler repository.
-#if BIA_FRONT_FEATURE
-                        // Begin BIADemo
-                        //new PlaneHandlerRepository(this.configuration),
-                        new AirportHandlerRepository(dataContextReadOnly),
-                        new NewPlaneHandlerRepository(dataContextReadOnly),
-                        // End BIADemo
-#endif
-                });
-
+                this.configuration);
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
-
+            services.AddTransient<IDatabaseHandlerRepository, PlaneHandlerRepository>();
+            services.AddTransient<IDatabaseHandlerRepository, AirportHandlerRepository>();
+            services.AddTransient<IDatabaseHandlerRepository, NewPlaneHandlerRepository>();
             // End BIADemo
 #endif
 

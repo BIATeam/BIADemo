@@ -11,13 +11,14 @@
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     public class AirportHandlerRepository : PollingDatabaseHandlerRepository<Airport, int>
     {
-        public AirportHandlerRepository(IQueryableUnitOfWorkReadOnly dataContext)
-            : base(dataContext, OnAirportChanged)
+        public AirportHandlerRepository(IServiceProvider serviceProvider)
+            : base(serviceProvider, OnAirportChanged)
         {
         }
 
