@@ -147,7 +147,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
-                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain");
+                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
 #if BIA_FRONT_FEATURE
             collection.AddSingleton<AuditFeature>();
 #endif
