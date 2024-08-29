@@ -30,14 +30,14 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The database handler repositories.
         /// </summary>
-        private readonly List<DatabaseHandlerRepository> databaseHandlerRepositories;
+        private readonly List<IDatabaseHandlerRepository> databaseHandlerRepositories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBaseHandlerService"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="databaseHandlerRepositories">The database handler repositories.</param>
-        public DataBaseHandlerService(IServiceProvider serviceProvider, List<DatabaseHandlerRepository> databaseHandlerRepositories)
+        public DataBaseHandlerService(IServiceProvider serviceProvider, List<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
             this.serviceProvider = serviceProvider;
             this.logger = this.serviceProvider.GetService<ILogger<DataBaseHandlerService>>();

@@ -33,7 +33,7 @@ namespace BIA.Net.Core.WorkerService.Features
             [NotNull] this IServiceCollection services,
             WorkerFeatures workerFeatures,
             IConfiguration configuration,
-            List<DatabaseHandlerRepository> databaseHandlerRepositories)
+            List<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)

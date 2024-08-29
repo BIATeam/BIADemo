@@ -13,7 +13,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     /// <summary>
     /// Database handler to track change in database and react on it.
     /// </summary>
-    public class DatabaseHandlerRepository
+    public class DatabaseHandlerRepository : IDatabaseHandlerRepository
     {
         /// <summary>
         /// The connection string.
