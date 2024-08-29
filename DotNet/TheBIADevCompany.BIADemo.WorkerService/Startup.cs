@@ -8,20 +8,26 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Security.Principal;
+    using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+    using TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
@@ -89,18 +95,23 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 });
             services.AddTransient<UserContext>(provider => new UserContext("en-GB", this.biaNetSection.Cultures));
 
+            var dbContextOptions = new DbContextOptionsBuilder<DataContext>();
+            dbContextOptions.UseSqlServer(this.configuration.GetConnectionString("BIADemoDatabase"));
+            var dataContextReadOnly = new DataContextReadOnly(dbContextOptions.Options, LoggerFactory.Create(builder => builder.SetMinimumLevel(LogLevel.Information)).CreateLogger<DataContextReadOnly>());
+
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(
                 this.biaNetSection.WorkerFeatures,
                 this.configuration,
-                new List<DatabaseHandlerRepository>()
+                new List<IDatabaseHandlerRepository>()
                 {
                     // Add here all the Handler repository.
 #if BIA_FRONT_FEATURE
                         // Begin BIADemo
-                        new PlaneHandlerRepository(this.configuration),
-
+                        //new PlaneHandlerRepository(this.configuration),
+                        new AirportHandlerRepository(dataContextReadOnly),
+                        new NewPlaneHandlerRepository(dataContextReadOnly),
                         // End BIADemo
 #endif
                 });
