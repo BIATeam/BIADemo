@@ -46,7 +46,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="env">The environment.</param>
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;

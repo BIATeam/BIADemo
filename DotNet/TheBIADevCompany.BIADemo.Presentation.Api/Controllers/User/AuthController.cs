@@ -29,7 +29,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// Initializes a new instance of the <see cref="AuthController"/> class.
         /// </summary>
         /// <param name="authService">The authentication service.</param>
-        /// <param name="configuration">The configuration.</param>
         public AuthController(IAuthAppService authService)
         {
             this.authService = authService;

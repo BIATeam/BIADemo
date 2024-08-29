@@ -4,12 +4,14 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 {
+    using System.Threading.Tasks;
 #if BIA_FRONT_FEATURE
     using Audit.EntityFramework;
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
@@ -38,6 +40,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     public class DataContext : BiaDataContext
     {
         /// <summary>
+        /// The current logger.
+        /// </summary>
+        private readonly ILogger<BiaDataContext> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
@@ -45,7 +52,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger)
             : base(options, logger)
         {
+            this.logger = logger;
+            this.logger.LogDebug("----------------Create Context--------------");
         }
+
 #if BIA_FRONT_FEATURE
 
         /// <summary>
@@ -152,6 +162,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
         // End BIADemo
 #endif
+
+        /// <summary>
+        /// Releases the allocated resources for this context.
+        /// </summary>
+        /// <returns>Task.</returns>
+        public override ValueTask DisposeAsync()
+        {
+            this.logger.LogDebug("----------------Dispose Context--------------");
+            return base.DisposeAsync();
+        }
 
         /// <inheritdoc cref="DbContext.OnModelCreating"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)

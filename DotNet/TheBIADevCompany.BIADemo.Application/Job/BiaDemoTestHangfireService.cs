@@ -106,7 +106,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 selectPlaneOnSiteTitle = currentSite.TeamTitle;
             }
 
-            List<PlaneDto> targetPlanes = this.planeAppService.GetAllAsync(accessMode: AccessMode.All, filter: p => p.SiteId == selectPlaneOnSiteId).Result.ToList();
+            List<PlaneDto> targetPlanes = this.planeAppService.GetAllAsync(accessMode: AccessMode.All, filter: p => p.SiteId == selectPlaneOnSiteId, isReadOnlyMode: true).Result.ToList();
             if (targetPlanes.Count > 0)
             {
                 // send notification review plane only if there is plane on the site
