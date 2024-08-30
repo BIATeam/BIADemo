@@ -37,7 +37,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
-    <ProjectReference Include="..\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj" />
   </ItemGroup>
 

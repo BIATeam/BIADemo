@@ -4,16 +4,12 @@
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Infrastructure.Data;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Identity.Client;
 
     /// <summary>
     /// DataBaseHandler Service.

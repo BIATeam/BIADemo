@@ -6,29 +6,21 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
     using System.Security.Claims;
     using System.Security.Principal;
-    using Audit.EntityFramework;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
