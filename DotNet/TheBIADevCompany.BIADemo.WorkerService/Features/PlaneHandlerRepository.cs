@@ -36,7 +36,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             "SELECT RowVersion FROM [dbo].[Planes]",
             "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
             usePolling: true,
-            pollingInterval: TimeSpan.FromSeconds(10))
+            pollingInterval: TimeSpan.FromSeconds(1))
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
             this.clientForHubService = clientForHubService;
@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <summary>
         /// Send message to the clients.
         /// </summary>
-        /// <param name="reader">the reader use to retrieve info send by th trigger.</param>
+        /// <param name="reader">the reader use to retrieve info send by the trigger.</param>
         /// <returns><see cref="Task"/>.</returns>
         public async Task PlaneChange(DbDataReader reader)
         {
@@ -54,8 +54,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            int siteId = reader.GetInt32(0);
-            await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+            if (reader != null)
+            {
+                int siteId = reader.GetInt32(0);
+                //await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+            }
         }
     }
 }
