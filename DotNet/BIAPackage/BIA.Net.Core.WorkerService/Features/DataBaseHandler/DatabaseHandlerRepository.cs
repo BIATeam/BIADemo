@@ -15,7 +15,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Database handler to track change in database and react on it.
+    /// Database handler to track change in database and react on it. Default method is using Sql broker handler.
     /// </summary>
     /// <typeparam name="T">Type of inherited child.</typeparam>
 #pragma warning disable CA2100
@@ -339,29 +339,37 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.pollingCancellationToken = new CancellationTokenSource();
 
             this.pollingDbConnection = this.GetPollingDataDbConnection();
-            await this.pollingDbConnection.OpenAsync();
 
-            var previousData = await this.FetchPollingDataAsync();
-            while (!this.pollingCancellationToken.IsCancellationRequested)
+            try
             {
-                try
-                {
-                    var newData = await this.FetchPollingDataAsync();
-                    if (this.HasChangedPollingData(previousData, newData))
-                    {
-                        await this.OnChangesPollingDataAsync();
-                    }
+                await this.pollingDbConnection.OpenAsync();
+                var previousData = await this.FetchPollingDataAsync();
 
-                    previousData = newData;
-                }
-                catch (Exception ex)
+                while (!this.pollingCancellationToken.IsCancellationRequested)
                 {
-                    this.logger.LogError($"Polling error : {ex}");
+                    try
+                    {
+                        var newData = await this.FetchPollingDataAsync();
+                        if (this.HasChangedPollingData(previousData, newData))
+                        {
+                            await this.OnChangesPollingDataAsync();
+                        }
+
+                        previousData = newData;
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogError($"Polling error : {ex}");
+                    }
+                    finally
+                    {
+                        await Task.Delay(this.pollingInterval);
+                    }
                 }
-                finally
-                {
-                    await Task.Delay(this.pollingInterval);
-                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.ToString());
             }
         }
 
@@ -371,8 +379,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns>A list of data rows wrapped into Dictionnary of string|object, string corresponding to column name, object the column's value.</returns>
         protected virtual async Task<List<Dictionary<string, object>>> FetchPollingDataAsync()
         {
-            this.logger.LogInformation(nameof(this.FetchPollingDataAsync));
-
             var data = new List<Dictionary<string, object>>();
 
             using var command = this.GetPollingDataDbCommand(this.OnChangeEventHandlerRequest, this.pollingDbConnection);
@@ -419,8 +425,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns>A <see cref="bool"/> that indicates if any changed has opered.</returns>
         protected virtual bool HasChangedPollingData(List<Dictionary<string, object>> previousData, List<Dictionary<string, object>> newData)
         {
-            this.logger.LogInformation(nameof(this.HasChangedPollingData));
-
             if (previousData.Count != newData.Count)
             {
                 return true;

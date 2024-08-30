@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// Example for handler repository: a signalR event is send to client when something change in the Plane Table.
+    /// Example for handler repository using Sql broker handler : a signalR event is send to client when something change in the Plane Table.
     /// </summary>
     public class PlaneHandlerRepository : DatabaseHandlerRepository<PlaneHandlerRepository>
     {
@@ -39,9 +39,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   configuration.GetConnectionString("BIADemoDatabase"),
                   configuration.GetDBEngine("BIADemoDatabase"),
                   "SELECT RowVersion FROM [dbo].[Planes]",
-                  "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
-                  usePolling: true,
-                  pollingInterval: TimeSpan.FromSeconds(1))
+                  "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC")
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
             this.clientForHubService = clientForHubService;

@@ -98,6 +98,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
                 this.biaNetSection.WorkerFeatures,
                 this.configuration);
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
+            services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
