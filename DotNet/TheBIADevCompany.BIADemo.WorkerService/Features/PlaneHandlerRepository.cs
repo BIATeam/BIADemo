@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             configuration.GetConnectionString("BIADemoDatabase"),
             new SqlCommand("SELECT RowVersion FROM [dbo].[Planes]"),
             new SqlCommand("SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"),
-            usePolling: true,
+            usePolling: false,
             pollingInterval: TimeSpan.FromSeconds(10))
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
@@ -51,7 +51,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            int siteId = reader != null ? reader.GetInt32(0) : 0;
+            int siteId = reader.GetInt32(0);
             await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
         }
     }

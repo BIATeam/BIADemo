@@ -357,10 +357,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             if (await reader.ReadAsync())
             {
                 this.OnChange(reader);
-                return;
             }
-
-            this.OnChange(null);
         }
 
         /// <summary>
