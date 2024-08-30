@@ -101,13 +101,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddBiaWorkerFeatures(
                 this.biaNetSection.WorkerFeatures,
                 this.configuration);
+            services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
-            services.AddTransient<IDatabaseHandlerRepository, PlaneHandlerRepository>();
-            services.AddTransient<IDatabaseHandlerRepository, AirportHandlerRepository>();
-            services.AddTransient<IDatabaseHandlerRepository, NewPlaneHandlerRepository>();
             // End BIADemo
 #endif
 
