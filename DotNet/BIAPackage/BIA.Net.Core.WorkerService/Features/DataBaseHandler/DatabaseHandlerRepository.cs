@@ -67,12 +67,17 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         private CancellationTokenSource pollingCancellationToken;
 
         /// <summary>
-        /// The SQL connection used by the SQL borker handler.
+        /// The Database Connection use by the polling handler.
         /// </summary>
-        private SqlConnection sqlConnectionBrokerHandler;
+        private DbConnection pollingDbConnection;
 
         /// <summary>
-        /// Indicates weither the current instance is disposed or not
+        /// The SQL connection used by the SQL borker handler.
+        /// </summary>
+        private SqlConnection brokerSqlConnection;
+
+        /// <summary>
+        /// Indicates weither the current instance is disposed or not.
         /// </summary>
         private bool isDisposed;
 
@@ -219,9 +224,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             this.logger.LogInformation($"{nameof(this.SqlBrokerHandle)}");
 
-            this.sqlConnectionBrokerHandler = new SqlConnection(this.connectionString);
-            using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.sqlConnectionBrokerHandler);
-            this.sqlConnectionBrokerHandler.Open();
+            this.brokerSqlConnection = new SqlConnection(this.connectionString);
+            using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.brokerSqlConnection);
+            this.brokerSqlConnection.Open();
 
             var sqlDependency = new SqlDependency(command);
             this.logger.LogInformation($"{nameof(sqlDependency)}.OnChange += new OnChangeEventHandler(this.{nameof(this.OnSqlDependencyChange)})");
@@ -244,7 +249,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 return;
             }
 
-            using var command = new SqlCommand(this.ReadChangeRequest, this.sqlConnectionBrokerHandler);
+            using var command = new SqlCommand(this.ReadChangeRequest, this.brokerSqlConnection);
             using var reader = command.ExecuteReader();
             this.logger.LogInformation($"reader.HasRows = {reader.HasRows}");
             if (reader.Read() && this.IsValidSqlNotificationEvent(e))
@@ -253,8 +258,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 this.OnChange?.Invoke(reader);
             }
 
-            this.sqlConnectionBrokerHandler.Close();
-            this.sqlConnectionBrokerHandler.Dispose();
+            this.brokerSqlConnection.Close();
+            this.brokerSqlConnection.Dispose();
 
             this.SqlBrokerHandle();
         }
@@ -283,11 +288,14 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns><see cref="Task"/> with polling method.</returns>
         protected virtual async Task PollingHandleAsync()
         {
+            this.logger.LogInformation(nameof(this.PollingHandleAsync));
+
             this.pollingCancellationToken = new CancellationTokenSource();
 
-            this.logger.LogInformation(nameof(this.PollingHandleAsync));
-            var previousData = await this.FetchPollingDataAsync();
+            this.pollingDbConnection = this.GetPollingDataDbConnection();
+            await this.pollingDbConnection.OpenAsync();
 
+            var previousData = await this.FetchPollingDataAsync();
             while (!this.pollingCancellationToken.IsCancellationRequested)
             {
                 try
@@ -295,7 +303,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                     var newData = await this.FetchPollingDataAsync();
                     if (this.HasChangedPollingData(previousData, newData))
                     {
-                        this.logger.LogInformation("Changed data");
                         await this.OnChangesPollingDataAsync();
                     }
 
@@ -322,9 +329,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             var data = new List<Dictionary<string, object>>();
 
-            using var connection = this.GetPollingDataDbConnection();
-            using var command = this.GetPollingDataDbCommand(this.OnChangeEventHandlerRequest, connection);
-            await connection.OpenAsync();
+            using var command = this.GetPollingDataDbCommand(this.OnChangeEventHandlerRequest, this.pollingDbConnection);
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -347,11 +352,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task OnChangesPollingDataAsync()
         {
-            this.logger.LogInformation(nameof(this.FetchPollingDataAsync));
+            this.logger.LogInformation(nameof(this.OnChangesPollingDataAsync));
 
-            using var connection = this.GetPollingDataDbConnection();
-            using var command = this.GetPollingDataDbCommand(this.ReadChangeRequest, connection);
-            await connection.OpenAsync();
+            using var command = this.GetPollingDataDbCommand(this.ReadChangeRequest, this.pollingDbConnection);
             using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
@@ -454,10 +457,16 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             if (disposing)
             {
-                if (this.sqlConnectionBrokerHandler != null)
+                if (this.brokerSqlConnection != null)
                 {
-                    this.sqlConnectionBrokerHandler.Close();
-                    this.sqlConnectionBrokerHandler.Dispose();
+                    this.brokerSqlConnection.Close();
+                    this.brokerSqlConnection.Dispose();
+                }
+
+                if (this.pollingDbConnection != null)
+                {
+                    this.pollingDbConnection.Close();
+                    this.pollingDbConnection.Dispose();
                 }
 
                 if (this.pollingCancellationToken != null)
