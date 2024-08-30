@@ -32,7 +32,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             configuration.GetConnectionString("BIADemoDatabase"),
             new SqlCommand("SELECT RowVersion FROM [dbo].[Planes]"),
             new SqlCommand("SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"),
-            usePolling: true)
+            usePolling: true,
+            pollingInterval: TimeSpan.FromSeconds(10))
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
             this.clientForHubService = clientForHubService;
