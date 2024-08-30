@@ -20,8 +20,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     /// </summary>
     public class DataBaseHandlerService : IHostedService
     {
-        private readonly IServiceProvider serviceProvider;
-
         /// <summary>
         /// The logger.
         /// </summary>
@@ -37,9 +35,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="databaseHandlerRepositories">The database handler repositories.</param>
-        public DataBaseHandlerService(IServiceProvider serviceProvider, ILogger<DataBaseHandlerService> logger, IEnumerable<IDatabaseHandlerRepository> databaseHandlerRepositories)
+        public DataBaseHandlerService(ILogger<DataBaseHandlerService> logger, IEnumerable<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
-            this.serviceProvider = serviceProvider;
             this.logger = logger;
             this.databaseHandlerRepositories = databaseHandlerRepositories.ToList();
         }
@@ -58,7 +55,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
-                handlerRepositorie.Start(this.serviceProvider);
+                handlerRepositorie.Start();
             }
 
             return Task.CompletedTask;

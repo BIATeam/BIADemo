@@ -21,6 +21,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     /// </summary>
     public class PlaneHandlerRepository : DatabaseHandlerRepository<PlaneHandlerRepository>
     {
+        /// <summary>
+        /// The client for hub service.
+        /// </summary>
         private readonly IClientForHubRepository clientForHubService = null;
 
         /// <summary>
@@ -29,14 +32,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// </summary>
         /// <param name="configuration">the project configuration.</param>
         /// <param name="clientForHubService">the client hub service.</param>
-        public PlaneHandlerRepository(IConfiguration configuration, IClientForHubRepository clientForHubService)
+        /// <param name="serviceProvider">the service provider.</param>
+        public PlaneHandlerRepository(IConfiguration configuration, IClientForHubRepository clientForHubService, IServiceProvider serviceProvider)
             : base(
-            configuration.GetConnectionString("BIADemoDatabase"),
-            configuration.GetDBEngine("BIADemoDatabase"),
-            "SELECT RowVersion FROM [dbo].[Planes]",
-            "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
-            usePolling: true,
-            pollingInterval: TimeSpan.FromSeconds(1))
+                  serviceProvider,
+                  configuration.GetConnectionString("BIADemoDatabase"),
+                  configuration.GetDBEngine("BIADemoDatabase"),
+                  "SELECT RowVersion FROM [dbo].[Planes]",
+                  "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
+                  usePolling: true,
+                  pollingInterval: TimeSpan.FromSeconds(1))
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
             this.clientForHubService = clientForHubService;
@@ -57,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             if (reader != null)
             {
                 int siteId = reader.GetInt32(0);
-                //await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
             }
         }
     }

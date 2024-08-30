@@ -8,7 +8,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
     public interface IDatabaseHandlerRepository
     {
-        void Start(IServiceProvider serviceProvider);
+        void Start();
         void Stop();
     }
 }

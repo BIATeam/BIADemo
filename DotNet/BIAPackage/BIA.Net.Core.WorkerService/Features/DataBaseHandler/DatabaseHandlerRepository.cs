@@ -22,6 +22,11 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     public abstract class DatabaseHandlerRepository<T> : IDatabaseHandlerRepository, IDisposable
     {
         /// <summary>
+        /// The service provider.
+        /// </summary>
+        private readonly IServiceProvider serviceProvider;
+
+        /// <summary>
         /// The connection string.
         /// </summary>
         private readonly string connectionString;
@@ -59,7 +64,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The logger.
         /// </summary>
-        private ILogger<T> logger;
+        private readonly ILogger<T> logger;
 
         /// <summary>
         /// The polling cancellation token to stop the polling task.
@@ -84,38 +89,42 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// Initializes a new instance of the <see cref="DatabaseHandlerRepository{T}"/> class.
         /// </summary>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="connectionString">The connectionString.</param>
         /// <param name="onChangeEventHandlerRequest">sql request. The action is lanch if the result change.</param>
         /// <param name="readChangeRequest">sql request to run when a change is detected, and pass it to change action. If null is send null to change action.</param>
-        /// <param name="dbEngine">Database engine to request.</param>
+        /// <param name="databaseEngine">Database engine to request.</param>
         /// <param name="sqlFilterNotificationInfos">Filter the SQL event action type. If null send all action. To use with SQL broker only.</param>
         /// <param name="usePolling">Optional. Indicates if polling method should be used. False by default.</param>
         /// <param name="pollingInterval">Optional. Interval of polling. 5 seconds by default.</param>
         protected DatabaseHandlerRepository(
+            IServiceProvider serviceProvider,
             string connectionString,
-            string dbEngine,
+            string databaseEngine,
             string onChangeEventHandlerRequest,
             string readChangeRequest,
             List<SqlNotificationInfo> sqlFilterNotificationInfos = null,
             bool usePolling = false,
             TimeSpan? pollingInterval = null)
         {
+            this.serviceProvider = serviceProvider;
             this.connectionString = connectionString;
-            this.databaseEngine = dbEngine;
+            this.databaseEngine = databaseEngine;
             this.onChangeEventHandlerRequest = onChangeEventHandlerRequest;
             this.readChangeRequest = readChangeRequest;
             this.sqlFilterNotificationInfos = sqlFilterNotificationInfos;
             this.usePolling = usePolling;
             this.pollingInterval = pollingInterval ?? TimeSpan.FromSeconds(5);
+            this.logger = this.serviceProvider.GetService<ILogger<T>>();
 
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw new ArgumentNullException(nameof(connectionString));
             }
 
-            if (string.IsNullOrEmpty(dbEngine))
+            if (string.IsNullOrEmpty(databaseEngine))
             {
-                throw new ArgumentNullException(nameof(dbEngine));
+                throw new ArgumentNullException(nameof(databaseEngine));
             }
 
             if (string.IsNullOrEmpty(onChangeEventHandlerRequest))
@@ -141,9 +150,19 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         protected event ChangeHandler OnChange;
 
         /// <summary>
+        /// The service provider.
+        /// </summary>
+        protected IServiceProvider ServiceProvider => this.serviceProvider;
+
+        /// <summary>
         /// The connection string.
         /// </summary>
         protected string ConnectionString => this.connectionString;
+
+        /// <summary>
+        /// The database engine type.
+        /// </summary>
+        protected string DatabaseEngine => this.databaseEngine;
 
         /// <summary>
         /// The SQL on change event handler request.
@@ -161,6 +180,36 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         protected List<SqlNotificationInfo> SqlFilterNotificationInfos => this.sqlFilterNotificationInfos;
 
         /// <summary>
+        /// Indicates if polling method should be used.
+        /// </summary>
+        protected bool UsePolling => this.usePolling;
+
+        /// <summary>
+        /// Interval of polling.
+        /// </summary>
+        protected TimeSpan PollingInterval => this.pollingInterval;
+
+        /// <summary>
+        /// The logger.
+        /// </summary>
+        protected ILogger<T> Logger => this.logger;
+
+        /// <summary>
+        /// The polling cancellation token to stop the polling task.
+        /// </summary>
+        protected CancellationTokenSource PollingCancellationToken => this.pollingCancellationToken;
+
+        /// <summary>
+        /// The Database Connection use by the polling handler.
+        /// </summary>
+        protected DbConnection PollingDbConnection => this.pollingDbConnection;
+
+        /// <summary>
+        /// The SQL connection used by the SQL borker handler.
+        /// </summary>
+        protected SqlConnection BrokerSqlConnection => this.brokerSqlConnection;
+
+        /// <summary>
         /// Indicates if the database engine is SQL Server.
         /// </summary>
         protected bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals("sqlserver", StringComparison.CurrentCultureIgnoreCase);
@@ -175,11 +224,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// Start the process of event handler.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
-        public virtual void Start(IServiceProvider serviceProvider)
+        public virtual void Start()
         {
-            this.logger = serviceProvider.GetService<ILogger<T>>();
-
             this.logger.LogInformation($"{nameof(this.Start)}");
             this.logger.LogInformation($"{nameof(this.connectionString)} = {this.connectionString}");
             this.logger.LogInformation($"{nameof(this.databaseEngine)} = {this.databaseEngine}");
