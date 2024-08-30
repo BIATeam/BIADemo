@@ -189,7 +189,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
         ?.userData?.currentTeams?.find(
           t => t.teamTypeId == this.teamType.teamTypeId
         )?.currentRoleIds;
-      var roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
+      let roles = this.teams.find(t => t.id == this.currentTeam?.id)?.roles;
       roles = roles ? [...roles] : roles;
       const defaultRoleIds = roles?.filter(r => r.isDefault).map(r => r.id);
       if (roles && (this.multiRoleMode || roles.length > 1)) {

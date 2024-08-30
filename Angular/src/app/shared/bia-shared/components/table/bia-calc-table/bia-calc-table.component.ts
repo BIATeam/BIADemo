@@ -109,7 +109,7 @@ export class BiaCalcTableComponent
     }
     this.initEditableRow(rowData);
     if (event.currentTarget instanceof HTMLElement) {
-      var element = event.currentTarget as HTMLElement;
+      const element = event.currentTarget as HTMLElement;
       setTimeout(() => this.getChildInput(element)?.focus(), 0);
     }
   }
@@ -177,11 +177,13 @@ export class BiaCalcTableComponent
     this.initEditableRow(null);
   }
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
     _: KeyboardEvent
   ) {
     this.escape();
   }
+  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   public onSubmit() {
     throw new Error('onSubmit not Implemented');
@@ -244,11 +246,11 @@ export class BiaCalcTableComponent
   }
 
   public getChildInput(el: Element | null): HTMLElement | null {
-    var result: HTMLElement | null = null;
+    let result: HTMLElement | null = null;
     if (el) {
-      var children = el.children;
-      for (var i = 0; i < children.length; i++) {
-        var tableChild = children[i];
+      const children = el.children;
+      for (let i = 0; i < children.length; i++) {
+        const tableChild = children[i];
         if (tableChild.tagName === 'INPUT') {
           return tableChild as HTMLElement;
         } else if (tableChild.tagName === 'P-DROPDOWN') {
