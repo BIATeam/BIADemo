@@ -7,7 +7,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
     using System.Configuration;
+    using System.Data.Common;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -30,9 +32,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         public PlaneHandlerRepository(IConfiguration configuration, IClientForHubRepository clientForHubService)
             : base(
             configuration.GetConnectionString("BIADemoDatabase"),
-            new SqlCommand("SELECT RowVersion FROM [dbo].[Planes]"),
-            new SqlCommand("SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"),
-            usePolling: false,
+            configuration.GetDBEngine("BIADemoDatabase"),
+            "SELECT RowVersion FROM [dbo].[Planes]",
+            "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC",
+            usePolling: true,
             pollingInterval: TimeSpan.FromSeconds(10))
         {
             this.OnChange += async (reader) => await this.PlaneChange(reader);
@@ -44,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// </summary>
         /// <param name="reader">the reader use to retrieve info send by th trigger.</param>
         /// <returns><see cref="Task"/>.</returns>
-        public async Task PlaneChange(SqlDataReader reader)
+        public async Task PlaneChange(DbDataReader reader)
         {
             if (this.clientForHubService == null)
             {

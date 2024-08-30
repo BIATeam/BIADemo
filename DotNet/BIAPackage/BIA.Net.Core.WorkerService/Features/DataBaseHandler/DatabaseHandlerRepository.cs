@@ -6,6 +6,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.Common;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Threading;
@@ -18,6 +19,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     /// Database handler to track change in database and react on it.
     /// </summary>
     /// <typeparam name="T">Type of inherited child.</typeparam>
+#pragma warning disable CA2100
     public abstract class DatabaseHandlerRepository<T> : IDatabaseHandlerRepository
     {
         /// <summary>
@@ -26,19 +28,24 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         private readonly string connectionString;
 
         /// <summary>
-        /// The SQL on change event handler request.
+        /// The database engine type.
         /// </summary>
-        private readonly SqlCommand sqlOnChangeEventHandlerRequest;
+        private readonly string databaseEngine;
 
         /// <summary>
-        /// The SQL read change request.
+        /// The on change event handler request.
         /// </summary>
-        private readonly SqlCommand sqlReadChangeRequest;
+        private readonly string onChangeEventHandlerRequest;
 
         /// <summary>
-        /// The filter notifiction infos.
+        /// The read change request.
         /// </summary>
-        private readonly List<SqlNotificationInfo> filterNotifictionInfos;
+        private readonly string readChangeRequest;
+
+        /// <summary>
+        /// The SQL filter notification infos.
+        /// </summary>
+        private readonly List<SqlNotificationInfo> sqlFilterNotificationInfos;
 
         /// <summary>
         /// Indicates if polling method should be used.
@@ -69,24 +76,26 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// Initializes a new instance of the <see cref="DatabaseHandlerRepository{T}"/> class.
         /// </summary>
         /// <param name="connectionString">The connectionString.</param>
-        /// <param name="sqlOnChangeEventHandlerRequest">sql request. The action is lanch if the result change.</param>
-        /// <param name="sqlReadChangeRequest">sql request to run when a change is detected, and pass it to change action. If null is send null to change action.</param>
-        /// <param name="onChange">Action to perform on Change detected. The function take a reader parameter. Exemple of usage for a int : int id = reader.GetInt32(0).</param>
-        /// <param name="filterNotificationInfos">Filter the event action type. If null send all action.</param>
+        /// <param name="onChangeEventHandlerRequest">sql request. The action is lanch if the result change.</param>
+        /// <param name="readChangeRequest">sql request to run when a change is detected, and pass it to change action. If null is send null to change action.</param>
+        /// <param name="dbEngine">Database engine to request.</param>
+        /// <param name="sqlFilterNotificationInfos">Filter the SQL event action type. If null send all action.</param>
         /// <param name="usePolling">Optional. Indicates if polling method should be used. False by default.</param>
         /// <param name="pollingInterval">Optional. Interval of polling. 5 seconds by default.</param>
         protected DatabaseHandlerRepository(
             string connectionString,
-            SqlCommand sqlOnChangeEventHandlerRequest,
-            SqlCommand sqlReadChangeRequest,
-            List<SqlNotificationInfo> filterNotificationInfos = null,
+            string dbEngine,
+            string onChangeEventHandlerRequest,
+            string readChangeRequest,
+            List<SqlNotificationInfo> sqlFilterNotificationInfos = null,
             bool usePolling = false,
             TimeSpan? pollingInterval = null)
         {
             this.connectionString = connectionString;
-            this.sqlOnChangeEventHandlerRequest = sqlOnChangeEventHandlerRequest;
-            this.sqlReadChangeRequest = sqlReadChangeRequest;
-            this.filterNotifictionInfos = filterNotificationInfos;
+            this.databaseEngine = dbEngine;
+            this.onChangeEventHandlerRequest = onChangeEventHandlerRequest;
+            this.readChangeRequest = readChangeRequest;
+            this.sqlFilterNotificationInfos = sqlFilterNotificationInfos;
             this.usePolling = usePolling;
             this.pollingInterval = pollingInterval ?? TimeSpan.FromSeconds(5);
         }
@@ -95,7 +104,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// Format the expected action function.
         /// </summary>
         /// <param name="reader">The reader for ligne impacted.</param>
-        public delegate void ChangeHandler(SqlDataReader reader);
+        public delegate void ChangeHandler(DbDataReader reader);
 
         /// <summary>
         /// The on change function.
@@ -110,17 +119,22 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The SQL on change event handler request.
         /// </summary>
-        protected SqlCommand SqlOnChangeEventHandlerRequest => this.sqlOnChangeEventHandlerRequest;
+        protected string OnChangeEventHandlerRequest => this.onChangeEventHandlerRequest;
 
         /// <summary>
         /// The SQL read change request.
         /// </summary>
-        protected SqlCommand SqlReadChangeRequest => this.sqlReadChangeRequest;
+        protected string ReadChangeRequest => this.readChangeRequest;
 
         /// <summary>
-        /// The filter notifiction infos.
+        /// The SQL filter notification infos.
         /// </summary>
-        protected List<SqlNotificationInfo> FilterNotifictionInfos => this.filterNotifictionInfos;
+        protected List<SqlNotificationInfo> SqlFilterNotificationInfos => this.sqlFilterNotificationInfos;
+
+        /// <summary>
+        /// Indicates if the database engine is SQL Server.
+        /// </summary>
+        protected bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals("sqlserver", StringComparison.CurrentCultureIgnoreCase);
 
         /// <summary>
         /// Start the process of event handler.
@@ -134,20 +148,20 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.logger.LogInformation(message);
             message = $"{nameof(this.connectionString)} = {this.connectionString}";
             this.logger.LogInformation(message);
-            message = $"{nameof(this.sqlOnChangeEventHandlerRequest)} = {this.sqlOnChangeEventHandlerRequest.CommandText}";
+            message = $"{nameof(this.onChangeEventHandlerRequest)} = {this.OnChangeEventHandlerRequest}";
             this.logger.LogInformation(message);
-            message = $"{nameof(this.sqlReadChangeRequest)} = {this.sqlReadChangeRequest.CommandText}";
+            message = $"{nameof(this.readChangeRequest)} = {this.ReadChangeRequest}";
             this.logger.LogInformation(message);
             message = $"{nameof(this.usePolling)} = {this.usePolling}";
             this.logger.LogInformation(message);
 
-            if (this.usePolling)
+            if (!this.IsDatabaseEngineSqlServer || this.usePolling)
             {
                 this.PollingHandleAsync();
                 return;
             }
 
-            this.BrokerHandle(null);
+            this.SqlBrokerHandle(null);
         }
 
         /// <summary>
@@ -158,7 +172,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string message = $"{nameof(this.Stop)}";
             this.logger.LogInformation(message);
 
-            if (this.usePolling)
+            if (!this.IsDatabaseEngineSqlServer || this.usePolling)
             {
                 this.pollingCancellationToken.Cancel();
                 this.pollingCancellationToken.Dispose();
@@ -169,12 +183,12 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Handle the changes using broker method.
+        /// Handle the changes using SQL broker.
         /// </summary>
         /// <param name="e">The <see cref="SqlNotificationEventArgs"/> instance containing the event data.</param>
-        protected virtual void BrokerHandle(SqlNotificationEventArgs e)
+        protected virtual void SqlBrokerHandle(SqlNotificationEventArgs e)
         {
-            string baseLog = $"{nameof(this.BrokerHandle)}";
+            string baseLog = $"{nameof(this.SqlBrokerHandle)}";
 
             this.logger.LogInformation(baseLog);
 
@@ -187,11 +201,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             using (SqlConnection connection = new SqlConnection(this.connectionString))
             {
-                this.sqlOnChangeEventHandlerRequest.Connection = connection;
-                using (SqlCommand command = this.sqlOnChangeEventHandlerRequest.Clone())
+                using (var command = new SqlCommand(this.OnChangeEventHandlerRequest, connection))
                 {
                     connection.Open();
-                    command.Connection = connection;
 
                     SqlDependency dependency = new SqlDependency(command);
                     string message = $"{baseLog} dependency.OnChange += new OnChangeEventHandler(this.OnDependencyChange)";
@@ -201,34 +213,28 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
                     if (!this.isFirst)
                     {
-                        if (string.IsNullOrEmpty(this.sqlReadChangeRequest.CommandText))
+                        if (string.IsNullOrEmpty(this.readChangeRequest))
                         {
-                            if (this.IsValidEvent(e) && this.OnChange != null)
+                            if (this.IsValidEvent(e))
                             {
                                 string message1 = $"{baseLog} this.OnChange(null)";
                                 this.logger.LogInformation(message1);
-                                this.OnChange(null);
+                                this.OnChange?.Invoke(null);
                             }
                         }
                         else
                         {
-                            using (SqlCommand selectCommand = this.sqlReadChangeRequest.Clone())
+                            using (SqlCommand selectCommand = new SqlCommand(this.ReadChangeRequest, connection))
                             {
-                                selectCommand.Connection = connection;
                                 using (SqlDataReader reader = selectCommand.ExecuteReader())
                                 {
                                     string message1 = $"{baseLog} reader.HasRows = {reader.HasRows}";
                                     this.logger.LogInformation(message1);
-                                    if (reader.HasRows)
+                                    if (reader.Read() && this.IsValidEvent(e))
                                     {
-                                        reader.Read();
-
-                                        if (this.IsValidEvent(e) && this.OnChange != null)
-                                        {
-                                            string message2 = $"{baseLog} this.OnChange(reader)";
-                                            this.logger.LogInformation(message2);
-                                            this.OnChange(reader);
-                                        }
+                                        string message2 = $"{baseLog} this.OnChange(reader)";
+                                        this.logger.LogInformation(message2);
+                                        this.OnChange?.Invoke(reader);
                                     }
                                 }
                             }
@@ -250,9 +256,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             bool isValidEvent = (e != null)
                     &&
                     (
-                        this.filterNotifictionInfos == null
+                        this.sqlFilterNotificationInfos == null
                         ||
-                        this.filterNotifictionInfos.Contains(e.Info));
+                        this.sqlFilterNotificationInfos.Contains(e.Info));
 
             string message = $"{nameof(isValidEvent)} = {isValidEvent}";
             this.logger.LogInformation(message);
@@ -270,9 +276,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.logger.LogInformation($"{nameof(this.OnDependencyChange)}");
             this.isFirst = false;
 
-            if (e.Info != SqlNotificationInfo.Invalid)
+            if (e.Info != SqlNotificationInfo.Invalid && this.SqlFilterNotificationInfos != null && this.SqlFilterNotificationInfos.Contains(e.Info))
             {
-                this.BrokerHandle(e);
+                this.SqlBrokerHandle(e);
             }
         }
 
@@ -312,7 +318,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Retrive data based on the <see cref="SqlOnChangeEventHandlerRequest"/> for polling.
+        /// Retrive data based on the <see cref="OnChangeEventHandlerRequest"/> for polling.
         /// </summary>
         /// <returns>A list of data rows wrapped into Dictionnary of string|object, string corresponding to column name, object the column's value.</returns>
         protected virtual async Task<List<Dictionary<string, object>>> FetchPollingDataAsync()
@@ -321,10 +327,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             var data = new List<Dictionary<string, object>>();
 
-            using var connection = new SqlConnection(this.ConnectionString);
-            using var command = this.sqlOnChangeEventHandlerRequest.Clone();
+            using var connection = this.GetDbConnection();
+            using var command = this.GetDbCommand(this.OnChangeEventHandlerRequest, connection);
             await connection.OpenAsync();
-            command.Connection = connection;
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -342,22 +347,24 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
         /// <summary>
         /// Task executed when changes are detected while polling.
-        /// Execute the <see cref="sqlReadChangeRequest"/> and raise the <see cref="OnChange"/> event.
+        /// Execute the <see cref="readChangeRequest"/> and raise the <see cref="OnChange"/> event.
         /// </summary>
         /// <returns><see cref="Task"/>.</returns>
         protected virtual async Task OnChangesPollingDataAsync()
         {
             this.logger.LogInformation(nameof(this.FetchPollingDataAsync));
 
-            using var connection = new SqlConnection(this.ConnectionString);
-            using var command = this.sqlReadChangeRequest.Clone();
+            using var connection = this.GetDbConnection();
+            using var command = this.GetDbCommand(this.ReadChangeRequest, connection);
             await connection.OpenAsync();
-            command.Connection = connection;
             using var reader = await command.ExecuteReaderAsync();
             if (await reader.ReadAsync())
             {
-                this.OnChange(reader);
+                this.OnChange?.Invoke(reader);
+                return;
             }
+
+            this.OnChange?.Invoke(null);
         }
 
         /// <summary>
@@ -406,5 +413,38 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             return previousValue.Equals(newValue);
         }
+
+        /// <summary>
+        /// Provide the <see cref="DbConnection"/> based on current <see cref="databaseEngine"/>.
+        /// </summary>
+        /// <returns><see cref="DbConnection"/>.</returns>
+        /// <exception cref="NotSupportedException">If current <see cref="databaseEngine"/> is not supported.</exception>
+        private DbConnection GetDbConnection()
+        {
+            return this.databaseEngine.ToLower() switch
+            {
+                "sqlserver" => new SqlConnection(this.connectionString),
+                "postgresql" => new Npgsql.NpgsqlConnection(this.connectionString),
+                _ => throw new NotSupportedException()
+            };
+        }
+
+        /// <summary>
+        /// Provide the <see cref="DbCommand"/> based on current <see cref="databaseEngine"/>.
+        /// </summary>
+        /// <param name="command">The command to create.</param>
+        /// <param name="connection">The <see cref="DbConnection"/> to use with the command.</param>
+        /// <returns><see cref="DbCommand"/>.</returns>
+        /// <exception cref="NotSupportedException">If current <see cref="databaseEngine"/> is not supported.</exception>
+        private DbCommand GetDbCommand(string command, DbConnection connection)
+        {
+            return this.databaseEngine.ToLower() switch
+            {
+                "sqlserver" => new SqlCommand(command, connection as SqlConnection),
+                "postgresql" => new Npgsql.NpgsqlCommand(command, connection as Npgsql.NpgsqlConnection),
+                _ => throw new NotSupportedException()
+            };
+        }
     }
 }
+#pragma warning restore CA2100
