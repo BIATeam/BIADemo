@@ -70,10 +70,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         public static void Configure(IHost host)
         {
 #if BIA_FRONT_FEATURE
-            // Begin BIADemo
-            PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
-
-            // End BIADemo
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
 #endif
         }
