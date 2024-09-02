@@ -13,6 +13,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     using Microsoft.Data.SqlClient;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Database handler to track change in database and react on it. Default method is using Sql broker handler.
@@ -401,16 +402,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Handle when there is changed data in the provider <paramref name="changedData"/> list.
-        /// </summary>
-        /// <param name="changedData">The list of <see cref="DataBaseHandlerChangedData"/>.</param>
-        protected virtual void OnChangedData(List<DataBaseHandlerChangedData> changedData)
-        {
-            this.logger.LogInformation(nameof(this.OnChangedData));
-            changedData.ForEach(x => this.OnChange?.Invoke(x));
-        }
-
-        /// <summary>
         /// Produces the list of changed data based on the <paramref name="previousDataSet"/> and <paramref name="currentDataSet"/>.
         /// </summary>
         /// <param name="previousDataSet">Previous data to compare.</param>
@@ -427,7 +418,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 var previousData = previousDataDictionary[previousDataIndexKey];
                 if (!currentDataDictionary.TryGetValue(previousDataIndexKey, out Dictionary<string, object> currentData))
                 {
-                    changedData.Add(new DataBaseHandlerChangedData(ChangeType.Delete, previousData: previousData));
+                    changedData.Add(new DataBaseHandlerChangedData(DatabaseHandlerChangeType.Delete, previousData: previousData));
                     continue;
                 }
 
@@ -436,7 +427,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                     var previousDataValue = previousData[key];
                     if (!currentData.TryGetValue(key, out object currentDataValue) || !this.AreDataValueEquals(previousDataValue, currentDataValue))
                     {
-                        changedData.Add(new DataBaseHandlerChangedData(ChangeType.Modify, previousData, currentData));
+                        changedData.Add(new DataBaseHandlerChangedData(DatabaseHandlerChangeType.Modify, previousData, currentData));
                         break;
                     }
                 }
@@ -446,7 +437,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             {
                 if (!previousDataDictionary.ContainsKey(currentDataIndexKey))
                 {
-                    changedData.Add(new DataBaseHandlerChangedData(ChangeType.Add, currentData: currentDataDictionary[currentDataIndexKey]));
+                    changedData.Add(new DataBaseHandlerChangedData(DatabaseHandlerChangeType.Add, currentData: currentDataDictionary[currentDataIndexKey]));
                 }
             }
 
@@ -487,6 +478,20 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             return previousValue.Equals(currentValue);
+        }
+
+        /// <summary>
+        /// Handle when there is changed data in the provider <paramref name="changedData"/> list.
+        /// </summary>
+        /// <param name="changedData">The list of <see cref="DataBaseHandlerChangedData"/>.</param>
+        protected virtual void OnChangedData(List<DataBaseHandlerChangedData> changedData)
+        {
+            this.logger.LogInformation(nameof(this.OnChangedData));
+            changedData.ForEach(x =>
+            {
+                this.logger.LogInformation($"Changed data: {JsonConvert.SerializeObject(x)}");
+                this.OnChange?.Invoke(x);
+            });
         }
 
         /// <summary>

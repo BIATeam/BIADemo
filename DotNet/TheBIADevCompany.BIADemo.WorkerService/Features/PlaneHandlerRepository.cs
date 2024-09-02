@@ -58,7 +58,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
             }
 
             int? siteId = null;
-            if (changedData.ChangeType == ChangeType.Delete && changedData.PreviousData.TryGetValue("SiteId", out object oldSiteId))
+            if (changedData.ChangeType == DatabaseHandlerChangeType.Delete && changedData.PreviousData.TryGetValue("SiteId", out object oldSiteId))
             {
                 siteId = (int)oldSiteId;
             }

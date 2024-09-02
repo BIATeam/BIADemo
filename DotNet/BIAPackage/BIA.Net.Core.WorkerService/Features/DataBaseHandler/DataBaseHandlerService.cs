@@ -55,11 +55,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-
         /// <inheritdoc cref="IHostedService.StopAsync"/>
         public async Task StopAsync(CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");
             string message = $"databaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
@@ -67,7 +64,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
-                handlerRepositorie.Stop();
+                await handlerRepositorie.Stop();
             }
         }
     }
