@@ -33,8 +33,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   configuration.GetDBEngine("BIADemoDatabase"),
                   "SELECT * FROM [dbo].[Airports]",
                   "Id",
-                  // We use polling here instead of default Sql broker handler
-                  usePolling: true,
+                  useSqlDataBroker: configuration.GetSqlDataBroker("BIADemoDatabase"),
                   pollingInterval: TimeSpan.FromSeconds(1))
         {
         }

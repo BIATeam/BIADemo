@@ -16,7 +16,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Database handler to track change in database and react on it. Default method is using Sql broker handler.
+    /// Database handler to track change in database and react on it. Default mode is using polling handler.
     /// </summary>
     /// <typeparam name="T">Type of inherited child.</typeparam>
 #pragma warning disable CA2100
@@ -53,9 +53,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         private readonly List<SqlNotificationInfo> sqlFilterNotificationInfos;
 
         /// <summary>
-        /// Indicates if polling method should be used.
+        /// Indicates if SQL data broker mode should be used.
         /// </summary>
-        private readonly bool usePolling;
+        private readonly bool useSqlDataBroker;
 
         /// <summary>
         /// Interval of polling.
@@ -100,8 +100,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <param name="onChangeEventHandlerRequest">Database request to handle changes.</param>
         /// <param name="indexKey">Index key that must be included in the <paramref name="onChangeEventHandlerRequest"/>.</param>
         /// <param name="databaseEngine">Database engine to request.</param>
+        /// <param name="useSqlDataBroker">Optional. Indicates if SQL data broker mode should be used instead of polling.</param>
         /// <param name="sqlFilterNotificationInfos">Optional. Filter the SQL event action type. If null send all action. To use with SQL broker only.</param>
-        /// <param name="usePolling">Optional. Indicates if polling method should be used. False by default.</param>
         /// <param name="pollingInterval">Optional. Interval of polling. 5 seconds by default.</param>
         protected DatabaseHandlerRepository(
             IServiceProvider serviceProvider,
@@ -109,18 +109,18 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string databaseEngine,
             string onChangeEventHandlerRequest,
             string indexKey,
-            List<SqlNotificationInfo> sqlFilterNotificationInfos = null,
-            bool usePolling = false,
-            TimeSpan? pollingInterval = null)
+            TimeSpan? pollingInterval = null,
+            bool? useSqlDataBroker = false,
+            List<SqlNotificationInfo> sqlFilterNotificationInfos = null)
         {
             this.serviceProvider = serviceProvider;
             this.connectionString = connectionString;
             this.databaseEngine = databaseEngine;
+            this.useSqlDataBroker = useSqlDataBroker.GetValueOrDefault();
             this.onChangeEventHandlerRequest = onChangeEventHandlerRequest;
             this.indexKey = indexKey;
 
             this.sqlFilterNotificationInfos = sqlFilterNotificationInfos;
-            this.usePolling = usePolling;
             this.pollingInterval = pollingInterval ?? TimeSpan.FromSeconds(5);
             this.logger = this.serviceProvider.GetService<ILogger<T>>();
 
@@ -171,9 +171,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         protected List<SqlNotificationInfo> SqlFilterNotificationInfos => this.sqlFilterNotificationInfos;
 
         /// <summary>
-        /// Indicates if polling method should be used.
+        /// Indicates if data broker method should be used.
         /// </summary>
-        protected bool UsePolling => this.usePolling;
+        protected bool UseDataBroker => this.useSqlDataBroker;
 
         /// <summary>
         /// Interval of polling.
@@ -219,19 +219,19 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.logger.LogInformation($"{nameof(this.connectionString)} = {this.connectionString}");
             this.logger.LogInformation($"{nameof(this.databaseEngine)} = {this.databaseEngine}");
             this.logger.LogInformation($"{nameof(this.onChangeEventHandlerRequest)} = {this.OnChangeEventHandlerRequest}");
-            this.logger.LogInformation($"{nameof(this.usePolling)} = {this.usePolling}");
+            this.logger.LogInformation($"{nameof(this.useSqlDataBroker)} = {this.useSqlDataBroker}");
 
-            if (!this.IsDatabaseEngineSqlServer || this.usePolling)
+            if (this.IsDatabaseEngineSqlServer && this.useSqlDataBroker)
             {
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
-                this.PollingHandleAsync();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+                this.logger.LogInformation($"{nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
+                SqlDependency.Start(this.connectionString);
+                await this.SqlBrokerHandleAsync();
                 return;
             }
 
-            this.logger.LogInformation($"{nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
-            SqlDependency.Start(this.connectionString);
-            await this.SqlBrokerHandleAsync();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            this.PollingHandleAsync();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
         /// <inheritdoc/>
@@ -240,7 +240,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string message = $"{nameof(this.Stop)}";
             this.logger.LogInformation(message);
 
-            if (this.IsDatabaseEngineSqlServer && !this.usePolling)
+            if (this.IsDatabaseEngineSqlServer && !this.useSqlDataBroker)
             {
                 SqlDependency.Stop(this.connectionString);
             }
