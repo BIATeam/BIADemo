@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System.Data.Common;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -37,29 +38,38 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   serviceProvider,
                   configuration.GetConnectionString("BIADemoDatabase"),
                   configuration.GetDBEngine("BIADemoDatabase"),
-                  "SELECT RowVersion FROM [dbo].[Planes]",
-                  "SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC")
+                  "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
+                  "Id")
         {
-            this.OnChange += async (reader) => await this.PlaneChange(reader);
             this.clientForHubService = clientForHubService;
+            this.OnChange += async (changedData) => await this.PlaneChange(changedData);
         }
 
         /// <summary>
         /// Send message to the clients.
         /// </summary>
-        /// <param name="reader">the reader use to retrieve info send by the trigger.</param>
+        /// <param name="changedData">the data changed.</param>
         /// <returns><see cref="Task"/>.</returns>
-        public async Task PlaneChange(DbDataReader reader)
+        public async Task PlaneChange(DataBaseHandlerChangedData changedData)
         {
             if (this.clientForHubService == null)
             {
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            if (reader != null)
+            int? siteId = null;
+            if (changedData.ChangeType == ChangeType.Delete && changedData.PreviousData.TryGetValue("SiteId", out object oldSiteId))
             {
-                int siteId = reader.GetInt32(0);
-                await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+                siteId = (int)oldSiteId;
+            }
+            else if (changedData.CurrentData.TryGetValue("SiteId", out object currentSiteId))
+            {
+                siteId = (int)currentSiteId;
+            }
+
+            if (siteId.HasValue)
+            {
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.Value.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
             }
         }
     }

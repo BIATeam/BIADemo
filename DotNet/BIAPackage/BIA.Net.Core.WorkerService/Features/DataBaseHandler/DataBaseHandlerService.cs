@@ -43,7 +43,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         protected ILogger<DataBaseHandlerService> Logger => this.logger;
 
         /// <inheritdoc cref="IHostedService.StartAsync"/>
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
             string message = $"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
@@ -51,10 +51,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
-                handlerRepositorie.Start();
+                await handlerRepositorie.Start();
             }
-
-            return Task.CompletedTask;
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

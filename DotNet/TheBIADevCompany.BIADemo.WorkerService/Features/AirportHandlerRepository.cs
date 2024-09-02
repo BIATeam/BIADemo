@@ -7,9 +7,11 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
     using System.Data.Common;
+    using System.Diagnostics;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Example for handler repository using polling: a signalR event is send to client when something change in the Plane Table.
@@ -28,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   serviceProvider,
                   configuration.GetConnectionString("BIADemoDatabase"),
                   configuration.GetDBEngine("BIADemoDatabase"),
-                  "SELECT RowVersion FROM [dbo].[Airports]",
-                  "SELECT TOP (1) [Id] FROM [dbo].[Airports] ORDER BY [RowVersion] DESC",
+                  "SELECT * FROM [dbo].[Airports]",
+                  "Id",
                   // We use polling here instead of default Sql broker handler
                   usePolling: true,
                   pollingInterval: TimeSpan.FromSeconds(1))
@@ -40,13 +42,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <summary>
         /// React to airport changed.
         /// </summary>
-        /// <param name="reader">the reader use to retrieve info send by the trigger.</param>
-        public void AirportChange(DbDataReader reader)
+        /// <param name="changedData">the data changed.</param>
+        public void AirportChange(DataBaseHandlerChangedData changedData)
         {
-            if (reader != null)
-            {
-                int airportId = reader.GetInt32(0);
-            }
+            this.Logger.LogInformation($"Airport changed : {changedData.ChangeType}");
         }
     }
 }

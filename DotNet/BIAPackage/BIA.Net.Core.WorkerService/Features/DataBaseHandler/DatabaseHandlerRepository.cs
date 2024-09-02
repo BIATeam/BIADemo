@@ -42,9 +42,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         private readonly string onChangeEventHandlerRequest;
 
         /// <summary>
-        /// The read change request.
+        /// The index key of the on change event handler request.
         /// </summary>
-        private readonly string readChangeRequest;
+        private readonly string indexKey;
 
         /// <summary>
         /// The SQL filter notification infos.
@@ -77,9 +77,14 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         private DbConnection pollingDbConnection;
 
         /// <summary>
-        /// The SQL connection used by the SQL borker handler.
+        /// The SQL connection used by the SQL broker handler.
         /// </summary>
         private SqlConnection brokerSqlConnection;
+
+        /// <summary>
+        /// The previous fetched data used by tehe SQL broker handler.
+        /// </summary>
+        private List<Dictionary<string, object>> brokerPreviousData;
 
         /// <summary>
         /// Indicates weither the current instance is disposed or not.
@@ -91,10 +96,10 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="connectionString">The connectionString.</param>
-        /// <param name="onChangeEventHandlerRequest">sql request. The action is lanch if the result change.</param>
-        /// <param name="readChangeRequest">sql request to run when a change is detected, and pass it to change action. If null is send null to change action.</param>
+        /// <param name="onChangeEventHandlerRequest">Database request to handle changes.</param>
+        /// <param name="indexKey">Index key that must be included in the <paramref name="onChangeEventHandlerRequest"/>.</param>
         /// <param name="databaseEngine">Database engine to request.</param>
-        /// <param name="sqlFilterNotificationInfos">Filter the SQL event action type. If null send all action. To use with SQL broker only.</param>
+        /// <param name="sqlFilterNotificationInfos">Optional. Filter the SQL event action type. If null send all action. To use with SQL broker only.</param>
         /// <param name="usePolling">Optional. Indicates if polling method should be used. False by default.</param>
         /// <param name="pollingInterval">Optional. Interval of polling. 5 seconds by default.</param>
         protected DatabaseHandlerRepository(
@@ -102,7 +107,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string connectionString,
             string databaseEngine,
             string onChangeEventHandlerRequest,
-            string readChangeRequest,
+            string indexKey,
             List<SqlNotificationInfo> sqlFilterNotificationInfos = null,
             bool usePolling = false,
             TimeSpan? pollingInterval = null)
@@ -111,7 +116,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.connectionString = connectionString;
             this.databaseEngine = databaseEngine;
             this.onChangeEventHandlerRequest = onChangeEventHandlerRequest;
-            this.readChangeRequest = readChangeRequest;
+            this.indexKey = indexKey;
+
             this.sqlFilterNotificationInfos = sqlFilterNotificationInfos;
             this.usePolling = usePolling;
             this.pollingInterval = pollingInterval ?? TimeSpan.FromSeconds(5);
@@ -132,17 +138,17 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 throw new ArgumentNullException(nameof(onChangeEventHandlerRequest));
             }
 
-            if (string.IsNullOrEmpty(readChangeRequest))
+            if (string.IsNullOrEmpty(indexKey))
             {
-                throw new ArgumentNullException(nameof(readChangeRequest));
+                throw new ArgumentNullException(nameof(onChangeEventHandlerRequest));
             }
         }
 
         /// <summary>
         /// Format the expected action function.
         /// </summary>
-        /// <param name="reader">The reader for ligne impacted.</param>
-        public delegate void ChangeHandler(DbDataReader reader);
+        /// <param name="changedData">The <see cref="DataBaseHandlerChangedData"/>.</param>
+        public delegate void ChangeHandler(DataBaseHandlerChangedData changedData);
 
         /// <summary>
         /// The on change function.
@@ -168,11 +174,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// The SQL on change event handler request.
         /// </summary>
         protected string OnChangeEventHandlerRequest => this.onChangeEventHandlerRequest;
-
-        /// <summary>
-        /// The SQL read change request.
-        /// </summary>
-        protected string ReadChangeRequest => this.readChangeRequest;
 
         /// <summary>
         /// The SQL filter notification infos.
@@ -221,16 +222,13 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// Start the process of event handler.
-        /// </summary>
-        public virtual void Start()
+        /// <inheritdoc/>
+        public virtual async Task Start()
         {
             this.logger.LogInformation($"{nameof(this.Start)}");
             this.logger.LogInformation($"{nameof(this.connectionString)} = {this.connectionString}");
             this.logger.LogInformation($"{nameof(this.databaseEngine)} = {this.databaseEngine}");
             this.logger.LogInformation($"{nameof(this.onChangeEventHandlerRequest)} = {this.OnChangeEventHandlerRequest}");
-            this.logger.LogInformation($"{nameof(this.readChangeRequest)} = {this.ReadChangeRequest}");
             this.logger.LogInformation($"{nameof(this.usePolling)} = {this.usePolling}");
 
             if (!this.IsDatabaseEngineSqlServer || this.usePolling)
@@ -243,13 +241,11 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             this.logger.LogInformation($"{nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
             SqlDependency.Start(this.connectionString);
-            this.SqlBrokerHandle();
+            await this.SqlBrokerHandle();
         }
 
-        /// <summary>
-        /// Stop the process of event handler.
-        /// </summary>
-        public virtual void Stop()
+        /// <inheritdoc/>
+        public virtual Task Stop()
         {
             string message = $"{nameof(this.Stop)}";
             this.logger.LogInformation(message);
@@ -260,24 +256,28 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             this.Dispose(true);
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Handle the changes using SQL broker.
         /// </summary>
         /// <param name="e">The <see cref="SqlNotificationEventArgs"/> instance containing the event data.</param>
-        protected virtual void SqlBrokerHandle()
+        /// <returns>A completed <see cref="Task"/>.</returns>
+        protected virtual async Task SqlBrokerHandle()
         {
             this.logger.LogInformation($"{nameof(this.SqlBrokerHandle)}");
 
             this.brokerSqlConnection = new SqlConnection(this.connectionString);
-            using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.brokerSqlConnection);
-            this.brokerSqlConnection.Open();
+            await this.brokerSqlConnection.OpenAsync();
 
+            using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.brokerSqlConnection);
             var sqlDependency = new SqlDependency(command);
             this.logger.LogInformation($"{nameof(sqlDependency)}.OnChange += new OnChangeEventHandler(this.{nameof(this.OnSqlDependencyChange)})");
-            sqlDependency.OnChange += this.OnSqlDependencyChange;
-            command.ExecuteNonQuery();
+            sqlDependency.OnChange += async (s, e) => await this.OnSqlDependencyChange(s, e);
+            await command.ExecuteNonQueryAsync();
+
+            this.brokerPreviousData = await this.FetchDataAsync(this.brokerSqlConnection);
         }
 
         /// <summary>
@@ -285,7 +285,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="SqlNotificationEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnSqlDependencyChange(object sender, SqlNotificationEventArgs e)
+        /// <returns>A completed <see cref="Task"/>.</returns>
+        protected virtual async Task OnSqlDependencyChange(object sender, SqlNotificationEventArgs e)
         {
             this.logger.LogInformation($"{nameof(this.OnSqlDependencyChange)}");
 
@@ -295,19 +296,19 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 return;
             }
 
-            using var command = new SqlCommand(this.ReadChangeRequest, this.brokerSqlConnection);
-            using var reader = command.ExecuteReader();
-            this.logger.LogInformation($"reader.HasRows = {reader.HasRows}");
-            if (reader.Read() && this.IsValidSqlNotificationEvent(e))
+            var currentData = await this.FetchDataAsync(this.brokerSqlConnection);
+            var changedData = this.GetChangedData(this.brokerPreviousData, currentData);
+            if (changedData.Count != 0)
             {
-                this.logger.LogInformation($"this.{nameof(this.OnChange)}(reader)");
-                this.OnChange?.Invoke(reader);
+                this.OnChangedData(changedData);
             }
 
-            this.brokerSqlConnection.Close();
-            this.brokerSqlConnection.Dispose();
+            this.brokerPreviousData = currentData;
 
-            this.SqlBrokerHandle();
+            await this.brokerSqlConnection.CloseAsync();
+            await this.brokerSqlConnection.DisposeAsync();
+
+            await this.SqlBrokerHandle();
         }
 
         /// <summary>
@@ -338,24 +339,25 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             this.pollingCancellationToken = new CancellationTokenSource();
 
-            this.pollingDbConnection = this.GetPollingDataDbConnection();
+            this.pollingDbConnection = this.GetDbConnection();
 
             try
             {
                 await this.pollingDbConnection.OpenAsync();
-                var previousData = await this.FetchPollingDataAsync();
+                var previousData = await this.FetchDataAsync(this.pollingDbConnection);
 
                 while (!this.pollingCancellationToken.IsCancellationRequested)
                 {
                     try
                     {
-                        var newData = await this.FetchPollingDataAsync();
-                        if (this.HasChangedPollingData(previousData, newData))
+                        var currentData = await this.FetchDataAsync(this.pollingDbConnection);
+                        var changedData = this.GetChangedData(previousData, currentData);
+                        if (changedData.Count != 0)
                         {
-                            await this.OnChangesPollingDataAsync();
+                            this.OnChangedData(changedData);
                         }
 
-                        previousData = newData;
+                        previousData = currentData;
                     }
                     catch (Exception ex)
                     {
@@ -374,14 +376,15 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Retrive data based on the <see cref="OnChangeEventHandlerRequest"/> for polling.
+        /// Retrive data based on the <see cref="OnChangeEventHandlerRequest"/>.
         /// </summary>
-        /// <returns>A list of data rows wrapped into Dictionnary of string|object, string corresponding to column name, object the column's value.</returns>
-        protected virtual async Task<List<Dictionary<string, object>>> FetchPollingDataAsync()
+        /// <param name="dbConnection">The <see cref="DbConnection"/> to use to execute the fetch command.</param>
+        /// <returns>A list of data rows wrapped into <see cref="Dictionary{TKey, TValue}"/>, string corresponding to column name, object the column's value.</returns>
+        protected virtual async Task<List<Dictionary<string, object>>> FetchDataAsync(DbConnection dbConnection)
         {
             var data = new List<Dictionary<string, object>>();
 
-            using var command = this.GetPollingDataDbCommand(this.OnChangeEventHandlerRequest, this.pollingDbConnection);
+            using var command = this.GetDbCommand(this.OnChangeEventHandlerRequest, dbConnection);
             using var reader = await command.ExecuteReaderAsync();
             while (await reader.ReadAsync())
             {
@@ -398,76 +401,100 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Task executed when changes are detected while polling.
-        /// Execute the <see cref="readChangeRequest"/> and raise the <see cref="OnChange"/> event.
+        /// Handle when there is changed data in the provider <paramref name="changedData"/> list.
         /// </summary>
-        /// <returns><see cref="Task"/>.</returns>
-        protected virtual async Task OnChangesPollingDataAsync()
+        /// <param name="changedData">The list of <see cref="DataBaseHandlerChangedData"/>.</param>
+        protected virtual void OnChangedData(List<DataBaseHandlerChangedData> changedData)
         {
-            this.logger.LogInformation(nameof(this.OnChangesPollingDataAsync));
-
-            using var command = this.GetPollingDataDbCommand(this.ReadChangeRequest, this.pollingDbConnection);
-            using var reader = await command.ExecuteReaderAsync();
-            if (await reader.ReadAsync())
-            {
-                this.OnChange?.Invoke(reader);
-                return;
-            }
-
-            this.OnChange?.Invoke(null);
+            this.logger.LogInformation(nameof(this.OnChangedData));
+            changedData.ForEach(x => this.OnChange?.Invoke(x));
         }
 
         /// <summary>
-        /// Check if the <paramref name="previousData"/> and <paramref name="newData"/> are equals when polling.
+        /// Produces the list of changed data based on the <paramref name="previousDataSet"/> and <paramref name="currentDataSet"/>.
         /// </summary>
-        /// <param name="previousData">Previous polling data to compare.</param>
-        /// <param name="newData">New polling data to compare.</param>
-        /// <returns>A <see cref="bool"/> that indicates if any changed has opered.</returns>
-        protected virtual bool HasChangedPollingData(List<Dictionary<string, object>> previousData, List<Dictionary<string, object>> newData)
+        /// <param name="previousDataSet">Previous data to compare.</param>
+        /// <param name="currentDataSet">Current data to compare.</param>
+        /// <returns>The list of <see cref="DataBaseHandlerChangedData"/>.</returns>
+        protected virtual List<DataBaseHandlerChangedData> GetChangedData(List<Dictionary<string, object>> previousDataSet, List<Dictionary<string, object>> currentDataSet)
         {
-            if (previousData.Count != newData.Count)
-            {
-                return true;
-            }
+            var changedData = new List<DataBaseHandlerChangedData>();
+            var previousDataDictionary = previousDataSet.ToDictionary(data => data[this.indexKey].ToString());
+            var currentDataDictionary = currentDataSet.ToDictionary(data => data[this.indexKey].ToString());
 
-            for (int rowIndex = 0; rowIndex < previousData.Count; rowIndex++)
+            foreach (var previousDataIndexKey in previousDataDictionary.Keys)
             {
-                var previousRow = previousData[rowIndex];
-                var newRow = newData[rowIndex];
-                foreach (var columnName in previousRow.Select(x => x.Key))
+                var previousData = previousDataDictionary[previousDataIndexKey];
+                if (!currentDataDictionary.TryGetValue(previousDataIndexKey, out Dictionary<string, object> currentData))
                 {
-                    if (!newRow.TryGetValue(columnName, out object newValue) || !this.ArePollingDataValueEquals(previousRow[columnName], newValue))
+                    changedData.Add(new DataBaseHandlerChangedData(ChangeType.Delete, previousData: previousData));
+                    continue;
+                }
+
+                foreach (var key in previousData.Keys)
+                {
+                    var previousDataValue = previousData[key];
+                    if (!currentData.TryGetValue(key, out object currentDataValue) || !this.AreDataValueEquals(previousDataValue, currentDataValue))
                     {
-                        return true;
+                        changedData.Add(new DataBaseHandlerChangedData(ChangeType.Modify, previousData, currentData));
+                        break;
                     }
                 }
             }
 
-            return false;
-        }
-
-        /// <summary>
-        /// Check if the value of polling's data are equals.
-        /// </summary>
-        /// <param name="previousValue">Previous polling data value.</param>
-        /// <param name="newValue">New polling data value.</param>
-        /// <returns>A <see cref="bool"/> that indicates if the data are equals.</returns>
-        protected virtual bool ArePollingDataValueEquals(object previousValue, object newValue)
-        {
-            if (previousValue is byte[] previousValueAsByteArray)
+            foreach (var currentDataIndexKey in currentDataDictionary.Keys)
             {
-                return previousValueAsByteArray.SequenceEqual((byte[])newValue);
+                if (!previousDataDictionary.ContainsKey(currentDataIndexKey))
+                {
+                    changedData.Add(new DataBaseHandlerChangedData(ChangeType.Add, currentData: currentDataDictionary[currentDataIndexKey]));
+                }
             }
 
-            return previousValue.Equals(newValue);
+            return changedData;
         }
 
         /// <summary>
-        /// Provide the <see cref="DbConnection"/> based on current <see cref="databaseEngine"/> for polling data.
+        /// Check if the value of data are equals.
+        /// </summary>
+        /// <param name="previousValue">Previous data value.</param>
+        /// <param name="currentValue">Current data value.</param>
+        /// <returns>A <see cref="bool"/> that indicates if the data are equals.</returns>
+        protected virtual bool AreDataValueEquals(object previousValue, object currentValue)
+        {
+            if (previousValue == null || currentValue == null)
+            {
+                return previousValue == currentValue;
+            }
+
+            if (previousValue is byte[] previousValueAsByteArray && currentValue is byte[] currentValueAsByteArray)
+            {
+                return previousValueAsByteArray.SequenceEqual(currentValueAsByteArray);
+            }
+
+            if (previousValue is float previousValueAsFloat && currentValue is float currentValueAsFloat)
+            {
+                return Math.Abs(previousValueAsFloat - currentValueAsFloat) < float.Epsilon;
+            }
+
+            if (previousValue is double previousValueAsDouble && currentValue is double currentValueAsDouble)
+            {
+                return Math.Abs(previousValueAsDouble - currentValueAsDouble) < double.Epsilon;
+            }
+
+            if (previousValue is string previousValueAsString && currentValue is string currentValueAsString)
+            {
+                return string.Equals(previousValueAsString, currentValueAsString, StringComparison.OrdinalIgnoreCase);
+            }
+
+            return previousValue.Equals(currentValue);
+        }
+
+        /// <summary>
+        /// Provide the <see cref="DbConnection"/> based on current <see cref="databaseEngine"/>.
         /// </summary>
         /// <returns><see cref="DbConnection"/>.</returns>
         /// <exception cref="NotSupportedException">If current <see cref="databaseEngine"/> is not supported.</exception>
-        protected virtual DbConnection GetPollingDataDbConnection()
+        protected virtual DbConnection GetDbConnection()
         {
             return this.databaseEngine.ToLower() switch
             {
@@ -478,13 +505,13 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Provide the <see cref="DbCommand"/> based on current <see cref="databaseEngine"/> for polling data.
+        /// Provide the <see cref="DbCommand"/> based on current <see cref="databaseEngine"/>.
         /// </summary>
         /// <param name="command">The command to create.</param>
         /// <param name="connection">The <see cref="DbConnection"/> to use with the command.</param>
         /// <returns><see cref="DbCommand"/>.</returns>
         /// <exception cref="NotSupportedException">If current <see cref="databaseEngine"/> is not supported.</exception>
-        protected virtual DbCommand GetPollingDataDbCommand(string command, DbConnection connection)
+        protected virtual DbCommand GetDbCommand(string command, DbConnection connection)
         {
             return this.databaseEngine.ToLower() switch
             {
