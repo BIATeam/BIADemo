@@ -42,15 +42,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   "Id")
         {
             this.clientForHubService = clientForHubService;
-            this.OnChange += async (changedData) => await this.PlaneChange(changedData);
         }
 
-        /// <summary>
-        /// Send message to the clients.
-        /// </summary>
-        /// <param name="changedData">the data changed.</param>
-        /// <returns><see cref="Task"/>.</returns>
-        public async Task PlaneChange(DataBaseHandlerChangedData changedData)
+        /// <inheritdoc/>
+        protected override async Task OnChange(DataBaseHandlerChangedData changedData)
         {
             if (this.clientForHubService == null)
             {

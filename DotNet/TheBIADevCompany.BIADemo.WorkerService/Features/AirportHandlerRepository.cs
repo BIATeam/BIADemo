@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System;
     using System.Data.Common;
     using System.Diagnostics;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
@@ -36,16 +37,13 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   usePolling: true,
                   pollingInterval: TimeSpan.FromSeconds(1))
         {
-            this.OnChange += this.AirportChange;
         }
 
-        /// <summary>
-        /// React to airport changed.
-        /// </summary>
-        /// <param name="changedData">the data changed.</param>
-        public void AirportChange(DataBaseHandlerChangedData changedData)
+        /// <inheritdoc/>
+        protected override Task OnChange(DataBaseHandlerChangedData changedData)
         {
             this.Logger.LogInformation($"Airport changed : {changedData.ChangeType}");
+            return Task.CompletedTask;
         }
     }
 }

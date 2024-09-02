@@ -146,17 +146,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Format the expected action function.
-        /// </summary>
-        /// <param name="changedData">The <see cref="DataBaseHandlerChangedData"/>.</param>
-        public delegate void ChangeHandler(DataBaseHandlerChangedData changedData);
-
-        /// <summary>
-        /// The on change function.
-        /// </summary>
-        protected event ChangeHandler OnChange;
-
-        /// <summary>
         /// The service provider.
         /// </summary>
         protected IServiceProvider ServiceProvider => this.serviceProvider;
@@ -199,22 +188,22 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The polling cancellation token to stop the polling task.
         /// </summary>
-        protected CancellationTokenSource PollingCancellationToken => this.pollingCancellationToken;
+        protected virtual CancellationTokenSource PollingCancellationToken => this.pollingCancellationToken;
 
         /// <summary>
         /// The Database Connection use by the polling handler.
         /// </summary>
-        protected DbConnection PollingDbConnection => this.pollingDbConnection;
+        protected virtual DbConnection PollingDbConnection => this.pollingDbConnection;
 
         /// <summary>
         /// The SQL connection used by the SQL borker handler.
         /// </summary>
-        protected SqlConnection BrokerSqlConnection => this.brokerSqlConnection;
+        protected virtual SqlConnection BrokerSqlConnection => this.brokerSqlConnection;
 
         /// <summary>
         /// Indicates if the database engine is SQL Server.
         /// </summary>
-        protected bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals("sqlserver", StringComparison.CurrentCultureIgnoreCase);
+        protected virtual bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals("sqlserver", StringComparison.CurrentCultureIgnoreCase);
 
         /// <inheritdoc/>
         public void Dispose()
@@ -261,6 +250,13 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
+        /// Called when the handler detect changes using the <see cref="OnChangeEventHandlerRequest"/>.
+        /// </summary>
+        /// <param name="changedData">The content of the <see cref="DataBaseHandlerChangedData"/>.</param>
+        /// <returns>Completed <see cref="Task"/>.</returns>
+        protected abstract Task OnChange(DataBaseHandlerChangedData changedData);
+
+        /// <summary>
         /// Handle the changes using SQL broker.
         /// </summary>
         /// <param name="e">The <see cref="SqlNotificationEventArgs"/> instance containing the event data.</param>
@@ -272,13 +268,13 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             this.brokerSqlConnection = new SqlConnection(this.connectionString);
             await this.brokerSqlConnection.OpenAsync();
 
+            this.brokerPreviousData = await this.FetchDataAsync(this.brokerSqlConnection);
+
             using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.brokerSqlConnection);
             var sqlDependency = new SqlDependency(command);
             this.logger.LogInformation($"{nameof(sqlDependency)}.OnChange += new OnChangeEventHandler(this.{nameof(this.OnSqlDependencyChange)})");
             sqlDependency.OnChange += async (s, e) => await this.OnSqlDependencyChange(s, e);
             await command.ExecuteNonQueryAsync();
-
-            this.brokerPreviousData = await this.FetchDataAsync(this.brokerSqlConnection);
         }
 
         /// <summary>
@@ -298,12 +294,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             var currentData = await this.FetchDataAsync(this.brokerSqlConnection);
-            var changedData = this.GetChangedData(this.brokerPreviousData, currentData);
-            if (changedData.Count != 0)
-            {
-                this.OnChangedData(changedData);
-            }
-
+            this.HanldeChangedData(this.brokerPreviousData, currentData);
             this.brokerPreviousData = currentData;
 
             await this.brokerSqlConnection.CloseAsync();
@@ -352,12 +343,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                     try
                     {
                         var currentData = await this.FetchDataAsync(this.pollingDbConnection);
-                        var changedData = this.GetChangedData(previousData, currentData);
-                        if (changedData.Count != 0)
-                        {
-                            this.OnChangedData(changedData);
-                        }
-
+                        this.HanldeChangedData(previousData, currentData);
                         previousData = currentData;
                     }
                     catch (Exception ex)
@@ -377,7 +363,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         }
 
         /// <summary>
-        /// Retrive data based on the <see cref="OnChangeEventHandlerRequest"/>.
+        /// Retrieve data based on the <see cref="OnChangeEventHandlerRequest"/>.
         /// </summary>
         /// <param name="dbConnection">The <see cref="DbConnection"/> to use to execute the fetch command.</param>
         /// <returns>A list of data rows wrapped into <see cref="Dictionary{TKey, TValue}"/>, string corresponding to column name, object the column's value.</returns>
@@ -399,6 +385,20 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// Handle any changed between the <paramref name="previousDataSet"/> and the <paramref name="currentDataSet"/>.
+        /// </summary>
+        /// <param name="previousDataSet">Set of previous data to compare.</param>
+        /// <param name="currentDataSet">Set of current data to compare.</param>
+        protected virtual void HanldeChangedData(List<Dictionary<string, object>> previousDataSet, List<Dictionary<string, object>> currentDataSet)
+        {
+            this.GetChangedData(previousDataSet, currentDataSet).ForEach(x =>
+            {
+                this.logger.LogInformation($"Changed data: {JsonConvert.SerializeObject(x)}");
+                this.OnChange(x);
+            });
         }
 
         /// <summary>
@@ -478,20 +478,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             }
 
             return previousValue.Equals(currentValue);
-        }
-
-        /// <summary>
-        /// Handle when there is changed data in the provider <paramref name="changedData"/> list.
-        /// </summary>
-        /// <param name="changedData">The list of <see cref="DataBaseHandlerChangedData"/>.</param>
-        protected virtual void OnChangedData(List<DataBaseHandlerChangedData> changedData)
-        {
-            this.logger.LogInformation(nameof(this.OnChangedData));
-            changedData.ForEach(x =>
-            {
-                this.logger.LogInformation($"Changed data: {JsonConvert.SerializeObject(x)}");
-                this.OnChange?.Invoke(x);
-            });
         }
 
         /// <summary>
