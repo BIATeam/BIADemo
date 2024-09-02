@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Example for handler repository using polling: a signalR event is send to client when something change in the Plane Table.
+    /// Example for handler repository using polling.
     /// </summary>
     public class AirportHandlerRepository : DatabaseHandlerRepository<AirportHandlerRepository>
     {

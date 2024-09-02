@@ -231,7 +231,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             this.logger.LogInformation($"{nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
             SqlDependency.Start(this.connectionString);
-            await this.SqlBrokerHandle();
+            await this.SqlBrokerHandleAsync();
         }
 
         /// <inheritdoc/>
@@ -261,9 +261,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         /// <param name="e">The <see cref="SqlNotificationEventArgs"/> instance containing the event data.</param>
         /// <returns>A completed <see cref="Task"/>.</returns>
-        protected virtual async Task SqlBrokerHandle()
+        protected virtual async Task SqlBrokerHandleAsync()
         {
-            this.logger.LogInformation($"{nameof(this.SqlBrokerHandle)}");
+            this.logger.LogInformation($"{nameof(this.SqlBrokerHandleAsync)}");
 
             this.brokerSqlConnection = new SqlConnection(this.connectionString);
             await this.brokerSqlConnection.OpenAsync();
@@ -300,7 +300,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             await this.brokerSqlConnection.CloseAsync();
             await this.brokerSqlConnection.DisposeAsync();
 
-            await this.SqlBrokerHandle();
+            await this.SqlBrokerHandleAsync();
         }
 
         /// <summary>
