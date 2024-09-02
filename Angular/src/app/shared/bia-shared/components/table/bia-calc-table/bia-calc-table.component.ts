@@ -177,13 +177,9 @@ export class BiaCalcTableComponent
     this.initEditableRow(null);
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(
-    _: KeyboardEvent
-  ) {
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
     this.escape();
   }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
 
   public onSubmit() {
     throw new Error('onSubmit not Implemented');
