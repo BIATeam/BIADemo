@@ -5,7 +5,6 @@
 namespace BIA.Net.Core.Common.Exceptions
 {
     using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// The data exception.

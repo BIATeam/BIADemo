@@ -1,7 +1,7 @@
 ﻿// <copyright file="UserContext.cs" company="BIA">
 //     Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
-namespace BIA.Net.Core.Domain.Service
+namespace BIA.Net.Core.Domain.User
 {
     using System;
     using System.Collections.Generic;

@@ -5,22 +5,14 @@
 
 namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
-    using System.Collections.Generic;
     using System.Security.Principal;
-    using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.Specification;
-    using Microsoft.AspNetCore.Http;
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for AircraftMaintenanceCompany.

@@ -7,10 +7,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
     using System.Configuration;
-    using System.Data.Common;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;

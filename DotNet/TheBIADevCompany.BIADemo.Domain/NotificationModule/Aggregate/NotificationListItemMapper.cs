@@ -9,13 +9,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>

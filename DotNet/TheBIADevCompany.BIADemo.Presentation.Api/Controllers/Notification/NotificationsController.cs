@@ -10,12 +10,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Service;
 #if UseHubForClientInNotification
     using BIA.Net.Core.Domain.RepoContract;
 #endif

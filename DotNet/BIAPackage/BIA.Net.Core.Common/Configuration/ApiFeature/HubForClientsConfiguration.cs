@@ -4,10 +4,6 @@
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Api Feature Hub for Client Coniguration.
     /// </summary>

@@ -9,12 +9,9 @@ namespace BIA.Net.Core.Domain
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Security.Principal;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The class used to define the base mapper.

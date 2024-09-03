@@ -1,11 +1,9 @@
-﻿namespace BIA.Net.Core.Common.Enum
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// <copyright file="FrontUserExceptionErrorMessageKey.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
 
+namespace BIA.Net.Core.Common.Enum
+{
     /// <summary>
     /// Enum of availables front user exception error message keys.
     /// </summary>

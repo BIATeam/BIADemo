@@ -6,7 +6,6 @@ namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
     using System.Linq;
-    using BIA.Net.Core.Domain.Dto.Option;
     using Newtonsoft.Json;
 
     /// <summary>

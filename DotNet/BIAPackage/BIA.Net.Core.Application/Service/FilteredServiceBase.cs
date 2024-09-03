@@ -2,7 +2,7 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Service
+namespace BIA.Net.Core.Application.Service
 {
     using System;
     using System.Collections.Generic;
@@ -857,6 +857,7 @@ namespace BIA.Net.Core.Domain.Service
         /// <returns><see cref="Exception"/>.</returns>
         protected virtual Exception HandleFrontUserException(FrontUserException frontUserException)
         {
+#pragma warning disable SA1010 // Opening square brackets should be spaced correctly
             return frontUserException.ErrorMessageKey switch
             {
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
@@ -868,6 +869,7 @@ namespace BIA.Net.Core.Domain.Service
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 _ => frontUserException
             };
+#pragma warning restore SA1010 // Opening square brackets should be spaced correctly
         }
     }
 }

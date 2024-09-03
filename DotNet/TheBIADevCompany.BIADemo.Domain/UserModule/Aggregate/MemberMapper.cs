@@ -9,12 +9,10 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using BIA.Net.Core.Domain.User;
 
     /// <summary>
     /// The mapper used for member.

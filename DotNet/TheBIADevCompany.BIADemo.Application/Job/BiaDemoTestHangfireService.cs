@@ -9,12 +9,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using Hangfire.Server;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;

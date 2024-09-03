@@ -8,7 +8,6 @@ using BIA.Net.Core.Application.Authentication;
 using BIA.Net.Core.Common.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;

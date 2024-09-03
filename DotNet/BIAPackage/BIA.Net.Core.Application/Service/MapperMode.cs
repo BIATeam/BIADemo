@@ -2,13 +2,8 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Service
+namespace BIA.Net.Core.Application.Service
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using BIA.Net.Core.Domain.Specification;
-
     /// <summary>
     /// Different type of mapper. This list is custommizable so it should be string. For this reason it is not an enum.
     /// </summary>

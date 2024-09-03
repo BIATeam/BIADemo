@@ -5,7 +5,6 @@
 namespace BIA.Net.Core.Domain.Dto.User
 {
     using System.Collections.Generic;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>

@@ -1,12 +1,10 @@
-﻿namespace BIA.Net.Core.Common.Helpers
+﻿// <copyright file="ExceptionHelper.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Common.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Common.Exceptions;
 
     /// <summary>
     /// Helpers for exceptions.
