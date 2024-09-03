@@ -24,8 +24,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInPlane
     using Microsoft.AspNetCore.SignalR;
-    using Microsoft.Extensions.Logging;
 #endif
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
