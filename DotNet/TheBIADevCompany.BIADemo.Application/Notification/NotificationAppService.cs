@@ -1,8 +1,9 @@
-// <copyright file="NotificationDomainService.cs" company="TheBIADevCompany">
+// BIADemo only
+// <copyright file="NotificationAppService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
+namespace TheBIADevCompany.BIADemo.Application.Notification
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -12,7 +13,6 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
@@ -22,9 +22,11 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used to manage views.
+    /// The application service used for the notifications.
     /// </summary>
-    public class NotificationDomainService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationDomainService
+    public class NotificationAppService :
+        CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>,
+        INotificationAppService
     {
         /// <summary>
         /// The claims principal.
@@ -37,14 +39,14 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         private readonly IClientForHubRepository clientForHubService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationDomainService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="clientForHubService">Client for hub.</param>
         /// <param name="queryCustomizer">Query customizer to include permission at update.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationDomainService(
+        public NotificationAppService(
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,

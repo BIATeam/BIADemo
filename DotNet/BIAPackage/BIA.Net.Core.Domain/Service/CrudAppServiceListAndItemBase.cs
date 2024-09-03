@@ -25,7 +25,9 @@ namespace BIA.Net.Core.Domain.Service
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
     /// <typeparam name="TMapper">The mapper used between entity and DTO.</typeparam>
     /// <typeparam name="TMapperListItem">The mapper used between entity and DTO for item in list.</typeparam>
-    public abstract class CrudAppServiceListAndItemBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem> : CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper>
+    public abstract class CrudAppServiceListAndItemBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto, TMapper, TMapperListItem> :
+        CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper>,
+        ICrudAppServiceListAndItemBase<TDto, TDtoListItem, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TDtoListItem : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()

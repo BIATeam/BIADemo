@@ -7,10 +7,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -22,10 +20,10 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
@@ -34,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     /// </summary>
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
-        private readonly INotificationDomainService notificationAppService;
+        private readonly INotificationAppService notificationAppService;
 
         private readonly ITGenericRepository<Team, int> teamRepository;
 
@@ -52,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
-            INotificationDomainService notificationAppService,
+            INotificationAppService notificationAppService,
             ITGenericRepository<Team, int> teamRepository,
             IPlaneAppService planeAppService)
             : base(configuration, logger)

@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     /// <summary>
     /// The class representing a NotificationRepository.
     /// </summary>
-    public class MailRepository
+    public class MailRepository : IMailRepository
     {
         /// <summary>
         /// The configuration of the BiaNet section.
