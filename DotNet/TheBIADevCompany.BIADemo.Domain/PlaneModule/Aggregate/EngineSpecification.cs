@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The specifications of the member entity.

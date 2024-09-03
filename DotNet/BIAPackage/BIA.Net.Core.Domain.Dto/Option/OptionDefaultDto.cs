@@ -4,8 +4,6 @@
 
 namespace BIA.Net.Core.Domain.Dto.Option
 {
-    using BIA.Net.Core.Domain.Dto.Base;
-
     /// <summary>
     /// The DTO used to represent a airport.
     /// </summary>

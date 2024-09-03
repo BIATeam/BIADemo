@@ -6,8 +6,6 @@
 namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
-    using System.Data.Common;
-    using System.Diagnostics;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -24,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// Constructor Set the trigger request.
         /// </summary>
         /// <param name="configuration">the project configuration.</param>
-        /// <param name="clientForHubService">the client hub service.</param>
         /// <param name="serviceProvider">the service provider.</param>
         public AirportHandlerRepository(IConfiguration configuration, IServiceProvider serviceProvider)
             : base(

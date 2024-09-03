@@ -4,12 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Error
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// Class that contains the translation for an error on a language.
     /// </summary>

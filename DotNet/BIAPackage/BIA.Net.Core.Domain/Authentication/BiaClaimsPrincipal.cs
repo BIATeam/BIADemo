@@ -6,10 +6,7 @@ namespace BIA.Net.Core.Domain.Authentication
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Runtime.InteropServices;
     using System.Security.Claims;
-    using System.Security.Principal;
-    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Helpers;
     using Newtonsoft.Json;
 

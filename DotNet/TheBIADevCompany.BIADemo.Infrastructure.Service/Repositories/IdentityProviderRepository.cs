@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Meziantou.Framework.Win32;
-    using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;

@@ -5,7 +5,6 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>

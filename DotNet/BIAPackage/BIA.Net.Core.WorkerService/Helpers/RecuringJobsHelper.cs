@@ -7,11 +7,9 @@ namespace BIA.Net.Core.WorkerService
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using Hangfire;
     using Hangfire.Storage;
     using Hangfire.Storage.Monitoring;
-    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// Helper for recurring jobs.

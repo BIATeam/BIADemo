@@ -11,26 +11,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMember
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
 #endif
-    using BIA.Net.Presentation.Api.Controllers.Base;
-    using Microsoft.AspNetCore.Authorization;
+    using BIA.Net.Core.Domain.User;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInMember
-    using Microsoft.AspNetCore.SignalR;
-    using Microsoft.Extensions.Options;
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base;

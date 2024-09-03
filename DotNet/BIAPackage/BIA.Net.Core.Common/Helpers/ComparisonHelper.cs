@@ -4,10 +4,6 @@
 
 namespace BIA.Net.Core.Common.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Comparison Helper.
     /// </summary>

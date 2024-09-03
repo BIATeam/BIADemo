@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
 {
-    using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;

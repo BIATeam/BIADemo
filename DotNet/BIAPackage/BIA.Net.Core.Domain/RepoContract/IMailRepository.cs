@@ -1,4 +1,4 @@
-// <copyright file="INotification.cs" company="BIA">
+// <copyright file="IMailRepository.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

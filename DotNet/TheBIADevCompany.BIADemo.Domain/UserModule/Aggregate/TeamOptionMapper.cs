@@ -5,11 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for team option.

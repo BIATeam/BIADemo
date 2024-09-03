@@ -4,12 +4,7 @@
 
 namespace BIA.Net.Core.Domain
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// The class used to define the base mapper.

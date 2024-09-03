@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -18,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;

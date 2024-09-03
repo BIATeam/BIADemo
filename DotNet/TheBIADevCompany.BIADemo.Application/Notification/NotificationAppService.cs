@@ -9,13 +9,13 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;

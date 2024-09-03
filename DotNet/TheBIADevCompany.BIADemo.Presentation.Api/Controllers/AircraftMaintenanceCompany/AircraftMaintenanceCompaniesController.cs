@@ -50,7 +50,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// </summary>
         /// <param name="aircraftMaintenanceCompaniesService">The AircraftMaintenanceCompany application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInAircraftMaintenanceCompany
         public AircraftMaintenanceCompaniesController(
             IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService, IClientForHubRepository clientForHubService)

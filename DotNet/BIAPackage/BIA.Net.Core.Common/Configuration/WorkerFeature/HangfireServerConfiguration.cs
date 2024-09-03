@@ -3,10 +3,6 @@
 // </copyright>
 namespace BIA.Net.Core.Common.Configuration.WorkerFeature
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
     /// <summary>
     /// Hangfire Server Configuration.
     /// </summary>

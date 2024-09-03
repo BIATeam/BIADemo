@@ -5,20 +5,9 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Security.Principal;
-    using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>

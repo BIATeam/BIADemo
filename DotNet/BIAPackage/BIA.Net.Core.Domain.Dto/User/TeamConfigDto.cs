@@ -4,11 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
-    using System;
-    using System.Collections.Generic;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used for notifications.

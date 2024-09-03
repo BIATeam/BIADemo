@@ -8,12 +8,10 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System;
 
     // Begin BIADemo
-    using System.Security.Cryptography;
 
     // End BIADemo
     using System.Threading;
     using System.Threading.Tasks;
-    using BIA.Net.Core.WorkerService;
     using Hangfire;
 
     // Begin BIADemo
