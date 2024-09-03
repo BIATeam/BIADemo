@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// Example for handler repository using polling.
+    /// Example for handler repository using polling each seconds.
     /// </summary>
     public class AirportHandlerRepository : DatabaseHandlerRepository<AirportHandlerRepository>
     {
@@ -31,9 +31,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   serviceProvider,
                   configuration.GetConnectionString("BIADemoDatabase"),
                   configuration.GetDBEngine("BIADemoDatabase"),
-                  "SELECT * FROM [dbo].[Airports]",
+                  "SELECT Id, Name, City FROM [dbo].[Airports]",
                   "Id",
-                  useSqlDataBroker: configuration.GetSqlDataBroker("BIADemoDatabase"),
                   pollingInterval: TimeSpan.FromSeconds(1))
         {
         }

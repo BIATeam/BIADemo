@@ -16,12 +16,23 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Database handler to track change in database and react on it. Default mode is using polling handler.
+    /// Database handler to track change in database and react on it.
+    /// Default mode is using polling handler.
     /// </summary>
     /// <typeparam name="T">Type of inherited child.</typeparam>
 #pragma warning disable CA2100
     public abstract class DatabaseHandlerRepository<T> : IDatabaseHandlerRepository, IDisposable
     {
+        /// <summary>
+        /// Identifier of database engine SQL Server.
+        /// </summary>
+        protected const string DbEngineSqlServer = "sqlserver";
+
+        /// <summary>
+        /// Identifier of database engine PotgreSQL.
+        /// </summary>
+        protected const string DbEnginePostgreSql = "postgresql";
+
         /// <summary>
         /// The service provider.
         /// </summary>
@@ -203,7 +214,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// Indicates if the database engine is SQL Server.
         /// </summary>
-        protected virtual bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals("sqlserver", StringComparison.CurrentCultureIgnoreCase);
+        protected virtual bool IsDatabaseEngineSqlServer => this.databaseEngine.Equals(DbEngineSqlServer, StringComparison.CurrentCultureIgnoreCase);
 
         /// <inheritdoc/>
         public void Dispose()
@@ -216,20 +227,17 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public virtual async Task Start()
         {
             this.logger.LogInformation($"{nameof(this.Start)}");
-            this.logger.LogInformation($"{nameof(this.connectionString)} = {this.connectionString}");
-            this.logger.LogInformation($"{nameof(this.databaseEngine)} = {this.databaseEngine}");
-            this.logger.LogInformation($"{nameof(this.onChangeEventHandlerRequest)} = {this.OnChangeEventHandlerRequest}");
-            this.logger.LogInformation($"{nameof(this.useSqlDataBroker)} = {this.useSqlDataBroker}");
 
             if (this.IsDatabaseEngineSqlServer && this.useSqlDataBroker)
             {
-                this.logger.LogInformation($"{nameof(SqlDependency)}.{nameof(SqlDependency.Start)}");
+                this.logger.LogInformation("Using SQL Data Broker mode");
                 SqlDependency.Start(this.connectionString);
                 await this.SqlBrokerHandleAsync();
                 return;
             }
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
+            this.logger.LogInformation("Using polling mode");
             this.PollingHandleAsync();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
@@ -240,7 +248,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
             string message = $"{nameof(this.Stop)}";
             this.logger.LogInformation(message);
 
-            if (this.IsDatabaseEngineSqlServer && !this.useSqlDataBroker)
+            if (this.IsDatabaseEngineSqlServer && this.useSqlDataBroker)
             {
                 SqlDependency.Stop(this.connectionString);
             }
@@ -263,8 +271,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns>A completed <see cref="Task"/>.</returns>
         protected virtual async Task SqlBrokerHandleAsync()
         {
-            this.logger.LogInformation($"{nameof(this.SqlBrokerHandleAsync)}");
-
             this.brokerSqlConnection = new SqlConnection(this.connectionString);
             await this.brokerSqlConnection.OpenAsync();
 
@@ -272,7 +278,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 
             using var command = new SqlCommand(this.OnChangeEventHandlerRequest, this.brokerSqlConnection);
             var sqlDependency = new SqlDependency(command);
-            this.logger.LogInformation($"{nameof(sqlDependency)}.OnChange += new OnChangeEventHandler(this.{nameof(this.OnSqlDependencyChange)})");
             sqlDependency.OnChange += async (s, e) => await this.OnSqlDependencyChange(s, e);
             await command.ExecuteNonQueryAsync();
         }
@@ -285,11 +290,9 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns>A completed <see cref="Task"/>.</returns>
         protected virtual async Task OnSqlDependencyChange(object sender, SqlNotificationEventArgs e)
         {
-            this.logger.LogInformation($"{nameof(this.OnSqlDependencyChange)}");
-
             if (!this.IsValidSqlNotificationEvent(e))
             {
-                this.logger.LogInformation($"Invalid SQL notification event");
+                this.logger.LogInformation($"SQL Notification Event invalid : Source={e.Source}, Type={e.Type}, Info={e.Info}");
                 return;
             }
 
@@ -317,7 +320,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 && e.Info != SqlNotificationInfo.Invalid
                 && (this.sqlFilterNotificationInfos == null || this.sqlFilterNotificationInfos.Contains(e.Info));
 
-            this.logger.LogInformation($"{nameof(isValidEvent)} = {isValidEvent}");
             return isValidEvent;
         }
 
@@ -327,38 +329,28 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <returns><see cref="Task"/> with polling method.</returns>
         protected virtual async Task PollingHandleAsync()
         {
-            this.logger.LogInformation(nameof(this.PollingHandleAsync));
-
             this.pollingCancellationToken = new CancellationTokenSource();
-
             this.pollingDbConnection = this.GetDbConnection();
 
-            try
-            {
-                await this.pollingDbConnection.OpenAsync();
-                var previousData = await this.FetchDataAsync(this.pollingDbConnection);
+            await this.pollingDbConnection.OpenAsync();
+            var previousData = await this.FetchDataAsync(this.pollingDbConnection);
 
-                while (!this.pollingCancellationToken.IsCancellationRequested)
-                {
-                    try
-                    {
-                        var currentData = await this.FetchDataAsync(this.pollingDbConnection);
-                        this.HanldeChangedData(previousData, currentData);
-                        previousData = currentData;
-                    }
-                    catch (Exception ex)
-                    {
-                        this.logger.LogError($"Polling error : {ex}");
-                    }
-                    finally
-                    {
-                        await Task.Delay(this.pollingInterval);
-                    }
-                }
-            }
-            catch (Exception ex)
+            while (!this.pollingCancellationToken.IsCancellationRequested)
             {
-                logger.LogError(ex.ToString());
+                try
+                {
+                    var currentData = await this.FetchDataAsync(this.pollingDbConnection);
+                    this.HanldeChangedData(previousData, currentData);
+                    previousData = currentData;
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError($"Polling failed : {ex}");
+                }
+                finally
+                {
+                    await Task.Delay(this.pollingInterval);
+                }
             }
         }
 
@@ -489,8 +481,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             return this.databaseEngine.ToLower() switch
             {
-                "sqlserver" => new SqlConnection(this.connectionString),
-                "postgresql" => new Npgsql.NpgsqlConnection(this.connectionString),
+                DbEngineSqlServer => new SqlConnection(this.connectionString),
+                DbEnginePostgreSql => new Npgsql.NpgsqlConnection(this.connectionString),
                 _ => throw new NotSupportedException()
             };
         }
@@ -506,8 +498,8 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             return this.databaseEngine.ToLower() switch
             {
-                "sqlserver" => new SqlCommand(command, connection as SqlConnection),
-                "postgresql" => new Npgsql.NpgsqlCommand(command, connection as Npgsql.NpgsqlConnection),
+                DbEngineSqlServer => new SqlCommand(command, connection as SqlConnection),
+                DbEnginePostgreSql => new Npgsql.NpgsqlCommand(command, connection as Npgsql.NpgsqlConnection),
                 _ => throw new NotSupportedException()
             };
         }

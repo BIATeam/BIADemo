@@ -17,7 +17,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// Example for handler repository using Sql broker handler : a signalR event is send to client when something change in the Plane Table.
+    /// Example for handler repository using Sql broker handler.
+    /// A signalR event is send to client when something change in the Plane Table.
     /// </summary>
     public class PlaneHandlerRepository : DatabaseHandlerRepository<PlaneHandlerRepository>
     {
@@ -39,7 +40,8 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
                   configuration.GetConnectionString("BIADemoDatabase"),
                   configuration.GetDBEngine("BIADemoDatabase"),
                   "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
-                  "Id")
+                  "Id",
+                  useSqlDataBroker: configuration.GetSqlDataBroker("BIADemoDatabase"))
         {
             this.clientForHubService = clientForHubService;
         }

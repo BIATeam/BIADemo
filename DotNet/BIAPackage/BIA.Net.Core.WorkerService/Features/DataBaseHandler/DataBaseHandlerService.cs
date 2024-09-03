@@ -19,17 +19,17 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The logger.
         /// </summary>
-        private ILogger<DataBaseHandlerService> logger;
+        private readonly ILogger<DataBaseHandlerService> logger;
 
         /// <summary>
         /// The database handler repositories.
         /// </summary>
-        private List<IDatabaseHandlerRepository> databaseHandlerRepositories;
+        private readonly List<IDatabaseHandlerRepository> databaseHandlerRepositories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBaseHandlerService"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="logger">The service logger.</param>
         /// <param name="databaseHandlerRepositories">The database handler repositories.</param>
         public DataBaseHandlerService(ILogger<DataBaseHandlerService> logger, IEnumerable<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
@@ -42,14 +42,18 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// </summary>
         protected ILogger<DataBaseHandlerService> Logger => this.logger;
 
+        /// <summary>
+        /// The database handler repositories.
+        /// </summary>
+        protected List<IDatabaseHandlerRepository> DatabaseHandlerRepositories => this.databaseHandlerRepositories;
+
         /// <inheritdoc cref="IHostedService.StartAsync"/>
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
-            string message = $"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
-            this.logger.LogInformation(message);
+            this.logger.LogInformation($"DatabaseHandlerRepositories.Count: {this.DatabaseHandlerRepositories.Count}");
 
-            foreach (var handlerRepositorie in this.databaseHandlerRepositories)
+            foreach (var handlerRepositorie in this.DatabaseHandlerRepositories)
             {
                 await handlerRepositorie.Start();
             }
@@ -59,8 +63,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");
-            string message = $"databaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
-            this.logger.LogInformation(message);
+            this.logger.LogInformation($"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}");
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
