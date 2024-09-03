@@ -6,12 +6,11 @@ namespace BIA.Net.Core.Domain.RepoContract
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Dto.Notification;
 
     /// <summary>
-    /// The interface base for INotificationRepository.
+    /// The interface base for IMailRepository.
     /// </summary>
-    public interface INotification
+    public interface IMailRepository
     {
         /// <summary>
         /// Sends the mail asynchronous.
@@ -22,12 +21,5 @@ namespace BIA.Net.Core.Domain.RepoContract
         /// <param name="ccs">The CCS.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task SendNotificationAsync(string subject, string bodyText, IEnumerable<string> tos, IEnumerable<string> ccs = null);
-
-        /// <summary>
-        /// Creates the notification.
-        /// </summary>
-        /// <param name="notification">The notification.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        Task CreateNotification(NotificationDto notification);
     }
 }

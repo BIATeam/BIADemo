@@ -13,22 +13,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Service;
 #if UseHubForClientInNotification
     using BIA.Net.Core.Domain.RepoContract;
 #endif
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.Notification;
 #if UseHubForClientInNotification
     using Microsoft.AspNetCore.SignalR;
 #endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
     /// The API controller used to manage Notifications.
@@ -38,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// <summary>
         /// The notification application service.
         /// </summary>
-        private readonly INotificationDomainService notificationService;
+        private readonly INotificationAppService notificationService;
         private readonly IPrincipal principal;
 
 #if UseHubForClientInNotification
@@ -52,9 +51,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
 #if UseHubForClientInNotification
-        public NotificationsController(INotificationDomainService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
 #else
-        public NotificationsController(INotificationDomainService notificationService, IPrincipal principal)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal)
 #endif
         {
 #if UseHubForClientInNotification
@@ -330,7 +329,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// <summary>
         /// Get unread notifications count.
         /// </summary>
-        /// <param name="id">The identifier.</param>
         /// <returns>The number of unread notifications.</returns>
         [HttpGet("unreadIds")]
         [ProducesResponseType(StatusCodes.Status200OK)]

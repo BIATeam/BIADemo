@@ -8,8 +8,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
     /// The API controller used to manage notification type.
@@ -19,13 +19,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// <summary>
         /// The notification type application service.
         /// </summary>
-        private readonly INotificationTypeDomainService notificationTypeService;
+        private readonly INotificationTypeAppService notificationTypeService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypesController"/> class.
         /// </summary>
         /// <param name="notificationTypeService">The notification type application service.</param>
-        public NotificationTypesController(INotificationTypeDomainService notificationTypeService)
+        public NotificationTypesController(INotificationTypeAppService notificationTypeService)
         {
             this.notificationTypeService = notificationTypeService;
         }

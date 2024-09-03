@@ -1,8 +1,9 @@
-// <copyright file="INotificationDomainService.cs" company="TheBIADevCompany">
+// BIADemo only
+// <copyright file="IPlaneAppService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
+namespace TheBIADevCompany.BIADemo.Application.Notification
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -12,9 +13,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
-    /// The interface defining the notification application service.
+    /// The interface defining the application service for plane.
     /// </summary>
-    public interface INotificationDomainService : ICrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto>
+    public interface INotificationAppService : ICrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto>
     {
         /// <summary>
         /// Set the notification as read.
