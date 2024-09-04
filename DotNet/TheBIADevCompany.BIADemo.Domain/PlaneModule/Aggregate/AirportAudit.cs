@@ -5,9 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
+    using System;
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Audit;
     using global::Audit.EntityFramework;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The airport entity.

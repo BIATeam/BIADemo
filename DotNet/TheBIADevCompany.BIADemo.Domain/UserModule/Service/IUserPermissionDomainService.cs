@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// The interface defining the user right domain service.

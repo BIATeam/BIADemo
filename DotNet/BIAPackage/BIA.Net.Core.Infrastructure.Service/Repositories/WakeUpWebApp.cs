@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
 {
     using System.Net.Http;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using Microsoft.Extensions.Logging;
 

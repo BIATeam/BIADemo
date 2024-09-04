@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// The authorization info contained in the JWT token.
     /// </summary>

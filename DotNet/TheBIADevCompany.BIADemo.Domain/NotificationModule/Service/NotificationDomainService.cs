@@ -1,32 +1,30 @@
-// BIADemo only
-// <copyright file="NotificationAppService.cs" company="TheBIADevCompany">
+// <copyright file="NotificationDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Notification
+namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used for the notifications.
+    /// The application service used to manage views.
     /// </summary>
-    public class NotificationAppService :
-        CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>,
-        INotificationAppService
+    public class NotificationDomainService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationDomainService
     {
         /// <summary>
         /// The claims principal.
@@ -39,14 +37,14 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         private readonly IClientForHubRepository clientForHubService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
         /// <param name="clientForHubService">Client for hub.</param>
         /// <param name="queryCustomizer">Query customizer to include permission at update.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationAppService(
+        public NotificationDomainService(
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
             IClientForHubRepository clientForHubService,

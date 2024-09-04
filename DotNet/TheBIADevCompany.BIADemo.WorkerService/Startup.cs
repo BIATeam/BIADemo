@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.User;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -93,14 +93,12 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // Begin BIADemo
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
-
             // End BIADemo
 
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
-
             // End BIADemo
 #endif
 

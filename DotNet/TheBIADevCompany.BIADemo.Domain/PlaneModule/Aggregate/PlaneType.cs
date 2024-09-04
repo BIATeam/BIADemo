@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain;
 
     /// <summary>

@@ -4,8 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
+    using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;

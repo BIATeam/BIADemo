@@ -6,9 +6,10 @@ namespace BIA.Net.Core.Application.Translation
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Service;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.TranslationModule.Aggregate;
 
     /// <summary>
@@ -20,6 +21,8 @@ namespace BIA.Net.Core.Application.Translation
         /// Initializes a new instance of the <see cref="LanguageAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="userContext">The user context.</param>
         public LanguageAppService(ITGenericRepository<Language, int> repository)
             : base(repository)
         {

@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Sid Resolved Group.

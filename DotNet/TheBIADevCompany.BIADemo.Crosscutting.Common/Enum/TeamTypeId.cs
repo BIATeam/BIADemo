@@ -4,6 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
 {
+    using System.Collections.Immutable;
+
     /// <summary>
     /// Enum for different kind of team.
     /// </summary>

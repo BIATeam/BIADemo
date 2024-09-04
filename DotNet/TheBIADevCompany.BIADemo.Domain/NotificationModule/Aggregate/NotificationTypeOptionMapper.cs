@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.User;
+    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The mapper used for notification type.

@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Domain
     using System.Text.Json;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
+    using Microsoft.EntityFrameworkCore;
 
     /// <summary>
     /// The helpers for specifications.

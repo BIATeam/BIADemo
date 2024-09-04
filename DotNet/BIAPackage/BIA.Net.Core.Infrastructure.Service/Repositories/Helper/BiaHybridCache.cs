@@ -3,7 +3,15 @@
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
 
     /// <summary>
     /// Store object in application instance or distributed with the IDistributedCache service that you find with same key.

@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Domain.Dto.User
 {
+    using System;
+
     /// <summary>
     /// The DTO used for user coming from AD.
     /// </summary>
