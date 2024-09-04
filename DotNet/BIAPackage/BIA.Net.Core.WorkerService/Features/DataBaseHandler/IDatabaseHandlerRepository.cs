@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
+    using System;
     using System.Threading.Tasks;
 
     /// <summary>

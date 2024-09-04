@@ -1,18 +1,17 @@
-// BIADemo only
-// <copyright file="IPlaneTypeAppService.cs" company="TheBIADevCompany">
+// <copyright file="INotificationTypeDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Notification
+namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
-    /// The interface defining the application service for plane.
+    /// The interface defining the application service for notification type.
     /// </summary>
-    public interface INotificationTypeAppService
+    public interface INotificationTypeDomainService
     {
         /// <summary>
         /// Return options.

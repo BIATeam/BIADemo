@@ -6,8 +6,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.Extensions.Options;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The domain service used for user right.

@@ -1,28 +1,27 @@
-// BIADemo only
-// <copyright file="PlaneTypeAppService.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTypeDomainService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Notification
+namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.Service;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
-    /// The application service used for plane.
+    /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeAppService : AppServiceBase<NotificationType, int>, INotificationTypeAppService
+    public class NotificationTypeDomainService : AppServiceBase<NotificationType, int>, INotificationTypeDomainService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationTypeAppService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationTypeDomainService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationTypeAppService(ITGenericRepository<NotificationType, int> repository)
+        public NotificationTypeDomainService(ITGenericRepository<NotificationType, int> repository)
             : base(repository)
         {
         }

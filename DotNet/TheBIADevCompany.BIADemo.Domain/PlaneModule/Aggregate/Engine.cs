@@ -6,8 +6,10 @@
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>
     /// The Engine entity.

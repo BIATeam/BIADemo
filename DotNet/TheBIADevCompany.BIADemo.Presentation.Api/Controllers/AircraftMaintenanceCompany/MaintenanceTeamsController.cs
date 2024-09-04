@@ -8,14 +8,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMaintenanceTeam
     using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -50,6 +55,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// </summary>
         /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
+        /// <param name="principal">The BIAClaimsPrincipal.</param>
 #if UseHubForClientInMaintenanceTeam
         public MaintenanceTeamsController(
             IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubRepository clientForHubService)

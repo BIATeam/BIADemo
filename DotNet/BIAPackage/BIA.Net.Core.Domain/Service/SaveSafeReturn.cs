@@ -2,7 +2,7 @@
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Service
+namespace BIA.Net.Core.Domain.Service
 {
     using System;
     using System.Collections.Generic;

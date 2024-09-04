@@ -4,6 +4,7 @@
 namespace BIA.Net.Core.WorkerService.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
@@ -13,6 +14,7 @@ namespace BIA.Net.Core.WorkerService.Features
     using Hangfire.PostgreSql;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
 
     /// <summary>
     /// Add the standard service.

@@ -6,7 +6,10 @@
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
 {
     using System;
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Option;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
     /// <summary>
     /// The DTO used to represent a Engine.

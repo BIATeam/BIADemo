@@ -1,10 +1,10 @@
-﻿// <copyright file="DataBaseHandlerChangedData.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
-// </copyright>
-
-namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
+﻿namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Represents a changed data handle by a database handler.

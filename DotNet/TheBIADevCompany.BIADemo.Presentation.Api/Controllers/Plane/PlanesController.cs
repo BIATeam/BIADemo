@@ -18,14 +18,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
+    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 #if UseHubForClientInPlane
+    using Microsoft.AspNetCore.SignalR;
 #endif
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Plane;
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>

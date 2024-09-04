@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
+    using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using global::Audit.EntityFramework;
 

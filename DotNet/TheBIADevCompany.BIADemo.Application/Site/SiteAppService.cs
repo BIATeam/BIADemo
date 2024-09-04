@@ -4,14 +4,22 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Site
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Principal;
-    using BIA.Net.Core.Application.Service;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
+    using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The application service used for site.

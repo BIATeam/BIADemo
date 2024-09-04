@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
 
     /// <summary>
     /// The API controller used to manage hangfire.

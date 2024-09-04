@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Transactions;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;

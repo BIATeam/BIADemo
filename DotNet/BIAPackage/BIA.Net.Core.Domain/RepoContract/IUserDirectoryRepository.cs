@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.RepoContract
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;

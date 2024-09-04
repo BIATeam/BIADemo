@@ -4,6 +4,8 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.View
 {
+    using TheBIADevCompany.BIADemo.Domain.Dto.View;
+
     /// <summary>
     /// The DTO used to represent a siteView.
     /// </summary>

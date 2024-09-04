@@ -3,8 +3,12 @@
 // </copyright>
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Ldap
 {
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Microsoft.Extensions.Options;
 
     /// <summary>
     /// Ldap Repository Helper.

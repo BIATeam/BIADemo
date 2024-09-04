@@ -1,9 +1,13 @@
-﻿// <copyright file="DatabaseHandlerChangeType.cs" company="TheBIADevCompany">
-//     Copyright (c) TheBIADevCompany. All rights reserved.
-// </copyright>
-
-namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
+﻿namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     /// <summary>
     /// The change type of the database handler.
     /// </summary>

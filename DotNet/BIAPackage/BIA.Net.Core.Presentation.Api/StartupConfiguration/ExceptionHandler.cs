@@ -4,12 +4,22 @@
 
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
+    using System;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Microsoft.IdentityModel.Logging;
+    using Microsoft.IdentityModel.Tokens;
 
     /// <summary>
     /// The class containing configuration for authentication.
