@@ -161,7 +161,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
 #if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
-            collection.AddTransient<INotification, NotificationRepository>();
+            collection.AddTransient<IMailRepository, MailRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
