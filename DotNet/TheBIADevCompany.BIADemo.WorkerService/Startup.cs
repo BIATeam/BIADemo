@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
@@ -63,10 +62,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         public static void Configure(IHost host)
         {
 #if BIA_FRONT_FEATURE
-            // Begin BIADemo
-            PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
-
-            // End BIADemo
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
 #endif
         }
@@ -93,23 +88,17 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(
                 this.biaNetSection.WorkerFeatures,
-                this.configuration,
-                new List<DatabaseHandlerRepository>()
-                {
-                    // Add here all the Handler repository.
-#if BIA_FRONT_FEATURE
-                        // Begin BIADemo
-                        new PlaneHandlerRepository(this.configuration),
+                this.configuration);
 
-                        // End BIADemo
-#endif
-                });
+            // Begin BIADemo
+            services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
+            services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
+            // End BIADemo
 
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
-
             // End BIADemo
 #endif
 
