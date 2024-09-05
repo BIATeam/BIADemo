@@ -52,7 +52,7 @@ export enum TeamTypeId {
   // End BIADemo
 }
 
-const TeamTypeRightPrefixe: { key: TeamTypeId; value: string }[] = [
+const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.Site, value: 'Site' },
   // Begin BIADemo
   {
@@ -62,4 +62,4 @@ const TeamTypeRightPrefixe: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.MaintenanceTeam, value: 'MaintenanceTeam' },
   // End BIADemo
 ];
-export { TeamTypeRightPrefixe };
+export { TeamTypeRightPrefix };

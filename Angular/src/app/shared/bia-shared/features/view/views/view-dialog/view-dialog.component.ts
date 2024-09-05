@@ -19,7 +19,7 @@ import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
 import { map, tap } from 'rxjs/operators';
 import {
   TeamTypeId,
-  TeamTypeRightPrefixe,
+  TeamTypeRightPrefix,
   ViewType,
 } from 'src/app/shared/constants';
 import { TeamView } from '../../model/team-view';
@@ -257,20 +257,20 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   protected setPermissions() {
     if (this.useViewTeamWithTypeId != null) {
-      const teamTypeRightPrefixe = TeamTypeRightPrefixe.find(
+      const teamTypeRightPrefix = TeamTypeRightPrefix.find(
         t => t.key == this.useViewTeamWithTypeId
       )?.value;
       this.canAddTeamView = this.authService.hasPermission(
-        teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix
+        teamTypeRightPrefix + Permission.View_AddTeamViewSuffix
       );
       this.canUpdateTeamView = this.authService.hasPermission(
-        teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix
+        teamTypeRightPrefix + Permission.View_UpdateTeamViewSuffix
       );
       this.canSetDefaultTeamView = this.authService.hasPermission(
-        teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix
+        teamTypeRightPrefix + Permission.View_SetDefaultTeamViewSuffix
       );
       this.canAssignTeamView = this.authService.hasPermission(
-        teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix
+        teamTypeRightPrefix + Permission.View_AssignToTeamSuffix
       );
       this.canDeleteTeamView = this.authService.hasPermission(
         Permission.View_DeleteTeamView

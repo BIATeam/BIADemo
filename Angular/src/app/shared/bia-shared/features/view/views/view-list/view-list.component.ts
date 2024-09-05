@@ -20,7 +20,7 @@ import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 import {
   TeamTypeId,
-  TeamTypeRightPrefixe,
+  TeamTypeRightPrefix,
   ViewType,
 } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
@@ -482,21 +482,21 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   showEditButton() {
     let canSetTeamView = false;
     if (this.useViewTeamWithTypeId != null) {
-      const teamTypeRightPrefixe = TeamTypeRightPrefixe.find(
+      const teamTypeRightPrefix = TeamTypeRightPrefix.find(
         t => t.key == this.useViewTeamWithTypeId
       )?.value;
       canSetTeamView =
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_AddTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_UpdateTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_SetDefaultTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix
+          teamTypeRightPrefix + Permission.View_AssignToTeamSuffix
         ) ||
         this.authService.hasPermission(Permission.View_DeleteTeamView);
     }

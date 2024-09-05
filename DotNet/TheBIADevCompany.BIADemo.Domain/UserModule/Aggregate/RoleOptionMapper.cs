@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
