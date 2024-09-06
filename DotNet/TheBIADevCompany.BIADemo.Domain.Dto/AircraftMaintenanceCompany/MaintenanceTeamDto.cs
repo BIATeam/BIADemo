@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
     /// <summary>
     /// The DTO used to represent a MaintenanceTeamDto.
     /// </summary>
+    [BiaDtoClass(AncestorTeam = "AircraftMaintenanceCompany")]
     public class MaintenanceTeamDto : TeamDto
     {
         /// <summary>
