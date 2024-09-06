@@ -74,5 +74,28 @@
     "Children": [],
     "Options": [],
     "Partial": []
+  },
+  {
+    "Feature": "maintenance-teams",
+    "Type": "Team",
+    "FeatureName": "MaintenanceTeam",
+    "FeatureNamePlural": "MaintenanceTeams",
+    "ZipName": "maintenance-teams.zip",
+    "Contains": {
+      "Include": [
+        "src\\app\\features\\aircraft-maintenance-companies\\children\\maintenance-teams\\*"
+      ],
+      "Exclude": []
+    },
+    "Parent": [
+      {
+        "FeatureName": "AircraftMaintenanceCompany",
+        "FeatureNamePlural": "AircraftMaintenanceCompanies",
+        "PathToTranslate": ["aircraft-maintenance-companies\\children\\"]
+      }
+    ],
+    "Children": [],
+    "Options": [],
+    "Partial": []
   }
 ]

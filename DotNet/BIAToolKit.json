@@ -60,32 +60,54 @@
 		]
 	},
 	{
-		"Feature" : "plane-type-option",
-		"Type" : "Option",
-		"FeatureName" : "PlaneType",
-		"FeatureNamePlural" : "PlanesTypes",
-		"ZipName" : "plane-type-option.zip",
+		"Feature": "plane-type-option",
+		"Type": "Option",
+		"FeatureName": "PlaneType",
+		"FeatureNamePlural": "PlanesTypes",
+		"ZipName": "plane-type-option.zip",
 		"Relation": "one-to-many",
-		"Contains" :
-		{
-			"Include" :
-			[
+		"Contains": {
+			"Include": [
 				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesTypesController.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneTypeAppService.cs",
 				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneTypeAppService.cs"
 			],
-			"Exclude":
-			[]
-		},		
-		"Children" : 
-		[],
-		"Options" :
-		[],
-		"Partial" :
-		[
+			"Exclude": []
+		},
+		"Children": [],
+		"Options": [],
+		"Partial": [
 			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
 			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
 			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
+		]
+	},
+	{
+		"Feature": "maintenance-teams",
+		"Type": "Team",
+		"FeatureName": "MaintenanceTeam",
+		"FeatureNamePlural": "MaintenanceTeams",
+		"ZipName": "maintenance-teams.zip",
+		"Contains": {
+			"Include": [
+				"TheBIADevCompany.BIATemplate.Presentation.Api\\Controllers\\MaintenanceTeam\\MaintenanceTeamsController.cs",
+				"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\MaintenanceTeamAppService.cs",
+				"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\IMaintenanceTeamAppService.cs",
+				"TheBIADevCompany.BIATemplate.Domain\\MaintenanceTeamModule\\Aggregate\\MaintenanceTeamMapper.cs",
+				"TheBIADevCompany.BIATemplate.Domain\\MaintenanceTeamModule\\Aggregate\\MaintenanceTeam.cs",
+				"TheBIADevCompany.BIATemplate.Domain.Dto\\MaintenanceTeam\\MaintenanceTeamDto.cs"
+			],
+			"Exclude": []
+		},
+		"Children": [],
+		"Options": [],
+		"Partial": [
+			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Rights.cs",
+			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Enum\\TeamTypeId.cs",
+			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Enum\\RoleId.cs",
+			"TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
+			"TheBIADevCompany.BIATemplate.Presentation.Api\\bianetconfig.json",
+			"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\MaintenanceTeamAppService.cs"
 		]
 	}
 ]
