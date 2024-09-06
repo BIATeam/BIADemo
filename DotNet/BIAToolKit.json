@@ -90,24 +90,31 @@
 		"ZipName": "maintenance-teams.zip",
 		"Contains": {
 			"Include": [
-				"TheBIADevCompany.BIATemplate.Presentation.Api\\Controllers\\MaintenanceTeam\\MaintenanceTeamsController.cs",
-				"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\MaintenanceTeamAppService.cs",
-				"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\IMaintenanceTeamAppService.cs",
-				"TheBIADevCompany.BIATemplate.Domain\\MaintenanceTeamModule\\Aggregate\\MaintenanceTeamMapper.cs",
-				"TheBIADevCompany.BIATemplate.Domain\\MaintenanceTeamModule\\Aggregate\\MaintenanceTeam.cs",
-				"TheBIADevCompany.BIATemplate.Domain.Dto\\MaintenanceTeam\\MaintenanceTeamDto.cs"
+				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\MaintenanceTeamsController.cs",
+				"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs",
+				"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\IMaintenanceTeamAppService.cs",
+				"TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeamMapper.cs",
+				"TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeam.cs",
+				"TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\MaintenanceTeamDto.cs"
 			],
 			"Exclude": []
 		},
 		"Children": [],
+		"Parent": [
+			{
+				"FeatureName": "AircraftMaintenanceCompany",
+				"FeatureNamePlural": "AircraftMaintenanceCompanies",
+				"PathToTranslate": [ "AircraftMaintenanceCompany\\" ]
+			}
+		],
 		"Options": [],
 		"Partial": [
-			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Rights.cs",
-			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Enum\\TeamTypeId.cs",
-			"TheBIADevCompany.BIATemplate.Crosscutting.Common\\Enum\\RoleId.cs",
+			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs",
+			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\TeamTypeId.cs",
+			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\RoleId.cs",
 			"TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
-			"TheBIADevCompany.BIATemplate.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIATemplate.Application\\MaintenanceTeam\\MaintenanceTeamAppService.cs"
+			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
+			"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs"
 		]
 	}
 ]

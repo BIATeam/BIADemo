@@ -127,7 +127,7 @@ RemoveFolder -path $biaPackage
 
 Set-Location -Path $newPath
 
-Write-Host "Zip plane"
+Write-Host "Zip elements"
 
 # Read Json settings to generate archive
 $myJson = Get-Content "$oldPath\$jsonFileName" -Raw | ConvertFrom-Json 
