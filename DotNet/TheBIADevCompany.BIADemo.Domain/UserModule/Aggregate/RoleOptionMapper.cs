@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -26,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         }
 
         /// <summary>
-        /// The user context langage and culture.
+        /// The user context language and culture.
         /// </summary>
         private UserContext UserContext { get; set; }
 

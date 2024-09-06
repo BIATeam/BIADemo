@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Service;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
@@ -51,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         }
 
         /// <summary>
-        /// The user context langage and culture.
+        /// The user context language and culture.
         /// </summary>
         private UserContext UserContext { get; set; }
 
