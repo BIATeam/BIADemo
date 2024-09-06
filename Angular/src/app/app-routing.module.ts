@@ -24,6 +24,7 @@ const routes: Routes = [
               canNavigate: false,
             },
             children: [
+              /// BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
               {
                 path: 'aircraft-maintenance-companies',
                 data: {
@@ -35,6 +36,22 @@ const routes: Routes = [
                     './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
                   ).then(m => m.AircraftMaintenanceCompanyModule),
               },
+              /// BIAToolKit - End Partial Parent AircraftMaintenanceCompany
+              /// BIAToolKit - Begin Partial NoParent MaintenanceTeam
+              {
+                path: 'maintenance-teams',
+                data: {
+                  breadcrumb: 'app.maintenance-teams',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path to the module
+                    './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
+                  ).then(m => m.MaintenanceTeamModule),
+              },
+              /// BIAToolKit - End Partial NoParent MaintenanceTeam
+
               /// BIAToolKit - Begin Partial Routing Plane
               {
                 path: 'planes',

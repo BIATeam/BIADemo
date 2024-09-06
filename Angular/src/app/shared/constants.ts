@@ -47,19 +47,28 @@ export enum TeamTypeId {
   Root = 1,
   Site = 2,
   // Begin BIADemo
+  /// BIAToolKit - Begin Parent AircraftMaintenanceCompany
   AircraftMaintenanceCompany = 3,
+  /// BIAToolKit - End Parent AircraftMaintenanceCompany
+  /// BIAToolKit - Begin Partial TeamTypeIdConstants MaintenanceTeam
+  // TODO after creation of team MaintenanceTeam : adapt enum value
   MaintenanceTeam = 4,
+  /// BIAToolKit - End Partial TeamTypeIdConstants MaintenanceTeam
   // End BIADemo
 }
 
 const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
   { key: TeamTypeId.Site, value: 'Site' },
   // Begin BIADemo
+  /// BIAToolKit - Begin Parent AircraftMaintenanceCompany
   {
     key: TeamTypeId.AircraftMaintenanceCompany,
     value: 'AircraftMaintenanceCompany',
   },
+  /// BIAToolKit - End Parent AircraftMaintenanceCompany
+  /// BIAToolKit - Begin Partial TeamTypeRightPrefixConstants MaintenanceTeam
   { key: TeamTypeId.MaintenanceTeam, value: 'MaintenanceTeam' },
+  /// BIAToolKit - Begin Partial TeamTypeRightPrefixConstants MaintenanceTeam
   // End BIADemo
 ];
 export { TeamTypeRightPrefix };

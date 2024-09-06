@@ -40,6 +40,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Operator = 202,
 #pragma warning restore SA1602 // Enumeration items should be documented
 
+        // BIAToolKit - Begin Partial RoleId MaintenanceTeam
+
+        /// <summary>
+        /// The maintenanceTeam admin role identifier.
+        /// </summary>
+        // TODO after creation of team MaintenanceTeam : adapt the enum value
+        MaintenanceTeamAdmin = 3,
+
+        // BIAToolKit - End Partial RoleId MaintenanceTeam
+
         // End BIADemo
     }
 }

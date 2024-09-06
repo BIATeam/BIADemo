@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
 {
+    using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.User;
 
     /// <summary>
@@ -15,6 +16,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
         /// <summary>
         /// Gets or sets the aircraft maintenance company.
         /// </summary>
+        [BiaDtoField(IsParent = true, Required = true)]
         public int AircraftMaintenanceCompanyId { get; set; }
     }
 }

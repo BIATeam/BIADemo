@@ -113,7 +113,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 
             // Begin BIADemo
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
+
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
 
             // End BIADemo
         }
@@ -147,10 +151,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Pilot, Code = "Pilot", Label = "Pilot" });
 
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Supervisor, Code = "Supervisor", Label = "Supervisor" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Expert, Code = "Expert", Label = "Expert" });
 
+            // BIAToolKit - Begin Partial RoleModelBuilder MaintenanceTeam
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Expert, Code = "Expert", Label = "Expert" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.TeamLeader, Code = "Team_Leader", Label = "Team leader" });
             modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.Operator, Code = "Operator", Label = "Operator" });
+
+            // BIAToolKit - End Partial RoleModelBuilder MaintenanceTeam
 
             // End BIADemo
         }
@@ -179,9 +186,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Expert });
 
+                    // BIAToolKit - Begin Partial TeamTypeRoleModelBuilder MaintenanceTeam
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.TeamLeader });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Operator });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.MaintenanceTeam, RolesId = (int)RoleId.Expert });
+
+                    // BIAToolKit - End Partial TeamTypeRoleModelBuilder MaintenanceTeam
 
                     // End BIADemo
                 });

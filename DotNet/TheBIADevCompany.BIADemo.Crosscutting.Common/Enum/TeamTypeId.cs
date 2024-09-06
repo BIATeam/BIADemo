@@ -33,11 +33,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// </summary>
         AircraftMaintenanceCompany = 3,
 
+        // BIAToolKit - Begin Partial TeamTypeId MaintenanceTeam
+
         /// <summary>
         /// Value for Maintenance Team.
         /// </summary>
         MaintenanceTeam = 4,
 
+        // BIAToolKit - End Partial TeamTypeId MaintenanceTeam
         // End BIADemo
     }
 }

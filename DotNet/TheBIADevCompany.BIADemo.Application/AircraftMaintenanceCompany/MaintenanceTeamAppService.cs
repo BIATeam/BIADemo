@@ -22,13 +22,14 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     /// </summary>
     public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
-        /* Begin Parent AircraftMaintenanceCompany */
+        // BIAToolKit - Begin Parent AircraftMaintenanceCompany
 
         /// <summary>
         /// The current Aircraft Maintenance Company Id.
         /// </summary>
         private readonly int currentAircraftMaintenanceCompanyId;
-        /* End Parent AircraftMaintenanceCompany */
+
+        // BIAToolKit - End Parent AircraftMaintenanceCompany
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamAppService"/> class.
@@ -38,11 +39,11 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         public MaintenanceTeamAppService(ITGenericRepository<MaintenanceTeam, int> repository, IPrincipal principal)
             : base(repository)
         {
-            /* Begin Parent AircraftMaintenanceCompany */
+            // BIAToolKit - Begin Parent AircraftMaintenanceCompany
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentAircraftMaintenanceCompanyId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.AircraftMaintenanceCompany) : 0;
-            /* End Parent AircraftMaintenanceCompany */
 
+            // BIAToolKit - End Parent AircraftMaintenanceCompany */
             this.FiltersContext.Add(
                 AccessMode.Read,
                 TeamAppService.ReadSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
@@ -52,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
                 TeamAppService.UpdateSpecification<MaintenanceTeam>(TeamTypeId.MaintenanceTeam, principal));
         }
 
-        /* Begin Parent AircraftMaintenanceCompany */
+        // BIAToolKit - Begin Parent AircraftMaintenanceCompany
 
         /// <inheritdoc/>
         public override Task<MaintenanceTeamDto> AddAsync(MaintenanceTeamDto dto, string mapperMode = null)
@@ -61,6 +62,6 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             return base.AddAsync(dto, mapperMode);
         }
 
-        /* End Parent AircraftMaintenanceCompany */
+        // BIAToolKit - End Parent AircraftMaintenanceCompany */
     }
 }
