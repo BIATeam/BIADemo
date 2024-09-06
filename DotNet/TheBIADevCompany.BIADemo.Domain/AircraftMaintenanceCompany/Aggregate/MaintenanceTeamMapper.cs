@@ -69,6 +69,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             entity.Id = dto.Id;
             entity.Title = dto.Title;
             entity.TeamTypeId = (int)TeamTypeId.MaintenanceTeam;
+            entity.IsActive = dto.IsActive;
 
             // Mapping relationship 1-* : AircraftMaintenanceCompany
             if (dto.AircraftMaintenanceCompanyId != 0)
@@ -84,6 +85,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             {
                 Id = entity.Id,
                 Title = entity.Title,
+                IsActive = entity.IsActive,
 
                 // Mapping relationship 1-* : AircraftMaintenanceCompany
                 AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId,
@@ -111,6 +113,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             return x => (new object[]
             {
                 CSVString(x.Title),
+                CSVBool(x.IsActive),
             });
         }
     }

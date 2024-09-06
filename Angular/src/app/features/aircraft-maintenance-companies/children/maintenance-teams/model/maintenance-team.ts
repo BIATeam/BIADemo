@@ -1,17 +1,33 @@
 import {
+  BaseTeamDto,
+  teamFieldsConfigurationColumns,
+} from 'src/app/shared/bia-shared/model/base-team-dto';
+import {
   BiaFieldConfig,
   BiaFieldsConfig,
+  PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseTeamDto } from 'src/app/shared/bia-shared/model/base-team-dto';
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
-export type MaintenanceTeam = BaseTeamDto;
+export class MaintenanceTeam extends BaseTeamDto {
+  /// BIAToolKit - Begin Properties
+  isActive: boolean;
+  /// BIAToolKit - End Properties
+}
 
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the field configuration
 export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig = {
   columns: [
-    Object.assign(new BiaFieldConfig('title', 'site.title'), {
-      isRequired: true,
-    }),
+    ...teamFieldsConfigurationColumns,
+    ...[
+      /// BIAToolKit - Begin Block isActive
+      Object.assign(
+        new BiaFieldConfig('isActive', 'maintenanceTeam.isActive'),
+        {
+          type: PropType.Boolean,
+        }
+      ),
+      /// BIAToolKit - End Block
+    ],
   ],
 };

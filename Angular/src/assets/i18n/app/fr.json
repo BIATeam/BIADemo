@@ -55,7 +55,8 @@
     "filterMember": "Utilisateur membre",
     "headerLabel": "Equipe de maintenance",
     "listOf": "Liste des équipes de maintenance",
-    "title": "Nom"
+    "title": "Nom",
+    "isActive": "Active"
   },
   "plane": {
     "add": "Ajouter avion",

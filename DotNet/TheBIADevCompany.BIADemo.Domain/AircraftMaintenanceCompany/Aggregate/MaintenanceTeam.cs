@@ -30,5 +30,10 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         [Timestamp]
         [Column("RowVersion")]
         public byte[] RowVersionAircraftMaintenanceCompany { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maintenance team active indicator.
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }

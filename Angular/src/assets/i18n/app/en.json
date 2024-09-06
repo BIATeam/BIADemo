@@ -55,7 +55,8 @@
     "filterMember": "Member user",
     "headerLabel": "Maintenance team",
     "listOf": "List of maintenance teams",
-    "title": "Name"
+    "title": "Name",
+    "isActive": "Active"
   },
   "plane": {
     "add": "Add plane",

@@ -55,7 +55,8 @@
     "filterMember": "Usuario miembro",
     "headerLabel": "Equipo de mantenimiento",
     "listOf": "Lista de equipos de mantenimiento",
-    "title": "Name"
+    "title": "Name",
+    "isActive": "Activo"
   },
   "plane": {
     "add": "Añadir plano",

@@ -18,5 +18,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
         /// </summary>
         [BiaDtoField(IsParent = true, Required = true)]
         public int AircraftMaintenanceCompanyId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the maintenance team active indicator.
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }
