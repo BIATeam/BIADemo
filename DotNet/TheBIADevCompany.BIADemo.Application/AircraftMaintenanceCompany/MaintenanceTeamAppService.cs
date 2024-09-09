@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
 
     /// <summary>
-    /// The application service used for AircraftMaintenanceCompany.
+    /// The application service used for MaintenanceTeam.
     /// </summary>
     public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
