@@ -1,10 +1,10 @@
 [
 	{
-		"Feature" : "crud-planes",
+		"Feature" : "CRUD",
 		"Type" : "CRUD",
 		"FeatureName" : "Plane",
 		"FeatureNamePlural" : "Planes",
-		"ZipName" : "crud-planes.zip",
+		"ZipName" : "crud.zip",
 		"Contains" :
 		{
 			"Include" :
@@ -31,11 +31,11 @@
 		]
 	},
 	{
-		"Feature" : "airport-option",
+		"Feature" : "Option (many to many)",
 		"Type" : "Option",
 		"FeatureName" : "Airport",
 		"FeatureNamePlural" : "Airports",
-		"ZipName" : "airport-option.zip",
+		"ZipName" : "option-many-to-many.zip",
 		"Relation": "many-to-many",
 		"Contains" :
 		{
@@ -60,11 +60,11 @@
 		]
 	},
 	{
-		"Feature": "plane-type-option",
+		"Feature": "Option (one to many)",
 		"Type": "Option",
 		"FeatureName": "PlaneType",
 		"FeatureNamePlural": "PlanesTypes",
-		"ZipName": "plane-type-option.zip",
+		"ZipName": "option-one-to-many.zip",
 		"Relation": "one-to-many",
 		"Contains": {
 			"Include": [
@@ -83,11 +83,11 @@
 		]
 	},
 	{
-		"Feature": "maintenance-teams",
+		"Feature": "Team",
 		"Type": "Team",
 		"FeatureName": "MaintenanceTeam",
 		"FeatureNamePlural": "MaintenanceTeams",
-		"ZipName": "maintenance-teams.zip",
+		"ZipName": "team.zip",
 		"Contains": {
 			"Include": [
 				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\MaintenanceTeamsController.cs",
