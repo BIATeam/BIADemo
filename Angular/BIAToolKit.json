@@ -59,11 +59,13 @@
       ],
       "Exclude": []
     },
-    "Parent": [
+    "Parents": [
       {
-        "FeatureName": "AircraftMaintenanceCompany",
-        "FeatureNamePlural": "AircraftMaintenanceCompanies",
-        "PathToTranslate": ["aircraft-maintenance-companies\\children\\"]
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "PathToTranslate": "aircraft-maintenance-companies\\children\\",
+        "SearchInPath": "src\\app\\features\\",
+        "IsPrincipal": "true"
       }
     ],
     "Children": [],

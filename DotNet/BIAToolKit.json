@@ -100,11 +100,12 @@
 			"Exclude": []
 		},
 		"Children": [],
-		"Parent": [
+		"Parents": [
 			{
-				"FeatureName": "AircraftMaintenanceCompany",
-				"FeatureNamePlural": "AircraftMaintenanceCompanies",
-				"PathToTranslate": [ "AircraftMaintenanceCompany\\" ]
+				"Name": "AircraftMaintenanceCompany",
+				"NamePlural": "AircraftMaintenanceCompanies",
+				"DomainName":  "AircraftMaintenanceCompany",
+				"IsPrincipal": "true"
 			}
 		],
 		"Options": [],
