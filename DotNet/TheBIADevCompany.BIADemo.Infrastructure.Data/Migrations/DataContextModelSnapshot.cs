@@ -157,17 +157,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            RolesId = 201,
-                            TeamTypesId = 4
-                        },
-                        new
-                        {
                             RolesId = 202,
                             TeamTypesId = 4
                         },
                         new
                         {
                             RolesId = 102,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 3,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 201,
                             TeamTypesId = 4
                         });
                 });
@@ -1198,15 +1203,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
+                            Id = 202,
+                            Code = "Operator",
+                            Label = "Operator"
+                        },
+                        new
+                        {
                             Id = 201,
                             Code = "Team_Leader",
                             Label = "Team leader"
                         },
                         new
                         {
-                            Id = 202,
-                            Code = "Operator",
-                            Label = "Operator"
+                            Id = 3,
+                            Code = "MaintenanceTeam_Admin",
+                            Label = "MaintenanceTeam administrator"
                         });
                 });
 

@@ -30,6 +30,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 AdminRoleIds = new int[] { (int)RoleId.SiteAdmin },
             },
 
+            // BIAToolKit - Begin TeamConfig
+            // BIAToolKit - End TeamConfig
+
             // Begin BIADemo
             new BiaTeamConfig<Team>()
             {
@@ -45,11 +48,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     },
                 }.ToImmutable(),
             },
+
+            // BIAToolKit - Begin Partial TeamConfig MaintenanceTeam
             new BiaTeamConfig<Team>()
             {
                 TeamTypeId = (int)TeamTypeId.MaintenanceTeam,
                 RightPrefix = "MaintenanceTeam",
-                AdminRoleIds = new int[] { (int)RoleId.TeamLeader },
+                AdminRoleIds = new int[] { (int)RoleId.MaintenanceTeamAdmin },
+
+                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
                 Parents = new ImmutableListBuilder<BiaTeamParentConfig<Team>>
                 {
                     new BiaTeamParentConfig<Team>
@@ -57,8 +64,13 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                         TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany,
                         GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany,
                     },
-                }.ToImmutable(),
+                }
+
+                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+                .ToImmutable(),
             },
+
+            // BIAToolKit - End Partial TeamConfig MaintenanceTeam
 
             // End BIADemo
         }.ToImmutable();

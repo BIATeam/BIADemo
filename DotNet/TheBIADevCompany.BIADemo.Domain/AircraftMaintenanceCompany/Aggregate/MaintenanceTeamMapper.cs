@@ -94,17 +94,13 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
 
                 // Should correspond to MaintenanceTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =
-                    /* Begin Parent AircraftMaintenanceCompany */
-                    this.UserRoleIds.Contains((int)RoleId.Supervisor) ||
-                    /* End Parent AircraftMaintenanceCompany */
+                    this.UserRoleIds.Contains((int)RoleId.MaintenanceTeamAdmin) ||
                     this.UserRoleIds.Contains((int)RoleId.Admin),
 
                 // Should correspond to MaintenanceTeam_Member_List_Access (but without use the roles *_Member that is not determined at list display)
                 CanMemberListAccess =
                     this.UserRoleIds.Contains((int)RoleId.Admin) ||
-                    /* Begin Parent AircraftMaintenanceCompany */
                     entity.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
-                    /* End Parent AircraftMaintenanceCompany */
                     entity.Members.Any(m => m.UserId == this.UserId),
             };
         }

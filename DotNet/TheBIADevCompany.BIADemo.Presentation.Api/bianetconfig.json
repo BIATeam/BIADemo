@@ -186,9 +186,7 @@
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
         "Roles": [
-          // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
-          "Supervisor",
-          // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+          "MaintenanceTeam_Admin",
           "Admin"
         ]
       },
@@ -217,19 +215,19 @@
         "Roles": [
           "Admin",
           // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
-          "Supervisor",
+          "Team_Leader",
           // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
-          "Team_Leader"
+          "MaintenanceTeam_Admin"
         ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
         "Roles": [
+          "Admin",
           // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
-          "Supervisor",
           "Team_Leader",
           // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
-          "Admin"
+          "MaintenanceTeam_Admin"
         ]
       },
       // BIAToolKit - End Partial Config MaintenanceTeam
