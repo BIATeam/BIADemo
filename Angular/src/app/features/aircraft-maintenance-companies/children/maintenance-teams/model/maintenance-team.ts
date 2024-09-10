@@ -11,6 +11,7 @@ import {
 // TODO after creation of CRUD Team MaintenanceTeam : adapt the model
 export class MaintenanceTeam extends BaseTeamDto {
   /// BIAToolKit - Begin Properties
+  code: string;
   isActive: boolean;
   /// BIAToolKit - End Properties
 }
@@ -20,6 +21,11 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig = {
   columns: [
     ...teamFieldsConfigurationColumns,
     ...[
+      /// BIAToolKit - Begin Block code
+      Object.assign(new BiaFieldConfig('code', 'maintenanceTeam.code'), {
+        type: PropType.String,
+      }),
+      /// BIAToolKit - End Block code
       /// BIAToolKit - Begin Block isActive
       Object.assign(
         new BiaFieldConfig('isActive', 'maintenanceTeam.isActive'),
@@ -27,7 +33,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig = {
           type: PropType.Boolean,
         }
       ),
-      /// BIAToolKit - End Block
+      /// BIAToolKit - End Block isActive
     ],
   ],
 };

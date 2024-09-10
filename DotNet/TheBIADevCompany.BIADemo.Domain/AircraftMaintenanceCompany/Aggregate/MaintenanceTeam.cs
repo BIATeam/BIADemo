@@ -32,6 +32,11 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         public byte[] RowVersionAircraftMaintenanceCompany { get; set; }
 
         /// <summary>
+        /// Gets or sets the maintenance team code.
+        /// </summary>
+        public string Code { get; set; }
+
+        /// <summary>
         /// Gets or sets the maintenance team active indicator.
         /// </summary>
         public bool IsActive { get; set; }
