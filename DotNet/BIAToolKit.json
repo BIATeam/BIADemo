@@ -114,8 +114,7 @@
 			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\TeamTypeId.cs",
 			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\RoleId.cs",
 			"TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs"
+			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json"
 		]
 	}
 ]

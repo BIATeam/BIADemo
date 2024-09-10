@@ -186,19 +186,19 @@
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
         "Roles": [
-          "Admin",
-          // BIAToolKit - Begin Parent AircraftMaintenanceCompany
-          "Supervisor"
-          // BIAToolKit - End Parent AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
+          "Supervisor",
+          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
+          "Admin"
         ]
       },
       {
         "Names": [ "MaintenanceTeam_List_Access" ],
         "Roles": [
           "Admin",
-          // BIAToolKit - Begin Parent AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
           "AircraftMaintenanceCompany_Member",
-          // BIAToolKit - End Parent AircraftMaintenanceCompany
+          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
           "MaintenanceTeam_MemberOfOne"
         ]
       },
@@ -206,9 +206,9 @@
         "Names": [ "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
         "Roles": [
           "Admin",
-          // BIAToolKit - Begin Parent AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
           "AircraftMaintenanceCompany_Member",
-          // BIAToolKit - End Parent AircraftMaintenanceCompany
+          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
           "MaintenanceTeam_Member"
         ]
       },
@@ -216,20 +216,20 @@
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
         "Roles": [
           "Admin",
-          // BIAToolKit - Begin Parent AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
           "Supervisor",
-          // BIAToolKit - End Parent AircraftMaintenanceCompany
+          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
           "Team_Leader"
         ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
         "Roles": [
-          "Admin",
-          // BIAToolKit - Begin Parent AircraftMaintenanceCompany
+          // BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
           "Supervisor",
-          "Team_Leader"
-          // BIAToolKit - End ParentAircraftMaintenanceCompany
+          "Team_Leader",
+          // BIAToolKit - End Partial Parent AircraftMaintenanceCompany
+          "Admin"
         ]
       },
       // BIAToolKit - End Partial Config MaintenanceTeam
