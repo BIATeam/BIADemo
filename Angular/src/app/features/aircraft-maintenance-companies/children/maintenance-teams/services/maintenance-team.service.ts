@@ -3,16 +3,16 @@ import { Store } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { MaintenanceTeam } from '../model/maintenance-team';
 import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { MaintenanceTeam } from '../model/maintenance-team';
 import { FeatureMaintenanceTeamsStore } from '../store/maintenance-team.state';
 import { FeatureMaintenanceTeamsActions } from '../store/maintenance-teams-actions';
-import { MaintenanceTeamOptionsService } from './maintenance-team-options.service';
 import { MaintenanceTeamDas } from './maintenance-team-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { MaintenanceTeamOptionsService } from './maintenance-team-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,9 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   public getParentIds(): any[] {
     // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key tothe context. It can be null if root crud
     return [
+      // BIAToolKit - Begin Parent AircraftMaintenanceCompany
       this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany),
+      // BIAToolKit - End Parent AircraftMaintenanceCompany
     ];
   }
 

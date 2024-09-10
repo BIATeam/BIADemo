@@ -23,20 +23,20 @@ export const NAVIGATION: BiaNavigation[] = [
       Permission.Hangfire_Access,
     ],
     children: [
-      /// BIAToolKit - Begin Partial Parent AircraftMaintenanceCompany
       {
         labelKey: 'app.aircraft-maintenance-companies',
         permissions: [Permission.AircraftMaintenanceCompany_List_Access],
         path: ['/examples/aircraft-maintenance-companies'],
       },
-      /// BIAToolKit - End Partial Parent AircraftMaintenanceCompany
-      /// BIAToolKit - Begin Partial NoParent MaintenanceTeam
+      /// BIAToolKit - Begin Partial Navigation MaintenanceTeam
+      /// BIAToolKit - Begin Nested NoParent MaintenanceTeam
       {
         labelKey: 'app.maintenance-teams',
         permissions: [Permission.MaintenanceTeam_List_Access],
         path: ['/examples/maintenance-teams'],
       },
-      /// BIAToolKit - End Partial NoParent MaintenanceTeam
+      /// BIAToolKit - End Nested NoParent MaintenanceTeam
+      /// BIAToolKit - End Partial Navigation MaintenanceTeam
       /// BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',
