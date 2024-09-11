@@ -43,11 +43,13 @@ export class MaintenanceTeamsIndexComponent
 
   ngOnInit(): void {
     super.ngOnInit();
+    // Begin BIADemo
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.maintenanceTeamOptionsService.loadAllOptions();
       })
     );
+    // End BIADemo
   }
 
   protected setPermissions() {
