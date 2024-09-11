@@ -1,0 +1,36 @@
+﻿namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+
+    /// <summary>
+    /// The entity to link maintenance teams and countries.
+    /// </summary>
+    public class MaintenanceTeamCountry : VersionedTable
+    {
+        /// <summary>
+        /// Gets or sets the MaintenanceTeam.
+        /// </summary>
+        public MaintenanceTeam MaintenanceTeam { get; set; }
+
+        /// <summary>
+        /// Gets or sets the MaintenanceTeam id.
+        /// </summary>
+        public int MaintenanceTeamId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Country.
+        /// </summary>
+        public Country Country { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Country id.
+        /// </summary>
+        public int CountryId { get; set; }
+    }
+}

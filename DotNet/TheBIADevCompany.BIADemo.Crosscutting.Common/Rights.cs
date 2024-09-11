@@ -181,6 +181,51 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial Rights MaintenanceTeam
 
+        // BIAToolKit - Begin Partial Rights Country
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Countries
+        {
+            /// <summary>
+            /// The right to access to the list of countries (options only).
+            /// </summary>
+            public const string Options = "Country_Options";
+
+            /// <summary>
+            /// The right to access to the list of countries.
+            /// </summary>
+            public const string ListAccess = "Country_List_Access";
+
+            /// <summary>
+            /// The right to create countries.
+            /// </summary>
+            public const string Create = "Country_Create";
+
+            /// <summary>
+            /// The right to read countries.
+            /// </summary>
+            public const string Read = "Country_Read";
+
+            /// <summary>
+            /// The right to update countries.
+            /// </summary>
+            public const string Update = "Country_Update";
+
+            /// <summary>
+            /// The right to delete countries.
+            /// </summary>
+            public const string Delete = "Country_Delete";
+
+            /// <summary>
+            /// The right to save planes.
+            /// </summary>
+            public const string Save = "Country_Save";
+        }
+
+        // BIAToolKit - End Partial Rights Country
+
         // BIAToolKit - Begin Partial Rights Plane
 
         /// <summary>
@@ -270,32 +315,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Airports
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of countrys (options only).
             /// </summary>
             public const string Options = "Airport_Options";
 
             /// <summary>
-            /// The right to access to the list of airports.
+            /// The right to access to the list of countrys.
             /// </summary>
             public const string ListAccess = "Airport_List_Access";
 
             /// <summary>
-            /// The right to create airports.
+            /// The right to create countrys.
             /// </summary>
             public const string Create = "Airport_Create";
 
             /// <summary>
-            /// The right to read airports.
+            /// The right to read countrys.
             /// </summary>
             public const string Read = "Airport_Read";
 
             /// <summary>
-            /// The right to update airports.
+            /// The right to update countrys.
             /// </summary>
             public const string Update = "Airport_Update";
 
             /// <summary>
-            /// The right to delete airports.
+            /// The right to delete countrys.
             /// </summary>
             public const string Delete = "Airport_Delete";
 
@@ -326,7 +371,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Roles
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of countrys (options only).
             /// </summary>
             public const string Options = "Roles_Options";
 
@@ -342,7 +387,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Permissions
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of countrys (options only).
             /// </summary>
             public const string Options = "Permissions_Options";
         }
