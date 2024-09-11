@@ -14,11 +14,12 @@
     "planesOfflineMode": "Planos (Desconectado)",
     "planesSpecific": "Planos (Specific)",
     "planesTypes": "Tipos de planos",
-    "sites": "Aerolíneas",
+    "airlines": "Aerolíneas",
     "End BIADemo": "To remove in project up to here",
     "teams": "Equipos",
     "users": "Usuarios",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "maintenance-teams": "Mantenimiento equipos"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -56,7 +57,27 @@
     "headerLabel": "Equipo de mantenimiento",
     "listOf": "Lista de equipos de mantenimiento",
     "title": "Name",
-    "isActive": "Activo"
+    "code": "Código",
+    "isActive": "Activo",
+    "isApproved": "Aprobado",
+    "firstOperation": "Primera fecha de operación",
+    "lastOperation": "Última fecha de operación",
+    "approvalDate": "Fecha de aprobación",
+    "nextOperation": "Próxima fecha de operación",
+    "maxTravelDuration": "Duración máxima de viaje",
+    "maxOperationDuration": "Duración máxima de operación",
+    "operationCount": "Operaciones",
+    "incidentCount": "Incidentes",
+    "totalOperationDuration": "Duración total de las operaciones",
+    "averageOperationDuration": "Duración promedio de las operaciones",
+    "totalTravelDuration": "Duración total de los viajes",
+    "averageTravelDuration": "Duración promedio de los viajes",
+    "totalOperationCost": "Costo total de las operaciones",
+    "averageOperationCost": "Costo promedio de las operaciones",
+    "currentCountry": "País actual",
+    "operationCountries": "Países de operaciones",
+    "currentAirport": "Aeropuerto actual",
+    "operationAirports": "Aeropuertos de operaciones"
   },
   "plane": {
     "add": "Añadir plano",
