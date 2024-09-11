@@ -150,6 +150,8 @@ Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
 Write-Host "RemoveFolder src\app\domains\plane-type-option"
 RemoveFolder -path 'src\app\domains\plane-type-option'
+Write-Host "RemoveFolder src\app\domains\country-option"
+RemoveFolder -path 'src\app\domains\country-option'
 
 #Write-Host "RemoveFolder src\assets\bia\primeng\sass"
 #RemoveFolder -path 'src\assets\bia\primeng\sass'

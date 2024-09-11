@@ -1,4 +1,9 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
+﻿// BIADemo only
+// <copyright file="MaintenanceTeamAirport.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
 {
     using System;
     using System.Collections.Generic;

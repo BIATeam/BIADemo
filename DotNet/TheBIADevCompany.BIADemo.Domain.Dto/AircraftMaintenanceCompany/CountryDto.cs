@@ -1,4 +1,9 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
+﻿// BIADemo only
+// <copyright file="CountryDto.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
 {
     using System;
     using System.Collections.Generic;
