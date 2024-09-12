@@ -47,7 +47,6 @@ const routes: Routes = [
                 },
                 loadChildren: () =>
                   import(
-                    /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path to the module
                     './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
                   ).then(m => m.MaintenanceTeamModule),
               },

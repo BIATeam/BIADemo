@@ -33,6 +33,7 @@ export const NAVIGATION: BiaNavigation[] = [
       {
         labelKey: 'app.maintenance-teams',
         permissions: [Permission.MaintenanceTeam_List_Access],
+        /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path
         path: ['/examples/maintenance-teams'],
       },
       /// BIAToolKit - End Nested NoParent MaintenanceTeam
