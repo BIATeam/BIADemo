@@ -86,4 +86,16 @@ export class MaintenanceTeamsIndexComponent
       });
     }
   }
+
+  onSelectedElementsChanged(crudItems: MaintenanceTeam[]) {
+    super.onSelectedElementsChanged(crudItems);
+    if (crudItems.length === 1) {
+      this.maintenanceTeamService.currentCrudItemId = crudItems[0].id;
+    }
+  }
+
+  onDelete(): void {
+    super.onDelete();
+    this.authService.reLogin();
+  }
 }
