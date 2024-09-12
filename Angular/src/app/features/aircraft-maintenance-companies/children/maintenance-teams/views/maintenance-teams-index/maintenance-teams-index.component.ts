@@ -6,7 +6,9 @@ import { Permission } from 'src/app/shared/permission';
 import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
 import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
 import { MaintenanceTeam } from '../../model/maintenance-team';
+// BIAToolKit - Begin Option
 import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
+// BIAToolKit - End Option
 import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
@@ -34,8 +36,10 @@ export class MaintenanceTeamsIndexComponent
   constructor(
     protected injector: Injector,
     public maintenanceTeamService: MaintenanceTeamService,
-    protected authService: AuthService,
-    protected maintenanceTeamOptionsService: MaintenanceTeamOptionsService
+    // BIAToolKit - Begin Option
+    protected maintenanceTeamOptionsService: MaintenanceTeamOptionsService,
+    // BIAToolKit - End Option
+    protected authService: AuthService
   ) {
     super(injector, maintenanceTeamService);
     this.crudConfiguration = maintenanceTeamCRUDConfiguration;
@@ -43,13 +47,13 @@ export class MaintenanceTeamsIndexComponent
 
   ngOnInit(): void {
     super.ngOnInit();
-    // Begin BIADemo
+    // BIAToolKit - Begin Option
     this.sub.add(
       this.biaTranslationService.currentCulture$.subscribe(() => {
         this.maintenanceTeamOptionsService.loadAllOptions();
       })
     );
-    // End BIADemo
+    // BIAToolKit - End Option
   }
 
   protected setPermissions() {
