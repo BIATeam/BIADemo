@@ -74,7 +74,8 @@
       "src\\app\\app-routing.module.ts",
       "src\\app\\shared\\navigation.ts",
       "src\\app\\shared\\permission.ts",
-      "src\\app\\shared\\constants.ts"
+      "src\\app\\shared\\constants.ts",
+      "src\\environments\\all-environments.ts"
     ]
   }
 ]
