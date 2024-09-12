@@ -4,17 +4,12 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.RepoContract.QueryCustomizer;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -22,9 +17,9 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
-    /// The application service used to manage views.
+    /// The domain service used to add notifications.
     /// </summary>
-    public class NotificationDomainService : CrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto, NotificationMapper, NotificationListItemMapper>, INotificationDomainService
+    public class NotificationDomainService : FilteredServiceBase<Notification, int>, INotificationDomainService
     {
         /// <summary>
         /// The claims principal.
@@ -67,119 +62,29 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
         }
 
         /// <inheritdoc/>
-        public async Task SetAsRead(NotificationDto dto)
+        public async override Task<TOtherObject> AddAsync<TOtherObject, TOtherMapper>(TOtherObject dto, string mapperMode = null)
         {
-            var notification = await this.Repository.GetEntityAsync(dto.Id);
-
-            notification.Read = true;
-            await this.Repository.UnitOfWork.CommitAsync();
-            dto.Read = true;
-
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
-        }
-
-        /// <inheritdoc/>
-        public async Task SetUnread(NotificationDto dto)
-        {
-            var notification = await this.Repository.GetEntityAsync(dto.Id);
-
-            notification.Read = false;
-            await this.Repository.UnitOfWork.CommitAsync();
-            dto.Read = false;
-
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
-        }
-
-        /// <inheritdoc/>
-        public override async Task<NotificationDto> UpdateAsync(
-            NotificationDto dto,
-            string accessMode = AccessMode.Update,
-            string queryMode = QueryMode.Update,
-            string mapperMode = null)
-        {
-            if (dto != null)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                NotificationMapper mapper = this.InitMapper<NotificationDto, NotificationMapper>();
-
-                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                if (entity == null)
+                if (dto != null)
                 {
-                    throw new ElementNotFoundException();
+                    TOtherMapper mapper = this.InitMapper<TOtherObject, TOtherMapper>();
+                    var entity = new Notification();
+                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    this.Repository.Add(entity);
+                    await this.Repository.UnitOfWork.CommitAsync();
+                    mapper.MapEntityKeysInDto(entity, dto);
+
+                    if (!entity.Read)
+                    {
+                        _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
+                    }
+
+                    _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
                 }
 
-                if (entity.Read && !dto.Read)
-                {
-                    _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", dto);
-                }
-                else if (!entity.Read && dto.Read)
-                {
-                    _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", dto.Id);
-                }
-
-                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", dto);
-
-                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
-
-                await this.Repository.UnitOfWork.CommitAsync();
-                dto.DtoState = DtoState.Unchanged;
-                mapper.MapEntityKeysInDto(entity, dto);
-            }
-
-            return dto;
-        }
-
-        /// <inheritdoc/>
-        public override async Task<NotificationDto> RemoveAsync(
-            int id,
-            string accessMode = AccessMode.Delete,
-            string queryMode = QueryMode.Delete,
-            string mapperMode = null)
-        {
-            var notification = await base.RemoveAsync(id, accessMode: accessMode, queryMode: queryMode, mapperMode: mapperMode);
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeUnread", notification.Id);
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
-            return notification;
-        }
-
-        /// <inheritdoc/>
-        public override async Task<List<NotificationDto>> RemoveAsync(List<int> ids, string accessMode = "Delete", string queryMode = "Delete", string mapperMode = null)
-        {
-            var deletedDtos = await base.RemoveAsync(ids, accessMode, queryMode, mapperMode);
-
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-removeSeveralUnread", deletedDtos.Select(s => s.Id).ToList());
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notifications-several", deletedDtos);
-
-            return deletedDtos;
-        }
-
-        /// <inheritdoc/>
-        public override async Task<NotificationDto> AddAsync(NotificationDto dto, string mapperMode = null)
-        {
-            var notification = await base.AddAsync(dto, mapperMode);
-
-            if (!dto.Read)
-            {
-                _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", notification);
-            }
-
-            _ = this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notifications" }, "refresh-notification", notification);
-            return notification;
-        }
-
-        /// <summary>
-        /// Return the list of unreadIds.
-        /// </summary>
-        /// <param name="userId">the user Id.</param>
-        /// <returns>The list of int.</returns>
-        public async Task<List<int>> GetUnreadIds(int userId)
-        {
-            var results = await this.Repository.GetAllResultAsync<int>(
-                selectResult: x => x.Id,
-                specification: this.FiltersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
-
-            return results.ToList();
+                return dto;
+            });
         }
     }
 }

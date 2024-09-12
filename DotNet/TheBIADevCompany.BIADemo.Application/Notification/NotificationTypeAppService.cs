@@ -1,8 +1,8 @@
-// <copyright file="NotificationTypeDomainService.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTypeAppService.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
+namespace TheBIADevCompany.BIADemo.Application.Notification
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -14,14 +14,14 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
     /// <summary>
     /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeDomainService : AppServiceBase<NotificationType, int>, INotificationTypeDomainService
+    public class NotificationTypeAppService : AppServiceBase<NotificationType, int>, INotificationTypeAppService
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotificationTypeDomainService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationTypeAppService"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userContext">The user context.</param>
-        public NotificationTypeDomainService(ITGenericRepository<NotificationType, int> repository)
+        public NotificationTypeAppService(ITGenericRepository<NotificationType, int> repository)
             : base(repository)
         {
         }

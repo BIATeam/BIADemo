@@ -4,37 +4,27 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Service
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     /// <summary>
-    /// The interface defining the notification application service.
+    /// The interface defining the notification domain service.
     /// </summary>
-    public interface INotificationDomainService : ICrudAppServiceListAndItemBase<NotificationDto, NotificationListItemDto, Notification, int, LazyLoadDto>
+    public interface INotificationDomainService : IFilteredServiceBase<Notification, int>
     {
         /// <summary>
-        /// Set the notification as read.
+        /// Transform the source object into a Notification entity and add it to the DB.
         /// </summary>
-        /// <param name="dto">The notification dto.</param>
-        /// <returns>A task.</returns>
-        Task SetAsRead(NotificationDto dto);
-
-        /// <summary>
-        /// Set the notification as unread.
-        /// </summary>
-        /// <param name="dto">The notification dto.</param>
-        /// <returns>A task.</returns>
-        Task SetUnread(NotificationDto dto);
-
-        /// <summary>
-        /// Return the list of unreadIds.
-        /// </summary>
-        /// <param name="userId">the user Id.</param>
-        /// <returns>The list of int.</returns>
-        Task<List<int>> GetUnreadIds(int userId);
+        /// <typeparam name="TOtherObject">The type of the source object.</typeparam>
+        /// <typeparam name="TOtherMapper">The type of Mapper transforming source object to Notification entity.</typeparam>
+        /// <param name="dto">The source object.</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <returns>The source object with id updated.</returns>
+        new Task<TOtherObject> AddAsync<TOtherObject, TOtherMapper>(TOtherObject dto, string mapperMode = null)
+            where TOtherObject : BaseDto<int>, new()
+            where TOtherMapper : BaseMapper<TOtherObject, Notification, int>;
     }
 }
