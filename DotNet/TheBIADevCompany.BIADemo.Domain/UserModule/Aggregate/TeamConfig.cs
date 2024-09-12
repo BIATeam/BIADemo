@@ -65,9 +65,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                         GetParent = team => (team as MaintenanceTeam).AircraftMaintenanceCompany,
                     },
                 }
-
-                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
                 .ToImmutable(),
+                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
             },
 
             // BIAToolKit - End Partial TeamConfig MaintenanceTeam
