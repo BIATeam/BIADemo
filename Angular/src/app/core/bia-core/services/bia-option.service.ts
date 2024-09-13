@@ -34,10 +34,10 @@ export class BiaOptionService {
     }
 
     if (oldList && newList) {
-      // Unchanged items
-      const unchangeds = newList
-        .filter(n => oldList.map(o => o.id).includes(n.id))
-        .map(n => <T>{ ...n, dtoState: DtoState.Unchanged });
+      // Other Items
+      const unchangeds = newList.filter(n =>
+        oldList.map(o => o.id).includes(n.id)
+      );
 
       if (unchangeds) {
         differential = differential.concat(unchangeds);

@@ -1,13 +1,13 @@
-import {
-  PrimeNGFiltering,
-  BiaFieldConfig,
-  PropType,
-  BiaFieldsConfig,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Validators } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PrimeNGFiltering,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto {
@@ -15,11 +15,12 @@ export interface Plane extends BaseDto {
   isActive: boolean;
   lastFlightDate: Date;
   deliveryDate: Date;
-  syncTime: string;
+  syncFlightDataTime: string;
   capacity: number;
   siteId: number;
-  connectingAirports: OptionDto[];
   planeType: OptionDto | null;
+  connectingAirports: OptionDto[];
+  currentAirport: OptionDto;
 }
 
 // TODO after creation of CRUD Plane : adapt the field configuration
@@ -50,10 +51,15 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       type: PropType.Date,
       minWidth: '50px',
     }),
-    Object.assign(new BiaFieldConfig('syncTime', 'plane.syncTime'), {
-      type: PropType.TimeSecOnly,
-      minWidth: '50px',
-    }),
+    Object.assign(
+      new BiaFieldConfig('syncFlightDataTime', 'plane.syncFlightDataTime'),
+      {
+        isRequired: true,
+        type: PropType.TimeSecOnly,
+        validators: [Validators.required],
+        minWidth: '50px',
+      }
+    ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
       type: PropType.Number,
       filterMode: PrimeNGFiltering.Equals,
@@ -67,6 +73,15 @@ export const planeFieldsConfiguration: BiaFieldsConfig = {
       type: PropType.OneToMany,
       minWidth: '50px',
     }),
+    Object.assign(
+      new BiaFieldConfig('currentAirport', 'plane.currentAirport'),
+      {
+        isRequired: true,
+        type: PropType.OneToMany,
+        validators: [Validators.required],
+        minWidth: '50px',
+      }
+    ),
     Object.assign(
       new BiaFieldConfig('connectingAirports', 'plane.connectingAirports'),
       {

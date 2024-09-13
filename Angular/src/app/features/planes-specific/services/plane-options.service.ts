@@ -33,6 +33,7 @@ export class PlaneOptionsService extends CrudItemOptionsService {
           <DictOptionDto[]>[
             new DictOptionDto('planeType', options[0]),
             new DictOptionDto('connectingAirports', options[1]),
+            new DictOptionDto('currentAirport', options[1]),
           ]
       )
     );

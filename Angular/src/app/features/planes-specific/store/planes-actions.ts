@@ -1,8 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
-import { Plane } from '../model/plane';
-import { planeCRUDConfiguration } from '../plane.constants';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { Plane } from '../model/plane';
+import { PlaneSpecific } from '../model/plane-specific';
+import { planeCRUDConfiguration } from '../plane.constants';
 
 export namespace FeaturePlanesActions {
   export const loadAllByPost = createAction(
@@ -17,12 +18,12 @@ export namespace FeaturePlanesActions {
 
   export const create = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Create',
-    props<{ plane: Plane }>()
+    props<{ plane: PlaneSpecific }>()
   );
 
   export const update = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Update',
-    props<{ plane: Plane }>()
+    props<{ plane: PlaneSpecific }>()
   );
 
   export const remove = createAction(
@@ -42,7 +43,7 @@ export namespace FeaturePlanesActions {
 
   export const loadSuccess = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Load success',
-    props<{ plane: Plane }>()
+    props<{ plane: PlaneSpecific }>()
   );
 
   export const failure = createAction(

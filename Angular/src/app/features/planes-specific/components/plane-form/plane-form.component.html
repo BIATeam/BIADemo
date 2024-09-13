@@ -27,8 +27,32 @@
             >
           </span>
         </ng-container>
+
         <!-- capacity -->
       </ng-container>
     </div>
+    <ng-container *ngIf="field.field == 'engines'">
+      <bia-table-header
+        [headerTitle]="field.header | translate"
+        [canAdd]="false"
+        [canDelete]="true"
+        (delete)="onDeleteEngines()"
+        [selectedElements]="selectedEngines"></bia-table-header>
+      <span class="p-float-label">
+        <app-engine-table
+          [elements]="displayedEngines"
+          [configuration]="engineCrudConfig"
+          [dictOptionDtos]="[]"
+          [totalRecord]="crudItem?.engines?.length ?? 0"
+          [paginator]="false"
+          [showColSearch]="false"
+          [canEdit]="true"
+          [canAdd]="true"
+          [canSelectElement]="true"
+          [loading]="false"
+          (selectedElementsChanged)="onSelectedEnginesChanged($event)"
+          (save)="onEngineSave($event)" />
+      </span>
+    </ng-container>
   </ng-template>
 </bia-form>
