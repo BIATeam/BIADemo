@@ -66,7 +66,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                     },
                 }
                 .ToImmutable(),
-                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+
+                // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
             },
 
             // BIAToolKit - End Partial TeamConfig MaintenanceTeam
