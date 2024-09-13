@@ -47,9 +47,9 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   public getParentIds(): any[] {
     // TODO after creation of CRUD Team MaintenanceTeam : adapt the parent Key tothe context. It can be null if root crud
     return [
-      // BIAToolKit - Begin Parent AircraftMaintenanceCompany
+      // BIAToolKit - Begin AncestorTeam AircraftMaintenanceCompany
       this.authService.getCurrentTeamId(TeamTypeId.AircraftMaintenanceCompany),
-      // BIAToolKit - End Parent AircraftMaintenanceCompany
+      // BIAToolKit - End AncestorTeam AircraftMaintenanceCompany
     ];
   }
 
