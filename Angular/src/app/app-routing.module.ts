@@ -24,8 +24,6 @@ const routes: Routes = [
               canNavigate: false,
             },
             children: [
-              /// BIAToolKit - Begin Partial Routing MaintenanceTeam
-              /// BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
               {
                 path: 'aircraft-maintenance-companies',
                 data: {
@@ -37,8 +35,7 @@ const routes: Routes = [
                     './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
                   ).then(m => m.AircraftMaintenanceCompanyModule),
               },
-              /// BIAToolKit - End Nested Parent AircraftMaintenanceCompany
-              /// BIAToolKit - Begin Nested NoParent MaintenanceTeam
+              /// BIAToolKit - Begin Partial Routing MaintenanceTeam
               {
                 path: 'maintenance-teams',
                 data: {
@@ -50,7 +47,6 @@ const routes: Routes = [
                     './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
                   ).then(m => m.MaintenanceTeamModule),
               },
-              /// BIAToolKit - End Nested NoParent MaintenanceTeam
               /// BIAToolKit - End Partial Routing MaintenanceTeam
 
               /// BIAToolKit - Begin Partial Routing Plane

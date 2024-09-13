@@ -29,14 +29,12 @@ export const NAVIGATION: BiaNavigation[] = [
         path: ['/examples/aircraft-maintenance-companies'],
       },
       /// BIAToolKit - Begin Partial Navigation MaintenanceTeam
-      /// BIAToolKit - Begin Nested NoParent MaintenanceTeam
       {
         labelKey: 'app.maintenance-teams',
         permissions: [Permission.MaintenanceTeam_List_Access],
         /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path
         path: ['/examples/maintenance-teams'],
       },
-      /// BIAToolKit - End Nested NoParent MaintenanceTeam
       /// BIAToolKit - End Partial Navigation MaintenanceTeam
       /// BIAToolKit - Begin Partial Navigation Plane
       {
