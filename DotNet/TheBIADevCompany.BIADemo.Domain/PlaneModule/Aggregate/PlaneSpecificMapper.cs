@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
@@ -74,25 +73,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             this.planeMapper.DtoToEntity(dto, entity);
             entity.Engines ??= [];
-            foreach (EngineDto engineDto in dto.Engines)
-            {
-                Engine engineEntity;
-                switch (engineDto.DtoState)
-                {
-                    case DtoState.Added:
-                        engineEntity = new Engine();
-                        this.engineMapper.DtoToEntity(engineDto, engineEntity);
-                        entity.Engines.Add(engineEntity);
-                        break;
-                    case DtoState.Modified:
-                        engineEntity = entity.Engines.FirstOrDefault(e => e.Id == engineDto.Id);
-                        this.engineMapper.DtoToEntity(engineDto, engineEntity);
-                        break;
-                    case DtoState.Deleted:
-                        entity.Engines.Remove(entity.Engines.FirstOrDefault(e => e.Id == engineDto.Id));
-                        break;
-                }
-            }
+            MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>

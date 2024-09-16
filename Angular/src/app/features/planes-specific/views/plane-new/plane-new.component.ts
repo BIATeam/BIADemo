@@ -5,7 +5,7 @@ import { planeSpecificCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
-  selector: 'app-plane-new',
+  selector: 'app-plane-specific-new',
   templateUrl: './plane-new.component.html',
 })
 export class PlaneNewComponent extends CrudItemNewComponent<PlaneSpecific> {

@@ -1,14 +1,14 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+import { Permission } from 'src/app/shared/permission';
+import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { PlaneService } from '../../services/plane.service';
-import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 
 @Component({
-  selector: 'app-planes-index',
+  selector: 'app-planes-specific-index',
   templateUrl: './planes-index.component.html',
   styleUrls: ['./planes-index.component.scss'],
 })
