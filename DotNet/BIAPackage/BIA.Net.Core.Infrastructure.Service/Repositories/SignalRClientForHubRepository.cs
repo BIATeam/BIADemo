@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
     using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Transactions;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -110,12 +109,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                     connection.Closed += async (error) =>
                     {
                         await Task.Delay(RandomNumberGenerator.GetInt32(1000, 5000));
-                        await connection.StartAsync();
+                        if (started)
+                        {
+                            await connection.StartAsync();
+                        }
                     };
 
-                    await connection.StartAsync();
-
                     started = true;
+                    await connection.StartAsync();
                 }
             }
             finally
@@ -138,13 +139,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 {
                     if (started)
                     {
+                        started = false;
                         if (connection != null)
                         {
                             await connection.StopAsync();
                             await connection.DisposeAsync();
                         }
-
-                        started = false;
                     }
                 }
                 finally
