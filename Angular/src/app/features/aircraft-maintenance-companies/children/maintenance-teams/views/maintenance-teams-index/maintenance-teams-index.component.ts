@@ -1,19 +1,25 @@
-import { Component, Injector, ViewChild } from '@angular/core';
-import { MaintenanceTeam } from '../../model/maintenance-team';
-import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
-import { MaintenanceTeamService } from '../../services/maintenance-team.service';
-import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
 import { TeamAdvancedFilterDto } from 'src/app/shared/bia-shared/model/team-advanced-filter-dto';
+import { Permission } from 'src/app/shared/permission';
+import { MaintenanceTeamTableComponent } from '../../components/maintenance-team-table/maintenance-team-table.component';
+import { maintenanceTeamCRUDConfiguration } from '../../maintenance-team.constants';
+import { MaintenanceTeam } from '../../model/maintenance-team';
+// BIAToolKit - Begin Option
+import { MaintenanceTeamOptionsService } from '../../services/maintenance-team-options.service';
+// BIAToolKit - End Option
+import { MaintenanceTeamService } from '../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-teams-index',
   templateUrl: './maintenance-teams-index.component.html',
   styleUrls: ['./maintenance-teams-index.component.scss'],
 })
-export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<MaintenanceTeam> {
+export class MaintenanceTeamsIndexComponent
+  extends CrudItemsIndexComponent<MaintenanceTeam>
+  implements OnInit
+{
   // Custo for teams
   canViewMembers = false;
   canSelectElement = false;
@@ -30,10 +36,24 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
   constructor(
     protected injector: Injector,
     public maintenanceTeamService: MaintenanceTeamService,
+    // BIAToolKit - Begin Option
+    protected maintenanceTeamOptionsService: MaintenanceTeamOptionsService,
+    // BIAToolKit - End Option
     protected authService: AuthService
   ) {
     super(injector, maintenanceTeamService);
     this.crudConfiguration = maintenanceTeamCRUDConfiguration;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    // BIAToolKit - Begin Option
+    this.sub.add(
+      this.biaTranslationService.currentCulture$.subscribe(() => {
+        this.maintenanceTeamOptionsService.loadAllOptions();
+      })
+    );
+    // BIAToolKit - End Option
   }
 
   protected setPermissions() {
@@ -65,5 +85,17 @@ export class MaintenanceTeamsIndexComponent extends CrudItemsIndexComponent<Main
         relativeTo: this.activatedRoute,
       });
     }
+  }
+
+  onSelectedElementsChanged(crudItems: MaintenanceTeam[]) {
+    super.onSelectedElementsChanged(crudItems);
+    if (crudItems.length === 1) {
+      this.maintenanceTeamService.currentCrudItemId = crudItems[0].id;
+    }
+  }
+
+  onDelete(): void {
+    super.onDelete();
+    this.authService.reLogin();
   }
 }

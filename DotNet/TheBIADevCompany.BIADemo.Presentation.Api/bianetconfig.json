@@ -181,27 +181,63 @@
         "Names": [ "AircraftMaintenanceCompany_View_Add_TeamView", "AircraftMaintenanceCompany_View_Update_TeamView", "AircraftMaintenanceCompany_View_Set_Default_TeamView", "AircraftMaintenanceCompany_View_Assign_To_Team" ],
         "Roles": [ "Admin", "Supervisor" ]
       },
+      // BIAToolKit - Begin Partial Config MaintenanceTeam
       // Maintenance Team
       {
         "Names": [ "MaintenanceTeam_Create", "MaintenanceTeam_Update", "MaintenanceTeam_Delete", "MaintenanceTeam_Save" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */ ]
+        "Roles": [
+          "MaintenanceTeam_Admin",
+          "Admin"
+        ]
       },
       {
         "Names": [ "MaintenanceTeam_List_Access" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_MemberOfOne" ]
+        "Roles": [
+          "Admin",
+          // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+          "AircraftMaintenanceCompany_Member",
+          // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+          "MaintenanceTeam_MemberOfOne"
+        ]
       },
       {
         "Names": [ "MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "AircraftMaintenanceCompany_Member" /* End Parent AircraftMaintenanceCompany */, "MaintenanceTeam_Member" ]
+        "Roles": [
+          "Admin",
+          // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+          "AircraftMaintenanceCompany_Member",
+          // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+          "MaintenanceTeam_Member"
+        ]
       },
       {
         "Names": [ "MaintenanceTeam_Member_Create", "MaintenanceTeam_Member_Read", "MaintenanceTeam_Member_Update", "MaintenanceTeam_Member_Delete", "MaintenanceTeam_Member_Save" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
+        "Roles": [
+          "Admin",
+          // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+          "Team_Leader",
+          // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+          "MaintenanceTeam_Admin"
+        ]
       },
       {
         "Names": [ "MaintenanceTeam_View_Add_TeamView", "MaintenanceTeam_View_Update_TeamView", "MaintenanceTeam_View_Set_Default_TeamView", "MaintenanceTeam_View_Assign_To_Team" ],
-        "Roles": [ "Admin" /* Begin Parent AircraftMaintenanceCompany */, "Supervisor" /* End Parent AircraftMaintenanceCompany */, "Team_Leader" ]
+        "Roles": [
+          "Admin",
+          // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+          "Team_Leader",
+          // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+          "MaintenanceTeam_Admin"
+        ]
       },
+      // BIAToolKit - End Partial Config MaintenanceTeam
+      // BIAToolKit - Begin Partial Config Country
+      // Country
+      {
+        "Name": "Country_Options",
+        "Roles": [ "Admin", "Site_Member" ]
+      },
+      // BIAToolKit - End Partial Config Country
       // BIAToolKit - Begin Partial Config Airport
       // Airport
       {

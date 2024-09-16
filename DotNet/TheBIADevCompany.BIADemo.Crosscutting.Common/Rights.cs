@@ -141,6 +141,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "Engine_Save";
         }
 
+        // BIAToolKit - Begin Partial Rights MaintenanceTeam
+
         /// <summary>
         /// The maintenance team rights.
         /// </summary>
@@ -176,6 +178,23 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "MaintenanceTeam_Save";
         }
+
+        // BIAToolKit - End Partial Rights MaintenanceTeam
+
+        // BIAToolKit - Begin Partial Rights Country
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Countries
+        {
+            /// <summary>
+            /// The right to access to the list of countries (options only).
+            /// </summary>
+            public const string Options = "Country_Options";
+        }
+
+        // BIAToolKit - End Partial Rights Country
 
         // BIAToolKit - Begin Partial Rights Plane
 
@@ -261,7 +280,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         // BIAToolKit - Begin Partial Rights Airport
 
         /// <summary>
-        /// The planes rights.
+        /// The airports rights.
         /// </summary>
         public static class Airports
         {
@@ -296,7 +315,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Delete = "Airport_Delete";
 
             /// <summary>
-            /// The right to save planes.
+            /// The right to save airports.
             /// </summary>
             public const string Save = "Airport_Save";
         }
@@ -322,7 +341,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Roles
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of roles (options only).
             /// </summary>
             public const string Options = "Roles_Options";
 
@@ -338,7 +357,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
         public static class Permissions
         {
             /// <summary>
-            /// The right to access to the list of airports (options only).
+            /// The right to access to the list of permissions (options only).
             /// </summary>
             public const string Options = "Permissions_Options";
         }

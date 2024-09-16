@@ -1,10 +1,10 @@
 [
   {
-    "Feature": "planes",
+    "Feature": "CRUD",
     "Type": "CRUD",
     "FeatureName": "Plane",
     "FeatureNamePlural": "Planes",
-    "ZipName": "feature-planes.zip",
+    "ZipName": "crud.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\*"],
       "Exclude": ["src\\app\\features\\planes\\children\\engines\\*"]
@@ -18,25 +18,11 @@
     ]
   },
   {
-    "Feature": "planes-full-code",
-    "Type": "CRUD",
-    "FeatureName": "Plane",
-    "FeatureNamePlural": "Planes",
-    "ZipName": "feature-planes-full-code.zip",
-    "Contains": {
-      "Include": ["src\\app\\features\\planes-full-code\\*"],
-      "Exclude": []
-    },
-    "Children": [],
-    "Options": [],
-    "Partial": []
-  },
-  {
-    "Feature": "airport-option",
+    "Feature": "Option (many to many)",
     "Type": "Option",
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
-    "ZipName": "domain-airport-option.zip",
+    "ZipName": "option-many-to-many.zip",
     "Relation": "many-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
@@ -47,11 +33,11 @@
     "Partial": []
   },
   {
-    "Feature": "plane-type-option",
+    "Feature": "Option (one to many)",
     "Type": "Option",
     "FeatureName": "PlaneType",
     "FeatureNamePlural": "PlanesTypes",
-    "ZipName": "domain-plane-type-option.zip",
+    "ZipName": "option-one-to-many.zip",
     "Relation": "one-to-many",
     "Contains": {
       "Include": ["src\\app\\domains\\plane-type-option\\*"],
@@ -62,17 +48,34 @@
     "Partial": []
   },
   {
-    "Feature": "aircraft-maintenance-companies",
+    "Feature": "Team",
     "Type": "Team",
-    "FeatureName": "AircraftMaintenanceCompany",
-    "FeatureNamePlural": "AircraftMaintenanceCompanies",
-    "ZipName": "aircraft-maintenance-companies.zip",
+    "FeatureName": "MaintenanceTeam",
+    "FeatureNamePlural": "MaintenanceTeams",
+    "ZipName": "team.zip",
     "Contains": {
-      "Include": ["src\\app\\features\\aircraft-maintenance-companies\\*"],
+      "Include": [
+        "src\\app\\features\\aircraft-maintenance-companies\\children\\maintenance-teams\\*"
+      ],
       "Exclude": []
     },
+    "Parents": [
+      {
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "PathToTranslate": "aircraft-maintenance-companies\\children\\",
+        "SearchInPath": "src\\app\\features\\",
+        "IsPrincipal": "true"
+      }
+    ],
     "Children": [],
     "Options": [],
-    "Partial": []
+    "Partial": [
+      "src\\app\\app-routing.module.ts",
+      "src\\app\\shared\\navigation.ts",
+      "src\\app\\shared\\permission.ts",
+      "src\\app\\shared\\constants.ts",
+      "src\\environments\\all-environments.ts"
+    ]
   }
 ]

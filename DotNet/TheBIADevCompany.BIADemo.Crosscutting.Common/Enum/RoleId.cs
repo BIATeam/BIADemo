@@ -32,14 +32,34 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         // Begin BIADemo
 #pragma warning disable SA1602 // Enumeration items should be documented
         Pilot = 2,
-
         Supervisor = 101,
         Expert = 102,
-
-        TeamLeader = 201,
         Operator = 202,
 #pragma warning restore SA1602 // Enumeration items should be documented
 
+        // BIAToolKit - Begin Partial RoleId MaintenanceTeam
+
+        /// <summary>
+        /// The maintenanceTeam admin role identifier.
+        /// </summary>
+        // TODO after creation of team MaintenanceTeam : adapt the enum value
+        MaintenanceTeamAdmin = 3,
+
+        // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompany
+
+        /// <summary>
+        /// The TeamLeader role identifier
+        /// </summary>
+        // TODO after creation of team MaintenanceTeam : adapt the enum value
+        TeamLeader = 201,
+
+        // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
+
+        // BIAToolKit - End Partial RoleId MaintenanceTeam
+
         // End BIADemo
+
+        // BIAToolKit - Begin RoleId
+        // BIAToolKit - End RoleId
     }
 }
