@@ -5,13 +5,15 @@ import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import {
   DeleteParam,
   DeletesParam,
-  GenericDas,
   GetListByPostParam,
   GetListParam,
   GetParam,
   PostParam,
   PutParam,
-  SaveParam,
+  SaveParam
+} from '../models/http-params';
+import {
+  GenericDas,
 } from './generic-das.service';
 
 export abstract class AbstractDasWithListAndItem<

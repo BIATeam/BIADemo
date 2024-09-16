@@ -17,17 +17,13 @@ import {
 } from 'rxjs';
 import { catchError, filter, first, skip } from 'rxjs/operators';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
 import { AppDB } from '../db';
-import { AuthService } from './auth.service';
+import { HttpOptions } from '../models/http-options';
+import { HttpRequestItem } from '../models/http-request-item';
 import { BiaEnvironmentService } from './bia-environment.service';
 import { BiaMessageService } from './bia-message.service';
-import { HttpOptions } from './generic-das.service';
-import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
-
-export interface HttpRequestItem {
-  id?: number;
-  httpRequest: HttpRequest<any>;
-}
+import { RefreshTokenService } from './refresh-token.service';
 
 enum HTTPMethod {
   DELETE = 'DELETE',
@@ -61,7 +57,6 @@ export class BiaOnlineOfflineService implements OnDestroy {
     protected db: AppDB,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
-    protected authService: AuthService,
     protected appSettingsService: AppSettingsService
   ) {
     BiaOnlineOfflineService._IsModeEnabled = true;
@@ -172,7 +167,7 @@ export class BiaOnlineOfflineService implements OnDestroy {
               this.serverAvailableSubject.value === false
             ) {
               this.serverAvailableSubject.next(true);
-              this.authService.shouldRefreshToken = true;
+              RefreshTokenService.shouldRefreshToken = true;
               this.launchFirstHttpRequestItem();
             }
           });
