@@ -19,6 +19,7 @@ import { AbstractDas } from './abstract-das.service';
 import { BiaMessageService } from './bia-message.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
+import { RefreshTokenService } from './refresh-token.service';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
@@ -27,7 +28,6 @@ const STORAGE_RELOADED_KEY = 'isReloaded';
   providedIn: 'root',
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
-  public shouldRefreshToken = false;
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo> =
     new BehaviorSubject<AuthInfo>(new AuthInfo());
@@ -47,6 +47,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     protected biaSwUpdateService: BiaSwUpdateService
   ) {
     super(injector, 'Auth');
+    RefreshTokenService.shouldRefreshToken = false;
     this.init();
   }
 
@@ -107,7 +108,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     if (!permission) {
       return of(true);
     }
-    if (this.shouldRefreshToken) {
+    if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
         map((authInfo: AuthInfo | null) => {
@@ -242,7 +243,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public reLogin() {
     if (!this.isInLogin) {
-      this.shouldRefreshToken = true;
+      RefreshTokenService.shouldRefreshToken = true;
       this.authInfoSubject.next(new AuthInfo());
       this.login().subscribe(() => {
         console.log('Logged after relogin');
@@ -344,7 +345,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           if (authInfo) {
             authInfo.uncryptedToken = this.decodeToken(authInfo.token);
           }
-          this.shouldRefreshToken = false;
+          RefreshTokenService.shouldRefreshToken = false;
           this.isInLogin = false;
           this.authInfoSubject.next(authInfo);
 
@@ -361,7 +362,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
               allEnvironments.urlErrorPage + '?num=' + err.status;
           }
 
-          this.shouldRefreshToken = true;
+          RefreshTokenService.shouldRefreshToken = true;
           this.isInLogin = false;
           const authInfo: AuthInfo = <AuthInfo>{};
           this.authInfoSubject.next(authInfo);
