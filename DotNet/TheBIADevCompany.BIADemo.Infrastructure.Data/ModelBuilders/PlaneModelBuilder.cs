@@ -52,7 +52,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                .HasMany(p => p.SimilarTypes)
                .WithMany()
                .UsingEntity<PlanePlaneType>();
+            modelBuilder.Entity<Plane>()
+               .HasMany(p => p.Engines)
+               .WithOne()
+               .HasForeignKey(engine => engine.PlaneId);
         }
+
 
         /// <summary>
         /// Create the model for planes.
@@ -80,6 +85,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateEngineModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Engine>().Property(p => p.Reference).HasMaxLength(64);
+            modelBuilder.Entity<Engine>().HasOne(x => x.Plane).WithMany(x => x.Engines).OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }

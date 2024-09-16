@@ -1,23 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { CrudListAndItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-list-and-item.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../model/plane';
+import { PlaneSpecific } from '../model/plane-specific';
 import { planeCRUDConfiguration } from '../plane.constants';
 import { FeaturePlanesStore } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
-import { PlaneOptionsService } from './plane-options.service';
 import { PlaneDas } from './plane-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { PlaneOptionsService } from './plane-options.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PlaneService extends CrudItemService<Plane> {
+export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
   constructor(
     private store: Store<AppState>,
     public dasService: PlaneDas,
@@ -51,9 +53,10 @@ export class PlaneService extends CrudItemService<Plane> {
     FeaturePlanesStore.getLastLazyLoadEvent
   );
 
-  public crudItem$: Observable<Plane> = this.store.select(
-    FeaturePlanesStore.getCurrentPlane
-  );
+  public crudItem$: Observable<PlaneSpecific> = this.store
+    .select(FeaturePlanesStore.getCurrentPlane)
+    .pipe(map(plane => clone(plane)));
+
   public loadingGet$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGet
   );
@@ -64,12 +67,14 @@ export class PlaneService extends CrudItemService<Plane> {
   public loadAllByPost(event: LazyLoadEvent) {
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
   }
-  public create(crudItem: Plane) {
+  public create(crudItem: PlaneSpecific) {
     // TODO after creation of CRUD Plane : map parent Key on the corresponding field
+    this.resetNewItemsIds(crudItem.engines);
     (crudItem.siteId = this.getParentIds()[0]),
       this.store.dispatch(FeaturePlanesActions.create({ plane: crudItem }));
   }
-  public update(crudItem: Plane) {
+  public update(crudItem: PlaneSpecific) {
+    this.resetNewItemsIds(crudItem.engines);
     this.store.dispatch(FeaturePlanesActions.update({ plane: crudItem }));
   }
   public remove(id: any) {
@@ -82,7 +87,7 @@ export class PlaneService extends CrudItemService<Plane> {
     this.store.dispatch(FeaturePlanesActions.clearAll());
   }
   public clearCurrent() {
-    this._currentCrudItem = <Plane>{};
+    this._currentCrudItem = <PlaneSpecific>{};
     this._currentCrudItemId = 0;
     this.store.dispatch(FeaturePlanesActions.clearCurrent());
   }

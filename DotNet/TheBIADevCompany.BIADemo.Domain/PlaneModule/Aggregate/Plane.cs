@@ -164,5 +164,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the list of similar plane type. Via the jointure table.
         /// </summary>
         public ICollection<PlanePlaneType> SimilarPlaneType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of engines for plane.
+        /// </summary>
+        public ICollection<Engine> Engines { get; set; }
     }
 }

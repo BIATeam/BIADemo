@@ -127,7 +127,7 @@
           pFrozenColumn
           [frozen]="isSelectFrozen">
           <!-- ONLY IF NOT FOOTER -->
-          <ng-container *ngIf="rowData.id > 0">
+          <ng-container *ngIf="rowData.id !== 0">
             <ng-template
               #selectMultipleElement
               [ngIf]="canSelectMultipleElement === true"

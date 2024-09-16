@@ -1,19 +1,19 @@
 import {
   Component,
+  EventEmitter,
+  Injector,
+  OnDestroy,
   OnInit,
   Output,
-  EventEmitter,
-  OnDestroy,
-  Injector,
 } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute, Router } from '@angular/router';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemService } from '../../services/crud-item.service';
+import { AppState } from 'src/app/store/state';
 import { CrudConfig } from '../../model/crud-config';
+import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 @Component({
   selector: 'bia-crud-item-edit',
@@ -34,7 +34,7 @@ export class CrudItemEditComponent<CrudItem extends BaseDto>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    public crudItemService: CrudItemSingleService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);
