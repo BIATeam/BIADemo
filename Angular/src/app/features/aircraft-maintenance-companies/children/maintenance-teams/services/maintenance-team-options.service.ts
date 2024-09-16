@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
-  combineLatest,
   // BIAToolKit - Begin Option
   Observable,
   // BIAToolKit - End Option
+  combineLatest,
 } from 'rxjs';
 import { map } from 'rxjs/operators';
 // BIAToolKit - Begin Option Airport
