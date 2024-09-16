@@ -237,10 +237,6 @@
         "Name": "Country_Options",
         "Roles": [ "Admin", "Site_Member" ]
       },
-      {
-        "Names": [ "Country_List_Access", "Country_Create", "Country_Read", "Country_Update", "Country_Delete", "Country_Save" ],
-        "Roles": [ "Admin" ]
-      },
       // BIAToolKit - End Partial Config Country
       // BIAToolKit - Begin Partial Config Airport
       // Airport
