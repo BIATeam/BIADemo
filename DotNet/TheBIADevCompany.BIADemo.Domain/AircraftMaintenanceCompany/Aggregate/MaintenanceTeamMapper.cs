@@ -237,5 +237,15 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 CSVString(x.CurrentCountry?.Display),
             });
         }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Expression<Func<MaintenanceTeam, object>>[] IncludesForUpdate()
+        {
+            return
+            [
+                x => x.OperationAirports,
+                x => x.OperationCountries
+            ];
+        }
     }
 }
