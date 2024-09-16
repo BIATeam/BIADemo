@@ -86,8 +86,8 @@ export abstract class CrudItemSingleService<CrudItem extends BaseDto> {
   abstract clearAll(): void;
   abstract clearCurrent(): void;
 
-  protected resetNewItemsIds(dtos: BaseDto[]): void {
-    dtos.forEach(dto => {
+  protected resetNewItemsIds(dtos: BaseDto[] | undefined): void {
+    dtos?.forEach(dto => {
       if (dto.id < 0) {
         dto.id = 0;
         dto.dtoState = DtoState.Added;

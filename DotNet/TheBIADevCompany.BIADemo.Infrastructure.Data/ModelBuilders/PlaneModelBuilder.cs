@@ -85,7 +85,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateEngineModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Engine>().Property(p => p.Reference).HasMaxLength(64);
-            modelBuilder.Entity<Engine>().HasOne(x => x.Plane).WithMany(x => x.Engines).OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Engine>()
+                .HasOne(x => x.Plane)
+                .WithMany(x => x.Engines)
+                .OnDelete(DeleteBehavior.ClientCascade);
         }
     }
 }
