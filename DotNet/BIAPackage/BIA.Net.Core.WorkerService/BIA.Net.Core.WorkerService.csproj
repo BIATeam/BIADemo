@@ -27,9 +27,9 @@
     <PackageReference Include="Bonura.NLog.HangfireJobLogsTarget" Version="1.0.1" />
     <PackageReference Include="Bonura.NLog.HangfireLayouts" Version="1.1.6" />
     <PackageReference Include="Hangfire.Core" Version="1.8.14" />
-    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.4" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.7" />
+    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.6" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
   </ItemGroup>
