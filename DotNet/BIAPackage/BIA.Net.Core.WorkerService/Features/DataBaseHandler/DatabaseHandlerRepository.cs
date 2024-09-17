@@ -292,7 +292,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             if (!this.IsValidSqlNotificationEvent(e))
             {
-                this.logger.LogInformation($"SQL Notification Event invalid : Source={e.Source}, Type={e.Type}, Info={e.Info}");
+                this.logger.LogInformation("SQL Notification Event invalid : Source={Source}, Type={Type}, Info={Info}", e.Source, e.Type, e.Info);
                 return;
             }
 
@@ -345,7 +345,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
                 }
                 catch (Exception ex)
                 {
-                    this.logger.LogError($"Polling failed : {ex}");
+                    this.logger.LogError(ex, "Polling failed : {Ex}", ex);
                 }
                 finally
                 {
@@ -388,7 +388,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         {
             this.GetChangedData(previousDataSet, currentDataSet).ForEach(x =>
             {
-                this.logger.LogInformation($"Changed data: {JsonConvert.SerializeObject(x)}");
+                this.logger.LogInformation("Changed data: {SerializeObject}", JsonConvert.SerializeObject(x));
                 this.OnChange(x);
             });
         }

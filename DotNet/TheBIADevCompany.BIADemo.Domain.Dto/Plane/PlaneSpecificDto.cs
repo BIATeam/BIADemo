@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     public class PlaneSpecificDto : PlaneDto
     {
         /// <summary>
-        /// Gets or sets the list of connecting airports.
+        /// Gets or sets the list of engines.
         /// </summary>
         [BiaDtoField(ItemType = "Engine", Required = true)]
         public ICollection<EngineDto> Engines { get; set; }

@@ -1,11 +1,8 @@
-﻿namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
+﻿// <copyright file="CountryId.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
+namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     /// <summary>
     /// The enumeration of prefilled countries.
     /// </summary>

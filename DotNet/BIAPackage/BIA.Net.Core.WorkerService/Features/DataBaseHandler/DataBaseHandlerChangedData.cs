@@ -1,4 +1,7 @@
-﻿namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
+﻿// <copyright file="DataBaseHandlerChangedData.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
     using System;
     using System.Collections.Generic;

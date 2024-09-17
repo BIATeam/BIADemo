@@ -2,7 +2,6 @@
 // <copyright file="CountriesController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInCountry
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 {

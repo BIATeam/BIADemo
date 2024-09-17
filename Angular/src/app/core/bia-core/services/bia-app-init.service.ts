@@ -113,15 +113,15 @@ export class BiaAppInitService implements OnDestroy {
             keycloakEvent?.type == KeycloakEventType.OnReady ||
             keycloakEvent?.type == KeycloakEventType.OnTokenExpired
           ) {
-              if (this.keycloakService.isLoggedIn() !== true) {
-                this.keycloakService.login({
-                  redirectUri: window.location.href,
-                  idpHint:
-                    this.appSettingsService.appSettings?.keycloak?.configuration
-                      ?.idpHint,
-                  // scope: 'offline_access',
-                });
-              }
+            if (this.keycloakService.isLoggedIn() !== true) {
+              this.keycloakService.login({
+                redirectUri: window.location.href,
+                idpHint:
+                  this.appSettingsService.appSettings?.keycloak?.configuration
+                    ?.idpHint,
+                // scope: 'offline_access',
+              });
+            }
           } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
 
         const token = await this.keycloakService.getToken();

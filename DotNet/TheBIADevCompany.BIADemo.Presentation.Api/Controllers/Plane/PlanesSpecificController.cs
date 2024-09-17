@@ -21,9 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-#if UseHubForClientInPlane
-    using Microsoft.AspNetCore.SignalR;
-#endif
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -56,6 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInPlane
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesSpecificController" /> class.
         /// </summary>
@@ -63,15 +61,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="principal">The principal.</param>
         /// <param name="planeSpecificService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInPlane
         public PlanesSpecificController(
             ILogger<PlanesSpecificController> logger,
             IPrincipal principal,
             IPlaneSpecificAppService planeSpecificService,
             IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlanesSpecificController" /> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="planeSpecificService">The plane application service.</param>
         public PlanesSpecificController(
-            ILogger<PlanesController> logger,
+            ILogger<PlanesSpecificController> logger,
             IPrincipal principal,
             IPlaneSpecificAppService planeSpecificService)
 #endif

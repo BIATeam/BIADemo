@@ -58,7 +58,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                .HasForeignKey(engine => engine.PlaneId);
         }
 
-
         /// <summary>
         /// Create the model for planes.
         /// </summary>

@@ -1,5 +1,5 @@
-import { LazyLoadEvent } from "primeng/api";
-import { HttpOptions } from "./http-options";
+import { LazyLoadEvent } from 'primeng/api';
+import { HttpOptions } from './http-options';
 
 interface HttpParam {
   offlineMode?: boolean;

@@ -40,14 +40,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInAirport
         /// <summary>
         /// Initializes a new instance of the <see cref="AirportsController"/> class.
         /// </summary>
         /// <param name="airportService">The airport application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInAirport
         public AirportsController(IAirportAppService airportService, IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AirportsController"/> class.
+        /// </summary>
+        /// <param name="airportService">The airport application service.</param>
         public AirportsController(IAirportAppService airportService)
 #endif
         {

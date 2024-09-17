@@ -93,12 +93,14 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // Begin BIADemo
             services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
             services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
+
             // End BIADemo
 
             // End BIA Standard service
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
+
             // End BIADemo
 #endif
 

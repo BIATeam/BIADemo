@@ -51,7 +51,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
-            this.logger.LogInformation($"DatabaseHandlerRepositories.Count: {this.DatabaseHandlerRepositories.Count}");
+            this.logger.LogInformation("DatabaseHandlerRepositories.Count: {Count}", this.DatabaseHandlerRepositories.Count);
 
             foreach (var handlerRepositorie in this.DatabaseHandlerRepositories)
             {
@@ -63,7 +63,7 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");
-            this.logger.LogInformation($"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}");
+            this.logger.LogInformation("DatabaseHandlerRepositories.Count: {Count}", this.databaseHandlerRepositories.Count);
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {

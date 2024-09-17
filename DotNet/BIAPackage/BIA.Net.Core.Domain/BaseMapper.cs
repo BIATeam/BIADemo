@@ -138,7 +138,7 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
-        /// Update a collection of entities from a collection of dto depending the dtoState of the dto.s
+        /// Update a collection of entities from a collection of dto depending the dtoState of the dto.
         /// </summary>
         /// <typeparam name="TEmbeddedDto">Embedded item DTO type.</typeparam>
         /// <typeparam name="TEmbeddedEntity">Embedded item Entity type.</typeparam>

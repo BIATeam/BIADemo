@@ -24,9 +24,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Notification;
-#if UseHubForClientInNotification
-    using Microsoft.AspNetCore.SignalR;
-#endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
@@ -44,15 +41,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInNotification
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// </summary>
         /// <param name="notificationService">The notification application service.</param>
         /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInNotification
-        public NotificationsController(INotificationDomainService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
+        /// </summary>
+        /// <param name="notificationService">The notification application service.</param>
+        /// <param name="principal">The current user.</param>
         public NotificationsController(INotificationAppService notificationService, IPrincipal principal)
 #endif
         {
@@ -327,9 +329,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         }
 
         /// <summary>
-        /// Get unread notifications count.
+        /// Get unread notifications Ids.
         /// </summary>
-        /// <param name="id">The identifier.</param>
         /// <returns>The number of unread notifications.</returns>
         [HttpGet("unreadIds")]
         [ProducesResponseType(StatusCodes.Status200OK)]
