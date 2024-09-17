@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DELETE FROM MaintenanceTeams");
+            migrationBuilder.Sql($"DELETE FROM Teams WHERE TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Code",
