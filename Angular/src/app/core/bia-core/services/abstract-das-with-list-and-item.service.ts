@@ -10,11 +10,9 @@ import {
   GetParam,
   PostParam,
   PutParam,
-  SaveParam
+  SaveParam,
 } from '../models/http-params';
-import {
-  GenericDas,
-} from './generic-das.service';
+import { GenericDas } from './generic-das.service';
 
 export abstract class AbstractDasWithListAndItem<
   TOut,

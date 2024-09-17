@@ -54,6 +54,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// Check autorize based on teamTypeId.
         /// </summary>
         /// <param name="teamTypeId">the type team Id.</param>
+        /// <param name="teamId">the team Id.</param>
         /// <param name="roleSuffix">the last part of the permission.</param>
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)

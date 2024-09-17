@@ -16,7 +16,7 @@ import { PlaneSpecific } from '../../model/plane-specific';
 })
 export class PlaneFormComponent extends CrudItemFormComponent<PlaneSpecific> {
   engineCrudConfig: BiaFieldsConfig = engineCRUDConfiguration.fieldsConfig;
-  newId: number = CrudHelperService.NewIdStartingValue;
+  newId: number = CrudHelperService.newIdStartingValue;
   selectedEngines: Engine[] = [];
 
   get displayedEngines(): Engine[] {

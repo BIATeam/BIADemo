@@ -2,7 +2,7 @@ import { BaseDto } from '../model/base-dto';
 import { DtoState } from '../model/dto-state.enum';
 
 export class CrudHelperService {
-  public static readonly NewIdStartingValue: number = -1;
+  public static readonly newIdStartingValue: number = -1;
 
   public static onEmbeddedItemSave<T extends BaseDto>(
     embeddedItem: T,

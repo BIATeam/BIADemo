@@ -40,7 +40,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <inheritdoc/>
         protected override Task OnChange(DataBaseHandlerChangedData changedData)
         {
-            this.Logger.LogInformation($"Airport changed : {changedData.ChangeType}");
+            this.Logger.LogInformation("Airport changed : {ChangeType}", changedData.ChangeType);
             return Task.CompletedTask;
         }
     }

@@ -1,12 +1,9 @@
-﻿namespace BIA.Net.Core.Common.Exceptions
+﻿// <copyright file="FrontUserException.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
+// </copyright>
+namespace BIA.Net.Core.Common.Exceptions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Runtime.CompilerServices;
-    using System.Text;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Helpers;
 
