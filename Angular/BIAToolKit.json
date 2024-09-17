@@ -63,9 +63,37 @@
       {
         "Name": "AircraftMaintenanceCompany",
         "NamePlural": "AircraftMaintenanceCompanies",
-        "PathToTranslate": "aircraft-maintenance-companies\\children\\",
-        "SearchInPath": "src\\app\\features\\",
-        "IsPrincipal": "true"
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "src\\app\\features\\",
+            "InitialDeepLevel": 1,
+            "DeepLevelIdentifier": "children",
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "aircraft-maintenance-companies\\children\\",
+                "ToRelativePathNoParent": "",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
+              }
+            ],
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "'([^']*)'",
+                "Pattern": "aircraft-maintenance-companies/children/",
+                "NoParentValue": "",
+                "WithParentValue": "{ParentRelativePathLinux}/children/"
+              },
+              {
+                "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
+                "Pattern": "'../../../../../../",
+                "NoParentValue": "'../../../../",
+                "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          }
+        ]
       }
     ],
     "Children": [],
