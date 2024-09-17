@@ -456,33 +456,37 @@ p:last-child {
 }
 .layout-topbar
   .layout-topbar-end
-  .layout-megamenu.p-megamenu
+  .layout-megamenu.p-megamenu.p-megamenu-horizontal
   .p-megamenu-root-list
   > .p-menuitem
-  > .p-menuitem-link
+  > .p-menuitem-content
+  .p-menuitem-link
   .p-menuitem-text,
 .layout-topbar
   .layout-topbar-end
-  .layout-megamenu.p-megamenu
+  .layout-megamenu.p-megamenu.p-megamenu-horizontal
   .p-megamenu-root-list
   > .p-menuitem
-  > .p-menuitem-link
+  > .p-menuitem-content
+  .p-menuitem-link
   .p-menuitem-icon,
 .layout-topbar
   .layout-topbar-end
-  .layout-megamenu.p-megamenu
+  .layout-megamenu.p-megamenu.p-megamenu-horizontal
   .p-megamenu-root-list
   > .p-menuitem
-  > .p-menuitem-link
+  > .p-menuitem-content
+  .p-menuitem-link
   .p-submenu-icon {
   color: var(--topbar-item-text-color);
 }
 .layout-topbar
   .layout-topbar-end
-  .layout-megamenu.p-megamenu
+  .layout-megamenu.p-megamenu.p-megamenu-horizontal
   .p-megamenu-root-list
   > .p-menuitem
-  > .p-menuitem-link:not(.p-disabled):hover {
+  > .p-menuitem-content
+  .p-menuitem-link:not(.p-disabled):hover {
   background: var(--topbar-item-hover-bg);
   transition: background-color var(--transition-duration);
 }
