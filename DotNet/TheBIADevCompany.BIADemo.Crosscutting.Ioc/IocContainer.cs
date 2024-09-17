@@ -78,6 +78,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
@@ -98,6 +99,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
@@ -144,6 +146,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 },
                 contextLifetime: ServiceLifetime.Transient);
 
+            // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
