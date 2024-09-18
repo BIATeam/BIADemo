@@ -241,11 +241,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
         public override Expression<Func<MaintenanceTeam, object>>[] IncludesForUpdate()
         {
-            return
-            [
-                x => x.OperationAirports,
-                x => x.OperationCountries
-            ];
+            return new Expression<Func<MaintenanceTeam, object>>[] { x => x.OperationAirports, x => x.OperationCountries };
         }
     }
 }

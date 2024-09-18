@@ -13,9 +13,15 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     // Begin BIADemo
+    // BIAToolKit - Begin Partial TeamMapperUsing MaintenanceTeam
+    // BIAToolKit - Begin Nested AncestorTeam AircraftMaintenanceCompany
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
+    // BIAToolKit - End Nested AncestorTeam AircraftMaintenanceCompany
+    // BIAToolKit - End Partial TeamMapperUsing MaintenanceTeam
     // End BIADemo
+    // BIAToolKit - Begin TeamMapperUsing
+    // BIAToolKit - End TeamMapperUsing
 
     /// <summary>
     /// The mapper used for site.
@@ -69,15 +75,54 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
                 }).ToList(),
 
                 // Map the parent properties if usefull in project:
-                // Begin BIADemo
-                ParentTeamId =
-                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompanyId :
-                    0,
-                ParentTeamTitle =
-                    (entity.TeamTypeId == (int)TeamTypeId.MaintenanceTeam) ? ((MaintenanceTeam)entity).AircraftMaintenanceCompany.Title :
-                    string.Empty,
+                ParentTeamId = GetParentTeamId(entity),
+                ParentTeamTitle = GetParentTeamTitle(entity),
+            };
+        }
 
+        /// <summary>
+        /// Retrieve the parent team id.
+        /// </summary>
+        /// <param name="team">Child <see cref="Team"/>.</param>
+        /// <returns>Parent Team id as <see cref="int"/>.</returns>
+        private static int GetParentTeamId(Team team)
+        {
+            return team switch
+            {
+                // Begin BIADemo
+                // BIAToolKit - Begin Partial TeamMapperParentTeamId MaintenanceTeam
+                // BIAToolKit - Begin Nested Parent AircraftMaintenanceCompanyId
+                MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompanyId : 0,
+
+                // BIAToolKit - End Nested Parent AircraftMaintenanceCompanyId
+                // BIAToolKit - End Partial TeamMapperParentTeamId MaintenanceTeam
                 // End BIADemo
+                // BIAToolKit - Begin TeamMapperParentTeamId
+                // BIAToolKit - End TeamMapperParentTeamId
+                _ => 0
+            };
+        }
+
+        /// <summary>
+        /// Retrieve the parent team title.
+        /// </summary>
+        /// <param name="team">Child <see cref="Team"/>.</param>
+        /// <returns>Parent Team title as <see cref="string"/>.</returns>
+        private static string GetParentTeamTitle(Team team)
+        {
+            return team switch
+            {
+                // Begin BIADemo
+                // BIAToolKit - Begin Partial TeamMapperParentTeamTitle MaintenanceTeam
+                // BIAToolKit - Begin Nested AncestorTeam AircraftMaintenanceCompany
+                MaintenanceTeam maintenanceTeam => team.TeamTypeId == (int)TeamTypeId.MaintenanceTeam ? maintenanceTeam.AircraftMaintenanceCompany.Title : string.Empty,
+
+                // BIAToolKit - End Nested AncestorTeam AircraftMaintenanceCompany
+                // BIAToolKit - End Partial TeamMapperParentTeamTitle MaintenanceTeam
+                // End BIADemo
+                // BIAToolKit - Begin TeamMapperParentTeamTitle
+                // BIAToolKit - End TeamMapperParentTeamTitle
+                _ => string.Empty
             };
         }
     }

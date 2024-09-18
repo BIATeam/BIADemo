@@ -57,9 +57,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
                     // Begin BIADemo
                     new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.AircraftMaintenanceCompany, RoleMode = RoleMode.MultiRoles, InHeader = true },
+
+                    // BIAToolKit - Begin Partial AuthController MaintenanceTeam
                     new TeamConfigDto() { TeamTypeId = (int)TeamTypeId.MaintenanceTeam, RoleMode = RoleMode.AllRoles, InHeader = false },
 
+                    // BIAToolKit - End Partial AuthController MaintenanceTeam
                     // End BIADemo
+                    // BIAToolKit - Begin AuthController
+                    // BIAToolKit - End AuthController
                 },
                 CurrentTeamLogins = null,
                 LightToken = lightToken,

@@ -1,121 +1,113 @@
 [
-	{
-		"Feature" : "CRUD",
-		"Type" : "CRUD",
-		"FeatureName" : "Plane",
-		"FeatureNamePlural" : "Planes",
-		"ZipName" : "crud.zip",
-		"Contains" :
-		{
-			"Include" :
-			[
-				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
-				"TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
-				"TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
-			],
-			"Exclude":
-			[]
-		},		
-		"Children" : 
-		[],
-		"Options" :
-		[],
-		"Partial" :
-		[
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
-		]
-	},
-	{
-		"Feature" : "Option (many to many)",
-		"Type" : "Option",
-		"FeatureName" : "Airport",
-		"FeatureNamePlural" : "Airports",
-		"ZipName" : "option-many-to-many.zip",
-		"Relation": "many-to-many",
-		"Contains" :
-		{
-			"Include" :
-			[
-				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
-			],
-			"Exclude":
-			[]
-		},		
-		"Children" : 
-		[],
-		"Options" :
-		[],
-		"Partial" :
-		[
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
-		]
-	},
-	{
-		"Feature": "Option (one to many)",
-		"Type": "Option",
-		"FeatureName": "PlaneType",
-		"FeatureNamePlural": "PlanesTypes",
-		"ZipName": "option-one-to-many.zip",
-		"Relation": "one-to-many",
-		"Contains": {
-			"Include": [
-				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesTypesController.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\PlaneTypeAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneTypeAppService.cs"
-			],
-			"Exclude": []
-		},
-		"Children": [],
-		"Options": [],
-		"Partial": [
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
-		]
-	},
-	{
-		"Feature": "Team",
-		"Type": "Team",
-		"FeatureName": "MaintenanceTeam",
-		"FeatureNamePlural": "MaintenanceTeams",
-		"ZipName": "team.zip",
-		"Contains": {
-			"Include": [
-				"TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\MaintenanceTeamsController.cs",
-				"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs",
-				"TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\IMaintenanceTeamAppService.cs",
-				"TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeamMapper.cs",
-				"TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeam.cs",
-				"TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\MaintenanceTeamDto.cs"
-			],
-			"Exclude": []
-		},
-		"Children": [],
-		"Parents": [
-			{
-				"Name": "AircraftMaintenanceCompany",
-				"NamePlural": "AircraftMaintenanceCompanies",
-				"DomainName":  "AircraftMaintenanceCompany",
-				"IsPrincipal": "true"
-			}
-		],
-		"Options": [],
-		"Partial": [
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\TeamTypeId.cs",
-			"TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\RoleId.cs",
-			"TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
-			"TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-			"TheBIADevCompany.BIADemo.Domain\\UserModule\\Aggregate\\TeamConfig.cs"
-		]
-	}
+  {
+    "Feature": "CRUD",
+    "Type": "CRUD",
+    "FeatureName": "Plane",
+    "FeatureNamePlural": "Planes",
+    "ZipName": "crud.zip",
+    "Contains": {
+      "Include": [
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
+        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
+        "TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
+      ],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": [
+      "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
+      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
+    ]
+  },
+  {
+    "Feature": "Option",
+    "Type": "Option",
+    "FeatureName": "Airport",
+    "FeatureNamePlural": "Airports",
+    "ZipName": "option.zip",
+    "Contains": {
+      "Include": [
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
+      ],
+      "Exclude": []
+    },
+    "Children": [],
+    "Options": [],
+    "Partial": [
+      "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
+      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
+    ]
+  },
+  {
+    "Feature": "Team",
+    "Type": "Team",
+    "FeatureName": "MaintenanceTeam",
+    "FeatureNamePlural": "MaintenanceTeams",
+    "ZipName": "team.zip",
+    "Contains": {
+      "Include": [
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\MaintenanceTeamsController.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\IMaintenanceTeamAppService.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeamMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeam.cs",
+        "TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\MaintenanceTeamDto.cs"
+      ],
+      "Exclude": []
+    },
+    "Children": [],
+    "Parents": [
+      {
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "DomainName": "AircraftMaintenanceCompany",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Options": [],
+    "Partial": [
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\TeamTypeId.cs",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\RoleId.cs",
+      "TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
+      "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
+      "TheBIADevCompany.BIADemo.Domain\\UserModule\\Aggregate\\TeamConfig.cs",
+      "TheBIADevCompany.BIADemo.Domain\\UserModule\\Aggregate\\TeamMapper.cs",
+      "TheBIADevCompany.BIADemo.Presentation.API\\Controllers\\User\\AuthController.cs"
+    ]
+  }
 ]

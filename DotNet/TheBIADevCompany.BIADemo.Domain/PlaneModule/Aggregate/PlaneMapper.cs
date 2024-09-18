@@ -335,11 +335,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return
-            [
-                x => x.ConnectingAirports,
-                x => x.SimilarTypes,
-            ];
+            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.SimilarTypes };
         }
 
         /// <summary>
