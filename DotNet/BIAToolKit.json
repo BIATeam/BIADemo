@@ -25,40 +25,16 @@
     ]
   },
   {
-    "Feature": "Option (many to many)",
+    "Feature": "Option",
     "Type": "Option",
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
-    "ZipName": "option-many-to-many.zip",
-    "Relation": "many-to-many",
+    "ZipName": "option.zip",
     "Contains": {
       "Include": [
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
-      ],
-      "Exclude": []
-    },
-    "Children": [],
-    "Options": [],
-    "Partial": [
-      "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
-      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
-    ]
-  },
-  {
-    "Feature": "Option (one to many)",
-    "Type": "Option",
-    "FeatureName": "PlaneType",
-    "FeatureNamePlural": "PlanesTypes",
-    "ZipName": "option-one-to-many.zip",
-    "Relation": "one-to-many",
-    "Contains": {
-      "Include": [
-        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesTypesController.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\PlaneTypeAppService.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneTypeAppService.cs"
       ],
       "Exclude": []
     },

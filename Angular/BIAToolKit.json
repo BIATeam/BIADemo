@@ -18,29 +18,13 @@
     ]
   },
   {
-    "Feature": "Option (many to many)",
+    "Feature": "Option",
     "Type": "Option",
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
-    "ZipName": "option-many-to-many.zip",
-    "Relation": "many-to-many",
+    "ZipName": "option.zip",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
-      "Exclude": []
-    },
-    "Children": [],
-    "Options": [],
-    "Partial": []
-  },
-  {
-    "Feature": "Option (one to many)",
-    "Type": "Option",
-    "FeatureName": "PlaneType",
-    "FeatureNamePlural": "PlanesTypes",
-    "ZipName": "option-one-to-many.zip",
-    "Relation": "one-to-many",
-    "Contains": {
-      "Include": ["src\\app\\domains\\plane-type-option\\*"],
       "Exclude": []
     },
     "Children": [],
