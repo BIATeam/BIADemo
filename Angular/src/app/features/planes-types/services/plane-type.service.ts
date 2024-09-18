@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
 import { PlaneType } from '../model/plane-type';
 import { planeTypeCRUDConfiguration } from '../plane-type.constants';
 import { FeaturePlanesTypesStore } from '../store/plane-type.state';
 import { FeaturePlanesTypesActions } from '../store/planes-types-actions';
-import { PlaneTypeOptionsService } from './plane-type-options.service';
 import { PlaneTypeDas } from './plane-type-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { PlaneTypeOptionsService } from './plane-type-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class PlaneTypeService extends CrudItemService<PlaneType> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeaturePlanesTypesStore.getPlaneTypeLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeaturePlanesTypesStore.getLastLazyLoadEvent
   );
 
@@ -60,7 +60,7 @@ export class PlaneTypeService extends CrudItemService<PlaneType> {
   public load(id: any) {
     this.store.dispatch(FeaturePlanesTypesActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeaturePlanesTypesActions.loadAllByPost({ event }));
   }
   public create(crudItem: PlaneType) {

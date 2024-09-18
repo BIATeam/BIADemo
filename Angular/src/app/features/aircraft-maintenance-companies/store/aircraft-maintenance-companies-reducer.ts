@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
+import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
 
 // This adapter will allow is to manipulate aircraftMaintenanceCompanies (mostly CRUD operations)
 export const aircraftMaintenanceCompaniesAdapter =
@@ -27,7 +27,7 @@ export interface State extends EntityState<AircraftMaintenanceCompany> {
   // additional props here
   totalCount: number;
   currentAircraftMaintenanceCompany: AircraftMaintenanceCompany;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -37,7 +37,7 @@ export const INIT_STATE: State =
     // additional props default values here
     totalCount: 0,
     currentAircraftMaintenanceCompany: <AircraftMaintenanceCompany>{},
-    lastLazyLoadEvent: <LazyLoadEvent>{},
+    lastLazyLoadEvent: <TableLazyLoadEvent>{},
     loadingGet: false,
     loadingGetAll: false,
   });

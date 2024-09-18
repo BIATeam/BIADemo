@@ -1,37 +1,37 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
-import { View } from '../../model/view';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
-import {
-  removeUserView,
-  addUserView,
-  addTeamView,
-  removeTeamView,
-  setDefaultUserView,
-  setDefaultTeamView,
-  closeViewDialog,
-  updateUserView,
-  assignViewToTeam,
-  updateTeamView,
-} from '../../store/views-actions';
-import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
+import { ConfirmationService } from 'primeng/api';
+import { Dialog } from 'primeng/dialog';
+import { Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
 import {
   TeamTypeId,
   TeamTypeRightPrefix,
   ViewType,
 } from 'src/app/shared/constants';
-import { TeamView } from '../../model/team-view';
+import { Permission } from 'src/app/shared/permission';
+import { AppState } from 'src/app/store/state';
+import { AssignViewToTeam } from '../../model/assign-view-to-team';
 import { DefaultView } from '../../model/default-view';
 import { TeamDefaultView } from '../../model/team-default-view';
-import { Dialog } from 'primeng/dialog';
-import { AssignViewToTeam } from '../../model/assign-view-to-team';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { ConfirmationService } from 'primeng/api';
-import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
-import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { TeamView } from '../../model/team-view';
+import { View } from '../../model/view';
+import { getAllViews, getDisplayViewDialog } from '../../store/view.state';
+import {
+  addTeamView,
+  addUserView,
+  assignViewToTeam,
+  closeViewDialog,
+  removeTeamView,
+  removeUserView,
+  setDefaultTeamView,
+  setDefaultUserView,
+  updateTeamView,
+  updateUserView,
+} from '../../store/views-actions';
 
 @Component({
   selector: 'bia-view-dialog',
@@ -47,10 +47,10 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   teams$: Observable<Team[]>;
   views$: Observable<View[]>;
-  viewTeams$: Observable<View[]>;
+  viewTeams$: Observable<TeamView[]>;
   viewUsers$: Observable<View[]>;
-  userViewSelected: View;
-  teamViewSelected: View;
+  userViewSelected: View | undefined;
+  teamViewSelected: TeamView | undefined;
   teamSelected: Team;
 
   canAddTeamView = false;
@@ -89,16 +89,18 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   protected initViews() {
-    this.views$ = this.store
-      .pipe(select(getAllViews))
-      .pipe(
-        map(views => views.filter(view => view.tableId === this.tableStateKey))
-      );
+    this.views$ = this.store.pipe(
+      select(getAllViews),
+      map(views => views.filter(view => view.tableId === this.tableStateKey))
+    );
   }
 
   protected initViewTeams() {
     this.viewTeams$ = this.views$.pipe(
-      map(views => views.filter(view => view.viewType === ViewType.Team))
+      map(
+        views =>
+          views.filter(view => view.viewType === ViewType.Team) as TeamView[]
+      )
     );
   }
 
@@ -142,7 +144,7 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
 
   onClose() {
     this.userViewSelected = <View>{};
-    this.teamViewSelected = <View>{};
+    this.teamViewSelected = <TeamView>{};
     this.store.dispatch(closeViewDialog());
   }
 
@@ -160,21 +162,29 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
   }
 
   onDeleteTeamView(viewId: number) {
-    this.teamViewSelected = <View>{};
+    this.teamViewSelected = <TeamView>{};
     this.store.dispatch(removeTeamView({ id: viewId }));
   }
 
-  onSetDefaultUserView(event: { viewId: number; isDefault: boolean }) {
-    const defaultView: DefaultView = {
-      id: event.viewId,
-      isDefault: event.isDefault,
-      tableId: this.tableStateKey,
-    };
-    this.store.dispatch(setDefaultUserView(defaultView));
+  onSetDefaultUserView(event: {
+    viewId: number | undefined;
+    isDefault: boolean;
+  }) {
+    if (event.viewId) {
+      const defaultView: DefaultView = {
+        id: event.viewId,
+        isDefault: event.isDefault,
+        tableId: this.tableStateKey,
+      };
+      this.store.dispatch(setDefaultUserView(defaultView));
+    }
   }
 
-  onSetDefaultTeamView(event: { viewId: number; isDefault: boolean }) {
-    if (this.teamSelected) {
+  onSetDefaultTeamView(event: {
+    viewId: number | undefined;
+    isDefault: boolean;
+  }) {
+    if (this.teamSelected && event.viewId) {
       const defaultView: TeamDefaultView = {
         id: event.viewId,
         isDefault: event.isDefault,
@@ -216,11 +226,11 @@ export class ViewDialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  onUserViewSelected(view: View) {
+  onUserViewSelected(view: View | undefined) {
     this.userViewSelected = view;
   }
 
-  onTeamViewSelected(view: View) {
+  onTeamViewSelected(view: TeamView | undefined) {
     this.teamViewSelected = view;
   }
 

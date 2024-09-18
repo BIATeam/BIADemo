@@ -11,7 +11,7 @@
       [selectedElements]="selectedPlanes"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
+      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -25,8 +25,8 @@
       [hasColumnFilter]="hasColumnFilter"></bia-table-controller>
     <bia-table
       *ngIf="!useCalcMode"
-      [elements]="planes$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(planes$ | async) ?? []"
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="tableConfiguration"
@@ -34,7 +34,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (clickRowId)="onEdit($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -44,9 +44,9 @@
       (stateSave)="onStateSave($event)"></bia-table>
     <app-plane-table
       *ngIf="useCalcMode"
-      [elements]="planes$ | async"
-      [dictOptionDtos]="planeOptionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(planes$ | async) ?? []"
+      [dictOptionDtos]="(planeOptionsService.dictOptionDtos$ | async) ?? []"
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="tableConfiguration"
@@ -55,7 +55,7 @@
       [canEdit]="canEdit"
       [canAdd]="canAdd"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"

@@ -1,18 +1,18 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  ChangeDetectionStrategy,
-  TemplateRef,
-  ContentChildren,
-  QueryList,
-  AfterContentInit,
-} from '@angular/core';
 import { Location } from '@angular/common';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  TemplateRef,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService, Confirmation, PrimeTemplate } from 'primeng/api';
+import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
 
 @Component({

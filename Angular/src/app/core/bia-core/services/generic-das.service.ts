@@ -6,7 +6,7 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { from, NEVER, Observable, of, throwError } from 'rxjs';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
@@ -243,7 +243,7 @@ export abstract class GenericDas {
     }
   }
 
-  getItemFile(event: LazyLoadEvent, endpoint = 'csv'): Observable<any> {
+  getItemFile(event: TableLazyLoadEvent, endpoint = 'csv'): Observable<any> {
     this.matomoTracker.trackDownload('Export ' + endpoint);
     return this.http.post(`${this.route}${endpoint}`, event, {
       responseType: 'blob',

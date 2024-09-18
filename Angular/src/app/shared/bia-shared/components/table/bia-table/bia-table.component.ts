@@ -1,29 +1,29 @@
 import {
-  Component,
-  Input,
-  ViewChild,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  ContentChildren,
-  QueryList,
-  TemplateRef,
   AfterContentInit,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  QueryList,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
-import { Table } from 'primeng/table';
-import { LazyLoadEvent, PrimeTemplate, TableState } from 'primeng/api';
-import {
-  BiaFieldsConfig,
-  PropType,
-  BiaFieldConfig,
-} from '../../../model/bia-field-config';
+import { TranslateService } from '@ngx-translate/core';
+import { PrimeTemplate, TableState } from 'primeng/api';
+import { Table, TableLazyLoadEvent } from 'primeng/table';
+import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
-import { KeyValuePair } from '../../../model/key-value-pair';
-import { Observable, timer, of } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PropType,
+} from '../../../model/bia-field-config';
 import { BiaTableState } from '../../../model/bia-table-state';
+import { KeyValuePair } from '../../../model/key-value-pair';
 
 const objectsEqual = (o1: any, o2: any) =>
   Object.keys(o1).length === Object.keys(o2).length &&
@@ -54,7 +54,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() canClickRow = true;
   @Input() canSelectElement = true;
   @Input() loading = false;
-  @Input() tableStateKey: string;
+  @Input() tableStateKey: string | undefined;
   @Input() viewPreference: string;
   @Input() actionColumnLabel = 'bia.actions';
   @Input() showLoadingAfter = 100;
@@ -78,11 +78,11 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Output() clickRowId = new EventEmitter<number>();
   @Output() clickRowData = new EventEmitter<any>();
   @Output() filter = new EventEmitter<number>();
-  @Output() loadLazy = new EventEmitter<LazyLoadEvent>();
+  @Output() loadLazy = new EventEmitter<TableLazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
   @Output() stateSave = new EventEmitter<string>();
 
-  @ViewChild('dt', { static: false }) table: Table;
+  @ViewChild('dt', { static: false }) table: Table | undefined;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   // specificInputTemplate: TemplateRef<any>;
@@ -221,7 +221,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   saveStateNoEmit() {
-    if (this.table.stateKey !== undefined && this.table.stateKey !== '') {
+    if (this.table?.stateKey !== undefined && this.table.stateKey !== '') {
       // Copy of the PrimeNG funcion (replace this by this.table) and comment emit and add custom
       const storage = this.table.getStorage();
       const state: any = {};
@@ -313,7 +313,12 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   protected firstViewPreferenceApply = false;
 
   protected onViewPreferenceChange(changes: SimpleChanges) {
-    if (this.table && this.table.isStateful() && changes.viewPreference) {
+    if (
+      this.table &&
+      this.table.isStateful() &&
+      changes.viewPreference &&
+      this.tableStateKey
+    ) {
       const viewPreference: BiaTableState = JSON.parse(
         changes.viewPreference.currentValue
       );
@@ -388,7 +393,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       if (this.table.lazy === true) {
         this.configuration.columns.forEach(col => {
           if (col.isSearchable === true && col.type !== PropType.Boolean) {
-            this.table.filter(
+            this.table?.filter(
               value,
               TABLE_FILTER_GLOBAL + col.field,
               col.filterMode
@@ -408,7 +413,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
   }
 
-  onLoadLazy(event: LazyLoadEvent) {
+  onLoadLazy(event: TableLazyLoadEvent) {
     this.saveTableState();
     setTimeout(() => this.loadLazy.emit(event), 0);
   }
@@ -476,12 +481,14 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   protected getTableState(): BiaTableState | null {
-    const stateString: string | null = sessionStorage.getItem(
-      this.tableStateKey
-    );
-    if (stateString && stateString?.length > 0) {
-      const state: BiaTableState = JSON.parse(stateString);
-      return state;
+    if (this.tableStateKey) {
+      const stateString: string | null = sessionStorage.getItem(
+        this.tableStateKey
+      );
+      if (stateString && stateString?.length > 0) {
+        const state: BiaTableState = JSON.parse(stateString);
+        return state;
+      }
     }
 
     return null;
@@ -510,15 +517,15 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     return this.authService.hasPermission(permission);
   }
 
-  getLazyLoadMetadata(): LazyLoadEvent {
-    return this.table.createLazyLoadMetadata();
+  getLazyLoadMetadata(): TableLazyLoadEvent {
+    return this.table?.createLazyLoadMetadata();
   }
 
   getLazyLoadOnInit(): boolean {
     return !this.tableStateKey;
   }
 
-  getPrimeNgTable(): Table {
+  getPrimeNgTable(): Table | undefined {
     return this.table;
   }
 

@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureMembersActions } from './members-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Member } from '../model/member';
+import { FeatureMembersActions } from './members-actions';
 
 // This adapter will allow is to manipulate members (mostly CRUD operations)
 export const membersAdapter = createEntityAdapter<Member>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<Member> {
   // additional props here
   totalCount: number;
   currentMember: Member;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = membersAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentMember: <Member>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

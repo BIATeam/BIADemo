@@ -1,4 +1,4 @@
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { HttpOptions } from './http-options';
 
 interface HttpParam {
@@ -14,7 +14,7 @@ export interface GetParam extends HttpParam {
 export type GetListParam = HttpParam;
 
 export interface GetListByPostParam extends HttpParam {
-  event: LazyLoadEvent;
+  event: TableLazyLoadEvent;
 }
 
 export interface SaveParam<TIn> extends HttpParam {

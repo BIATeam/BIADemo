@@ -1,28 +1,32 @@
 <span *ngIf="field.isSearchable === true" class="p-float-label">
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 18px">
-      <ng-container *ngIf="!isArraySimple(field)">
+      <ng-container *ngIf="!isArraySimple(field) && showColumnFilter">
         <p-columnFilter
           [type]="columnFilterType"
-          [locale]="field.displayFormat?.autoLocale"
-          [minFractionDigits]="field.displayFormat?.minFractionDigits"
-          [maxFractionDigits]="field.displayFormat?.maxFractionDigits"
+          [locale]="getDisplayNumberFormat(field.displayFormat)?.autoLocale"
+          [minFractionDigits]="
+            getDisplayNumberFormat(field.displayFormat)?.minFractionDigits
+          "
+          [maxFractionDigits]="
+            getDisplayNumberFormat(field.displayFormat)?.maxFractionDigits
+          "
           [currency]="
-            field.displayFormat?.mode === 'currency'
-              ? field.displayFormat?.currency
+            getDisplayNumberFormat(field.displayFormat)?.mode === 'currency'
+              ? getDisplayNumberFormat(field.displayFormat)?.currency
               : undefined
           "
-          [currencyDisplay]="field.displayFormat?.currencyDisplay"
+          [currencyDisplay]="
+            getDisplayNumberFormat(field.displayFormat)?.currencyDisplay
+          "
           [matchModeOptions]="matchModeOptions"
           [field]="field.field"
-          display="menu"
-          *ngIf="showColumnFilter"></p-columnFilter>
+          display="menu"></p-columnFilter>
       </ng-container>
     </div>
     <div class="app-field-container flex-1">
-      <span *ngIf="isArrayFilter(field)" class="displayInline">
-        <ng-container
-          *ngFor="let filter of table.filters[field.field]; let last = last">
+      <span *ngIf="isArrayFilter(field); let filterArray" class="displayInline">
+        <ng-container *ngFor="let filter of filterArray; let last = last">
           <ng-container
             *ngIf="
               filter.value !== null ||
@@ -103,6 +107,7 @@
       <ng-container
         *ngIf="!isArrayFilter(field) && columnFilterType !== 'boolean'">
         <input
+          *ngIf="columnFilterType !== 'boolean'"
           pInputText
           class="input-search"
           type="{{ field.type === 'Number' ? 'number' : 'text' }}"
@@ -113,14 +118,11 @@
                 ? ('bia.dateIso8601' | translate)
                 : ''
           }}"
-          (input)="setSimpleFilter($event.target.value, field)"
-          [value]="
-            table.filters[field.field]?.value !== undefined
-              ? table.filters[field.field]?.value
-              : ''
-          "
+          (input)="setSimpleFilter($event.target, field)"
+          [value]="isSimpleFilter(table.filters[field.field])?.value ?? ''"
           [ngClass]="{
-            'p-state-filled': table.filters[field.field]?.value !== '',
+            'p-state-filled':
+              isSimpleFilter(table.filters[field.field])?.value !== '',
           }" />
       </ng-container>
     </div>

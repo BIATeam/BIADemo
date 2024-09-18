@@ -1,7 +1,8 @@
 <app-site-form
-  [crudItem]="siteService.crudItem$ | async"
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="siteService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="(siteService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-site-form>
 <bia-spinner

@@ -1,5 +1,5 @@
 import { Injector } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import {
@@ -55,7 +55,7 @@ export abstract class AbstractDasWithListAndItem<
     return this.deleteItems(param);
   }
 
-  getFile(event: LazyLoadEvent, endpoint = 'csv'): Observable<any> {
+  getFile(event: TableLazyLoadEvent, endpoint = 'csv'): Observable<any> {
     return this.getItemFile(event, endpoint);
   }
 }

@@ -16,16 +16,16 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
-import { KeyValuePair } from '../../../model/key-value-pair';
+import { Subscription } from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE,
   TABLE_FILTER_GLOBAL,
   TeamTypeId,
 } from 'src/app/shared/constants';
-import { BiaTableState } from '../../../model/bia-table-state';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
+import { BiaTableState } from '../../../model/bia-table-state';
+import { KeyValuePair } from '../../../model/key-value-pair';
 
 @Component({
   selector: 'bia-table-controller',
@@ -52,7 +52,7 @@ export class BiaTableControllerComponent
   @Input() length: number;
   @Input() columns: KeyValuePair[];
   @Input() columnToDisplays: KeyValuePair[];
-  @Input() tableStateKey: string;
+  @Input() tableStateKey: string | undefined;
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Input() defaultViewPref: BiaTableState;

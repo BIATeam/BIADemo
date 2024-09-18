@@ -1,25 +1,24 @@
-import { Inject, Injectable } from '@angular/core';
 import { APP_BASE_HREF } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureEnginesActions } from './engines-actions';
-import { Store } from '@ngrx/store';
-import { FeatureEnginesStore } from './engine.state';
-import { Engine } from '../model/engine';
-import { engineCRUDConfiguration } from '../engine.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { engineCRUDConfiguration } from '../engine.constants';
+import { Engine } from '../model/engine';
 import { EngineDas } from '../services/engine-das.service';
+import { FeatureEnginesStore } from './engine.state';
+import { FeatureEnginesActions } from './engines-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -90,7 +89,7 @@ export class EnginesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -128,7 +127,7 @@ export class EnginesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -165,7 +164,7 @@ export class EnginesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -202,7 +201,7 @@ export class EnginesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureEnginesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),

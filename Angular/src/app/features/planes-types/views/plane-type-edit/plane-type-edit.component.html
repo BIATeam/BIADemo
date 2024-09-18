@@ -1,7 +1,10 @@
 <app-plane-type-form
-  [crudItem]="planeTypeService.crudItem$ | async"
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="planeTypeService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="
+    (planeTypeService.optionsService.dictOptionDtos$ | async) ?? []
+  "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-type-form>
 <bia-spinner

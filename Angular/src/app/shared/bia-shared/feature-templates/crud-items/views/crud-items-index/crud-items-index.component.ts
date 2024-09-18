@@ -10,7 +10,7 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -65,7 +65,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   pageSize = this.defaultPageSize;
   totalRecords: number;
   crudItems$: Observable<CrudItem[]>;
-  selectedCrudItems: CrudItem[];
+  selectedCrudItems: CrudItem[] = [];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
   canEdit = false;
@@ -308,7 +308,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   }
 
   onDelete() {
-    if (this.selectedCrudItems && this.canDelete) {
+    if (this.canDelete) {
       this.crudItemService.multiRemove(this.selectedCrudItems.map(x => x.id));
     }
   }
@@ -321,7 +321,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.pageSize = pageSize;
   }
 
-  onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
+  onLoadLazy(lazyLoadEvent: TableLazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = {
       advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
@@ -388,7 +388,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     } else {
       this.crudItemListComponent
         .getPrimeNgTable()
-        .columns?.map(
+        ?.columns?.map(
           (x: BiaFieldConfig) =>
             (columns[x.field] = this.translateService.instant(x.header))
         );
@@ -439,7 +439,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   onFilter(advancedFilter: any) {
     this.crudConfiguration.fieldsConfig.advancedFilter = advancedFilter;
-    this.crudItemListComponent.table.saveState();
+    this.crudItemListComponent.table?.saveState();
     this.checkhasAdvancedFilter();
     this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
   }

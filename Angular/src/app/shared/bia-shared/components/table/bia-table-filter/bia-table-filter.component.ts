@@ -6,7 +6,6 @@ import {
   OnDestroy,
   OnInit,
   ViewEncapsulation,
-  // Output,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FilterMatchMode, FilterMetadata, SelectItem } from 'primeng/api';
@@ -15,6 +14,8 @@ import { Subscription } from 'rxjs';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   BiaFieldConfig,
+  BiaFieldDateFormat,
+  BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { TableHelperService } from '../../../services/table-helper.service';
@@ -48,6 +49,14 @@ export class BiaTableFilterComponent
     super(biaTranslationService);
   }
 
+  getDisplayNumberFormat(
+    displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
+  ): BiaFieldNumberFormat | null {
+    return displayFormat && displayFormat instanceof BiaFieldNumberFormat
+      ? displayFormat
+      : null;
+  }
+
   ngOnInit() {
     this.initFiterConfiguration();
   }
@@ -58,20 +67,27 @@ export class BiaTableFilterComponent
     }
   }
 
-  isArrayFilter(col: BiaFieldConfig) {
-    let valueInArray = false;
+  isArrayFilter(col: BiaFieldConfig): FilterMetadata[] | null {
     if (
       this.table &&
       this.table.filters &&
       Array.isArray(this.table.filters[col.field])
     ) {
-      (this.table.filters[col.field] as FilterMetadata[]).forEach(element => {
-        if (!this.tableHelperService.isEmptyFilter(element)) {
-          valueInArray = true;
-        }
-      });
+      if (
+        (this.table.filters[col.field] as FilterMetadata[]).some(
+          element => !this.tableHelperService.isEmptyFilter(element)
+        )
+      ) {
+        return this.table.filters[col.field] as FilterMetadata[];
+      }
     }
-    return valueInArray;
+    return null;
+  }
+
+  isSimpleFilter(
+    filter: FilterMetadata | FilterMetadata[] | undefined
+  ): FilterMetadata | null {
+    return filter && !Array.isArray(filter) ? filter : null;
   }
 
   isArraySimple(col: BiaFieldConfig) {
@@ -88,8 +104,8 @@ export class BiaTableFilterComponent
     return false;
   }
 
-  setSimpleFilter(value: any, col: BiaFieldConfig) {
-    this.table.filter(value, col.field, col.filterMode);
+  setSimpleFilter(event: any, col: BiaFieldConfig) {
+    this.table.filter(event?.value, col.field, col.filterMode);
   }
 
   protected initFiterConfiguration() {

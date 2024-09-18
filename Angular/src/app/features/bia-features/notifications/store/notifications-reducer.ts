@@ -1,6 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { clone } from 'src/app/shared/bia-shared/utils';
 import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notificationListItem';
@@ -27,7 +27,7 @@ export interface State extends EntityState<NotificationListItem> {
   // additional props here
   totalCount: number;
   currentNotification: Notification;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -36,7 +36,7 @@ export const INIT_STATE: State = notificationsAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentNotification: <Notification>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

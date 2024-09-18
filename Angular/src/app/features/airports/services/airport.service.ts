@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Airport } from '../model/airport';
 import { airportCRUDConfiguration } from '../airport.constants';
+import { Airport } from '../model/airport';
 import { FeatureAirportsStore } from '../store/airport.state';
 import { FeatureAirportsActions } from '../store/airports-actions';
-import { AirportOptionsService } from './airport-options.service';
 import { AirportDas } from './airport-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { AirportOptionsService } from './airport-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class AirportService extends CrudItemService<Airport> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureAirportsStore.getAirportLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureAirportsStore.getLastLazyLoadEvent
   );
 
@@ -60,7 +60,7 @@ export class AirportService extends CrudItemService<Airport> {
   public load(id: any) {
     this.store.dispatch(FeatureAirportsActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeatureAirportsActions.loadAllByPost({ event }));
   }
   public create(crudItem: Airport) {

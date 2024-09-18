@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
-import { MaintenanceTeam } from '../model/maintenance-team';
-import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { MaintenanceTeam } from '../model/maintenance-team';
 
 export namespace FeatureMaintenanceTeamsActions {
   export const loadAllByPost = createAction(
     '[' + maintenanceTeamCRUDConfiguration.storeKey + '] Load all by post',
-    props<{ event: LazyLoadEvent }>()
+    props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
@@ -39,7 +39,10 @@ export namespace FeatureMaintenanceTeamsActions {
     '[' +
       maintenanceTeamCRUDConfiguration.storeKey +
       '] Load all by post success',
-    props<{ result: DataResult<MaintenanceTeam[]>; event: LazyLoadEvent }>()
+    props<{
+      result: DataResult<MaintenanceTeam[]>;
+      event: TableLazyLoadEvent;
+    }>()
   );
 
   export const loadSuccess = createAction(
