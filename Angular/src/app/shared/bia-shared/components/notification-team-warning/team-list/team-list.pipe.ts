@@ -6,7 +6,7 @@ import { Notification } from 'src/app/domains/bia-domains/notification/model/not
 })
 export class TeamListPipe implements PipeTransform {
   transform(notification: Notification): any {
-    if (!notification?.data.teams) {
+    if (!notification?.data?.teams) {
       return '';
     }
 

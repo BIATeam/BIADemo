@@ -1,9 +1,10 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureNotificationsActions } from './notifications-actions';
 import { LazyLoadEvent } from 'primeng/api';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notificationListItem';
+import { FeatureNotificationsActions } from './notifications-actions';
 
 // This adapter will allow is to manipulate notifications (mostly CRUD operations)
 export const notificationsAdapter = createEntityAdapter<NotificationListItem>({
@@ -59,8 +60,9 @@ export const notificationReducers = createReducer<State>(
     }
   ),
   on(FeatureNotificationsActions.loadSuccess, (state, { notification }) => {
-    notification.data = JSON.parse(notification.jData);
-    return { ...state, currentNotification: notification, loadingGet: false };
+    const notif = clone(notification);
+    notif.data = JSON.parse(notification.jData);
+    return { ...state, currentNotification: notif, loadingGet: false };
   }),
   on(FeatureNotificationsActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };

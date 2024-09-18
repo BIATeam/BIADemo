@@ -12,7 +12,7 @@ export interface Notification {
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
   jData: string;
-  data: NotificationData;
+  data?: NotificationData;
 }
 
 export class NotificationTeam {

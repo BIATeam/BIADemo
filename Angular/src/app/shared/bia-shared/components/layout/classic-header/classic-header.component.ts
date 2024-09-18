@@ -1,38 +1,38 @@
+import { Platform } from '@angular/cdk/platform';
 import {
-  Component,
   ChangeDetectionStrategy,
-  Input,
-  Output,
+  Component,
   EventEmitter,
+  Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
-import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
-import { Platform } from '@angular/cdk/platform';
-import { MenuItem, Message } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { BiaNavigation } from '../../../model/bia-navigation';
-import { Subscription, Observable } from 'rxjs';
-import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
-import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
-import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { MenuItem, Message } from 'primeng/api';
+import { Toast } from 'primeng/toast';
+import { Observable, Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
 import {
   BiaTranslationService,
   STORAGE_CULTURE_KEY,
 } from 'src/app/core/bia-core/services/bia-translation.service';
-import { allEnvironments } from 'src/environments/all-environments';
-import { Toast } from 'primeng/toast';
 import {
   Notification,
   NotificationData,
   NotificationType,
 } from 'src/app/domains/bia-domains/notification/model/notification';
-import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
+import { getUnreadNotificationCount } from 'src/app/domains/bia-domains/notification/store/notification.state';
+import { DomainNotificationsActions } from 'src/app/domains/bia-domains/notification/store/notifications-actions';
+import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { allEnvironments } from 'src/environments/all-environments';
+import { BiaNavigation } from '../../../model/bia-navigation';
+import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
 
 @Component({
   selector: 'bia-classic-header',
@@ -128,7 +128,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   onNotificationClick(message: Message) {
     if (message.data?.notification) {
       const notification: Notification = message.data.notification;
-      const data: NotificationData = notification.data;
+      const data: NotificationData | undefined = notification.data;
       if (data?.route) {
         if (data?.teams) {
           // Auto-switch to teams related to this notification
