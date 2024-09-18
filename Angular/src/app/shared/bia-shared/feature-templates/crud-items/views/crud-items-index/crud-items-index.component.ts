@@ -6,31 +6,32 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import { LazyLoadEvent } from 'primeng/api';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import { saveAs } from 'file-saver';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
-import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
-import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
+import { saveAs } from 'file-saver';
+import { LazyLoadEvent } from 'primeng/api';
+import { Observable, Subscription } from 'rxjs';
 import { filter, skip } from 'rxjs/operators';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemService } from '../../services/crud-item.service';
-import { CrudConfig } from '../../model/crud-config';
-import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
-import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
-import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
+import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
+import { CrudConfig } from '../../model/crud-config';
+import { CrudItemService } from '../../services/crud-item.service';
 
 @Component({
   selector: 'bia-crud-items-index',
@@ -324,7 +325,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     const pagingAndFilter: PagingFilterFormatDto = {
       advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
-      ...lazyLoadEvent,
+      filters: clone(lazyLoadEvent.filters),
+      first: lazyLoadEvent.first,
+      globalFilter: clone(lazyLoadEvent.globalFilter),
+      last: lazyLoadEvent.last,
+      multiSortMeta: clone(lazyLoadEvent.multiSortMeta),
+      rows: lazyLoadEvent.rows,
+      sortField: lazyLoadEvent.sortField,
+      sortOrder: lazyLoadEvent.sortOrder,
     };
     this.crudItemService.loadAllByPost(pagingAndFilter);
     this.hasColumnFilter =
