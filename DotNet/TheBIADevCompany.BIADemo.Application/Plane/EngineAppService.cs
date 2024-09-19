@@ -25,10 +25,14 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public class EngineAppService : CrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto, EngineMapper>, IEngineAppService
     {
+        // BIAToolKit - Begin AncestorTeam Site
+
         /// <summary>
-        /// The current SiteId.
+        /// The current TeamId.
         /// </summary>
-        private readonly int currentSiteId;
+        private readonly int currentTeamId;
+
+        // BIAToolKit - Begin AncestorTeam Site
 
         /// <summary>
         /// The configuration.
@@ -52,11 +56,17 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             this.repository = repository;
             this.configuration = configuration;
             var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
-            this.currentSiteId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
+
+            // BIAToolKit - Begin AncestorTeam Site
+            this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
-            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentSiteId));
+            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<Engine>(p => p.Plane.SiteId == this.currentTeamId));
+
+            // BIAToolKit - End AncestorTeam Site
         }
+
+        // Begin BIADemo
 
         /// <inheritdoc cref="IEngineAppService.CheckToBeMaintainedAsync"/>
         public async Task CheckToBeMaintainedAsync()
@@ -70,5 +80,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             string projectName = this.configuration["Project:Name"];
             RecurringJob.TriggerJob($"{projectName}.{typeof(EngineManageTask).Name}");
         }
+
+        // End BIADemo
     }
 }

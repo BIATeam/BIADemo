@@ -105,6 +105,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string Save = "AircraftMaintenanceCompany_Save";
         }
 
+        // BIAToolKit - Begin Partial Rights Engine
+
         /// <summary>
         /// The planes rights.
         /// </summary>
@@ -140,6 +142,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             public const string Save = "Engine_Save";
         }
+
+        // BIAToolKit - End Partial Rights Engine
 
         // BIAToolKit - Begin Partial Rights MaintenanceTeam
 

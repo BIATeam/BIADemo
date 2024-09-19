@@ -147,6 +147,7 @@
         "Roles": [ "Site_Admin" ]
       },
       // BIAToolKit - End Partial Config Plane
+      // BIAToolKit - Begin Partial Config Engine
       // Engine
       {
         "Names": [ "Engine_List_Access", "Engine_Read" ],
@@ -160,6 +161,7 @@
         "Names": [ "Engine_Create", "Engine_Delete" ],
         "Roles": [ "Site_Admin" ]
       },
+      // BIAToolKit - End Partial Config Plane
       // Aircraft Maintenance Company
       {
         "Names": [ "AircraftMaintenanceCompany_Create", "AircraftMaintenanceCompany_Update", "AircraftMaintenanceCompany_Delete", "AircraftMaintenanceCompany_Save" ],

@@ -1,11 +1,11 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
+import { Permission } from 'src/app/shared/permission';
+import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { PlaneService } from '../../services/plane.service';
-import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 
 @Component({
   selector: 'app-planes-index',
@@ -15,9 +15,11 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
-  /// BIAToolKit - Begin Child Engine
+  /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
-  /// BIAToolKit - End Child Engine
+  /// BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
+  // BIAToolKit - Begin PlaneIndexTsCanViewChildDeclaration
+  // BIAToolKit - End PlaneIndexTsCanViewChildDeclaration
   constructor(
     protected injector: Injector,
     public planeService: PlaneService,
@@ -32,14 +34,16 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     this.canDelete = this.authService.hasPermission(Permission.Plane_Delete);
     this.canAdd = this.authService.hasPermission(Permission.Plane_Create);
     this.canSave = this.authService.hasPermission(Permission.Plane_Save);
-    /// BIAToolKit - Begin Child Engine
+    /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildSet Engine
     this.canViewEngines = this.authService.hasPermission(
       Permission.Engine_List_Access
     );
-    /// BIAToolKit - End Child Engine
+    /// BIAToolKit - End Partial PlaneIndexTsCanViewChildSet Engine
+    // BIAToolKit - Begin PlaneIndexTsCanViewChildSet
+    // BIAToolKit - End PlaneIndexTsCanViewChildSet
   }
 
-  /// BIAToolKit - Begin Child Engine
+  /// BIAToolKit - Begin Partial PlaneIndexTsOnViewChild Engine
   onViewEngines(crudItemId: any) {
     if (crudItemId && crudItemId > 0) {
       this.router.navigate([crudItemId, 'engines'], {
@@ -47,5 +51,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
       });
     }
   }
-  /// BIAToolKit - End Child Engine
+  /// BIAToolKit - End Partial PlaneIndexTsOnViewChild Engine
+  // BIAToolKit - Begin PlaneIndexTsOnViewChild
+  // BIAToolKit - End PlaneIndexTsOnViewChild
 }

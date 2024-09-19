@@ -8,12 +8,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
     /// <summary>
     /// The DTO used to represent a Engine.
     /// </summary>
+    [BiaDtoClass(AncestorTeam = "Site")]
     public class EngineDto : BaseDto<int>
     {
         /// <summary>
@@ -39,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the Plane.
         /// </summary>
+        [BiaDtoField(IsParent = true, Required = true)]
         public int PlaneId { get; set; }
     }
 }
