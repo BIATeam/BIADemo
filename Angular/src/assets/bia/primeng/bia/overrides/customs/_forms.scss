@@ -1,37 +1,39 @@
-p-button,
-button[pbutton] {
-  &.p-button-secondary {
-    color: $primaryColor !important;
-    :before {
+@layer primeng {
+  p-button,
+  button[pbutton] {
+    &.p-button-secondary {
       color: $primaryColor !important;
+      :before {
+        color: $primaryColor !important;
+      }
     }
   }
-}
 
-input,
-textarea,
-select,
-button {
-  border-radius: 0 !important;
-  color: $biaFgTextColor;
-  &.p-button-secondary {
-    border-style: solid;
-    border-width: thin;
-    &:not(:hover) {
-      background-color: $biaBgColor !important;
+  input,
+  textarea,
+  select,
+  button {
+    border-radius: 0 !important;
+    color: $biaFgTextColor;
+    &.p-button-secondary {
+      border-style: solid;
+      border-width: thin;
+      &:not(:hover) {
+        background-color: $biaBgColor !important;
+      }
     }
   }
-}
 
-h1 {
-  color: $biaTitleColor;
-}
+  h1 {
+    color: $biaTitleColor;
+  }
 
-.p-button-label {
-  font-family: 'oswald-light';
-}
+  .p-button-label {
+    font-family: 'oswald-light';
+  }
 
-// dialog
-body .p-dialog .p-dialog-titlebar {
-  background-color: $biaBgColor;
+  // dialog
+  body .p-dialog .p-dialog-titlebar {
+    background-color: $biaBgColor;
+  }
 }

@@ -1,70 +1,72 @@
-body .p-datatable .p-datatable-tbody > tr {
-  background: $biaBgHoverColor;
-}
-
-body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
-  background-color: $biaBgColor;
-}
-
-body .p-datatable .p-datatable-tbody > tr > td {
-  border-top-width: 1px;
-  border-top-color: #d7d7d7;
-  border-top-style: solid;
-}
-
-body .p-datatable .p-datatable-tbody > tr:last-child > td {
-  border-bottom-width: 1px;
-  border-bottom-color: #d7d7d7;
-  border-bottom-style: solid;
-}
-
-tr.p-selectable-row.p-highlight td {
-  color: $primaryColor !important;
-}
-
-p-celleditor {
-  .p-inputtext {
-    padding: 0;
+@layer primeng {
+  body .p-datatable .p-datatable-tbody > tr {
+    background: $biaBgHoverColor;
   }
 
-  .p-multiselect-label {
-    padding: 0 !important;
-  }
-}
-
-p-table {
-  .p-widget-overlay {
-    background-color: $biaBgColor !important;
+  body .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: $biaBgColor;
   }
 
-  table {
-    thead {
-      tr:first-child th {
-        border-top-width: 0px !important;
-        font-weight: 800 !important;
+  body .p-datatable .p-datatable-tbody > tr > td {
+    border-top-width: 1px;
+    border-top-color: #d7d7d7;
+    border-top-style: solid;
+  }
+
+  body .p-datatable .p-datatable-tbody > tr:last-child > td {
+    border-bottom-width: 1px;
+    border-bottom-color: #d7d7d7;
+    border-bottom-style: solid;
+  }
+
+  tr.p-selectable-row.p-highlight td {
+    color: $primaryColor !important;
+  }
+
+  p-celleditor {
+    .p-inputtext {
+      padding: 0;
+    }
+
+    .p-multiselect-label {
+      padding: 0 !important;
+    }
+  }
+
+  p-table {
+    .p-widget-overlay {
+      background-color: $biaBgColor !important;
+    }
+
+    table {
+      thead {
+        tr:first-child th {
+          border-top-width: 0px !important;
+          font-weight: 800 !important;
+        }
+      }
+
+      tr,
+      th,
+      td {
+        border-left-width: 0px !important;
+        border-right-width: 0px !important;
       }
     }
-
-    tr,
-    th,
-    td {
-      border-left-width: 0px !important;
-      border-right-width: 0px !important;
-    }
   }
-}
 
-body .p-dataview .p-dataview-header {
-  background-color: $contentBgColor;
-}
+  body .p-dataview .p-dataview-header {
+    background-color: $contentBgColor;
+  }
 
-.p-datatable.p-datatable-striped
-  .p-datatable-tbody
-  > tr:nth-child(odd)
-  .p-frozen-column {
-  background: $biaBgRowOdd;
-}
+  .p-datatable.p-datatable-striped
+    .p-datatable-tbody
+    > tr:nth-child(odd)
+    .p-frozen-column {
+    background: $biaBgRowOdd;
+  }
 
-.p-datatable .p-datatable-tbody > tr.p-highlight .p-frozen-column {
-  background: $biaBgRowSelected !important;
+  .p-datatable .p-datatable-tbody > tr.p-highlight .p-frozen-column {
+    background: $biaBgRowSelected !important;
+  }
 }
