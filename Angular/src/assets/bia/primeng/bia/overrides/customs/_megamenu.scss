@@ -1,9 +1,11 @@
-.p-megamenu {
-  .p-megamenu-panel {
-    z-index: 10;
-    color: #000;
-  }
-  .p-menuitem-text {
-    line-height: 1.5em !important;
+@layer primeng {
+  .p-megamenu {
+    .p-megamenu-panel {
+      z-index: 10;
+      color: #000;
+    }
+    .p-menuitem-text {
+      line-height: 1.5em !important;
+    }
   }
 }
