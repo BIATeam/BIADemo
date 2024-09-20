@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         private readonly int currentTeamId;
 
-        // BIAToolKit - Begin AncestorTeam Site
+        // BIAToolKit - End AncestorTeam Site
 
         /// <summary>
         /// The configuration.

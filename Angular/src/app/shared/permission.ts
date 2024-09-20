@@ -60,14 +60,14 @@ export enum Permission {
   Airport_Read = 'Airport_Read',
   Airport_Save = 'Airport_Save',
   Airport_Update = 'Airport_Update',
-  /// BIAToolKit - Begin Partial Permission Plane
+  /// BIAToolKit - Begin Partial Permission Engine
   Engine_Create = 'Engine_Create',
   Engine_Delete = 'Engine_Delete',
   Engine_List_Access = 'Engine_List_Access',
   Engine_Read = 'Engine_Read',
   Engine_Save = 'Engine_Save',
   Engine_Update = 'Engine_Update',
-  /// BIAToolKit - End Partial Permission Plane
+  /// BIAToolKit - End Partial Permission Engine
   PlaneType_Create = 'PlaneType_Create',
   PlaneType_Delete = 'PlaneType_Delete',
   PlaneType_List_Access = 'PlaneType_List_Access',

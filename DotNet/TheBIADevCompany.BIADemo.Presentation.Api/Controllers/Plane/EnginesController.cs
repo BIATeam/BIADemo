@@ -45,10 +45,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
         /// </summary>
-        /// <param name="enngineService">The engine application service.</param>
+        /// <param name="engineService">The engine application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public EnginesController(
-            IEngineAppService enngineService, IClientForHubRepository clientForHubService)
+            IEngineAppService engineService, IClientForHubRepository clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
@@ -60,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 #if UseHubForClientInEngine
             this.clientForHubService = clientForHubService;
 #endif
-            this.engineService = enngineService;
+            this.engineService = engineService;
         }
 
         /// <summary>
@@ -125,7 +125,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.engineService.AddAsync(dto);
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -158,7 +161,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.engineService.UpdateAsync(dto);
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -194,7 +200,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var deletedDto = await this.engineService.RemoveAsync(id);
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 _ = this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -227,10 +236,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 var deletedDtos = await this.engineService.RemoveAsync(ids);
 
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -263,10 +275,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var savedDtos = await this.engineService.SaveAsync(dtoList);
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }

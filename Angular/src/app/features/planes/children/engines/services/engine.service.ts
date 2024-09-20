@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LazyLoadEvent } from 'primeng/api';
 import { Observable } from 'rxjs';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Engine } from '../model/engine';
+import { PlaneService } from '../../../services/plane.service';
 import { engineCRUDConfiguration } from '../engine.constants';
+import { Engine } from '../model/engine';
 import { FeatureEnginesStore } from '../store/engine.state';
 import { FeatureEnginesActions } from '../store/engines-actions';
-import { EngineOptionsService } from './engine-options.service';
 import { EngineDas } from './engine-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { PlaneService } from '../../../services/plane.service';
+import { EngineOptionsService } from './engine-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -66,8 +66,10 @@ export class EngineService extends CrudItemService<Engine> {
   }
   public create(crudItem: Engine) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
+    // BIAToolKit - Begin Parent planeId
     (crudItem.planeId = this.getParentIds()[0]),
       this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
+    // BIAToolKit - End Parent planeId
   }
   public update(crudItem: Engine) {
     this.store.dispatch(FeatureEnginesActions.update({ engine: crudItem }));
