@@ -27,9 +27,31 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public string Reference { get; set; }
 
         /// <summary>
+        /// Gets or sets the Manufacturer's name.
+        /// </summary>
+        public string Manufacturer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the next maintenance date.
+        /// </summary>
+        public DateTime NextMaintenanceDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the last maintenance date.
         /// </summary>
-        public DateTime LastMaintenanceDate { get; set; }
+        public DateTime? LastMaintenanceDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delivery date.
+        /// </summary>
+        [Column(TypeName = "date")]
+        public DateTime DeliveryDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exchange date.
+        /// </summary>
+        [Column(TypeName = "date")]
+        public DateTime? ExchangeDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
@@ -38,9 +60,50 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public TimeSpan SyncTime { get; set; }
 
         /// <summary>
+        /// Gets or sets the daily ignition hour.
+        /// </summary>
+        [Column(TypeName = "time")]
+        public TimeSpan? IgnitionTime { get; set; }
+
+        /// <summary>
         /// Gets or sets the power.
         /// </summary>
         public int? Power { get; set; }
+
+        /// <summary>
+        /// Gets or sets the noise level.
+        /// </summary>
+        public int NoiseLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the flight hours.
+        /// </summary>
+        public double FlightHours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the average of flight hours.
+        /// </summary>
+        public double? AverageFlightHours { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fuel consumption.
+        /// </summary>
+        public float FuelConsumption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the average of fuel consumption.
+        /// </summary>
+        public float? AverageFuelConsumption { get; set; }
+
+        /// <summary>
+        /// Gets or sets the original price.
+        /// </summary>
+        public decimal OriginalPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the estimated price.
+        /// </summary>
+        public decimal? EstimatedPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the Plane.
@@ -56,5 +119,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets a value indicating whether this instance is to be maintained.
         /// </summary>
         public bool IsToBeMaintained { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is hybrid.
+        /// </summary>
+        public bool? IsHybrid { get; set; }
     }
 }

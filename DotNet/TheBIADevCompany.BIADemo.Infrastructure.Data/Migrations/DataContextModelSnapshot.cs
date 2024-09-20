@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -569,11 +569,50 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double?>("AverageFlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float?>("AverageFuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("EstimatedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ExchangeDate")
+                        .HasColumnType("date");
+
+                    b.Property<double>("FlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float>("FuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<TimeSpan?>("IgnitionTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool?>("IsHybrid")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsToBeMaintained")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastMaintenanceDate")
+                    b.Property<DateTime?>("LastMaintenanceDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NextMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NoiseLevel")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
@@ -1875,9 +1914,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
-                        .WithMany()
+                        .WithMany("Engines")
                         .HasForeignKey("PlaneId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Plane");
@@ -2161,6 +2200,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
                 {
                     b.Navigation("ConnectingPlaneAirports");
+
+                    b.Navigation("Engines");
 
                     b.Navigation("SimilarPlaneType");
                 });
