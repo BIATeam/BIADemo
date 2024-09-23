@@ -34,7 +34,7 @@ export interface State extends EntityState<Plane> {
 export const INIT_STATE: State = planesAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
-  currentPlane: <PlaneSpecific>{},
+  currentPlane: { engines: [] } as unknown as PlaneSpecific,
   lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
