@@ -33,9 +33,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     public class EnginesController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The engine application service.
         /// </summary>
-        private readonly IEngineAppService planeService;
+        private readonly IEngineAppService engineService;
 
 #if UseHubForClientInEngine
         private readonly IClientForHubRepository clientForHubService;
@@ -45,29 +45,29 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
         /// </summary>
-        /// <param name="planeService">The plane application service.</param>
+        /// <param name="engineService">The engine application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public EnginesController(
-            IEngineAppService planeService, IClientForHubRepository clientForHubService)
+            IEngineAppService engineService, IClientForHubRepository clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
         /// </summary>
-        /// <param name="planeService">The plane application service.</param>
-        public EnginesController(IEngineAppService planeService)
+        /// <param name="engineService">The engine application service.</param>
+        public EnginesController(IEngineAppService engineService)
 #endif
         {
 #if UseHubForClientInEngine
             this.clientForHubService = clientForHubService;
 #endif
-            this.planeService = planeService;
+            this.engineService = engineService;
         }
 
         /// <summary>
-        /// Get all planes with filters.
+        /// Get all engines with filters.
         /// </summary>
         /// <param name="filters">The filters.</param>
-        /// <returns>The list of planes.</returns>
+        /// <returns>The list of engines.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,16 +75,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.Engines.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.planeService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            var (results, total) = await this.engineService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
 
         /// <summary>
-        /// Get a plane by its identifier.
+        /// Get a engine by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns>The plane.</returns>
+        /// <returns>The engine.</returns>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -100,7 +100,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var dto = await this.planeService.GetAsync(id);
+                var dto = await this.engineService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -110,9 +110,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Add a plane.
+        /// Add a engine.
         /// </summary>
-        /// <param name="dto">The plane DTO.</param>
+        /// <param name="dto">The engine DTO.</param>
         /// <returns>The result of the creation.</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -123,9 +123,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         {
             try
             {
-                var createdDto = await this.planeService.AddAsync(dto);
+                var createdDto = await this.engineService.AddAsync(dto);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "planes", "refresh-planes");
+                // BIAToolKit - Begin Parent PlaneId
+                _ = this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -136,10 +139,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Update a plane.
+        /// Update a engine.
         /// </summary>
-        /// <param name="id">The plane identifier.</param>
-        /// <param name="dto">The plane DTO.</param>
+        /// <param name="id">The engine identifier.</param>
+        /// <param name="dto">The engine DTO.</param>
         /// <returns>The result of the update.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -156,9 +159,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var updatedDto = await this.planeService.UpdateAsync(dto);
+                var updatedDto = await this.engineService.UpdateAsync(dto);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "planes", "refresh-planes");
+                // BIAToolKit - Begin Parent PlaneId
+                _ = this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok(updatedDto);
             }
@@ -173,9 +179,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Remove a plane.
+        /// Remove a engine.
         /// </summary>
-        /// <param name="id">The plane identifier.</param>
+        /// <param name="id">The engine identifier.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -192,9 +198,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var deletedDto = await this.planeService.RemoveAsync(id);
+                var deletedDto = await this.engineService.RemoveAsync(id);
 #if UseHubForClientInEngine
-                _ = this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "planes", "refresh-planes");
+                // BIAToolKit - Begin Parent PlaneId
+                _ = this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -205,9 +214,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Removes the specified plane ids.
+        /// Removes the specified engine ids.
         /// </summary>
-        /// <param name="ids">The plane ids.</param>
+        /// <param name="ids">The engine ids.</param>
         /// <returns>The result of the remove.</returns>
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -224,13 +233,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var deletedDtos = await this.planeService.RemoveAsync(ids);
+                var deletedDtos = await this.engineService.RemoveAsync(ids);
 
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -241,9 +253,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Save all planes according to their state (added, updated or removed).
+        /// Save all engines according to their state (added, updated or removed).
         /// </summary>
-        /// <param name="dtos">The list of planes.</param>
+        /// <param name="dtos">The list of engines.</param>
         /// <returns>The status code.</returns>
         [HttpPost("save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -261,12 +273,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var savedDtos = await this.planeService.SaveAsync(dtoList);
+                var savedDtos = await this.engineService.SaveAsync(dtoList);
 #if UseHubForClientInEngine
+                // BIAToolKit - Begin Parent PlaneId
                 savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(parentId =>
                 {
-                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
+                    _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
                 });
+
+                // BIAToolKit - End Parent PlaneId
 #endif
                 return this.Ok();
             }
@@ -288,9 +303,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.planeService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            byte[] buffer = await this.engineService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
         }
+
+        // Begin BIADemo
 
         /// <summary>
         /// Launches the job manually example.
@@ -299,8 +316,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [HttpPost("LaunchJobManually")]
         public IActionResult LaunchJobManuallyExample()
         {
-            this.planeService.LaunchJobManuallyExample();
+            this.engineService.LaunchJobManuallyExample();
             return this.Ok();
         }
+
+        // End BIADemo
     }
 }

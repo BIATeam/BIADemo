@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -569,16 +569,58 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double?>("AverageFlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float?>("AverageFuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("EstimatedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ExchangeDate")
+                        .HasColumnType("date");
+
+                    b.Property<double>("FlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float>("FuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<TimeSpan?>("IgnitionTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool?>("IsHybrid")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsToBeMaintained")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastMaintenanceDate")
+                    b.Property<DateTime?>("LastMaintenanceDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NextMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NoiseLevel")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Power")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PrincipalPartId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reference")
@@ -597,7 +639,86 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PlaneId");
 
+                    b.HasIndex("PrincipalPartId");
+
                     b.ToTable("Engines");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+                {
+                    b.Property<int>("EngineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("EngineId", "PartId");
+
+                    b.HasIndex("PartId");
+
+                    b.ToTable("EnginePart");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Family")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Parts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Family = "N.A",
+                            Price = 499.99m,
+                            SN = "P0001"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Family = "N.A",
+                            Price = 250.99m,
+                            SN = "P0002"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Family = "N.A",
+                            Price = 100.99m,
+                            SN = "P0003"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Family = "N.A",
+                            Price = 25.99m,
+                            SN = "P0004"
+                        });
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
@@ -1875,12 +1996,37 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
-                        .WithMany()
+                        .WithMany("Engines")
                         .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "PrincipalPart")
+                        .WithMany()
+                        .HasForeignKey("PrincipalPartId");
+
+                    b.Navigation("Plane");
+
+                    b.Navigation("PrincipalPart");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", "Engine")
+                        .WithMany("InstalledEngineParts")
+                        .HasForeignKey("EngineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Plane");
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "Part")
+                        .WithMany()
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Engine");
+
+                    b.Navigation("Part");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
@@ -2158,9 +2304,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTypeTranslations");
                 });
 
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
+                {
+                    b.Navigation("InstalledEngineParts");
+                });
+
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
                 {
                     b.Navigation("ConnectingPlaneAirports");
+
+                    b.Navigation("Engines");
 
                     b.Navigation("SimilarPlaneType");
                 });

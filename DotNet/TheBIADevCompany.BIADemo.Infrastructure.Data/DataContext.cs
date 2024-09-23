@@ -160,6 +160,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         public DbSet<Engine> Engines { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parts.
+        /// </summary>
+        public DbSet<Part> Parts { get; set; }
+
         // End BIADemo
 #endif
 

@@ -18,6 +18,63 @@
     ]
   },
   {
+    "Feature": "CRUD (with parent)",
+    "Type": "CRUD",
+    "FeatureName": "Engine",
+    "FeatureNamePlural": "Engines",
+    "ZipName": "crud-parent.zip",
+    "Contains": {
+      "Include": ["src\\app\\features\\planes\\children\\engines\\*"],
+      "Exclude": []
+    },
+    "NeedParent": "true",
+    "Parents": [
+      {
+        "Name": "Plane",
+        "NamePlural": "Planes",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "src\\app\\features\\",
+            "InitialDeepLevel": 1,
+            "DeepLevelIdentifier": "children",
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "planes\\children\\",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
+              },
+              {
+                "FromRelativePath": "planes\\views\\planes-index\\planes-index.component",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\views\\{ParentNameKebabPlural}-index\\{ParentNameKebabPlural}-index.component"
+              },
+              {
+                "FromRelativePath": "planes\\plane.module.ts",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\{ParentNameKebabSingular}.module.ts"
+              }
+            ],
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
+                "Pattern": "'../../../../../../",
+                "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Children": [],
+    "Options": [],
+    "Partial": [
+      "src\\app\\shared\\permission.ts",
+      "src\\app\\features\\planes\\plane.module.ts",
+      "src\\app\\features\\planes\\views\\planes-index\\planes-index.component.ts",
+      "src\\app\\features\\planes\\views\\planes-index\\planes-index.component.html"
+    ]
+  },
+  {
     "Feature": "Option",
     "Type": "Option",
     "FeatureName": "Airport",

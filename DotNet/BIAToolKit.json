@@ -25,6 +25,75 @@
     ]
   },
   {
+    "Feature": "CRUD (with parent)",
+    "Type": "CRUD",
+    "FeatureName": "Engine",
+    "FeatureNamePlural": "Engines",
+    "ZipName": "crud-parent.zip",
+    "Contains": {
+      "Include": [
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\EnginesController.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\EngineAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\Plane\\IEngineAppService.cs",
+        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\EngineMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Engine.cs",
+        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\EngineSpecification.cs",
+        "TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\EngineDto.cs"
+      ],
+      "Exclude": []
+    },
+    "Children": [],
+    "NeedParent": "true",
+    "Parents": [
+      {
+        "Name": "Plane",
+        "NamePlural": "Planes",
+        "DomainName": "Plane",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "Plane\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "Plane\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Domain\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "PlaneModule\\Aggregate\\EngineSpecification.cs",
+                "ToRelativePathWithParent": "{ParentDomainName}Module\\Aggregate\\{NewCrudNamePascalSingular}Specification.cs"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Options": [],
+    "Partial": [
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs",
+      "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json"
+    ]
+  },
+  {
     "Feature": "Option",
     "Type": "Option",
     "FeatureName": "Airport",

@@ -43,11 +43,12 @@ function GetLineNumber($pattern, $file) {
 
 # Deletes a set of lines whose number is between $start and $end.
 function DeleteLine($start, $end, $file) {
+  $fileRel = Resolve-Path -Path "$file" -Relative
+  Write-Verbose "Delete lines $start to $end in file $fileRel" -Verbose
   $i = 0
   $start--
   $end--
-  $fileRel = Resolve-Path -Path "$file" -Relative
-  Write-Verbose "Delete lines $start to $end in file $fileRel" -Verbose
+  
   (Get-Content $file) | Where-Object {
 	(($i -ne $start - 1 -or $_.Trim() -ne '') -and 
     ($i -lt $start -or $i -gt $end))
@@ -114,6 +115,32 @@ function RemoveFolder {
   }
 }
 
+function RemoveCodeBetweenMarkers {
+    param (
+    [string]$file,
+    [string]$marker
+  )
+    $lineBegin = @()
+  
+    $searchWord = "Begin $marker"
+    $starts = GetLineNumber -pattern $searchWord -file $file
+    $lineBegin += $starts
+  
+    $searchWord = "End $marker"
+    $ends = GetLineNumber -pattern $searchWord -file $file
+    $lineBegin += $ends
+  
+    if ($lineBegin -and $lineBegin.Length -gt 0) {
+        Write-Host "Remove code between markers $marker :"
+        $lineBegin = $lineBegin | Sort-Object
+        for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
+        $start = [int]$lineBegin[$i - 1]
+        $end = [int]$lineBegin[$i]
+        DeleteLine -start $start -end $end -file $file
+        }
+    }
+}
+
 function CopyModel {
   param (
     [string]$modelName,
@@ -126,9 +153,13 @@ function CopyModel {
   $sourceFile = '.\' + $folderpath + '\' + $fileName
   Copy-Item -path $sourceFile -Destination $destinationFile
 
+  RemoveCodeBetweenMarkers $destinationFile "Partial"
+  RemoveCodeBetweenMarkers $destinationFile "BIADemo"
+
   $searchWord = '// BIADemo only'
   $starts = GetLineNumber -pattern $searchWord -file $destinationFile
   if ($starts -eq 1) {
+    Write-Host "Remove '// BIADemo only' line :"
     DeleteLine -start 1 -end 1 -file $destinationFile
   }
 }
@@ -147,6 +178,10 @@ function CopyFileFolder() {
     $dirPath = $include.Replace('*', '')
     Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force"
     Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force
+    Get-ChildItem -File -Recurse -Path "$newPath\$docsFolder\$feature\$dirPath" | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" -and $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object {
+        RemoveCodeBetweenMarkers $_.FullName "Partial"
+        RemoveCodeBetweenMarkers $_.FullName "BIADemo"
+    }
   } 
   else
   {       

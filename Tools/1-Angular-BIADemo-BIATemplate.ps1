@@ -1,5 +1,5 @@
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
-Import-Module $scriptPath/Library-BIA-BIATemplate.psm1
+Import-Module -Force $scriptPath/Library-BIA-BIATemplate.psm1
 
 # $oldName = Read-Host "old project name ?"
 $oldName = 'BIADemo'

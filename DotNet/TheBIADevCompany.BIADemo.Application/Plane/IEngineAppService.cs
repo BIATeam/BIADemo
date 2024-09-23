@@ -16,6 +16,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public interface IEngineAppService : ICrudAppServiceBase<EngineDto, Engine, int, PagingFilterFormatDto>
     {
+        // Begin BIADemo
+
         /// <summary>
         /// Checks engine to be maintained asynchronous.
         /// </summary>
@@ -26,5 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// Launches the job manually (example).
         /// </summary>
         void LaunchJobManuallyExample();
+
+        // End BIADemo
     }
 }

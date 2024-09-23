@@ -66,7 +66,9 @@ export class EngineService extends CrudItemService<Engine> {
   }
   public create(crudItem: Engine) {
     // TODO after creation of CRUD Engine : map parent Key on the corresponding field
+    // BIAToolKit - Begin Parent planeId
     (crudItem.planeId = this.getParentIds()[0]),
+      // BIAToolKit - End Parent planeId
       this.store.dispatch(FeatureEnginesActions.create({ engine: crudItem }));
   }
   public update(crudItem: Engine) {

@@ -3,7 +3,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Application.Plane
+namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
