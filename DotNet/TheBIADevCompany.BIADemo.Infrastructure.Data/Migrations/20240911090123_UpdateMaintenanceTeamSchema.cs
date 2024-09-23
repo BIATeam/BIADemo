@@ -15,8 +15,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql("DELETE FROM MaintenanceTeams");
-            migrationBuilder.Sql($"DELETE FROM Members as M INNER JOIN Teams AS T ON T.Id = M.TeamId WHERE T.TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
-            migrationBuilder.Sql($"DELETE FROM NotificationTeam as NT INNER JOIN Teams AS T ON T.Id = NT.TeamId WHERE T.TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
+            migrationBuilder.Sql($"DELETE M FROM Members as M INNER JOIN Teams AS T ON T.Id = M.TeamId WHERE T.TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
+            migrationBuilder.Sql($"DELETE NT FROM NotificationTeam as NT INNER JOIN Teams AS T ON T.Id = NT.TeamId WHERE T.TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
             migrationBuilder.Sql($"DELETE FROM Teams WHERE TeamTypeId = {(int)TeamTypeId.MaintenanceTeam}");
 
             migrationBuilder.AlterColumn<string>(
