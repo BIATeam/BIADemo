@@ -12,8 +12,8 @@
     {{ 'user.add' | translate }}
   </p-header>
   <bia-user-from-directory-form
-    [users]="usersFromDirectory$ | async"
-    [domains]="ldapDomains$ | async"
+    [users]="(usersFromDirectory$ | async) ?? []"
+    [domains]="(ldapDomains$ | async) ?? []"
     (searchUsers)="onSearchUsers($event)"
     (cancel)="onCancelled()"
     (save)="onSubmitted($event)"></bia-user-from-directory-form>

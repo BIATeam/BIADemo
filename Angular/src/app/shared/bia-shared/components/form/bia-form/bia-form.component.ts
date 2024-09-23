@@ -20,11 +20,11 @@ import {
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-form',
@@ -42,8 +42,9 @@ export class BiaFormComponent
   @Output() cancel = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
+  specificOutputTemplate: TemplateRef<any>;
+
   form: UntypedFormGroup;
   protected sub = new Subscription();
 
@@ -64,11 +65,11 @@ export class BiaFormComponent
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
-        /*case 'specificInput':
-          this.specificInputTemplate = item.template;
-        break;*/
         case 'specificInput':
           this.specificInputTemplate = item.template;
+          break;
+        case 'specificOutput':
+          this.specificOutputTemplate = item.template;
           break;
       }
     });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AbstractDasWithListAndItem } from 'src/app/core/bia-core/services/abstract-das-with-list-and-item.service';
 import { BaseDto } from '../../../model/base-dto';
@@ -29,5 +29,5 @@ export abstract class CrudListAndItemService<
   abstract totalCount$: Observable<number>;
   abstract loadingGetAll$: Observable<boolean>;
 
-  abstract loadAllByPost(event: LazyLoadEvent): void;
+  abstract loadAllByPost(event: TableLazyLoadEvent): void;
 }

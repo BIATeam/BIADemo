@@ -2,7 +2,7 @@
   [hidden]="true"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="
-    crudItemService.optionsService.dictOptionDtos$ | async
+    (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
   "></bia-form>
 
 <bia-crud-item-bulk-form

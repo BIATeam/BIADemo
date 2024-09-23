@@ -11,7 +11,7 @@
       [selectedElements]="selectedCrudItems"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
+      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -55,8 +55,8 @@
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(crudItems$ | async) ?? []"
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="crudConfiguration.fieldsConfig"
@@ -64,7 +64,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -74,9 +74,11 @@
       (stateSave)="onStateSave($event)"></bia-table>
     <bia-member-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [dictOptionDtos]="memberService.optionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(crudItems$ | async) ?? []"
+      [dictOptionDtos]="
+        (memberService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="crudConfiguration.fieldsConfig"
@@ -85,7 +87,7 @@
       [canEdit]="canEdit"
       [canAdd]="canAdd"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"

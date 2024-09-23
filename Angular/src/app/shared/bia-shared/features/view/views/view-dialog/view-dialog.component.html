@@ -25,7 +25,7 @@
           (save)="onSaveUserView($event)"></bia-view-form>
       </div>
       <bia-view-user-table
-        [views]="viewUsers$ | async"
+        [views]="(viewUsers$ | async) ?? []"
         [canDelete]="canDeleteUserView"
         [canSetDefault]="canSetDefaultUserView"
         [canUpdate]="canUpdateUserView"
@@ -35,15 +35,15 @@
     </p-tabPanel>
     <p-tabPanel
       header="{{ 'bia.views.team' | translate | uppercase }} {{
-        (teams$ | async)?.length === 1 ? teamSelected?.title : ''
+        (teams$ | async)?.length === 1 ? teamSelected.title : ''
       }}"
-      *ngIf="canSetTeamView() && (teams$ | async)?.length > 0">
+      *ngIf="canSetTeamView() && ((teams$ | async) ?? []).length > 0">
       <div class="app-div-select-team">
         <p-dropdown
-          *ngIf="(teams$ | async)?.length > 1"
+          *ngIf="((teams$ | async) ?? []).length > 1"
           optionLabel="title"
           placeholder="{{ 'bia.views.selectTeam' | translate }}"
-          [options]="teams$ | async"
+          [options]="(teams$ | async) ?? []"
           [(ngModel)]="teamSelected"></p-dropdown>
       </div>
       <ng-container *ngIf="teamSelected">
@@ -56,7 +56,7 @@
             (save)="onSaveTeamView($event)"></bia-view-form>
         </div>
         <bia-view-team-table
-          [views]="viewTeams$ | async"
+          [views]="(viewTeams$ | async) ?? []"
           [teamSelected]="teamSelected"
           [canDelete]="canDeleteTeamView"
           [canSetDefault]="canSetDefaultTeamView"

@@ -120,7 +120,7 @@ export class BiaCalcTableComponent
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
-            this.table.editingRowKeys[rowData.id] !== true) ||
+            this.table?.editingRowKeys[rowData.id] !== true) ||
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
@@ -149,7 +149,7 @@ export class BiaCalcTableComponent
       } else {
         this.editFooter = false;
         if (this.canEdit === true) {
-          this.table.initRowEdit(rowData);
+          this.table?.initRowEdit(rowData);
         }
       }
       this.form.reset();
@@ -168,7 +168,9 @@ export class BiaCalcTableComponent
   public cancel() {
     this.hasChanged = false;
     this.form.reset();
-    this.table.editingRowKeys = {};
+    if (this.table) {
+      this.table.editingRowKeys = {};
+    }
     this.editFooter = false;
   }
 

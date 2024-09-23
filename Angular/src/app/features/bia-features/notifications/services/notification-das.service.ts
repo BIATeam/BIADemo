@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
-import { Notification } from '../model/notification';
-import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
 import { Observable } from 'rxjs';
+import { AbstractDas } from 'src/app/core/bia-core/services/abstract-das.service';
+import { Notification } from '../model/notification';
 
 @Injectable({
   providedIn: 'root',

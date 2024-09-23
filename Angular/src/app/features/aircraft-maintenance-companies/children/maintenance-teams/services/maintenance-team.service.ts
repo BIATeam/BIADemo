@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
@@ -66,7 +66,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureMaintenanceTeamsStore.getMaintenanceTeamLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureMaintenanceTeamsStore.getLastLazyLoadEvent
   );
 
@@ -80,7 +80,7 @@ export class MaintenanceTeamService extends CrudItemService<MaintenanceTeam> {
   public load(id: any) {
     this.store.dispatch(FeatureMaintenanceTeamsActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(
       FeatureMaintenanceTeamsActions.loadAllByPost({ event })
     );

@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
@@ -25,6 +25,7 @@ import {
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
 import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
 import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
@@ -177,10 +178,17 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
   }
 
-  onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
+  onLoadLazy(lazyLoadEvent: TableLazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds,
-      ...lazyLoadEvent,
+      filters: clone(lazyLoadEvent.filters),
+      first: lazyLoadEvent.first,
+      globalFilter: clone(lazyLoadEvent.globalFilter),
+      last: lazyLoadEvent.last,
+      multiSortMeta: clone(lazyLoadEvent.multiSortMeta),
+      rows: lazyLoadEvent.rows,
+      sortField: lazyLoadEvent.sortField,
+      sortOrder: lazyLoadEvent.sortOrder,
     };
     this.store.dispatch(
       FeatureNotificationsActions.loadAllByPost({ event: pagingAndFilter })
@@ -210,7 +218,7 @@ export class NotificationsIndexComponent implements OnInit, OnDestroy {
     const columns: { [key: string]: string } = {};
     this.notificationListComponent
       .getPrimeNgTable()
-      .columns?.map(
+      ?.columns?.map(
         (x: BiaFieldConfig) =>
           (columns[x.field] = this.translateService.instant(x.header))
       );

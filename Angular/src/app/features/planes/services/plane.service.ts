@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
@@ -10,9 +11,8 @@ import { Plane } from '../model/plane';
 import { planeCRUDConfiguration } from '../plane.constants';
 import { FeaturePlanesStore } from '../store/plane.state';
 import { FeaturePlanesActions } from '../store/planes-actions';
-import { PlaneOptionsService } from './plane-options.service';
 import { PlaneDas } from './plane-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { PlaneOptionsService } from './plane-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +53,7 @@ export class PlaneService extends CrudItemService<Plane> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeaturePlanesStore.getLastLazyLoadEvent
   );
 
@@ -67,7 +67,7 @@ export class PlaneService extends CrudItemService<Plane> {
   public load(id: any) {
     this.store.dispatch(FeaturePlanesActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
   }
   public create(crudItem: Plane) {

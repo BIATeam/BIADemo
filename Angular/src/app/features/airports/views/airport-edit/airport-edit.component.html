@@ -1,7 +1,10 @@
 <app-airport-form
-  [crudItem]="airportService.crudItem$ | async"
+  *ngIf="airportService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="airportService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="
+    (airportService.optionsService.dictOptionDtos$ | async) ?? []
+  "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-airport-form>
 <bia-spinner

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
@@ -40,16 +40,16 @@ export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
     return planeCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<Plane[]> = this.store.select(
-    FeaturePlanesStore.getAllPlanes
-  );
+  public crudItems$: Observable<Plane[]> = this.store
+    .select(FeaturePlanesStore.getAllPlanes)
+    .pipe(map(value => clone(value)));
   public totalCount$: Observable<number> = this.store.select(
     FeaturePlanesStore.getPlanesTotalCount
   );
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeaturePlanesStore.getPlaneLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeaturePlanesStore.getLastLazyLoadEvent
   );
 
@@ -64,7 +64,7 @@ export class PlaneService extends CrudListAndItemService<PlaneSpecific, Plane> {
   public load(id: any) {
     this.store.dispatch(FeaturePlanesActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeaturePlanesActions.loadAllByPost({ event }));
   }
   public create(crudItem: PlaneSpecific) {

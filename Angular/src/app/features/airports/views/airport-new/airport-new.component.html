@@ -1,5 +1,7 @@
 <app-airport-form
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="airportService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="
+    (airportService.optionsService.dictOptionDtos$ | async) ?? []
+  "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-airport-form>

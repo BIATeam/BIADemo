@@ -6,10 +6,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-form/bia-form.component';
+import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 
 @Component({
   selector: 'bia-crud-item-form',
@@ -18,7 +18,7 @@ import { BiaFormComponent } from 'src/app/shared/bia-shared/components/form/bia-
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto> {
-  @Input() crudItem: CrudItem = <CrudItem>{};
+  @Input() crudItem: CrudItem;
   @Input() fields: BiaFieldConfig[];
   @Input() dictOptionDtos: DictOptionDto[];
 

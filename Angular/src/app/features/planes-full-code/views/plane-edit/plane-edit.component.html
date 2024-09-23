@@ -1,7 +1,8 @@
 <app-plane-form
-  [plane]="planeService.plane$ | async"
-  [airportOptions]="planeOptionsService.airportOptions$ | async"
-  [planeTypeOptions]="planeOptionsService.planeTypeOptions$ | async"
+  *ngIf="planeService.plane$ | async; let plane"
+  [plane]="plane"
+  [airportOptions]="(planeOptionsService.airportOptions$ | async) ?? []"
+  [planeTypeOptions]="(planeOptionsService.planeTypeOptions$ | async) ?? []"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-plane-form>
 <bia-spinner

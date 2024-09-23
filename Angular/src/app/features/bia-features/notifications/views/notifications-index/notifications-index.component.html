@@ -11,7 +11,7 @@
       [selectedElements]="selectedNotifications"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
+      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -22,8 +22,8 @@
       [tableStateKey]="tableStateKey"
       [hasColumnFilter]="hasColumnFilter"></bia-table-controller>
     <bia-table
-      [elements]="notifications$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(notifications$ | async) ?? []"
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="tableConfiguration"
@@ -31,7 +31,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canRead"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (clickRowId)="onDetail($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"

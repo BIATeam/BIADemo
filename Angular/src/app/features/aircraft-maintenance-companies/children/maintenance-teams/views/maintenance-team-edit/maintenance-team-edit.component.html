@@ -1,8 +1,9 @@
 <app-maintenance-team-form
-  [crudItem]="maintenanceTeamService.crudItem$ | async"
+  *ngIf="maintenanceTeamService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="
-    maintenanceTeamService.optionsService.dictOptionDtos$ | async
+    (maintenanceTeamService.optionsService.dictOptionDtos$ | async) ?? []
   "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-maintenance-team-form>

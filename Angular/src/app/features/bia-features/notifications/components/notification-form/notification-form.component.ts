@@ -207,8 +207,8 @@ export class NotificationFormComponent implements OnChanges {
     }
   }
 
-  labelTranslation(id: number): string | undefined {
-    return this.languageOptions.find(lo => lo.id === id)?.display;
+  labelTranslation(id: number): string {
+    return this.languageOptions.find(lo => lo.id === id)?.display ?? '';
   }
 
   onCancel() {

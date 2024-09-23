@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Engine } from '../model/engine';
+import { PlaneService } from '../../../services/plane.service';
 import { engineCRUDConfiguration } from '../engine.constants';
+import { Engine } from '../model/engine';
 import { FeatureEnginesStore } from '../store/engine.state';
 import { FeatureEnginesActions } from '../store/engines-actions';
-import { EngineOptionsService } from './engine-options.service';
 import { EngineDas } from './engine-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { PlaneService } from '../../../services/plane.service';
+import { EngineOptionsService } from './engine-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,7 @@ export class EngineService extends CrudItemService<Engine> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureEnginesStore.getEngineLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureEnginesStore.getLastLazyLoadEvent
   );
 
@@ -61,7 +61,7 @@ export class EngineService extends CrudItemService<Engine> {
   public load(id: any) {
     this.store.dispatch(FeatureEnginesActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeatureEnginesActions.loadAllByPost({ event }));
   }
   public create(crudItem: Engine) {

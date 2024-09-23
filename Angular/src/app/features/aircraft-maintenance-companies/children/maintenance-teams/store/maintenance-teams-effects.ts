@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
-import { Store } from '@ngrx/store';
-import { FeatureMaintenanceTeamsStore } from './maintenance-team.state';
-import { MaintenanceTeam } from '../model/maintenance-team';
-import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { maintenanceTeamCRUDConfiguration } from '../maintenance-team.constants';
+import { MaintenanceTeam } from '../model/maintenance-team';
 import { MaintenanceTeamDas } from '../services/maintenance-team-das.service';
+import { FeatureMaintenanceTeamsStore } from './maintenance-team.state';
+import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -90,7 +89,7 @@ export class MaintenanceTeamsEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -128,7 +127,7 @@ export class MaintenanceTeamsEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -165,7 +164,7 @@ export class MaintenanceTeamsEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -202,7 +201,7 @@ export class MaintenanceTeamsEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMaintenanceTeamsActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),

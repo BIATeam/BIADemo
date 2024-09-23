@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureEnginesActions } from './engines-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Engine } from '../model/engine';
+import { FeatureEnginesActions } from './engines-actions';
 
 // This adapter will allow is to manipulate engines (mostly CRUD operations)
 export const enginesAdapter = createEntityAdapter<Engine>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<Engine> {
   // additional props here
   totalCount: number;
   currentEngine: Engine;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = enginesAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentEngine: <Engine>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

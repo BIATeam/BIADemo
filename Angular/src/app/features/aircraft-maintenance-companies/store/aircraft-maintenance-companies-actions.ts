@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
-import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 
 export namespace FeatureAircraftMaintenanceCompaniesActions {
   export const loadAllByPost = createAction(
     '[' +
       aircraftMaintenanceCompanyCRUDConfiguration.storeKey +
       '] Load all by post',
-    props<{ event: LazyLoadEvent }>()
+    props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
@@ -45,7 +45,7 @@ export namespace FeatureAircraftMaintenanceCompaniesActions {
       '] Load all by post success',
     props<{
       result: DataResult<AircraftMaintenanceCompany[]>;
-      event: LazyLoadEvent;
+      event: TableLazyLoadEvent;
     }>()
   );
 

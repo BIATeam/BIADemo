@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { FeatureNotificationsActions } from '../store/notifications-actions';
-import { getLastLazyLoadEvent } from '../store/notification.state';
-import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Notification } from '../model/notification';
-import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { AppState } from 'src/app/store/state';
+import { Notification } from '../model/notification';
+import { getLastLazyLoadEvent } from '../store/notification.state';
+import { FeatureNotificationsActions } from '../store/notifications-actions';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -64,7 +63,7 @@ export class NotificationsSignalRService {
             );
             this.store.dispatch(
               FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               })
             );
           });
@@ -85,7 +84,7 @@ export class NotificationsSignalRService {
             );
             this.store.dispatch(
               FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               })
             );
           });

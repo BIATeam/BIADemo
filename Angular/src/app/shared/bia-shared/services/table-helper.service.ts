@@ -11,7 +11,7 @@ export class TableHelperService {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
     }
-    if (biaTableComponent.table.hasFilter()) {
+    if (biaTableComponent.table && biaTableComponent.table.hasFilter()) {
       if (this.isNullUndefEmptyFilters(biaTableComponent.table.filters, true)) {
         return false;
       } else {

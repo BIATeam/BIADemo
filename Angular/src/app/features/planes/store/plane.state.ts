@@ -1,4 +1,3 @@
-import * as fromPlanes from './planes-reducer';
 import {
   Action,
   combineReducers,
@@ -6,6 +5,7 @@ import {
   createSelector,
 } from '@ngrx/store';
 import { planeCRUDConfiguration } from '../plane.constants';
+import * as fromPlanes from './planes-reducer';
 
 export namespace FeaturePlanesStore {
   export interface PlanesState {

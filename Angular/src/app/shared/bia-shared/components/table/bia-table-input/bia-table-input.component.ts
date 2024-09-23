@@ -14,8 +14,12 @@ import {
 import { UntypedFormGroup } from '@angular/forms';
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { BiaFieldConfig } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
+import {
+  BiaFieldConfig,
+  BiaFieldDateFormat,
+  BiaFieldNumberFormat,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
 @Component({
@@ -39,6 +43,22 @@ export class BiaTableInputComponent
   // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
   protected sub = new Subscription();
+
+  getDisplayDateFormat(
+    displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
+  ): BiaFieldDateFormat | null {
+    return displayFormat && displayFormat instanceof BiaFieldDateFormat
+      ? displayFormat
+      : null;
+  }
+
+  getDisplayNumberFormat(
+    displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
+  ): BiaFieldNumberFormat | null {
+    return displayFormat && displayFormat instanceof BiaFieldNumberFormat
+      ? displayFormat
+      : null;
+  }
 
   ngAfterContentInit() {
     this.templates.forEach(item => {

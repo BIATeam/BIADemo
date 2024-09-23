@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeaturePlanesTypesActions } from './planes-types-actions';
-import { Store } from '@ngrx/store';
-import { FeaturePlanesTypesStore } from './plane-type.state';
-import { PlaneType } from '../model/plane-type';
-import { planeTypeCRUDConfiguration } from '../plane-type.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { PlaneType } from '../model/plane-type';
+import { planeTypeCRUDConfiguration } from '../plane-type.constants';
 import { PlaneTypeDas } from '../services/plane-type-das.service';
+import { FeaturePlanesTypesStore } from './plane-type.state';
+import { FeaturePlanesTypesActions } from './planes-types-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -90,7 +89,7 @@ export class PlanesTypesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -128,7 +127,7 @@ export class PlanesTypesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -165,7 +164,7 @@ export class PlanesTypesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -202,7 +201,7 @@ export class PlanesTypesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeaturePlanesTypesActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
