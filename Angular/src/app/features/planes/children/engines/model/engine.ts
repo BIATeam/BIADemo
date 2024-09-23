@@ -8,6 +8,7 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Engine : adapt the model
 export interface Engine extends BaseDto {
@@ -31,6 +32,8 @@ export interface Engine extends BaseDto {
   isToBeMaintained: boolean;
   isHybrid: boolean | null;
   planeId: number;
+  principalPart: OptionDto | null;
+  installedParts: OptionDto[];
   /// BIAToolKit - End Properties
 }
 
@@ -203,5 +206,18 @@ export const engineFieldsConfiguration: BiaFieldsConfig = {
       }
     ),
     /// BIAToolKit - End Block isToBeMaintained
+    /// BIAToolKit - Begin Block principalPart
+    Object.assign(new BiaFieldConfig('principalPart', 'engine.principalPart'), {
+      type: PropType.OneToMany,
+    }),
+    /// BIAToolKit - End Block principalPart
+    /// BIAToolKit - Begin Block installedParts
+    Object.assign(
+      new BiaFieldConfig('installedParts', 'engine.installedParts'),
+      {
+        type: PropType.ManyToMany,
+      }
+    ),
+    /// BIAToolKit - End Block installedParts
   ],
 };

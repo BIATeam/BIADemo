@@ -13,6 +13,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
@@ -47,6 +49,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     { HeaderName.EstimatedPrice, engine => engine.EstimatedPrice },
                     { HeaderName.IsToBeMaintained, engine => engine.IsToBeMaintained },
                     { HeaderName.IsHybrid, engine => engine.IsHybrid },
+                    { HeaderName.PrincipalPart, engine => engine.PrincipalPart },
                 };
             }
         }
@@ -79,10 +82,30 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.IsToBeMaintained = dto.IsToBeMaintained;
             entity.IsHybrid = dto.IsHybrid;
 
-            // Mapping relationship 1-* : Site
+            // Mapping relationship 1-* : Plane
             if (dto.PlaneId != 0)
             {
                 entity.PlaneId = dto.PlaneId;
+            }
+
+            entity.PrincipalPartId = dto.PrincipalPart?.Id;
+            if (dto.InstalledParts != null && dto.InstalledParts?.Any() == true)
+            {
+                foreach (var partDto in dto.InstalledParts.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var installedPart = entity.InstalledParts.FirstOrDefault(x => x.Id == partDto.Id);
+                    if (installedPart != null)
+                    {
+                        entity.InstalledParts.Remove(installedPart);
+                    }
+                }
+
+                entity.InstalledEngineParts = entity.InstalledEngineParts ?? new List<EnginePart>();
+                foreach (var partDto in dto.InstalledParts.Where(w => w.DtoState == DtoState.Added))
+                {
+                    entity.InstalledEngineParts.Add(new EnginePart
+                    { PartId = partDto.Id, EngineId = dto.Id });
+                }
             }
         }
 
@@ -113,6 +136,19 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 
                 // Mapping relationship 1-* : Plane
                 PlaneId = entity.PlaneId,
+
+                PrincipalPart = entity.PrincipalPart != null ? new OptionDto
+                {
+                    Id = entity.PrincipalPart.Id,
+                    Display = entity.PrincipalPart.SN,
+                }
+                : null,
+
+                InstalledParts = entity.InstalledParts.Select(ca => new OptionDto
+                {
+                    Id = ca.Id,
+                    Display = ca.SN,
+                }).OrderBy(x => x.Display).ToList(),
             };
         }
 
@@ -216,6 +252,11 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                         {
                             records.Add(CSVBool(x.IsHybrid.GetValueOrDefault()));
                         }
+
+                        if (string.Equals(headerName, HeaderName.PrincipalPart, StringComparison.OrdinalIgnoreCase))
+                        {
+                            records.Add(CSVString(x.PrincipalPart?.Display));
+                        }
                     }
                 }
 
@@ -228,6 +269,12 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         {
             dto.Id = entity.Id;
             dto.PlaneId = entity.PlaneId;
+        }
+
+        /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
+        public override Expression<Func<Engine, object>>[] IncludesForUpdate()
+        {
+            return new Expression<Func<Engine, object>>[] { x => x.InstalledParts };
         }
 
         /// <summary>
@@ -329,6 +376,11 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             /// Header Name IsHybrid.
             /// </summary>
             public const string IsHybrid = "isHybrid";
+
+            /// <summary>
+            /// Header Name principalPart.
+            /// </summary>
+            public const string PrincipalPart = "principalPart";
         }
     }
 }

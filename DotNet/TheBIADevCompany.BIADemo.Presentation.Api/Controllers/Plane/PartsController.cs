@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="CountriesController.cs" company="TheBIADevCompany">
+// <copyright file="PartsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -10,26 +10,26 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
+    using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage Countries.
+    /// The API controller used to manage Parts.
     /// </summary>
-    public class CountriesController : BiaControllerBase
+    public class PartsController : BiaControllerBase
     {
         /// <summary>
         /// The plane application service.
         /// </summary>
-        private readonly ICountryAppService countryService;
+        private readonly IPartAppService partService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CountriesController"/> class.
+        /// Initializes a new instance of the <see cref="PartsController"/> class.
         /// </summary>
-        /// <param name="countryService">The country application service.</param>
-        public CountriesController(ICountryAppService countryService)
+        /// <param name="partService">The part application service.</param>
+        public PartsController(IPartAppService partService)
         {
-            this.countryService = countryService;
+            this.partService = partService;
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Countries.Options)]
+        [Authorize(Roles = Rights.Parts.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.countryService.GetAllOptionsAsync();
+            var results = await this.partService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

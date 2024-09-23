@@ -145,6 +145,21 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
         // BIAToolKit - End Partial Rights Engine
 
+        // BIAToolKit - Begin Partial Rights Part
+
+        /// <summary>
+        /// The countries rights.
+        /// </summary>
+        public static class Parts
+        {
+            /// <summary>
+            /// The right to access to the list of parts (options only).
+            /// </summary>
+            public const string Options = "Part_Options";
+        }
+
+        // BIAToolKit - End Partial Rights Part
+
         // BIAToolKit - Begin Partial Rights MaintenanceTeam
 
         /// <summary>

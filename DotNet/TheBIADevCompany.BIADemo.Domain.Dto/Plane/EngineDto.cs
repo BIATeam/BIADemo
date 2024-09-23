@@ -132,5 +132,17 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// </summary>
         [BiaDtoField(IsParent = true, Required = true)]
         public int PlaneId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the principal part serial number.
+        /// </summary>
+        [BiaDtoField(ItemType = "Part")]
+        public OptionDto PrincipalPart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of installed part'ss serial numbers.
+        /// </summary>
+        [BiaDtoField(ItemType = "Part")]
+        public ICollection<OptionDto> InstalledParts { get; set; }
     }
 }

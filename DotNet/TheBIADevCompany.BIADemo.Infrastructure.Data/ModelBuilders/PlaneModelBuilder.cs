@@ -6,6 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
@@ -23,6 +24,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             CreatePlaneTypeModel(modelBuilder);
             CreateAirportModel(modelBuilder);
             CreateEngineModel(modelBuilder);
+            CreatePartModel(modelBuilder);
         }
 
         /// <summary>
@@ -88,6 +90,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 .HasOne(x => x.Plane)
                 .WithMany(x => x.Engines)
                 .OnDelete(DeleteBehavior.ClientCascade);
+            modelBuilder.Entity<Engine>().HasOne(x => x.PrincipalPart).WithMany().HasForeignKey(x => x.PrincipalPartId);
+            modelBuilder.Entity<Engine>()
+               .HasMany(e => e.InstalledParts)
+               .WithMany()
+               .UsingEntity<EnginePart>();
+        }
+
+        /// <summary>
+        /// Create the model for parts.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreatePartModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Part>().ToTable("Parts");
+            modelBuilder.Entity<Part>().HasData(
+                new Part { Id = 1, SN = "P0001", Family = "N.A", Price = 499.99M },
+                new Part { Id = 2, SN = "P0002", Family = "N.A", Price = 250.99M },
+                new Part { Id = 3, SN = "P0003", Family = "N.A", Price = 100.99M },
+                new Part { Id = 4, SN = "P0004", Family = "N.A", Price = 25.99M });
         }
     }
 }

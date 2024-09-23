@@ -124,5 +124,25 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets a value indicating whether this instance is hybrid.
         /// </summary>
         public bool? IsHybrid { get; set; }
+
+        /// <summary>
+        /// Gets or sets the principal part.
+        /// </summary>
+        public Part PrincipalPart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the principal part id.
+        /// </summary>
+        public int? PrincipalPartId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the installed parts.
+        /// </summary>
+        public ICollection<Part> InstalledParts { get; set; }
+
+        /// <summary>
+        /// Gets or sets the installed parts. Via jointure table.
+        /// </summary>
+        public ICollection<EnginePart> InstalledEngineParts { get; set; }
     }
 }
