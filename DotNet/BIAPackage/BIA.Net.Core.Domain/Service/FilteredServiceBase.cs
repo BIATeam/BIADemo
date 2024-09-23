@@ -246,14 +246,14 @@ namespace BIA.Net.Core.Domain.Service
                 TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
                 List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-                StringBuilder csv = new();
+                var csvBuilder = new StringBuilder();
                 records.ForEach(line =>
                 {
-                    csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
+                    csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
                 });
 
                 string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
-                return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
+                return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csvBuilder}");
             });
         }
 
@@ -472,7 +472,7 @@ namespace BIA.Net.Core.Domain.Service
             int nbUpdated = 0;
             int nbDeleted = 0;
             int nbError = 0;
-            SaveSafeReturn<TOtherDto> saveSafeReturn = new();
+            var saveSafeReturn = new SaveSafeReturn<TOtherDto>();
 
             bool canAdd = true;
             bool canUpdate = true;
@@ -862,7 +862,10 @@ namespace BIA.Net.Core.Domain.Service
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
-                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(
+                    frontUserException.ErrorMessageKey,
+                    frontUserException,
+                    [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
                 Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),

@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public override void DtoToEntity(PlaneSpecificDto dto, Plane entity)
         {
             this.planeMapper.DtoToEntity(dto, entity);
-            entity.Engines ??= [];
+            entity.Engines ??= Array.Empty<Engine>();
             MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }
 
@@ -288,7 +288,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return [x => x.ConnectingAirports, x => x.Engines];
+            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.Engines };
         }
 
         /// <summary>
