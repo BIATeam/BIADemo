@@ -53,7 +53,7 @@ export const planeReducers = createReducer<State>(
   on(FeaturePlanesActions.loadAllByPostSuccess, (state, { result, event }) => {
     const stateUpdated = planesAdapter.setAll(result.data, state);
     stateUpdated.totalCount = result.totalCount;
-    //stateUpdated.lastLazyLoadEvent = clone(event);
+    stateUpdated.lastLazyLoadEvent = event;
     stateUpdated.loadingGetAll = false;
     return stateUpdated;
   }),
