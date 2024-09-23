@@ -13,9 +13,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             migrationBuilder.Sql("DELETE FROM PlaneAirport");
             migrationBuilder.Sql("DELETE FROM PlanePlaneType");
             migrationBuilder.Sql("DELETE FROM Engines");
-            migrationBuilder.Sql("DBCC CHECKIDENT ('Engines', RESEED, 0)");
+            migrationBuilder.Sql("DBCC CHECKIDENT ('Engines', RESEED, 1)");
             migrationBuilder.Sql("DELETE FROM Planes");
-            migrationBuilder.Sql("DBCC CHECKIDENT ('Planes', RESEED, 0)");
+            migrationBuilder.Sql("DBCC CHECKIDENT ('Planes', RESEED, 1)");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Planes_Airports_CurrentAirportId",
