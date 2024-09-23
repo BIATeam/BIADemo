@@ -70,6 +70,6 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <summary>
         /// The parameters to format into the current <see cref="Exception.Message"/>.
         /// </summary>
-        public string[] ErrorMessageParameters { get; } = [];
+        public string[] ErrorMessageParameters { get; } = Array.Empty<string>();
     }
 }

@@ -27,6 +27,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Site = 2,
 
         // Begin BIADemo
+#pragma warning disable S1135 // Complete the task associated to this 'TODO' comment.
 
         /// <summary>
         /// Value for Aircraft Maintenance Company.
@@ -42,6 +43,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         MaintenanceTeam = 4,
 
         // BIAToolKit - End Partial TeamTypeId MaintenanceTeam
+#pragma warning restore S1135 // Complete the task associated to this 'TODO' comment.
+
         // End BIADemo
 
         // BIAToolKit - Begin TeamTypeId

@@ -30,6 +30,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         SiteAdmin = 1,
 
         // Begin BIADemo
+#pragma warning disable S1135 // Complete the task associated to this 'TODO' comment.
 #pragma warning disable SA1602 // Enumeration items should be documented
         Pilot = 2,
         Supervisor = 101,
@@ -56,6 +57,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         // BIAToolKit - End Nested Parent AircraftMaintenanceCompany
 
         // BIAToolKit - End Partial RoleId MaintenanceTeam
+#pragma warning restore S1135 // Complete the task associated to this 'TODO' comment.
 
         // End BIADemo
 

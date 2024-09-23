@@ -32,9 +32,9 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
         /// Return options.
         /// </summary>
         /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
         {
-            return GetAllAsync<OptionDto, CountryOptionMapper>();
+            return await this.GetAllAsync<OptionDto, CountryOptionMapper>();
         }
     }
 }
