@@ -27,6 +27,7 @@
       "Include": ["src\\app\\features\\planes\\children\\engines\\*"],
       "Exclude": []
     },
+    "NeedParent": "true",
     "Parents": [
       {
         "Name": "Plane",

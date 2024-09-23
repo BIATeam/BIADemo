@@ -43,6 +43,7 @@
       "Exclude": []
     },
     "Children": [],
+    "NeedParent": "true",
     "Parents": [
       {
         "Name": "Plane",
