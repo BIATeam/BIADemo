@@ -28,6 +28,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
 
         // Begin BIADemo
 #pragma warning disable S1135 // Complete the task associated to this 'TODO' comment.
+
         /// <summary>
         /// Value for Aircraft Maintenance Company.
         /// </summary>
