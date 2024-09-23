@@ -55,9 +55,9 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         {
             this.repository = repository;
             this.configuration = configuration;
-            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
 
             // BIAToolKit - Begin AncestorTeam Site
+            var userData = (principal as BiaClaimsPrincipal).GetUserData<UserDataDto>();
             this.currentTeamId = userData != null ? userData.GetCurrentTeamId((int)TeamTypeId.Site) : 0;
 
             // For child : set the TeamId of the Ancestor that contain a team Parent
