@@ -14,7 +14,7 @@
     <Compile Remove="Migrations\20200908084410_AddVersionedTable.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Audit.NET.SqlServer" Version="27.0.1" />
+    <PackageReference Include="Audit.NET.SqlServer" Version="27.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />

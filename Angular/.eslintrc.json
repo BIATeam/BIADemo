@@ -21,7 +21,7 @@
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "error",
-        "@typescript-eslint/naming-convention": "warn",
+        "@typescript-eslint/naming-convention": "error",
         "@angular-eslint/directive-selector": [
           "error",
           {
