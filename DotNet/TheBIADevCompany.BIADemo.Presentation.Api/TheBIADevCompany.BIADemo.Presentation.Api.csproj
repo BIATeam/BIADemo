@@ -28,7 +28,7 @@
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.13" />
     <PackageReference Include="NLog.MailKit" Version="5.2.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.13" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
