@@ -1,4 +1,5 @@
-﻿// <copyright file="EnginePart.cs" company="PlaceholderCompany">
+﻿// BIADemo only
+// <copyright file="EnginePart.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
