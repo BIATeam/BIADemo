@@ -43,6 +43,9 @@ export function createTranslateLoader(http: HttpClient, store: TranslateStore) {
     BrowserAnimationsModule,
     StoreModule.forRoot(ROOT_REDUCERS, {
       metaReducers,
+      runtimeChecks: {
+        strictActionImmutability: false,
+      },
     }) /* Initialise the Central Store with Application's main reducer*/,
     buildSpecificModules,
     EffectsModule.forRoot([]) /* Start monitoring app's side effects */,
