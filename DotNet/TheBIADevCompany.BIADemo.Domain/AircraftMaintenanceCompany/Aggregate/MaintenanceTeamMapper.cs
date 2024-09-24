@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -21,20 +22,20 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for AircraftMaintenanceCompany.
     /// </summary>
-    public class MaintenanceTeamMapper : BaseMapper<MaintenanceTeamDto, MaintenanceTeam, int>
+    public class MaintenanceTeamMapper : TTeamMapper<MaintenanceTeamDto, MaintenanceTeam>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamMapper"/> class.
         /// </summary>
         /// <param name="principal">The principal.</param>
         public MaintenanceTeamMapper(IPrincipal principal)
+            : base(principal)
         {
-            this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
-            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
@@ -50,16 +51,6 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 };
             }
         }
-
-        /// <summary>
-        /// the user id.
-        /// </summary>
-        private int UserId { get; set; }
-
-        /// <summary>
-        /// the user roles.
-        /// </summary>
-        private IEnumerable<int> UserRoleIds { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
@@ -145,10 +136,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<MaintenanceTeam, MaintenanceTeamDto>> EntityToDto()
         {
-            return entity => new MaintenanceTeamDto
+            return base.EntityToDto().CombineMapping(entity => new MaintenanceTeamDto
             {
-                Id = entity.Id,
-                Title = entity.Title,
                 Code = entity.Code,
                 IsActive = entity.IsActive,
                 IsApproved = entity.IsApproved,
@@ -207,7 +196,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                     Id = ca.Id,
                     Display = ca.Name,
                 }).OrderBy(x => x.Display).ToList(),
-            };
+            });
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
