@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
-    using BIA.Net.Core.Common.Helpers;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;

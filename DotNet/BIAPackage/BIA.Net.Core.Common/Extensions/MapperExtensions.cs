@@ -1,17 +1,17 @@
-﻿// <copyright file="MapperHelper.cs" company="PlaceholderCompany">
+﻿// <copyright file="MapperExtensions.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Common.Helpers
+namespace BIA.Net.Core.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
 
     /// <summary>
-    /// Provides methods and extensions helpers for mappers.
+    /// Provides extensions for mapper actions.
     /// </summary>
-    public static class MapperHelper
+    public static class MapperExtensions
     {
         /// <summary>
         /// Produces the combination of two mapping expressions.
