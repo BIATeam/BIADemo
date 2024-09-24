@@ -9,6 +9,8 @@ import { PlaneService } from '../../services/plane.service';
   templateUrl: './plane-new.component.html',
 })
 export class PlaneNewComponent extends CrudItemNewComponent<PlaneSpecific> {
+  newPlane: PlaneSpecific = { engines: [] } as unknown as PlaneSpecific;
+
   constructor(
     protected injector: Injector,
     public planeService: PlaneService

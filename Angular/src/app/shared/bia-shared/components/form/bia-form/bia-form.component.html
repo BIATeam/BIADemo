@@ -1,4 +1,8 @@
-<form (submit)="onSubmit()" class="flex flex-column" [formGroup]="form">
+<form
+  *ngIf="form"
+  (submit)="onSubmit()"
+  class="flex flex-column"
+  [formGroup]="form">
   <ng-container *ngFor="let field of fields">
     <div
       *ngIf="field.isVisible === true"
