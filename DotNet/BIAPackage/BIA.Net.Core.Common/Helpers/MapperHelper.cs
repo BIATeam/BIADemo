@@ -26,14 +26,6 @@ namespace BIA.Net.Core.Common.Helpers
             this Expression<Func<TParam, TResult>> firstMapping,
             Expression<Func<TParam, TResult>> secondMapping)
         {
-            var firstMappingParameterExpression = firstMapping.Parameters[0];
-            var secondMappingParameterExpression = secondMapping.Parameters[0];
-
-            if (!firstMappingParameterExpression.Name.Equals(secondMappingParameterExpression.Name))
-            {
-                throw new InvalidOperationException("Parameter name of mapping expressions must be similar.");
-            }
-
             if (firstMapping.Body is not MemberInitExpression firstMappingBodyExpression)
             {
                 throw new InvalidOperationException($"First mapping expression must be a {nameof(MemberInitExpression)}.");
@@ -43,6 +35,9 @@ namespace BIA.Net.Core.Common.Helpers
             {
                 throw new InvalidOperationException($"Second mapping expression must be a {nameof(MemberInitExpression)}.");
             }
+
+            var firstMappingParameterExpression = firstMapping.Parameters[0];
+            var secondMappingParameterExpression = secondMapping.Parameters[0];
 
             var expressionParameterReplacer = new ExpressionParameterReplacer(secondMappingParameterExpression, firstMappingParameterExpression);
             var updatedSecondMappingBody = (MemberInitExpression)expressionParameterReplacer.Visit(secondMappingBodyExpression);
