@@ -143,7 +143,7 @@
     <ng-container *ngSwitchCase="'DateTime'">
       <p-calendar
         biaLocale
-        [formControlName]="field.field"
+        [formControlName]="field.field.toString()"
         placeholder="&nbsp;"
         [showButtonBar]="true"
         (onShow)="onComplexInput(true)"
@@ -171,7 +171,7 @@
         pInputText
         type="text"
         [maxlength]="field.maxlength"
-        [formControlName]="field.field"
+        [formControlName]="field.field.toString()"
         (change)="onChange()" />
     </ng-container>
   </ng-container>

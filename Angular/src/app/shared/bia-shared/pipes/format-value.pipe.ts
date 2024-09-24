@@ -17,7 +17,8 @@ export class FormatValuePipe implements PipeTransform {
     protected currencyPipe: CurrencyPipe,
     protected decimalPipe: DecimalPipe
   ) {}
-  transform(value: any, col: BiaFieldConfig): string | null {
+
+  transform<TDto>(value: any, col: BiaFieldConfig<TDto>): string | null {
     if (value === null || value === undefined) {
       return null;
     }

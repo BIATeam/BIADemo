@@ -20,11 +20,11 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
   styleUrls: ['./bia-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class BiaOutputComponent
-  extends BiaFieldBaseComponent
+export class BiaOutputComponent<CrudItem>
+  extends BiaFieldBaseComponent<CrudItem>
   implements OnInit, OnDestroy, AfterContentInit
 {
-  @Input() field: BiaFieldConfig;
+  @Input() field: BiaFieldConfig<CrudItem>;
   @Input() data: any;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;

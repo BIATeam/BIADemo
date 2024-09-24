@@ -17,7 +17,7 @@ import { Plane } from '../../model/plane';
   ],
 })
 export class PlaneTableComponent
-  extends BiaCalcTableComponent
+  extends BiaCalcTableComponent<Plane>
   implements OnChanges
 {
   constructor(

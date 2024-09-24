@@ -17,7 +17,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   implements OnInit, OnDestroy
 {
   protected sub = new Subscription();
-  public crudConfiguration: CrudConfig;
+  public crudConfiguration: CrudConfig<CrudItem>;
 
   protected store: Store<AppState>;
   protected router: Router;

@@ -2,7 +2,7 @@ import { TeamTypeId } from 'src/app/shared/constants';
 import { BiaFieldsConfig } from '../../../model/bia-field-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 
-export class CrudConfig {
+export class CrudConfig<TDto extends { id: number }> {
   featureName: string;
   storeKey: string;
   useCalcMode: boolean;
@@ -12,7 +12,7 @@ export class CrudConfig {
   useViewTeamWithTypeId: TeamTypeId | null;
   usePopup: boolean;
   useOfflineMode: boolean;
-  fieldsConfig: BiaFieldsConfig;
+  fieldsConfig: BiaFieldsConfig<TDto>;
   defaultViewPref: BiaTableState;
   optionFilter: any;
   useBulk: boolean;
@@ -37,7 +37,7 @@ export class CrudConfig {
     bulkMode,
   }: {
     featureName: string;
-    fieldsConfig: BiaFieldsConfig;
+    fieldsConfig: BiaFieldsConfig<TDto>;
     storeKey?: string;
     useCalcMode?: boolean;
     useSignalR?: boolean;
