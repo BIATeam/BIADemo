@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         {
             this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
             this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
-            this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault();
+            this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault() ?? Array.Empty<int>();
         }
 
         /// <summary>

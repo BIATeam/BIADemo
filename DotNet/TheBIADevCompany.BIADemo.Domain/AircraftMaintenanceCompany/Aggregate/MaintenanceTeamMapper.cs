@@ -11,6 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using System.Linq;
     using System.Linq.Expressions;
     using System.Security.Principal;
+    using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -21,20 +22,20 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The mapper used for AircraftMaintenanceCompany.
     /// </summary>
-    public class MaintenanceTeamMapper : BaseMapper<MaintenanceTeamDto, MaintenanceTeam, int>
+    public class MaintenanceTeamMapper : TTeamMapper<MaintenanceTeamDto, MaintenanceTeam>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamMapper"/> class.
         /// </summary>
         /// <param name="principal">The principal.</param>
         public MaintenanceTeamMapper(IPrincipal principal)
+            : base(principal)
         {
-            this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
-            this.UserId = (principal as BiaClaimsPrincipal).GetUserId();
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
@@ -50,16 +51,6 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 };
             }
         }
-
-        /// <summary>
-        /// the user id.
-        /// </summary>
-        private int UserId { get; set; }
-
-        /// <summary>
-        /// the user roles.
-        /// </summary>
-        private IEnumerable<int> UserRoleIds { get; set; }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
         public override void DtoToEntity(MaintenanceTeamDto dto, MaintenanceTeam entity)
@@ -145,30 +136,28 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
         public override Expression<Func<MaintenanceTeam, MaintenanceTeamDto>> EntityToDto()
         {
-            return entity => new MaintenanceTeamDto
+            return base.EntityToDto().CombineMapping(x => new MaintenanceTeamDto
             {
-                Id = entity.Id,
-                Title = entity.Title,
-                Code = entity.Code,
-                IsActive = entity.IsActive,
-                IsApproved = entity.IsApproved,
-                FirstOperation = entity.FirstOperation,
-                LastOperation = entity.LastOperation,
-                ApprovedDate = entity.ApprovedDate,
-                NextOperation = entity.NextOperation,
-                MaxTravelDuration = entity.MaxTravelDuration.Value.ToString(@"hh\:mm\:ss"),
-                MaxOperationDuration = entity.MaxOperationDuration.ToString(@"hh\:mm\:ss"),
-                OperationCount = entity.OperationCount,
-                IncidentCount = entity.IncidentCount,
-                TotalOperationDuration = entity.TotalOperationDuration,
-                AverageOperationDuration = entity.AverageOperationDuration,
-                TotalTravelDuration = entity.TotalTravelDuration,
-                AverageTravelDuration = entity.AverageTravelDuration,
-                TotalOperationCost = entity.TotalOperationCost,
-                AverageOperationCost = entity.AverageOperationCost,
+                Code = x.Code,
+                IsActive = x.IsActive,
+                IsApproved = x.IsApproved,
+                FirstOperation = x.FirstOperation,
+                LastOperation = x.LastOperation,
+                ApprovedDate = x.ApprovedDate,
+                NextOperation = x.NextOperation,
+                MaxTravelDuration = x.MaxTravelDuration.Value.ToString(@"hh\:mm\:ss"),
+                MaxOperationDuration = x.MaxOperationDuration.ToString(@"hh\:mm\:ss"),
+                OperationCount = x.OperationCount,
+                IncidentCount = x.IncidentCount,
+                TotalOperationDuration = x.TotalOperationDuration,
+                AverageOperationDuration = x.AverageOperationDuration,
+                TotalTravelDuration = x.TotalTravelDuration,
+                AverageTravelDuration = x.AverageTravelDuration,
+                TotalOperationCost = x.TotalOperationCost,
+                AverageOperationCost = x.AverageOperationCost,
 
                 // Mapping relationship 1-* : AircraftMaintenanceCompany
-                AircraftMaintenanceCompanyId = entity.AircraftMaintenanceCompanyId,
+                AircraftMaintenanceCompanyId = x.AircraftMaintenanceCompanyId,
 
                 // Should correspond to MaintenanceTeam_Update permission (but without use the roles *_Member that is not determined at list display)
                 CanUpdate =
@@ -178,36 +167,36 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 // Should correspond to MaintenanceTeam_Member_List_Access (but without use the roles *_Member that is not determined at list display)
                 CanMemberListAccess =
                     this.UserRoleIds.Contains((int)RoleId.Admin) ||
-                    entity.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
-                    entity.Members.Any(m => m.UserId == this.UserId),
+                    x.AircraftMaintenanceCompany.Members.Any(m => m.UserId == this.UserId) ||
+                    x.Members.Any(m => m.UserId == this.UserId),
 
                 // Mapping relationship 0..1-* : Country
-                CurrentCountry = entity.CurrentCountry != null ? new OptionDto
+                CurrentCountry = x.CurrentCountry != null ? new OptionDto
                 {
-                    Id = entity.CurrentCountry.Id,
-                    Display = entity.CurrentCountry.Name,
+                    Id = x.CurrentCountry.Id,
+                    Display = x.CurrentCountry.Name,
                 }
                 : null,
 
                 CurrentAirport = new OptionDto
                 {
-                    Id = entity.CurrentAirport.Id,
-                    Display = entity.CurrentAirport.Name,
+                    Id = x.CurrentAirport.Id,
+                    Display = x.CurrentAirport.Name,
                 },
 
                 // Mapping relationship *-* : ICollection<Airports>
-                OperationAirports = entity.OperationAirports.Select(ca => new OptionDto
+                OperationAirports = x.OperationAirports.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
                     Display = ca.Name,
                 }).OrderBy(x => x.Display).ToList(),
 
-                OperationCountries = entity.OperationCountries.Select(ca => new OptionDto
+                OperationCountries = x.OperationCountries.Select(ca => new OptionDto
                 {
                     Id = ca.Id,
                     Display = ca.Name,
                 }).OrderBy(x => x.Display).ToList(),
-            };
+            });
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
