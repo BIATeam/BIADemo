@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public override void DtoToEntity(PlaneSpecificDto dto, Plane entity)
         {
             this.planeMapper.DtoToEntity(dto, entity);
-            entity.Engines ??= Array.Empty<Engine>();
+            entity.Engines ??= new List<Engine>();
             MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
         }
 
