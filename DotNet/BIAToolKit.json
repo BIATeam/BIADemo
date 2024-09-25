@@ -96,22 +96,57 @@
   {
     "Feature": "Option",
     "Type": "Option",
-    "FeatureName": "Airport",
-    "FeatureNamePlural": "Airports",
+    "FeatureName": "Country",
+    "FeatureNamePlural": "Countries",
     "ZipName": "option.zip",
     "Contains": {
       "Include": [
-        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\CountryOptionsController.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\CountryOptionAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\ICountryOptionAppService.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\CountryOptionMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\CountryOptionDto.cs"
       ],
       "Exclude": []
     },
     "Children": [],
+    "Parents": [
+      {
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "DomainName": "AircraftMaintenanceCompany",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
+                "ToRelativePathWithParent": "{ParentDomainName}\\"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Options": [],
     "Partial": [
       "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
       "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
     ]
   },
