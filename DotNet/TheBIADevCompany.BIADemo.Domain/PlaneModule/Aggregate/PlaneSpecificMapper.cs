@@ -132,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     Display = ca.Title,
                 }).OrderBy(x => x.Display).ToList(),
 
-                Engines = entity.Engines.AsQueryable().Select(engineDtoExpression).ToList(),
+                Engines = entity.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
             };
         }
 
