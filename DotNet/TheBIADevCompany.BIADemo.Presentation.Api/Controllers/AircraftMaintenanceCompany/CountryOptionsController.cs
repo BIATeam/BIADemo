@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="CountriesOptionsController.cs" company="TheBIADevCompany">
+// <copyright file="CountryOptionsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -14,22 +14,22 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage Countries.
+    /// The API controller used to manage country options.
     /// </summary>
-    public class CountriesOptionsController : BiaControllerBase
+    public class CountryOptionsController : BiaControllerBase
     {
         /// <summary>
         /// The country application service.
         /// </summary>
-        private readonly ICountryOptionAppService countryService;
+        private readonly ICountryOptionAppService countryOptionService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CountriesOptionsController"/> class.
+        /// Initializes a new instance of the <see cref="CountryOptionsController"/> class.
         /// </summary>
-        /// <param name="countryService">The country application service.</param>
-        public CountriesOptionsController(ICountryOptionAppService countryService)
+        /// <param name="countryOptionService">The country application service.</param>
+        public CountryOptionsController(ICountryOptionAppService countryOptionService)
         {
-            this.countryService = countryService;
+            this.countryOptionService = countryOptionService;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.Countries.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.countryService.GetAllOptionsAsync();
+            var results = await this.countryOptionService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }
