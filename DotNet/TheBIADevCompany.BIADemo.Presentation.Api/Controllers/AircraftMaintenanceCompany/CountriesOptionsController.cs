@@ -1,9 +1,9 @@
 // BIADemo only
-// <copyright file="CountriesController.cs" company="TheBIADevCompany">
+// <copyright file="CountriesOptionsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
+namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintenanceCompany
 {
     using System.Threading.Tasks;
     using BIA.Net.Presentation.Api.Controllers.Base;
@@ -16,18 +16,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     /// <summary>
     /// The API controller used to manage Countries.
     /// </summary>
-    public class CountriesController : BiaControllerBase
+    public class CountriesOptionsController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The country application service.
         /// </summary>
-        private readonly ICountryAppService countryService;
+        private readonly ICountryOptionAppService countryService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CountriesController"/> class.
+        /// Initializes a new instance of the <see cref="CountriesOptionsController"/> class.
         /// </summary>
         /// <param name="countryService">The country application service.</param>
-        public CountriesController(ICountryAppService countryService)
+        public CountriesOptionsController(ICountryOptionAppService countryService)
         {
             this.countryService = countryService;
         }
@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
+        /// /// <returns>The list of countries.</returns>
         [HttpGet("allOptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
