@@ -27,13 +27,8 @@ namespace BIA.Net.Core.Common.Configuration
         public IEnumerable<LdapGroup> LdapGroups { get; set; }
 
         /// <summary>
-        /// Gets or sets the type of the claim.
+        /// Gets or sets the require claim.
         /// </summary>
-        public string ClaimType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the claim values.
-        /// </summary>
-        public IEnumerable<string> ClaimValues { get; set; }
+        public RequireClaim RequireClaim { get; set; }
     }
 }
