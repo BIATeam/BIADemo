@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using TheBIADevCompany.BIADemo.Application.Plane;
@@ -91,6 +92,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             bool isActive = false;
             DateTime lastFlightDate = new DateTime(2013, 4, 4, 0, 0, 0, DateTimeKind.Utc);
             string msn = "AB-0001";
+            OptionDto airport = new OptionDto() { Id = 1, Display = "BDX" };
 
             PlaneDto dto = this.service.AddAsync(new PlaneDto()
             {
@@ -101,6 +103,8 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
                 DeliveryDate = deliveryDate,
                 SyncTime = syncTime,
                 Msn = msn,
+                SyncFlightDataTime = syncTime,
+                CurrentAirport = airport,
             }).Result;
             Assert.IsNotNull(dto);
 
