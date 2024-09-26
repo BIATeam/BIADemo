@@ -104,8 +104,7 @@
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\CountryOptionsController.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\CountryOptionAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\ICountryOptionAppService.cs",
-        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\CountryOptionMapper.cs",
-        "TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\CountryOptionDto.cs"
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\CountryOptionMapper.cs"
       ],
       "Exclude": []
     },
@@ -124,8 +123,7 @@
             "MoveFiles": [
               {
                 "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
-                "ToRelativePathWithParent": "{ParentDomainName}\\"
+                "ToRelativePathNoParent": "{DomainName}\\"
               }
             ]
           },
@@ -136,8 +134,7 @@
             "MoveFiles": [
               {
                 "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{NewCrudNamePascalSingular}\\",
-                "ToRelativePathWithParent": "{ParentDomainName}\\"
+                "ToRelativePathNoParent": "{DomainName}\\"
               }
             ]
           }
