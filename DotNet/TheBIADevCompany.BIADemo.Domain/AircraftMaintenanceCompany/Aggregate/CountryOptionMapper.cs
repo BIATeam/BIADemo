@@ -8,17 +8,17 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
     using System;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The mapper used for country option.
     /// </summary>
-    public class CountryOptionMapper : BaseMapper<CountryOptionDto, Country, int>
+    public class CountryOptionMapper : BaseMapper<OptionDto, Country, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Country, CountryOptionDto>> EntityToDto()
+        public override Expression<Func<Country, OptionDto>> EntityToDto()
         {
-            return entity => new CountryOptionDto
+            return entity => new OptionDto
             {
                 Id = entity.Id,
                 Display = entity.Name,
