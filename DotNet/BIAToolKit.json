@@ -137,6 +137,17 @@
                 "ToRelativePathNoParent": "{DomainName}\\"
               }
             ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Domain\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\Aggregate",
+                "ToRelativePathNoParent": "{DomainName}\\Aggregate"
+              }
+            ]
           }
         ]
       }
