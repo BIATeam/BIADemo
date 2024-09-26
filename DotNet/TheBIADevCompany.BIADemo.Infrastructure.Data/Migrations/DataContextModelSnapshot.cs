@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -157,17 +157,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            RolesId = 201,
-                            TeamTypesId = 4
-                        },
-                        new
-                        {
                             RolesId = 202,
                             TeamTypesId = 4
                         },
                         new
                         {
                             RolesId = 102,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 3,
+                            TeamTypesId = 4
+                        },
+                        new
+                        {
+                            RolesId = 201,
                             TeamTypesId = 4
                         });
                 });
@@ -185,6 +190,91 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("UserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "France"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Mexico"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "China"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Spain"
+                        });
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamAirport", b =>
+                {
+                    b.Property<int>("AirportId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("AirportId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamAirport");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamCountry", b =>
+                {
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaintenanceTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("CountryId", "MaintenanceTeamId");
+
+                    b.HasIndex("MaintenanceTeamId");
+
+                    b.ToTable("MaintenanceTeamCountry");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Aggregate.AuditLog", b =>
@@ -479,16 +569,58 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double?>("AverageFlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float?>("AverageFuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("DeliveryDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal?>("EstimatedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ExchangeDate")
+                        .HasColumnType("date");
+
+                    b.Property<double>("FlightHours")
+                        .HasColumnType("float");
+
+                    b.Property<float>("FuelConsumption")
+                        .HasColumnType("real");
+
+                    b.Property<TimeSpan?>("IgnitionTime")
+                        .HasColumnType("time");
+
+                    b.Property<bool?>("IsHybrid")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsToBeMaintained")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("LastMaintenanceDate")
+                    b.Property<DateTime?>("LastMaintenanceDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Manufacturer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("NextMaintenanceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NoiseLevel")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Power")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PrincipalPartId")
                         .HasColumnType("int");
 
                     b.Property<string>("Reference")
@@ -507,7 +639,86 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
                     b.HasIndex("PlaneId");
 
+                    b.HasIndex("PrincipalPartId");
+
                     b.ToTable("Engines");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+                {
+                    b.Property<int>("EngineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PartId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("EngineId", "PartId");
+
+                    b.HasIndex("PartId");
+
+                    b.ToTable("EnginePart");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Family")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<string>("SN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Parts", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Family = "N.A",
+                            Price = 499.99m,
+                            SN = "P0001"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Family = "N.A",
+                            Price = 250.99m,
+                            SN = "P0002"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Family = "N.A",
+                            Price = 100.99m,
+                            SN = "P0003"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Family = "N.A",
+                            Price = 25.99m,
+                            SN = "P0004"
+                        });
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
@@ -521,7 +732,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CurrentAirportId")
+                    b.Property<int>("CurrentAirportId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DeliveryDate")
@@ -530,19 +741,41 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<decimal?>("EstimatedPrice")
                         .HasColumnType("Money");
 
+                    b.Property<DateTime>("FirstFlightDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("FuelCapacity")
+                        .HasColumnType("real");
+
                     b.Property<float?>("FuelLevel")
                         .HasColumnType("real");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("IsMaintenance")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("LastFlightDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Manufacturer")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int?>("MotorsCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Msn")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("NextMaintenanceDate")
+                        .HasColumnType("date");
+
+                    b.Property<decimal>("OriginalPrice")
+                        .HasColumnType("Money");
 
                     b.Property<int?>("PlaneTypeId")
                         .HasColumnType("int");
@@ -558,8 +791,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("SyncFlightDataTime")
+                        .HasColumnType("time");
+
                     b.Property<TimeSpan?>("SyncTime")
                         .HasColumnType("time");
+
+                    b.Property<double>("TotalFlightHours")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -1170,15 +1409,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         },
                         new
                         {
+                            Id = 202,
+                            Code = "Operator",
+                            Label = "Operator"
+                        },
+                        new
+                        {
                             Id = 201,
                             Code = "Team_Leader",
                             Label = "Team leader"
                         },
                         new
                         {
-                            Id = 202,
-                            Code = "Operator",
-                            Label = "Operator"
+                            Id = 3,
+                            Code = "MaintenanceTeam_Admin",
+                            Label = "MaintenanceTeam administrator"
                         });
                 });
 
@@ -1520,13 +1765,75 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("AverageOperationCost")
+                        .HasColumnType("Money");
+
+                    b.Property<double?>("AverageOperationDuration")
+                        .HasColumnType("float");
+
+                    b.Property<float?>("AverageTravelDuration")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("CurrentAirportId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CurrentCountryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FirstOperation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("IncidentCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastOperation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("MaxOperationDuration")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("MaxTravelDuration")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("NextOperation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OperationCount")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion")
                         .HasColumnName("RowVersion");
 
+                    b.Property<decimal>("TotalOperationCost")
+                        .HasColumnType("Money");
+
+                    b.Property<double>("TotalOperationDuration")
+                        .HasColumnType("float");
+
+                    b.Property<float>("TotalTravelDuration")
+                        .HasColumnType("real");
+
                     b.HasIndex("AircraftMaintenanceCompanyId");
+
+                    b.HasIndex("CurrentAirportId");
+
+                    b.HasIndex("CurrentCountryId");
 
                     b.ToTable("MaintenanceTeams", (string)null);
                 });
@@ -1572,6 +1879,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamAirport", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "Airport")
+                        .WithMany()
+                        .HasForeignKey("AirportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "MaintenanceTeam")
+                        .WithMany("OperationMaintenanceTeamAirports")
+                        .HasForeignKey("MaintenanceTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Airport");
+
+                    b.Navigation("MaintenanceTeam");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamCountry", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "MaintenanceTeam")
+                        .WithMany("OperationMaintenanceTeamCountries")
+                        .HasForeignKey("MaintenanceTeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+
+                    b.Navigation("MaintenanceTeam");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
@@ -1651,19 +1996,46 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
-                        .WithMany()
+                        .WithMany("Engines")
                         .HasForeignKey("PlaneId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "PrincipalPart")
+                        .WithMany()
+                        .HasForeignKey("PrincipalPartId");
+
+                    b.Navigation("Plane");
+
+                    b.Navigation("PrincipalPart");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+                {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", "Engine")
+                        .WithMany("InstalledEngineParts")
+                        .HasForeignKey("EngineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Plane");
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "Part")
+                        .WithMany()
+                        .HasForeignKey("PartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Engine");
+
+                    b.Navigation("Part");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "CurrentAirport")
                         .WithMany()
-                        .HasForeignKey("CurrentAirportId");
+                        .HasForeignKey("CurrentAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", "PlaneType")
                         .WithMany()
@@ -1685,7 +2057,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneAirport", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "Airport")
-                        .WithMany("ClientPlaneAirports")
+                        .WithMany()
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1710,7 +2082,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", "PlaneType")
-                        .WithMany("ClientPlanePlanesTypes")
+                        .WithMany()
                         .HasForeignKey("PlaneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1881,6 +2253,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "CurrentAirport")
+                        .WithMany()
+                        .HasForeignKey("CurrentAirportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", "CurrentCountry")
+                        .WithMany()
+                        .HasForeignKey("CurrentCountryId");
+
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
                         .WithOne()
                         .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "Id")
@@ -1888,6 +2270,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("AircraftMaintenanceCompany");
+
+                    b.Navigation("CurrentAirport");
+
+                    b.Navigation("CurrentCountry");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
@@ -1918,21 +2304,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationTypeTranslations");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
                 {
-                    b.Navigation("ClientPlaneAirports");
+                    b.Navigation("InstalledEngineParts");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
                 {
                     b.Navigation("ConnectingPlaneAirports");
 
-                    b.Navigation("SimilarPlaneType");
-                });
+                    b.Navigation("Engines");
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", b =>
-                {
-                    b.Navigation("ClientPlanePlanesTypes");
+                    b.Navigation("SimilarPlaneType");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
@@ -1977,6 +2360,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
                 {
                     b.Navigation("MaintenanceTeams");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", b =>
+                {
+                    b.Navigation("OperationMaintenanceTeamAirports");
+
+                    b.Navigation("OperationMaintenanceTeamCountries");
                 });
 #pragma warning restore 612, 618
         }

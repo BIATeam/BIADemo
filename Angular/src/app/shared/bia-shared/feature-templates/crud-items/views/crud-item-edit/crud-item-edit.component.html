@@ -1,7 +1,10 @@
 <bia-crud-item-form
-  [crudItem]="crudItemService.crudItem$ | async"
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="crudItemService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="
+    (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
+  "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></bia-crud-item-form>
 <bia-spinner

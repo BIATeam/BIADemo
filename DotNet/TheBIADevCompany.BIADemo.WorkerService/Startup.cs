@@ -10,7 +10,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
@@ -20,12 +19,14 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
     // End BIADemo
+#endif
 
     /// <summary>
     /// The startup class.
@@ -60,11 +61,9 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="host">The host.</param>
         public static void Configure(IHost host)
         {
-            // Begin BIADemo
-            PlaneHandlerRepository.Configure(host.Services.GetService<IClientForHubRepository>());
-
-            // End BIADemo
+#if BIA_FRONT_FEATURE
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
+#endif
         }
 
         /// <summary>
@@ -89,21 +88,21 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(
                 this.biaNetSection.WorkerFeatures,
-                this.configuration,
-                new List<DatabaseHandlerRepository>()
-                    {
-                        // Add here all the Handler repository.
-                        // Begin BIADemo
-                        new PlaneHandlerRepository(this.configuration),
+                this.configuration);
 
-                        // End BIADemo
-                    });
+            // Begin BIADemo
+            services.AddSingleton<IDatabaseHandlerRepository, PlaneHandlerRepository>();
+            services.AddSingleton<IDatabaseHandlerRepository, AirportHandlerRepository>();
+
+            // End BIADemo
 
             // End BIA Standard service
+#if BIA_FRONT_FEATURE
             // Begin BIADemo
             services.AddHostedService<Worker>();
 
             // End BIADemo
+#endif
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, false);

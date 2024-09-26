@@ -55,6 +55,11 @@ namespace BIA.Net.Core.Common.Configuration
         public Jwt Jwt { get; set; }
 
         /// <summary>
+        /// Gets or sets the policies.
+        /// </summary>
+        public IEnumerable<Policy> Policies { get; set; }
+
+        /// <summary>
         /// Gets or sets the Roles configuration.
         /// </summary>
         public IEnumerable<Role> Roles { get; set; }
@@ -68,11 +73,6 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the permissions configuration.
         /// </summary>
         public IEnumerable<Permission> Permissions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user profile configuration.
-        /// </summary>
-        public UserProfile UserProfile { get; set; }
 
         /// <summary>
         /// Gets or sets the cultures configuration.

@@ -1,7 +1,6 @@
 ﻿// <copyright file="AuthAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System;
@@ -12,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Authentication;
@@ -21,16 +19,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
 
     /// <summary>
     /// Auth App Service.
     /// </summary>
-    /// <seealso cref="TheBIADevCompany.BIADemo.Application.User.IAuthAppService" />
     public class AuthAppService : IAuthAppService
     {
         /// <summary>
@@ -54,6 +49,27 @@ namespace TheBIADevCompany.BIADemo.Application.User
         private readonly IUserPermissionDomainService userPermissionDomainService;
 
         /// <summary>
+        /// The helper used for AD.
+        /// </summary>
+        private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
+
+        /// <summary>
+        /// The domain section in the BiaNet configuration.
+        /// </summary>
+        private readonly IEnumerable<LdapDomain> ldapDomains;
+#if BIA_FRONT_FEATURE
+
+        /// <summary>
+        /// The role section in the BiaNet configuration.
+        /// </summary>
+        private readonly IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesConfiguration;
+
+        /// <summary>
+        /// The identity provider repository.
+        /// </summary>
+        private readonly Domain.RepoContract.IIdentityProviderRepository identityProviderRepository;
+
+        /// <summary>
         /// The user application service.
         /// </summary>
         private readonly IUserAppService userAppService;
@@ -67,110 +83,282 @@ namespace TheBIADevCompany.BIADemo.Application.User
         /// The role application service.
         /// </summary>
         private readonly IRoleAppService roleAppService;
+#endif
 
         /// <summary>
-        /// The user profile repository.
+        /// Initializes a new instance of the <see cref="AuthAppService"/> class.
         /// </summary>
-        private readonly IUserProfileRepository userProfileRepository;
-
-        /// <summary>
-        /// The helper used for AD.
-        /// </summary>
-        private readonly IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper;
-
-        /// <summary>
-        /// The domain section in the BiaNet configuration.
-        /// </summary>
-        private readonly IEnumerable<LdapDomain> ldapDomains;
-
-        /// <summary>
-        /// The role section in the BiaNet configuration.
-        /// </summary>
-        private readonly IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesConfiguration;
-
-        /// <summary>
-        /// The identity provider repository.
-        /// </summary>
-        private readonly IIdentityProviderRepository identityProviderRepository;
-
-        /// <summary>
-        /// The connectionString.
-        /// </summary>
-        private readonly string connectionString;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthAppService" /> class.
-        /// </summary>
+        /// <param name="userAppService">The user application service.</param>
+        /// <param name="teamAppService">The team application service.</param>
+        /// <param name="roleAppService">The role application service.</param>
+        /// <param name="identityProviderRepository">The identity provider repository.</param>
         /// <param name="jwtFactory">The JWT factory.</param>
         /// <param name="principal">The principal.</param>
         /// <param name="userPermissionDomainService">The user permission domain service.</param>
-        /// <param name="userAppService">The user application service.</param>
-        /// <param name="teamAppService">The team application service.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="roleAppService">The role application service.</param>
-        /// <param name="userProfileRepository">The user profile repository.</param>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="biaNetconfiguration">The BiaNetSection configuration.</param>
+        /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
-        /// <param name="identityProviderRepository">The identity provider repository.</param>
         public AuthAppService(
+#if BIA_FRONT_FEATURE
+            IUserAppService userAppService,
+            ITeamAppService teamAppService,
+            IRoleAppService roleAppService,
+            Domain.RepoContract.IIdentityProviderRepository identityProviderRepository,
+#endif
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
-            IUserAppService userAppService,
-            ITeamAppService teamAppService,
             ILogger<AuthAppService> logger,
-            IRoleAppService roleAppService,
-            IUserProfileRepository userProfileRepository,
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
-            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper,
-            IIdentityProviderRepository identityProviderRepository)
+            IUserDirectoryRepository<UserFromDirectory> userDirectoryHelper)
         {
+#if BIA_FRONT_FEATURE
+            this.userAppService = userAppService;
+            this.teamAppService = teamAppService;
+            this.roleAppService = roleAppService;
+            this.identityProviderRepository = identityProviderRepository;
+            this.rolesConfiguration = biaNetconfiguration.Value.Roles;
+#endif
             this.jwtFactory = jwtFactory;
             this.claimsPrincipal = principal as BiaClaimsPrincipal;
             this.userPermissionDomainService = userPermissionDomainService;
-            this.userAppService = userAppService;
-            this.teamAppService = teamAppService;
             this.logger = logger;
-            this.roleAppService = roleAppService;
-            this.userProfileRepository = userProfileRepository;
             this.userDirectoryHelper = userDirectoryHelper;
             this.ldapDomains = biaNetconfiguration.Value.Authentication.LdapDomains;
-            this.rolesConfiguration = biaNetconfiguration.Value.Roles;
-            this.identityProviderRepository = identityProviderRepository;
-            this.connectionString = configuration.GetConnectionString("BIADemoDatabase");
+        }
+#if BIA_BACK_TO_BACK_AUTH
+
+        /// <inheritdoc cref="IAuthAppService.LoginAsync"/>
+        public async Task<string> LoginAsync()
+        {
+            // Check if current user is authenticated
+            this.CheckIsAuthenticated();
+
+            // Get informations in Claims
+            string sid = this.GetSid();
+            string login = this.GetLogin();
+            string domain = this.GetDomain();
+
+            // Get Global Roles
+            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain);
+
+            // Get Permissions
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles);
+
+            // Check User Permissions
+            this.CheckUserPermissions(userPermissions);
+
+            // Sort User Permissions
+            userPermissions.Sort();
+
+            // Create Token Dto
+            TokenDto<UserDataDto> tokenDto = new TokenDto<UserDataDto>()
+            {
+                Login = login,
+                RoleIds = new List<int>(),
+                Permissions = userPermissions,
+                UserData = new UserDataDto(),
+            };
+
+            // Create AuthInfo
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, default(AdditionalInfoDto), new LoginParamDto());
+
+            return authInfo?.Token;
+        }
+#endif
+#if BIA_FRONT_FEATURE
+
+        /// <inheritdoc cref="IAuthAppService.LoginOnTeamsAsync"/>
+        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        {
+            // Check if current user is authenticated
+            this.CheckIsAuthenticated();
+
+            // Get informations in Claims
+            string sid = this.GetSid();
+            string login = this.GetLogin();
+            string domain = this.GetDomain();
+            string identityKey = this.GetIdentityKey();
+
+            // Get UserInfo
+            UserInfoDto userInfo = await this.GetUserInfo(loginParam, login, identityKey);
+
+            // Get Global Roles
+            List<string> globalRoles = await this.GetGlobalRolesAsync(sid: sid, domain: domain, userInfo: userInfo);
+            List<int> roleIds = GetRoleIds(globalRoles);
+
+            // Fill UserInfo
+            userInfo = await this.CreateOrUpdateUserInDatabase(sid, identityKey, userInfo, globalRoles);
+            this.userAppService.SelectDefaultLanguage(userInfo);
+
+            // Get User AppRoot Roles
+            if (userInfo?.Id > 0 && globalRoles.Contains(Crosscutting.Common.Constants.Role.User))
+            {
+                IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
+                globalRoles.AddRange(userAppRootRoles);
+            }
+
+            // Get Permissions
+            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
+
+            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
+            UserDataDto userData = new UserDataDto();
+
+            // Get Fine Grained Permissions
+            if (loginParam.FineGrainedPermission && userInfo?.Id > 0)
+            {
+                // Get All Teams
+                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
+
+                // Get Fine Grained Roles
+                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
+                List<int> fineGrainedRoleIds = GetRoleIds(fineGrainedRoles);
+                roleIds = roleIds.Union(fineGrainedRoleIds).ToList();
+
+                // Translate Roles in Permissions
+                List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
+
+                // Concat global permissions and fine grained permissions
+                userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
+            }
+
+            // Check User Permissions
+            this.CheckUserPermissions(userPermissions);
+
+            // Sort User Permissions
+            userPermissions.Sort();
+
+            // Create Token Dto
+            TokenDto<UserDataDto> tokenDto = new TokenDto<UserDataDto>()
+            {
+                Login = login,
+                Id = (userInfo?.Id).GetValueOrDefault(),
+                RoleIds = roleIds,
+                Permissions = userPermissions,
+                UserData = userData,
+            };
+
+            // Get AdditionalInfoDto
+            AdditionalInfoDto additionalInfo = this.GetAdditionalInfo(loginParam, userInfo, allTeams, userData);
+
+            // Create AuthInfo
+            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionalInfo, loginParam);
+
+            return authInfo;
         }
 
         /// <summary>
-        /// Logins the on teams asynchronous.
+        /// Gets the role ids.
         /// </summary>
-        /// <param name="loginParam">The login parameter.</param>
-        /// <returns>
-        /// AuthInfo.
-        /// </returns>
-        public async Task<AuthInfoDto<AdditionalInfoDto>> LoginOnTeamsAsync(LoginParamDto loginParam)
+        /// <param name="roles">The roles.</param>
+        /// <returns>Role ids.</returns>
+        private static List<int> GetRoleIds(List<string> roles)
         {
-            // Check inputs parameter
-            this.CheckIsAuthenticated();
-            this.GetIdentityKey(out string identityKey, out string sid, out string login);
-
-            // Get user profil async
-            Task<UserProfileDto> userProfileTask = null;
-            if (loginParam.AdditionalInfos)
+            List<int> roleIds = new List<int>();
+            foreach (string role in roles)
             {
-                userProfileTask = this.userProfileRepository.GetAsync(identityKey);
+                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                {
+                    roleIds.Add((int)roleId);
+                }
             }
 
-            // Get userInfo if needed (it requires an user in database)
-            UserInfoDto userInfo = null;
-            if (this.connectionString != null && (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole()))
+            return roleIds;
+        }
+#endif
+
+        /// <summary>
+        /// Checks the user permissions.
+        /// </summary>
+        /// <param name="userPermissions">The user permissions.</param>
+        /// <exception cref="BIA.Net.Core.Common.Exceptions.UnauthorizedException">No permission found.</exception>
+        private void CheckUserPermissions(List<string> userPermissions)
+        {
+            if (!userPermissions.Any())
             {
-                userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+                this.logger.LogInformation("Unauthorized because no permission found");
+                throw new UnauthorizedException("No permission found");
+            }
+        }
+
+        /// <summary>
+        /// Checks if user is Authenticated.
+        /// </summary>
+        /// <param name="claimsPrincipal">The identity.</param>
+        private void CheckIsAuthenticated()
+        {
+            if (this.claimsPrincipal.Identity?.IsAuthenticated != true)
+            {
+                if (this.claimsPrincipal.Identity == null)
+                {
+                    this.logger.LogInformation("Unauthorized because identity is null");
+                }
+                else
+                {
+                    this.logger.LogInformation("Unauthorized because not authenticated");
+                }
+
+                throw new UnauthorizedException();
+            }
+        }
+
+        /// <summary>
+        /// Gets the global roles.
+        /// </summary>
+        /// <param name="sid">The sid.</param>
+        /// <param name="domain">The domain.</param>
+        /// <param name="userInfo">The user information.</param>
+        /// <returns>Global roles.</returns>
+        /// <exception cref="BIA.Net.Core.Common.Exceptions.UnauthorizedException">No roles found.</exception>
+        private async Task<List<string>> GetGlobalRolesAsync(string sid, string domain, UserInfoDto userInfo = default)
+        {
+            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
+
+            // If the user has no role
+            if (globalRoles?.Any() != true)
+            {
+                this.logger.LogInformation("Unauthorized because No roles found");
+                throw new UnauthorizedException("No roles found");
             }
 
-            // Get domain
+            return globalRoles;
+        }
+
+        /// <summary>
+        /// Gets the sid.
+        /// </summary>
+        /// <returns>The sid.</returns>
+        private string GetSid()
+        {
+            return this.claimsPrincipal.GetClaimValue(ClaimTypes.PrimarySid);
+        }
+
+        /// <summary>
+        /// Gets the login.
+        /// </summary>
+        /// <returns>The login.</returns>
+        private string GetLogin()
+        {
+            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\').LastOrDefault()?.ToUpper();
+            if (string.IsNullOrEmpty(login))
+            {
+                this.logger.LogWarning("Unauthorized because bad login");
+                throw new BadRequestException("Incorrect login");
+            }
+
+            return login;
+        }
+
+        /// <summary>
+        /// Gets the domain.
+        /// </summary>
+        /// <returns>The domain.</returns>
+        private string GetDomain()
+        {
             string domain = null;
+
             if (this.claimsPrincipal.Identity.Name?.Contains('\\') == true)
             {
                 domain = this.claimsPrincipal.Identity.Name.Split('\\').FirstOrDefault();
@@ -181,27 +369,102 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 }
             }
 
-            // Get global roles
-            List<string> globalRoles = await this.userDirectoryHelper.GetUserRolesAsync(claimsPrincipal: this.claimsPrincipal, userInfoDto: userInfo, sid: sid, domain: domain);
-            List<int> roleIds = new List<int>();
-            foreach (var role in globalRoles)
+            return domain;
+        }
+#if BIA_FRONT_FEATURE
+
+        /// <summary>
+        /// Gets the user information.
+        /// </summary>
+        /// <param name="loginParam">The login parameter.</param>
+        /// <param name="login">The login.</param>
+        /// <param name="identityKey">The identity key.</param>
+        /// <returns>A UserInfo Dto.</returns>
+        private async Task<UserInfoDto> GetUserInfo(LoginParamDto loginParam, string login, string identityKey)
+        {
+            // Get userInfo if needed (it requires an user in database)
+            UserInfoDto userInfo = null;
+
+            if (loginParam.FineGrainedPermission || loginParam.AdditionalInfos || this.UseUserRole())
             {
-                if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
+                userInfo = await this.userAppService.GetUserInfoAsync(identityKey);
+            }
+
+            // If the user does not exist in the database
+            // We create a UserInfoDto object from principal
+            userInfo ??= new UserInfoDto
+            {
+                Login = login,
+                FirstName = this.claimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
+                LastName = this.claimsPrincipal.GetClaimValue(ClaimTypes.Surname),
+                Country = this.claimsPrincipal.GetClaimValue(ClaimTypes.Country),
+            };
+
+            return userInfo;
+        }
+
+        /// <summary>
+        /// Gets the identity key.
+        /// </summary>
+        /// <returns>The identity key.</returns>
+        private string GetIdentityKey()
+        {
+            // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
+            return this.GetLogin();
+        }
+
+        /// <summary>
+        /// Checks if the rolesConfiguration contains the 'User' role.
+        /// </summary>
+        /// <returns>Return true if the rolesConfiguration contains the 'User' role.</returns>
+        private bool UseUserRole()
+        {
+            return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
+                r.Label == Crosscutting.Common.Constants.Role.User);
+        }
+
+        /// <summary>
+        /// Gets the additional information.
+        /// </summary>
+        /// <param name="loginParam">The login parameter.</param>
+        /// <param name="userInfo">The user information.</param>
+        /// <param name="allTeams">All teams.</param>
+        /// <param name="userData">The user data.</param>
+        /// <returns>A AdditionalInfo Dto.</returns>
+        private AdditionalInfoDto GetAdditionalInfo(LoginParamDto loginParam, UserInfoDto userInfo, IEnumerable<TeamDto> allTeams, UserDataDto userData)
+        {
+            AdditionalInfoDto additionalInfo = default;
+
+            if (loginParam.AdditionalInfos)
+            {
+                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
+                    tc.Parents == null
+                    ||
+                    tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
+
+                additionalInfo = new AdditionalInfoDto
                 {
-                    roleIds.Add((int)roleId);
-                }
+                    UserInfo = userInfo,
+                    Teams = allTeamsFilteredByCurrentParent.OrderBy(x => x.Title).ToList(),
+                };
             }
 
-            // If the user has no role
-            if (globalRoles == null || globalRoles?.Any() != true)
-            {
-                this.logger.LogInformation("Unauthorized because No roles found");
-                throw new UnauthorizedException("No roles found");
-            }
+            return additionalInfo;
+        }
 
-            if (globalRoles.Contains(Constants.Role.User))
+        /// <summary>
+        /// Creates the or update user in database.
+        /// </summary>
+        /// <param name="sid">The sid.</param>
+        /// <param name="identityKey">The identity key.</param>
+        /// <param name="userInfo">The user information.</param>
+        /// <param name="globalRoles">The global roles.</param>
+        /// <returns>A UserInfoDto.</returns>
+        private async Task<UserInfoDto> CreateOrUpdateUserInDatabase(string sid, string identityKey, UserInfoDto userInfo, List<string> globalRoles)
+        {
+            if (globalRoles.Contains(Crosscutting.Common.Constants.Role.User))
             {
-                if (userInfo == null)
+                if (!(userInfo?.Id > 0))
                 {
                     // automatic creation from ldap, only use if user do not need fine Role on team.
                     try
@@ -242,148 +505,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 }
             }
 
-            if (userInfo != null && globalRoles.Contains(Constants.Role.User))
-            {
-                IEnumerable<string> userAppRootRoles = await this.roleAppService.GetUserRolesAsync(userInfo.Id);
-                globalRoles.AddRange(userAppRootRoles);
-            }
-
-            if (globalRoles == null || !globalRoles.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no role found");
-                throw new UnauthorizedException("No role found");
-            }
-
-            List<string> userPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(globalRoles, loginParam.LightToken);
-            IEnumerable<TeamDto> allTeams = new List<TeamDto>();
-            UserDataDto userData = new ();
-
-            // Compute fine grained user permissions if needed (it requires an user in database)
-            if (loginParam.FineGrainedPermission && userInfo != null)
-            {
-                allTeams = await this.teamAppService.GetAllAsync(userInfo.Id, userPermissions);
-                List<string> fineGrainedRoles = await this.GetFineRolesAsync(loginParam, userData, userInfo, allTeams);
-                foreach (var role in fineGrainedRoles)
-                {
-                    if (Enum.TryParse<RoleId>(role, out var roleId) && !roleIds.Contains((int)roleId))
-                    {
-                        roleIds.Add((int)roleId);
-                    }
-                }
-
-                // translate roles in permission
-                List<string> fineGrainedUserPermissions = this.userPermissionDomainService.TranslateRolesInPermissions(fineGrainedRoles, loginParam.LightToken);
-                userPermissions = userPermissions.Union(fineGrainedUserPermissions).ToList();
-            }
-
-            if (!userPermissions.Any())
-            {
-                this.logger.LogInformation("Unauthorized because no permission found");
-                throw new UnauthorizedException("No permission found");
-            }
-
-            // If the user does not exist in the database
-            // We create a UserInfoDto object from principal
-            userInfo ??= new UserInfoDto
-            {
-                Login = login,
-                FirstName = this.claimsPrincipal.GetClaimValue(ClaimTypes.GivenName),
-                LastName = this.claimsPrincipal.GetClaimValue(ClaimTypes.Surname),
-                Country = this.claimsPrincipal.GetClaimValue(ClaimTypes.Country),
-            };
-
-            this.userAppService.SelectDefaultLanguage(userInfo);
-
-            TokenDto<UserDataDto> tokenDto = new () { Login = login, Id = userInfo.Id, RoleIds = roleIds, Permissions = userPermissions, UserData = userData };
-
-            UserProfileDto userProfile = null;
-            if (userProfileTask != null)
-            {
-                userProfile = await userProfileTask;
-                userProfile ??= new UserProfileDto { Theme = Constants.DefaultValues.Theme };
-            }
-
-            AdditionalInfoDto additionnalInfo = null;
-            if (loginParam.AdditionalInfos)
-            {
-                var allTeamsFilteredByCurrentParent = allTeams.Where(t => TeamConfig.Config.Exists(tc => tc.TeamTypeId == t.TeamTypeId && (
-                    tc.Parents == null
-                    ||
-                    tc.Parents.Exists(p => userData.CurrentTeams.Any(ct => ct.TeamId == t.ParentTeamId))))).ToList();
-
-                additionnalInfo = new AdditionalInfoDto
-                {
-                    UserInfo = userInfo, UserProfile = userProfile,
-                    Teams = allTeamsFilteredByCurrentParent,
-                };
-            }
-
-            AuthInfoDto<AdditionalInfoDto> authInfo = await this.jwtFactory.GenerateAuthInfoAsync(tokenDto, additionnalInfo, loginParam);
-
-            return authInfo;
-        }
-
-        /// <summary>
-        /// Check if UserInDb is requiered.
-        /// </summary>
-        /// <returns>True if user in db is in configuration file.</returns>
-        public bool UseUserRole()
-        {
-            return this.rolesConfiguration != null && this.rolesConfiguration.Any(r =>
-                r.Label == Constants.Role.User);
-        }
-
-        /// <summary>
-        /// Checks if user is Authenticated.
-        /// </summary>
-        /// <param name="claimsPrincipal">The identity.</param>
-        private void CheckIsAuthenticated()
-        {
-            if (this.claimsPrincipal.Identity?.IsAuthenticated != true)
-            {
-                if (this.claimsPrincipal.Identity == null)
-                {
-                    this.logger.LogInformation("Unauthorized because identity is null");
-                }
-                else if (!this.claimsPrincipal.Identity.IsAuthenticated)
-                {
-                    this.logger.LogInformation("Unauthorized because not authenticated");
-                }
-
-                throw new UnauthorizedException();
-            }
-        }
-
-        /// <summary>
-        /// Checks the input parameters.
-        /// </summary>
-        /// <param name="identityKey">The identityKey.</param>
-        /// <param name="sid">The sid.</param>
-        /// <param name="login">The login.</param>
-        private void GetIdentityKey(out string identityKey, out string sid, out string login)
-        {
-            sid = this.GetSid();
-            login = this.GetLogin();
-
-            // If you change it parse all other #IdentityKey to be sure thare is a match (Database, Ldap, Idp, WindowsIdentity).
-            identityKey = login;
-        }
-
-        private string GetSid()
-        {
-            return this.claimsPrincipal.GetClaimValue(ClaimTypes.PrimarySid);
-        }
-
-        private string GetLogin()
-        {
-            var login = this.claimsPrincipal.GetUserLogin()?.Split('\\').LastOrDefault()?.ToUpper();
-            if (string.IsNullOrEmpty(login))
-            {
-                this.logger.LogWarning("Unauthorized because bad login");
-                throw new BadRequestException("Incorrect login");
-            }
-
-            return login;
+            return userInfo;
         }
 
         /// <summary>
@@ -422,7 +544,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         IEnumerable<TeamDto> teams = allTeams.Where(t => t.TeamTypeId == teamLogin.TeamTypeId);
                         TeamDto team = teams.OrderByDescending(x => x.IsDefault).FirstOrDefault();
 
-                        CurrentTeamDto currentTeam = new ()
+                        CurrentTeamDto currentTeam = new CurrentTeamDto()
                         {
                             TeamTypeId = teamLogin.TeamTypeId,
                         };
@@ -444,13 +566,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
                         if (currentTeam.TeamId > 0)
                         {
                             IEnumerable<RoleDto> roles = await this.roleAppService.GetMemberRolesAsync(currentTeam.TeamId, userInfo.Id);
-                            RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? RoleMode.AllRoles;
+                            BIA.Net.Core.Common.Enum.RoleMode roleMode = Array.Find(loginParam.TeamsConfig, r => r.TeamTypeId == currentTeam.TeamTypeId)?.RoleMode ?? BIA.Net.Core.Common.Enum.RoleMode.AllRoles;
 
-                            if (roleMode == RoleMode.AllRoles)
+                            if (roleMode == BIA.Net.Core.Common.Enum.RoleMode.AllRoles)
                             {
                                 currentTeam.CurrentRoleIds = roles.Select(r => r.Id).ToList();
                             }
-                            else if (roleMode == RoleMode.SingleRole)
+                            else if (roleMode == BIA.Net.Core.Common.Enum.RoleMode.SingleRole)
                             {
                                 RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
                                 if (role != null)
@@ -498,12 +620,12 @@ namespace TheBIADevCompany.BIADemo.Application.User
                             {
                                 if (currentTeam.TeamTypeId == teamConfig.TeamTypeId)
                                 {
-                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberSuffix);
+                                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberSuffix);
                                 }
 
                                 if (teamConfig.Parents != null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId && t.ParentTeamId == currentTeam.TeamId))
                                 {
-                                    allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                                    allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
                                 }
                             }
 
@@ -516,12 +638,13 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 {
                     if (teamConfig.Parents == null && allTeams.Any(t => t.TeamTypeId == teamConfig.TeamTypeId))
                     {
-                        allRoles.Add(teamConfig.RightPrefix + Constants.Role.TeamMemberOfOneSuffix);
+                        allRoles.Add(teamConfig.RightPrefix + Crosscutting.Common.Constants.Role.TeamMemberOfOneSuffix);
                     }
                 }
             }
 
             return allRoles;
         }
+#endif
     }
 }

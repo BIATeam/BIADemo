@@ -23,7 +23,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     public activatedRoute: ActivatedRoute,
-    private serviceInjector: BiaInjectorService
+    protected serviceInjector: BiaInjectorService
   ) {}
   protected dynamicComponent: ComponentRef<any>;
 

@@ -40,8 +40,8 @@ export class LanguageOptionsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private languageDas: LanguageOptionDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected languageDas: LanguageOptionDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

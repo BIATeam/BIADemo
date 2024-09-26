@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureUsersActions } from './users-actions';
-import { Store } from '@ngrx/store';
-import { FeatureUsersStore } from './user.state';
-import { User } from '../model/user';
-import { userCRUDConfiguration } from '../user.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { User } from '../model/user';
 import { UserDas } from '../services/user-das.service';
+import { userCRUDConfiguration } from '../user.constants';
+import { FeatureUsersStore } from './user.state';
+import { FeatureUsersActions } from './users-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -88,7 +87,7 @@ export class UsersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -126,7 +125,7 @@ export class UsersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -163,7 +162,7 @@ export class UsersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -197,7 +196,7 @@ export class UsersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -234,7 +233,7 @@ export class UsersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureUsersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -271,9 +270,9 @@ export class UsersEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private userDas: UserDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    protected actions$: Actions,
+    protected userDas: UserDas,
+    protected biaMessageService: BiaMessageService,
+    protected store: Store<AppState>
   ) {}
 }

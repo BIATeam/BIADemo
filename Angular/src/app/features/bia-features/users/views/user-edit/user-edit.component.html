@@ -1,7 +1,8 @@
 <bia-user-form
-  [crudItem]="userService.crudItem$ | async"
+  *ngIf="userService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="userService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="(userService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></bia-user-form>
 <bia-spinner

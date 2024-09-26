@@ -1,34 +1,33 @@
+import { HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
-import { Observable, BehaviorSubject, of, NEVER, Subscription } from 'rxjs';
-import { map, filter, take, switchMap, catchError, skip } from 'rxjs/operators';
-import { AbstractDas } from './abstract-das.service';
-import {
-  AuthInfo,
-  AdditionalInfos,
-  Token,
-  LoginParamDto,
-  CurrentTeamDto,
-} from 'src/app/shared/bia-shared/model/auth-info';
-import { BiaMessageService } from './bia-message.service';
-import { TranslateService } from '@ngx-translate/core';
-import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
-import { allEnvironments } from 'src/environments/all-environments';
-import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
-import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, NEVER, Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
+import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
+import {
+  AdditionalInfos,
+  AuthInfo,
+  CurrentTeamDto,
+  LoginParamDto,
+  Token,
+} from 'src/app/shared/bia-shared/model/auth-info';
+import { RoleMode, TeamTypeId } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { allEnvironments } from 'src/environments/all-environments';
+import { AbstractDas } from './abstract-das.service';
+import { BiaMessageService } from './bia-message.service';
 import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { BiaSwUpdateService } from './bia-sw-update.service';
-import { HttpStatusCode } from '@angular/common/http';
+import { RefreshTokenService } from './refresh-token.service';
 
 const STORAGE_LOGINPARAM_KEY = 'loginParam';
 const STORAGE_RELOADED_KEY = 'isReloaded';
-const STORAGE_AUTHINFO_KEY = 'AuthInfo';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
-  public shouldRefreshToken = false;
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo> =
     new BehaviorSubject<AuthInfo>(new AuthInfo());
@@ -40,18 +39,15 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
       )
     );
 
-  public hasToken$: Observable<boolean> = this.authInfo$.pipe(
-    map((authInfo: AuthInfo) => authInfo?.token?.length > 0 === true)
-  );
-
   constructor(
     injector: Injector,
     protected biaMessageService: BiaMessageService,
     protected translateService: TranslateService,
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     protected biaSwUpdateService: BiaSwUpdateService
   ) {
     super(injector, 'Auth');
+    RefreshTokenService.shouldRefreshToken = false;
     this.init();
   }
 
@@ -112,7 +108,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     if (!permission) {
       return of(true);
     }
-    if (this.shouldRefreshToken) {
+    if (RefreshTokenService.shouldRefreshToken) {
       console.info('Login from hasPermissionObs.');
       return this.login().pipe(
         map((authInfo: AuthInfo | null) => {
@@ -247,7 +243,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
 
   public reLogin() {
     if (!this.isInLogin) {
-      this.shouldRefreshToken = true;
+      RefreshTokenService.shouldRefreshToken = true;
       this.authInfoSubject.next(new AuthInfo());
       this.login().subscribe(() => {
         console.log('Logged after relogin');
@@ -255,7 +251,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
-  private setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
+  protected setCurrentTeamId(teamTypeId: number, teamId: number): boolean {
     teamId = +teamId;
     const loginParam = this.getLoginParameters();
     let teamsLogin = loginParam.currentTeamLogins;
@@ -298,7 +294,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
-  private setCurrentRoleIds(
+  protected setCurrentRoleIds(
     teamTypeId: number,
     teamId: number,
     roleIds: number[]
@@ -349,16 +345,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
           if (authInfo) {
             authInfo.uncryptedToken = this.decodeToken(authInfo.token);
           }
-          this.shouldRefreshToken = false;
+          RefreshTokenService.shouldRefreshToken = false;
           this.isInLogin = false;
           this.authInfoSubject.next(authInfo);
-
-          if (BiaOnlineOfflineService.isModeEnabled === true) {
-            localStorage.setItem(
-              STORAGE_AUTHINFO_KEY,
-              JSON.stringify(authInfo)
-            );
-          }
 
           this.store.dispatch(
             DomainTeamsActions.loadAllSuccess({
@@ -373,20 +362,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
               allEnvironments.urlErrorPage + '?num=' + err.status;
           }
 
-          this.shouldRefreshToken = false;
-          let authInfo: AuthInfo = <AuthInfo>{};
-
-          if (
-            BiaOnlineOfflineService.isModeEnabled === true &&
-            BiaOnlineOfflineService.isServerAvailable(err) !== true
-          ) {
-            const jsonAuthInfo: string | null =
-              localStorage.getItem(STORAGE_AUTHINFO_KEY);
-            if (jsonAuthInfo) {
-              authInfo = JSON.parse(jsonAuthInfo);
-            }
-          }
-
+          RefreshTokenService.shouldRefreshToken = true;
+          this.isInLogin = false;
+          const authInfo: AuthInfo = <AuthInfo>{};
           this.authInfoSubject.next(authInfo);
           this.store.dispatch(
             DomainTeamsActions.loadAllSuccess({

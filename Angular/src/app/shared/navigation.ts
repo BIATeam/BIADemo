@@ -28,6 +28,14 @@ export const NAVIGATION: BiaNavigation[] = [
         permissions: [Permission.AircraftMaintenanceCompany_List_Access],
         path: ['/examples/aircraft-maintenance-companies'],
       },
+      /// BIAToolKit - Begin Partial Navigation MaintenanceTeam
+      {
+        labelKey: 'app.maintenance-teams',
+        permissions: [Permission.MaintenanceTeam_List_Access],
+        /// TODO after creation of CRUD Team MaintenanceTeam : adapt the path
+        path: ['/examples/maintenance-teams'],
+      },
+      /// BIAToolKit - End Partial Navigation MaintenanceTeam
       /// BIAToolKit - Begin Partial Navigation Plane
       {
         labelKey: 'app.planes',

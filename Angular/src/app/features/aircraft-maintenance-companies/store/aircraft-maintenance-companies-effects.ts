@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
-import { Store } from '@ngrx/store';
-import { FeatureAircraftMaintenanceCompaniesStore } from './aircraft-maintenance-company.state';
-import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
-import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
+import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { AircraftMaintenanceCompanyDas } from '../services/aircraft-maintenance-company-das.service';
+import { FeatureAircraftMaintenanceCompaniesActions } from './aircraft-maintenance-companies-actions';
+import { FeatureAircraftMaintenanceCompaniesStore } from './aircraft-maintenance-company.state';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -101,7 +100,7 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: <LazyLoadEvent>event }
+                  { event: event }
                 );
               }
             }),
@@ -146,7 +145,7 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: <LazyLoadEvent>event }
+                  { event: event }
                 );
               }
             }),
@@ -190,7 +189,7 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: <LazyLoadEvent>event }
+                  { event: event }
                 );
               }
             }),
@@ -234,7 +233,7 @@ export class AircraftMaintenanceCompaniesEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureAircraftMaintenanceCompaniesActions.loadAllByPost(
-                  { event: <LazyLoadEvent>event }
+                  { event: event }
                 );
               }
             }),

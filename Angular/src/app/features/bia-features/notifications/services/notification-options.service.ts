@@ -29,7 +29,7 @@ export class NotificationOptionsService {
   teamOptions$: Observable<OptionDto[]>;
   languageOptions$: Observable<OptionDto[]>;
 
-  constructor(private store: Store<AppState>) {
+  constructor(protected store: Store<AppState>) {
     this.notificationTypeOptions$ = this.store.select(
       getAllNotificationTypeOptions
     );

@@ -1,6 +1,7 @@
 import { CrudConfig } from 'src/app/shared/bia-shared/feature-templates/crud-items/model/crud-config';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { planeFieldsConfiguration } from './model/plane';
+import { planeSpecificFieldsConfiguration } from './model/plane-specific';
 
 // IMPORTANT: this key should be unique in all the application.
 export const featureName = 'planes-specific';
@@ -19,4 +20,9 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   // storeKey: 'feature-' + featureName,
   // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
   tableStateKey: 'planesGrid',
+});
+
+export const planeSpecificCRUDConfiguration: CrudConfig = new CrudConfig({
+  ...planeCRUDConfiguration,
+  fieldsConfig: planeSpecificFieldsConfiguration,
 });

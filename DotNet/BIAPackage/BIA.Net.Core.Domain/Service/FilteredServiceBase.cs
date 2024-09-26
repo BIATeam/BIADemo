@@ -72,27 +72,30 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-            var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
-                this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
-                mapper,
-                filters);
+                var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
+                    this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
+                    mapper,
+                    filters);
 
-            var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
+                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollection, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
 
-            var results = await this.Repository.GetRangeResultAsync(
-                mapper.EntityToDto(mapperMode),
-                id: id,
-                specification: spec,
-                filter: filter,
-                queryOrder: queryOrder,
-                firstElement: filters?.First ?? 0,
-                pageCount: filters?.Rows ?? 0,
-                queryMode: queryMode,
-                isReadOnlyMode: isReadOnlyMode);
+                var results = await this.Repository.GetRangeResultAsync(
+                    mapper.EntityToDto(mapperMode),
+                    id: id,
+                    specification: spec,
+                    filter: filter,
+                    queryOrder: queryOrder,
+                    firstElement: filters?.First ?? 0,
+                    pageCount: filters?.Rows ?? 0,
+                    queryMode: queryMode,
+                    isReadOnlyMode: isReadOnlyMode);
 
-            return (results.Item1.ToList(), results.Item2);
+                return (results.Item1.ToList(), results.Item2);
+            });
         }
 
         /// <summary>
@@ -127,18 +130,21 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-            return await this.Repository.GetAllResultAsync(
-                selectResult: mapper.EntityToDto(mapperMode),
-                id: id,
-                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
-                filter: filter,
-                queryOrder: queryOrder,
-                firstElement: firstElement,
-                pageCount: pageCount,
-                includes: includes,
-                queryMode: queryMode,
-                isReadOnlyMode: isReadOnlyMode);
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                return await this.Repository.GetAllResultAsync(
+                    selectResult: mapper.EntityToDto(mapperMode),
+                    id: id,
+                    specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
+                    filter: filter,
+                    queryOrder: queryOrder,
+                    firstElement: firstElement,
+                    pageCount: pageCount,
+                    includes: includes,
+                    queryMode: queryMode,
+                    isReadOnlyMode: isReadOnlyMode);
+            });
         }
 
         /// <summary>
@@ -175,19 +181,22 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-            return await this.Repository.GetAllResultAsync(
-                mapper.EntityToDto(mapperMode),
-                orderByExpression,
-                ascending,
-                id: id,
-                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
-                filter: filter,
-                firstElement: firstElement,
-                pageCount: pageCount,
-                includes: includes,
-                queryMode: queryMode,
-                isReadOnlyMode: isReadOnlyMode);
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                return await this.Repository.GetAllResultAsync(
+                    mapper.EntityToDto(mapperMode),
+                    orderByExpression,
+                    ascending,
+                    id: id,
+                    specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
+                    filter: filter,
+                    firstElement: firstElement,
+                    pageCount: pageCount,
+                    includes: includes,
+                    queryMode: queryMode,
+                    isReadOnlyMode: isReadOnlyMode);
+            });
         }
 
         /// <summary>
@@ -218,31 +227,34 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherDto : BaseDto<TKey>, new()
             where TOtherFilterDto : LazyLoadDto, new()
         {
-            List<string> columnHeaderKeys = null;
-            List<string> columnHeaderValues = null;
-            if (filters is PagingFilterFormatDto fileFilters)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                columnHeaderKeys = fileFilters.Columns.Select(x => x.Key).ToList();
-                columnHeaderValues = fileFilters.Columns.Select(x => x.Value).ToList();
-            }
+                List<string> columnHeaderKeys = null;
+                List<string> columnHeaderValues = null;
+                if (filters is PagingFilterFormatDto fileFilters)
+                {
+                    columnHeaderKeys = fileFilters.Columns.Select(x => x.Key).ToList();
+                    columnHeaderValues = fileFilters.Columns.Select(x => x.Value).ToList();
+                }
 
-            // We reset these parameters, used for paging, in order to recover the totality of the data.
-            filters.First = 0;
-            filters.Rows = 0;
+                // We reset these parameters, used for paging, in order to recover the totality of the data.
+                filters.First = 0;
+                filters.Rows = 0;
 
-            IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
+                IEnumerable<TOtherDto> results = (await this.GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(filters: filters, id: id, specification: specification, filter: filter, accessMode: accessMode, queryMode: queryMode, isReadOnlyMode: isReadOnlyMode)).results;
 
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-            List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                List<object[]> records = results.Select(mapper.DtoToRecord(mapperMode, columnHeaderKeys)).ToList();
 
-            StringBuilder csv = new ();
-            records.ForEach(line =>
-            {
-                csv.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
+                var csvBuilder = new StringBuilder();
+                records.ForEach(line =>
+                {
+                    csvBuilder.AppendLine(string.Join(BiaConstants.Csv.Separator, line));
+                });
+
+                string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
+                return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csvBuilder}");
             });
-
-            string csvSep = $"sep={BiaConstants.Csv.Separator}\n";
-            return Encoding.GetEncoding("iso-8859-1").GetBytes($"{csvSep}{string.Join(BiaConstants.Csv.Separator, columnHeaderValues ?? new List<string>())}\r\n{csv}");
         }
 
         /// <summary>
@@ -272,21 +284,24 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-            var result = await this.Repository.GetResultAsync(
-                mapper.EntityToDto(mapperMode),
-                id: id,
-                specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
-                filter: filter,
-                includes: includes,
-                queryMode: queryMode,
-                isReadOnlyMode: isReadOnlyMode);
-            if (result == null)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                throw new ElementNotFoundException();
-            }
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                var result = await this.Repository.GetResultAsync(
+                    mapper.EntityToDto(mapperMode),
+                    id: id,
+                    specification: this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
+                    filter: filter,
+                    includes: includes,
+                    queryMode: queryMode,
+                    isReadOnlyMode: isReadOnlyMode);
+                if (result == null)
+                {
+                    throw new ElementNotFoundException();
+                }
 
-            return result;
+                return result;
+            });
         }
 
         /// <summary>
@@ -303,17 +318,20 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dto != null)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-                var entity = new TEntity();
-                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
-                this.Repository.Add(entity);
-                await this.Repository.UnitOfWork.CommitAsync();
-                mapper.MapEntityKeysInDto(entity, dto);
-            }
+                if (dto != null)
+                {
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                    var entity = new TEntity();
+                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+                    this.Repository.Add(entity);
+                    await this.Repository.UnitOfWork.CommitAsync();
+                    mapper.MapEntityKeysInDto(entity, dto);
+                }
 
-            return dto;
+                return dto;
+            });
         }
 
         /// <summary>
@@ -334,24 +352,27 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            if (dto != null)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-
-                var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
-                if (entity == null)
+                if (dto != null)
                 {
-                    throw new ElementNotFoundException();
+                    TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+
+                    var entity = await this.Repository.GetEntityAsync(id: dto.Id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesForUpdate(mapperMode), queryMode: queryMode);
+                    if (entity == null)
+                    {
+                        throw new ElementNotFoundException();
+                    }
+
+                    mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
+
+                    await this.Repository.UnitOfWork.CommitAsync();
+                    dto.DtoState = DtoState.Unchanged;
+                    mapper.MapEntityKeysInDto(entity, dto);
                 }
 
-                mapper.DtoToEntity(dto, entity, mapperMode, this.Repository.UnitOfWork);
-
-                await this.Repository.UnitOfWork.CommitAsync();
-                dto.DtoState = DtoState.Unchanged;
-                mapper.MapEntityKeysInDto(entity, dto);
-            }
-
-            return dto;
+                return dto;
+            });
         }
 
         /// <summary>
@@ -372,20 +393,23 @@ namespace BIA.Net.Core.Domain.Service
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
-            TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
-
-            var entity = await this.Repository.GetEntityAsync(id: id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
-            if (entity == null)
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                throw new ElementNotFoundException();
-            }
+                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-            var dto = new TOtherDto();
-            mapper.MapEntityKeysInDto(entity, dto);
+                var entity = await this.Repository.GetEntityAsync(id: id, specification: this.GetFilterSpecification(accessMode, this.FiltersContext), includes: mapper.IncludesBeforeDelete(mapperMode), queryMode: queryMode);
+                if (entity == null)
+                {
+                    throw new ElementNotFoundException();
+                }
 
-            this.Repository.Remove(entity);
-            await this.Repository.UnitOfWork.CommitAsync();
-            return dto;
+                var dto = new TOtherDto();
+                mapper.MapEntityKeysInDto(entity, dto);
+
+                this.Repository.Remove(entity);
+                await this.Repository.UnitOfWork.CommitAsync();
+                return dto;
+            });
         }
 
         /// <summary>
@@ -448,7 +472,7 @@ namespace BIA.Net.Core.Domain.Service
             int nbUpdated = 0;
             int nbDeleted = 0;
             int nbError = 0;
-            SaveSafeReturn<TOtherDto> saveSafeReturn = new ();
+            var saveSafeReturn = new SaveSafeReturn<TOtherDto>();
 
             bool canAdd = true;
             bool canUpdate = true;
@@ -799,6 +823,54 @@ namespace BIA.Net.Core.Domain.Service
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Execute the <paramref name="action"/> and handling <see cref="FrontUserException"/>.
+        /// </summary>
+        /// <typeparam name="T">Generic return <typeparamref name="T"/> type of the executed <paramref name="action"/>.</typeparam>
+        /// <param name="action">The action to execute.</param>
+        /// <returns><typeparamref name="T"/>.</returns>
+        /// <exception cref="FrontUserException">Throw into <see cref="FrontUserException"/> when raised.</exception>
+        protected virtual async Task<T> ExecuteWithFrontUserExceptionHandlingAsync<T>(Func<Task<T>> action)
+        {
+            try
+            {
+                return await action();
+            }
+            catch (FrontUserException ex)
+            {
+                var handledException = this.HandleFrontUserException(ex);
+                if (handledException != null)
+                {
+                    throw handledException;
+                }
+
+                return default;
+            }
+        }
+
+        /// <summary>
+        /// Handle the <paramref name="frontUserException"/>.
+        /// </summary>
+        /// <param name="frontUserException">The <see cref="FrontUserException"/> to handle.</param>
+        /// <returns><see cref="Exception"/>.</returns>
+        protected virtual Exception HandleFrontUserException(FrontUserException frontUserException)
+        {
+            return frontUserException.ErrorMessageKey switch
+            {
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseForeignKeyConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseUniqueConstraint => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseDuplicateKey => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseNullValueInsert => new FrontUserException(
+                    frontUserException.ErrorMessageKey,
+                    frontUserException,
+                    [.. frontUserException.ErrorMessageParameters, typeof(TEntity).Name]),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseObjectNotFound => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseLoginUser => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                Common.Enum.FrontUserExceptionErrorMessageKey.DatabaseOpen => new FrontUserException(frontUserException.ErrorMessageKey, frontUserException, typeof(TEntity).Name),
+                _ => frontUserException
+            };
         }
     }
 }

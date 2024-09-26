@@ -1,75 +1,31 @@
+import { APP_BASE_HREF } from '@angular/common';
 import {
   HttpClient,
   HttpHeaders,
-  HttpParams,
   HttpResponse,
   HttpStatusCode,
 } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { catchError, first, map, tap } from 'rxjs/operators';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { from, NEVER, Observable, of, throwError } from 'rxjs';
-import { LazyLoadEvent } from 'primeng/api';
+import { catchError, first, map, tap } from 'rxjs/operators';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { AppDB, DataItem } from '../db';
+import {
+  DeleteParam,
+  DeletesParam,
+  GetListByPostParam,
+  GetListParam,
+  GetParam,
+  PostParam,
+  PutParam,
+  SaveParam,
+} from '../models/http-params';
+import { BiaEnvironmentService } from './bia-environment.service';
+import { BiaOnlineOfflineService } from './bia-online-offline.service';
 import { DateHelperService } from './date-helper.service';
 import { MatomoTracker } from './matomo/matomo-tracker.service';
-import { BiaOnlineOfflineService } from './bia-online-offline.service';
-import { AppDB, DataItem } from '../db';
-import { BiaEnvironmentService } from './bia-environment.service';
-import { APP_BASE_HREF } from '@angular/common';
-
-export interface HttpOptions {
-  headers?:
-    | HttpHeaders
-    | {
-        [header: string]: string | string[];
-      };
-  observe?: any;
-  params?:
-    | HttpParams
-    | {
-        [param: string]: string | string[];
-      };
-  reportProgress?: boolean;
-  responseType?: any;
-  withCredentials?: boolean;
-}
-
-interface HttpParam {
-  offlineMode?: boolean;
-  options?: HttpOptions;
-  endpoint?: string;
-}
-
-export interface GetParam extends HttpParam {
-  id?: string | number;
-}
-
-export type GetListParam = HttpParam;
-
-export interface GetListByPostParam extends HttpParam {
-  event: LazyLoadEvent;
-}
-
-export interface SaveParam<TIn> extends HttpParam {
-  items: TIn[];
-}
-
-export interface PutParam<TIn> extends HttpParam {
-  item: TIn;
-  id: string | number;
-}
-
-export interface PostParam<TIn> extends HttpParam {
-  item: TIn;
-}
-
-export interface DeleteParam extends HttpParam {
-  id: string | number;
-}
-
-export interface DeletesParam extends HttpParam {
-  ids: string[] | number[];
-}
 
 export abstract class GenericDas {
   public http: HttpClient;
@@ -193,6 +149,8 @@ export abstract class GenericDas {
   }
 
   saveItem<TIn, TOut>(param: SaveParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? 'save';
     if (param.items) {
       param.items.forEach(item => {
@@ -212,6 +170,8 @@ export abstract class GenericDas {
   }
 
   putItem<TIn, TOut>(param: PutParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
@@ -233,6 +193,8 @@ export abstract class GenericDas {
   }
 
   postItem<TIn, TOut>(param: PostParam<TIn>) {
+    // param might contains ngrx state item which is immutable : clone to allow update
+    param = clone(param);
     param.endpoint = param.endpoint ?? '';
     DateHelperService.fillDate(param.item);
 
@@ -281,7 +243,7 @@ export abstract class GenericDas {
     }
   }
 
-  getItemFile(event: LazyLoadEvent, endpoint = 'csv'): Observable<any> {
+  getItemFile(event: TableLazyLoadEvent, endpoint = 'csv'): Observable<any> {
     this.matomoTracker.trackDownload('Export ' + endpoint);
     return this.http.post(`${this.route}${endpoint}`, event, {
       responseType: 'blob',

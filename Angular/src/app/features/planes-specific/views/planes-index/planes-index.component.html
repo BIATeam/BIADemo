@@ -11,7 +11,7 @@
       [selectedElements]="selectedCrudItems"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="totalCount$ | async"
+      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -26,12 +26,6 @@
       [hasColumnFilter]="hasColumnFilter">
       <ng-template pTemplate="customControl">
         <div class="flex flex-row gap-3 bia-table-controller-container">
-          <i
-            class="pi pi-table bia-pointer"
-            [class]="crudConfiguration.useCalcMode ? 'enable' : 'disabled'"
-            (click)="useCalcModeChange(!crudConfiguration.useCalcMode)"
-            pTooltip="{{ 'bia.useCalcMode' | translate }}"
-            tooltipPosition="top"></i>
           <i
             class="pi pi-eye bia-pointer"
             [class]="crudConfiguration.useView ? 'enable' : 'disabled'"
@@ -55,8 +49,8 @@
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(crudItems$ | async) ?? []"
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="crudConfiguration.fieldsConfig"
@@ -64,7 +58,7 @@
       [globalSearchValue]="globalSearchValue"
       [canClickRow]="canEdit"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (clickRowId)="onClickRow($event)"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
@@ -100,11 +94,13 @@
         </ng-container>
       </ng-template>
     </bia-table>
-    <app-plane-table
+    <app-plane-specific-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="crudItems$ | async"
-      [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
-      [totalRecord]="totalCount$ | async"
+      [elements]="(crudItems$ | async) ?? []"
+      [dictOptionDtos]="
+        (planeService.optionsService.dictOptionDtos$ | async) ?? []
+      "
+      [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
       [configuration]="crudConfiguration.fieldsConfig"
@@ -113,7 +109,7 @@
       [canEdit]="canEdit"
       [canAdd]="canAdd"
       [canSelectElement]="canDelete"
-      [loading]="loading$ | async"
+      [loading]="(loading$ | async) ?? false"
       (loadLazy)="onLoadLazy($event)"
       [viewPreference]="viewPreference"
       [tableStateKey]="tableStateKey"
@@ -169,6 +165,6 @@
           </ng-container>
         </div>
       </ng-template>
-    </app-plane-table>
+    </app-plane-specific-table>
   </div>
 </div>

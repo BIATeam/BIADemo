@@ -20,7 +20,7 @@
         <div class="app-filter-container flex-1" style="max-width: 90%">
           <span class="p-float-label">
             <p-dropdown
-              [options]="userOptions$ | async"
+              [options]="(userOptions$ | async) ?? []"
               placeholder="&nbsp;"
               formControlName="userSelected"
               optionValue="id"

@@ -46,15 +46,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// </summary>
         private readonly BiaNetSection configuration;
 
+#if UseHubForClientInUser
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInUser
         public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubRepository clientForHubService)
 #else
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UsersController"/> class.
+        /// </summary>
+        /// <param name="userService">The user service.</param>
+        /// <param name="configuration">The configuration.</param>
         public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration)
 #endif
         {

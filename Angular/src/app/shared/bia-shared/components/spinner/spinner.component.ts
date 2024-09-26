@@ -48,7 +48,7 @@ export class SpinnerComponent implements OnInit {
   showSpinner$: Observable<any>;
 
   constructor(
-    private elementRef: ElementRef<HTMLElement>,
+    protected elementRef: ElementRef<HTMLElement>,
     public themeService: BiaThemeService
   ) {}
 

@@ -42,22 +42,28 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Boolean'">
-      <p-checkbox
-        binary="true"
-        [formControlName]="field.field"
-        label="{{ field.header | translate }}"></p-checkbox>
+      <p-checkbox binary="true" [formControlName]="field.field"></p-checkbox>
+      <label>
+        <span class="bia-star-mandatory" *ngIf="field.isRequired">*</span>
+        {{ field.header | translate }}
+      </label>
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
-      <span class="p-float-label">
+      <span
+        class="p-float-label"
+        *ngIf="
+          getDisplayNumberFormat(field.displayFormat);
+          let displayNumberFormat
+        ">
         <p-inputNumber
           [formControlName]="field.field"
-          [mode]="field.displayFormat.mode"
-          [currency]="field.displayFormat.currency"
-          [minFractionDigits]="field.displayFormat.minFractionDigits"
-          [maxFractionDigits]="field.displayFormat.maxFractionDigits"
-          [min]="field.displayFormat.min"
-          [max]="field.displayFormat.max"
-          [locale]="field.displayFormat.autoLocale || 'en-US'" />
+          [mode]="displayNumberFormat.mode"
+          [currency]="displayNumberFormat.currency"
+          [minFractionDigits]="displayNumberFormat.minFractionDigits"
+          [maxFractionDigits]="displayNumberFormat.maxFractionDigits"
+          [min]="displayNumberFormat.min"
+          [max]="displayNumberFormat.max"
+          [locale]="displayNumberFormat.autoLocale || 'en-US'" />
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
           >{{ field.header | translate }}</label
@@ -65,14 +71,19 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
-      <span class="p-float-label">
+      <span
+        class="p-float-label"
+        *ngIf="
+          getDisplayDateFormat(field.displayFormat);
+          let displayDateFormat
+        ">
         <p-calendar
           biaLocale
           [formControlName]="field.field"
           placeholder="&nbsp;"
           showButtonBar="true"
           appendTo="body"
-          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
+          [dateFormat]="displayDateFormat.autoPrimeDateFormat"
           [inputStyle]="{ width: '100%' }"></p-calendar>
         <label
           ><span class="bia-star-mandatory" *ngIf="field.isRequired">*</span
@@ -81,14 +92,19 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
-      <span class="p-float-label">
+      <span
+        class="p-float-label"
+        *ngIf="
+          getDisplayDateFormat(field.displayFormat);
+          let displayDateFormat
+        ">
         <p-calendar
           [formControlName]="field.field"
-          showTime="true"
+          [showTime]="true"
           showSeconds="false"
           timeOnly="true"
-          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
-          [hourFormat]="24"
+          [dateFormat]="displayDateFormat.autoPrimeDateFormat"
+          [hourFormat]="'24'"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
@@ -103,12 +119,12 @@
       <span class="p-float-label">
         <p-calendar
           [formControlName]="field.field"
-          showTime="true"
+          [showTime]="true"
           showSeconds="false"
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
-          [hourFormat]="24"
+          [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
@@ -122,12 +138,12 @@
       <span class="p-float-label">
         <p-calendar
           [formControlName]="field.field"
-          showTime="true"
+          [showTime]="true"
           showSeconds="true"
           timeOnly="true"
           placeholder="&nbsp;"
           dataType="string"
-          [hourFormat]="24"
+          [hourFormat]="'24'"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar
         ><!-- [hourFormat]="field.displayFormat.autoHourFormat" not work for 12 (PrimeNG 13)-->
@@ -138,13 +154,18 @@
       </span>
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
-      <span class="p-float-label">
+      <span
+        class="p-float-label"
+        *ngIf="
+          getDisplayDateFormat(field.displayFormat);
+          let displayDateFormat
+        ">
         <p-calendar
           biaLocale
           [formControlName]="field.field"
-          showTime="true"
-          [dateFormat]="field.displayFormat.autoPrimeDateFormat"
-          [hourFormat]="field.displayFormat.autoHourFormat"
+          [showTime]="true"
+          [dateFormat]="displayDateFormat.autoPrimeDateFormat"
+          [hourFormat]="displayDateFormat.autoHourFormat.toString()"
           placeholder="&nbsp;"
           [inputStyle]="{ width: '100%' }"
           appendTo="body"></p-calendar>

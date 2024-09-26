@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureMembersActions } from './members-actions';
-import { Store } from '@ngrx/store';
-import { FeatureMembersStore } from './member.state';
-import { Member } from '../model/member';
-import { memberCRUDConfiguration } from '../member.constants';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
+import { memberCRUDConfiguration } from '../member.constants';
+import { Member } from '../model/member';
 import { MemberDas } from '../services/member-das.service';
+import { FeatureMembersStore } from './member.state';
+import { FeatureMembersActions } from './members-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -88,7 +87,7 @@ export class MembersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -126,7 +125,7 @@ export class MembersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -163,7 +162,7 @@ export class MembersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -200,7 +199,7 @@ export class MembersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -237,7 +236,7 @@ export class MembersEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureMembersActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -251,9 +250,9 @@ export class MembersEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private memberDas: MemberDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    protected actions$: Actions,
+    protected memberDas: MemberDas,
+    protected biaMessageService: BiaMessageService,
+    protected store: Store<AppState>
   ) {}
 }

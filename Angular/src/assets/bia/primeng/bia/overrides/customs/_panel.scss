@@ -1,36 +1,38 @@
-p-tabview {
-  ul.p-tabview-nav {
-    display: flex;
-    border-radius: 0 !important;
-    border: 0 !important;
-    background-color: transparent !important;
-    li {
-      // width: 100%;
-      display: flex !important;
-      justify-content: center;
-      align-items: center;
+@layer primeng {
+  p-tabview {
+    ul.p-tabview-nav {
+      display: flex;
       border-radius: 0 !important;
-      background-color: $accentLightColor !important;
       border: 0 !important;
-      margin: 0 !important;
-      a {
-        color: $accentDarkColor !important;
-        width: 100%;
-        text-align: center;
-        .p-tabview-title {
-          font-family: 'oswald-light';
+      background-color: transparent !important;
+      li {
+        // width: 100%;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 !important;
+        background-color: $accentLightColor !important;
+        border: 0 !important;
+        margin: 0 !important;
+        a {
+          color: $accentDarkColor !important;
+          width: 100%;
+          text-align: center;
+          .p-tabview-title {
+            font-family: 'oswald-light';
+          }
+        }
+      }
+      > li.p-state-active {
+        background-color: $biaTabColor !important;
+        a {
+          color: $accentTextColor !important;
         }
       }
     }
-    > li.p-state-active {
-      background-color: $biaTabColor !important;
-      a {
-        color: $accentTextColor !important;
-      }
-    }
-  }
 
-  .p-tabview-panels {
-    background-color: $biaBgColor !important;
+    .p-tabview-panels {
+      background-color: $biaBgColor !important;
+    }
   }
 }

@@ -28,5 +28,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// Name of the Domain (reference to Authentication > LdapDomains > Name).
         /// </summary>
         public string Domain { get; set; }
+
+        /// <summary>
+        /// Gets or sets the sid.
+        /// </summary>
+        public string Sid { get; set; }
     }
 }

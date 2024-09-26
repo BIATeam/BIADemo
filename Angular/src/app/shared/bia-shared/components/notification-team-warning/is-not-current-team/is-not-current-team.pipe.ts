@@ -9,7 +9,7 @@ export class IsNotCurrentTeamPipe implements PipeTransform {
   constructor(public auth: AuthService) {}
 
   transform(notification: Notification): any {
-    if (!notification?.data.teams) {
+    if (!notification?.data?.teams) {
       return false;
     }
     return !notification.data.teams?.some(

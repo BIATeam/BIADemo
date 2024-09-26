@@ -27,9 +27,24 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public string Msn { get; set; }
 
         /// <summary>
+        /// Gets or sets the Manufacturer.
+        /// </summary>
+        public string Manufacturer { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the plane is active.
         /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the plane is on maintenance.
+        /// </summary>
+        public bool? IsMaintenance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the first flight date.
+        /// </summary>
+        public DateTime FirstFlightDate { get; set; }
 
         /// <summary>
         /// Gets or sets the last flight date.
@@ -43,10 +58,22 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public DateTime? DeliveryDate { get; set; }
 
         /// <summary>
+        /// Gets or sets the next maintenance date.
+        /// </summary>
+        [Column(TypeName = "date")]
+        public DateTime NextMaintenanceDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
         [Column(TypeName = "time")]
         public TimeSpan? SyncTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the daily synchronisation hour for flight data.
+        /// </summary>
+        [Column(TypeName = "time")]
+        public TimeSpan SyncFlightDataTime { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity.
@@ -54,14 +81,34 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         public int Capacity { get; set; }
 
         /// <summary>
+        /// Gets or sets the motors count.
+        /// </summary>
+        public int? MotorsCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total of flight hours.
+        /// </summary>
+        public double TotalFlightHours { get; set; }
+
+        /// <summary>
         /// Gets or sets the probability.
         /// </summary>
         public double? Probability { get; set; }
 
         /// <summary>
+        /// Gets or sets the fuel capacity.
+        /// </summary>
+        public float FuelCapacity { get; set; }
+
+        /// <summary>
         /// Gets or sets the fuelLevel.
         /// </summary>
         public float? FuelLevel { get; set; }
+
+        /// <summary>
+        /// Gets or sets the original price.
+        /// </summary>
+        public decimal OriginalPrice { get; set; }
 
         /// <summary>
         /// Gets or sets the estimated price.
@@ -106,7 +153,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <summary>
         /// Gets or sets the current airport id.
         /// </summary>
-        public int? CurrentAirportId { get; set; }
+        public int CurrentAirportId { get; set; }
 
         /// <summary>
         /// Gets or sets the list of similar plane type. Direct access.
@@ -117,5 +164,10 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the list of similar plane type. Via the jointure table.
         /// </summary>
         public ICollection<PlanePlaneType> SimilarPlaneType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of engines for plane.
+        /// </summary>
+        public ICollection<Engine> Engines { get; set; }
     }
 }

@@ -25,7 +25,7 @@
     <ng-container *ngSwitchCase="'ManyToMany'">
       <p-multiSelect
         class="bia-simple-input"
-        defaultLabel="&nbsp;"
+        placeholder="&nbsp;"
         [formControlName]="field.field"
         [options]="getOptionDto(field.field)"
         optionLabel="display"
@@ -46,15 +46,19 @@
     </ng-container>
     <ng-container *ngSwitchCase="'Number'">
       <p-inputNumber
+        *ngIf="
+          getDisplayNumberFormat(field.displayFormat);
+          let displayNumberFormat
+        "
         [formControlName]="field.field"
         (onInput)="onChange()"
-        [mode]="field.displayFormat.mode"
-        [currency]="field.displayFormat.currency"
-        [minFractionDigits]="field.displayFormat.minFractionDigits"
-        [maxFractionDigits]="field.displayFormat.maxFractionDigits"
-        [min]="field.displayFormat.min"
-        [max]="field.displayFormat.max"
-        [locale]="field.displayFormat.autoLocale || 'en-US'" />
+        [mode]="displayNumberFormat.mode"
+        [currency]="displayNumberFormat.currency"
+        [minFractionDigits]="displayNumberFormat.minFractionDigits"
+        [maxFractionDigits]="displayNumberFormat.maxFractionDigits"
+        [min]="displayNumberFormat.min"
+        [max]="displayNumberFormat.max"
+        [locale]="displayNumberFormat.autoLocale || 'en-US'" />
     </ng-container>
     <ng-container *ngSwitchCase="'Date'">
       <p-calendar
@@ -71,9 +75,8 @@
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
         [dateFormat]="
-          field.displayFormat.autoPrimeDateFormat
-            ? field.displayFormat.autoPrimeDateFormat
-            : 'yy-mm-dd'
+          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+          'yy-mm-dd'
         "></p-calendar>
     </ng-container>
     <ng-container *ngSwitchCase="'Time'">
@@ -89,14 +92,13 @@
         (onInput)="onChange()"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
-        showTime="true"
+        [showTime]="true"
         [timeOnly]="true"
         [dateFormat]="
-          field.displayFormat.autoPrimeDateFormat
-            ? field.displayFormat.autoPrimeDateFormat
-            : 'yy-mm-dd'
+          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+          'yy-mm-dd'
         "
-        [hourFormat]="24"></p-calendar>
+        [hourFormat]="'24'"></p-calendar>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeOnly'">
@@ -112,10 +114,10 @@
         (onInput)="onChange()"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
-        showTime="true"
+        [showTime]="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="24"></p-calendar>
+        [hourFormat]="'24'"></p-calendar>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'TimeSecOnly'">
@@ -131,11 +133,11 @@
         appendTo="body"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
-        showTime="true"
+        [showTime]="true"
         showSeconds="true"
         dataType="string"
         [timeOnly]="true"
-        [hourFormat]="24"></p-calendar>
+        [hourFormat]="'24'"></p-calendar>
       <!-- [hourFormat]="field.displayFormat.autoHourFormat?field.displayFormat.autoHourFormat:24" not work for 12 (PrimeNG 13)-->
     </ng-container>
     <ng-container *ngSwitchCase="'DateTime'">
@@ -152,16 +154,15 @@
         (onInput)="onChange()"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
-        showTime="true"
+        [showTime]="true"
         [dateFormat]="
-          field.displayFormat.autoPrimeDateFormat
-            ? field.displayFormat.autoPrimeDateFormat
-            : 'yy-mm-dd'
+          getDisplayDateFormat(field.displayFormat)?.autoPrimeDateFormat ??
+          'yy-mm-dd'
         "
         [hourFormat]="
-          field.displayFormat.autoHourFormat
-            ? field.displayFormat.autoHourFormat
-            : 24
+          getDisplayDateFormat(
+            field.displayFormat
+          )?.autoHourFormat?.toString() ?? '24'
         "></p-calendar>
     </ng-container>
     <ng-container *ngSwitchDefault>

@@ -23,7 +23,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
+#endif
 
     /// <summary>
     /// The startup class.
@@ -44,7 +46,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        /// <param name="env">The environment.</param>
         public Startup(IConfiguration configuration)
         {
             this.configuration = configuration;
@@ -55,9 +56,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
         /// <summary>
         /// This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
-        /// <param name="services">The collection of services.</param>
-        public void ConfigureServices(IServiceCollection services)
+        /// <param name="builder">The app's builder.</param>
+        public void ConfigureServices(IHostApplicationBuilder builder)
         {
+            IServiceCollection services = builder.Services;
+
             services.AddControllers();
             services.AddCors();
             services.AddResponseCompression();
@@ -72,7 +75,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.Secure = CookieSecurePolicy.Always;
-                options.HttpOnly = HttpOnlyPolicy.None;
+                options.HttpOnly = HttpOnlyPolicy.Always;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
             // Used to get a unique identifier for each HTTP request and track it.
@@ -88,6 +92,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, true);
+#if BIA_BACK_TO_BACK_AUTH
+            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, Controllers.Bia.BiaClaimsTransformation>();
+#endif
         }
 
         /// <summary>
@@ -105,8 +112,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             else
             {
                 app.UseHsts();
-                app.ConfigureApiExceptionHandler();
             }
+
+            app.ConfigureApiExceptionHandler(env.IsDevelopment());
 
             if (!string.IsNullOrEmpty(this.biaNetSection.Security?.Audience))
             {
@@ -132,7 +140,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
+#if BIA_FRONT_FEATURE
             CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
+#endif
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

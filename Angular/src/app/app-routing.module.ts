@@ -35,6 +35,20 @@ const routes: Routes = [
                     './features/aircraft-maintenance-companies/aircraft-maintenance-company.module'
                   ).then(m => m.AircraftMaintenanceCompanyModule),
               },
+              /// BIAToolKit - Begin Partial Routing MaintenanceTeam
+              {
+                path: 'maintenance-teams',
+                data: {
+                  breadcrumb: 'app.maintenance-teams',
+                  canNavigate: true,
+                },
+                loadChildren: () =>
+                  import(
+                    './features/aircraft-maintenance-companies/children/maintenance-teams/maintenance-team.module'
+                  ).then(m => m.MaintenanceTeamModule),
+              },
+              /// BIAToolKit - End Partial Routing MaintenanceTeam
+
               /// BIAToolKit - Begin Partial Routing Plane
               {
                 path: 'planes',

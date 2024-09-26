@@ -1,9 +1,10 @@
-<app-plane-form
-  [crudItem]="planeService.crudItem$ | async"
+<app-plane-specific-form
+  *ngIf="crudItemService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
-  [dictOptionDtos]="planeService.optionsService.dictOptionDtos$ | async"
+  [dictOptionDtos]="(planeService.optionsService.dictOptionDtos$ | async) ?? []"
   (cancel)="onCancelled()"
-  (save)="onSubmitted($event)"></app-plane-form>
+  (save)="onSubmitted($event)"></app-plane-specific-form>
 <bia-spinner
   *ngIf="planeService.loadingGet$ | async"
   [overlay]="true"></bia-spinner>

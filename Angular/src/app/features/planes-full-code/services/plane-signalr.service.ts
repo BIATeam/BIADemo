@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { FeaturePlanesActions } from '../store/planes-actions';
-import { getLastLazyLoadEvent } from '../store/plane.state';
-import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
 import { TeamTypeId } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
+import { getLastLazyLoadEvent } from '../store/plane.state';
+import { FeaturePlanesActions } from '../store/planes-actions';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -52,7 +51,9 @@ export class PlanesSignalRService {
             'color: green; font-weight: bold'
           );
           this.store.dispatch(
-            FeaturePlanesActions.loadAllByPost({ event: <LazyLoadEvent>event })
+            FeaturePlanesActions.loadAllByPost({
+              event: event,
+            })
           );
         });
     });

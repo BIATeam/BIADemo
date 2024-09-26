@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  concatMap,
   map,
   switchMap,
   withLatestFrom,
-  concatMap,
 } from 'rxjs/operators';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { FeatureNotificationsActions } from './notifications-actions';
-import { NotificationDas } from '../services/notification-das.service';
-import { Store } from '@ngrx/store';
-import { getLastLazyLoadEvent } from './notification.state';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
 import { AppState } from 'src/app/store/state';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
-import { LazyLoadEvent } from 'primeng/api';
-import { biaSuccessWaitRefreshSignalR } from 'src/app/core/bia-core/shared/bia-action';
 import { NotificationListItem } from '../model/notificationListItem';
+import { NotificationDas } from '../services/notification-das.service';
+import { getLastLazyLoadEvent } from './notification.state';
+import { FeatureNotificationsActions } from './notifications-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -103,7 +102,7 @@ export class NotificationsEffects {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               });
             }
           }),
@@ -135,7 +134,7 @@ export class NotificationsEffects {
                 return biaSuccessWaitRefreshSignalR();
               } else {
                 return FeatureNotificationsActions.loadAllByPost({
-                  event: <LazyLoadEvent>event,
+                  event: event,
                 });
               }
             }),
@@ -163,7 +162,7 @@ export class NotificationsEffects {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               });
             }
           }),
@@ -191,7 +190,7 @@ export class NotificationsEffects {
               return biaSuccessWaitRefreshSignalR();
             } else {
               return FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               });
             }
           }),
@@ -205,9 +204,9 @@ export class NotificationsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private notificationDas: NotificationDas,
-    private biaMessageService: BiaMessageService,
-    private store: Store<AppState>
+    protected actions$: Actions,
+    protected notificationDas: NotificationDas,
+    protected biaMessageService: BiaMessageService,
+    protected store: Store<AppState>
   ) {}
 }

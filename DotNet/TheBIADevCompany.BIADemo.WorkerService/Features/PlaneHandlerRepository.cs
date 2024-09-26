@@ -7,55 +7,67 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
 {
     using System;
     using System.Configuration;
-    using System.Data.SqlClient;
+    using System.Data.Common;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Microsoft.Extensions.Configuration;
 
     /// <summary>
-    /// Example for handler repository: a signalR event is send to client when something change in the Plane Table.
+    /// Example for handler repository using Sql broker handler.
+    /// A signalR event is send to client when something change in the Plane Table.
     /// </summary>
-    public class PlaneHandlerRepository : DatabaseHandlerRepository
+    public class PlaneHandlerRepository : DatabaseHandlerRepository<PlaneHandlerRepository>
     {
-        private static IClientForHubRepository clientForHubService = null;
+        /// <summary>
+        /// The client for hub service.
+        /// </summary>
+        private readonly IClientForHubRepository clientForHubService = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneHandlerRepository"/> class.
         /// Constructor Set the trigger request.
         /// </summary>
         /// <param name="configuration">the project configuration.</param>
-        public PlaneHandlerRepository(IConfiguration configuration)
+        /// <param name="clientForHubService">the client hub service.</param>
+        /// <param name="serviceProvider">the service provider.</param>
+        public PlaneHandlerRepository(IConfiguration configuration, IClientForHubRepository clientForHubService, IServiceProvider serviceProvider)
             : base(
-            configuration.GetConnectionString("BIADemoDatabase"),
-            new SqlCommand("SELECT RowVersion FROM [dbo].[Planes]"),
-            new SqlCommand("SELECT TOP (1) [SiteId] FROM [dbo].[Planes] ORDER BY [RowVersion] DESC"),
-            r => PlaneChange(r))
+                  serviceProvider,
+                  configuration.GetConnectionString("BIADemoDatabase"),
+                  configuration.GetDBEngine("BIADemoDatabase"),
+                  "SELECT Id, SiteId, RowVersion FROM [dbo].[Planes]",
+                  "Id",
+                  useSqlDataBroker: configuration.GetSqlDataBroker("BIADemoDatabase"))
         {
+            this.clientForHubService = clientForHubService;
         }
 
-        /// <summary>
-        /// Configure the services.
-        /// </summary>
-        /// <param name="pClientForHubService">The client for hub service.</param>
-        public static void Configure(IClientForHubRepository pClientForHubService)
+        /// <inheritdoc/>
+        protected override async Task OnChange(DataBaseHandlerChangedData changedData)
         {
-            clientForHubService = pClientForHubService;
-        }
-
-        /// <summary>
-        /// Send message to the clients.
-        /// </summary>
-        /// <param name="reader">the reader use to retrieve info send by th trigger.</param>
-        public static void PlaneChange(SqlDataReader reader)
-        {
-            if (clientForHubService == null)
+            if (this.clientForHubService == null)
             {
                 throw new ConfigurationErrorsException("The ClientForHub feature is not configure before use PlaneChange. Verify your correctly configure PlaneHandlerRepository in Statup.cs.");
             }
 
-            int siteId = reader.GetInt32(0);
-            _ = clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+            int? siteId = null;
+            if (changedData.ChangeType == DatabaseHandlerChangeType.Delete && changedData.PreviousData.TryGetValue("SiteId", out object oldSiteId))
+            {
+                siteId = (int)oldSiteId;
+            }
+            else if (changedData.CurrentData.TryGetValue("SiteId", out object currentSiteId))
+            {
+                siteId = (int)currentSiteId;
+            }
+
+            if (siteId.HasValue)
+            {
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { ParentKey = siteId.Value.ToString(), FeatureName = "planes" }, "refresh-planes", string.Empty);
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
-import { HttpRequestItem } from './services/bia-online-offline.service';
+import { HttpRequestItem } from './models/http-request-item';
 
 export interface DataItem {
   url: string;

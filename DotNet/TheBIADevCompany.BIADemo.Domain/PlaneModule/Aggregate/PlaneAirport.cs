@@ -8,27 +8,27 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using BIA.Net.Core.Domain;
 
     /// <summary>
-    /// The entity conformcertif repair site.
+    /// The entity PlaneAirport repair site.
     /// </summary>
     public class PlaneAirport : VersionedTable
     {
         /// <summary>
-        /// Gets or sets the conformcertif.
+        /// Gets or sets the Plane.
         /// </summary>
         public Plane Plane { get; set; }
 
         /// <summary>
-        /// Gets or sets the conformcertif id.
+        /// Gets or sets the Plane id.
         /// </summary>
         public int PlaneId { get; set; }
 
         /// <summary>
-        /// Gets or sets the site.
+        /// Gets or sets the Airport.
         /// </summary>
         public Airport Airport { get; set; }
 
         /// <summary>
-        /// Gets or sets the site id.
+        /// Gets or sets the Airport id.
         /// </summary>
         public int AirportId { get; set; }
     }

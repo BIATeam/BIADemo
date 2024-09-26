@@ -104,7 +104,9 @@
               </div>
             </p-tabPanel>
           </ng-container>
-          <p-tabPanel header="+" *ngIf="missingLanguageOptions?.length > 0">
+          <p-tabPanel
+            header="+"
+            *ngIf="(missingLanguageOptions?.length ?? 0) > 0">
             <ng-template pTemplate="header">
               <i class="pi pi-plus"></i>
             </ng-template>
@@ -211,7 +213,7 @@
                 <ng-container formArrayName="notifiedTeams">
                   <tr [formGroupName]="rowIndex">
                     <td>
-                      <p-celleditor>
+                      <p-cellEditor>
                         <p-dropdown
                           [options]="teamOptions"
                           placeholder="&nbsp;"
@@ -219,11 +221,12 @@
                           optionLabel="display"
                           datakey="id"
                           [style]="{ width: '100%' }"
-                          [showClear]="true"></p-dropdown>
-                      </p-celleditor>
+                          [showClear]="true"
+                          appendTo="body"></p-dropdown>
+                      </p-cellEditor>
                     </td>
                     <td>
-                      <p-celleditor>
+                      <p-cellEditor>
                         <p-multiSelect
                           [options]="roleOptions"
                           formControlName="roles"
@@ -231,7 +234,7 @@
                           datakey="id"
                           [style]="{ width: '100%' }"
                           appendTo="body"></p-multiSelect>
-                      </p-celleditor>
+                      </p-cellEditor>
                     </td>
                     <td>
                       <i

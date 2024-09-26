@@ -73,9 +73,9 @@ export class PlaneOptionsService extends CrudItemOptionsService {
           // BIAToolKit - Begin OptionField PlaneType planeType
           new DictOptionDto('planeType', options[planeType]),
           // BIAToolKit - End OptionField PlaneType planeType
-          // BIAToolKit - Begin OptionField PlaneType similarType
-          new DictOptionDto('similarType', options[planeType]),
-          // BIAToolKit - End OptionField PlaneType similarType
+          // BIAToolKit - Begin OptionField PlaneType similarTypes
+          new DictOptionDto('similarTypes', options[planeType]),
+          // BIAToolKit - End OptionField PlaneType similarTypes
           // BIAToolKit - Begin OptionField Airport currentAirport
           new DictOptionDto('currentAirport', options[airport]),
           // BIAToolKit - End OptionField Airport currentAirport

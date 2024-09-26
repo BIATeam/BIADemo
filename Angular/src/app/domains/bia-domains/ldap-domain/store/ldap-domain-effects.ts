@@ -31,8 +31,8 @@ export class LdapDomainsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private ldapDomainDas: LdapDomainDas,
-    private biaMessageService: BiaMessageService
+    protected actions$: Actions,
+    protected ldapDomainDas: LdapDomainDas,
+    protected biaMessageService: BiaMessageService
   ) {}
 }

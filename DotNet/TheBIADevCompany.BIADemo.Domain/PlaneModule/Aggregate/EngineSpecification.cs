@@ -26,7 +26,11 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             if (filter.ParentIds != null && filter.ParentIds.Length > 0)
             {
                 specification &= new DirectSpecification<Engine>(s =>
+
+                    // BIAToolKit - Begin Parent PlaneId
                     s.PlaneId == int.Parse(filter.ParentIds[0]));
+
+                    // BIAToolKit - End Parent PlaneId
             }
 
             return specification;

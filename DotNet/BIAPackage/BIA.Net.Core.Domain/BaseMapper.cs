@@ -9,12 +9,9 @@ namespace BIA.Net.Core.Domain
     using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Security.Principal;
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The class used to define the base mapper.
@@ -97,6 +94,16 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
+        /// CSVs the date time with seconds.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date and time with seconds cell.</returns>
+        public static string CSVDateTimeSeconds(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        /// <summary>
         /// CSVs the bool.
         /// </summary>
         /// <param name="x">if set to <c>true</c> [x].</param>
@@ -128,6 +135,42 @@ namespace BIA.Net.Core.Domain
             where T : IFormattable
         {
             return x.ToString(null, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Update a collection of entities from a collection of dto depending the dtoState of the dto.
+        /// </summary>
+        /// <typeparam name="TEmbeddedDto">Embedded item DTO type.</typeparam>
+        /// <typeparam name="TEmbeddedEntity">Embedded item Entity type.</typeparam>
+        /// <param name="dtoCollection">Collection of DTO to use à source.</param>
+        /// <param name="entityCollection">Collection of entity to modify.</param>
+        /// <param name="mapper">mapper of TEmbeddedDto and TEmbeddedEntity.</param>
+        public static void MapEmbeddedItemToEntityCollection<TEmbeddedDto, TEmbeddedEntity>(
+            ICollection<TEmbeddedDto> dtoCollection,
+            ICollection<TEmbeddedEntity> entityCollection,
+            BaseMapper<TEmbeddedDto, TEmbeddedEntity, int> mapper)
+            where TEmbeddedDto : BaseDto<int>
+            where TEmbeddedEntity : class, IEntity<int>, new()
+        {
+            foreach (TEmbeddedDto dto in dtoCollection)
+            {
+                TEmbeddedEntity entity;
+                switch (dto.DtoState)
+                {
+                    case DtoState.Added:
+                        entity = new TEmbeddedEntity();
+                        mapper.DtoToEntity(dto, entity);
+                        entityCollection.Add(entity);
+                        break;
+                    case DtoState.Modified:
+                        entity = entityCollection.FirstOrDefault(e => e.Id == dto.Id);
+                        mapper.DtoToEntity(dto, entity);
+                        break;
+                    case DtoState.Deleted:
+                        entityCollection.Remove(entityCollection.FirstOrDefault(e => e.Id == dto.Id));
+                        break;
+                }
+            }
         }
 
         /// <summary>

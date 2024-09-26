@@ -1,0 +1,17 @@
+﻿// BIADemo only
+// <copyright file="PartMapper.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
+{
+    using BIA.Net.Core.Domain;
+    using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+
+    /// <summary>
+    /// The mapper used for part.
+    /// </summary>
+    public class PartMapper : BaseMapper<PartDto, Part, int>
+    {
+    }
+}

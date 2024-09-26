@@ -1,19 +1,20 @@
 import {
+  AfterContentInit,
   Component,
-  Output,
   EventEmitter,
-  SimpleChanges,
+  HostListener,
   Input,
   OnInit,
+  Output,
+  SimpleChanges,
   TemplateRef,
-  AfterContentInit,
 } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
 
 @Component({
@@ -101,13 +102,25 @@ export class BiaCalcTableComponent
     this.hasChanged = true;
   }
 
+  public initEditableRowAndFocus(rowData: any, event: MouseEvent) {
+    if (this.canSelectElement && !this.canSelectMultipleElement) {
+      this.selectedElements = rowData;
+      this.onSelectionChange();
+    }
+    this.initEditableRow(rowData);
+    if (event.currentTarget instanceof HTMLElement) {
+      const element = event.currentTarget as HTMLElement;
+      setTimeout(() => this.getChildInput(element)?.focus(), 0);
+    }
+  }
+
   public initEditableRow(rowData: any) {
     if (
       (this.canEdit === true || this.canAdd === true) &&
       (!rowData ||
         (rowData &&
           ((rowData.id !== 0 &&
-            this.table.editingRowKeys[rowData.id] !== true) ||
+            this.table?.editingRowKeys[rowData.id] !== true) ||
             (rowData.id === 0 && this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
@@ -136,7 +149,7 @@ export class BiaCalcTableComponent
       } else {
         this.editFooter = false;
         if (this.canEdit === true) {
-          this.table.initRowEdit(rowData);
+          this.table?.initRowEdit(rowData);
         }
       }
       this.form.reset();
@@ -148,13 +161,26 @@ export class BiaCalcTableComponent
     if (this.hasChanged === true) {
       this.onSubmit();
       this.hasChanged = false;
+      setTimeout(() => this.escape(), 0);
     }
   }
 
   public cancel() {
     this.hasChanged = false;
     this.form.reset();
-    this.table.editingRowKeys = {};
+    if (this.table) {
+      this.table.editingRowKeys = {};
+    }
+    this.editFooter = false;
+  }
+
+  public escape() {
+    this.cancel();
+    this.initEditableRow(null);
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler() {
+    this.escape();
   }
 
   public onSubmit() {
@@ -186,18 +212,17 @@ export class BiaCalcTableComponent
         document.activeElement,
         'bia-selectable-row'
       ) as HTMLElement;
-      if (this.editFooter === true) {
-        this.currentInput = this.currentRow?.querySelectorAll(
-          '.bia-simple-input'
-        )[0] as HTMLElement;
-      }
+      this.currentInput = document.activeElement as HTMLElement;
     } else {
-      if (this.editFooter === true) {
+      if (
+        // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
+        (this.getParentComponent(
+          document.activeElement,
+          'bia-selectable-row'
+        ) as HTMLElement) !== this.currentRow
+      ) {
         this.currentInput?.focus();
-      } else {
-        this.currentRow?.focus();
       }
-
       this.isInComplexInput = false;
     }
   }
@@ -212,6 +237,27 @@ export class BiaCalcTableComponent
           return el.parentElement;
         } else {
           el = el.parentElement;
+        }
+      }
+    }
+    return null;
+  }
+
+  public getChildInput(el: Element | null): HTMLElement | null {
+    let result: HTMLElement | null = null;
+    if (el) {
+      const children = el.children;
+      for (let i = 0; i < children.length; i++) {
+        const tableChild = children[i];
+        if (tableChild.tagName === 'INPUT') {
+          return tableChild as HTMLElement;
+        } else if (tableChild.tagName === 'P-DROPDOWN') {
+          return tableChild.children[0].children[0] as HTMLElement;
+        } else {
+          result = this.getChildInput(tableChild);
+        }
+        if (result !== null) {
+          return result;
         }
       }
     }

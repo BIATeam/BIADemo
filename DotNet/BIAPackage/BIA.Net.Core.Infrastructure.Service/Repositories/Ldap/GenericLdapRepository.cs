@@ -191,6 +191,12 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
         public List<TUserFromDirectory> SearchUsers(string search, string ldapName = null, int max = 10)
         {
             List<TUserFromDirectory> usersInfo = new List<TUserFromDirectory>();
+
+            // Sanitize unsafe characters from search value to avoid LDAP injections
+            // See : https://cheatsheetseries.owasp.org/cheatsheets/LDAP_Injection_Prevention_Cheat_Sheet.html
+            const string rgxPattern = @"[\\ #+<>,;""=*()]";
+            search = Regex.Replace(search, rgxPattern, string.Empty);
+
             if (string.IsNullOrEmpty(search))
             {
                 return usersInfo;
@@ -685,19 +691,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             this.cacheGroupPrincipal.Clear();
             IEnumerable<BIA.Net.Core.Common.Configuration.Role> rolesSection = this.configuration.Roles;
 
-            List<string> memberOfs = null;
-            List<string> claimRoles = null;
-
-            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.LdapFromWinIdentity || x.Type == BiaConstants.RoleType.LdapFromIdP) == true)
-            {
-                memberOfs = claimsPrincipal?.GetGroups(this.configuration)?.OrderBy(x => x)?.ToList() ?? new List<string>();
-            }
-
-            if (rolesSection?.Any(x => x.Type == BiaConstants.RoleType.IdP) == true)
-            {
-                claimRoles = claimsPrincipal?.GetRoles()?.ToList() ?? new List<string>();
-            }
-
             var gobalRoles = new ConcurrentBag<string>();
 
             if (rolesSection != null)
@@ -716,18 +709,14 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             }
                             break;
 
-                        case BiaConstants.RoleType.IdP:
-                            if (claimRoles.Intersect(role.IdpRoles, StringComparer.OrdinalIgnoreCase).Any())
+                        case BiaConstants.RoleType.ClaimsToRole:
+                            if (role.RequireClaim?.AllowedValues?.Any() == true)
                             {
-                                return role.Label;
-                            }
-                            break;
-
-                        case BiaConstants.RoleType.LdapFromWinIdentity:
-                        case BiaConstants.RoleType.LdapFromIdP:
-                            if (CheckIfMember(role, memberOfs))
-                            {
-                                return role.Label;
+                                List<string> claimValues = claimsPrincipal.FindAll(role.RequireClaim.Type).Select(c => c.Value).ToList();
+                                if (role.RequireClaim.AllowedValues.Intersect(claimValues).Any())
+                                {
+                                    return role.Label;
+                                }
                             }
                             break;
 
@@ -771,13 +760,6 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
             }
 
             return gobalRoles.ToList();
-        }
-
-        private static bool CheckIfMember(Role role, List<string> memberOfs)
-        {
-            return role.LdapGroups?
-                                .Any(ldapGroup => memberOfs
-                                    .Any(memberOf => System.IO.Path.GetFileName(memberOf).Contains(System.IO.Path.GetFileName(ldapGroup.LdapName), StringComparison.OrdinalIgnoreCase))) == true;
         }
 
         private async Task<string> GetSidHistory(string sid, string userDomain)

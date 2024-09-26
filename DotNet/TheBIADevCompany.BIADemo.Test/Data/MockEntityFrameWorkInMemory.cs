@@ -9,7 +9,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Linq;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
-
+#if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
@@ -17,6 +17,8 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -35,6 +37,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         {
             // Do nothing. Used to create the DbContext through IoC.
         }
+#if BIA_FRONT_FEATURE
 
         #region Sites methods
 
@@ -138,6 +141,14 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataPlanes.InitDefaultPlanes"/>
         public void InitDefaultPlanes()
         {
+            var airport = new Airport
+            {
+                Id = 1,
+                City = "Bordeaux",
+                Name = "BDX",
+            };
+            this.GetDbContext().Airports.Add(airport);
+
             var plane1 = new Plane
             {
                 SiteId = 1,
@@ -147,6 +158,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 DeliveryDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
+                SyncFlightDataTime = TimeSpan.Parse("10:00", new CultureInfo("en-US")),
+                CurrentAirportId = 1,
+                CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[0],
             };
 
@@ -159,6 +173,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 DeliveryDate = new DateTime(2001, 2, 3, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
+                SyncFlightDataTime = TimeSpan.Parse("13:00", new CultureInfo("en-US")),
+                CurrentAirportId = 1,
+                CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[1],
             };
 
@@ -182,17 +199,20 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         #endregion Planes methods
 
         // End BIADemo
+#endif
         #region AbstractMockEntityFrameworkInMemory methods
 
         /// <inheritdoc cref="AbstractMockEntityFramework{TDbContext}.InitDefaultData" />
         public override void InitDefaultData()
         {
+#if BIA_FRONT_FEATURE
             this.InitDefaultSites();
 
             // Begin BIADemo
             this.InitDefaultPlanes();
 
             // End BIADemo
+#endif
         }
 
         #endregion AbstractMockEntityFrameworkInMemory methods

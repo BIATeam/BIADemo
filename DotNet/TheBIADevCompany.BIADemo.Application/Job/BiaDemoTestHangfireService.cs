@@ -7,10 +7,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -25,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
@@ -34,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     /// </summary>
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
-        private readonly INotificationDomainService notificationAppService;
+        private readonly INotificationDomainService notificationDomainService;
 
         private readonly ITGenericRepository<Team, int> teamRepository;
 
@@ -45,19 +44,19 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">logger.</param>
-        /// <param name="notificationAppService">The notification service.</param>
+        /// <param name="notificationDomainService">The notification service.</param>
         /// <param name="teamRepository">The team repository.</param>
         /// <param name="planeAppService">The plane repository.</param>
         /// <param name="principal">The principal.</param>
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
-            INotificationDomainService notificationAppService,
+            INotificationDomainService notificationDomainService,
             ITGenericRepository<Team, int> teamRepository,
             IPlaneAppService planeAppService)
             : base(configuration, logger)
         {
-            this.notificationAppService = notificationAppService;
+            this.notificationDomainService = notificationDomainService;
             this.teamRepository = teamRepository;
             this.planeAppService = planeAppService;
         }
@@ -106,7 +105,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 selectPlaneOnSiteTitle = currentSite.TeamTitle;
             }
 
-            List<PlaneDto> targetPlanes = this.planeAppService.GetAllAsync(accessMode: AccessMode.All, filter: p => p.SiteId == selectPlaneOnSiteId).Result.ToList();
+            List<PlaneDto> targetPlanes = this.planeAppService.GetAllAsync(accessMode: AccessMode.All, filter: p => p.SiteId == selectPlaneOnSiteId, isReadOnlyMode: true).Result.ToList();
             if (targetPlanes.Count > 0)
             {
                 // send notification review plane only if there is plane on the site
@@ -170,7 +169,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                         new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID " + targetPlaneId + ".", DtoState = DtoState.Added },
                     },
                 };
-                await this.notificationAppService.AddAsync(notification);
+                await this.notificationDomainService.AddAsync<NotificationDto, NotificationMapper>(notification);
             }
             else
             {
@@ -207,7 +206,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                         new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Kein Flugzeug zu überprüfen", Description = "An Standort '" + selectPlaneOnSiteTitle + "' sind keine Flugzeuge zu überprüfen.", DtoState = DtoState.Added },
                     },
                 };
-                await this.notificationAppService.AddAsync(notification);
+                await this.notificationDomainService.AddAsync<NotificationDto, NotificationMapper>(notification);
             }
         }
 

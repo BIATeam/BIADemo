@@ -1,19 +1,25 @@
-.p-button {
-  &:disabled {
-    background-color: $primaryColor !important;
-    color: $primaryTextColor !important;
-    opacity: $disabledOpacity !important;
+@layer primeng {
+  .p-button {
+    &:disabled {
+      background-color: $primaryColor !important;
+      color: $primaryTextColor !important;
+      opacity: $disabledOpacity !important;
+    }
+    color: $primaryTextColor;
+    line-height: 2.143em !important;
+    &.p-button-outlined {
+      color: $primaryColor;
+    }
   }
-  line-height: 2.143em !important;
-}
 
-.bia-table-controller-container {
-  padding-top: 10px;
-  white-space: nowrap;
-  .pi.disabled {
-    opacity: $disabledOpacity !important;
-  }
-  .pi.enable {
-    color: $primaryColor !important;
+  .bia-table-controller-container {
+    padding-top: 10px;
+    white-space: nowrap;
+    .pi.disabled {
+      opacity: $disabledOpacity !important;
+    }
+    .pi.enable {
+      color: $primaryColor !important;
+    }
   }
 }

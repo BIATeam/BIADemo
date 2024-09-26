@@ -1,10 +1,10 @@
 [
   {
-    "Feature": "planes",
+    "Feature": "CRUD",
     "Type": "CRUD",
     "FeatureName": "Plane",
     "FeatureNamePlural": "Planes",
-    "ZipName": "feature-planes.zip",
+    "ZipName": "crud.zip",
     "Contains": {
       "Include": ["src\\app\\features\\planes\\*"],
       "Exclude": ["src\\app\\features\\planes\\children\\engines\\*"]
@@ -18,26 +18,68 @@
     ]
   },
   {
-    "Feature": "planes-full-code",
+    "Feature": "CRUD (with parent)",
     "Type": "CRUD",
-    "FeatureName": "Plane",
-    "FeatureNamePlural": "Planes",
-    "ZipName": "feature-planes-full-code.zip",
+    "FeatureName": "Engine",
+    "FeatureNamePlural": "Engines",
+    "ZipName": "crud-parent.zip",
     "Contains": {
-      "Include": ["src\\app\\features\\planes-full-code\\*"],
+      "Include": ["src\\app\\features\\planes\\children\\engines\\*"],
       "Exclude": []
     },
+    "NeedParent": "true",
+    "Parents": [
+      {
+        "Name": "Plane",
+        "NamePlural": "Planes",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "src\\app\\features\\",
+            "InitialDeepLevel": 1,
+            "DeepLevelIdentifier": "children",
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "planes\\children\\",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
+              },
+              {
+                "FromRelativePath": "planes\\views\\planes-index\\planes-index.component",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\views\\{ParentNameKebabPlural}-index\\{ParentNameKebabPlural}-index.component"
+              },
+              {
+                "FromRelativePath": "planes\\plane.module.ts",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\{ParentNameKebabSingular}.module.ts"
+              }
+            ],
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
+                "Pattern": "'../../../../../../",
+                "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Children": [],
     "Options": [],
-    "Partial": []
+    "Partial": [
+      "src\\app\\shared\\permission.ts",
+      "src\\app\\features\\planes\\plane.module.ts",
+      "src\\app\\features\\planes\\views\\planes-index\\planes-index.component.ts",
+      "src\\app\\features\\planes\\views\\planes-index\\planes-index.component.html"
+    ]
   },
   {
-    "Feature": "airport-option",
+    "Feature": "Option",
     "Type": "Option",
     "FeatureName": "Airport",
     "FeatureNamePlural": "Airports",
-    "ZipName": "domain-airport-option.zip",
-    "Relation": "many-to-many",
+    "ZipName": "option.zip",
     "Contains": {
       "Include": ["src\\app\\domains\\airport-option\\*"],
       "Exclude": []
@@ -47,32 +89,62 @@
     "Partial": []
   },
   {
-    "Feature": "plane-type-option",
-    "Type": "Option",
-    "FeatureName": "PlaneType",
-    "FeatureNamePlural": "PlanesTypes",
-    "ZipName": "domain-plane-type-option.zip",
-    "Relation": "one-to-many",
-    "Contains": {
-      "Include": ["src\\app\\domains\\plane-type-option\\*"],
-      "Exclude": []
-    },
-    "Children": [],
-    "Options": [],
-    "Partial": []
-  },
-  {
-    "Feature": "aircraft-maintenance-companies",
+    "Feature": "Team",
     "Type": "Team",
-    "FeatureName": "AircraftMaintenanceCompany",
-    "FeatureNamePlural": "AircraftMaintenanceCompanies",
-    "ZipName": "aircraft-maintenance-companies.zip",
+    "FeatureName": "MaintenanceTeam",
+    "FeatureNamePlural": "MaintenanceTeams",
+    "ZipName": "team.zip",
     "Contains": {
-      "Include": ["src\\app\\features\\aircraft-maintenance-companies\\*"],
+      "Include": [
+        "src\\app\\features\\aircraft-maintenance-companies\\children\\maintenance-teams\\*"
+      ],
       "Exclude": []
     },
+    "Parents": [
+      {
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "src\\app\\features\\",
+            "InitialDeepLevel": 1,
+            "DeepLevelIdentifier": "children",
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "aircraft-maintenance-companies\\children\\",
+                "ToRelativePathNoParent": "",
+                "ToRelativePathWithParent": "{ParentRelativePath}\\children\\"
+              }
+            ],
+
+            "ReplaceInFiles": [
+              {
+                "RegexMatch": "'([^']*)'",
+                "Pattern": "aircraft-maintenance-companies/children/",
+                "NoParentValue": "",
+                "WithParentValue": "{ParentRelativePathLinux}/children/"
+              },
+              {
+                "RegexMatch": "(\\.\\./){6}shared/bia-shared/.*\\.(html|scss)\\'",
+                "Pattern": "'../../../../../../",
+                "NoParentValue": "'../../../../",
+                "WithParentAddByDeeperLevel": "../../"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Children": [],
     "Options": [],
-    "Partial": []
+    "Partial": [
+      "src\\app\\app-routing.module.ts",
+      "src\\app\\shared\\navigation.ts",
+      "src\\app\\shared\\permission.ts",
+      "src\\app\\shared\\constants.ts",
+      "src\\environments\\all-environments.ts"
+    ]
   }
 ]

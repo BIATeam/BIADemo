@@ -1,38 +1,38 @@
 import {
   Component,
-  OnInit,
-  OnDestroy,
   EventEmitter,
-  Output,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
-import { FilterMetadata, SelectItemGroup } from 'primeng/api';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription, combineLatest } from 'rxjs';
-import { View } from '../../model/view';
-import {
-  ViewType,
-  TeamTypeId,
-  TeamTypeRightPrefixe,
-} from 'src/app/shared/constants';
+import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { FilterMetadata, SelectItemGroup } from 'primeng/api';
+import { Subscription, combineLatest } from 'rxjs';
+import { map, skip } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import {
+  TeamTypeId,
+  TeamTypeRightPrefix,
+  ViewType,
+} from 'src/app/shared/constants';
+import { Permission } from 'src/app/shared/permission';
 import { AppState } from 'src/app/store/state';
+import { View } from '../../model/view';
+import { QUERY_STRING_VIEW } from '../../model/view.constants';
 import {
   getAllViews,
-  getLastViewChanged,
   getDataLoaded,
+  getLastViewChanged,
 } from '../../store/view.state';
-import { map, skip } from 'rxjs/operators';
 import { openViewDialog } from '../../store/views-actions';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Permission } from 'src/app/shared/permission';
-import { ActivatedRoute } from '@angular/router';
-import { QUERY_STRING_VIEW } from '../../model/view.constants';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
-import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
 
 const currentView = -1;
 const undefinedView = -2;
@@ -57,7 +57,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   selectedViewName: string | null = null;
   defaultView: number;
   urlView: number | null = null;
-  private sub = new Subscription();
+  protected sub = new Subscription();
   @Input() tableStateKey: string;
   @Input() tableState: string;
   @Input() defaultViewPref: BiaTableState;
@@ -67,11 +67,11 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   @Output() viewChange = new EventEmitter<string>();
 
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public translateService: TranslateService,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private tableHelperService: TableHelperService
+    protected authService: AuthService,
+    protected route: ActivatedRoute,
+    protected tableHelperService: TableHelperService
   ) {}
 
   ngOnInit() {
@@ -143,14 +143,14 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private autoSelectView(tableStateStr: string) {
+  protected autoSelectView(tableStateStr: string) {
     this.selectedView = this.getCorrespondingViewId(tableStateStr);
     this.selectedViewName = this.getCurrentViewName();
   }
 
   public getCurrentViewName(): string | null {
     let viewName: string | null = null;
-    if (this.selectedView > -1 && this.views.length > 0) {
+    if (this.selectedView > -1 && this.views?.length) {
       this.views.forEach(v => {
         if (v.id === this.selectedView) {
           viewName = v.name;
@@ -162,7 +162,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return viewName;
   }
 
-  private getCorrespondingViewId(preference: string): number {
+  protected getCorrespondingViewId(preference: string): number {
     const pref: BiaTableState = JSON.parse(preference);
     pref.columnWidths = undefined;
     if (this.defaultViewPref != undefined) {
@@ -200,7 +200,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return currentView;
   }
 
-  private areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
+  protected areViewsEgals(view1: BiaTableState, view2: BiaTableState) {
     return (
       view1.first === view2.first &&
       this.areFilterEgals(view1.filters, view2.filters) &&
@@ -229,7 +229,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private areFilterEgals(
+  protected areFilterEgals(
     filters1: { [s: string]: FilterMetadata | FilterMetadata[] } | undefined,
     filters2: { [s: string]: FilterMetadata | FilterMetadata[] } | undefined
   ): boolean {
@@ -267,7 +267,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  private standardizeFilterMetadata(
+  protected standardizeFilterMetadata(
     filterMetadata: FilterMetadata | FilterMetadata[] | undefined
   ): FilterMetadata[] {
     const standardized: FilterMetadata[] = [];
@@ -296,7 +296,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     return standardized;
   }
 
-  private isNullUndefEmptyStr(obj: any): boolean {
+  protected isNullUndefEmptyStr(obj: any): boolean {
     if (this.isValueNullUndefEmptyStr(obj)) {
       return true;
     }
@@ -312,7 +312,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private isValueNullUndefEmptyStr(obj: any): boolean {
+  protected isValueNullUndefEmptyStr(obj: any): boolean {
     return obj === null || obj === undefined || obj === '';
   }
 
@@ -321,7 +321,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     this.updateFilterValues(null, true);
   }
 
-  private updateGroupedViews() {
+  protected updateGroupedViews() {
     if (!this.views || !this.translations) {
       return;
     }
@@ -422,7 +422,10 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
   isFirstEmitDone = false;
-  private updateFilterValues(preference: string | null, manualChange: boolean) {
+  protected updateFilterValues(
+    preference: string | null,
+    manualChange: boolean
+  ) {
     //setTimeout(() => {
     if (!manualChange) this.initViewByQueryParam(this.views);
     if (preference && !this.urlView) {
@@ -457,7 +460,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
     //});
   }
   /*
-    private saveViewState(stateString: string) {
+    protected saveViewState(stateString: string) {
       if (stateString) {
         const state = JSON.parse(stateString);
         if (state && !state.filters) {
@@ -468,7 +471,7 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
       }
     }*/
 
-  private getViewState(): string | null {
+  protected getViewState(): string | null {
     return sessionStorage.getItem(this.tableStateKey);
   }
 
@@ -479,21 +482,21 @@ export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   showEditButton() {
     let canSetTeamView = false;
     if (this.useViewTeamWithTypeId != null) {
-      const teamTypeRightPrefixe = TeamTypeRightPrefixe.find(
+      const teamTypeRightPrefix = TeamTypeRightPrefix.find(
         t => t.key == this.useViewTeamWithTypeId
       )?.value;
       canSetTeamView =
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_AddTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_AddTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_UpdateTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_UpdateTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_SetDefaultTeamViewSuffix
+          teamTypeRightPrefix + Permission.View_SetDefaultTeamViewSuffix
         ) ||
         this.authService.hasPermission(
-          teamTypeRightPrefixe + Permission.View_AssignToTeamSuffix
+          teamTypeRightPrefix + Permission.View_AssignToTeamSuffix
         ) ||
         this.authService.hasPermission(Permission.View_DeleteTeamView);
     }

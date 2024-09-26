@@ -5,46 +5,47 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import {
-  getAllPlanes,
-  getPlanesTotalCount,
-  getPlaneLoadingGetAll,
-} from '../../store/plane.state';
-import { FeaturePlanesActions } from '../../store/planes-actions';
-import { Observable, Subscription } from 'rxjs';
-import { LazyLoadEvent } from 'primeng/api';
-import { Plane } from '../../model/plane';
-import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
-import {
-  BiaFieldsConfig,
-  BiaFieldConfig,
-  PropType,
-  PrimeNGFiltering,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { AppState } from 'src/app/store/state';
-import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
-import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlaneDas } from '../../services/plane-das.service';
-import { saveAs } from 'file-saver';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { saveAs } from 'file-saver';
+import { TableLazyLoadEvent } from 'primeng/table';
+import { Observable, Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
+import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { Permission } from 'src/app/shared/permission';
-import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
-import { PlanesSignalRService } from '../../services/plane-signalr.service';
+import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
-import { PlaneOptionsService } from '../../services/plane-options.service';
+import {
+  BiaFieldConfig,
+  BiaFieldsConfig,
+  PrimeNGFiltering,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
+import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { clone } from 'src/app/shared/bia-shared/utils';
+import { DEFAULT_PAGE_SIZE } from 'src/app/shared/constants';
+import { Permission } from 'src/app/shared/permission';
+import { AppState } from 'src/app/store/state';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
+import { Plane } from '../../model/plane';
 import {
   useCalcMode,
   useSignalR,
   useView,
   useViewTeamWithTypeId,
 } from '../../plane.constants';
-import { skip } from 'rxjs/operators';
-import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
+import { PlaneDas } from '../../services/plane-das.service';
+import { PlaneOptionsService } from '../../services/plane-options.service';
+import { PlanesSignalRService } from '../../services/plane-signalr.service';
+import {
+  getAllPlanes,
+  getPlaneLoadingGetAll,
+  getPlanesTotalCount,
+} from '../../store/plane.state';
+import { FeaturePlanesActions } from '../../store/planes-actions';
 
 @Component({
   selector: 'app-planes-index',
@@ -112,7 +113,11 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.sub = new Subscription();
 
     this.initTableConfiguration();
-    this.setPermissions();
+    this.sub.add(
+      this.authService.authInfo$.subscribe(() => {
+        this.setPermissions();
+      })
+    );
     this.planes$ = this.store.select(getAllPlanes);
     this.totalCount$ = this.store.select(getPlanesTotalCount);
     this.loading$ = this.store.select(getPlaneLoadingGetAll);
@@ -205,10 +210,17 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     this.pageSize = pageSize;
   }
 
-  onLoadLazy(lazyLoadEvent: LazyLoadEvent) {
+  onLoadLazy(lazyLoadEvent: TableLazyLoadEvent) {
     const pagingAndFilter: PagingFilterFormatDto = {
       parentIds: this.parentIds,
-      ...lazyLoadEvent,
+      filters: clone(lazyLoadEvent.filters),
+      first: lazyLoadEvent.first,
+      globalFilter: clone(lazyLoadEvent.globalFilter),
+      last: lazyLoadEvent.last,
+      multiSortMeta: clone(lazyLoadEvent.multiSortMeta),
+      rows: lazyLoadEvent.rows,
+      sortField: lazyLoadEvent.sortField,
+      sortOrder: lazyLoadEvent.sortOrder,
     };
     this.store.dispatch(
       FeaturePlanesActions.loadAllByPost({ event: pagingAndFilter })
@@ -243,7 +255,7 @@ export class PlanesIndexComponent implements OnInit, OnDestroy {
     const columns: { [key: string]: string } = {};
     this.planeListComponent
       .getPrimeNgTable()
-      .columns?.map(
+      ?.columns?.map(
         (x: BiaFieldConfig) =>
           (columns[x.field] = this.translateService.instant(x.header))
       );

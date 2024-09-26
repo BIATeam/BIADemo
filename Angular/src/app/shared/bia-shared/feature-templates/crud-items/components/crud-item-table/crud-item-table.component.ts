@@ -5,10 +5,10 @@ import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaMessageService } from 'src/app/core/bia-core/services/bia-message.service';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
 import { BiaCalcTableComponent } from 'src/app/shared/bia-shared/components/table/bia-calc-table/bia-calc-table.component';
-import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
+import { PropType } from 'src/app/shared/bia-shared/model/bia-field-config';
 import { DtoState } from 'src/app/shared/bia-shared/model/dto-state.enum';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 @Component({
   selector: 'bia-crud-item-table',
@@ -57,7 +57,7 @@ export class CrudItemTableComponent<CrudItem extends BaseDto>
   onSubmit() {
     if (this.form.valid) {
       const crudItem: CrudItem = <CrudItem>this.form.value;
-      crudItem.id = crudItem.id > 0 ? crudItem.id : 0;
+      crudItem.id = crudItem.id ?? 0;
       for (const col of this.configuration.columns) {
         switch (col.type) {
           case PropType.Boolean:

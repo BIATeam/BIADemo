@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeaturePlanesActions } from './planes-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Plane } from '../model/plane';
+import { FeaturePlanesActions } from './planes-actions';
 
 // This adapter will allow is to manipulate planes (mostly CRUD operations)
 export const planesAdapter = createEntityAdapter<Plane>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<Plane> {
   // additional props here
   totalCount: number;
   currentPlane: Plane;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = planesAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentPlane: <Plane>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

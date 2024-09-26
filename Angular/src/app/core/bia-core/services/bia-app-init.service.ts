@@ -1,22 +1,22 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { Observable, Subscription, throwError } from 'rxjs';
-import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
-import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
-import { AppState } from 'src/app/store/state';
 import { Store } from '@ngrx/store';
-import { allEnvironments } from 'src/environments/all-environments';
 import {
   KeycloakEvent,
   KeycloakEventType,
   KeycloakService,
 } from 'keycloak-angular';
-import { AuthService } from './auth.service';
+import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
-import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
-import { AppSettingsDas } from 'src/app/domains/bia-domains/app-settings/services/app-settings-das.service';
 import { AppSettings } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
-import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { AppSettingsDas } from 'src/app/domains/bia-domains/app-settings/services/app-settings-das.service';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+import { DomainAppSettingsActions } from 'src/app/domains/bia-domains/app-settings/store/app-settings-actions';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
+import { NotificationSignalRService } from 'src/app/domains/bia-domains/notification/services/notification-signalr.service';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
+import { AppState } from 'src/app/store/state';
+import { allEnvironments } from 'src/environments/all-environments';
+import { AuthService } from './auth.service';
 
 // const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
 // const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
@@ -113,17 +113,15 @@ export class BiaAppInitService implements OnDestroy {
             keycloakEvent?.type == KeycloakEventType.OnReady ||
             keycloakEvent?.type == KeycloakEventType.OnTokenExpired
           ) {
-            this.keycloakService.isLoggedIn().then(isLoggedIn => {
-              if (isLoggedIn !== true) {
-                this.keycloakService.login({
-                  redirectUri: window.location.href,
-                  idpHint:
-                    this.appSettingsService.appSettings?.keycloak?.configuration
-                      ?.idpHint,
-                  // scope: 'offline_access',
-                });
-              }
-            });
+            if (this.keycloakService.isLoggedIn() !== true) {
+              this.keycloakService.login({
+                redirectUri: window.location.href,
+                idpHint:
+                  this.appSettingsService.appSettings?.keycloak?.configuration
+                    ?.idpHint,
+                // scope: 'offline_access',
+              });
+            }
           } /*else if (keycloakEvent?.type == KeycloakEventType.OnAuthSuccess) {
 
         const token = await this.keycloakService.getToken();

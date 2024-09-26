@@ -32,7 +32,7 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist/BIADemo",
             "index": "src/index.html",
@@ -44,7 +44,8 @@
               "src/assets",
               "src/config.json",
               "src/web.config",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/ngsw-worker.js"
             ],
             "styles": [
               "node_modules/primeng/resources/primeng.min.css",
@@ -134,30 +135,30 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "BIADemo:build"
+            "buildTarget": "BIADemo:build"
           },
           "configurations": {
             "iis": {
-              "browserTarget": "BIADemo:build:iis"
+              "buildTarget": "BIADemo:build:iis"
             },
             "production": {
-              "browserTarget": "BIADemo:build:production"
+              "buildTarget": "BIADemo:build:production"
             },
             "es5": {
-              "browserTarget": "BIADemo:build:es5"
+              "buildTarget": "BIADemo:build:es5"
             },
             "ocp": {
-              "browserTarget": "BIADemo:build:ocp"
+              "buildTarget": "BIADemo:build:ocp"
             },
             "docker": {
-              "browserTarget": "BIADemo:build:docker"
+              "buildTarget": "BIADemo:build:docker"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "BIADemo:build"
+            "buildTarget": "BIADemo:build"
           }
         },
         "lint": {

@@ -1,8 +1,10 @@
 <app-aircraft-maintenance-company-form
-  [crudItem]="aircraftMaintenanceCompanyService.crudItem$ | async"
+  *ngIf="aircraftMaintenanceCompanyService.crudItem$ | async; let crudItem"
+  [crudItem]="crudItem"
   [fields]="crudConfiguration.fieldsConfig.columns"
   [dictOptionDtos]="
-    aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$ | async
+    (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
+      | async) ?? []
   "
   (cancel)="onCancelled()"
   (save)="onSubmitted($event)"></app-aircraft-maintenance-company-form>

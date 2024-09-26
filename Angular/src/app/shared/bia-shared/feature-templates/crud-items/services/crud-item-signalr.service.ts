@@ -1,11 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
 import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
-import { CrudItemService } from './crud-item.service';
+import { AppState } from 'src/app/store/state';
 import { BaseDto } from '../../../model/base-dto';
+import { CrudListAndItemService } from './crud-list-and-item.service';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -17,7 +17,7 @@ import { BaseDto } from '../../../model/base-dto';
   providedIn: 'root',
 })
 export class CrudItemSignalRService<CrudItem extends BaseDto> {
-  private targetedFeature: TargetedFeature;
+  protected targetedFeature: TargetedFeature;
 
   /**
    * Constructor.
@@ -37,7 +37,7 @@ export class CrudItemSignalRService<CrudItem extends BaseDto> {
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize(crudItemService: CrudItemService<CrudItem>) {
+  initialize(crudItemService: CrudListAndItemService<CrudItem, CrudItem>) {
     this.targetedFeature = crudItemService.getSignalRTargetedFeature();
 
     console.log(

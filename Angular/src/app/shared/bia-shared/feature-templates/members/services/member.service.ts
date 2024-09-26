@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { AppState } from 'src/app/store/state';
-import { Member, Members } from '../model/member';
 import { memberCRUDConfiguration } from '../member.constants';
+import { Member, Members } from '../model/member';
 import { FeatureMembersStore } from '../store/member.state';
 import { FeatureMembersActions } from '../store/members-actions';
-import { MemberOptionsService } from './member-options.service';
 import { MemberDas } from './member-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { MemberOptionsService } from './member-options.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MemberService extends CrudItemService<Member> {
   constructor(
-    private store: Store<AppState>,
+    protected store: Store<AppState>,
     public dasService: MemberDas,
     public signalRService: CrudItemSignalRService<Member>,
     public optionsService: MemberOptionsService,
@@ -48,7 +48,7 @@ export class MemberService extends CrudItemService<Member> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureMembersStore.getMemberLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureMembersStore.getLastLazyLoadEvent
   );
 
@@ -62,7 +62,7 @@ export class MemberService extends CrudItemService<Member> {
   public load(id: any) {
     this.store.dispatch(FeatureMembersActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeatureMembersActions.loadAllByPost({ event }));
   }
   public create(crudItem: Member) {

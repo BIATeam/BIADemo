@@ -5,14 +5,14 @@
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Diagnostics;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.IdentityModel.Logging;
@@ -153,7 +153,23 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(JwtBearerDefaults.AuthenticationScheme, policy => policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build());
+
+                if (configuration.Policies != default)
+                {
+                    AddConfigurationPolicies(configuration, options);
+                }
             });
+        }
+
+        private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
+        {
+            foreach (Policy confPolicy in
+                                configuration.Policies.Where(confPolicy => !string.IsNullOrWhiteSpace(confPolicy.Name) &&
+                                    !string.IsNullOrWhiteSpace(confPolicy.RequireClaim?.Type) &&
+                                    confPolicy.RequireClaim?.AllowedValues?.Any() == true))
+            {
+                options.AddPolicy(confPolicy.Name, policy => policy.RequireClaim(confPolicy.RequireClaim.Type, confPolicy.RequireClaim.AllowedValues));
+            }
         }
     }
 }

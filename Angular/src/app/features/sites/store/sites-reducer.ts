@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureSitesActions } from './sites-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Site } from '../model/site';
+import { FeatureSitesActions } from './sites-actions';
 
 // This adapter will allow is to manipulate sites (mostly CRUD operations)
 export const sitesAdapter = createEntityAdapter<Site>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<Site> {
   // additional props here
   totalCount: number;
   currentSite: Site;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = sitesAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentSite: <Site>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

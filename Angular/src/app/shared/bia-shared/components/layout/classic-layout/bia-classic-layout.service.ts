@@ -1,4 +1,3 @@
-/* eslint-disable deprecation/deprecation */
 import {
   ComponentPortal,
   ComponentType,
@@ -9,7 +8,6 @@ import {
   Injectable,
   Injector,
   TemplateRef,
-  ComponentFactoryResolver,
   InjectionToken,
   ViewContainerRef,
 } from '@angular/core';
@@ -19,12 +17,12 @@ export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
 
 @Injectable()
 export class BiaClassicLayoutService {
-  private footerPortal = new BehaviorSubject<Portal<any> | null>(null);
-  private mainBarPortal = new BehaviorSubject<Portal<any> | null>(null);
-  private mainBarHidden = new BehaviorSubject<boolean>(false);
-  private footerHidden = new BehaviorSubject<boolean>(false);
-  private breadcrumbHidden = new BehaviorSubject<boolean>(false);
-  private breadcrumbRefresh = new BehaviorSubject<boolean>(false);
+  protected footerPortal = new BehaviorSubject<Portal<any> | null>(null);
+  protected mainBarPortal = new BehaviorSubject<Portal<any> | null>(null);
+  protected mainBarHidden = new BehaviorSubject<boolean>(false);
+  protected footerHidden = new BehaviorSubject<boolean>(false);
+  protected breadcrumbHidden = new BehaviorSubject<boolean>(false);
+  protected breadcrumbRefresh = new BehaviorSubject<boolean>(false);
 
   // Whether user should choose a single role
   footerPortal$ = this.footerPortal.asObservable();
@@ -37,7 +35,6 @@ export class BiaClassicLayoutService {
   changeFooter<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -48,7 +45,6 @@ export class BiaClassicLayoutService {
       this.footerPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -56,7 +52,6 @@ export class BiaClassicLayoutService {
   changeMainBar<T, D>(
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     if (!componentOrTemplateRef) {
@@ -67,7 +62,6 @@ export class BiaClassicLayoutService {
       this.mainBarPortal,
       componentOrTemplateRef,
       injector,
-      componentFactoryResolver,
       data
     );
   }
@@ -100,11 +94,10 @@ export class BiaClassicLayoutService {
     this.breadcrumbRefresh.next(!this.breadcrumbRefresh.value);
   }
 
-  private setPortal<T, D>(
+  protected setPortal<T, D>(
     portalSubject: BehaviorSubject<Portal<any> | null>,
     componentOrTemplateRef: ComponentType<T> | TemplateRef<T>,
     injector?: Injector,
-    componentFactoryResolver?: ComponentFactoryResolver,
     data?: D
   ) {
     let portal;
@@ -127,12 +120,7 @@ export class BiaClassicLayoutService {
           });
         }
       }
-      portal = new ComponentPortal(
-        componentOrTemplateRef,
-        null,
-        finalInjector,
-        componentFactoryResolver
-      );
+      portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector);
     }
     portalSubject.next(portal);
     return portal;

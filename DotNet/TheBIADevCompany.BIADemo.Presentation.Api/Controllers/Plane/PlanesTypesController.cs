@@ -12,19 +12,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.RepoContract;
 #if UseHubForClientInPlaneType
-    using BIA.Net.Core.Presentation.Common.Features.HubForClients;
+    using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-#if UseHubForClientInPlaneType
-    using Microsoft.AspNetCore.SignalR;
-#endif
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -43,14 +38,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInPlaneType
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesTypesController"/> class.
         /// </summary>
         /// <param name="planeTypeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInPlaneType
         public PlanesTypesController(IPlaneTypeAppService planeTypeService, IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlanesTypesController"/> class.
+        /// </summary>
+        /// <param name="planeTypeService">The plane application service.</param>
         public PlanesTypesController(IPlaneTypeAppService planeTypeService)
 #endif
         {
@@ -138,7 +137,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var createdDto = await this.planeTypeService.AddAsync(dto);
 #if UseHubForClientInPlaneType
-                await this.clientForHubService.SendMessage("planetypes", "refresh -planetypes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh -planetypes", string.Empty);
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -171,7 +170,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 var updatedDto = await this.planeTypeService.UpdateAsync(dto);
 #if UseHubForClientInPlaneType
-                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok(updatedDto);
             }
@@ -207,7 +206,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 await this.planeTypeService.RemoveAsync(id);
 #if UseHubForClientInPlaneType
-                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -243,7 +242,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                 }
 
 #if UseHubForClientInPlaneType
-                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }
@@ -276,7 +275,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             {
                 await this.planeTypeService.SaveAsync(dtoList);
 #if UseHubForClientInPlaneType
-                await this.clientForHubService.SendMessage("planetypes", "refresh-planetypes", string.Empty);
+                await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
 #endif
                 return this.Ok();
             }

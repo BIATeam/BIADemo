@@ -29,7 +29,7 @@
         <p-calendar
           biaLocale
           formControlName="lastFlightDate"
-          showTime="true"
+          [showTime]="true"
           placeholder="DateTime"
           dateFormat="yy-mm-dd"
           placeholder="&nbsp;"
@@ -59,7 +59,7 @@
       <span class="p-float-label">
         <p-calendar
           formControlName="syncTime"
-          showTime="true"
+          [showTime]="true"
           showSeconds="true"
           [timeOnly]="true"
           placeholder="&nbsp;"

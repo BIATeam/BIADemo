@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureAirportsActions } from './airports-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Airport } from '../model/airport';
+import { FeatureAirportsActions } from './airports-actions';
 
 // This adapter will allow is to manipulate airports (mostly CRUD operations)
 export const airportsAdapter = createEntityAdapter<Airport>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<Airport> {
   // additional props here
   totalCount: number;
   currentAirport: Airport;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = airportsAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentAirport: <Airport>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

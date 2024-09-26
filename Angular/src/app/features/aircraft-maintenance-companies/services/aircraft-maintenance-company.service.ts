@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { aircraftMaintenanceCompanyCRUDConfiguration } from '../aircraft-maintenance-company.constants';
-import { FeatureAircraftMaintenanceCompaniesStore } from '../store/aircraft-maintenance-company.state';
+import { AircraftMaintenanceCompany } from '../model/aircraft-maintenance-company';
 import { FeatureAircraftMaintenanceCompaniesActions } from '../store/aircraft-maintenance-companies-actions';
-import { AircraftMaintenanceCompanyOptionsService } from './aircraft-maintenance-company-options.service';
+import { FeatureAircraftMaintenanceCompaniesStore } from '../store/aircraft-maintenance-company.state';
 import { AircraftMaintenanceCompanyDas } from './aircraft-maintenance-company-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
+import { AircraftMaintenanceCompanyOptionsService } from './aircraft-maintenance-company-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +66,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getAircraftMaintenanceCompanyLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureAircraftMaintenanceCompaniesStore.getLastLazyLoadEvent
   );
 
@@ -82,7 +82,7 @@ export class AircraftMaintenanceCompanyService extends CrudItemService<AircraftM
       FeatureAircraftMaintenanceCompaniesActions.load({ id })
     );
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(
       FeatureAircraftMaintenanceCompaniesActions.loadAllByPost({ event })
     );

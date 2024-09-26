@@ -1,22 +1,23 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor,
-  HttpErrorResponse,
   HTTP_INTERCEPTORS,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
   HttpStatusCode,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { KeycloakService } from 'keycloak-angular';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, filter, skip, switchMap, take } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
-import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
-import { getCurrentCulture } from '../services/bia-translation.service';
-import { allEnvironments } from 'src/environments/all-environments';
-import { KeycloakService } from 'keycloak-angular';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
+import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
+import { allEnvironments } from 'src/environments/all-environments';
+import { AuthService } from '../services/auth.service';
+import { getCurrentCulture } from '../services/bia-translation.service';
+import { RefreshTokenService } from '../services/refresh-token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -76,7 +77,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   protected launchRequest(request: HttpRequest<any>, next: HttpHandler) {
-    if (this.authService.shouldRefreshToken) {
+    if (RefreshTokenService.shouldRefreshToken) {
       return this.handle401Error(request, next);
     }
     const jwtToken = this.authService.getToken();
@@ -86,8 +87,7 @@ export class TokenInterceptor implements HttpInterceptor {
       catchError(error => {
         if (
           error instanceof HttpErrorResponse &&
-          (error.status === HttpStatusCodeCustom.FailedConnection ||
-            error.status === HttpStatusCode.Unauthorized ||
+          (error.status === HttpStatusCode.Unauthorized ||
             error.status === HttpStatusCodeCustom.InvalidToken)
         ) {
           return this.handle401Error(request, next);
@@ -146,7 +146,7 @@ export class TokenInterceptor implements HttpInterceptor {
     );
 
     if (this.appSettingsService.appSettings?.keycloak?.isActive === true) {
-      return from(this.keycloakService.isLoggedIn()).pipe(
+      return from([this.keycloakService.isLoggedIn()]).pipe(
         filter(x => x === true),
         switchMap(() => obs$)
       );

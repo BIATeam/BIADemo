@@ -1,8 +1,6 @@
-/* eslint-disable deprecation/deprecation */
-import { ALT, CONTROL, SHIFT } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { fromEvent, Subject, Subscription, Observable } from 'rxjs';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
 import {
   buffer,
   debounceTime,
@@ -21,14 +19,14 @@ export type BiaBarcodeMatcher<T> = (barcode: string) => T;
   providedIn: 'root',
 })
 export class BiaBarcodeScannerService implements OnDestroy {
-  private rawBarcodeScan = new Subject<string>();
-  private noMatchScan = new Subject<string>();
+  protected rawBarcodeScan = new Subject<string>();
+  protected noMatchScan = new Subject<string>();
 
   rawBarcodeScan$ = this.rawBarcodeScan.asObservable();
   noMatchScan$ = this.noMatchScan.asObservable();
 
-  private sub: Subscription;
-  private matchers: [BiaBarcodeMatcher<any>, Subject<any>][] = [];
+  protected sub: Subscription;
+  protected matchers: [BiaBarcodeMatcher<any>, Subject<any>][] = [];
 
   constructor(@Inject(DOCUMENT) document: any, zone: NgZone) {
     const keyDownUniq$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
@@ -50,8 +48,8 @@ export class BiaBarcodeScannerService implements OnDestroy {
       map(events =>
         // We could filter at the beginning, but it may interfere with debounceTime
         events.filter(evt => {
-          const code = evt.which || evt.keyCode;
-          return [SHIFT, CONTROL, ALT].indexOf(code) === -1;
+          const code = evt.key;
+          return ['Shift', 'Control', 'Alt'].indexOf(code) === -1;
         })
       ),
       filter(events => events.length >= MIN_SIZE),
@@ -95,25 +93,19 @@ export class BiaBarcodeScannerService implements OnDestroy {
     });
   }
 
-  private processEventsToCode(events: KeyboardEvent[]) {
+  protected processEventsToCode(events: KeyboardEvent[]) {
     const isKeyence = this.isKeyence(events);
     if (isKeyence) {
       // Remove keyence prefix
       events.shift();
     }
     return events.reduce((acc, evt) => {
-      const code = evt.which || evt.keyCode;
-      if (isKeyence && code >= 48 && code <= 57) {
-        acc += `${code - 48}`; // Convert bad keyence codes to numbers
-      } else {
-        acc += evt.key;
-      }
+      acc += evt.key;
       return acc;
     }, '');
   }
 
-  private isKeyence(events: KeyboardEvent[]) {
-    const code = events[0].which || events[0].keyCode;
-    return events[0].ctrlKey && code === 192;
+  protected isKeyence(events: KeyboardEvent[]) {
+    return events[0].ctrlKey && events[0].key === '`';
   }
 }

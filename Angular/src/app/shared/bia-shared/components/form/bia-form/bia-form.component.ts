@@ -20,11 +20,11 @@ import {
 import { PrimeTemplate } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaOptionService } from 'src/app/core/bia-core/services/bia-option.service';
+import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 import {
   BiaFieldConfig,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
-import { DictOptionDto } from 'src/app/shared/bia-shared/components/table/bia-table/dict-option-dto';
 
 @Component({
   selector: 'bia-form',
@@ -42,9 +42,10 @@ export class BiaFormComponent
   @Output() cancel = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
-  // specificInputTemplate: TemplateRef<any>;
   specificInputTemplate: TemplateRef<any>;
-  form: UntypedFormGroup;
+  specificOutputTemplate: TemplateRef<any>;
+
+  form?: UntypedFormGroup;
   protected sub = new Subscription();
 
   constructor(
@@ -53,6 +54,7 @@ export class BiaFormComponent
   ) {}
 
   ngOnInit() {
+    this.element ??= {};
     this.initForm();
   }
 
@@ -64,11 +66,11 @@ export class BiaFormComponent
   ngAfterContentInit() {
     this.templates.forEach(item => {
       switch (item.getType()) {
-        /*case 'specificInput':
-          this.specificInputTemplate = item.template;
-        break;*/
         case 'specificInput':
           this.specificInputTemplate = item.template;
+          break;
+        case 'specificOutput':
+          this.specificOutputTemplate = item.template;
           break;
       }
     });
@@ -84,22 +86,24 @@ export class BiaFormComponent
   }
 
   public checkObject(obj: any): { element: any; errorMessages: string[] } {
-    this.form.reset();
-    if (obj) {
-      this.form.patchValue({ ...obj });
-    }
-
     const errorMessages: string[] = [];
+    if (this.form) {
+      const form = this.form;
+      form.reset();
+      if (obj) {
+        form.patchValue({ ...obj });
+      }
 
-    if (this.form.invalid) {
-      Object.keys(this.form.controls).forEach(controlName => {
-        const controlErrors = this.form.controls[controlName].errors;
-        if (controlErrors != null) {
-          errorMessages.push(
-            `${controlName}: ${JSON.stringify(controlErrors)}`
-          );
-        }
-      });
+      if (this.form.invalid) {
+        Object.keys(form.controls).forEach(controlName => {
+          const controlErrors = form.controls[controlName].errors;
+          if (controlErrors != null) {
+            errorMessages.push(
+              `${controlName}: ${JSON.stringify(controlErrors)}`
+            );
+          }
+        });
+      }
     }
     const element = this.getElement();
     return { element, errorMessages };
@@ -109,7 +113,7 @@ export class BiaFormComponent
     this.form = this.formBuilder.group(this.formFields());
   }
   protected formFields() {
-    const fields: { [key: string]: any } = { id: [this.element.id] };
+    const fields: { [key: string]: any } = { id: [this.element?.id] };
     for (const col of this.fields) {
       if (col.validators && col.validators.length > 0) {
         fields[col.field] = [this.element[col.field], col.validators];
@@ -123,19 +127,19 @@ export class BiaFormComponent
   }
 
   onCancel() {
-    this.form.reset();
+    this.form?.reset();
     this.cancel.next();
   }
 
   onSubmit() {
-    if (this.form.valid) {
+    if (this.form?.valid) {
       const element: any = this.getElement();
       this.save.emit(element);
       this.form.reset();
     }
   }
   public getElement() {
-    const element: any = this.form.value;
+    const element: any = this.form?.value;
     element.id = element.id > 0 ? element.id : 0;
     for (const col of this.fields) {
       switch (col.type) {

@@ -1,4 +1,6 @@
-.p-badge {
-  min-width: 0.5rem;
-  height: 0.5rem;
+@layer primeng {
+  .p-badge {
+    min-width: 0.5rem;
+    height: 0.5rem;
+  }
 }

@@ -28,7 +28,7 @@ export class UserAddFromLdapComponent implements OnInit {
   usersFromDirectory$: Observable<UserFromDirectory[]>;
   ldapDomains$: Observable<LdapDomain[]>;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(protected store: Store<AppState>) {}
 
   async ngOnInit() {
     this.usersFromDirectory$ = this.store.select(getAllUsersFromDirectory);

@@ -18,18 +18,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
-    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-#if UseHubForClientInPlane
-    using Microsoft.AspNetCore.SignalR;
     using Microsoft.Extensions.Logging;
-#endif
     using TheBIADevCompany.BIADemo.Application.Plane;
-    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
 
     /// <summary>
@@ -59,6 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInPlane
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesController" /> class.
         /// </summary>
@@ -66,13 +61,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="principal">The principal.</param>
         /// <param name="planeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-#if UseHubForClientInPlane
         public PlanesController(
             ILogger<PlanesController> logger,
             IPrincipal principal,
             IPlaneAppService planeService,
             IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlanesController" /> class.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="principal">The principal.</param>
+        /// <param name="planeService">The plane application service.</param>
         public PlanesController(
             ILogger<PlanesController> logger,
             IPrincipal principal,

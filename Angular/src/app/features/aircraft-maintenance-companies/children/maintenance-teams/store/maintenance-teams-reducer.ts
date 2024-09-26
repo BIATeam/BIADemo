@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { MaintenanceTeam } from '../model/maintenance-team';
+import { FeatureMaintenanceTeamsActions } from './maintenance-teams-actions';
 
 // This adapter will allow is to manipulate maintenanceTeams (mostly CRUD operations)
 export const maintenanceTeamsAdapter = createEntityAdapter<MaintenanceTeam>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<MaintenanceTeam> {
   // additional props here
   totalCount: number;
   currentMaintenanceTeam: MaintenanceTeam;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = maintenanceTeamsAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentMaintenanceTeam: <MaintenanceTeam>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

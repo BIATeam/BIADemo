@@ -4,7 +4,7 @@
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="
-      crudConfiguration.fieldsConfig?.advancedFilter
+      crudConfiguration.fieldsConfig.advancedFilter
     "></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
     <div>
@@ -25,15 +25,15 @@
         <ng-template pTemplate="actionOnSelected">
           <button
             pButton
-            [disabled]="selectedCrudItems?.length !== 1"
+            [disabled]="selectedCrudItems.length !== 1"
             *ngIf="canEdit"
             class="p-button-outlined"
             label="{{ 'aircraftMaintenanceCompany.edit' | translate }}"
-            (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+            (click)="onEdit(selectedCrudItems[0].id)"></button>
           <!-- // Begin Child MaintenanceTeam -->
           <button
             pButton
-            [disabled]="selectedCrudItems?.length !== 1"
+            [disabled]="selectedCrudItems.length !== 1"
             *ngIf="canViewMaintenanceTeams"
             class="p-button-outlined"
             label="{{
@@ -43,19 +43,19 @@
           <button
             pButton
             [disabled]="
-              selectedCrudItems?.length !== 1 ||
+              selectedCrudItems.length !== 1 ||
               !selectedCrudItems[0].canMemberListAccess
             "
             *ngIf="canViewMembers"
             class="p-button-outlined"
             label="{{ 'app.members' | translate }}"
-            (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
+            (click)="onViewMembers(selectedCrudItems[0].id)"></button>
           <!-- // End Child MaintenanceTeam -->
         </ng-template>
       </bia-table-header>
       <bia-table-controller
         [defaultPageSize]="defaultPageSize"
-        [length]="totalCount$ | async"
+        [length]="(totalCount$ | async) ?? 0"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -99,8 +99,8 @@
       </bia-table-controller>
       <bia-table
         *ngIf="!crudConfiguration.useCalcMode"
-        [elements]="crudItems$ | async"
-        [totalRecord]="totalCount$ | async"
+        [elements]="(crudItems$ | async) ?? []"
+        [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
         [configuration]="crudConfiguration.fieldsConfig"
@@ -108,22 +108,23 @@
         [globalSearchValue]="globalSearchValue"
         [canClickRow]="canViewMembers"
         [canSelectElement]="canSelectElement"
-        [loading]="loading$ | async"
+        [loading]="(loading$ | async) ?? false"
         (clickRowData)="onClickRowData($event)"
         (loadLazy)="onLoadLazy($event)"
         [viewPreference]="viewPreference"
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"></bia-table>
+        (stateSave)="onStateSave($event)"
+        [canSelectMultipleElement]="false"></bia-table>
       <app-aircraft-maintenance-company-table
         *ngIf="crudConfiguration.useCalcMode"
-        [elements]="crudItems$ | async"
+        [elements]="(crudItems$ | async) ?? []"
         [dictOptionDtos]="
-          aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
-            | async
+          (aircraftMaintenanceCompanyService.optionsService.dictOptionDtos$
+            | async) ?? []
         "
-        [totalRecord]="totalCount$ | async"
+        [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
         [configuration]="crudConfiguration.fieldsConfig"
@@ -132,14 +133,17 @@
         [canEdit]="canEdit"
         [canAdd]="canAdd"
         [canSelectElement]="canDelete"
-        [loading]="loading$ | async"
+        [loading]="(loading$ | async) ?? false"
         (loadLazy)="onLoadLazy($event)"
         [viewPreference]="viewPreference"
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-        (save)="onSave($event)"></app-aircraft-maintenance-company-table>
+        (save)="onSave($event)"
+        [canSelectMultipleElement]="
+          false
+        "></app-aircraft-maintenance-company-table>
     </div>
   </div>
 </div>

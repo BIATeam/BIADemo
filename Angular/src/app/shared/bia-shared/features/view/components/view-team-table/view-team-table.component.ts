@@ -1,19 +1,19 @@
 import {
   Component,
-  Input,
-  Output,
   EventEmitter,
+  Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { View } from '../../model/view';
-import { AssignViewToTeam } from '../../model/assign-view-to-team';
-import { ViewTeam } from '../../model/view-team';
-import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { Confirmation, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
-import { Confirmation, ConfirmationService } from 'primeng/api';
+import { Team } from 'src/app/domains/bia-domains/team/model/team';
+import { AssignViewToTeam } from '../../model/assign-view-to-team';
+import { TeamView } from '../../model/team-view';
+import { ViewTeam } from '../../model/view-team';
 
 @Component({
   selector: 'bia-view-team-table',
@@ -21,20 +21,20 @@ import { Confirmation, ConfirmationService } from 'primeng/api';
   styleUrls: ['./view-team-table.component.scss'],
 })
 export class ViewTeamTableComponent implements OnChanges {
-  @Input() views: View[];
+  @Input() views: TeamView[];
   @Input() teamSelected: Team;
   @Input() canDelete = false;
   @Input() canSetDefault = false;
   @Input() canUpdate = false;
   @Input() canAssign = false;
 
-  get viewSelected(): View {
+  get viewSelected(): TeamView | undefined {
     if (this.table && this.table.selection) {
-      return this.table.selection as View;
+      return this.table.selection as TeamView;
     }
-    return {} as View;
+    return undefined;
   }
-  set viewSelected(value: View) {
+  set viewSelected(value: TeamView | undefined) {
     if (this.table) {
       this.table.selection = value;
     }
@@ -45,21 +45,24 @@ export class ViewTeamTableComponent implements OnChanges {
   @Output() assignViewToTeam = new EventEmitter<AssignViewToTeam>();
   @Output() delete = new EventEmitter<number>();
   @Output() setDefault = new EventEmitter<{
-    viewId: number;
+    viewId: number | undefined;
     isDefault: boolean;
   }>();
-  @Output() viewSelect = new EventEmitter<View>();
+  @Output() viewSelect = new EventEmitter<TeamView | undefined>();
 
   constructor(
-    private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService
+    protected biaDialogService: BiaDialogService,
+    protected confirmationService: ConfirmationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
   }
 
-  onDeleteView(viewId: number) {
+  onDeleteView(viewId: number | undefined) {
+    if (!viewId) {
+      return;
+    }
     const confirmation: Confirmation = {
       ...this.biaDialogService.getDeleteConfirmation(),
       accept: () => {
@@ -69,7 +72,10 @@ export class ViewTeamTableComponent implements OnChanges {
     this.confirmationService.confirm(confirmation);
   }
 
-  onAssignViewToTeam(viewId: number, isAssign: boolean) {
+  onAssignViewToTeam(viewId: number | undefined, isAssign: boolean) {
+    if (!viewId) {
+      return;
+    }
     this.assignViewToTeam.emit(<AssignViewToTeam>{
       viewId: viewId,
       teamId: this.teamSelected.id,
@@ -77,7 +83,10 @@ export class ViewTeamTableComponent implements OnChanges {
     });
   }
 
-  onAssignViewToTeamWithDelete(viewId: number, isAssign: boolean) {
+  onAssignViewToTeamWithDelete(viewId: number | undefined, isAssign: boolean) {
+    if (!viewId) {
+      return;
+    }
     const confirmation: Confirmation = {
       ...this.biaDialogService.getDeleteConfirmation('view-team-confirm'),
       accept: () => {
@@ -91,7 +100,7 @@ export class ViewTeamTableComponent implements OnChanges {
     this.confirmationService.confirm(confirmation);
   }
 
-  onSetDefaultView(viewId: number, isDefault: boolean) {
+  onSetDefaultView(viewId: number | undefined, isDefault: boolean) {
     this.setDefault.emit({ viewId, isDefault });
   }
 
@@ -107,7 +116,7 @@ export class ViewTeamTableComponent implements OnChanges {
     }
   }
 
-  containsCurrentTeam(view: View) {
+  containsCurrentTeam(view: TeamView | undefined) {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
         (x: ViewTeam) => x.teamId === this.teamSelected.id
@@ -116,8 +125,8 @@ export class ViewTeamTableComponent implements OnChanges {
     return false;
   }
 
-  containsOnlyCurrentTeam(view: View) {
-    if (view.viewTeams?.length > 1) return false;
+  containsOnlyCurrentTeam(view: TeamView | undefined) {
+    if (view && view.viewTeams?.length > 1) return false;
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
         (x: ViewTeam) => x.teamId === this.teamSelected.id
@@ -125,7 +134,7 @@ export class ViewTeamTableComponent implements OnChanges {
     }
     return false;
   }
-  isTeamDefault(view: View): boolean {
+  isTeamDefault(view: TeamView | undefined): boolean {
     if (view && view.viewTeams && this.teamSelected) {
       return view.viewTeams.some(
         (x: ViewTeam) =>
@@ -164,14 +173,13 @@ export class ViewTeamTableComponent implements OnChanges {
     );
   }
 
-  private onViewsChange(changes: SimpleChanges) {
+  protected onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
-      if (this.viewSelected && this.viewSelected.id > 0 && this.views) {
-        this.viewSelected = this.views.filter(
-          x => x.id === this.viewSelected.id
-        )[0];
+      const viewSelected: TeamView | undefined = this.viewSelected;
+      if (viewSelected && viewSelected.id > 0 && this.views) {
+        this.viewSelected = this.views.filter(x => x.id === viewSelected.id)[0];
       } else {
-        this.viewSelected = {} as View;
+        this.viewSelected = undefined;
       }
       this.onSelectionChange();
     }

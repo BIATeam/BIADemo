@@ -53,9 +53,9 @@ export class AppSettingsEffects {
   );
 
   constructor(
-    private actions$: Actions,
-    private appSettingsDas: AppSettingsDas,
-    private biaMessageService: BiaMessageService,
-    private appSettingsService: AppSettingsService
+    protected actions$: Actions,
+    protected appSettingsDas: AppSettingsDas,
+    protected biaMessageService: BiaMessageService,
+    protected appSettingsService: AppSettingsService
   ) {}
 }

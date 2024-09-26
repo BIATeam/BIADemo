@@ -57,7 +57,7 @@ export class NotificationFormComponent implements OnChanges {
         this.form.patchValue({ ...this.notification });
 
         const formArray = new UntypedFormArray([]);
-        this.notification.notifiedTeams.forEach(team => {
+        this.notification.notifiedTeams?.forEach(team => {
           formArray.push(
             this.formBuilder.group({
               team: [team.team, Validators.required],
@@ -83,7 +83,7 @@ export class NotificationFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     const group: any = {
       id: [this.notification.id],
       title: [this.notification.title, Validators.required],
@@ -110,7 +110,7 @@ export class NotificationFormComponent implements OnChanges {
   /**
    * Returns the FormGroup as a Table Row
    */
-  private createNotifiedTeams(): UntypedFormGroup {
+  protected createNotifiedTeams(): UntypedFormGroup {
     return this.formBuilder.group({
       team: [null, Validators.required],
       roles: [],
@@ -193,7 +193,7 @@ export class NotificationFormComponent implements OnChanges {
     this.computeMissingTranslation();
   }
 
-  private computeMissingTranslation() {
+  protected computeMissingTranslation() {
     this.missingLanguageOptions = this.languageOptions.filter(
       lo =>
         !this.notificationTranslations.value.find(
@@ -207,8 +207,8 @@ export class NotificationFormComponent implements OnChanges {
     }
   }
 
-  labelTranslation(id: number): string | undefined {
-    return this.languageOptions.find(lo => lo.id === id)?.display;
+  labelTranslation(id: number): string {
+    return this.languageOptions.find(lo => lo.id === id)?.display ?? '';
   }
 
   onCancel() {

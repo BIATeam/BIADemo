@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
-import { Engine } from '../model/engine';
-import { engineCRUDConfiguration } from '../engine.constants';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { engineCRUDConfiguration } from '../engine.constants';
+import { Engine } from '../model/engine';
 
 export namespace FeatureEnginesActions {
   export const loadAllByPost = createAction(
     '[' + engineCRUDConfiguration.storeKey + '] Load all by post',
-    props<{ event: LazyLoadEvent }>()
+    props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
@@ -37,7 +37,7 @@ export namespace FeatureEnginesActions {
 
   export const loadAllByPostSuccess = createAction(
     '[' + engineCRUDConfiguration.storeKey + '] Load all by post success',
-    props<{ result: DataResult<Engine[]>; event: LazyLoadEvent }>()
+    props<{ result: DataResult<Engine[]>; event: TableLazyLoadEvent }>()
   );
 
   export const loadSuccess = createAction(

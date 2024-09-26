@@ -1,27 +1,27 @@
 import {
   Component,
   EventEmitter,
-  Output,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
 } from '@angular/core';
-import { View } from '../../model/view';
 import {
-  UntypedFormGroup,
   UntypedFormBuilder,
+  UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { View } from '../../model/view';
 
 @Component({
   selector: 'bia-view-form',
   templateUrl: './view-form.component.html',
   styleUrls: ['./view-form.component.scss'],
 })
-export class ViewFormComponent implements OnChanges {
-  @Input() view: View = <View>{};
+export class ViewFormComponent<T extends View> implements OnChanges {
+  @Input() view: T | undefined;
 
-  @Output() save = new EventEmitter<View>();
+  @Output() save = new EventEmitter<T>();
 
   form: UntypedFormGroup;
   isAdd = true;
@@ -36,7 +36,7 @@ export class ViewFormComponent implements OnChanges {
     }
   }
 
-  onViewChange(view: View) {
+  onViewChange(view: T | undefined) {
     this.form.reset();
     this.isAdd = !(view && view.id > 0);
     if (view) {
@@ -44,17 +44,17 @@ export class ViewFormComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
-      id: [this.view.id],
-      name: [this.view.name, Validators.required],
-      description: [this.view.description],
+      id: [this.view?.id],
+      name: [this.view?.name, Validators.required],
+      description: [this.view?.description],
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      const view: View = <View>this.form.value;
+      const view: T = <T>this.form.value;
       view.id = view.id > 0 ? view.id : 0;
       if (view.id === 0) {
         this.form.reset();

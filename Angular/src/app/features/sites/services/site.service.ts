@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
+import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
 import { CrudItemService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item.service';
+import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { Site } from '../model/site';
 import { siteCRUDConfiguration } from '../site.constants';
 import { FeatureSitesStore } from '../store/site.state';
 import { FeatureSitesActions } from '../store/sites-actions';
-import { SiteOptionsService } from './site-options.service';
 import { SiteDas } from './site-das.service';
-import { CrudItemSignalRService } from 'src/app/shared/bia-shared/feature-templates/crud-items/services/crud-item-signalr.service';
-import { TeamTypeId } from 'src/app/shared/constants';
+import { SiteOptionsService } from './site-options.service';
 
 @Injectable({
   providedIn: 'root',
@@ -63,7 +63,7 @@ export class SiteService extends CrudItemService<Site> {
   public loadingGetAll$: Observable<boolean> = this.store.select(
     FeatureSitesStore.getSiteLoadingGetAll
   );
-  public lastLazyLoadEvent$: Observable<LazyLoadEvent> = this.store.select(
+  public lastLazyLoadEvent$: Observable<TableLazyLoadEvent> = this.store.select(
     FeatureSitesStore.getLastLazyLoadEvent
   );
 
@@ -77,7 +77,7 @@ export class SiteService extends CrudItemService<Site> {
   public load(id: any) {
     this.store.dispatch(FeatureSitesActions.load({ id }));
   }
-  public loadAllByPost(event: LazyLoadEvent) {
+  public loadAllByPost(event: TableLazyLoadEvent) {
     this.store.dispatch(FeatureSitesActions.loadAllByPost({ event }));
   }
   public create(crudItem: Site) {

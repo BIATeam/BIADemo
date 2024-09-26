@@ -17,11 +17,6 @@ namespace BIA.Net.Core.Domain.Dto.User
         public UserInfoDto UserInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the user profile.
-        /// </summary>
-        public UserProfileDto UserProfile { get; set; }
-
-        /// <summary>
         /// Gets or sets the teams.
         /// </summary>
         public ICollection<TeamDto> Teams { get; set; }

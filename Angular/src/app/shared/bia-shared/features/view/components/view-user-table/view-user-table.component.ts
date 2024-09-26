@@ -1,16 +1,16 @@
 import {
   Component,
-  Input,
-  Output,
   EventEmitter,
+  Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { View } from '../../model/view';
+import { Confirmation, ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { BiaDialogService } from 'src/app/core/bia-core/services/bia-dialog.service';
-import { Confirmation, ConfirmationService } from 'primeng/api';
+import { View } from '../../model/view';
 
 @Component({
   selector: 'bia-view-user-table',
@@ -23,13 +23,13 @@ export class ViewUserTableComponent implements OnChanges {
   @Input() canSetDefault = false;
   @Input() canUpdate = false;
 
-  get viewSelected(): View {
+  get viewSelected(): View | undefined {
     if (this.table) {
       return this.table.selection as View;
     }
-    return {} as View;
+    return undefined;
   }
-  set viewSelected(value: View) {
+  set viewSelected(value: View | undefined) {
     if (this.table) {
       this.table.selection = value;
     }
@@ -39,21 +39,24 @@ export class ViewUserTableComponent implements OnChanges {
 
   @Output() delete = new EventEmitter<number>();
   @Output() setDefault = new EventEmitter<{
-    viewId: number;
+    viewId: number | undefined;
     isDefault: boolean;
   }>();
-  @Output() viewSelect = new EventEmitter<View>();
+  @Output() viewSelect = new EventEmitter<View | undefined>();
 
   constructor(
-    private biaDialogService: BiaDialogService,
-    private confirmationService: ConfirmationService
+    protected biaDialogService: BiaDialogService,
+    protected confirmationService: ConfirmationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     this.onViewsChange(changes);
   }
 
-  onDeleteView(viewId: number) {
+  onDeleteView(viewId: number | undefined) {
+    if (!viewId) {
+      return;
+    }
     const confirmation: Confirmation = {
       ...this.biaDialogService.getDeleteConfirmation('view-user-confirm'),
       accept: () => {
@@ -63,7 +66,7 @@ export class ViewUserTableComponent implements OnChanges {
     this.confirmationService.confirm(confirmation);
   }
 
-  onSetDefaultView(viewId: number, isDefault: boolean) {
+  onSetDefaultView(viewId: number | undefined, isDefault: boolean) {
     this.setDefault.emit({ viewId, isDefault });
   }
 
@@ -79,12 +82,11 @@ export class ViewUserTableComponent implements OnChanges {
     );
   }
 
-  private onViewsChange(changes: SimpleChanges) {
+  protected onViewsChange(changes: SimpleChanges) {
     if (changes.views && this.table) {
-      if (this.viewSelected && this.viewSelected.id > 0 && this.views) {
-        this.viewSelected = this.views.filter(
-          x => x.id === this.viewSelected.id
-        )[0];
+      const viewSelected: View | undefined = this.viewSelected;
+      if (viewSelected && viewSelected.id > 0 && this.views) {
+        this.viewSelected = this.views.filter(x => x.id === viewSelected.id)[0];
       } else {
         this.viewSelected = {} as View;
       }

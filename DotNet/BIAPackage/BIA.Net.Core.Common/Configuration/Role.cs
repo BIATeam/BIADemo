@@ -22,16 +22,13 @@ namespace BIA.Net.Core.Common.Configuration
         public string Type { get; set; }
 
         /// <summary>
-        /// Gets or sets the value of the role.
+        /// Gets or sets the LDAP groups.
         /// </summary>
         public IEnumerable<LdapGroup> LdapGroups { get; set; }
 
         /// <summary>
-        /// Gets or sets the identity provider roles.
+        /// Gets or sets the require claim.
         /// </summary>
-        /// <value>
-        /// The identity provider roles.
-        /// </value>
-        public IEnumerable<string> IdpRoles { get; set; }
+        public RequireClaim RequireClaim { get; set; }
     }
 }

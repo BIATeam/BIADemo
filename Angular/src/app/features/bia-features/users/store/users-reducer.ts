@@ -1,8 +1,8 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { FeatureUsersActions } from './users-actions';
-import { LazyLoadEvent } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { User } from '../model/user';
+import { FeatureUsersActions } from './users-actions';
 
 // This adapter will allow is to manipulate users (mostly CRUD operations)
 export const usersAdapter = createEntityAdapter<User>({
@@ -25,7 +25,7 @@ export interface State extends EntityState<User> {
   // additional props here
   totalCount: number;
   currentUser: User;
-  lastLazyLoadEvent: LazyLoadEvent;
+  lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
 }
@@ -34,7 +34,7 @@ export const INIT_STATE: State = usersAdapter.getInitialState({
   // additional props default values here
   totalCount: 0,
   currentUser: <User>{},
-  lastLazyLoadEvent: <LazyLoadEvent>{},
+  lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
 });

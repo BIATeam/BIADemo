@@ -23,7 +23,7 @@ import { Member } from '../../model/member';
   changeDetection: ChangeDetectionStrategy.Default,
 })
 export class MemberFormEditComponent implements OnChanges {
-  @Input() member: Member = <Member>{};
+  @Input() member: Member | null = null;
   @Input() roleOptions: OptionDto[];
   @Input() userOptions: OptionDto[];
   @Input() canAddFromDirectory = false;
@@ -50,12 +50,12 @@ export class MemberFormEditComponent implements OnChanges {
     }
   }
 
-  private initForm() {
+  protected initForm() {
     this.form = this.formBuilder.group({
-      id: [this.member.id],
-      user: [this.member.user, Validators.required],
-      roles: [this.member.roles],
-      teamId: [this.member.teamId],
+      id: [this.member?.id],
+      user: [this.member?.user, Validators.required],
+      roles: [this.member?.roles],
+      teamId: [this.member?.teamId],
     });
   }
 
@@ -74,7 +74,7 @@ export class MemberFormEditComponent implements OnChanges {
       member.id = member.id > 0 ? member.id : 0;
       member.roles = BiaOptionService.differential(
         member.roles,
-        this.member?.roles
+        this.member?.roles ?? []
       );
       member.user = new OptionDto(
         member.user.id,

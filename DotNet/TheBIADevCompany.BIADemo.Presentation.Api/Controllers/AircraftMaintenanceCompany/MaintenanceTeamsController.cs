@@ -8,25 +8,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Dto;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.User;
 #if UseHubForClientInMaintenanceTeam
     using BIA.Net.Core.Domain.RepoContract;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
-    using Hangfire;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-#if UseHubForClientInMaintenanceTeam
-    using Microsoft.AspNetCore.SignalR;
-#endif
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
@@ -50,16 +42,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         private readonly IClientForHubRepository clientForHubService;
 #endif
 
+#if UseHubForClientInMaintenanceTeam
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
         /// </summary>
         /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        /// <param name="principal">The BIAClaimsPrincipal.</param>
-#if UseHubForClientInMaintenanceTeam
         public MaintenanceTeamsController(
             IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubRepository clientForHubService)
 #else
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
+        /// </summary>
+        /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         public MaintenanceTeamsController(IMaintenanceTeamAppService maintenanceTeamAppService)
 #endif
         {
@@ -131,7 +126,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             {
                 var createdDto = await this.maintenanceTeamAppService.AddAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                await this.clientForHubService.SendTargetedMessage(createdDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -164,7 +159,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             {
                 var updatedDto = await this.maintenanceTeamAppService.UpdateAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                _ = this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                _ = this.clientForHubService.SendTargetedMessage(updatedDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
                 return this.Ok(updatedDto);
             }
@@ -200,7 +195,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             {
                 var deletedDto = await this.maintenanceTeamAppService.RemoveAsync(id);
 #if UseHubForClientInMaintenanceTeam
-                _ = this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
+                _ = this.clientForHubService.SendTargetedMessage(deletedDto.AircraftMaintenanceCompanyId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
 #endif
                 return this.Ok();
             }
@@ -233,7 +228,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
                 var deletedDtos = await this.maintenanceTeamAppService.RemoveAsync(ids);
 
 #if UseHubForClientInMaintenanceTeam
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                deletedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
                 });
@@ -269,7 +264,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
             {
                 var savedDtos = await this.maintenanceTeamAppService.SaveAsync(dtoList);
 #if UseHubForClientInMaintenanceTeam
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                savedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "MaintenanceTeams", "refresh-MaintenanceTeams");
                 });

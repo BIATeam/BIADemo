@@ -4,11 +4,10 @@
 
 namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
 {
-    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
 
@@ -18,11 +17,6 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
     public class DataBaseHandlerService : IHostedService
     {
         /// <summary>
-        /// The service provider.
-        /// </summary>
-        private readonly IServiceProvider serviceProvider;
-
-        /// <summary>
         /// The logger.
         /// </summary>
         private readonly ILogger<DataBaseHandlerService> logger;
@@ -30,58 +24,50 @@ namespace BIA.Net.Core.WorkerService.Features.DataBaseHandler
         /// <summary>
         /// The database handler repositories.
         /// </summary>
-        private readonly List<DatabaseHandlerRepository> databaseHandlerRepositories;
+        private readonly List<IDatabaseHandlerRepository> databaseHandlerRepositories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataBaseHandlerService"/> class.
         /// </summary>
-        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="logger">The service logger.</param>
         /// <param name="databaseHandlerRepositories">The database handler repositories.</param>
-        public DataBaseHandlerService(IServiceProvider serviceProvider, List<DatabaseHandlerRepository> databaseHandlerRepositories)
+        public DataBaseHandlerService(ILogger<DataBaseHandlerService> logger, IEnumerable<IDatabaseHandlerRepository> databaseHandlerRepositories)
         {
-            this.serviceProvider = serviceProvider;
-            this.logger = this.serviceProvider.GetService<ILogger<DataBaseHandlerService>>();
-            this.databaseHandlerRepositories = databaseHandlerRepositories;
+            this.logger = logger;
+            this.databaseHandlerRepositories = databaseHandlerRepositories.ToList();
         }
-
-        /// <summary>
-        /// Gets the service provider.
-        /// </summary>
-        protected IServiceProvider ServiceProvider => this.serviceProvider;
 
         /// <summary>
         /// Gets the service provider.
         /// </summary>
         protected ILogger<DataBaseHandlerService> Logger => this.logger;
 
+        /// <summary>
+        /// The database handler repositories.
+        /// </summary>
+        protected List<IDatabaseHandlerRepository> DatabaseHandlerRepositories => this.databaseHandlerRepositories;
+
         /// <inheritdoc cref="IHostedService.StartAsync"/>
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StartAsync)}");
-            string message = $"DatabaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
-            this.logger.LogInformation(message);
+            this.logger.LogInformation("DatabaseHandlerRepositories.Count: {Count}", this.DatabaseHandlerRepositories.Count);
 
-            foreach (var handlerRepositorie in this.databaseHandlerRepositories)
+            foreach (var handlerRepositorie in this.DatabaseHandlerRepositories)
             {
-                handlerRepositorie.Start(this.serviceProvider);
+                await handlerRepositorie.Start();
             }
-
-            return Task.CompletedTask;
         }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
         /// <inheritdoc cref="IHostedService.StopAsync"/>
         public async Task StopAsync(CancellationToken cancellationToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             this.logger.LogInformation($"{nameof(DataBaseHandlerService)}.{nameof(this.StopAsync)}");
-            string message = $"databaseHandlerRepositories.Count: {this.databaseHandlerRepositories.Count}";
-            this.logger.LogInformation(message);
+            this.logger.LogInformation("DatabaseHandlerRepositories.Count: {Count}", this.databaseHandlerRepositories.Count);
 
             foreach (var handlerRepositorie in this.databaseHandlerRepositories)
             {
-                handlerRepositorie.Stop();
+                await handlerRepositorie.Stop();
             }
         }
     }

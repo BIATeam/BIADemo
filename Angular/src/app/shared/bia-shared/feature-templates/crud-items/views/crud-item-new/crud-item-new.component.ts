@@ -1,12 +1,12 @@
 import { Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { CrudItemService } from '../../services/crud-item.service';
+import { AppState } from 'src/app/store/state';
 import { CrudConfig } from '../../model/crud-config';
+import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 @Component({
   selector: 'bia-crud-item-new',
@@ -25,7 +25,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto>
   protected biaTranslationService: BiaTranslationService;
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemService<CrudItem>
+    public crudItemService: CrudItemSingleService<CrudItem>
   ) {
     this.store = this.injector.get<Store<AppState>>(Store);
     this.router = this.injector.get<Router>(Router);

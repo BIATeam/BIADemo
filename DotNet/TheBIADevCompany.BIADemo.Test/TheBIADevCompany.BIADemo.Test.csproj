@@ -16,24 +16,67 @@
 		<OutputPath></OutputPath>
 		<DebugType>portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
-		<DefineConstants>TRACE</DefineConstants>
+		<DefineConstants>TRACE;$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<OutputPath></OutputPath>
 		<DebugType>portable</DebugType>
 		<DebugSymbols>true</DebugSymbols>
+		<DefineConstants>TRACE;$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
 	</PropertyGroup>
 
+	<ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
+		<!--BIADEMO-->
+		<Compile Remove="**\*Aircraft*.cs" />
+		<Compile Remove="**\*Airport*.cs" />
+		<Compile Remove="**\*BiaDemo*.cs" />
+		<Compile Remove="**\*Engine*.cs" />
+		<Compile Remove="**\*Example*.cs" />
+		<Compile Remove="**\*Plane*.cs" />
+		<Compile Remove="**\*Worker*.cs" />
+		<Compile Remove="**\*HangfiresController*.cs" />
+		<!--BIATEMPLATE-->
+		<Compile Remove="**\*Audit*.cs" />
+		<Compile Remove="**\*Error*.cs" />
+		<Compile Remove="**\*IdentityProvider*.cs" />
+		<Compile Remove="**\*LogsController*.cs" />
+		<Compile Remove="**\*Mapper*.cs" />
+		<Compile Remove="**\*Member*.cs" />
+		<Compile Remove="**\*ModelBuilder*.cs" />
+		<Compile Remove="**\*Notification*.cs" />
+		<Compile Remove="**\*Query*.cs" />
+		<Compile Remove="**\*SearchExpressionService*.cs" />
+		<Compile Remove="**\*Site*.cs" />
+		<Compile Remove="**\*Synchronize*.cs" />
+		<Compile Remove="**\*Team*.cs" />
+		<Compile Remove="**\*Translation*.cs" />
+		<Compile Remove="**\*View*.cs" />
+		<Compile Remove="**\Role.cs" />
+		<Compile Remove="**\RoleAppService.cs" />
+		<Compile Remove="**\IRoleAppService.cs" />
+		<Compile Remove="**\RolesController.cs" />
+		<Compile Remove="**\User.cs" />
+		<Compile Remove="**\UsersController.cs" />
+		<Compile Remove="**\UserAppService.cs" />
+		<Compile Remove="**\IUserAppService.cs" />
+		<Compile Remove="**\UserExtensions.cs" />
+		<Compile Remove="**\UserSelectBuilder.cs" />
+		<Compile Remove="**\UserSpecification.cs" />
+		<Compile Remove="**\WakeUpTask.cs" />
+		<Compile Remove="**\LanguagesController.cs" />
+		<Compile Remove="**\LdapDomainsController.cs" />
+	</ItemGroup>
+
 	<ItemGroup>
-		<PackageReference Include="BIA.Net.Core.Test" Version="3.9.*" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-		<PackageReference Include="Moq" Version="4.20.70" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.4.3" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.4.3" />
+		<PackageReference Include="BIA.Net.Core.Test" Version="3.10.*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+		<PackageReference Include="Moq" Version="4.20.72" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.6.0" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.6.0" />
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
 

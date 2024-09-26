@@ -6,7 +6,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using System;
     using System.Collections.Generic;
-    using System.Net.Http;
     using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
@@ -24,29 +23,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-
-    // BIAToolKit - Begin Dependency 1
-    // BIAToolKit - End Dependency 1
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Application.Job;
-
-    // BIAToolKit - Begin Partial Dependency 1 Plane
-    using TheBIADevCompany.BIADemo.Application.Plane;
-
-    // BIAToolKit - End Partial Dependency 1 Plane
-    // End BIADemo
-    using TheBIADevCompany.BIADemo.Application.Site;
-    using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Application.View;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+#if BIA_FRONT_FEATURE
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories.QueryCustomizer;
+#endif
+    using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     /// <summary>
@@ -95,52 +78,32 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
-            // Application Layer
-            collection.AddTransient<ITeamAppService, TeamAppService>();
-            collection.AddTransient<ISiteAppService, SiteAppService>();
-            collection.AddTransient<IMemberAppService, MemberAppService>();
-            collection.AddTransient<IRoleAppService, RoleAppService>();
-            collection.AddTransient<IUserAppService, UserAppService>();
-            collection.AddTransient<IViewAppService, ViewAppService>();
-            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Application",
+                excludedServiceNames: new List<string>() { nameof(AuthAppService) },
+                serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
             {
-                collection.AddTransient<IAuthAppService, AuthAppService>();
+                BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Application",
+                includedServiceNames: new List<string>() { nameof(AuthAppService) },
+                serviceLifetime: ServiceLifetime.Transient);
             }
 
-            // Begin BIADemo
-            collection.AddTransient<IAircraftMaintenanceCompanyAppService, AircraftMaintenanceCompanyAppService>();
-            collection.AddTransient<IMaintenanceTeamAppService, MaintenanceTeamAppService>();
-
-            // BIAToolKit - Begin Partial Dependency 2 Plane
-            collection.AddTransient<IPlaneAppService, PlaneAppService>();
-
-            // BIAToolKit - End Partial Dependency 2 Plane
-            collection.AddTransient<IPlaneTypeAppService, PlaneTypeAppService>();
-
-            // BIAToolKit - Begin Partial Dependency 2 Airport
-            collection.AddTransient<IAirportAppService, AirportAppService>();
-
-            // BIAToolKit - End Partial Dependency 2 Airport
-            collection.AddTransient<IEngineAppService, EngineAppService>();
-            collection.AddTransient<IBiaDemoTestHangfireService, BiaDemoTestHangfireService>();
-            collection.AddTransient<IRemotePlaneAppService, RemotePlaneAppService>();
-
-            // End BIADemo
-
-            // BIAToolKit - Begin Dependency 2
-            // BIAToolKit - End Dependency 2
+            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
         {
-            // Domain Layer
-            collection.AddTransient<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
-            collection.AddTransient<IUserPermissionDomainService, UserPermissionDomainService>();
-            collection.AddTransient<IUserSynchronizeDomainService, UserSynchronizeDomainService>();
-            collection.AddTransient<INotificationDomainService, NotificationDomainService>();
-            collection.AddTransient<INotificationTypeDomainService, NotificationTypeDomainService>();
+            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
 
             Type templateType = typeof(BaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
@@ -183,56 +146,34 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 },
                 contextLifetime: ServiceLifetime.Transient);
 
-            collection.AddTransient<IMemberQueryCustomizer, MemberQueryCustomizer>();
-            collection.AddTransient<IViewQueryCustomizer, ViewQueryCustomizer>();
-            collection.AddTransient<INotificationQueryCustomizer, NotificationQueryCustomizer>();
+            // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
+                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: ServiceLifetime.Transient);
+#if BIA_FRONT_FEATURE
             collection.AddSingleton<AuditFeature>();
-
-            // Begin BIADemo
-            collection.AddTransient<IEngineRepository, EngineRepository>();
-
-            // End BIADemo
+#endif
         }
 
+#pragma warning disable S1172 // Unused method parameters should be removed
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection)
+#pragma warning restore S1172 // Unused method parameters should be removed
         {
-            // Infrastructure Service Layer
             collection.AddSingleton<IUserDirectoryRepository<UserFromDirectory>, LdapRepository>();
-            collection.AddTransient<INotification, NotificationRepository>();
+#if BIA_FRONT_FEATURE
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+            collection.AddTransient<IMailRepository, MailRepository>();
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
-            collection.AddHttpClient<IUserProfileRepository, UserProfileRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
-
-            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection, false));
+            collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
 
             // Begin BIADemo
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => CreateHttpClientHandler(biaNetSection));
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
 
             // End BIADemo
-        }
-
-        /// <summary>
-        /// Creates the HTTP client handler.
-        /// </summary>
-        /// <param name="biaNetSection">The bia net section.</param>
-        /// <returns>HttpClientHandler object.</returns>
-        private static HttpClientHandler CreateHttpClientHandler(BiaNetSection biaNetSection, bool useDefaultCredentials = true)
-        {
-            HttpClientHandler httpClientHandler = new HttpClientHandler
-            {
-                UseDefaultCredentials = useDefaultCredentials,
-                AllowAutoRedirect = false,
-                UseProxy = false,
-            };
-
-            if (biaNetSection?.Security?.DisableTlsVerify == true)
-            {
-#pragma warning disable S4830 // Server certificates should be verified during SSL/TLS connections
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-#pragma warning restore S4830 // Server certificates should be verified during SSL/TLS connections
-            }
-
-            return httpClientHandler;
+#endif
         }
     }
 }

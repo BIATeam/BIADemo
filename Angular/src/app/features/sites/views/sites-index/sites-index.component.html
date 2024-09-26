@@ -4,7 +4,7 @@
     (filter)="onFilter($event)"
     (closeFilter)="onCloseFilter()"
     [advancedFilter]="
-      crudConfiguration.fieldsConfig?.advancedFilter
+      crudConfiguration.fieldsConfig.advancedFilter
     "></bia-team-advanced-filter>
   <div class="flex-grow-1 bia-page-margin">
     <div>
@@ -25,26 +25,25 @@
         <ng-template pTemplate="actionOnSelected">
           <button
             pButton
-            [disabled]="selectedCrudItems?.length !== 1"
-            *ngIf="canEdit"
+            [disabled]="!canEdit || selectedCrudItems.length !== 1"
             class="p-button-outlined"
             label="{{ 'site.edit' | translate }}"
-            (click)="onEdit(this.selectedCrudItems[0].id)"></button>
+            (click)="onEdit(selectedCrudItems[0].id)"></button>
           <button
             pButton
             [disabled]="
-              selectedCrudItems?.length !== 1 ||
+              !canViewMembers ||
+              selectedCrudItems.length !== 1 ||
               !selectedCrudItems[0].canMemberListAccess
             "
-            *ngIf="canViewMembers"
             class="p-button-outlined"
             label="{{ 'app.members' | translate }}"
-            (click)="onViewMembers(this.selectedCrudItems[0].id)"></button>
+            (click)="onViewMembers(selectedCrudItems[0].id)"></button>
         </ng-template>
       </bia-table-header>
       <bia-table-controller
         [defaultPageSize]="defaultPageSize"
-        [length]="totalCount$ | async"
+        [length]="(totalCount$ | async) ?? 0"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
@@ -87,8 +86,8 @@
       </bia-table-controller>
       <bia-table
         *ngIf="!crudConfiguration.useCalcMode"
-        [elements]="crudItems$ | async"
-        [totalRecord]="totalCount$ | async"
+        [elements]="(crudItems$ | async) ?? []"
+        [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
         [configuration]="crudConfiguration.fieldsConfig"
@@ -96,19 +95,22 @@
         [globalSearchValue]="globalSearchValue"
         [canClickRow]="canViewMembers"
         [canSelectElement]="canSelectElement"
-        [loading]="loading$ | async"
+        [loading]="(loading$ | async) ?? false"
         (clickRowData)="onClickRowData($event)"
         (loadLazy)="onLoadLazy($event)"
         [viewPreference]="viewPreference"
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
-        (stateSave)="onStateSave($event)"></bia-table>
+        (stateSave)="onStateSave($event)"
+        [canSelectMultipleElement]="false"></bia-table>
       <app-site-table
         *ngIf="crudConfiguration.useCalcMode"
-        [elements]="crudItems$ | async"
-        [dictOptionDtos]="siteService.optionsService.dictOptionDtos$ | async"
-        [totalRecord]="totalCount$ | async"
+        [elements]="(crudItems$ | async) ?? []"
+        [dictOptionDtos]="
+          (siteService.optionsService.dictOptionDtos$ | async) ?? []
+        "
+        [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
         [configuration]="crudConfiguration.fieldsConfig"
@@ -117,14 +119,15 @@
         [canEdit]="canEdit"
         [canAdd]="canAdd"
         [canSelectElement]="canDelete"
-        [loading]="loading$ | async"
+        [loading]="(loading$ | async) ?? false"
         (loadLazy)="onLoadLazy($event)"
         [viewPreference]="viewPreference"
         [tableStateKey]="tableStateKey"
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-        (save)="onSave($event)"></app-site-table>
+        (save)="onSave($event)"
+        [canSelectMultipleElement]="false"></app-site-table>
     </div>
   </div>
 </div>

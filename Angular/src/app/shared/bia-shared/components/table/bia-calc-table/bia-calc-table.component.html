@@ -1,7 +1,4 @@
-<form
-  *ngIf="(authService.hasToken$ | async) === true"
-  [formGroup]="form"
-  class="bia-calc-form">
+<form [formGroup]="form" class="bia-calc-form">
   <p-table
     *ngIf="configuration"
     #dt
@@ -24,7 +21,7 @@
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
     [styleClass]="
-      table?.multiSortMeta?.length > 1
+      (table?.multiSortMeta?.length ?? 0) > 1
         ? 'p-datatable-striped multiSort'
         : 'p-datatable-striped singleSort'
     "
@@ -32,7 +29,8 @@
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
     editMode="row"
-    dataKey="id">
+    dataKey="id"
+    [(selection)]="selectedElements">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th
@@ -42,7 +40,8 @@
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          <p-tableHeaderCheckbox
+            *ngIf="canSelectMultipleElement"></p-tableHeaderCheckbox>
         </th>
         <ng-container *ngFor="let col of columns">
           <th
@@ -112,29 +111,39 @@
       let-columns="columns"
       let-editing="editing"
       let-ri="rowIndex">
+      <!-- SELECTABLE IF NOT FOOTER -->
       <tr
         class="bia-selectable-row"
-        [pSelectableRow]="isFooter(rowData) !== true ? rowData : null"
+        [pSelectableRow]="rowData?.id !== 0 ? rowData : null"
         [pEditableRow]="rowData"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()">
-        <!-- FIRST COLUMN WITH CHECKBOX -->
+        (keyup.escape)="escape()">
+        <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
         <td
           *ngIf="canSelectElement === true"
           [style.width]="widthSelect"
           [alignFrozen]="alignFrozenSelect"
           pFrozenColumn
           [frozen]="isSelectFrozen">
-          <p-tableCheckbox
-            *ngIf="rowData.id > 0"
-            [value]="rowData"></p-tableCheckbox>
+          <!-- ONLY IF NOT FOOTER -->
+          <ng-container *ngIf="rowData.id !== 0">
+            <ng-template
+              #selectMultipleElement
+              [ngIf]="canSelectMultipleElement === true"
+              [ngIfElse]="selectSingleElement">
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </ng-template>
+            <ng-template #selectSingleElement>
+              <p-tableRadioButton [value]="rowData"></p-tableRadioButton>
+            </ng-template>
+          </ng-container>
         </td>
         <!-- OTHER COLUMNS -->
         <td
           *ngFor="let col of columns"
           [class]="'bia-column-' + col.typeLowerCase"
-          (click)="initEditableRow(rowData)"
+          (click)="initEditableRowAndFocus(rowData, $event)"
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
@@ -160,7 +169,8 @@
                 </bia-table-input>
               </ng-template>
               <ng-template #isNotEditable>
-                <ng-container *ngIf="isFooter(rowData) !== true">
+                <!-- ONLY IF NOT FOOTER -->
+                <ng-container *ngIf="rowData?.id !== 0">
                   <bia-table-output
                     [field]="col"
                     [data]="getCellData(rowData, col)">
@@ -181,7 +191,8 @@
             </ng-template>
             <!-- OUTPUT -->
             <ng-template pTemplate="output">
-              <ng-template [ngIf]="isFooter(rowData) !== true">
+              <!-- ONLY IF NOT FOOTER -->
+              <ng-template [ngIf]="rowData?.id !== 0">
                 <bia-table-output
                   [field]="col"
                   [data]="getCellData(rowData, col)">
@@ -203,12 +214,13 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="footer" *ngIf="canAdd === true" let-columns>
+    <ng-template pTemplate="footer" let-columns>
       <tr
+        *ngIf="canAdd === true"
         class="bia-selectable-row"
         (focusout)="onFocusout()"
         (keyup.enter)="initEditableRow(null)"
-        (keyup.escape)="cancel()">
+        (keyup.escape)="escape()">
         <td
           (click)="initEditableRow(footerRowData)"
           *ngIf="canSelectElement === true"

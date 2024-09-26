@@ -16,16 +16,16 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
 import { FilterMetadata, PrimeTemplate, SelectItem } from 'primeng/api';
-import { KeyValuePair } from '../../../model/key-value-pair';
+import { Subscription } from 'rxjs';
 import {
   DEFAULT_PAGE_SIZE,
   TABLE_FILTER_GLOBAL,
   TeamTypeId,
 } from 'src/app/shared/constants';
-import { BiaTableState } from '../../../model/bia-table-state';
 import { ViewListComponent } from '../../../features/view/views/view-list/view-list.component';
+import { BiaTableState } from '../../../model/bia-table-state';
+import { KeyValuePair } from '../../../model/key-value-pair';
 
 @Component({
   selector: 'bia-table-controller',
@@ -52,7 +52,7 @@ export class BiaTableControllerComponent
   @Input() length: number;
   @Input() columns: KeyValuePair[];
   @Input() columnToDisplays: KeyValuePair[];
-  @Input() tableStateKey: string;
+  @Input() tableStateKey: string | undefined;
   @Input() tableState: string;
   @Input() useViewTeamWithTypeId: TeamTypeId | null;
   @Input() defaultViewPref: BiaTableState;
@@ -181,7 +181,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  private initFilterCtrl() {
+  protected initFilterCtrl() {
     this.sub.add(
       this.filterCtrl.valueChanges.subscribe(filterValue => {
         this.filter.emit(filterValue.trim().toLowerCase());
@@ -189,11 +189,11 @@ export class BiaTableControllerComponent
     );
   }
 
-  private initPageSize() {
+  protected initPageSize() {
     this.pageSize = this.defaultPageSize;
   }
 
-  private updateDisplayedPageSizeOptions() {
+  protected updateDisplayedPageSizeOptions() {
     if (this.pageSizeOptions) {
       const displayedPageSizeOptions = this.pageSizeOptions.sort(
         (a, b) => a - b
@@ -209,7 +209,7 @@ export class BiaTableControllerComponent
     }
   }
 
-  private setControlByViewState(stateString: string) {
+  protected setControlByViewState(stateString: string) {
     const state: BiaTableState = <BiaTableState>JSON.parse(stateString);
     this.pageSize = state.rows ? state.rows : DEFAULT_PAGE_SIZE;
     const newDisplayColumns = state.columnOrder ? state.columnOrder : [];

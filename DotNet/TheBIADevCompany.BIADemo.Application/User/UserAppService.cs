@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
         }
 
         /// <inheritdoc/>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
+        public async Task<IEnumerable<OptionDto>> GetAllOptionsAsync(string filter = null)
         {
             Specification<User> specification = null;
             if (!string.IsNullOrEmpty(filter))
@@ -103,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 specification = UserSpecification.Search(filter);
             }
 
-            return this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
+            return await this.GetAllAsync<OptionDto, UserOptionMapper>(specification: specification, queryOrder: new QueryOrder<User>().OrderBy(o => o.LastName).ThenBy(o => o.FirstName));
         }
 
         /// <inheritdoc cref="IUserAppService.AddUserFromUserDirectoryAsync"/>
@@ -112,7 +112,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
             if (userFromDirectory != null)
             {
                 User user = new User();
-                UserFromDirectory.UpdateUserFieldFromDirectory(user, userFromDirectory);
+                this.userSynchronizeDomainService.UpdateUserFieldFromDirectory(user, userFromDirectory);
 
                 var func = this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(identityKey).Compile();
                 if (!func(user))
@@ -216,7 +216,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     result.UsersAddedDtos = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(usersIdentityKey))).Select(entity => new OptionDto
                     {
                         Id = entity.Id,
-                        Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                        Display = entity.LastName + " " + entity.FirstName + " (" + entity.Login + ")",
                     }).ToList();
                 }
                 catch (Exception ex)
@@ -265,7 +265,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
                 result.UsersAddedDtos = usersAdded.Select(entity => new OptionDto
                 {
                     Id = entity.Id,
-                    Display = entity.FirstName + " " + entity.LastName + " (" + entity.Login + ")",
+                    Display = entity.LastName + " " + entity.FirstName + " (" + entity.Login + ")",
                 }).ToList();
             }
 

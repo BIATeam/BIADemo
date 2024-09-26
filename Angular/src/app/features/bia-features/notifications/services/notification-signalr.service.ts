@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from 'src/app/store/state';
 import { first } from 'rxjs/operators';
-import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
-import { FeatureNotificationsActions } from '../store/notifications-actions';
-import { getLastLazyLoadEvent } from '../store/notification.state';
-import { LazyLoadEvent } from 'primeng/api';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { Notification } from '../model/notification';
-import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { BiaSignalRService } from 'src/app/core/bia-core/services/bia-signalr.service';
 import { Team } from 'src/app/domains/bia-domains/team/model/team';
 import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
+import { TargetedFeature } from 'src/app/shared/bia-shared/model/signalR';
+import { AppState } from 'src/app/store/state';
+import { Notification } from '../model/notification';
+import { getLastLazyLoadEvent } from '../store/notification.state';
+import { FeatureNotificationsActions } from '../store/notifications-actions';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -22,8 +21,8 @@ import { getAllTeams } from 'src/app/domains/bia-domains/team/store/team.state';
   providedIn: 'root',
 })
 export class NotificationsSignalRService {
-  private targetedFeature: TargetedFeature;
-  private myTeams: Team[];
+  protected targetedFeature: TargetedFeature;
+  protected myTeams: Team[];
 
   /**
    * Constructor.
@@ -31,9 +30,9 @@ export class NotificationsSignalRService {
    * @param signalRService the service managing the SignalR connection.
    */
   constructor(
-    private store: Store<AppState>,
-    private signalRService: BiaSignalRService,
-    private authService: AuthService
+    protected store: Store<AppState>,
+    protected signalRService: BiaSignalRService,
+    protected authService: AuthService
   ) {
     // Do nothing.
   }
@@ -64,7 +63,7 @@ export class NotificationsSignalRService {
             );
             this.store.dispatch(
               FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               })
             );
           });
@@ -85,7 +84,7 @@ export class NotificationsSignalRService {
             );
             this.store.dispatch(
               FeatureNotificationsActions.loadAllByPost({
-                event: <LazyLoadEvent>event,
+                event: event,
               })
             );
           });
@@ -95,7 +94,7 @@ export class NotificationsSignalRService {
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  private isInMyDisplay(notification: Notification) {
+  protected isInMyDisplay(notification: Notification) {
     const additionalInfo = this.authService.getAdditionalInfos();
 
     // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers

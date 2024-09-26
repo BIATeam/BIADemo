@@ -1,12 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
-import { Notification } from '../model/notification';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notificationListItem';
 export namespace FeatureNotificationsActions {
   export const loadAllByPost = createAction(
     '[Notifications] Load all by post',
-    props<{ event: LazyLoadEvent }>()
+    props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
@@ -43,7 +43,7 @@ export namespace FeatureNotificationsActions {
     '[Notifications] Load all by post success',
     props<{
       result: DataResult<NotificationListItem[]>;
-      event: LazyLoadEvent;
+      event: TableLazyLoadEvent;
     }>()
   );
 

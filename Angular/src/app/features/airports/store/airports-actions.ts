@@ -1,13 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { LazyLoadEvent } from 'primeng/api';
-import { Airport } from '../model/airport';
-import { airportCRUDConfiguration } from '../airport.constants';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { DataResult } from 'src/app/shared/bia-shared/model/data-result';
+import { airportCRUDConfiguration } from '../airport.constants';
+import { Airport } from '../model/airport';
 
 export namespace FeatureAirportsActions {
   export const loadAllByPost = createAction(
     '[' + airportCRUDConfiguration.storeKey + '] Load all by post',
-    props<{ event: LazyLoadEvent }>()
+    props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
@@ -37,7 +37,7 @@ export namespace FeatureAirportsActions {
 
   export const loadAllByPostSuccess = createAction(
     '[' + airportCRUDConfiguration.storeKey + '] Load all by post success',
-    props<{ result: DataResult<Airport[]>; event: LazyLoadEvent }>()
+    props<{ result: DataResult<Airport[]>; event: TableLazyLoadEvent }>()
   );
 
   export const loadSuccess = createAction(
