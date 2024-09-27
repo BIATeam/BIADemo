@@ -60,22 +60,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         }
 
         /// <summary>
-        /// Gets all option that I can see.
-        /// </summary>
-        /// /// <returns>The list of production sites.</returns>
-        [HttpGet("allOptions")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Options)]
-        public async Task<IActionResult> GetAllOptions()
-        {
-            var results = await this.planeTypeService.GetAllOptionsAsync();
-            return this.Ok(results);
-        }
-
-        /// <summary>
         /// Get all planes with filters.
         /// </summary>
         /// <param name="filters">The filters.</param>

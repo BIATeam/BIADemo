@@ -7,6 +7,6 @@ import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 })
 export class PlaneTypeOptionDas extends AbstractDas<OptionDto> {
   constructor(injector: Injector) {
-    super(injector, 'PlanesTypes');
+    super(injector, 'PlaneTypeOptions');
   }
 }

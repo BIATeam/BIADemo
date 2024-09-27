@@ -5,17 +5,14 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
-    /// The application service used for plane.
+    /// The application service used for airport.
     /// </summary>
     public class AirportAppService : CrudAppServiceBase<AirportDto, Airport, int, PagingFilterFormatDto, AirportMapper>, IAirportAppService
     {
