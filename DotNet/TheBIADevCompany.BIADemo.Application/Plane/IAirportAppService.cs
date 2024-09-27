@@ -18,10 +18,5 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public interface IAirportAppService : ICrudAppServiceBase<AirportDto, Airport, int, PagingFilterFormatDto>
     {
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
     }
 }

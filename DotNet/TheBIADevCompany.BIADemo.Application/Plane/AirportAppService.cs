@@ -27,14 +27,5 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
             : base(repository)
         {
         }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
-        {
-            return this.GetAllAsync<OptionDto, AirportOptionMapper>();
-        }
     }
 }
