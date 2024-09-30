@@ -6,13 +6,13 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Domain" Version="3.10.*" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain.Dto\TheBIADevCompany.BIADemo.Domain.Dto.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>

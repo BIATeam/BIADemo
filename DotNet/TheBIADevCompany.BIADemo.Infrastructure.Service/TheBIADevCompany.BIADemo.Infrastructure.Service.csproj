@@ -6,13 +6,13 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BIA.Net.Core.Infrastructure.Service" Version="3.10.*" />
     <PackageReference Include="MailKit" Version="4.7.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
     <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
