@@ -1,12 +1,29 @@
 import { Injectable } from '@angular/core';
 import { FilterMetadata } from 'primeng/api';
+import { TableLazyLoadEvent } from 'primeng/table';
 import { TABLE_FILTER_GLOBAL } from '../../constants';
 import { BiaTableComponent } from '../components/table/bia-table/bia-table.component';
+import { clone } from '../utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TableHelperService {
+  static copyTableLazyLoadEvent(
+    lazyLoadEvent: TableLazyLoadEvent
+  ): TableLazyLoadEvent {
+    return {
+      filters: clone(lazyLoadEvent.filters),
+      first: lazyLoadEvent.first,
+      globalFilter: clone(lazyLoadEvent.globalFilter),
+      last: lazyLoadEvent.last,
+      multiSortMeta: clone(lazyLoadEvent.multiSortMeta),
+      rows: lazyLoadEvent.rows,
+      sortField: lazyLoadEvent.sortField,
+      sortOrder: lazyLoadEvent.sortOrder,
+    };
+  }
+
   public hasFilter(biaTableComponent: BiaTableComponent): boolean {
     if (this.isNullUndefEmptyStr(biaTableComponent)) {
       return false;
