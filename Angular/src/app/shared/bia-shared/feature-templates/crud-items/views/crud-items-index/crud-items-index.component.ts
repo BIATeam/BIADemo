@@ -26,7 +26,6 @@ import { BiaTableState } from 'src/app/shared/bia-shared/model/bia-table-state';
 import { KeyValuePair } from 'src/app/shared/bia-shared/model/key-value-pair';
 import { PagingFilterFormatDto } from 'src/app/shared/bia-shared/model/paging-filter-format';
 import { TableHelperService } from 'src/app/shared/bia-shared/services/table-helper.service';
-import { clone } from 'src/app/shared/bia-shared/utils';
 import { DEFAULT_PAGE_SIZE, TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { CrudItemTableComponent } from '../../components/crud-item-table/crud-item-table.component';
@@ -325,14 +324,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     const pagingAndFilter: PagingFilterFormatDto = {
       advancedFilter: this.crudConfiguration.fieldsConfig.advancedFilter,
       parentIds: this.crudItemService.getParentIds().map(id => id.toString()),
-      filters: clone(lazyLoadEvent.filters),
-      first: lazyLoadEvent.first,
-      globalFilter: clone(lazyLoadEvent.globalFilter),
-      last: lazyLoadEvent.last,
-      multiSortMeta: clone(lazyLoadEvent.multiSortMeta),
-      rows: lazyLoadEvent.rows,
-      sortField: lazyLoadEvent.sortField,
-      sortOrder: lazyLoadEvent.sortOrder,
+      ...lazyLoadEvent,
     };
     this.crudItemService.loadAllByPost(pagingAndFilter);
     this.hasColumnFilter =
