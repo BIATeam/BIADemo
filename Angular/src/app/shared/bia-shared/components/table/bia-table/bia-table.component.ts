@@ -24,6 +24,7 @@ import {
 } from '../../../model/bia-field-config';
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
+import { TableHelperService } from '../../../services/table-helper.service';
 
 const objectsEqual = (o1: any, o2: any) =>
   Object.keys(o1).length === Object.keys(o2).length &&
@@ -415,7 +416,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   onLoadLazy(event: TableLazyLoadEvent) {
     this.saveTableState();
-    setTimeout(() => this.loadLazy.emit(event), 0);
+    const tableLazyLoadCopy: TableLazyLoadEvent =
+      TableHelperService.copyTableLazyLoadEvent(event);
+    setTimeout(() => this.loadLazy.emit(tableLazyLoadCopy), 0);
   }
 
   onSelectionChange() {
@@ -518,7 +521,11 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   }
 
   getLazyLoadMetadata(): TableLazyLoadEvent {
-    return this.table?.createLazyLoadMetadata();
+    const lazyLoadEvent = this.table?.createLazyLoadMetadata();
+    if (lazyLoadEvent) {
+      return TableHelperService.copyTableLazyLoadEvent(lazyLoadEvent);
+    }
+    return {};
   }
 
   getLazyLoadOnInit(): boolean {

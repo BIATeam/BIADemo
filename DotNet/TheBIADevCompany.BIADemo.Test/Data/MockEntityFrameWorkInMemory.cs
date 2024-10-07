@@ -141,6 +141,14 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc cref="IDataPlanes.InitDefaultPlanes"/>
         public void InitDefaultPlanes()
         {
+            var airport = new Airport
+            {
+                Id = 1,
+                City = "Bordeaux",
+                Name = "BDX",
+            };
+            this.GetDbContext().Airports.Add(airport);
+
             var plane1 = new Plane
             {
                 SiteId = 1,
@@ -150,6 +158,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 DeliveryDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
+                SyncFlightDataTime = TimeSpan.Parse("10:00", new CultureInfo("en-US")),
+                CurrentAirportId = 1,
+                CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[0],
             };
 
@@ -162,6 +173,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 DeliveryDate = new DateTime(2001, 2, 3, 0, 0, 0, DateTimeKind.Utc),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
+                SyncFlightDataTime = TimeSpan.Parse("13:00", new CultureInfo("en-US")),
+                CurrentAirportId = 1,
+                CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[1],
             };
 

@@ -710,10 +710,13 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                             break;
 
                         case BiaConstants.RoleType.ClaimsToRole:
-                            List<string> claimValues = claimsPrincipal.FindAll(role.ClaimType).Select(c => c.Value).ToList();
-                            if (role.ClaimValues.Intersect(claimValues).Any())
+                            if (role.RequireClaim?.AllowedValues?.Any() == true)
                             {
-                                return role.Label;
+                                List<string> claimValues = claimsPrincipal.FindAll(role.RequireClaim.Type).Select(c => c.Value).ToList();
+                                if (role.RequireClaim.AllowedValues.Intersect(claimValues).Any())
+                                {
+                                    return role.Label;
+                                }
                             }
                             break;
 
