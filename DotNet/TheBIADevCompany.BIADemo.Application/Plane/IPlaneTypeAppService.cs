@@ -5,10 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
@@ -18,10 +15,5 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     /// </summary>
     public interface IPlaneTypeAppService : ICrudAppServiceBase<PlaneTypeDto, PlaneType, int, PagingFilterFormatDto>
     {
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        Task<IEnumerable<OptionDto>> GetAllOptionsAsync();
     }
 }

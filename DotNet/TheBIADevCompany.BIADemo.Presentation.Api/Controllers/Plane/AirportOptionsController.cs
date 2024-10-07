@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="CountriesController.cs" company="TheBIADevCompany">
+// <copyright file="AirportOptionsController.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -10,41 +10,41 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
+    using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
-    /// The API controller used to manage Countries.
+    /// The API controller used to manage Airport options.
     /// </summary>
-    public class CountriesController : BiaControllerBase
+    public class AirportOptionsController : BiaControllerBase
     {
         /// <summary>
-        /// The plane application service.
+        /// The Airport application service.
         /// </summary>
-        private readonly ICountryAppService countryService;
+        private readonly IAirportOptionAppService airportOptionService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CountriesController"/> class.
+        /// Initializes a new instance of the <see cref="AirportOptionsController"/> class.
         /// </summary>
-        /// <param name="countryService">The country application service.</param>
-        public CountriesController(ICountryAppService countryService)
+        /// <param name="airportOptionService">The Airport application service.</param>
+        public AirportOptionsController(IAirportOptionAppService airportOptionService)
         {
-            this.countryService = countryService;
+            this.airportOptionService = airportOptionService;
         }
 
         /// <summary>
         /// Gets all option that I can see.
         /// </summary>
-        /// /// <returns>The list of production sites.</returns>
+        /// /// <returns>The list of airports.</returns>
         [HttpGet("allOptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Countries.Options)]
+        [Authorize(Roles = Rights.Airports.Options)]
         public async Task<IActionResult> GetAllOptions()
         {
-            var results = await this.countryService.GetAllOptionsAsync();
+            var results = await this.airportOptionService.GetAllOptionsAsync();
             return this.Ok(results);
         }
     }

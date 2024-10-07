@@ -5,10 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
@@ -26,15 +23,6 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         public PlaneTypeAppService(ITGenericRepository<PlaneType, int> repository)
             : base(repository)
         {
-        }
-
-        /// <summary>
-        /// Return options.
-        /// </summary>
-        /// <returns>List of OptionDto.</returns>
-        public Task<IEnumerable<OptionDto>> GetAllOptionsAsync()
-        {
-            return this.GetAllAsync<OptionDto, PlaneTypeOptionMapper>();
         }
     }
 }
