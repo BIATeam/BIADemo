@@ -1,5 +1,5 @@
-﻿// <copyright file="BiaAuthorizeFilter.cs" company="PlaceholderCompany">
-// Copyright (c) PlaceholderCompany. All rights reserved.
+﻿// <copyright file="BiaAuthorizeFilter.cs" company="BIA">
+//     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Presentation.Api.Filters
