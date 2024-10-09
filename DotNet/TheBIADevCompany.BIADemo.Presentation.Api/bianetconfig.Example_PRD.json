@@ -19,6 +19,7 @@
       }
     },
     "Authentication": {
+      "AuthenticationSchemes": "NoToken", // NoToken, LDP
       "LdapDomains": [
         {
           "Name": "DOMAIN_BIA_1",

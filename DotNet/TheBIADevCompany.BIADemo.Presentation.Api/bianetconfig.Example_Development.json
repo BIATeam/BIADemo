@@ -28,6 +28,7 @@
       "SmtpPort": 25
     },
     "Authentication": {
+      "AuthenticationSchemes": "NoToken", // NoToken, LDP
       "Keycloak": {
         "IsActive": false,
         "BaseUrl": "http://localhost:8080",
