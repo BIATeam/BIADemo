@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Presentation.Api.Filters
+﻿// <copyright file="BiaAuthorizeFilter.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Presentation.Api.Filters
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
