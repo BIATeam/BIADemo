@@ -4,12 +4,19 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
 {
-    using BIA.Net.Presentation.Api.Controllers.Base;
+    using BIA.Net.Core.Presentation.Api.Filters;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// Auth Controller Base.
     /// </summary>
-    public abstract class AuthControllerBase : BiaControllerBaseNoToken
+    [Route("api/[controller]")]
+    [ApiController]
+    [Produces("application/json")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ServiceFilter(typeof(BiaAuthorizeFilter))]
+    public abstract class AuthControllerBase : ControllerBase
     {
     }
 }
