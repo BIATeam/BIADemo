@@ -32,8 +32,8 @@ namespace BIA.Net.Core.Common.Configuration
         public int LdapCacheUserDuration { get; set; }
 
         /// <summary>
-        /// Gets or sets the authentication schemes.
+        /// Gets or sets the schemes.
         /// </summary>
-        public string AuthenticationSchemes { get; set; }
+        public string Schemes { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace BIA.Net.Core.Presentation.Api.Filters
     public class BiaAuthorizeFilter : IAsyncAuthorizationFilter
     {
         private const string AuthenticationSchemesNoToken = "NoToken";
-        private const string AuthenticationSchemesLDP = "LDP";
+        private const string AuthenticationSchemesIdP = "IdP";
 
         private readonly BiaNetSection biaNetSection = new ();
 
@@ -35,9 +35,9 @@ namespace BIA.Net.Core.Presentation.Api.Filters
         /// <inheritdoc cref="IAsyncAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext)"/>
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            var authenticationSchemes = this.biaNetSection?.Authentication?.AuthenticationSchemes switch
+            var authenticationSchemes = this.biaNetSection?.Authentication?.Schemes switch
             {
-                AuthenticationSchemesLDP => AuthenticationConfiguration.JwtBearerIdentityProvider,
+                AuthenticationSchemesIdP => AuthenticationConfiguration.JwtBearerIdentityProvider,
                 AuthenticationSchemesNoToken => NegotiateDefaults.AuthenticationScheme,
                 _ => NegotiateDefaults.AuthenticationScheme
             };
