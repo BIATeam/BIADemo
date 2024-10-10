@@ -10,7 +10,6 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Presentation.Api.Filters;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -161,7 +160,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                 }
             });
 
-            services.AddScoped<BiaAuthorizeFilter>();
+            services.AddSingleton<IAuthorizationPolicyProvider, BiaAuthorizationPolicyProvider>();
         }
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)

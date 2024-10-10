@@ -4,7 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
 {
-    using BIA.Net.Core.Presentation.Api.Filters;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     [ApiController]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ServiceFilter(typeof(BiaAuthorizeFilter))]
+    [Authorize(Policy = "BiaAuthorizationPolicy")]
     public abstract class AuthControllerBase : ControllerBase
     {
     }
