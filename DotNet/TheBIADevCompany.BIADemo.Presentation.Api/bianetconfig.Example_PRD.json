@@ -19,7 +19,6 @@
       }
     },
     "Authentication": {
-      "Schemes": "NoToken", // NoToken, IdP
       "LdapDomains": [
         {
           "Name": "DOMAIN_BIA_1",

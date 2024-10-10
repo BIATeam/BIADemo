@@ -27,7 +27,6 @@
       "SmtpPort": 25
     },
     "Authentication": {
-      "Schemes": "NoToken", // NoToken, IdP
       "Keycloak": {
         "IsActive": true,
         "BaseUrl": "https://the-bia-dev-team-keycloak-int.the-deploy-domain-name.bia",
