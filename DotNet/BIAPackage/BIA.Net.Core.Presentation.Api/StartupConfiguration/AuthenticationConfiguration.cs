@@ -159,6 +159,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     AddConfigurationPolicies(configuration, options);
                 }
             });
+
+            services.AddSingleton<IAuthorizationPolicyProvider, BiaAuthorizationPolicyProvider>();
         }
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
