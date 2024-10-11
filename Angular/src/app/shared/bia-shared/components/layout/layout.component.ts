@@ -30,6 +30,7 @@ export class LayoutComponent implements OnInit {
   helpUrl = environment.helpUrl;
   reportUrl = environment.reportUrl;
   enableNotifications = allEnvironments.enableNotifications;
+  login = '';
   username = '';
   headerLogos: string[];
   footerLogo = 'assets/bia/img/Footer.png';
@@ -95,6 +96,7 @@ export class LayoutComponent implements OnInit {
       authInfo.additionalInfos &&
       authInfo.additionalInfos.userInfo
     ) {
+      this.login = authInfo.additionalInfos.userInfo.login;
       this.username = authInfo.additionalInfos.userInfo.firstName
         ? authInfo.additionalInfos.userInfo.firstName
         : authInfo.additionalInfos.userInfo.login;

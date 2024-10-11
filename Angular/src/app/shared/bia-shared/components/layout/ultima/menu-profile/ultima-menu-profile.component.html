@@ -5,9 +5,11 @@
     pTooltip="Profile"
     [tooltipDisabled]="isTooltipDisabled">
     <img
-      src="assets/bia/img/Division.gif"
+      *ngIf="layoutService.config().showAvatar"
+      [src]="avatarUrl"
+      onError="this.src='assets/bia/img/PersonPlaceholder.png'"
       alt="avatar"
-      style="width: 32px; height: 32px" />
+      class="avatar" />
     <span>
       <strong>{{ displayName }}</strong>
     </span>

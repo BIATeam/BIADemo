@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { take, tap } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import {
   BiaLayoutService,
   ColorScheme,
@@ -12,6 +13,7 @@ import { MenuService } from '../../services/menu.service';
 @Component({
   selector: 'bia-ultima-config',
   templateUrl: './ultima-config.component.html',
+  styleUrls: ['./ultima-config.component.scss'],
 })
 export class BiaUltimaConfigComponent {
   @Input() minimal: boolean = false;
@@ -21,6 +23,7 @@ export class BiaUltimaConfigComponent {
   componentThemes: any[] = [];
   menuThemes: any[] = [];
   topbarThemes: any[] = [];
+  urlEditAvatar: string;
 
   protected _currentCulture: string | null;
 
@@ -28,7 +31,8 @@ export class BiaUltimaConfigComponent {
     public layoutService: BiaLayoutService,
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
-    public menuService: MenuService
+    public menuService: MenuService,
+    protected readonly appSettingsService: AppSettingsService
   ) {
     this.biaTranslation.currentCulture$
       .pipe(
@@ -38,6 +42,9 @@ export class BiaUltimaConfigComponent {
         })
       )
       .subscribe();
+    this.urlEditAvatar =
+      this.appSettingsService.appSettings.profileConfiguration
+        ?.urlEditProfileImage ?? '';
   }
 
   get visible(): boolean {

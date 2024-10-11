@@ -33,5 +33,10 @@ namespace BIA.Net.Core.Domain.Dto.Option
         /// Url to Monitor.
         /// </summary>
         public string MonitoringUrl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the user profile configuration.
+        /// </summary>
+        public ProfileConfiguration ProfileConfiguration { get; set; }
     }
 }

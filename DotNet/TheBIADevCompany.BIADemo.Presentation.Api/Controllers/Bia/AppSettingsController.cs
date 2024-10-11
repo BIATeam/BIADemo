@@ -33,6 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 Environment = configuration.Value.Environment,
                 Cultures = configuration.Value.Cultures,
                 MonitoringUrl = configuration.Value.ApiFeatures?.DelegateJobToWorker?.MonitoringUrl,
+                ProfileConfiguration = configuration.Value.ProfileConfiguration,
             };
         }
 

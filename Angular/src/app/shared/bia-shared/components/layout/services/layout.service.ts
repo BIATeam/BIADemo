@@ -36,6 +36,7 @@ export interface AppConfig {
   menuMode: MenuMode;
   scale: number;
   canToggleStyle: boolean;
+  showAvatar: boolean;
 }
 
 interface LayoutState {
@@ -51,17 +52,20 @@ interface LayoutState {
   fullscreen: boolean;
 }
 
+const DEFAULT_LAYOUT_CONFIG: AppConfig = {
+  classicStyle: false,
+  colorScheme: 'light',
+  menuMode: 'static',
+  scale: 14,
+  canToggleStyle: true,
+  showAvatar: true,
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class BiaLayoutService {
-  _config: AppConfig = {
-    classicStyle: false,
-    colorScheme: 'light',
-    menuMode: 'static',
-    scale: 14,
-    canToggleStyle: true,
-  };
+  _config: AppConfig = DEFAULT_LAYOUT_CONFIG;
 
   state: LayoutState = {
     staticMenuDesktopInactive: false,
@@ -230,6 +234,13 @@ export class BiaLayoutService {
   onConfigUpdate() {
     this._config = { ...this.config() };
     this.configUpdate.next(this.config());
+  }
+
+  defaultConfigUpdate(config: Partial<AppConfig>) {
+    this.config.update(currentValue => {
+      return { ...currentValue, ...config };
+    });
+    this.onConfigUpdate();
   }
 
   mapNavigationToMenuItems(

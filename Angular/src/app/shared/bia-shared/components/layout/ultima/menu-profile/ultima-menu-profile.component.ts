@@ -5,12 +5,14 @@ import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
   selector: 'ultima-menu-profile',
   templateUrl: './ultima-menu-profile.component.html',
+  styleUrls: ['./ultima-menu-profile.component.scss'],
   animations: [
     trigger('menu', [
       transition('void => inline', [
@@ -45,6 +47,16 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     this.buildTopBarMenu();
   }
   @Input() supportedLangs: string[];
+  @Input() set login(value: string) {
+    const url =
+      this.appSettingsService.appSettings.profileConfiguration?.urlProfileImage.replace(
+        '{login}',
+        value
+      ) ?? '';
+    this.avatarUrl = url;
+  }
+
+  avatarUrl: string = 'assets/bia/img/PersonPlaceholder.png';
 
   usernameParam?: { name: string };
   displayName: string;
@@ -57,6 +69,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     protected readonly layoutService: BiaLayoutService,
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
+    protected readonly appSettingsService: AppSettingsService,
     public el: ElementRef
   ) {}
 

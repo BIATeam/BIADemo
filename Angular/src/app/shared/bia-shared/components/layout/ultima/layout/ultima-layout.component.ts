@@ -35,6 +35,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
   @Input() appTitle: string;
   @Input() menus: BiaNavigation[];
   @Input() username?: string;
+  @Input() login: string;
   @Input() headerLogos: string[];
   @Input() footerLogo = 'assets/bia/img/Footer.png';
   @Input() supportedLangs = APP_SUPPORTED_TRANSLATIONS;

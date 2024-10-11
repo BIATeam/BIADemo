@@ -25,6 +25,7 @@ export class BiaUltimaSideBarComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input() username: string | undefined;
+  @Input() login: string;
   @Input() supportedLangs: string[];
   @Input()
   set menus(navigations: BiaNavigation[]) {
