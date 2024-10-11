@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { first } from 'rxjs/operators';
-import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../../model/plane';
@@ -23,7 +23,7 @@ export class PlaneItemComponent
     protected store: Store<AppState>,
     protected injector: Injector,
     public planeService: PlaneService,
-    protected layoutService: BiaClassicLayoutService
+    protected layoutService: BiaLayoutService
   ) {
     super(injector, planeService);
   }

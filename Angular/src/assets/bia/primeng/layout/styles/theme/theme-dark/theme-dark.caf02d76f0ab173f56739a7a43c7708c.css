@@ -9892,12 +9892,13 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 }
 @layer primeng {
   p-breadcrumb .p-breadcrumb {
-    padding: 0.25rem;
+    height: 2.95rem;
+    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
   }
   p-breadcrumb .p-menuitem-text {
     font-size: 0.9em !important;
     font-weight: 100 !important;
-    line-height: 24px !important;
+    line-height: 1.7rem !important;
   }
   p-breadcrumb .p-menuitem-separator .p-icon {
     width: 0.6rem;
@@ -9970,4 +9971,17 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     min-width: 0.5rem;
     height: 0.5rem;
   }
+}
+body {
+  --menu-bg: #02143a;
+  --topbar-bg: #02143a;
+  --topbar-start-bg: #070e1d;
+  --topbar-menu-button-bg: #f7a92a;
+  --topbar-menu-button-hover-bg: #cc8108;
+  --topbar-menu-button-text-color: #020f21;
+  --topbar-item-text-color: #ffffff;
+}
+
+.layout-menu-dark {
+  --menu-bg: #02143a;
 }

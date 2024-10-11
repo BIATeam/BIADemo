@@ -47,7 +47,9 @@
       "us": "US"
     },
     "languages": "Idiomas",
+    "layoutScale": "Escala de diseño",
     "manage": "Administrar",
+    "menuMode": "Estilo de barra lateral",
     "new": "Nuevo",
     "no": "No",
     "NoRecordsFound": "No se han encontrado registros",
@@ -62,6 +64,7 @@
     "save": "Guardar",
     "search": "Buscar",
     "select": "Seleccionar",
+    "settings": "Configuración",
     "success": "Exito",
     "synchronize": "Sincronizar",
     "theme": "Aspecto",
@@ -69,6 +72,7 @@
     "themeLight": "Light",
     "toAdd": " Para Agregar",
     "toDelete": "Para Eliminar",
+    "toggleStyle": "Cambiar estilo",
     "toModify": "Para Modificar",
     "translation": {
       "add": "Agregar traducción",

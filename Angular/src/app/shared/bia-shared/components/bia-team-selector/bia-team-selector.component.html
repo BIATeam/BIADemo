@@ -1,4 +1,4 @@
-<div class="controls flex flex-row">
+<div class="controls flex flex-row align-items-center">
   <label *ngIf="teamType.label">{{ teamType.label | translate }} : </label>
   <p-dropdown
     *ngIf="displayTeamList === true"
@@ -7,7 +7,8 @@
     optionLabel="title"
     dataKey="id"
     (onChange)="onTeamChange()"
-    scrollHeight="50vh"></p-dropdown>
+    scrollHeight="50vh"
+    [appendTo]="'body'"></p-dropdown>
   <i
     *ngIf="displayTeamList === true && currentTeam?.id !== defaultTeamId"
     class="pi pi-star app-icon-header bia-pointer"
@@ -27,7 +28,8 @@
     dataKey="id"
     (onChange)="onRolesChange()"
     placeholder="Select a role"
-    scrollHeight="50vh">
+    scrollHeight="50vh"
+    [appendTo]="'body'">
   </p-dropdown>
   <p-multiSelect
     *ngIf="displayRoleMultiSelect"
@@ -37,7 +39,8 @@
     datakey="id"
     (onChange)="onRolesChange()"
     placeholder="Select a role"
-    scrollHeight="50vh">
+    scrollHeight="50vh"
+    [appendTo]="'body'">
   </p-multiSelect>
   <i
     *ngIf="

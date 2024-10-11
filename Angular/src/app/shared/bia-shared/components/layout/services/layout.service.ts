@@ -1,0 +1,387 @@
+import {
+  ComponentPortal,
+  ComponentType,
+  Portal,
+  TemplatePortal,
+} from '@angular/cdk/portal';
+import {
+  effect,
+  Injectable,
+  InjectionToken,
+  Injector,
+  signal,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
+import { MenuItem } from 'primeng/api';
+import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
+import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
+
+export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
+
+export type MenuMode =
+  | 'static'
+  | 'overlay'
+  | 'horizontal'
+  | 'slim'
+  | 'slim-plus'
+  | 'reveal'
+  | 'drawer';
+
+export type ColorScheme = 'light' | 'dark';
+
+export interface AppConfig {
+  classicStyle: boolean;
+  colorScheme: ColorScheme;
+  menuMode: MenuMode;
+  scale: number;
+  canToggleStyle: boolean;
+}
+
+interface LayoutState {
+  staticMenuMobileActive: boolean;
+  overlayMenuActive: boolean;
+  staticMenuDesktopInactive: boolean;
+  configSidebarVisible: boolean;
+  menuHoverActive: boolean;
+  topbarMenuActive: boolean;
+  menuProfileActive: boolean;
+  sidebarActive: boolean;
+  anchored: boolean;
+  fullscreen: boolean;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class BiaLayoutService {
+  _config: AppConfig = {
+    classicStyle: false,
+    colorScheme: 'light',
+    menuMode: 'static',
+    scale: 14,
+    canToggleStyle: true,
+  };
+
+  state: LayoutState = {
+    staticMenuDesktopInactive: false,
+    overlayMenuActive: false,
+    configSidebarVisible: false,
+    staticMenuMobileActive: false,
+    topbarMenuActive: false,
+    menuHoverActive: false,
+    sidebarActive: false,
+    anchored: false,
+    fullscreen: false,
+    menuProfileActive: false,
+  };
+
+  config = signal<AppConfig>(this._config);
+
+  private configUpdate = new BehaviorSubject<AppConfig>(this._config);
+  private overlayOpen = new Subject<any>();
+  private topbarMenuOpen = new Subject<any>();
+  private menuProfileOpen = new Subject<any>();
+
+  protected footerPortal = new BehaviorSubject<Portal<any> | null>(null);
+  protected mainBarPortal = new BehaviorSubject<Portal<any> | null>(null);
+  protected mainBarHidden = new BehaviorSubject<boolean>(false);
+  protected footerHidden = new BehaviorSubject<boolean>(false);
+  protected breadcrumbHidden = new BehaviorSubject<boolean>(false);
+  protected breadcrumbRefresh = new BehaviorSubject<boolean>(false);
+
+  configUpdate$ = this.configUpdate.asObservable();
+  overlayOpen$ = this.overlayOpen.asObservable();
+  topbarMenuOpen$ = this.topbarMenuOpen.asObservable();
+  menuProfileOpen$ = this.menuProfileOpen.asObservable();
+
+  // Whether user should choose a single role
+  footerPortal$ = this.footerPortal.asObservable();
+  mainBarPortal$ = this.mainBarPortal.asObservable();
+  mainBarHidden$ = this.mainBarHidden.asObservable().pipe(debounceTime(0));
+  footerHidden$ = this.footerHidden.asObservable().pipe(debounceTime(0));
+  breadcrumbHidden$ = this.breadcrumbHidden
+    .asObservable()
+    .pipe(debounceTime(0));
+  breadcrumbRefresh$ = this.breadcrumbRefresh.asObservable();
+
+  constructor() {
+    effect(() => {
+      const config = this.config();
+      this.changeScale(config.scale);
+      this.onConfigUpdate();
+    });
+  }
+
+  changeTheme() {
+    let { colorScheme } = this.config();
+    const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
+    const themeLinkHref = themeLink.getAttribute('href')!;
+    const newHref = themeLinkHref
+      .split('/')
+      .map(el =>
+        el == `theme-${this._config.colorScheme}`
+          ? (el = `theme-${colorScheme}`)
+          : el
+      )
+      .join('/');
+    this.replaceThemeLink(newHref);
+  }
+
+  replaceThemeLink(href: string) {
+    const id = 'theme-link';
+    let themeLink = <HTMLLinkElement>document.getElementById(id);
+    const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
+
+    cloneLinkElement.setAttribute('href', href);
+    cloneLinkElement.setAttribute('id', id + '-clone');
+
+    themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
+    cloneLinkElement.addEventListener('load', () => {
+      themeLink.remove();
+      cloneLinkElement.setAttribute('id', id);
+    });
+  }
+
+  changeScale(value: number) {
+    document.documentElement.style.fontSize = `${value}px`;
+  }
+
+  onMenuToggle() {
+    if (this.isOverlay()) {
+      this.state.overlayMenuActive = !this.state.overlayMenuActive;
+
+      if (this.state.overlayMenuActive) {
+        this.overlayOpen.next(null);
+      }
+    }
+
+    if (this.isDesktop()) {
+      this.state.staticMenuDesktopInactive =
+        !this.state.staticMenuDesktopInactive;
+    } else {
+      this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
+
+      if (this.state.staticMenuMobileActive) {
+        this.overlayOpen.next(null);
+      }
+    }
+  }
+
+  onTopbarMenuToggle() {
+    this.state.topbarMenuActive = !this.state.topbarMenuActive;
+    if (this.state.topbarMenuActive) {
+      this.topbarMenuOpen.next(null);
+    }
+  }
+
+  menuOpen() {
+    if (
+      (this.isOverlay() && !this.state.overlayMenuActive) ||
+      (this.isDesktop() && this.state.staticMenuDesktopInactive) ||
+      (!this.isDesktop() && !this.state.staticMenuMobileActive)
+    ) {
+      this.onMenuToggle();
+    }
+  }
+
+  menuClose() {
+    if (
+      (this.isOverlay() && this.state.overlayMenuActive) ||
+      (this.isDesktop() && !this.state.staticMenuDesktopInactive) ||
+      (!this.isDesktop() && this.state.staticMenuMobileActive)
+    ) {
+      this.onMenuToggle();
+    }
+  }
+
+  onOverlaySubmenuOpen() {
+    this.overlayOpen.next(null);
+  }
+
+  isOverlay() {
+    return this.config().menuMode === 'overlay';
+  }
+
+  isDesktop() {
+    return window.innerWidth > 991;
+  }
+
+  isSlim() {
+    return this.config().menuMode === 'slim';
+  }
+
+  isSlimPlus() {
+    return this.config().menuMode === 'slim-plus';
+  }
+
+  isDrawer() {
+    return this.config().menuMode === 'drawer';
+  }
+
+  isHorizontal() {
+    return this.config().menuMode === 'horizontal';
+  }
+
+  isMobile() {
+    return !this.isDesktop();
+  }
+
+  onConfigUpdate() {
+    this._config = { ...this.config() };
+    this.configUpdate.next(this.config());
+  }
+
+  mapNavigationToMenuItems(
+    navigationItems: BiaNavigation[],
+    withIcons: boolean = false
+  ): MenuItem[] {
+    const navMenuItems: MenuItem[] = [];
+    navigationItems.forEach(menu => {
+      const childrenMenuItem: MenuItem[] = [];
+      if (menu.children) {
+        menu.children.forEach(child => {
+          childrenMenuItem.push({
+            id: child.labelKey,
+            routerLink: child.path,
+            icon: withIcons ? child.icon : undefined,
+          });
+        });
+      }
+      navMenuItems.push({
+        id: menu.labelKey,
+        routerLink: menu.path,
+        icon: withIcons ? menu.icon : undefined,
+        items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined,
+      });
+    });
+    return navMenuItems;
+  }
+
+  processMenuTranslation(children: MenuItem[], translations: any) {
+    for (const item of children) {
+      if (item.separator) continue;
+      item.label = item.id == undefined ? '---' : translations[item.id];
+      if (item.items) {
+        this.processMenuTranslation(item.items, translations);
+      }
+    }
+  }
+
+  changeFooter<T, D>(
+    componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
+    injector?: Injector,
+    data?: D
+  ) {
+    if (!componentOrTemplateRef) {
+      this.footerPortal.next(null);
+      return;
+    }
+    return this.setPortal(
+      this.footerPortal,
+      componentOrTemplateRef,
+      injector,
+      data
+    );
+  }
+
+  changeMainBar<T, D>(
+    componentOrTemplateRef: ComponentType<T> | TemplateRef<T> | null,
+    injector?: Injector,
+    data?: D
+  ) {
+    if (!componentOrTemplateRef) {
+      this.mainBarPortal.next(null);
+      return;
+    }
+    return this.setPortal(
+      this.mainBarPortal,
+      componentOrTemplateRef,
+      injector,
+      data
+    );
+  }
+
+  hideMainBar() {
+    this.mainBarHidden.next(true);
+  }
+
+  showMainBar() {
+    this.mainBarHidden.next(false);
+  }
+
+  hideFooter() {
+    this.footerHidden.next(true);
+  }
+
+  showFooter() {
+    this.footerHidden.next(false);
+  }
+
+  hideBreadcrumb() {
+    this.breadcrumbHidden.next(true);
+  }
+
+  showBreadcrumb() {
+    this.breadcrumbHidden.next(false);
+  }
+
+  refreshBreadcrumb() {
+    this.breadcrumbRefresh.next(!this.breadcrumbRefresh.value);
+  }
+
+  setFullscreen(fullscreenMode: boolean) {
+    this.state.fullscreen = fullscreenMode;
+  }
+
+  protected setPortal<T, D>(
+    portalSubject: BehaviorSubject<Portal<any> | null>,
+    componentOrTemplateRef: ComponentType<T> | TemplateRef<T>,
+    injector?: Injector,
+    data?: D
+  ) {
+    let portal;
+    if (componentOrTemplateRef instanceof TemplateRef) {
+      portal = new TemplatePortal<T>(
+        componentOrTemplateRef,
+        <ViewContainerRef>{}
+      );
+    } else {
+      let finalInjector = injector;
+      if (data) {
+        const injectionTokens = new WeakMap<any, any>([
+          [BIA_LAYOUT_DATA, data],
+        ]);
+        if (injector !== undefined) {
+          // finalInjector = new PortalInjector(injector, injectionTokens);
+          finalInjector = Injector.create({
+            parent: injector,
+            providers: [{ provide: injectionTokens, useValue: data }],
+          });
+        }
+      }
+      portal = new ComponentPortal(componentOrTemplateRef, null, finalInjector);
+    }
+    portalSubject.next(portal);
+    return portal;
+  }
+
+  onMenuProfileToggle() {
+    this.state.menuProfileActive = !this.state.menuProfileActive;
+    if (
+      this.state.menuProfileActive &&
+      this.isHorizontal() &&
+      this.isDesktop()
+    ) {
+      this.menuProfileOpen.next(null);
+    }
+  }
+
+  toggleStyle() {
+    this.config.update(config => ({
+      ...config,
+      classicStyle: !this._config.classicStyle,
+      scale: this._config.classicStyle ? 14 : 16,
+    }));
+  }
+}

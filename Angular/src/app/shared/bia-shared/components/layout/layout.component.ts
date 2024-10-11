@@ -1,43 +1,28 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
-import { AuthInfo } from '../../model/auth-info';
+import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
 import {
   BiaTranslationService,
   getCurrentCulture,
 } from 'src/app/core/bia-core/services/bia-translation.service';
-import { BiaNavigation } from '../../model/bia-navigation';
+import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
 import { NAVIGATION } from 'src/app/shared/navigation';
-import { APP_BASE_HREF } from '@angular/common';
 import { allEnvironments } from 'src/environments/all-environments';
+import { environment } from 'src/environments/environment';
+import { APP_SUPPORTED_TRANSLATIONS } from '../../../constants';
+import { AuthInfo } from '../../model/auth-info';
+import { BiaNavigation } from '../../model/bia-navigation';
+import { BiaLayoutService } from './services/layout.service';
 
 @Component({
   selector: 'bia-layout',
-  template: `
-    <bia-spinner [overlay]="true" *ngIf="isLoadingUserInfo"></bia-spinner>
-    <bia-classic-layout
-      [menus]="menus"
-      [version]="version"
-      [username]="username"
-      [headerLogos]="headerLogos"
-      [footerLogo]="footerLogo"
-      [supportedLangs]="supportedLangs"
-      [appTitle]="appTitle"
-      [helpUrl]="helpUrl"
-      [reportUrl]="reportUrl"
-      [enableNotifications]="enableNotifications"
-      [companyName]="companyName"
-      class="p-input-filled">
-      <router-outlet></router-outlet>
-    </bia-classic-layout>
-  `,
+  templateUrl: './layout.component.html',
 })
 export class LayoutComponent implements OnInit {
-  @HostBinding('class') classes = 'bia-flex';
-  isLoadingUserInfo = false;
+  @HostBinding('class.bia-flex') classicStyle = false;
 
+  isLoadingUserInfo = false;
   menus = new Array<BiaNavigation>();
   version = allEnvironments.version;
   appTitle = allEnvironments.appTitle;
@@ -54,9 +39,19 @@ export class LayoutComponent implements OnInit {
     public biaTranslationService: BiaTranslationService,
     protected navigationService: NavigationService,
     protected authService: AuthService,
+    protected readonly layoutService: BiaLayoutService,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
-  ) {}
+  ) {
+    this.classicStyle = layoutService.config().classicStyle;
+    this.layoutService.configUpdate$
+      .pipe(
+        tap(update => {
+          this.classicStyle = update.classicStyle;
+        })
+      )
+      .subscribe();
+  }
 
   ngOnInit() {
     if (this.enableNotifications) {

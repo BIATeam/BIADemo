@@ -20,6 +20,12 @@
   }
 }
 
+.logos {
+  & > img {
+    max-height: 35px;
+  }
+}
+
 .mainbar {
   box-shadow:
     0 1px 10px #0000001f,
@@ -143,14 +149,6 @@ bia-notification-team-warning {
   // adjust height in topbar at minimu (35px)
   .p-megamenu-root-list > .p-menuitem > .p-menuitem-content > .p-menuitem-link {
     padding: 0px;
-  }
-  bia-online-offline-icon {
-    i {
-      margin-left: 8px;
-      margin-right: 8px;
-      margin-top: auto;
-      margin-bottom: auto;
-    }
   }
   .separator {
     font-size: xxx-large;

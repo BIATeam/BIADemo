@@ -66,6 +66,7 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
+      [scrollHeightValue]="getFillScrollHeightValue()"
       (stateSave)="onStateSave($event)"></bia-table>
     <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"

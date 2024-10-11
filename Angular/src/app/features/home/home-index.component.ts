@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 
 @Component({
   selector: 'app-home-index',
@@ -7,7 +7,7 @@ import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/la
   styleUrls: ['./home-index.component.scss'],
 })
 export class HomeIndexComponent implements OnInit, OnDestroy {
-  constructor(private layoutService: BiaClassicLayoutService) {}
+  constructor(private layoutService: BiaLayoutService) {}
   ngOnInit(): void {
     this.layoutService.hideBreadcrumb();
   }

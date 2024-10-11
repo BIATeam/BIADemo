@@ -3,12 +3,24 @@
   flex: 1;
 }
 
+bia-ultima-layout .bia-flex {
+  display: block;
+  flex: unset;
+}
+
+bia-ultima-layout bia-page-layout.bia-flex {
+  padding: 1rem;
+}
+
 .bia-page-margin {
   padding-left: 35px;
   padding-right: 35px;
   padding-top: 10px;
   padding-bottom: 10px;
   min-width: 10px;
+}
+
+bia-classic-layout .bia-page-margin {
   width: calc(95vw);
   left: calc(2.5vw);
 }
@@ -23,6 +35,9 @@
   margin-right: -35px;
   margin-top: -15px;
   margin-bottom: -15px;
+}
+
+bia-classic-layout .bia-page-remove-margin {
   width: calc(95vw);
   left: calc(2.5vw);
 }
