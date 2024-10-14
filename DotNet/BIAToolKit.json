@@ -123,7 +123,7 @@
             "MoveFiles": [
               {
                 "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{DomainName}\\"
+                "ToRelativePathWithParent": "{DomainName}\\"
               }
             ]
           },
@@ -134,7 +134,7 @@
             "MoveFiles": [
               {
                 "FromRelativePath": "AircraftMaintenanceCompany\\",
-                "ToRelativePathNoParent": "{DomainName}\\"
+                "ToRelativePathWithParent": "{DomainName}\\"
               }
             ]
           },
@@ -145,7 +145,7 @@
             "MoveFiles": [
               {
                 "FromRelativePath": "AircraftMaintenanceCompany\\Aggregate",
-                "ToRelativePathNoParent": "{DomainName}\\Aggregate"
+                "ToRelativePathWithParent": "{DomainName}\\Aggregate"
               }
             ]
           }
