@@ -3,7 +3,6 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,7 +19,7 @@ import { BiaUltimaMenuProfileComponent } from '../menu-profile/ultima-menu-profi
   templateUrl: './ultima-side-bar.component.html',
   styleUrls: ['./ultima-side-bar.component.scss'],
 })
-export class BiaUltimaSideBarComponent implements OnInit, OnDestroy {
+export class BiaUltimaSideBarComponent implements OnDestroy {
   timeout: any = null;
   @Input() appTitle: string;
   @Input() version: string;
@@ -43,7 +42,6 @@ export class BiaUltimaSideBarComponent implements OnInit, OnDestroy {
   menuProfile!: BiaUltimaMenuProfileComponent;
   @ViewChild('menuContainer') menuContainer!: ElementRef;
   navigations: BiaNavigation[];
-  cssClassEnv: string;
   navMenuItems: MenuItem[];
   urlAppIcon = allEnvironments.urlAppIcon;
 
@@ -55,16 +53,6 @@ export class BiaUltimaSideBarComponent implements OnInit, OnDestroy {
     public translateService: TranslateService,
     public el: ElementRef
   ) {}
-
-  ngOnInit(): void {
-    this.sub.add(
-      this.biaTranslationService.appSettings$.subscribe(appSettings => {
-        if (appSettings) {
-          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
-        }
-      })
-    );
-  }
 
   buildNavigation() {
     const translationKeys = new Array<string>();

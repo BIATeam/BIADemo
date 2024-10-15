@@ -6,3 +6,18 @@
   background-size: cover;
   background-attachment: scroll;
 }
+
+.layout-environment-warning {
+  position: absolute;
+  right: 0;
+  height: 2.95rem;
+  margin: auto;
+  border-bottom-left-radius: 0.5rem;
+  padding: 0 3rem 0 2rem;
+  display: flex;
+  align-items: center;
+  text-wrap: nowrap;
+  font-size: 1.5rem;
+  background-color: var(--topbar-start-bg);
+  color: var(--surface-900);
+}

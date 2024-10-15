@@ -24,6 +24,7 @@
     "display": "Monitor:",
     "edit": "Editar",
     "editProfileImage": "Cambia tu foto de perfil",
+    "environmentDescription": "Entorno {{envName}}",
     "error": "Error",
     "errors": "Error(es)",
     "export": "Exportador",

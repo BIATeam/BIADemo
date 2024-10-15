@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { Component, HostBinding, Inject, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { tap } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import {
@@ -7,6 +8,7 @@ import {
   getCurrentCulture,
 } from 'src/app/core/bia-core/services/bia-translation.service';
 import { NavigationService } from 'src/app/core/bia-core/services/navigation.service';
+import { EnvironmentType } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
 import { NAVIGATION } from 'src/app/shared/navigation';
 import { allEnvironments } from 'src/environments/all-environments';
 import { environment } from 'src/environments/environment';
@@ -41,6 +43,7 @@ export class LayoutComponent implements OnInit {
     protected navigationService: NavigationService,
     protected authService: AuthService,
     protected readonly layoutService: BiaLayoutService,
+    protected readonly store: Store,
     // protected notificationSignalRService: NotificationSignalRService,
     @Inject(APP_BASE_HREF) public baseHref: string
   ) {
@@ -52,6 +55,10 @@ export class LayoutComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
+    return environmentType !== EnvironmentType.PRD;
   }
 
   ngOnInit() {

@@ -26,29 +26,3 @@
   filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
     brightness(98%) contrast(98%);
 }
-
-.layout-sidebar {
-  &.env-dev {
-    ::ng-deep .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-  }
-
-  &.env-int {
-    ::ng-deep .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-  }
-
-  &.env-uat {
-    ::ng-deep .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-  }
-
-  &.env-pra {
-    ::ng-deep .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-  }
-}

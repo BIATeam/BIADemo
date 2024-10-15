@@ -7,11 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
-import { filter, Subscription } from 'rxjs';
+import { filter, map, Observable, Subscription } from 'rxjs';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { EnvironmentType } from 'src/app/domains/bia-domains/app-settings/model/app-settings';
+import { getAppSettings } from 'src/app/domains/bia-domains/app-settings/store/app-settings.state';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
 import {
   APP_SUPPORTED_TRANSLATIONS,
@@ -19,6 +22,7 @@ import {
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
 } from 'src/app/shared/constants';
+import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
 import { BiaUltimaSideBarComponent } from '../side-bar/ultima-side-bar.component';
@@ -58,6 +62,10 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
   @ViewChild(BiaUltimaSideBarComponent) appSidebar!: BiaUltimaSideBarComponent;
   @ViewChild(BiaUltimaTopBarComponent) appTopbar!: BiaUltimaTopBarComponent;
 
+  envName$: Observable<string | undefined>;
+  showEnvironmentMessage$: Observable<boolean>;
+  cssClassEnv: string;
+
   constructor(
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
@@ -66,7 +74,8 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
     public renderer: Renderer2,
     protected translateService: TranslateService,
     public router: Router,
-    protected activatedRoute: ActivatedRoute
+    protected activatedRoute: ActivatedRoute,
+    protected store: Store<AppState>
   ) {
     this.hideMenuProfile();
 
@@ -177,6 +186,25 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
       .subscribe(() => {
         this.hideMenu();
       });
+
+    this.envName$ = this.store.select(getAppSettings).pipe(
+      map(settings => {
+        return this.getEnvironmentName(settings?.environment.type);
+      })
+    );
+    this.showEnvironmentMessage$ = this.store.select(getAppSettings).pipe(
+      map(settings => {
+        return this.showEnvironmentMessage(settings?.environment.type);
+      })
+    );
+
+    this.sub.add(
+      this.store.select(getAppSettings).subscribe(appSettings => {
+        if (appSettings) {
+          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
+        }
+      })
+    );
   }
 
   ngOnInit(): void {
@@ -340,6 +368,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
       'layout-content-wrapper-fullscreen': this.layoutService.state.fullscreen,
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
+    styleClass[this.cssClassEnv] = true;
 
     return styleClass;
   }
@@ -362,5 +391,28 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
 
   onThemeChange(theme: string) {
     this.biaTheme.changeTheme(theme);
+  }
+
+  public showEnvironmentMessage(environmentType: EnvironmentType | undefined) {
+    return environmentType !== EnvironmentType.PRD;
+  }
+
+  private getEnvironmentName(environmentType: EnvironmentType | undefined) {
+    switch (environmentType) {
+      case EnvironmentType.DEV:
+        return 'Development';
+      case EnvironmentType.INT:
+        return 'Integration';
+      case EnvironmentType.UAT:
+        return 'User acceptance test';
+      case EnvironmentType.PRA:
+        return 'Disaster recovery plan';
+      case EnvironmentType.PPD:
+        return 'Pre-production';
+      case EnvironmentType.PRD:
+        return 'Production';
+      default:
+        return 'Inconnu';
+    }
   }
 }

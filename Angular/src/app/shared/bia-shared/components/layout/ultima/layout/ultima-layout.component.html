@@ -18,6 +18,14 @@
     [logos]="headerLogos"></bia-ultima-side-bar>
 
   <div class="layout-content-wrapper">
+    <div
+      class="layout-environment-warning"
+      *ngIf="showEnvironmentMessage$ | async">
+      {{
+        'bia.environmentDescription'
+          | translate: { envName: (envName$ | async) }
+      }}
+    </div>
     <p-breadcrumb
       *ngIf="
         (layoutService.breadcrumbHidden$ | async) === false &&

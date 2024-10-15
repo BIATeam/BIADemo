@@ -42,7 +42,6 @@ export class BiaUltimaTopBarComponent {
   fullscreenMode = false;
   isIE = this.platform.TRIDENT;
   urlAppIcon = allEnvironments.urlAppIcon;
-  cssClassEnv: string;
   protected sub = new Subscription();
 
   appIcon$: Observable<string>;
@@ -83,13 +82,6 @@ export class BiaUltimaTopBarComponent {
         DomainNotificationsActions.loadUnreadNotificationIds()
       );
     }
-    this.sub.add(
-      this.biaTranslationService.appSettings$.subscribe(appSettings => {
-        if (appSettings) {
-          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
-        }
-      })
-    );
   }
 
   ngOnDestroy() {

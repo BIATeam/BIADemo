@@ -118,6 +118,13 @@
       background-color: rgba($color: $biaRed, $alpha: 0);
     }
   }
+
+  &.env-pra {
+    background-color: rgba($color: $biaYellow, $alpha: 0.5);
+    .project-title {
+      background-color: rgba($color: $biaYellow, $alpha: 0);
+    }
+  }
 }
 
 .fullscreen-exit {
