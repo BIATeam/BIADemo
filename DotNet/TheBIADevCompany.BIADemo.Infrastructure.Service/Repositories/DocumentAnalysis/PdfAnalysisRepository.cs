@@ -1,4 +1,9 @@
-﻿namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis
+﻿// BIADemo only
+// <copyright file="PdfAnalysisRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis
 {
     using System;
     using System.Collections.Generic;

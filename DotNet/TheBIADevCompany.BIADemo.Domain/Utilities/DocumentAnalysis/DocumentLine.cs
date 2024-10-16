@@ -1,10 +1,12 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
+﻿// BIADemo only
+// <copyright file="DocumentLine.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
 
     /// <summary>
@@ -40,6 +42,5 @@
         /// Words of the line.
         /// </summary>
         public List<DocumentWord> Words { get; }
-
     }
 }

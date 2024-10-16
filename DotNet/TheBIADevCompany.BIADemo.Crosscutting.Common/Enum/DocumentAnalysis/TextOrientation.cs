@@ -1,12 +1,13 @@
-﻿namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// BIADemo only
+// <copyright file="TextOrientation.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
+{
+    /// <summary>
+    /// The text orientations.
+    /// </summary>
     public enum TextOrientation
     {
         /// <summary>

@@ -1,27 +1,36 @@
-﻿namespace TheBIADevCompany.BIADemo.Application.Utilities
+﻿// BIADemo only
+// <copyright file="DocumentAnalysisService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Application.Utilities
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
 
+    /// <summary>
+    /// Service for document analysis.
+    /// </summary>
     public class DocumentAnalysisService : IDocumentAnalysisService
     {
         private readonly IDocumentAnalysisRepositoryFactory documentAnalysisRepositoryFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentAnalysisService"/> class.
+        /// </summary>
+        /// <param name="documentAnalysisRepositoryFactory">The document analysys repositories factory <see cref="IDocumentAnalysisRepositoryFactory"/>.</param>
         public DocumentAnalysisService(IDocumentAnalysisRepositoryFactory documentAnalysisRepositoryFactory)
         {
             this.documentAnalysisRepositoryFactory = documentAnalysisRepositoryFactory;
         }
 
+        /// <inheritdoc/>
         public DocumentContent GetContent(string fileName, string fileContentType, Stream fileStream)
         {
-            var documentType = this.GetDocumentType(fileContentType);
+            var documentType = GetDocumentType(fileContentType);
             var documentAnalysisRepository = this.documentAnalysisRepositoryFactory.GetDocumentAnalysisRepository(documentType);
             var documentPages = documentAnalysisRepository.GetPagesContent(fileStream);
 
@@ -33,7 +42,7 @@
             };
         }
 
-        private DocumentType GetDocumentType(string fileContentType)
+        private static DocumentType GetDocumentType(string fileContentType)
         {
             return fileContentType switch
             {

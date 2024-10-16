@@ -1,13 +1,18 @@
-﻿namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿// BIADemo only
+// <copyright file="DocumentType.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
+namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
+{
+    /// <summary>
+    /// Document types.
+    /// </summary>
     public enum DocumentType
     {
-        Pdf
+        /// <summary>
+        /// PDF
+        /// </summary>
+        Pdf,
     }
 }

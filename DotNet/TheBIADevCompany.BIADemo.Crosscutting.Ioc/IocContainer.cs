@@ -30,8 +30,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis;
 
     /// <summary>

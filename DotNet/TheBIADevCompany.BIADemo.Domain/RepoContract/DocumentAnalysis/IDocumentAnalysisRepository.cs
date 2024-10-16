@@ -1,11 +1,12 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis
+﻿// BIADemo only
+// <copyright file="IDocumentAnalysisRepository.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
 

@@ -1,10 +1,11 @@
-﻿namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
+﻿// BIADemo only
+// <copyright file="DocumentContent.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
 
     /// <summary>
@@ -30,6 +31,6 @@
         /// <summary>
         /// Pages of the document.
         /// </summary>
-        public List<DocumentPage> Pages { get; set; } = [];
+        public List<DocumentPage> Pages { get; set; } = new ();
     }
 }

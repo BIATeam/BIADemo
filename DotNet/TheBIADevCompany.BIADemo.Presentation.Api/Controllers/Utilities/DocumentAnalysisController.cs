@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// BIADemo only
+// <copyright file="DocumentAnalysisController.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
 {
     using System;
-    using System.Threading.Tasks;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -11,15 +13,27 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
     using TheBIADevCompany.BIADemo.Application.Utilities;
     using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
 
+    /// <summary>
+    /// Controller for document analysis.
+    /// </summary>
     public class DocumentAnalysisController : BiaControllerBase
     {
         private readonly IDocumentAnalysisService documentAnalysisService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentAnalysisController"/> class.
+        /// </summary>
+        /// <param name="documentAnalysisService">Document analysis service.</param>
         public DocumentAnalysisController(IDocumentAnalysisService documentAnalysisService)
         {
             this.documentAnalysisService = documentAnalysisService;
         }
 
+        /// <summary>
+        /// Retrieve the content of a document.
+        /// </summary>
+        /// <param name="file"><see cref="IFormFile"/> of the document.</param>
+        /// <returns>Document content.</returns>
         [HttpPost("[action]")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(DocumentContent), StatusCodes.Status200OK)]
