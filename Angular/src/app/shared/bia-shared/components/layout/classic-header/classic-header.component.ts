@@ -16,14 +16,8 @@ import { MegaMenuItem, MenuItem, Message } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import {
-  BiaThemeService,
-  STORAGE_THEME_KEY,
-} from 'src/app/core/bia-core/services/bia-theme.service';
-import {
-  BiaTranslationService,
-  STORAGE_CULTURE_KEY,
-} from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   Notification,
   NotificationData,
@@ -188,12 +182,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
-    const theme = localStorage.getItem(STORAGE_THEME_KEY);
-    localStorage.clear();
-    if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
-    if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
-    sessionStorage.clear();
+    this.layoutService.clearSession();
     location.reload();
   }
 
