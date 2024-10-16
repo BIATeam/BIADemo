@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
     /// Service Api Rw Controller.
     /// </summary>
     [Authorize(Policy = "ServiceApiRW")]
-    public abstract class ServiceApiRwController : BiaControllerBaseNoToken
+    public abstract class ServiceApiRwController : AuthControllerBase
     {
     }
 }

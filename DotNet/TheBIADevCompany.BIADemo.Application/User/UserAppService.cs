@@ -234,7 +234,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     try
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
-                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
+
+                        UserFromDirectory userFormDirectory = null;
+
+                        if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
+                        {
+                            userFormDirectory = await this.identityProviderRepository.FindUserAsync(userFormDirectoryDto.IdentityKey);
+                        }
+                        else
+                        {
+                            userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
+                        }
+
                         if (userFormDirectory != null)
                         {
                             var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);
