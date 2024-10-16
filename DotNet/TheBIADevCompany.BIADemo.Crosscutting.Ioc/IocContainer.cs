@@ -30,7 +30,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
     using TheBIADevCompany.BIADemo.Application.User;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis;
 
     /// <summary>
     /// The IoC Container.
@@ -168,6 +170,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+
+            collection.AddSingleton<PdfAnalysisRepository>();
+            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, DocumentAnalysisRepositoryFactory>();
 
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
