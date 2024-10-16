@@ -11,6 +11,7 @@
     {
         public string Name { get; set; }
         public DocumentType Type { get; set; }
+        public int PagesCount => this.Pages.Count;
         public List<DocumentPage> Pages { get; set; } = [];
     }
 }

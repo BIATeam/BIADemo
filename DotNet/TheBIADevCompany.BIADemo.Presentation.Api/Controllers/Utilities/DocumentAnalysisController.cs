@@ -20,12 +20,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
             this.documentAnalysisService = documentAnalysisService;
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         [AllowAnonymous]
         [ProducesResponseType(typeof(DocumentContent), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetContent(IFormFile file)
         {
+            if (file == null || file.Length == 0)
+            {
+                return this.BadRequest("File cannot be empty.");
+            }
+
             try
             {
                 using var fileStream = file.OpenReadStream();

@@ -12,6 +12,8 @@
         public string Text { get; set; }
         public double PositionX { get; set; }
         public double PositionY { get; set; }
-        public TextOrientation TextOrientation { get; set; }
+        public double Rotation { get; set; }
+        public double Height { get; set; }
+        public TextOrientation Orientation { get; set; }
     }
 }
