@@ -21,11 +21,11 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// <param name="words">Words in the line.</param>
         public DocumentLine(TextOrientation orientation, IEnumerable<DocumentWord> words)
         {
-            words = words.Where(w => w.Orientation == orientation);
+            var lineWords = words.Where(w => w.Orientation == orientation);
 
             this.Orientation = orientation;
-            this.Content = string.Concat(words.Select(w => w.Text));
-            this.Words = new List<DocumentWord>(words);
+            this.Content = string.Concat(lineWords.Select(w => w.Text));
+            this.Words = new List<DocumentWord>(lineWords);
         }
 
         /// <summary>

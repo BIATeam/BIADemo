@@ -33,6 +33,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis
         /// <summary>
         /// Other rotated text.
         /// </summary>
-        Rotated,
+        Other,
     }
 }

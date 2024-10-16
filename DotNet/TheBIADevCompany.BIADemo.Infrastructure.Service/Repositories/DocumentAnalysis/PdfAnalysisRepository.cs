@@ -28,11 +28,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
         {
             var documentPages = new List<DocumentPage>();
 
+            // Open the PDF document using PdfPig
             using var document = PdfDocument.Open(stream);
+
+            // Iterate trought document's pages
             foreach (var page in document.GetPages())
             {
+                // Getting all letters of current page
+                // Optional: letters can be filtered by some criterias
                 var letters = page.Letters;
+
+                // Set word extractor based on current instance of PdfPig NearestNeighbourWordExtractor class
+                // Optional: custom word extractor can be set
                 var wordExtractor = NearestNeighbourWordExtractor.Instance;
+
+                // Getting words using word extractor page's letters and map them into DocumentWord
                 var documentWords = wordExtractor.GetWords(letters)
                     .Select(word => new DocumentWord
                     {
@@ -54,12 +64,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentA
         {
             return orientation switch
             {
-                UglyToad.PdfPig.Content.TextOrientation.Other => TextOrientation.Rotated,
                 UglyToad.PdfPig.Content.TextOrientation.Horizontal => TextOrientation.Horizontal,
                 UglyToad.PdfPig.Content.TextOrientation.Rotate180 => TextOrientation.Rotated180,
                 UglyToad.PdfPig.Content.TextOrientation.Rotate90 => TextOrientation.Rotated90,
                 UglyToad.PdfPig.Content.TextOrientation.Rotate270 => TextOrientation.Rotated270,
-                _ => throw new NotImplementedException($"Unkwon PdfPig TextOrientation {orientation}."),
+                _ => TextOrientation.Other
             };
         }
     }

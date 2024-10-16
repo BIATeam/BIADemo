@@ -29,7 +29,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// <summary>
         /// Page number.
         /// </summary>
-        public int Number { get; set; }
+        public int Number { get; }
 
         /// <summary>
         /// Count of lines with words in the page.
@@ -55,7 +55,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// Extract lines from words.
         /// </summary>
         /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
-        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        /// <returns>Collection of <see cref="DocumentLine"/>.</returns>
         public static List<DocumentLine> ExtractLines(IEnumerable<DocumentWord> words)
         {
             var lines = new List<DocumentLine>();
@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// Extract lines from horizontal words.
         /// </summary>
         /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
-        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        /// <returns>Collection of <see cref="DocumentLine"/>.</returns>
         public static IEnumerable<DocumentLine> ExtractHorizontalLines(IEnumerable<DocumentWord> words)
         {
             return words
@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// Extract lines from horizontal upside down words.
         /// </summary>
         /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
-        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        /// <returns>Collection of <see cref="DocumentLine"/>.</returns>
         public static IEnumerable<DocumentLine> ExtractRotated180Lines(IEnumerable<DocumentWord> words)
         {
             return words
@@ -102,7 +102,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// Extract lines from vertical going down words.
         /// </summary>
         /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
-        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        /// <returns>Collection of <see cref="DocumentLine"/>.</returns>
         public static IEnumerable<DocumentLine> ExtractRotated90Lines(IEnumerable<DocumentWord> words)
         {
             return words
@@ -117,7 +117,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
         /// Extract lines from vertical going up words.
         /// </summary>
         /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
-        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        /// <returns>Collection of <see cref="DocumentLine"/>.</returns>
         public static IEnumerable<DocumentLine> ExtractRotated270Lines(IEnumerable<DocumentWord> words)
         {
             return words

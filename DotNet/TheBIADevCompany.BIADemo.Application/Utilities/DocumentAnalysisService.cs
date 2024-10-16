@@ -30,8 +30,13 @@ namespace TheBIADevCompany.BIADemo.Application.Utilities
         /// <inheritdoc/>
         public DocumentContent GetContent(string fileName, string fileContentType, Stream fileStream)
         {
+            // Retrieve the document type from his content type
             var documentType = GetDocumentType(fileContentType);
+
+            // Get the corresponding implementation of IDocumentAnalysisRepository for the document type
             var documentAnalysisRepository = this.documentAnalysisRepositoryFactory.GetDocumentAnalysisRepository(documentType);
+
+            // Get document pages from repository
             var documentPages = documentAnalysisRepository.GetPagesContent(fileStream);
 
             return new DocumentContent
