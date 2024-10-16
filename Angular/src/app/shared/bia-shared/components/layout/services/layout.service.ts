@@ -16,6 +16,7 @@ import {
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
+import { ConfigDisplay } from '../../../model/config-display';
 
 export const BIA_LAYOUT_DATA = new InjectionToken<any>('BiaLayoutData');
 
@@ -28,6 +29,8 @@ export type MenuMode =
   | 'reveal'
   | 'drawer';
 
+export type FooterMode = 'bottom' | 'overlay';
+
 export type ColorScheme = 'light' | 'dark';
 
 export interface AppConfig {
@@ -37,11 +40,13 @@ export interface AppConfig {
   scale: number;
   canToggleStyle: boolean;
   showAvatar: boolean;
+  footerMode: FooterMode;
 }
 
 interface LayoutState {
   staticMenuMobileActive: boolean;
   overlayMenuActive: boolean;
+  overlayFooterActive: boolean;
   staticMenuDesktopInactive: boolean;
   configSidebarVisible: boolean;
   menuHoverActive: boolean;
@@ -59,6 +64,16 @@ const DEFAULT_LAYOUT_CONFIG: AppConfig = {
   scale: 14,
   canToggleStyle: true,
   showAvatar: true,
+  footerMode: 'bottom',
+};
+
+const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
+  showEditAvatar: true,
+  showLang: true,
+  showScale: true,
+  showTheme: true,
+  showMenuStyle: true,
+  showFooterStyle: true,
 };
 
 @Injectable({
@@ -66,10 +81,12 @@ const DEFAULT_LAYOUT_CONFIG: AppConfig = {
 })
 export class BiaLayoutService {
   _config: AppConfig = DEFAULT_LAYOUT_CONFIG;
+  _configDisplay: ConfigDisplay = DEFAULT_CONFIG_DISPLAY;
 
   state: LayoutState = {
     staticMenuDesktopInactive: false,
     overlayMenuActive: false,
+    overlayFooterActive: false,
     configSidebarVisible: false,
     staticMenuMobileActive: false,
     topbarMenuActive: false,
@@ -81,9 +98,14 @@ export class BiaLayoutService {
   };
 
   config = signal<AppConfig>(this._config);
+  configDisplay = signal<ConfigDisplay>(this._configDisplay);
 
   private configUpdate = new BehaviorSubject<AppConfig>(this._config);
+  private configDisplayUpdate = new BehaviorSubject<ConfigDisplay>(
+    this._configDisplay
+  );
   private overlayOpen = new Subject<any>();
+  private overlayFooterOpen = new Subject<any>();
   private topbarMenuOpen = new Subject<any>();
   private menuProfileOpen = new Subject<any>();
 
@@ -95,7 +117,9 @@ export class BiaLayoutService {
   protected breadcrumbRefresh = new BehaviorSubject<boolean>(false);
 
   configUpdate$ = this.configUpdate.asObservable();
+  configDisplayUpdate$ = this.configDisplayUpdate.asObservable();
   overlayOpen$ = this.overlayOpen.asObservable();
+  overlayFooterOpen$ = this.overlayFooterOpen.asObservable();
   topbarMenuOpen$ = this.topbarMenuOpen.asObservable();
   menuProfileOpen$ = this.menuProfileOpen.asObservable();
 
@@ -172,6 +196,16 @@ export class BiaLayoutService {
     }
   }
 
+  onFooterToggle() {
+    if (this.isFooterOverlay()) {
+      this.state.overlayFooterActive = !this.state.overlayFooterActive;
+
+      if (this.state.overlayFooterActive) {
+        this.overlayFooterOpen.next(null);
+      }
+    }
+  }
+
   onTopbarMenuToggle() {
     this.state.topbarMenuActive = !this.state.topbarMenuActive;
     if (this.state.topbarMenuActive) {
@@ -205,6 +239,10 @@ export class BiaLayoutService {
 
   isOverlay() {
     return this.config().menuMode === 'overlay';
+  }
+
+  isFooterOverlay() {
+    return this.config().footerMode === 'overlay';
   }
 
   isDesktop() {
@@ -241,6 +279,14 @@ export class BiaLayoutService {
       return { ...currentValue, ...config };
     });
     this.onConfigUpdate();
+  }
+
+  setConfigDisplay(configDisplay: Partial<ConfigDisplay>) {
+    this.configDisplay.update(currentValue => {
+      return { ...currentValue, ...configDisplay };
+    });
+    this._configDisplay = { ...this.configDisplay() };
+    this.configDisplayUpdate.next(this.configDisplay());
   }
 
   mapNavigationToMenuItems(

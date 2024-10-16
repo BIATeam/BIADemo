@@ -4,6 +4,11 @@
       background-color: $primaryColor !important;
       color: $primaryTextColor !important;
       opacity: $disabledOpacity !important;
+      &.p-button-outlined {
+        background-color: transparent !important;
+        color: rgba(0, 0, 0, 0.38) !important;
+        border-color: rgba(0, 0, 0, 0.38) !important;
+      }
     }
     color: $primaryTextColor;
     line-height: 2.143em !important;

@@ -42,7 +42,7 @@
   --surface-card: #ffffff;
   --surface-overlay: #ffffff;
   --surface-border: rgba(0, 0, 0, 0.12);
-  --surface-hover: rgba(0, 0, 0, 0.04);
+  --surface-hover: rgba(65, 12, 12, 0.04);
   --focus-ring: none;
   --maskbg: rgba(0, 0, 0, 0.32);
   --highlight-bg: rgba(0, 131, 155, 0.12);
@@ -9835,6 +9835,11 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     color: #ffffff !important;
     opacity: 0.38 !important;
   }
+  .p-button:disabled.p-button-outlined {
+    background-color: transparent !important;
+    color: rgba(0, 0, 0, 0.38) !important;
+    border-color: rgba(0, 0, 0, 0.38) !important;
+  }
   .p-button.p-button-outlined {
     color: #00839b;
   }
@@ -9948,6 +9953,9 @@ body {
   --topbar-menu-button-hover-bg: #cc8108;
   --topbar-menu-button-text-color: #020f21;
   --topbar-item-text-color: #ffffff;
+  --footer-bg: #112753;
+  --footer-hover-bg: #02143a;
+  --footer-item-text-color: #ffffff;
 }
 
 .layout-menu-dark {

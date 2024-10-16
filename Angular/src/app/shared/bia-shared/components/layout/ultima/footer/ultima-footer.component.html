@@ -1,11 +1,21 @@
 <ng-template
   let-footerPortal
   [ngIf]="layoutService.footerPortal$ | async"
-  [ngIfElse]="classicFooter">
+  [ngIfElse]="defaultFooter">
   <ng-template [cdkPortalOutlet]="footerPortal"></ng-template>
 </ng-template>
-<ng-template #classicFooter>
-  <footer class="layout-footer flex-1 align-content-center">
+<ng-template #defaultFooter>
+  <footer
+    class="layout-footer flex-1 align-content-center"
+    [ngClass]="footerClass">
+    <a
+      #footerButton
+      *ngIf="layoutService.isFooterOverlay()"
+      class="layout-footer-button"
+      (click)="onFooterButtonClick()"
+      pRipple>
+      <i class="pi pi-chevron-up"></i>
+    </a>
     <div class="copyright">
       © 2024 {{ companyName }} v{{ frameworkVersion }}
     </div>

@@ -2,13 +2,17 @@
 
 :host {
   // Warning any change to this area will affect custom footer
-  height: var(--footer-height);
   z-index: 1;
   display: flex;
   // ----
   .copyright {
     padding-left: 16px;
   }
+  position: relative;
+}
+
+.layout-footer {
+  height: var(--footer-height);
 }
 
 // .copyright {
@@ -26,4 +30,28 @@
     height: 100%;
     padding: 0.5rem;
   }
+}
+
+.footer-overlay {
+  position: fixed;
+  height: var(--footer-height);
+  right: 0;
+  bottom: -var(--footer-height);
+  width: 100%;
+}
+
+.layout-footer-button {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+
+  width: 4rem;
+  height: 2rem;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 0.5rem;
+  transition: background-color var(--transition-duration);
+  cursor: pointer;
 }

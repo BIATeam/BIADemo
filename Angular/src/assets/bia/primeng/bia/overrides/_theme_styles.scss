@@ -19,6 +19,9 @@ body {
   --topbar-menu-button-hover-bg: #cc8108;
   --topbar-menu-button-text-color: #{$accentDarkColor};
   --topbar-item-text-color: #{$accentTextColor};
+  --footer-bg: #{$biaPrimaryDisplayColor};
+  --footer-hover-bg: #{$biaPrimaryDarkDisplayColor};
+  --footer-item-text-color: #{$accentTextColor};
 }
 
 .layout-menu-dark {

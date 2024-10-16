@@ -1,71 +1,73 @@
 <div class="p-3">
-  <small>
+  <small *ngIf="layoutService.configDisplay().showEditAvatar">
     <i class="pi pi-pencil"></i
     ><a class="edit-avatar" [href]="urlEditAvatar" target="_blank">{{
       'bia.editProfileImage' | translate
     }}</a>
   </small>
-  <h5>{{ 'bia.languages' | translate }}</h5>
-  <div class="flex flex-wrap row-gap-3">
-    <div
-      class="flex align-items-center gap-2 w-6"
-      *ngFor="let lang of supportedLangs">
-      <p-radioButton
-        name="lang"
-        [value]="lang"
-        [(ngModel)]="currentCulture"
-        [inputId]="lang"></p-radioButton>
-      <label [for]="lang">{{
-        getLanguageTranslateKey(lang) | translate
-      }}</label>
+  <ng-container *ngIf="layoutService.configDisplay().showLang">
+    <h5>{{ 'bia.languages' | translate }}</h5>
+    <div class="flex flex-wrap row-gap-3">
+      <div
+        class="flex align-items-center gap-2 w-6"
+        *ngFor="let lang of supportedLangs">
+        <p-radioButton
+          name="lang"
+          [value]="lang"
+          [(ngModel)]="currentCulture"
+          [inputId]="lang"></p-radioButton>
+        <label [for]="lang">{{
+          getLanguageTranslateKey(lang) | translate
+        }}</label>
+      </div>
     </div>
-  </div>
-
-  <h5>{{ 'bia.layoutScale' | translate }}</h5>
-  <div class="flex align-items-center">
-    <button
-      icon="pi pi-minus"
-      type="button"
-      pButton
-      (click)="decrementScale()"
-      class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
-      [disabled]="scale === scales[0]"></button>
-    <div class="flex gap-2 align-items-center">
-      <i
-        class="pi pi-circle-fill text-300"
-        *ngFor="let s of scales"
-        [ngClass]="{ 'text-primary-500': s === scale }"></i>
+  </ng-container>
+  <ng-container *ngIf="layoutService.configDisplay().showScale">
+    <h5>{{ 'bia.layoutScale' | translate }}</h5>
+    <div class="flex align-items-center">
+      <button
+        icon="pi pi-minus"
+        type="button"
+        pButton
+        (click)="decrementScale()"
+        class="p-button-text p-button-rounded w-2rem h-2rem mr-2"
+        [disabled]="scale === scales[0]"></button>
+      <div class="flex gap-2 align-items-center">
+        <i
+          class="pi pi-circle-fill text-300"
+          *ngFor="let s of scales"
+          [ngClass]="{ 'text-primary-500': s === scale }"></i>
+      </div>
+      <button
+        icon="pi pi-plus"
+        type="button"
+        pButton
+        (click)="incrementScale()"
+        class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
+        [disabled]="scale === scales[scales.length - 1]"></button></div
+  ></ng-container>
+  <ng-container *ngIf="layoutService.configDisplay().showTheme">
+    <h5>{{ 'bia.theme' | translate }}</h5>
+    <div class="flex gap-4">
+      <div class="field-radiobutton flex-1">
+        <p-radioButton
+          name="colorScheme"
+          value="light"
+          [(ngModel)]="colorScheme"
+          inputId="light"></p-radioButton>
+        <label for="light">{{ 'bia.themeLight' | translate }}</label>
+      </div>
+      <div class="field-radiobutton flex-1">
+        <p-radioButton
+          name="colorScheme"
+          value="dark"
+          [(ngModel)]="colorScheme"
+          inputId="dark"></p-radioButton>
+        <label for="dark">{{ 'bia.themeDark' | translate }}</label>
+      </div>
     </div>
-    <button
-      icon="pi pi-plus"
-      type="button"
-      pButton
-      (click)="incrementScale()"
-      class="p-button-text p-button-rounded w-2rem h-2rem ml-2"
-      [disabled]="scale === scales[scales.length - 1]"></button>
-  </div>
-
-  <h5>{{ 'bia.theme' | translate }}</h5>
-  <div class="flex gap-4">
-    <div class="field-radiobutton flex-1">
-      <p-radioButton
-        name="colorScheme"
-        value="light"
-        [(ngModel)]="colorScheme"
-        inputId="light"></p-radioButton>
-      <label for="light">{{ 'bia.themeLight' | translate }}</label>
-    </div>
-    <div class="field-radiobutton flex-1">
-      <p-radioButton
-        name="colorScheme"
-        value="dark"
-        [(ngModel)]="colorScheme"
-        inputId="dark"></p-radioButton>
-      <label for="dark">{{ 'bia.themeDark' | translate }}</label>
-    </div>
-  </div>
-
-  <ng-container *ngIf="!minimal">
+  </ng-container>
+  <ng-container *ngIf="layoutService.configDisplay().showMenuStyle">
     <h5>{{ 'bia.menuMode' | translate }}</h5>
     <div class="flex flex-wrap row-gap-3">
       <div class="flex align-items-center gap-2 w-6">
@@ -123,6 +125,28 @@
           [(ngModel)]="menuMode"
           inputId="mode5"></p-radioButton>
         <label for="mode5">Horizontal</label>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="layoutService.configDisplay().showFooterStyle">
+    <h5>{{ 'bia.footerMode' | translate }}</h5>
+    <div class="flex flex-wrap row-gap-3">
+      <div class="flex align-items-center gap-2 w-6">
+        <p-radioButton
+          name="footerMode"
+          value="bottom"
+          [(ngModel)]="footerMode"
+          inputId="footerMode1"></p-radioButton>
+        <label for="footerMode1">Bottom</label>
+      </div>
+      <div class="flex align-items-center gap-2 w-6">
+        <p-radioButton
+          name="footerMode"
+          value="overlay"
+          [(ngModel)]="footerMode"
+          inputId="footerMode2"></p-radioButton>
+        <label for="footerMode2">Overlay</label>
       </div>
     </div>
   </ng-container>

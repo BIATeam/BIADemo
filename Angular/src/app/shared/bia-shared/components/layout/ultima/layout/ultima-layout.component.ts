@@ -25,6 +25,7 @@ import {
 import { AppState } from 'src/app/store/state';
 import { BiaLayoutService } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
+import { BiaUltimaFooterComponent } from '../footer/ultima-footer.component';
 import { BiaUltimaSideBarComponent } from '../side-bar/ultima-side-bar.component';
 import { BiaUltimaTopBarComponent } from '../top-bar/ultima-top-bar.component';
 
@@ -52,6 +53,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
   overlayMenuOpenSubscription: Subscription;
   menuOutsideClickListener: any;
   menuScrollListener: any;
+  footerOutsideClickListener: any;
   topbarMenuOutsideClickListener: any;
   menuProfileOutsideClickListener: any;
 
@@ -61,6 +63,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
 
   @ViewChild(BiaUltimaSideBarComponent) appSidebar!: BiaUltimaSideBarComponent;
   @ViewChild(BiaUltimaTopBarComponent) appTopbar!: BiaUltimaTopBarComponent;
+  @ViewChild(BiaUltimaFooterComponent) appFooter!: BiaUltimaFooterComponent;
 
   envName$: Observable<string | undefined>;
   showEnvironmentMessage$: Observable<boolean>;
@@ -122,6 +125,26 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
 
         if (this.layoutService.state.staticMenuMobileActive) {
           this.blockBodyScroll();
+        }
+      })
+    );
+
+    this.sub.add(
+      this.layoutService.overlayFooterOpen$.subscribe(() => {
+        if (!this.footerOutsideClickListener) {
+          this.footerOutsideClickListener = this.renderer.listen(
+            'document',
+            'click',
+            event => {
+              const isOutsideClicked = !(
+                this.appFooter.el.nativeElement.isSameNode(event.target) ||
+                this.appFooter.el.nativeElement.contains(event.target)
+              );
+              if (isOutsideClicked) {
+                this.hideFooter();
+              }
+            }
+          );
         }
       })
     );
@@ -328,6 +351,15 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
     this.unblockBodyScroll();
   }
 
+  hideFooter() {
+    this.layoutService.state.overlayFooterActive = false;
+
+    if (this.footerOutsideClickListener) {
+      this.footerOutsideClickListener();
+      this.footerOutsideClickListener = null;
+    }
+  }
+
   hideTopbarMenu() {
     this.layoutService.state.topbarMenuActive = false;
 
@@ -349,6 +381,8 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
   get containerClass() {
     let styleClass: { [key: string]: any } = {
       'layout-overlay': this.layoutService.config().menuMode === 'overlay',
+      'layout-footer-overlay':
+        this.layoutService.config().footerMode === 'overlay',
       'layout-static': this.layoutService.config().menuMode === 'static',
       'layout-slim': this.layoutService.config().menuMode === 'slim',
       'layout-slim-plus': this.layoutService.config().menuMode === 'slim-plus',
@@ -360,6 +394,8 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
         this.layoutService.state.staticMenuDesktopInactive &&
         this.layoutService.config().menuMode === 'static',
       'layout-overlay-active': this.layoutService.state.overlayMenuActive,
+      'layout-footer-overlay-active':
+        this.layoutService.state.overlayFooterActive,
       'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
       'layout-sidebar-active': this.layoutService.state.sidebarActive,
       'layout-sidebar-anchored': this.layoutService.state.anchored,

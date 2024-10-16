@@ -113,9 +113,15 @@ export class TableHelperService {
         ? `100vh - 240px`
         : `100vh - 460px`;
     } else {
-      height = layoutService.state.fullscreen
-        ? `100vh - 110px - 10rem`
-        : `100vh - 110px - 16.95rem - var(--footer-height)`;
+      if (layoutService.state.fullscreen) {
+        height = `100vh - 110px - 10rem`;
+      } else {
+        height = `100vh - 110px - 16.95rem`;
+        height +=
+          layoutService._config.footerMode != 'overlay'
+            ? ' - var(--footer-height)'
+            : '';
+      }
     }
     if (offset) {
       height += ` - ${offset}`;

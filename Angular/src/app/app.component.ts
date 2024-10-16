@@ -25,6 +25,11 @@ export class AppComponent implements OnInit {
       scale: 14,
       showAvatar: true,
     });
+
+    this.layoutService.setConfigDisplay({
+      showMenuStyle: true,
+      showFooterStyle: true,
+    });
   }
 
   ngOnInit() {

@@ -9867,6 +9867,11 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     color: #212121 !important;
     opacity: 0.38 !important;
   }
+  .p-button:disabled.p-button-outlined {
+    background-color: transparent !important;
+    color: rgba(0, 0, 0, 0.38) !important;
+    border-color: rgba(0, 0, 0, 0.38) !important;
+  }
   .p-button.p-button-outlined {
     color: #4ec1e0;
   }
@@ -9980,6 +9985,9 @@ body {
   --topbar-menu-button-hover-bg: #cc8108;
   --topbar-menu-button-text-color: #020f21;
   --topbar-item-text-color: #ffffff;
+  --footer-bg: #02143a;
+  --footer-hover-bg: #070e1d;
+  --footer-item-text-color: #ffffff;
 }
 
 .layout-menu-dark {

@@ -6,6 +6,7 @@ import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/ser
 import {
   BiaLayoutService,
   ColorScheme,
+  FooterMode,
   MenuMode,
 } from '../../services/layout.service';
 import { MenuService } from '../../services/menu.service';
@@ -75,6 +76,16 @@ export class BiaUltimaConfigComponent {
     if (this.layoutService.isSlim() || this.layoutService.isHorizontal()) {
       this.menuService.reset();
     }
+  }
+
+  get footerMode(): FooterMode {
+    return this.layoutService.config().footerMode;
+  }
+  set footerMode(_val: FooterMode) {
+    this.layoutService.config.update(config => ({
+      ...config,
+      footerMode: _val,
+    }));
   }
 
   get currentCulture(): string {
