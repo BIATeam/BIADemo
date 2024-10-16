@@ -61,7 +61,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() showLoadingAfter = 100;
   @Input() scrollHeightValue = 'calc( 100vh - 450px)';
   @Input() isScrollable = true;
-  @Input() frozeSelectColumn = false;
+  @Input() frozeSelectColumn = true;
   @Input() canSelectMultipleElement = true;
 
   protected isSelectFrozen = false;
