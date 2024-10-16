@@ -9,10 +9,29 @@
 
     public enum TextOrientation
     {
+        /// <summary>
+        /// Horizontal text, left to right.
+        /// </summary>
         Horizontal,
-        Rotated90,
+
+        /// <summary>
+        /// Horizontal text, upside down.
+        /// </summary>
         Rotated180,
+
+        /// <summary>
+        /// Vertical text, going down.
+        /// </summary>
+        Rotated90,
+
+        /// <summary>
+        /// Vertical text, going up.
+        /// </summary>
         Rotated270,
-        Rotated
+
+        /// <summary>
+        /// Other rotated text.
+        /// </summary>
+        Rotated,
     }
 }

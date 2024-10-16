@@ -4,18 +4,21 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
     using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
-    using UglyToad.PdfPig.DocumentLayoutAnalysis.WordExtractor;
     using UglyToad.PdfPig;
+    using UglyToad.PdfPig.DocumentLayoutAnalysis.WordExtractor;
 
+    /// <summary>
+    /// Document analysis repository for PDF files.
+    /// </summary>
     public class PdfAnalysisRepository : IDocumentAnalysisRepository
     {
+        /// <inheritdoc/>
         public DocumentType DocumentType => DocumentType.Pdf;
 
+        /// <inheritdoc/>
         public List<DocumentPage> GetPagesContent(Stream stream)
         {
             var documentPages = new List<DocumentPage>();
@@ -29,8 +32,8 @@
                     .Select(word => new DocumentWord
                     {
                         Text = word.Text,
-                        PositionX = word.BoundingBox.Left,
-                        PositionY = word.BoundingBox.Bottom,
+                        PositionX = word.BoundingBox.BottomLeft.X,
+                        PositionY = word.BoundingBox.BottomLeft.Y,
                         Rotation = word.BoundingBox.Rotation,
                         Height = word.BoundingBox.Height,
                         Orientation = GetTextOrientation(word.TextOrientation),

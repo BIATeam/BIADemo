@@ -7,53 +7,100 @@
     using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
 
+    /// <summary>
+    /// Represents a page in a document.
+    /// </summary>
     public class DocumentPage
     {
-        public int Number { get; set; }
-        public int LinesCount => this.Lines.Count;
-        public int WordsCount => this.Words.Count();
-        public List<DocumentLine> Lines { get; }
-        public IEnumerable<DocumentWord> Words => this.Lines.SelectMany(l => l.Words);
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentPage"/> class.
+        /// </summary>
+        /// <param name="number">Page number.</param>
+        /// <param name="words">Words in the page.</param>
         public DocumentPage(int number, IEnumerable<DocumentWord> words)
         {
-            Number = number;
-            Lines = GetLines(words);
+            this.Number = number;
+            this.Lines = ExtractLines(words);
         }
 
-        public static List<DocumentLine> GetLines(IEnumerable<DocumentWord> words)
+        /// <summary>
+        /// Page number.
+        /// </summary>
+        public int Number { get; set; }
+
+        /// <summary>
+        /// Count of lines with words in the page.
+        /// </summary>
+        public int LinesCount => this.Lines.Count;
+
+        /// <summary>
+        /// Count of words in the page.
+        /// </summary>
+        public int WordsCount => this.Words.Count();
+
+        /// <summary>
+        /// Lines with words in the page.
+        /// </summary>
+        public List<DocumentLine> Lines { get; }
+
+        /// <summary>
+        /// Words in the page.
+        /// </summary>
+        public IEnumerable<DocumentWord> Words => this.Lines.SelectMany(l => l.Words);
+
+        /// <summary>
+        /// Extract lines from words.
+        /// </summary>
+        /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
+        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        public static List<DocumentLine> ExtractLines(IEnumerable<DocumentWord> words)
         {
             var lines = new List<DocumentLine>();
 
-            lines.AddRange(GetHorizontalLines(words));
-            lines.AddRange(GetRotated90Lines(words));
-            lines.AddRange(GetRotated180Lines(words));
-            lines.AddRange(GetRotated270Lines(words));
+            lines.AddRange(ExtractHorizontalLines(words));
+            lines.AddRange(ExtractRotated90Lines(words));
+            lines.AddRange(ExtractRotated180Lines(words));
+            lines.AddRange(ExtractRotated270Lines(words));
 
             return lines;
         }
 
-        public static IEnumerable<DocumentLine> GetHorizontalLines(IEnumerable<DocumentWord> words)
+        /// <summary>
+        /// Extract lines from horizontal words.
+        /// </summary>
+        /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
+        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        public static IEnumerable<DocumentLine> ExtractHorizontalLines(IEnumerable<DocumentWord> words)
         {
             return words
                 .Where(w => w.Orientation == TextOrientation.Horizontal)
-                .GroupBy(w => GroupByPosition(w.PositionY, words.Max(x => x.Height)))
+                .GroupBy(w => GroupByPosition(w.PositionY, words.Max(x => x.Height) + 1))
                 .OrderByDescending(g => g.Key)
                 .Select(g => g.OrderBy(w => w.PositionX))
                 .Select(g => new DocumentLine(TextOrientation.Horizontal, g));
         }
 
-        public static IEnumerable<DocumentLine> GetRotated180Lines(IEnumerable<DocumentWord> words)
+        /// <summary>
+        /// Extract lines from horizontal upside down words.
+        /// </summary>
+        /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
+        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        public static IEnumerable<DocumentLine> ExtractRotated180Lines(IEnumerable<DocumentWord> words)
         {
             return words
                 .Where(w => w.Orientation == TextOrientation.Rotated180)
-                .GroupBy(w => GroupByPosition(w.PositionY, words.Max(x => x.Height)))
+                .GroupBy(w => GroupByPosition(w.PositionY, words.Max(x => x.Height) + 1))
                 .OrderByDescending(g => g.Key)
                 .Select(g => g.OrderByDescending(w => w.PositionX))
                 .Select(g => new DocumentLine(TextOrientation.Rotated180, g));
         }
 
-        public static IEnumerable<DocumentLine> GetRotated90Lines(IEnumerable<DocumentWord> words)
+        /// <summary>
+        /// Extract lines from vertical going down words.
+        /// </summary>
+        /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
+        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        public static IEnumerable<DocumentLine> ExtractRotated90Lines(IEnumerable<DocumentWord> words)
         {
             return words
                 .Where(w => w.Orientation == TextOrientation.Rotated90)
@@ -63,7 +110,12 @@
                 .Select(g => new DocumentLine(TextOrientation.Rotated90, g));
         }
 
-        public static IEnumerable<DocumentLine> GetRotated270Lines(IEnumerable<DocumentWord> words)
+        /// <summary>
+        /// Extract lines from vertical going up words.
+        /// </summary>
+        /// <param name="words">Collection of <see cref="DocumentWord"/>.</param>
+        /// <returns>Collection of <see cref="DocumentPage"/>.</returns>
+        public static IEnumerable<DocumentLine> ExtractRotated270Lines(IEnumerable<DocumentWord> words)
         {
             return words
                 .Where(w => w.Orientation == TextOrientation.Rotated270)
