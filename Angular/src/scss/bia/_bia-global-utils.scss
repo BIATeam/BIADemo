@@ -18,11 +18,14 @@ bia-ultima-layout bia-page-layout.bia-flex {
   padding-top: 10px;
   padding-bottom: 10px;
   min-width: 10px;
-}
-
-bia-classic-layout .bia-page-margin {
   width: calc(95vw);
   left: calc(2.5vw);
+}
+
+bia-ultima-layout .bia-page-margin {
+  padding: 0.75rem 2.5rem;
+  min-width: 0.75rem;
+  width: 100%;
 }
 
 .bia-page-remove-margin .bia-page-margin {
@@ -35,11 +38,13 @@ bia-classic-layout .bia-page-margin {
   margin-right: -35px;
   margin-top: -15px;
   margin-bottom: -15px;
-}
-
-bia-classic-layout .bia-page-remove-margin {
   width: calc(95vw);
   left: calc(2.5vw);
+}
+
+bia-ultima-layout .bia-page-remove-margin {
+  margin: -0.75rem -2.5rem;
+  width: calc(100% + 5rem);
 }
 
 .bia-advanced-filter {

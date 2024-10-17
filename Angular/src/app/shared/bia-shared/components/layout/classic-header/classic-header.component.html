@@ -25,7 +25,7 @@
     <div class="controls flex flex-row">
       <p-megaMenu [model]="topBarMenuItems"></p-megaMenu>
       <i
-        *ngIf="canToggleStyle"
+        *ngIf="showToggleStyle"
         class="pi pi-arrow-up-right app-icon-header bia-pointer"
         pTooltip="{{ 'bia.toggleStyle' | translate }}"
         (click)="toggleStyle()"></i>

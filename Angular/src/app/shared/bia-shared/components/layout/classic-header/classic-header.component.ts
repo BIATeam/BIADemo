@@ -296,8 +296,8 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  get canToggleStyle(): boolean {
-    return this.layoutService._config.canToggleStyle;
+  get showToggleStyle(): boolean {
+    return this.layoutService.configDisplay().showToggleStyle;
   }
 
   toggleStyle() {

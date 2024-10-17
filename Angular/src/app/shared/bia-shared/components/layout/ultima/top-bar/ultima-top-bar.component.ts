@@ -182,8 +182,8 @@ export class BiaUltimaTopBarComponent {
     return this.layoutService.state.topbarMenuActive;
   }
 
-  get canToggleStyle(): boolean {
-    return this.layoutService._config.canToggleStyle;
+  get showToggleStyle(): boolean {
+    return this.layoutService.configDisplay().showToggleStyle;
   }
 
   toggleStyle() {

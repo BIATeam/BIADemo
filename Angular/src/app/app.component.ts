@@ -20,16 +20,15 @@ export class AppComponent implements OnInit {
     private translateService: TranslateService,
     private layoutService: BiaLayoutService
   ) {
-    this.layoutService.defaultConfigUpdate({
-      classicStyle: false,
-      scale: 14,
-      showAvatar: true,
-    });
-
+    // Begin BIADemo
+    this.layoutService.defaultConfigUpdate({});
     this.layoutService.setConfigDisplay({
       showMenuStyle: true,
       showFooterStyle: true,
+      showToggleStyle: true,
     });
+
+    // End BIADemo
   }
 
   ngOnInit() {

@@ -42,7 +42,6 @@ export interface AppConfig {
   colorScheme: ColorScheme;
   menuMode: MenuMode;
   scale: number;
-  canToggleStyle: boolean;
   showAvatar: boolean;
   footerMode: FooterMode;
 }
@@ -66,9 +65,8 @@ const DEFAULT_LAYOUT_CONFIG: AppConfig = {
   colorScheme: 'light',
   menuMode: 'static',
   scale: 14,
-  canToggleStyle: true,
   showAvatar: true,
-  footerMode: 'bottom',
+  footerMode: 'overlay',
 };
 
 const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
@@ -76,8 +74,9 @@ const DEFAULT_CONFIG_DISPLAY: ConfigDisplay = {
   showLang: true,
   showScale: true,
   showTheme: true,
-  showMenuStyle: true,
-  showFooterStyle: true,
+  showMenuStyle: false,
+  showFooterStyle: false,
+  showToggleStyle: false,
 };
 
 @Injectable({
