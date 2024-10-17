@@ -2,6 +2,7 @@ import { HttpStatusCode } from '@angular/common/http';
 import { Injectable, Injector, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
+import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, NEVER, Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, skip, switchMap, take } from 'rxjs/operators';
 import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams-actions';
@@ -140,9 +141,7 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   public decodeToken(token: string): Token {
-    const jsonDecodedToken: string = atob(token.split('.')[1]);
-    const objDecodedToken: any = JSON.parse(jsonDecodedToken);
-
+    const objDecodedToken: any = jwtDecode(token);
     const decodedToken = <Token>{
       id: +objDecodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid'
