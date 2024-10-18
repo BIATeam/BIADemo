@@ -62,6 +62,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             IServiceCollection services = builder.Services;
 
             services.AddControllers();
+            services.ConfigureOptions<BiaApiBehaviorOptions>();
+
             services.AddCors();
             services.AddResponseCompression();
 
