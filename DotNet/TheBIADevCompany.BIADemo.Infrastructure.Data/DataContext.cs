@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
 #if BIA_FRONT_FEATURE
@@ -49,8 +50,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger)
-            : base(options, logger)
+        /// <param name="configuration">The configuration.</param>
+        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger, IConfiguration configuration)
+            : base(options, logger, configuration)
         {
             this.logger = logger;
             this.logger.LogDebug("----------------Create Context--------------");
