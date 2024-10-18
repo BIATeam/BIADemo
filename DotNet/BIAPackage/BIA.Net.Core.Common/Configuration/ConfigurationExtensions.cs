@@ -33,5 +33,16 @@ namespace BIA.Net.Core.Common.Configuration
             var value = configuration["SQLDataBroker:" + name];
             return !string.IsNullOrEmpty(value) && bool.Parse(configuration["SQLDataBroker:" + name]);
         }
+
+        /// <summary>
+        /// Gets the entity model state validation mode.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns>The entity model state valide mode as <see cref="bool"/>.</returns>
+        public static bool GetEntityModelStateValidation(this IConfiguration configuration)
+        {
+            var value = configuration["EntityModelStateValidation"];
+            return !string.IsNullOrEmpty(value) && bool.Parse(configuration["EntityModelStateValidation"]);
+        }
     }
 }

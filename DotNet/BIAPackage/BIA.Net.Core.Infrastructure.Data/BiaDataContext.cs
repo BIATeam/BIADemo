@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
@@ -20,6 +21,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
     /// <summary>
@@ -31,16 +33,19 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// The current logger.
         /// </summary>
         private readonly ILogger<BiaDataContext> logger;
+        private readonly IConfiguration configuration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaDataContext"/> class.
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public BiaDataContext(DbContextOptions options, ILogger<BiaDataContext> logger)
+        /// <param name="configuration">The configuration.</param>
+        public BiaDataContext(DbContextOptions options, ILogger<BiaDataContext> logger, IConfiguration configuration)
             : base(options)
         {
             this.logger = logger;
+            this.configuration = configuration;
         }
 
         /// <summary>
@@ -65,15 +70,9 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             try
             {
-                var entitiesToValidate = this.ChangeTracker.Entries()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                    .Where(e => e.Entity.GetType().GetCustomAttributes<ValidationAttribute>().Any())
-                    .Select(e => e.Entity);
-
-                foreach (var entity in entitiesToValidate)
+                if (this.configuration.GetEntityModelStateValidation())
                 {
-                    var validationContext = new ValidationContext(entity);
-                    Validator.ValidateObject(entity, validationContext);
+                    this.ValidateEntities();
                 }
 
                 return await base.SaveChangesAsync(cancellationToken);
@@ -308,6 +307,31 @@ namespace BIA.Net.Core.Infrastructure.Data
                 18456 => new FrontUserException(FrontUserExceptionErrorMessageKey.DatabaseLoginUser, sqlException),
                 _ => new FrontUserException(sqlException)
             };
+        }
+
+        /// <summary>
+        /// Validate the model of all changed entities currently tracked.
+        /// </summary>
+        /// <exception cref="ValidationException">Occurs when model state is invalid.</exception>
+        protected virtual void ValidateEntities()
+        {
+            var entitiesToValidate = this.ChangeTracker.Entries()
+                                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                                    .Where(e => e.Entity.GetType().GetCustomAttributes<ValidationAttribute>().Any())
+                                    .Select(e => e.Entity);
+
+            foreach (var entity in entitiesToValidate)
+            {
+                var validationContext = new ValidationContext(entity);
+                try
+                {
+                    Validator.ValidateObject(entity, validationContext);
+                }
+                catch (Exception ex)
+                {
+                    throw new ValidationException(ex.Message, ex);
+                }
+            }
         }
 
         private static string GetColumnNameFromSqlExceptionNullInsert(string sqlExceptionMessage)
