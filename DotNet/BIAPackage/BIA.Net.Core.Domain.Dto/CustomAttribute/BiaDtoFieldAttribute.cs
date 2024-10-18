@@ -127,7 +127,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
                    value is decimal;
         }
 
-        private static object GetMinValue(object value)
+        private static object GetMinNumericValue(object value)
         {
             return value switch
             {
@@ -146,7 +146,7 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
             };
         }
 
-        private static object GetMaxValue(object value)
+        private static object GetMaxNumerciValue(object value)
         {
             return value switch
             {
@@ -181,8 +181,8 @@ namespace BIA.Net.Core.Domain.Dto.CustomAttribute
 #pragma warning disable S1244 // Floating point numbers should not be tested for equality
             if (value != null && IsNumericType(value) && (this.RangeMin != 0 || this.RangeMax != 0))
             {
-                var rangeMax = this.RangeMax != 0 ? this.RangeMax : GetMaxValue(value);
-                var rangeMin = this.RangeMin != 0 ? this.RangeMin : GetMinValue(value);
+                var rangeMax = this.RangeMax != 0 ? this.RangeMax : GetMaxNumerciValue(value);
+                var rangeMin = this.RangeMin != 0 ? this.RangeMin : GetMinNumericValue(value);
                 var rangeAttribute = new RangeAttribute(Convert.ToDouble(rangeMin), Convert.ToDouble(rangeMax));
 
                 return rangeAttribute.GetValidationResult(value, validationContext);
