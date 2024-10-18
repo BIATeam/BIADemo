@@ -1,4 +1,8 @@
-﻿namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
+﻿// <copyright file="BiaApiBehaviorOptions.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System;
     using System.Linq;
@@ -8,15 +12,23 @@
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
 
+    /// <summary>
+    /// Configure API behavior options for BIA Framwework.
+    /// </summary>
     public class BiaApiBehaviorOptions : IConfigureOptions<ApiBehaviorOptions>
     {
         private readonly ILogger<BiaApiBehaviorOptions> logger;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaApiBehaviorOptions"/> class.
+        /// </summary>
+        /// <param name="logger">Class logger.</param>
         public BiaApiBehaviorOptions(ILogger<BiaApiBehaviorOptions> logger)
         {
             this.logger = logger;
         }
 
+        /// <inheritdoc/>
         public void Configure(ApiBehaviorOptions options)
         {
             options.InvalidModelStateResponseFactory = context =>
