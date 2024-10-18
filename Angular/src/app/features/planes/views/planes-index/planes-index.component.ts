@@ -1,4 +1,5 @@
 import { Component, Injector, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-items-index/crud-items-index.component';
 import { Permission } from 'src/app/shared/permission';
@@ -6,6 +7,8 @@ import { PlaneTableComponent } from '../../components/plane-table/plane-table.co
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
+import { FeaturePlanesStore } from '../../store/plane.state';
+import { FeaturePlanesActions } from '../../store/planes-actions';
 
 @Component({
   selector: 'app-planes-index',
@@ -15,6 +18,8 @@ import { PlaneService } from '../../services/plane.service';
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
+  compactMode$: Observable<boolean>;
+
   /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   /// BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine
@@ -27,6 +32,12 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   ) {
     super(injector, planeService);
     this.crudConfiguration = planeCRUDConfiguration;
+    this.compactMode$ = this.store.select(FeaturePlanesStore.getCompactMode);
+  }
+
+  toggleCompactMode() {
+    this.compactMode = !this._compactMode;
+    this.store.dispatch(FeaturePlanesActions.toggleCompactMode());
   }
 
   protected setPermissions() {
