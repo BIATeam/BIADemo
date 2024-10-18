@@ -7,6 +7,7 @@ import {
   trigger,
 } from '@angular/animations';
 import {
+  AfterViewChecked,
   Component,
   ElementRef,
   HostBinding,
@@ -60,7 +61,9 @@ import { MenuService } from '../../services/menu.service';
     ]),
   ],
 })
-export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
+export class BiaUltimaMenuItemComponent
+  implements OnInit, OnDestroy, AfterViewChecked
+{
   @Input() item: MenuItem;
 
   @Input() index!: number;
@@ -77,7 +80,7 @@ export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
 
   menuResetSubscription: Subscription;
 
-  key: string = '';
+  key = '';
 
   constructor(
     public layoutService: BiaLayoutService,
@@ -110,7 +113,7 @@ export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(params => {
+      .subscribe(() => {
         if (this.isSlimPlus || this.isSlim || this.isHorizontal) {
           this.active = false;
         } else {
@@ -151,7 +154,7 @@ export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
   }
 
   updateActiveStateFromRoute() {
-    let activeRoute = this.router.isActive(this.item.routerLink[0], {
+    const activeRoute = this.router.isActive(this.item.routerLink[0], {
       paths: 'exact',
       queryParams: 'ignored',
       matrixParams: 'ignored',

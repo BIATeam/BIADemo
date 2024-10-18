@@ -3,6 +3,7 @@ import {
   HostBinding,
   Input,
   OnDestroy,
+  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
@@ -34,7 +35,7 @@ import { BiaUltimaTopBarComponent } from '../top-bar/ultima-top-bar.component';
   templateUrl: './ultima-layout.component.html',
   styleUrls: ['./ultima-layout.component.scss'],
 })
-export class BiaUltimaLayoutComponent implements OnDestroy {
+export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @HostBinding('class.no-margin') noMargin = false;
   @Input() version: string;
   @Input() appTitle: string;
@@ -81,7 +82,119 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
     protected store: Store<AppState>
   ) {
     this.hideMenuProfile();
+    this.overlayMenuSubscription();
+    this.overlayFooterSubscription();
+    this.topBarMenuSubscription();
+    this.menuProfileSubscription();
 
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.hideMenu();
+      });
+
+    this.envName$ = this.store.select(getAppSettings).pipe(
+      map(settings => {
+        return this.getEnvironmentName(settings?.environment.type);
+      })
+    );
+    this.showEnvironmentMessage$ = this.store.select(getAppSettings).pipe(
+      map(settings => {
+        return this.showEnvironmentMessage(settings?.environment.type);
+      })
+    );
+
+    this.sub.add(
+      this.store.select(getAppSettings).subscribe(appSettings => {
+        if (appSettings) {
+          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
+        }
+      })
+    );
+  }
+
+  private menuProfileSubscription() {
+    this.sub.add(
+      this.layoutService.menuProfileOpen$.subscribe(() => {
+        this.hideMenu();
+        if (!this.menuProfileOutsideClickListener) {
+          this.menuProfileOutsideClickListener = this.renderer.listen(
+            'document',
+            'click',
+            event => {
+              const isOutsideClicked = !(
+                this.appSidebar.menuProfile.el.nativeElement.isSameNode(
+                  event.target
+                ) ||
+                this.appSidebar.menuProfile.el.nativeElement.contains(
+                  event.target
+                )
+              );
+              if (isOutsideClicked) {
+                this.hideMenuProfile();
+              }
+            }
+          );
+        }
+      })
+    );
+  }
+
+  private topBarMenuSubscription() {
+    this.sub.add(
+      this.layoutService.topbarMenuOpen$.subscribe(() => {
+        if (!this.topbarMenuOutsideClickListener) {
+          this.topbarMenuOutsideClickListener = this.renderer.listen(
+            'document',
+            'click',
+            event => {
+              const isOutsideClicked = !(
+                this.appTopbar.el.nativeElement.isSameNode(event.target) ||
+                this.appTopbar.el.nativeElement.contains(event.target) ||
+                this.appTopbar.mobileMenuButton.nativeElement.isSameNode(
+                  event.target
+                ) ||
+                this.appTopbar.mobileMenuButton.nativeElement.contains(
+                  event.target
+                )
+              );
+              if (isOutsideClicked) {
+                this.hideTopbarMenu();
+              }
+            }
+          );
+        }
+
+        if (this.layoutService.state.staticMenuMobileActive) {
+          this.blockBodyScroll();
+        }
+      })
+    );
+  }
+
+  private overlayFooterSubscription() {
+    this.sub.add(
+      this.layoutService.overlayFooterOpen$.subscribe(() => {
+        if (!this.footerOutsideClickListener) {
+          this.footerOutsideClickListener = this.renderer.listen(
+            'document',
+            'click',
+            event => {
+              const isOutsideClicked = !(
+                this.appFooter.el.nativeElement.isSameNode(event.target) ||
+                this.appFooter.el.nativeElement.contains(event.target)
+              );
+              if (isOutsideClicked) {
+                this.hideFooter();
+              }
+            }
+          );
+        }
+      })
+    );
+  }
+
+  private overlayMenuSubscription() {
     this.sub.add(
       this.layoutService.overlayOpen$.subscribe(() => {
         this.hideTopbarMenu();
@@ -115,7 +228,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
           this.menuScrollListener = this.renderer.listen(
             this.appSidebar.menuContainer.nativeElement,
             'scroll',
-            event => {
+            () => {
               if (this.layoutService.isDesktop()) {
                 this.hideMenu();
               }
@@ -125,106 +238,6 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
 
         if (this.layoutService.state.staticMenuMobileActive) {
           this.blockBodyScroll();
-        }
-      })
-    );
-
-    this.sub.add(
-      this.layoutService.overlayFooterOpen$.subscribe(() => {
-        if (!this.footerOutsideClickListener) {
-          this.footerOutsideClickListener = this.renderer.listen(
-            'document',
-            'click',
-            event => {
-              const isOutsideClicked = !(
-                this.appFooter.el.nativeElement.isSameNode(event.target) ||
-                this.appFooter.el.nativeElement.contains(event.target)
-              );
-              if (isOutsideClicked) {
-                this.hideFooter();
-              }
-            }
-          );
-        }
-      })
-    );
-
-    this.sub.add(
-      this.layoutService.topbarMenuOpen$.subscribe(() => {
-        if (!this.topbarMenuOutsideClickListener) {
-          this.topbarMenuOutsideClickListener = this.renderer.listen(
-            'document',
-            'click',
-            event => {
-              const isOutsideClicked = !(
-                this.appTopbar.el.nativeElement.isSameNode(event.target) ||
-                this.appTopbar.el.nativeElement.contains(event.target) ||
-                this.appTopbar.mobileMenuButton.nativeElement.isSameNode(
-                  event.target
-                ) ||
-                this.appTopbar.mobileMenuButton.nativeElement.contains(
-                  event.target
-                )
-              );
-              if (isOutsideClicked) {
-                this.hideTopbarMenu();
-              }
-            }
-          );
-        }
-
-        if (this.layoutService.state.staticMenuMobileActive) {
-          this.blockBodyScroll();
-        }
-      })
-    );
-
-    this.sub.add(
-      this.layoutService.menuProfileOpen$.subscribe(() => {
-        this.hideMenu();
-        if (!this.menuProfileOutsideClickListener) {
-          this.menuProfileOutsideClickListener = this.renderer.listen(
-            'document',
-            'click',
-            event => {
-              const isOutsideClicked = !(
-                this.appSidebar.menuProfile.el.nativeElement.isSameNode(
-                  event.target
-                ) ||
-                this.appSidebar.menuProfile.el.nativeElement.contains(
-                  event.target
-                )
-              );
-              if (isOutsideClicked) {
-                this.hideMenuProfile();
-              }
-            }
-          );
-        }
-      })
-    );
-
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        this.hideMenu();
-      });
-
-    this.envName$ = this.store.select(getAppSettings).pipe(
-      map(settings => {
-        return this.getEnvironmentName(settings?.environment.type);
-      })
-    );
-    this.showEnvironmentMessage$ = this.store.select(getAppSettings).pipe(
-      map(settings => {
-        return this.showEnvironmentMessage(settings?.environment.type);
-      })
-    );
-
-    this.sub.add(
-      this.store.select(getAppSettings).subscribe(appSettings => {
-        if (appSettings) {
-          this.cssClassEnv = `env-${appSettings.environment.type.toLowerCase()}`;
         }
       })
     );
@@ -379,7 +392,8 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
   }
 
   get containerClass() {
-    let styleClass: { [key: string]: any } = {
+    const styleClass: { [key: string]: any } = {
+      /* eslint-disable @typescript-eslint/naming-convention */
       'layout-overlay': this.layoutService.config().menuMode === 'overlay',
       'layout-footer-overlay':
         this.layoutService.config().footerMode === 'overlay',
@@ -405,7 +419,7 @@ export class BiaUltimaLayoutComponent implements OnDestroy {
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
     styleClass[this.cssClassEnv] = true;
-
+    /* eslint-enable @typescript-eslint/naming-convention */
     return styleClass;
   }
 

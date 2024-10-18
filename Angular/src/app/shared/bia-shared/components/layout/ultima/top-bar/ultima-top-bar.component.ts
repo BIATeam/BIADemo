@@ -1,6 +1,14 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, Input, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -26,7 +34,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   templateUrl: './ultima-top-bar.component.html',
   styleUrls: ['./ultima-top-bar.component.scss'],
 })
-export class BiaUltimaTopBarComponent {
+export class BiaUltimaTopBarComponent implements OnInit, OnDestroy {
   @Input() appTitle: string;
   @Input() version: string;
   @Input() helpUrl?: string;

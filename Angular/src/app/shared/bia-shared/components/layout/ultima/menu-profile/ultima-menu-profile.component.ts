@@ -10,7 +10,7 @@ import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { BiaLayoutService } from '../../services/layout.service';
 
 @Component({
-  selector: 'ultima-menu-profile',
+  selector: 'bia-ultima-menu-profile',
   templateUrl: './ultima-menu-profile.component.html',
   styleUrls: ['./ultima-menu-profile.component.scss'],
   animations: [
@@ -56,7 +56,7 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
     this.avatarUrl = url;
   }
 
-  avatarUrl: string = 'assets/bia/img/PersonPlaceholder.png';
+  avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
 
   usernameParam?: { name: string };
   displayName: string;

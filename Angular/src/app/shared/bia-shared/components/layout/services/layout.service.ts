@@ -146,29 +146,31 @@ export class BiaLayoutService {
   }
 
   changeTheme() {
-    let { colorScheme } = this.config();
+    const { colorScheme } = this.config();
     const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
-    const themeLinkHref = themeLink.getAttribute('href')!;
-    const newHref = themeLinkHref
-      .split('/')
-      .map(el =>
-        el == `theme-${this._config.colorScheme}`
-          ? (el = `theme-${colorScheme}`)
-          : el
-      )
-      .join('/');
-    this.replaceThemeLink(newHref);
+    const themeLinkHref = themeLink.getAttribute('href');
+    if (themeLinkHref) {
+      const newHref = themeLinkHref
+        .split('/')
+        .map(el =>
+          el == `theme-${this._config.colorScheme}`
+            ? (el = `theme-${colorScheme}`)
+            : el
+        )
+        .join('/');
+      this.replaceThemeLink(newHref);
+    }
   }
 
   replaceThemeLink(href: string) {
     const id = 'theme-link';
-    let themeLink = <HTMLLinkElement>document.getElementById(id);
+    const themeLink = <HTMLLinkElement>document.getElementById(id);
     const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
 
     cloneLinkElement.setAttribute('href', href);
     cloneLinkElement.setAttribute('id', id + '-clone');
 
-    themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
+    themeLink.parentNode?.insertBefore(cloneLinkElement, themeLink.nextSibling);
     cloneLinkElement.addEventListener('load', () => {
       themeLink.remove();
       cloneLinkElement.setAttribute('id', id);
@@ -280,7 +282,7 @@ export class BiaLayoutService {
 
   defaultConfigUpdate(
     config: Partial<AppConfig>,
-    overwriteLocaleStorageConfig: boolean = false
+    overwriteLocaleStorageConfig = false
   ) {
     const lValue = localStorage.getItem(BIA_USER_CONFIG);
     let valueToUpdate: Partial<AppConfig>;
@@ -306,7 +308,7 @@ export class BiaLayoutService {
 
   mapNavigationToMenuItems(
     navigationItems: BiaNavigation[],
-    withIcons: boolean = false
+    withIcons = false
   ): MenuItem[] {
     const navMenuItems: MenuItem[] = [];
     navigationItems.forEach(menu => {

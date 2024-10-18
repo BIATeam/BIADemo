@@ -17,7 +17,7 @@ import { MenuService } from '../../services/menu.service';
   styleUrls: ['./ultima-config.component.scss'],
 })
 export class BiaUltimaConfigComponent {
-  @Input() minimal: boolean = false;
+  @Input() minimal = false;
   @Input() supportedLangs: string[];
   @Input() scales: number[] = [12, 13, 14, 15, 16, 17, 18];
 

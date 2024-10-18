@@ -25,7 +25,8 @@ export class BiaUltimaFooterComponent {
   ) {}
 
   get footerClass() {
-    let styleClass: { [key: string]: any } = {
+    const styleClass: { [key: string]: any } = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
       'footer-overlay': this.layoutService.config().footerMode === 'overlay',
     };
     styleClass['layout-menu-' + this.layoutService.config().colorScheme] = true;
