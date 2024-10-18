@@ -315,16 +315,20 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// <exception cref="ValidationException">Occurs when model state is invalid.</exception>
         protected virtual void ValidateEntities()
         {
-            var entitiesToValidate = this.ChangeTracker.Entries()
+            var changedEntities = this.ChangeTracker.Entries()
                                     .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
-                                    .Where(e => e.Entity.GetType().GetCustomAttributes<ValidationAttribute>().Any())
                                     .Select(e => e.Entity);
 
-            foreach (var entity in entitiesToValidate)
+            foreach (var entity in changedEntities)
             {
-                var validationContext = new ValidationContext(entity);
+                if (!Array.Exists(entity.GetType().GetProperties(), p => p.GetCustomAttributes<ValidationAttribute>().Any()))
+                {
+                    continue;
+                }
+
                 try
                 {
+                    var validationContext = new ValidationContext(entity);
                     Validator.ValidateObject(entity, validationContext);
                 }
                 catch (Exception ex)
