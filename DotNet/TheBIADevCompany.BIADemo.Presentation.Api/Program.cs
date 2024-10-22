@@ -9,6 +9,7 @@ using BIA.Net.Core.Common.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Web;
@@ -24,7 +25,11 @@ try
     builder.Configuration.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
     builder.Configuration.AddJsonFile($"bianetconfig.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: false, reloadOnChange: true);
 
-    builder.Host.UseNLog();
+    builder.Host.UseNLog().ConfigureLogging((host, logging) =>
+    {
+        logging.AddFilter("Microsoft.AspNetCore.SignalR", Microsoft.Extensions.Logging.LogLevel.Debug);
+        logging.AddFilter("Microsoft.AspNetCore.Http.Connections", Microsoft.Extensions.Logging.LogLevel.Debug);
+    });
 
     Startup startup = new Startup(builder.Configuration);
 
