@@ -47,25 +47,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// Gets or sets the delivery date.
         /// </summary>
         [BiaDtoField(Type = "date", Required = true)]
-        public DateTime DeliveryDate { get; set; }
+        public DateOnly DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the exchange date.
         /// </summary>
         [BiaDtoField(Type = "date", Required = false)]
-        public DateTime? ExchangeDate { get; set; }
+        public DateOnly? ExchangeDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
         [BiaDtoField(Type = "time", Required = true)]
-        public string SyncTime { get; set; }
+        public TimeOnly SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the daily ignition hour.
         /// </summary>
         [BiaDtoField(Type = "time", Required = false)]
-        public string IgnitionTime { get; set; }
+        public TimeOnly? IgnitionTime { get; set; }
 
         /// <summary>
         /// Gets or sets the power.
