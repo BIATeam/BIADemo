@@ -45,25 +45,25 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// Gets or sets the delivery date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateTime DeliveryDate { get; set; }
+        public DateOnly DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the exchange date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateTime? ExchangeDate { get; set; }
+        public DateOnly? ExchangeDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeSpan SyncTime { get; set; }
+        public TimeOnly SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the daily ignition hour.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeSpan? IgnitionTime { get; set; }
+        public TimeOnly? IgnitionTime { get; set; }
 
         /// <summary>
         /// Gets or sets the power.

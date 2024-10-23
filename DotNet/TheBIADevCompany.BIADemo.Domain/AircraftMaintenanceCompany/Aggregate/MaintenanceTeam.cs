@@ -66,22 +66,22 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
         /// <summary>
         /// Gets or sets the approval date.
         /// </summary>
-        public DateTime? ApprovedDate { get; set; }
+        public DateOnly? ApprovedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the next operation date.
         /// </summary>
-        public DateTime NextOperation { get; set; }
+        public DateOnly NextOperation { get; set; }
 
         /// <summary>
         /// Gets or sets the max travel duration hour.
         /// </summary>
-        public TimeSpan? MaxTravelDuration { get; set; }
+        public TimeOnly? MaxTravelDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the max operation duration hour.
         /// </summary>
-        public TimeSpan MaxOperationDuration { get; set; }
+        public TimeOnly MaxOperationDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the operation count.
