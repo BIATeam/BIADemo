@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.Service
+namespace BIA.Net.Core.Application.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

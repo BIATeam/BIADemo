@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     using System.Collections.Generic;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;

@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
