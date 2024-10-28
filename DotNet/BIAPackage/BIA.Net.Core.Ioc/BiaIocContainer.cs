@@ -9,6 +9,7 @@ namespace BIA.Net.Core.IocContainer
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain;
@@ -131,6 +132,7 @@ namespace BIA.Net.Core.IocContainer
         private static void ConfigureApplicationContainer(IServiceCollection collection)
         {
             collection.AddTransient<ILanguageAppService, LanguageAppService>();
+            collection.AddTransient<IClientForHubService, ClientForHubService>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
