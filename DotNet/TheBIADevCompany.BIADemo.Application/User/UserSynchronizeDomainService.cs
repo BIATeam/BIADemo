@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System;
     using System.Collections.Concurrent;
@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Rights;
 
     /// <summary>

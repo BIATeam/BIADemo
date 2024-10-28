@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Threading.Tasks;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
