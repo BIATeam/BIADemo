@@ -8,10 +8,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common.Exceptions;
 #if UseHubForClientInTeam
-    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Application.Services;
 #endif
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly ITeamAppService teamService;
 
 #if UseHubForClientInTeam
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInTeam
@@ -45,7 +45,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="teamService">The team application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IClientForHubRepository clientForHubService)
+        public TeamsController(ITeamAppService teamService, IMemberAppService memberService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="TeamsController"/> class.

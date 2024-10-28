@@ -10,14 +10,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+#if UseHubForClientInNotification
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-#if UseHubForClientInNotification
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         private readonly IPrincipal principal;
 
 #if UseHubForClientInNotification
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInNotification
@@ -48,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// <param name="notificationService">The notification application service.</param>
         /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
+        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.

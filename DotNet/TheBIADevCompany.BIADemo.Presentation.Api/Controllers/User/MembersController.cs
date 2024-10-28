@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
 #if UseHubForClientInMember || UseHubForClientInUser
-    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Application.Services;
 #endif
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <summary>
         /// the client for hub (signalR) service.
         /// </summary>
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInMember || UseHubForClientInUser
@@ -67,7 +67,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             IMemberAppService memberService,
             ITeamAppService teamAppService,
             UserContext userContext,
-            IClientForHubRepository clientForHubService)
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="MembersController"/> class.

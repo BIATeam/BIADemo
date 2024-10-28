@@ -9,12 +9,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInMaintenanceTeam
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInMaintenanceTeam
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         private readonly IMaintenanceTeamAppService maintenanceTeamAppService;
 
 #if UseHubForClientInMaintenanceTeam
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInMaintenanceTeam
@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MaintenanceTeamsController(
-            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubRepository clientForHubService)
+            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.

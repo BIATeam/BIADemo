@@ -9,12 +9,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInEngine
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInEngine
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IEngineAppService engineService;
 
 #if UseHubForClientInEngine
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInEngine
@@ -48,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="engineService">The engine application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public EnginesController(
-            IEngineAppService engineService, IClientForHubRepository clientForHubService)
+            IEngineAppService engineService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.

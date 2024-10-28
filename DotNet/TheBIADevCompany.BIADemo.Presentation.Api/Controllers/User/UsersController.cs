@@ -9,14 +9,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+#if UseHubForClientInUser
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-#if UseHubForClientInUser
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -38,7 +38,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IUserAppService userService;
 
 #if UseHubForClientInUser
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubRepository clientForHubService)
+        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubService clientForHubService)
 #else
 
         /// <summary>

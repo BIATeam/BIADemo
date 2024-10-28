@@ -10,13 +10,13 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+#if UseHubForClientInPlane
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInPlane
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly ILogger<PlanesSpecificController> logger;
 
 #if UseHubForClientInPlane
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInPlane
@@ -65,7 +65,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
             ILogger<PlanesSpecificController> logger,
             IPrincipal principal,
             IPlaneSpecificAppService planeSpecificService,
-            IClientForHubRepository clientForHubService)
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesSpecificController" /> class.

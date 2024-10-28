@@ -34,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         /// <summary>
         /// The signalR Service.
         /// </summary>
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
@@ -47,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         public NotificationAppService(
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
-            IClientForHubRepository clientForHubService,
+            IClientForHubService clientForHubService,
             INotificationQueryCustomizer queryCustomizer)
             : base(repository)
         {

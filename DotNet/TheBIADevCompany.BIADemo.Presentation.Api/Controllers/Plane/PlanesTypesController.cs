@@ -10,12 +10,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInPlaneType
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInPlaneType
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IPlaneTypeAppService planeTypeService;
 
 #if UseHubForClientInPlaneType
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInPlaneType
@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// </summary>
         /// <param name="planeTypeService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public PlanesTypesController(IPlaneTypeAppService planeTypeService, IClientForHubRepository clientForHubService)
+        public PlanesTypesController(IPlaneTypeAppService planeTypeService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesTypesController"/> class.

@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using BIA.Net.Core.Domain.Dto.Base;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 #if UseHubForClientInAircraftMaintenanceCompany
-    using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Application.Services;
 #endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -39,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         private readonly IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService;
 
 #if UseHubForClientInAircraftMaintenanceCompany
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInAircraftMaintenanceCompany
@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <param name="aircraftMaintenanceCompaniesService">The AircraftMaintenanceCompany application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public AircraftMaintenanceCompaniesController(
-            IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService, IClientForHubRepository clientForHubService)
+            IAircraftMaintenanceCompanyAppService aircraftMaintenanceCompaniesService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompaniesController"/> class.
