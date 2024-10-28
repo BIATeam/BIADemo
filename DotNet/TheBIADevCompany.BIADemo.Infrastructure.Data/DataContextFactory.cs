@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// The factory for <see cref="DataContext"/> and <see cref="DataContextReadOnly"/>.
+    /// The factory for <see cref="DataContext"/> and <see cref="DataContextNoTracking"/>.
     /// </summary>
     public class DataContextFactory
     {
@@ -54,17 +54,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         }
 
         /// <summary>
-        /// Creates the corresponding <see cref="IQueryableUnitOfWorkReadOnly"/> by key.
+        /// Creates the corresponding <see cref="IQueryableUnitOfWorkNoTracking"/> by key.
         /// </summary>
-        /// <param name="key">The <see cref="IQueryableUnitOfWorkReadOnly"/> key.</param>
-        /// <returns><see cref="IQueryableUnitOfWorkReadOnly"/>.</returns>
+        /// <param name="key">The <see cref="IQueryableUnitOfWorkNoTracking"/> key.</param>
+        /// <returns><see cref="IQueryableUnitOfWorkNoTracking"/>.</returns>
         /// <exception cref="InvalidOperationException">Element not found.</exception>
-        public IQueryableUnitOfWorkReadOnly GetQueryableUnitOfWorkReadOnly(string key)
+        public IQueryableUnitOfWorkNoTracking GetQueryableUnitOfWorkNoTracking(string key)
         {
             var databaseConfiguration = this.databaseConfigurations.Find(x => x.Key == key)
                 ?? throw new InvalidOperationException($"Unable to find {nameof(DatabaseConfiguration)} with key {key}");
 
-            return this.CreateDataContextReadOnly(databaseConfiguration);
+            return this.CreateDataContextNoTracking(databaseConfiguration);
         }
 
         private static void ConfigureDataContextOptionsProvider(DatabaseConfiguration databaseConfiguration, DbContextOptionsBuilder<DataContext> dataContextOptions)
@@ -101,13 +101,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             return new DataContext(dataContextOptions.Options, dataContextLogger, this.configuration);
         }
 
-        private DataContextReadOnly CreateDataContextReadOnly(DatabaseConfiguration databaseConfiguration)
+        private DataContextNoTracking CreateDataContextNoTracking(DatabaseConfiguration databaseConfiguration)
         {
-            var dataContextLogger = this.serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<DataContextReadOnly>();
+            var dataContextLogger = this.serviceProvider.GetRequiredService<ILoggerFactory>().CreateLogger<DataContextNoTracking>();
             var dataContextOptions = new DbContextOptionsBuilder<DataContext>();
             ConfigureDataContextOptionsProvider(databaseConfiguration, dataContextOptions);
             dataContextOptions.EnableSensitiveDataLogging();
-            return new DataContextReadOnly(dataContextOptions.Options, dataContextLogger, this.configuration);
+            return new DataContextNoTracking(dataContextOptions.Options, dataContextLogger, this.configuration);
         }
     }
 }

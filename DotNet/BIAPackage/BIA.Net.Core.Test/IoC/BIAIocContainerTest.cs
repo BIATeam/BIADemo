@@ -32,7 +32,7 @@ namespace BIA.Net.Core.Test.IoC
         /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
         public static void ConfigureContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
-            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
+            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkNoTracking
         {
             services.AddLogging();
 
@@ -48,7 +48,7 @@ namespace BIA.Net.Core.Test.IoC
         /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
         public static void ConfigureInfrastructureDataContainerTest<TDbContext, TDbContextReadOnly>(IServiceCollection services)
             where TDbContext : DbContext, IQueryableUnitOfWork
-            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkReadOnly
+            where TDbContextReadOnly : DbContext, IQueryableUnitOfWorkNoTracking
         {
             services.AddDbContext<IQueryableUnitOfWork, TDbContext>(
                 options =>
@@ -57,7 +57,7 @@ namespace BIA.Net.Core.Test.IoC
                     options.EnableSensitiveDataLogging();
                 });
 
-            services.AddDbContext<IQueryableUnitOfWorkReadOnly, TDbContextReadOnly>(
+            services.AddDbContext<IQueryableUnitOfWorkNoTracking, TDbContextReadOnly>(
                options =>
                {
                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());

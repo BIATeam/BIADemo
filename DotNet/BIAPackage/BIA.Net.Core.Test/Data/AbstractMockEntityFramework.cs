@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Test.Data
     /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
     public abstract class AbstractMockEntityFramework<TDbContext, TDbContextReadOnly> : IMockEntityFramework<TDbContext, TDbContextReadOnly>
         where TDbContext : class, IQueryableUnitOfWork
-        where TDbContextReadOnly : class, IQueryableUnitOfWorkReadOnly
+        where TDbContextReadOnly : class, IQueryableUnitOfWorkNoTracking
     {
         /// <summary>
         /// The database context.
@@ -33,7 +33,7 @@ namespace BIA.Net.Core.Test.Data
         /// </summary>
         /// <param name="dbContext">The DB context.</param>
         /// <param name="dbContextReadOnly">The DB context ReadOnly.</param>
-        protected AbstractMockEntityFramework(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkReadOnly dbContextReadOnly)
+        protected AbstractMockEntityFramework(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkNoTracking dbContextReadOnly)
         {
             this.dbContext = dbContext as TDbContext;
             this.dbContextReadOnly = dbContextReadOnly as TDbContextReadOnly;

@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 options.EnableSensitiveDataLogging();
                 options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
-            collection.AddDbContext<IQueryableUnitOfWorkReadOnly, DataContextReadOnly>(
+            collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
                 options =>
                 {
                     if (connectionString != null)

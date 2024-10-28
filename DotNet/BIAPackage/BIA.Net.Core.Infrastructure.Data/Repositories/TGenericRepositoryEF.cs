@@ -372,7 +372,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <returns>The DBSet of TEntity.</returns>
         protected DbSet<TEntity> RetrieveSetReadOnly()
         {
-            return this.serviceProvider.GetService<IQueryableUnitOfWorkReadOnly>().RetrieveSet<TEntity>();
+            return this.serviceProvider.GetService<IQueryableUnitOfWorkNoTracking>().RetrieveSet<TEntity>();
         }
 
         /// <summary>
