@@ -130,7 +130,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         public async Task<bool> AnyAsync(Specification<TEntity> specification)
         {
             // Create IObjectSet for this particular type and query this
-            IQueryable<TEntity> objectSet = this.RetrieveSetReadOnly().AsNoTracking();
+            IQueryable<TEntity> objectSet = this.RetrieveSetNoTracking();
 
             // Return true if any match with filter condition
             return await objectSet.AnyAsync(specification.SatisfiedBy());
@@ -367,10 +367,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         }
 
         /// <summary>
-        /// Retrieve a DBSet.
+        /// Retrieve a DBSet as no tracking from dependancy injection <see cref="IQueryableUnitOfWorkNoTracking"/>.
         /// </summary>
-        /// <returns>The DBSet of TEntity.</returns>
-        protected DbSet<TEntity> RetrieveSetReadOnly()
+        /// <returns>The DBSet of TEntity with no tracking.</returns>
+        protected virtual DbSet<TEntity> RetrieveSetNoTracking()
         {
             return this.serviceProvider.GetService<IQueryableUnitOfWorkNoTracking>().RetrieveSet<TEntity>();
         }
@@ -474,12 +474,12 @@ namespace BIA.Net.Core.Infrastructure.Data.Repositories
         /// <param name="specification">The specification.</param>
         /// <param name="filter">The filter.</param>
         /// <param name="queryMode">The query mode.</param>
-        /// <param name="isReadOnlyMode">if set to <c>true</c> [is read only mode].</param>
+        /// <param name="isNoTrackingMode">if set to <c>true</c> [is no tracking mode].</param>
         /// <returns>A filtered query.</returns>
-        protected IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isReadOnlyMode = false)
+        protected IQueryable<TEntity> PrepareFilteredQuery(TKey id, Specification<TEntity> specification, Expression<Func<TEntity, bool>> filter, string queryMode, bool isNoTrackingMode = false)
         {
             // Create IObjectSet for this particular type and query this
-            IQueryable<TEntity> objectSet = isReadOnlyMode ? this.RetrieveSetReadOnly().AsNoTracking() : this.RetrieveSet();
+            IQueryable<TEntity> objectSet = isNoTrackingMode ? this.RetrieveSetNoTracking() : this.RetrieveSet();
 
             if (this.QueryCustomizer != null)
             {

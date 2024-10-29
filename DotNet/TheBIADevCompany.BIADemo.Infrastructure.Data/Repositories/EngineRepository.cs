@@ -32,11 +32,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
         /// <inheritdoc cref="IEngineRepository.FillIsToBeMaintainedAsync"/>
         public async Task FillIsToBeMaintainedAsync(int nbMonth)
         {
-            await this.RetrieveSetReadOnly()
+            await this.RetrieveSetNoTracking()
                 .Where(x => SqlServerDbFunctionsExtensions.DateDiffDay(EF.Functions, x.LastMaintenanceDate, DateTime.Today) > nbMonth)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsToBeMaintained, true));
 
-            await this.RetrieveSetReadOnly()
+            await this.RetrieveSetNoTracking()
                 .Where(x => SqlServerDbFunctionsExtensions.DateDiffDay(EF.Functions, x.LastMaintenanceDate, DateTime.Today) <= nbMonth)
                 .ExecuteUpdateAsync(setters => setters.SetProperty(b => b.IsToBeMaintained, false));
         }
