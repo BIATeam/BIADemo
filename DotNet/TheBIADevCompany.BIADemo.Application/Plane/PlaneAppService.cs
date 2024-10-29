@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// The application service used for plane.
@@ -38,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The claims principal.</param>
-        public PlaneAppService(ITGenericRepository<Plane, int> repository, IPrincipal principal)
+        public PlaneAppService(IBiaDemoRepository<Plane, int> repository, IPrincipal principal)
             : base(repository)
         {
             // BIAToolKit - Begin AncestorTeam Site

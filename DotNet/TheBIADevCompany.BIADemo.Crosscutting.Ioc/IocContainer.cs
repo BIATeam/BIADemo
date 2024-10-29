@@ -136,7 +136,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 options.EnableSensitiveDataLogging();
                 options.AddInterceptors(new AuditSaveChangesInterceptor());
             });
-            collection.AddDbContext<IQueryableUnitOfWorkReadOnly, DataContextReadOnly>(
+            collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
                 options =>
                 {
                     if (connectionString != null)
@@ -154,6 +154,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
+
+            collection.AddScoped<DataContextFactory>();
 #if BIA_FRONT_FEATURE
             collection.AddSingleton<AuditFeature>();
 #endif
