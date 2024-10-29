@@ -12,7 +12,7 @@ namespace BIA.Net.Core.Test.Data
     /// <typeparam name="TDbContextReadOnly">Type of the database context readonly.</typeparam>
     public interface IMockEntityFramework<TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
-        where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly
+        where TDbContextReadOnly : IQueryableUnitOfWorkNoTracking
     {
         /// <summary>
         /// Get the database context.

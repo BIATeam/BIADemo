@@ -32,9 +32,9 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
         public static void ConfigureContainerTest(IServiceCollection services)
         {
             IocContainer.ConfigureContainer(services, null, true, true);
-            BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextReadOnly>(services);
+            BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
 
-            services.AddTransient<IMockEntityFramework<DataContext, DataContextReadOnly>, MockEntityFrameworkInMemory>();
+            services.AddTransient<IMockEntityFramework<DataContext, DataContextNoTracking>, MockEntityFrameworkInMemory>();
 
             RegisterControllersFromAssembly(services, "TheBIADevCompany.BIADemo.Presentation.Api");
         }

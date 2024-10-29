@@ -20,7 +20,7 @@ namespace BIA.Net.Core.Test
     /// <typeparam name="TDbContextReadOnly">The type of the database context read only.</typeparam>
     public abstract class BIAAbstractUnitTest<TMockEF, TDbContext, TDbContextReadOnly>
         where TDbContext : IQueryableUnitOfWork
-        where TDbContextReadOnly : IQueryableUnitOfWorkReadOnly
+        where TDbContextReadOnly : IQueryableUnitOfWorkNoTracking
         where TMockEF : class, IMockEntityFramework<TDbContext, TDbContextReadOnly>
     {
         /// <summary>
