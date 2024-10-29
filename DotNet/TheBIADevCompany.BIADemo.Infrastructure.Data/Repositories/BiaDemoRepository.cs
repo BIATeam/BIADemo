@@ -1,4 +1,5 @@
-﻿// <copyright file="BiaDemoRepository.cs" company="TheBIADevCompany">
+﻿// BIADemo only
+// <copyright file="BiaDemoRepository.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
