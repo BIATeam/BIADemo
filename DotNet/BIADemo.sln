@@ -51,29 +51,41 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBIADevCompany.BIADemo.De
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BIAPackage", "BIAPackage", "{6B75375C-BC34-4AB4-A449-9E6D2CC9D925}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Common", "BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj", "{8623F41F-68E8-4AEC-B410-19A71B9BE151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Common", "BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj", "{8623F41F-68E8-4AEC-B410-19A71B9BE151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Domain.Dto", "BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj", "{41925F71-2AAE-4620-BA0F-1E6CCF33F59F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Domain.Dto", "BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj", "{41925F71-2AAE-4620-BA0F-1E6CCF33F59F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Domain", "BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj", "{954B3C3D-3C4D-40C2-A7DA-4A854FD95C27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Domain", "BIAPackage\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj", "{954B3C3D-3C4D-40C2-A7DA-4A854FD95C27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Application", "BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj", "{C56679B2-D96C-483E-B5DA-41E00F0EEFF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Application", "BIAPackage\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj", "{C56679B2-D96C-483E-B5DA-41E00F0EEFF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Infrastructure.Data", "BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj", "{94EAE575-EB73-4AA3-85D5-06427A1AB1FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Infrastructure.Data", "BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj", "{94EAE575-EB73-4AA3-85D5-06427A1AB1FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Infrastructure.Service", "BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj", "{789CDC04-C480-45E8-812B-736124EAA87F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Infrastructure.Service", "BIAPackage\BIA.Net.Core.Infrastructure.Service\BIA.Net.Core.Infrastructure.Service.csproj", "{789CDC04-C480-45E8-812B-736124EAA87F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Ioc", "BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj", "{226E6DEB-F66E-40B8-B566-E55E3F70C89C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Ioc", "BIAPackage\BIA.Net.Core.Ioc\BIA.Net.Core.Ioc.csproj", "{226E6DEB-F66E-40B8-B566-E55E3F70C89C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Presentation.Common", "BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj", "{32897C53-4DEA-4EF8-912C-03171F3C4251}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Presentation.Common", "BIAPackage\BIA.Net.Core.Presentation.Common\BIA.Net.Core.Presentation.Common.csproj", "{32897C53-4DEA-4EF8-912C-03171F3C4251}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Presentation.Api", "BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj", "{E5A0927A-C115-44A1-9E01-E762806AD872}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Presentation.Api", "BIAPackage\BIA.Net.Core.Presentation.Api\BIA.Net.Core.Presentation.Api.csproj", "{E5A0927A-C115-44A1-9E01-E762806AD872}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.Test", "BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj", "{02EC8C0E-5F2F-4848-909C-B2C7010E3349}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Test", "BIAPackage\BIA.Net.Core.Test\BIA.Net.Core.Test.csproj", "{02EC8C0E-5F2F-4848-909C-B2C7010E3349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIA.Net.Core.WorkerService", "BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj", "{72A5690E-501F-4C3B-8C65-B7C5207E71BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.WorkerService", "BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj", "{72A5690E-501F-4C3B-8C65-B7C5207E71BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGetPackage", "BIAPackage\NuGetPackage\NuGetPackage.csproj", "{4BDF6B4D-83E9-4204-8F44-7C50865C2696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NuGetPackage", "BIAPackage\NuGetPackage\NuGetPackage.csproj", "{4BDF6B4D-83E9-4204-8F44-7C50865C2696}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BIA.Net.Core.Analyzer", "BIA.Net.Core.Analyzer", "{EBF62C3A-BF17-4AAB-937F-DDF6E6667841}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Analyzer", "BIAPackage\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer.csproj", "{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Analyzer.CodeFixes", "BIAPackage\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer.CodeFixes\BIA.Net.Core.Analyzer.CodeFixes.csproj", "{7441940B-FFB0-4CED-97D8-761FC96A6EE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Analyzer.Package", "BIAPackage\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer.Package\BIA.Net.Core.Analyzer.Package.csproj", "{2CD582F8-CCA9-4F63-80D9-9FAEFE675589}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Analyzer.Test", "BIAPackage\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer.Test\BIA.Net.Core.Analyzer.Test.csproj", "{EF5FEE80-551F-47B4-A526-D4E195599E4E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BIA.Net.Core.Analyzer.Vsix", "BIAPackage\BIA.Net.Core.Analyzer\BIA.Net.Core.Analyzer.Vsix\BIA.Net.Core.Analyzer.Vsix.csproj", "{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +185,26 @@ Global
 		{4BDF6B4D-83E9-4204-8F44-7C50865C2696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BDF6B4D-83E9-4204-8F44-7C50865C2696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BDF6B4D-83E9-4204-8F44-7C50865C2696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7441940B-FFB0-4CED-97D8-761FC96A6EE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7441940B-FFB0-4CED-97D8-761FC96A6EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7441940B-FFB0-4CED-97D8-761FC96A6EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7441940B-FFB0-4CED-97D8-761FC96A6EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CD582F8-CCA9-4F63-80D9-9FAEFE675589}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CD582F8-CCA9-4F63-80D9-9FAEFE675589}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CD582F8-CCA9-4F63-80D9-9FAEFE675589}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CD582F8-CCA9-4F63-80D9-9FAEFE675589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF5FEE80-551F-47B4-A526-D4E195599E4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF5FEE80-551F-47B4-A526-D4E195599E4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF5FEE80-551F-47B4-A526-D4E195599E4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF5FEE80-551F-47B4-A526-D4E195599E4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,6 +233,12 @@ Global
 		{02EC8C0E-5F2F-4848-909C-B2C7010E3349} = {6B75375C-BC34-4AB4-A449-9E6D2CC9D925}
 		{72A5690E-501F-4C3B-8C65-B7C5207E71BD} = {6B75375C-BC34-4AB4-A449-9E6D2CC9D925}
 		{4BDF6B4D-83E9-4204-8F44-7C50865C2696} = {6B75375C-BC34-4AB4-A449-9E6D2CC9D925}
+		{EBF62C3A-BF17-4AAB-937F-DDF6E6667841} = {6B75375C-BC34-4AB4-A449-9E6D2CC9D925}
+		{A4B1D9AD-62EF-4DC5-9C2A-3FDB5FC9198C} = {EBF62C3A-BF17-4AAB-937F-DDF6E6667841}
+		{7441940B-FFB0-4CED-97D8-761FC96A6EE5} = {EBF62C3A-BF17-4AAB-937F-DDF6E6667841}
+		{2CD582F8-CCA9-4F63-80D9-9FAEFE675589} = {EBF62C3A-BF17-4AAB-937F-DDF6E6667841}
+		{EF5FEE80-551F-47B4-A526-D4E195599E4E} = {EBF62C3A-BF17-4AAB-937F-DDF6E6667841}
+		{97ED1C57-276D-4228-B1E8-6A1FB14F8B5E} = {EBF62C3A-BF17-4AAB-937F-DDF6E6667841}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D07EDEA-2197-4E6C-8665-3D76E7D31E14}
