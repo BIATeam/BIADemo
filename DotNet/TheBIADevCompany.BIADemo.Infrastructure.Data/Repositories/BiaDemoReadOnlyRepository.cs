@@ -15,7 +15,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories
     /// </summary>
     /// <typeparam name="TEntity">Entity type.</typeparam>
     /// <typeparam name="TKey">Entity key type.</typeparam>
-    public class BiaDemoReadOnlyRepository<TEntity, TKey> : DatabaseRepositoryBase<TEntity, TKey>, IBiaDemoRepository<TEntity, TKey>
+    public class BiaDemoReadOnlyRepository<TEntity, TKey> : DatabaseRepositoryBase<TEntity, TKey>, IBiaDemoReadOnlyRepository<TEntity, TKey>
         where TEntity : class, IEntity<TKey>
     {
         /// <summary>
