@@ -32,7 +32,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
-        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions)
+        /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
+        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
@@ -41,6 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
             // Audit
             if (this.isActive)
             {
+                this.UseAuditFeatures(serviceProvider);
                 Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
