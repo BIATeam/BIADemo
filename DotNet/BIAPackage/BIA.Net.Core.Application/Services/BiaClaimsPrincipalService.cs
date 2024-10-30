@@ -40,7 +40,6 @@ namespace BIA.Net.Core.Application.Services
             return this.biaClaimsPrincipal.GetUserData<T>();
         }
 
-
         /// <inheritdoc/>
         public BiaClaimsPrincipal GetBiaClaimsPrincipal()
         {
