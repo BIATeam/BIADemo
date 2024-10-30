@@ -15,13 +15,13 @@ namespace BIA.Net.Core.Application.Services
     /// </summary>
     public class ClientForHubService : IClientForHubService
     {
-        private readonly ICollection<IClientForHubRepository> clientForHubRepositories;
+        private readonly IEnumerable<IClientForHubRepository> clientForHubRepositories;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientForHubService"/> class.
         /// </summary>
         /// <param name="clientForHubRepositories">The injected repositories of client for hub.</param>
-        public ClientForHubService(ICollection<IClientForHubRepository> clientForHubRepositories)
+        public ClientForHubService(IEnumerable<IClientForHubRepository> clientForHubRepositories)
         {
             this.clientForHubRepositories = clientForHubRepositories;
         }
