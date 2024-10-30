@@ -26,15 +26,7 @@ namespace BIA.Net.Analyzers
         };
 
         /// <inheritdoc/>
-        public sealed override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get
-            {
-                var arrayBuilder = ImmutableArray.CreateBuilder<string>();
-                arrayBuilder.AddRange(this.codeFixes.Select(d => d.DiagnosticId));
-                return arrayBuilder.MoveToImmutable();
-            }
-        }
+        public sealed override ImmutableArray<string> FixableDiagnosticIds => this.codeFixes.Select(d => d.DiagnosticId).ToImmutableArray();
 
         /// <inheritdoc/>
         public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;

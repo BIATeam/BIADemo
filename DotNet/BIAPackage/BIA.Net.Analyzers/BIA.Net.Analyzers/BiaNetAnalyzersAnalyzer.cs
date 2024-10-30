@@ -23,15 +23,7 @@ namespace BIA.Net.Analyzers
         };
 
         /// <inheritdoc/>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                var arrayBuilder = ImmutableArray.CreateBuilder<DiagnosticDescriptor>();
-                arrayBuilder.AddRange(this.diagnostics.Select(d => d.Rule));
-                return arrayBuilder.MoveToImmutable();
-            }
-        }
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => this.diagnostics.Select(d => d.Rule).ToImmutableArray();
 
         /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
