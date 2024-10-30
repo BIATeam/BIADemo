@@ -1,24 +1,28 @@
-﻿namespace BIA.Net.Analyzers
+﻿// <copyright file="BiaNetAnalyzersAnalyzer.cs" company="BIA">
+// Copyright (c) BIA.Net. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Analyzers
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Linq;
-    using System.Threading;
     using BIA.Net.Analyzers.Diagnostics;
     using Microsoft.CodeAnalysis;
-    using Microsoft.CodeAnalysis.CSharp;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.CodeAnalysis.Diagnostics;
 
+    /// <summary>
+    /// Analyzer for BIA Net framework.
+    /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class BiaNetAnalyzersAnalyzer : DiagnosticAnalyzer
     {
         private readonly List<DiagnosticBase> diagnostics = new List<DiagnosticBase>
         {
-            new PresentationLayerUsingDomainLayerDiagnostic()
+            new PresentationLayerUsingDomainLayerDiagnostic(),
         };
 
+        /// <inheritdoc/>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
@@ -29,6 +33,7 @@
             }
         }
 
+        /// <inheritdoc/>
         public override void Initialize(AnalysisContext context)
         {
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
