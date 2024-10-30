@@ -10,7 +10,7 @@ namespace BIA.Net.Analyzer.CodeFixes
     /// <summary>
     /// Interface for all code fixes of BIA Net framework analyzer.
     /// </summary>
-    internal interface ICodeFixBase
+    internal interface ICodeFix
     {
         /// <summary>
         /// The diagnostic ID associated to code fix.

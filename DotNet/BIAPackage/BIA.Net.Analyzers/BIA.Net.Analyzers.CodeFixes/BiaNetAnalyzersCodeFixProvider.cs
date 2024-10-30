@@ -4,10 +4,12 @@
 
 namespace BIA.Net.Analyzers
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.Immutable;
     using System.Composition;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
     using BIA.Net.Analyzer.CodeFixes;
     using Microsoft.CodeAnalysis;
@@ -20,10 +22,19 @@ namespace BIA.Net.Analyzers
     [Shared]
     public class BiaNetAnalyzersCodeFixProvider : CodeFixProvider
     {
-        private readonly List<ICodeFixBase> codeFixes = new List<ICodeFixBase>
+        private readonly List<ICodeFix> codeFixes;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaNetAnalyzersCodeFixProvider"/> class.
+        /// </summary>
+        public BiaNetAnalyzersCodeFixProvider()
         {
-            new PresentationLayerUsingDomainLayerCodeFix(),
-        };
+            this.codeFixes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => typeof(ICodeFix).IsAssignableFrom(type) && !type.IsAbstract && type.IsClass && type.IsSealed)
+                .Select(type => (ICodeFix)Activator.CreateInstance(type))
+                .ToList();
+        }
 
         /// <inheritdoc/>
         public sealed override ImmutableArray<string> FixableDiagnosticIds => this.codeFixes.Select(d => d.DiagnosticId).ToImmutableArray();
@@ -34,7 +45,8 @@ namespace BIA.Net.Analyzers
         /// <inheritdoc/>
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            await Task.WhenAll(this.codeFixes.Select(cf => cf.Register(context)));
+            var contextDiagnosticIds = context.Diagnostics.Select(d => d.Id);
+            await Task.WhenAll(this.codeFixes.Where(cf => contextDiagnosticIds.Contains(cf.DiagnosticId)).Select(cf => cf.Register(context)));
         }
     }
 }
