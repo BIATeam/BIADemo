@@ -8,14 +8,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Claims;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -24,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for team.
     /// </summary>
-    public class TeamAppService : FilteredServiceBase<Team, int>, ITeamAppService
+    public class TeamAppService : CrudAppServiceBase<TeamDto, Team, int, PagingFilterFormatDto, TeamMapper>, ITeamAppService
     {
         /// <summary>
         /// The claims principal.
@@ -268,6 +269,31 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     mapper.EntityToDto(userId),
                     specification: specification);
             }
+        }
+
+        /// <inheritdoc/>
+        public bool IsAuthorizeForTeamType(ClaimsPrincipal principal, TeamTypeId teamTypeId, int teamId, string roleSuffix)
+        {
+            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
+            if (config != null)
+            {
+                if (!principal.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == config.RightPrefix + roleSuffix))
+                {
+                    return false;
+                }
+
+                var userData = new BiaClaimsPrincipal(principal).GetUserData<UserDataDto>();
+                if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
