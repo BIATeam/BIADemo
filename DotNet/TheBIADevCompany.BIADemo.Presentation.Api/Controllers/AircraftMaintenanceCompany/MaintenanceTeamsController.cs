@@ -21,9 +21,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage MaintenanceTeams.
@@ -76,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.MaintenanceTeams.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters));
+            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }

@@ -5,6 +5,9 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
@@ -83,5 +86,23 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
         }
 
         // End BIADemo
+
+        /// <inheritdoc/>
+#pragma warning disable S1006 // Method overrides should not change parameter defaults
+        public override Task<(IEnumerable<EngineDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+#pragma warning restore S1006 // Method overrides should not change parameter defaults
+        {
+            specification ??= EngineSpecification.SearchGetAll(filters);
+            return base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable S1006 // Method overrides should not change parameter defaults
+        public override Task<byte[]> GetCsvAsync(PagingFilterFormatDto filters = null, int id = default, Specification<Engine> specification = null, Expression<Func<Engine, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+#pragma warning restore S1006 // Method overrides should not change parameter defaults
+        {
+            specification ??= EngineSpecification.SearchGetAll(filters);
+            return base.GetCsvAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
+        }
     }
 }

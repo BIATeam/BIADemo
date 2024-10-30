@@ -11,7 +11,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Utilities;
-    using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
 
     /// <summary>
     /// Controller for document analysis.
@@ -36,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
         /// <returns>Document content.</returns>
         [HttpPost("[action]")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(DocumentContent), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         public IActionResult GetContent(IFormFile file)
         {

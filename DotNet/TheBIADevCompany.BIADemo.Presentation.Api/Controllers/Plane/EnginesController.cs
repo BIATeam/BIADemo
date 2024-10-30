@@ -22,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage Engines.
@@ -75,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.Engines.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.engineService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            var (results, total) = await this.engineService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -303,7 +302,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.engineService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            byte[] buffer = await this.engineService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
         }
 

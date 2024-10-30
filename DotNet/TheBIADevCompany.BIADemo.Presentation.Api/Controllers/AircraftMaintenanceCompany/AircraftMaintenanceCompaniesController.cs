@@ -12,7 +12,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 #if UseHubForClientInAircraftMaintenanceCompany
     using BIA.Net.Core.Application.Services;
 #endif
@@ -23,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage AircraftMaintenanceCompanies.
@@ -76,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.AircraftMaintenanceCompanies.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.aircraftMaintenanceCompaniesService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<AircraftMaintenanceCompany>.Filter(filters));
+            var (results, total) = await this.aircraftMaintenanceCompaniesService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }

@@ -5,12 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
-    using System.Security.Principal;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -83,8 +80,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
-            services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString(), this.biaNetSection.Cultures));
 
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
