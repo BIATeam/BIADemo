@@ -133,6 +133,7 @@ namespace BIA.Net.Core.IocContainer
         {
             collection.AddTransient<ILanguageAppService, LanguageAppService>();
             collection.AddTransient<IClientForHubService, ClientForHubService>();
+            collection.AddTransient<IBiaClaimsPrincipalService, BiaClaimsPrincipalService>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
