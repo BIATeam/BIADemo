@@ -1,4 +1,4 @@
-﻿// <copyright file="ICodeFixBase.cs" company="BIA">
+﻿// <copyright file="ICodeFix.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 

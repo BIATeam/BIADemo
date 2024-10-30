@@ -20,7 +20,7 @@ namespace BIA.Net.Analyzers
     /// </summary>
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BiaNetAnalyzersCodeFixProvider))]
     [Shared]
-    public class BiaNetAnalyzersCodeFixProvider : CodeFixProvider
+    public sealed class BiaNetAnalyzersCodeFixProvider : CodeFixProvider
     {
         private readonly List<ICodeFix> codeFixes;
 

@@ -17,7 +17,7 @@ namespace BIA.Net.Analyzers
     /// Analyzer for BIA Net framework.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class BiaNetAnalyzersAnalyzer : DiagnosticAnalyzer
+    public sealed class BiaNetAnalyzersAnalyzer : DiagnosticAnalyzer
     {
         private readonly List<DiagnosticBase> diagnostics;
 
