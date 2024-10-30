@@ -38,7 +38,7 @@ namespace BIA.Net.Analyzers.Diagnostics
         protected override string Description => "Ensures that the Presentation layer does not reference the Domain layer to maintain architectural boundaries.";
 
         /// <inheritdoc/>
-        protected override DiagnosticSeverity Severity => DiagnosticSeverity.Error;
+        protected override DiagnosticSeverity Severity => DiagnosticSeverity.Warning;
 
         /// <inheritdoc/>
         protected override bool IsEnabledByDefault => true;
