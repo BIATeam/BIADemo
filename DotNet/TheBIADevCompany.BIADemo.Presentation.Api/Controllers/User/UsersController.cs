@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -98,7 +97,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.userService.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters);
+            var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -159,7 +158,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var dto = await this.userService.GetAsync<UserDto, UserMapper>(id);
+                var dto = await this.userService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -245,7 +244,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var updatedDto = await this.userService.UpdateAsync<UserDto, UserMapper>(dto, mapperMode: "Roles");
+                var updatedDto = await this.userService.UpdateAsync(dto, mapperMode: "Roles");
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif

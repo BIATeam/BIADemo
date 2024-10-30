@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService : IFilteredServiceBase<User, int>
+    public interface IUserAppService : ICrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.

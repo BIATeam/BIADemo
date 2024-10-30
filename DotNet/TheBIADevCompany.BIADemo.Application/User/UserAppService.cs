@@ -32,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : FilteredServiceBase<User, int>, IUserAppService
+    public class UserAppService : CrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto, UserMapper>, IUserAppService
     {
         /// <summary>
         /// The user synchronize domain service.
