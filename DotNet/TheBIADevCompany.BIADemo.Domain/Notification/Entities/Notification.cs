@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
     using System;
     using System.Collections.Generic;

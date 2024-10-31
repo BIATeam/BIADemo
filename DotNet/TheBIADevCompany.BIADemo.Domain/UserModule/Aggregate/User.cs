@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
     using global::Audit.EntityFramework;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 
     /// <summary>

@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The role entity.

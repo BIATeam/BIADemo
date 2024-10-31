@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
 {
     using System;
     using System.Linq;
@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The mapper used for notification type.
@@ -22,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
         /// <param name="userContext">the user context.</param>
         public NotificationTypeOptionMapper(UserContext userContext)
         {
-            this.UserContext = userContext;
+            UserContext = userContext;
         }
 
         /// <summary>
@@ -36,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
+                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
             };
         }
     }

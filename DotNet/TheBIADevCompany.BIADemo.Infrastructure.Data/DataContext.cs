@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
