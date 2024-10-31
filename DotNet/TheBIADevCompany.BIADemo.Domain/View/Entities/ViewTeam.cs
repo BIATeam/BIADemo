@@ -1,26 +1,26 @@
-// <copyright file="ViewUser.cs" company="TheBIADevCompany">
+// <copyright file="ViewTeam.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.View.Entities
 {
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
-    /// The mapping entity between users and views.
+    /// The mapping entity between users and sites.
     /// </summary>
-    public class ViewUser : VersionedTable
+    public class ViewTeam : VersionedTable
     {
         /// <summary>
-        /// Gets or sets the user identifier.
+        /// Gets or sets the site identifier.
         /// </summary>
-        public int UserId { get; set; }
+        public int TeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets the user.
+        /// Gets or sets the site.
         /// </summary>
-        public virtual User User { get; set; }
+        public virtual Team Team { get; set; }
 
         /// <summary>
         /// Gets or sets the view identifier.

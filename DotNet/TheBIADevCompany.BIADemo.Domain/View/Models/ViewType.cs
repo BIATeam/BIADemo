@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.View.Models
 {
     /// <summary>
     /// The type of view.

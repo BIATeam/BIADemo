@@ -2,11 +2,12 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.View.Specifications
 {
     using System.Collections.Generic;
     using System.Linq;
     using BIA.Net.Core.Domain.Specification;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
     /// <summary>
     /// The specifications of the view entity.

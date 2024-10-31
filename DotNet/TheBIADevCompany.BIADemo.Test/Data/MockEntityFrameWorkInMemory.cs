@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;

@@ -14,13 +14,14 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.View.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.View.Models;
 
     /// <summary>
     /// The application service used to manage views.

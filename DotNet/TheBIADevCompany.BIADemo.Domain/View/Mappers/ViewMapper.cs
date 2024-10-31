@@ -2,13 +2,15 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.View.Mappers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.View.Models;
 
     /// <summary>
     /// The mapper used for user.

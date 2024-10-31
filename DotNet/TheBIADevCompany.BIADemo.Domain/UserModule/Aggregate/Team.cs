@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
 
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
     /// <summary>
     /// The team.
