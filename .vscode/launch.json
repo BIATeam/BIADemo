@@ -7,9 +7,57 @@
     {
       "type": "msedge",
       "request": "launch",
-      "name": "Launch Edge against localhost",
+      "name": "Front",
       "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}/Angular"
+    },
+    {
+      "name": "Worker",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build Worker",
+      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/bin/Debug/net8.0/TheBIADevCompany.BIADemo.WorkerService.dll",
+      "args": ["--hot-reload"],
+      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "true"
+      },
+      "console": "internalConsole"
+    },
+    {
+      "name": "WebApi",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build Api",
+      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/TheBIADevCompany.BIADemo.Presentation.Api.dll",
+      "args": [
+        "--urls=http://localhost:32128",
+        "--pathbase=/BIADemo/WebApi",
+        "--hot-reload"
+      ],
+      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+:32128)",
+        "uriFormat": "%s/BIADemo/WebApi/swagger/index.html"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "true",
+        "ASPNETCORE_PATHBASE": "/BIADemo"
+      },
+      "sourceFileMap": {
+        "/": "${workspaceFolder}/"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "WebApi/Front",
+      "configurations": ["WebApi", "Front"]
     }
   ]
 }
