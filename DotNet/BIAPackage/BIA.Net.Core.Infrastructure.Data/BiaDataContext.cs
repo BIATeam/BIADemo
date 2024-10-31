@@ -15,8 +15,8 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
-    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Domain.DistCache.Entities;
+    using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.Data.SqlClient;

@@ -11,7 +11,8 @@ namespace BIA.Net.Core.Application.Translation
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Domain.Translation.Entities;
+    using BIA.Net.Core.Domain.Translation.Mappers;
 
     /// <summary>
     /// The application service used for language.

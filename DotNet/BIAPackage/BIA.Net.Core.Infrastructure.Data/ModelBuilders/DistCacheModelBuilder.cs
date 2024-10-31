@@ -4,7 +4,7 @@
 
 namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 {
-    using BIA.Net.Core.Domain.DistCacheModule.Aggregate;
+    using BIA.Net.Core.Domain.DistCache.Entities;
     using Microsoft.EntityFrameworkCore;
 
     /// <summary>

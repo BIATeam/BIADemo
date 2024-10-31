@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
 {
     using BIA.Net.Core.Domain;
-    using BIA.Net.Core.Domain.TranslationModule.Aggregate;
+    using BIA.Net.Core.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>

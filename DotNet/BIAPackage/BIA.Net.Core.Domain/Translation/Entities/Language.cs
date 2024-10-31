@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.TranslationModule.Aggregate
+namespace BIA.Net.Core.Domain.Translation.Entities
 {
     using BIA.Net.Core.Domain;
 

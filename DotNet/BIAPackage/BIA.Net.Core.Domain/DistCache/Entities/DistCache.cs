@@ -2,7 +2,7 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Domain.DistCacheModule.Aggregate
+namespace BIA.Net.Core.Domain.DistCache.Entities
 {
     using System;
 
