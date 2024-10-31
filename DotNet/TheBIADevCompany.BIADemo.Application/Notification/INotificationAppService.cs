@@ -43,6 +43,6 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         /// </summary>
         /// <param name="pagingFilterFormatDto">The paging filter.</param>
         /// <returns><see cref="IEnumerable{NotificationListItemDto}"/> results and total as int.</returns>
-        Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccess(PagingFilterFormatDto pagingFilterFormatDto);
+        Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto);
     }
 }
