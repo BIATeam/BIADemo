@@ -70,8 +70,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
             entity.LastOperation = dto.LastOperation;
             entity.ApprovedDate = dto.ApprovedDate;
             entity.NextOperation = dto.NextOperation;
-            entity.MaxTravelDuration = string.IsNullOrEmpty(dto.MaxTravelDuration) ? null : TimeSpan.Parse(dto.MaxTravelDuration, new CultureInfo("en-US"));
-            entity.MaxOperationDuration = TimeSpan.Parse(dto.MaxOperationDuration, new CultureInfo("en-US"));
+            entity.MaxTravelDuration = dto.MaxTravelDuration;
+            entity.MaxOperationDuration = dto.MaxOperationDuration;
             entity.OperationCount = dto.OperationCount;
             entity.IncidentCount = dto.IncidentCount;
             entity.TotalOperationDuration = dto.TotalOperationDuration;
@@ -145,8 +145,8 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggre
                 LastOperation = x.LastOperation,
                 ApprovedDate = x.ApprovedDate,
                 NextOperation = x.NextOperation,
-                MaxTravelDuration = x.MaxTravelDuration.Value.ToString(@"hh\:mm\:ss"),
-                MaxOperationDuration = x.MaxOperationDuration.ToString(@"hh\:mm\:ss"),
+                MaxTravelDuration = x.MaxTravelDuration,
+                MaxOperationDuration = x.MaxOperationDuration,
                 OperationCount = x.OperationCount,
                 IncidentCount = x.IncidentCount,
                 TotalOperationDuration = x.TotalOperationDuration,

@@ -4,6 +4,8 @@
 
 namespace BIA.Net.Core.Common.Configuration.Keycloak
 {
+    using System.Text.Json.Serialization;
+
     /// <summary>
     /// Keycloak Configuration.
     /// </summary>
@@ -33,5 +35,11 @@ namespace BIA.Net.Core.Common.Configuration.Keycloak
         /// Gets or sets the valid audience.
         /// </summary>
         public string ValidAudience { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the cert file.
+        /// </summary>
+        [JsonIgnore]
+        public string CertFileName { get; set; }
     }
 }

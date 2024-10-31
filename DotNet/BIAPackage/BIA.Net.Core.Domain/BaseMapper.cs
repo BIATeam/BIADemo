@@ -54,6 +54,36 @@ namespace BIA.Net.Core.Domain
         }
 
         /// <summary>
+        /// CSVs the date.
+        /// </summary>
+        /// <param name="x">The DateOnly.</param>
+        /// <returns>A string for a date cell.</returns>
+        public static string CSVDate(DateOnly? x)
+        {
+            return x?.ToString("yyyy-MM-dd");
+        }
+
+        /// <summary>
+        /// CSVs the date time.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date and time cell.</returns>
+        public static string CSVDateTime(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd HH:mm");
+        }
+
+        /// <summary>
+        /// CSVs the date time with seconds.
+        /// </summary>
+        /// <param name="x">The DateTime.</param>
+        /// <returns>A string for a date and time with seconds cell.</returns>
+        public static string CSVDateTimeSeconds(DateTime? x)
+        {
+            return x?.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+
+        /// <summary>
         /// CSVs the time.
         /// </summary>
         /// <param name="x">The DateTime.</param>
@@ -76,31 +106,41 @@ namespace BIA.Net.Core.Domain
         /// <summary>
         /// CSVs the time.
         /// </summary>
-        /// <param name="x">The string.</param>
+        /// <param name="x">The TimeOnly.</param>
         /// <returns>A string for a time cell.</returns>
-        public static string CSVTime(string x)
+        public static string CSVTime(TimeOnly? x)
         {
-            return x;
+            return x?.ToString("HH:mm");
         }
 
         /// <summary>
-        /// CSVs the date time.
+        /// CSVs the time with seconds.
         /// </summary>
         /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a date and time cell.</returns>
-        public static string CSVDateTime(DateTime? x)
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTimeSeconds(DateTime? x)
         {
-            return x?.ToString("yyyy-MM-dd HH:mm");
+            return x?.ToString("HH:mm:ss");
         }
 
         /// <summary>
-        /// CSVs the date time with seconds.
+        /// CSVs the time with seconds.
         /// </summary>
-        /// <param name="x">The DateTime.</param>
-        /// <returns>A string for a date and time with seconds cell.</returns>
-        public static string CSVDateTimeSeconds(DateTime? x)
+        /// <param name="x">The TimeSpan.</param>
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTimeSeconds(TimeSpan? x)
         {
-            return x?.ToString("yyyy-MM-dd HH:mm:ss");
+            return x?.ToString("HH:mm:ss");
+        }
+
+        /// <summary>
+        /// CSVs the time with seconds.
+        /// </summary>
+        /// <param name="x">The TimeOnly.</param>
+        /// <returns>A string for a time cell.</returns>
+        public static string CSVTimeSeconds(TimeOnly? x)
+        {
+            return x?.ToString("HH:mm:ss");
         }
 
         /// <summary>
