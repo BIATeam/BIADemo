@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     // Begin BIADemo
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
     using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
 
     // Begin BIADemo

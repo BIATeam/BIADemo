@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Audit.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Audit.Entities
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Audit;
