@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
 {
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
 
     /// <summary>
     /// The NotificationType entity.

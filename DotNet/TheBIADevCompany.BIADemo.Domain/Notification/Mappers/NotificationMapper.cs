@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     using Newtonsoft.Json.Serialization;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <param name="userContext">the user context.</param>
         public NotificationMapper(UserContext userContext)
         {
-            UserContext = userContext;
+            this.UserContext = userContext;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
@@ -45,10 +45,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                 {
                     { "Title", notification => notification.Title },
                     { "Description", notification => notification.Description },
-                    { "TitleTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
-                    { "DescriptionTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
+                    { "TitleTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
+                    { "DescriptionTranslated", notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
                     { "CreatedDate", notification => notification.CreatedDate },
-                    { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
+                    { "Type", notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { "Read", notification => notification.Read },
                     { "CreatedBy", notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
                     { "NotifiedTeams", notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
@@ -192,8 +192,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                 Id = entity.Id,
                 Title = entity.Title,
                 Description = entity.Description,
-                TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
-                DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
+                TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
+                DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
 
                 CreatedDate = entity.CreatedDate,
 
@@ -208,7 +208,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                 Type = new OptionDto
                 {
                     Id = entity.TypeId,
-                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
                 },
 
                 JData = entity.JData,
@@ -226,7 +226,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                     Roles = nt.Roles != null ? nt.Roles.Select(ntr => new OptionDto
                     {
                         Id = ntr.RoleId,
-                        Display = ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ntr.Role.Label,
+                        Display = ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ntr.Role.Label,
                     }).ToList() : null,
                 }).ToList(),
 

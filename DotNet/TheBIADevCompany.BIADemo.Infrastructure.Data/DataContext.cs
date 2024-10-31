@@ -22,11 +22,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
 
     // Begin BIADemo
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;

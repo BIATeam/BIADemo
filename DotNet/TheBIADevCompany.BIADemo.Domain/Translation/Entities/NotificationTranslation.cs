@@ -1,17 +1,17 @@
-// <copyright file="RoleTranslation.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTranslation.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Translation.Entities
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class RoleTranslation : VersionedTable, IEntity<int>
+    public class NotificationTranslation : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.
@@ -29,18 +29,23 @@ namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
         public int LanguageId { get; set; }
 
         /// <summary>
-        ///  Gets or sets the role.
+        ///  Gets or sets the notification type.
         /// </summary>
-        public Role Role { get; set; }
+        public Notification Notification { get; set; }
 
         /// <summary>
-        /// Gets or sets the role id.
+        /// Gets or sets the notification type id.
         /// </summary>
-        public int RoleId { get; set; }
+        public int NotificationId { get; set; }
 
         /// <summary>
-        /// Gets or sets the label translated.
+        /// Gets or sets the title translated.
         /// </summary>
-        public string Label { get; set; }
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description translated.
+        /// </summary>
+        public string Description { get; set; }
     }
 }

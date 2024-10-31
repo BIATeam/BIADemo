@@ -1,8 +1,8 @@
-// <copyright file="NotificationTranslation.cs" company="TheBIADevCompany">
+// <copyright file="NotificationTypeTranslation.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Translation.Entities
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Translation.Entities;
@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
     /// <summary>
     /// The role entity.
     /// </summary>
-    public class NotificationTranslation : VersionedTable, IEntity<int>
+    public class NotificationTypeTranslation : VersionedTable, IEntity<int>
     {
         /// <summary>
         /// Gets or sets the id.
@@ -31,21 +31,16 @@ namespace TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate
         /// <summary>
         ///  Gets or sets the notification type.
         /// </summary>
-        public Notification Notification { get; set; }
+        public NotificationType NotificationType { get; set; }
 
         /// <summary>
         /// Gets or sets the notification type id.
         /// </summary>
-        public int NotificationId { get; set; }
+        public int NotificationTypeId { get; set; }
 
         /// <summary>
-        /// Gets or sets the title translated.
+        /// Gets or sets the label translated.
         /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description translated.
-        /// </summary>
-        public string Description { get; set; }
+        public string Label { get; set; }
     }
 }
