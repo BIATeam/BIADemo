@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, true);
 #if BIA_BACK_TO_BACK_AUTH
-            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, Controllers.Bia.BiaClaimsTransformation>();
+            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, Application.BiaClaimsTransformation>();
 #endif
         }
 

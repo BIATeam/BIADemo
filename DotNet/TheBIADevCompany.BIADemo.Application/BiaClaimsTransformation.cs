@@ -2,7 +2,7 @@
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
+namespace TheBIADevCompany.BIADemo.Application
 {
     using System.Collections.Generic;
     using System.Linq;
