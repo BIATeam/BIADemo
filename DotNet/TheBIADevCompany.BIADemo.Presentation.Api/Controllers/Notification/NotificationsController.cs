@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -90,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
+            var (results, total) = await this.notificationService.GetRangeWithAllAccess(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }

@@ -181,5 +181,11 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
 
             return results.ToList();
         }
+
+        /// <inheritdoc/>
+        public async Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccess(PagingFilterFormatDto pagingFilterFormatDto)
+        {
+            return await this.GetRangeAsync(pagingFilterFormatDto, accessMode: AccessMode.All);
+        }
     }
 }
