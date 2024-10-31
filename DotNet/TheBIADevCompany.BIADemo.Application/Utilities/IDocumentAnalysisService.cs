@@ -6,7 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Utilities
 {
     using System.IO;
-    using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models;
 
     /// <summary>
     /// Public interface for document analysis services.

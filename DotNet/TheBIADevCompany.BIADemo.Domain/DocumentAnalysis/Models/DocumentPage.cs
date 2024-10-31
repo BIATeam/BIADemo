@@ -3,7 +3,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis
+namespace TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models
 {
     using System;
     using System.Collections.Generic;
