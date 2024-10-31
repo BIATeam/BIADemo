@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <param name="userContext">the user context.</param>
         public NotificationListItemMapper(UserContext userContext)
         {
-            UserContext = userContext;
+            this.UserContext = userContext;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
@@ -40,10 +40,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
             {
                 return new ExpressionCollection<Notification>
                 {
-                    { HeaderName.TitleTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
-                    { HeaderName.DescriptionTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
+                    { HeaderName.TitleTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? notification.Title },
+                    { HeaderName.DescriptionTranslated, notification => notification.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? notification.Description },
                     { HeaderName.CreatedDate, notification => notification.CreatedDate },
-                    { HeaderName.Type, notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
+                    { HeaderName.Type, notification => notification.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? notification.Type.Label },
                     { HeaderName.Read, notification => notification.Read },
                     { HeaderName.CreatedBy, notification => notification.CreatedBy.LastName + notification.CreatedBy.FirstName + " (" + notification.CreatedBy.Login + ")" },
                     { HeaderName.NotifiedTeams, notification => notification.NotifiedTeams.Select(x => x.Team.Title).OrderBy(x => x) },
@@ -63,8 +63,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
             return entity => new NotificationListItemDto
             {
                 Id = entity.Id,
-                TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
-                DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
+                TitleTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Title).FirstOrDefault() ?? entity.Title,
+                DescriptionTranslated = entity.NotificationTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Description).FirstOrDefault() ?? entity.Description,
 
                 CreatedDate = entity.CreatedDate,
 
@@ -79,7 +79,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                 Type = new OptionDto
                 {
                     Id = entity.TypeId,
-                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
+                    Display = entity.Type.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Type.Label,
                 },
 
                 JData = entity.JData,
@@ -87,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
                 NotifiedTeams = entity.NotifiedTeams.Select(nt => new OptionDto
                 {
                     Id = nt.Id,
-                    Display = (nt.Team != null ? nt.Team.Title : string.Empty) + (nt.Roles == null || nt.Roles.Count == 0 ? string.Empty : " (" + string.Join(", ", nt.Roles.Select(ntr => ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ntr.Role.Label)) + ")"),
+                    Display = (nt.Team != null ? nt.Team.Title : string.Empty) + (nt.Roles == null || nt.Roles.Count == 0 ? string.Empty : " (" + string.Join(", ", nt.Roles.Select(ntr => ntr.Role.RoleTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? ntr.Role.Label)) + ")"),
                 }).ToList(),
 
                 NotifiedUsers = entity.NotifiedUsers.Select(nu => new OptionDto

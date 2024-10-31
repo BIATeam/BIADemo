@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="AirportMapper.cs" company="TheBIADevCompany">
+// <copyright file="PlaneTypeMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -11,52 +11,53 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class AirportMapper : BaseMapper<AirportDto, Airport, int>
+    public class PlaneTypeMapper : BaseMapper<PlaneTypeDto, PlaneType, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
-        public override ExpressionCollection<Airport> ExpressionCollection
+        public override ExpressionCollection<PlaneType> ExpressionCollection
         {
             get
             {
-                return new ExpressionCollection<Airport>
+                return new ExpressionCollection<PlaneType>
                 {
                     { HeaderName.Id, planeType => planeType.Id },
-                    { HeaderName.Name, planeType => planeType.Name },
-                    { HeaderName.City, planeType => planeType.City },
+                    { HeaderName.Title, planeType => planeType.Title },
+                    { HeaderName.CertificationDate, planeType => planeType.CertificationDate },
                 };
             }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(AirportDto dto, Airport entity)
+        public override void DtoToEntity(PlaneTypeDto dto, PlaneType entity)
         {
             if (entity == null)
             {
-                entity = new Airport();
+                entity = new PlaneType();
             }
 
             entity.Id = dto.Id;
-            entity.Name = dto.Name;
-            entity.City = dto.City;
+            entity.Title = dto.Title;
+            entity.CertificationDate = dto.CertificationDate;
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Airport, AirportDto>> EntityToDto()
+        public override Expression<Func<PlaneType, PlaneTypeDto>> EntityToDto()
         {
-            return entity => new AirportDto
+            return entity => new PlaneTypeDto
             {
                 Id = entity.Id,
-                Name = entity.Name,
-                City = entity.City,
+                Title = entity.Title,
+                CertificationDate = entity.CertificationDate,
             };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<AirportDto, object[]> DtoToRecord(List<string> headerNames = null)
+        public override Func<PlaneTypeDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             return x =>
             {
@@ -66,14 +67,14 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 {
                     foreach (string headerName in headerNames)
                     {
-                        if (string.Equals(headerName, HeaderName.Name, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.Title, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVString(x.Name));
+                            records.Add(CSVString(x.Title));
                         }
 
-                        if (string.Equals(headerName, HeaderName.City, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(headerName, HeaderName.CertificationDate, StringComparison.OrdinalIgnoreCase))
                         {
-                            records.Add(CSVString(x.City));
+                            records.Add(CSVDateTime(x.CertificationDate));
                         }
                     }
                 }
@@ -93,14 +94,14 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             public const string Id = "id";
 
             /// <summary>
-            /// header name Name.
+            /// header name Title.
             /// </summary>
-            public const string Name = "name";
+            public const string Title = "title";
 
             /// <summary>
-            /// header name City.
+            /// header name Certification Date.
             /// </summary>
-            public const string City = "city";
+            public const string CertificationDate = "certificationDate";
         }
     }
 }

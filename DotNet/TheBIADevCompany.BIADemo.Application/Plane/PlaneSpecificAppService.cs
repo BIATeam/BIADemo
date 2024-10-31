@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>

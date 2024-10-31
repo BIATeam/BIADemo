@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// The entity to link maintenance teams and airports.

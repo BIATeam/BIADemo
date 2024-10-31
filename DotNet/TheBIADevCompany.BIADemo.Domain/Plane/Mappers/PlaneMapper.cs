@@ -1,5 +1,5 @@
 // BIADemo only
-// <copyright file="PlaneSpecificMapper.cs" company="TheBIADevCompany">
+// <copyright file="PlaneMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -7,32 +7,20 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// The mapper used for plane.
     /// </summary>
-    public class PlaneSpecificMapper : BaseMapper<PlaneSpecificDto, Plane, int>
+    public class PlaneMapper : BaseMapper<PlaneDto, Plane, int>
     {
-        private readonly PlaneMapper planeMapper;
-        private readonly EngineMapper engineMapper;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PlaneSpecificMapper"/> class.
-        /// </summary>
-        /// <param name="planeMapper">base plane mapper.</param>
-        /// <param name="engineMapper">engine mapper.</param>
-        /// <param name="engineRepository">engine repository.</param>
-        public PlaneSpecificMapper(PlaneMapper planeMapper, EngineMapper engineMapper)
-        {
-            this.planeMapper = planeMapper;
-            this.engineMapper = engineMapper;
-        }
-
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.ExpressionCollection"/>
         public override ExpressionCollection<Plane> ExpressionCollection
         {
@@ -69,17 +57,89 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToEntity"/>
-        public override void DtoToEntity(PlaneSpecificDto dto, Plane entity)
+        public override void DtoToEntity(PlaneDto dto, Plane entity)
         {
-            this.planeMapper.DtoToEntity(dto, entity);
-            entity.Engines ??= new List<Engine>();
-            MapEmbeddedItemToEntityCollection(dto.Engines, entity.Engines, this.engineMapper);
+            if (entity == null)
+            {
+                entity = new Plane();
+            }
+
+            entity.Id = dto.Id;
+            entity.Msn = dto.Msn;
+            entity.Manufacturer = dto.Manufacturer;
+            entity.IsActive = dto.IsActive;
+            entity.IsMaintenance = dto.IsMaintenance;
+            entity.FirstFlightDate = dto.FirstFlightDate;
+            entity.LastFlightDate = dto.LastFlightDate;
+            entity.DeliveryDate = dto.DeliveryDate;
+            entity.NextMaintenanceDate = dto.NextMaintenanceDate;
+            entity.SyncTime = dto.SyncTime;
+            entity.SyncFlightDataTime = dto.SyncFlightDataTime;
+            entity.Capacity = dto.Capacity;
+            entity.MotorsCount = dto.MotorsCount;
+            entity.TotalFlightHours = dto.TotalFlightHours;
+            entity.Probability = dto.Probability;
+            entity.FuelCapacity = dto.FuelCapacity;
+            entity.FuelLevel = dto.FuelLevel;
+            entity.OriginalPrice = dto.OriginalPrice;
+            entity.EstimatedPrice = dto.EstimatedPrice;
+
+            // Mapping relationship 1-* : Site
+            if (dto.SiteId != 0)
+            {
+                entity.SiteId = dto.SiteId;
+            }
+
+            // Mapping relationship 0..1-* : PlaneType
+            entity.PlaneTypeId = dto.PlaneType?.Id;
+
+            // Mapping relationship 0..1-* : CurrentAirport
+            entity.CurrentAirportId = dto.CurrentAirport.Id;
+
+            // Mapping relationship *-* : ICollection<OptionDto> ConnectingAirports
+            if (dto.ConnectingAirports != null && dto.ConnectingAirports?.Any() == true)
+            {
+                foreach (var airportDto in dto.ConnectingAirports.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var connectingAirport = entity.ConnectingAirports.FirstOrDefault(x => x.Id == airportDto.Id);
+                    if (connectingAirport != null)
+                    {
+                        entity.ConnectingAirports.Remove(connectingAirport);
+                    }
+                }
+
+                entity.ConnectingPlaneAirports = entity.ConnectingPlaneAirports ?? new List<PlaneAirport>();
+                foreach (var airportDto in dto.ConnectingAirports.Where(w => w.DtoState == DtoState.Added))
+                {
+                    entity.ConnectingPlaneAirports.Add(new PlaneAirport
+                    { AirportId = airportDto.Id, PlaneId = dto.Id });
+                }
+            }
+
+            if (dto.SimilarTypes != null && dto.SimilarTypes?.Any() == true)
+            {
+                foreach (var planeTypeDto in dto.SimilarTypes.Where(x => x.DtoState == DtoState.Deleted))
+                {
+                    var similarType = entity.SimilarTypes.FirstOrDefault(x => x.Id == planeTypeDto.Id);
+                    if (similarType != null)
+                    {
+                        entity.SimilarTypes.Remove(similarType);
+                    }
+                }
+
+                entity.SimilarPlaneType = entity.SimilarPlaneType ?? new List<PlanePlaneType>();
+                foreach (var planeTypeDto in dto.SimilarTypes.Where(w => w.DtoState == DtoState.Added))
+                {
+                    entity.SimilarPlaneType.Add(new PlanePlaneType
+                    { PlaneTypeId = planeTypeDto.Id, PlaneId = dto.Id });
+                }
+            }
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Plane, PlaneSpecificDto>> EntityToDto()
+        public override Expression<Func<Plane, PlaneDto>> EntityToDto()
         {
-            return entity => new PlaneSpecificDto
+            return entity => new PlaneDto
             {
                 Id = entity.Id,
                 Msn = entity.Msn,
@@ -131,19 +191,17 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     Id = ca.Id,
                     Display = ca.Title,
                 }).OrderBy(x => x.Display).ToList(),
-
-                Engines = entity.Engines.AsQueryable().Select(this.engineMapper.EntityToDto()).ToList(),
             };
         }
 
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.DtoToRecord"/>
-        public override Func<PlaneSpecificDto, object[]> DtoToRecord(List<string> headerNames = null)
+        public override Func<PlaneDto, object[]> DtoToRecord(List<string> headerNames = null)
         {
             return x =>
             {
                 List<object> records = new List<object>();
 
-                if (headerNames?.Count > 0)
+                if (headerNames?.Any() == true)
                 {
                     foreach (string headerName in headerNames)
                     {
@@ -269,7 +327,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         }
 
         /// <inheritdoc/>
-        public override void MapEntityKeysInDto(Plane entity, PlaneSpecificDto dto)
+        public override void MapEntityKeysInDto(Plane entity, PlaneDto dto)
         {
             dto.Id = entity.Id;
             dto.SiteId = entity.SiteId;
@@ -278,7 +336,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.IncludesForUpdate"/>
         public override Expression<Func<Plane, object>>[] IncludesForUpdate()
         {
-            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.Engines };
+            return new Expression<Func<Plane, object>>[] { x => x.ConnectingAirports, x => x.SimilarTypes };
         }
 
         /// <summary>

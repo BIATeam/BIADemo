@@ -21,6 +21,8 @@ namespace TheBIADevCompany.BIADemo.Application.Plane
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Specifications;
     using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 

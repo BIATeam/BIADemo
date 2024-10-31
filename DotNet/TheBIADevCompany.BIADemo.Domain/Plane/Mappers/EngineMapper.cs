@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// The mapper used for engine.

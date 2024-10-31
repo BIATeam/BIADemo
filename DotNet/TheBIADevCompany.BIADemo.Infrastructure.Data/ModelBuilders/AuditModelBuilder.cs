@@ -6,9 +6,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;

@@ -1,5 +1,5 @@
-﻿// BIADemo only
-// <copyright file="PartOptionMapper.cs" company="TheBIADevCompany">
+// BIADemo only
+// <copyright file="PlaneTypeOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
@@ -9,19 +9,20 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
-    /// The mapper used for part option.
+    /// The mapper used for plane.
     /// </summary>
-    public class PartOptionMapper : BaseMapper<OptionDto, Part, int>
+    public class PlaneTypeOptionMapper : BaseMapper<OptionDto, PlaneType, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Part, OptionDto>> EntityToDto()
+        public override Expression<Func<PlaneType, OptionDto>> EntityToDto()
         {
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.SN,
+                Display = entity.Title,
             };
         }
     }

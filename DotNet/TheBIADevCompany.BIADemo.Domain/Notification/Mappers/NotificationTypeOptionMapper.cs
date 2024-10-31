@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
         /// <param name="userContext">the user context.</param>
         public NotificationTypeOptionMapper(UserContext userContext)
         {
-            UserContext = userContext;
+            this.UserContext = userContext;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
+                Display = entity.NotificationTypeTranslations.Where(rt => rt.Language.Code == this.UserContext.Language).Select(rt => rt.Label).FirstOrDefault() ?? entity.Label,
             };
         }
     }

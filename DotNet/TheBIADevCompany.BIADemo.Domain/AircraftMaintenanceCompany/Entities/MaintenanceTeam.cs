@@ -11,7 +11,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 

@@ -3,11 +3,12 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Plane.Specifications
 {
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
     /// The specifications of the member entity.
@@ -30,7 +31,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                     // BIAToolKit - Begin Parent PlaneId
                     s.PlaneId == int.Parse(filter.ParentIds[0]));
 
-                    // BIAToolKit - End Parent PlaneId
+                // BIAToolKit - End Parent PlaneId
             }
 
             return specification;
