@@ -3,12 +3,13 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
 {
     using System;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
     /// <summary>
     /// The mapper used for country option.

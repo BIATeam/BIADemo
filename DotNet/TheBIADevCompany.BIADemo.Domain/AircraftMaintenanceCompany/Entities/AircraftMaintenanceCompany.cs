@@ -3,7 +3,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;

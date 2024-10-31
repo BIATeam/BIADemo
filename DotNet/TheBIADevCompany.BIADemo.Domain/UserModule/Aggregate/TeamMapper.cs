@@ -11,11 +11,11 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
     // Begin BIADemo
     // BIAToolKit - Begin Partial TeamMapperUsing MaintenanceTeam
     // BIAToolKit - Begin Nested AncestorTeam AircraftMaintenanceCompany
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // BIAToolKit - End Nested AncestorTeam AircraftMaintenanceCompany
     // BIAToolKit - End Partial TeamMapperUsing MaintenanceTeam

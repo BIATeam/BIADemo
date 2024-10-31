@@ -1,9 +1,9 @@
 ﻿// BIADemo only
-// <copyright file="MaintenanceTeamAirport.cs" company="TheBIADevCompany">
+// <copyright file="MaintenanceTeamCountry.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities
 {
     using System;
     using System.Collections.Generic;
@@ -11,13 +11,11 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
-    /// The entity to link maintenance teams and airports.
+    /// The entity to link maintenance teams and countries.
     /// </summary>
-    public class MaintenanceTeamAirport : VersionedTable
+    public class MaintenanceTeamCountry : VersionedTable
     {
         /// <summary>
         /// Gets or sets the MaintenanceTeam.
@@ -30,13 +28,13 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate
         public int MaintenanceTeamId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Airport.
+        /// Gets or sets the Country.
         /// </summary>
-        public Airport Airport { get; set; }
+        public Country Country { get; set; }
 
         /// <summary>
-        /// Gets or sets the Airport id.
+        /// Gets or sets the Country id.
         /// </summary>
-        public int AirportId { get; set; }
+        public int CountryId { get; set; }
     }
 }
