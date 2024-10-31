@@ -36,3 +36,81 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
+function UpdateDirectoryBuildPropsAnalyzersReferences
+{
+    $propsFilePath = "Directory.Build.props"
+
+    # Load the content of Directory.Build.props
+    [xml]$xmlContent = Get-Content $propsFilePath
+
+    # Remove existing NuGet package reference to the Analyzer
+    $existingPackageReferences = $xmlContent.Project.ItemGroup |
+    Where-Object { 
+        $_.PackageReference -ne $null -and
+        $_.PackageReference | Where-Object { $_.Include -like "BIA.Net.Analyzers" }
+    }
+    $existingPackageReferences | ForEach-Object { $_.ParentNode.RemoveChild($_) }
+
+    # Add ProjectReference entries for Analyzers and CodeFixes
+    $itemGroup1 = $xmlContent.CreateElement("ItemGroup")
+    $itemGroup1.SetAttribute("Condition", "!`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`)")
+
+    $analyzerReference1 = $xmlContent.CreateElement("ProjectReference")
+    $analyzerReference1.SetAttribute("Include", "..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
+    $analyzerReference1.SetAttribute("PrivateAssets", "all")
+    $analyzerReference1.SetAttribute("ReferenceOutputAssembly", "false")
+    $analyzerReference1.SetAttribute("OutputItemType", "Analyzer")
+    $itemGroup1.AppendChild($analyzerReference1)
+
+    $analyzerCodeFixReference1 = $xmlContent.CreateElement("ProjectReference")
+    $analyzerCodeFixReference1.SetAttribute("Include", "..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj")
+    $analyzerCodeFixReference1.SetAttribute("PrivateAssets", "all")
+    $analyzerCodeFixReference1.SetAttribute("ReferenceOutputAssembly", "false")
+    $analyzerCodeFixReference1.SetAttribute("OutputItemType", "Analyzer")
+    $itemGroup1.AppendChild($analyzerCodeFixReference1)
+
+    $xmlContent.Project.AppendChild($itemGroup1)
+
+    $itemGroup2 = $xmlContent.CreateElement("ItemGroup")
+    $itemGroup2.SetAttribute("Condition", "`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`) and !`$(`(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))`)")
+
+    $analyzerReference2 = $xmlContent.CreateElement("ProjectReference")
+    $analyzerReference2.SetAttribute("Include", "..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
+    $analyzerReference2.SetAttribute("PrivateAssets", "all")
+    $analyzerReference2.SetAttribute("ReferenceOutputAssembly", "false")
+    $analyzerReference2.SetAttribute("OutputItemType", "Analyzer")
+    $itemGroup2.AppendChild($analyzerReference2)
+
+    $analyzerCodeFixReference2 = $xmlContent.CreateElement("ProjectReference")
+    $analyzerCodeFixReference2.SetAttribute("Include", "..\BIA.Net.Analyzers\BIA.Net.Analyzers.CodeFixes\BIA.Net.Analyzers.CodeFixes.csproj")
+    $analyzerCodeFixReference2.SetAttribute("PrivateAssets", "all")
+    $analyzerCodeFixReference2.SetAttribute("ReferenceOutputAssembly", "false")
+    $analyzerCodeFixReference2.SetAttribute("OutputItemType", "Analyzer")
+    $itemGroup2.AppendChild($analyzerCodeFixReference2)
+
+    $xmlContent.Project.AppendChild($itemGroup2)
+
+    # Save the updated Directory.Build.props
+    $xmlContent.Save($propsFilePath)
+}
+
+# Add Analyzer projects
+function AddAnalyzerProjectToSolution
+{
+    param([string]$analyzerProjectName)
+    
+    $SlnFile = "$SolutionName.sln"
+    $AnalyzerProjectFile = "$RelativePathToBIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
+    
+    # Add the analyzer project to the solution
+    dotnet sln $SlnFile add -s "BIAPackage\BIA.Net.Analyzers" $AnalyzerProjectFile
+}
+
+# Add Analyzer projects to the solution
+AddAnalyzerProjectToSolution "BIA.Net.Analyzers"
+AddAnalyzerProjectToSolution "BIA.Net.Analyzers.CodesFixes"
+AddAnalyzerProjectToSolution "BIA.Net.Analyzers.Package"
+AddAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
+
+# Run the function to update Directory.Build.props references to Analyzers
+UpdateDirectoryBuildPropsAnalyzersReferences

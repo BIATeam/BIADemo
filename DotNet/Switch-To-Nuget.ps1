@@ -33,3 +33,53 @@ AddBIAPackageToSolution "WorkerService" "WorkerService"
 
 # Remove the library from solution
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
+
+function UpdateDirectoryBuildPropsAnalyzersReferences
+{
+    $propsFilePath = "Directory.Build.props"
+
+    # Load the content of Directory.Build.props
+    [xml]$xmlContent = Get-Content $propsFilePath
+
+    # Remove ItemGroup nodes with specific conditions
+    $itemGroupsToRemove = $xmlContent.Project.ItemGroup |
+    Where-Object {
+        $_.Condition -eq "!`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`)" -or
+        $_.Condition -eq "`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`) and !`$(`(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))`)"
+    }
+    $itemGroupsToRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) }
+
+    # Add the NuGet PackageReference back
+    $itemGroup = $xmlContent.CreateElement("ItemGroup")
+
+    $nugetPackageReference = $xmlContent.CreateElement("PackageReference")
+    $nugetPackageReference.SetAttribute("Include", "BIA.Net.Analyzers")
+    $nugetPackageReference.SetAttribute("Version", "1.0.0")
+    $itemGroup.AppendChild($nugetPackageReference)
+
+    $xmlContent.Project.AppendChild($itemGroup)
+
+    # Save the updated Directory.Build.props
+    $xmlContent.Save($propsFilePath)
+}
+
+# Remove Analyzer projects
+function RemoveAnalyzerProjectToSolution
+{
+    param([string]$analyzerProjectName)
+    
+    $SlnFile = "$SolutionName.sln"
+    $AnalyzerProjectFile = "$RelativePathToBIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
+    
+    # Add the analyzer project to the solution
+    dotnet sln $SlnFile remove $AnalyzerProjectFile
+}
+
+# Remove Analyzer projects to the solution
+RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers"
+RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.CodesFixes"
+RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.Package"
+RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
+
+# Run the function to update Directory.Build.props references to Analyzers
+UpdateDirectoryBuildPropsAnalyzersReferences
