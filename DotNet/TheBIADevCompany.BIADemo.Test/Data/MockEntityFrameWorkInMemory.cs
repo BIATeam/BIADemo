@@ -10,11 +10,11 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
 

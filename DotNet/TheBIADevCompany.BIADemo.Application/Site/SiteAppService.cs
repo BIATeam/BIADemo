@@ -21,7 +21,8 @@ namespace TheBIADevCompany.BIADemo.Application.Site
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Mappers;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>

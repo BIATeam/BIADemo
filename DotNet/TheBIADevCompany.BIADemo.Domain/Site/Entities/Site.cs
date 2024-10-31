@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;

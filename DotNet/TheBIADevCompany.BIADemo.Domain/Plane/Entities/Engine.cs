@@ -9,7 +9,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
 
     /// <summary>
     /// The Engine entity.

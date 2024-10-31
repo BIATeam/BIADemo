@@ -7,7 +7,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
