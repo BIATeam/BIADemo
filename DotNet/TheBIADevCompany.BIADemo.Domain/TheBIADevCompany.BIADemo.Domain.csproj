@@ -61,7 +61,4 @@
     <Compile Remove="**\LanguagesController.cs" />
     <Compile Remove="**\LdapDomainsController.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
 </Project>
