@@ -51,6 +51,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         protected override UserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey)
         {
             var sid = new SecurityIdentifier((byte[])entry.Properties["objectSid"].Value, 0).ToString();
+
+#pragma warning disable CA1416 // Validate platform compatibility
             var user = new UserFromDirectory
             {
                 FirstName = entry.Properties["GivenName"].Value?.ToString(),
@@ -83,6 +85,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     user.ExternalCompany = extInfo[1];
                 }
             }
+#pragma warning restore CA1416 // Validate platform compatibility
 
             // Set sub department
             string fullDepartment = user.Department;
