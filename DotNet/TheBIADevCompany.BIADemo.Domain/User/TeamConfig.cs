@@ -1,13 +1,14 @@
 ﻿// <copyright file="TeamConfig.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User
 {
     using System.Collections.Immutable;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Helpers;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
 

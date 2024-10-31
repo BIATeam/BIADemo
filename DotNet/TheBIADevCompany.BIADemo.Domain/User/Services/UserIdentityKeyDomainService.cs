@@ -2,7 +2,7 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
 {
     using System;
     using System.Collections.Generic;
@@ -10,8 +10,9 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
     using BIA.Net.Core.Domain.Dto.User;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 #endif
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// This class MAnage the identity key during authentication and relation beetween Database, Directory and identity Provider.

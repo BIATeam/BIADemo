@@ -13,7 +13,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// The mapper used for user.

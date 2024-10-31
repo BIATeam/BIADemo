@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
     using System;
     using System.Linq;
@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
     // BIAToolKit - Begin Partial TeamMapperUsing MaintenanceTeam

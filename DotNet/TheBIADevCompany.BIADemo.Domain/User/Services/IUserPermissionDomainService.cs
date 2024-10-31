@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;

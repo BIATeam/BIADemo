@@ -22,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
 
     /// <summary>
     /// The application service used for MaintenanceTeam.

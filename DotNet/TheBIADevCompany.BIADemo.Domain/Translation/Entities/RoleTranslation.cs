@@ -6,7 +6,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Translation.Entities
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The role entity.

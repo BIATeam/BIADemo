@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers
     using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 
     /// <summary>
     /// The mapper used for AircraftMaintenanceCompany.

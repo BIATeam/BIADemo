@@ -2,7 +2,7 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
     using System;
     using System.Collections.Generic;
@@ -15,6 +15,8 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The mapper used for member.

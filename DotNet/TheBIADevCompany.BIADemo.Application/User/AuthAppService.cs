@@ -20,8 +20,10 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// Auth App Service.

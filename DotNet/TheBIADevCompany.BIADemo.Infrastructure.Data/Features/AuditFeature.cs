@@ -18,7 +18,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The Audit Feature.

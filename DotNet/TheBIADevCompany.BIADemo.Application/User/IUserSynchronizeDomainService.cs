@@ -5,7 +5,8 @@
 namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the user synchronize domain service.

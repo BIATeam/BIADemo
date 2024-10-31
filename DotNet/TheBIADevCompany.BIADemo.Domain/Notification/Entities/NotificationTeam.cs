@@ -7,7 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Entities
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The NotificationTeam entity.

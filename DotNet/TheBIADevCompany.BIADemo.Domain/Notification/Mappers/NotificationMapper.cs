@@ -20,7 +20,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Notification.Mappers
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User;
 
     /// <summary>
     /// The mapper used for user.

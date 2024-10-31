@@ -2,16 +2,17 @@
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Service
+namespace TheBIADevCompany.BIADemo.Domain.UserModule.Services
 {
     using System;
     using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain.Dto.User;
-    #if BIA_FRONT_FEATURE
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    #endif
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+#endif
 
     /// <summary>
     /// Interface UserIdentityKey Domain Service.

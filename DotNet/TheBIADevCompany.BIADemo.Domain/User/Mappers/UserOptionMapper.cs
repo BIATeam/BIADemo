@@ -1,28 +1,27 @@
-// <copyright file="TeamOptionMapper.cs" company="TheBIADevCompany">
+// <copyright file="UserOptionMapper.cs" company="TheBIADevCompany">
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User.Mappers
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
-    /// The mapper used for team option.
+    /// The mapper used for user option.
     /// </summary>
-    public class TeamOptionMapper : BaseMapper<OptionDto, Team, int>
+    public class UserOptionMapper : BaseMapper<OptionDto, User, int>
     {
         /// <inheritdoc cref="BaseMapper{TDto,TEntity}.EntityToDto"/>
-        public override Expression<Func<Team, OptionDto>> EntityToDto()
+        public override Expression<Func<User, OptionDto>> EntityToDto()
         {
             return entity => new OptionDto
             {
                 Id = entity.Id,
-                Display = entity.Title,
+                Display = entity.Display(),
             };
         }
     }

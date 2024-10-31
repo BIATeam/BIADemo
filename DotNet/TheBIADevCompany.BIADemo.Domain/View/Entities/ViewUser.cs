@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Domain.View.Entities
 {
     using BIA.Net.Core.Domain;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The mapping entity between users and views.

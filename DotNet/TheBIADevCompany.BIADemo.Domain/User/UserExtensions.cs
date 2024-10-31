@@ -2,8 +2,10 @@
 //     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User
 {
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+
     /// <summary>
     /// Extension for User.
     /// </summary>

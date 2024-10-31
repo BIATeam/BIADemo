@@ -23,7 +23,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -35,6 +34,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.AspNetCore.Http;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis;
 

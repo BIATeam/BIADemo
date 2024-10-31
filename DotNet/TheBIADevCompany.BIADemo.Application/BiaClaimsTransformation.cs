@@ -13,8 +13,8 @@ namespace TheBIADevCompany.BIADemo.Application
     using BIA.Net.Core.Domain.RepoContract;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.Extensions.Logging;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// Bia Claims Transformation.

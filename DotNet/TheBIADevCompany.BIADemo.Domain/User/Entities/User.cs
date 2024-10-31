@@ -1,27 +1,31 @@
-// <copyright file="UserFromDirectory.cs" company="TheBIADevCompany">
-//     Copyright (c) BIA.Net. All rights reserved.
+// <copyright file="User.cs" company="TheBIADevCompany">
+//     Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
-namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
+namespace TheBIADevCompany.BIADemo.Domain.User.Entities
 {
     using System;
-    using BIA.Net.Core.Domain.RepoContract;
+    using System.Collections.Generic;
+    using BIA.Net.Core.Domain;
+    using global::Audit.EntityFramework;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
     /// <summary>
-    /// The class representing a user from AD.
+    /// The user entity.
     /// </summary>
-    [Serializable]
-    public class UserFromDirectory : IUserFromDirectory
+    [AuditInclude]
+    public class User : VersionedTable, IEntity<int>
     {
         /// <summary>
-        /// Gets or sets the security Id.
+        /// Gets or sets the id.
         /// </summary>
-        public string Sid { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the last name.
+        /// Gets or sets the email.
         /// </summary>
-        public string LastName { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the first name.
@@ -29,24 +33,14 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         public string FirstName { get; set; }
 
         /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        public string LastName { get; set; }
+
+        /// <summary>
         /// Gets or sets the login.
         /// </summary>
         public string Login { get; set; }
-
-        /// <summary>
-        /// Gets or sets the login.
-        /// </summary>
-        public string Domain { get; set; }
-
-        /// <summary>
-        /// Gets or sets the GUID.
-        /// </summary>
-        public Guid Guid { get; set; }
-
-        /// <summary>
-        /// Gets or sets the email.
-        /// </summary>
-        public string Email { get; set; }
 
         /// <summary>
         /// Gets or sets the distinguished name.
@@ -102,5 +96,42 @@ namespace TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate
         /// Gets or sets the country.
         /// </summary>
         public string Country { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DAI date.
+        /// </summary>
+        [AuditIgnore]
+        public DateTime DaiDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the members.
+        /// </summary>
+        public virtual ICollection<Member> Members { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating where the user is active.
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last login date.
+        /// </summary>
+        [AuditIgnore]
+        public DateTime? LastLoginDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of view user.
+        /// </summary>
+        public ICollection<ViewUser> ViewUsers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of notifications.
+        /// </summary>
+        public ICollection<NotificationUser> NotificationUsers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of roles.
+        /// </summary>
+        public ICollection<Role> Roles { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// Example of task lanched manualy with hangfire.
