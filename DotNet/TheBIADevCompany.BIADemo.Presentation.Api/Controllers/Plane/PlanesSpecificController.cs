@@ -37,11 +37,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// </summary>
         private readonly IPlaneSpecificAppService planeSpecificService;
 
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        private readonly ILogger<PlanesSpecificController> logger;
-
 #if UseHubForClientInPlane
         private readonly IClientForHubService clientForHubService;
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
@@ -51,12 +46,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <summary>
         /// Initializes a new instance of the <see cref="PlanesSpecificController" /> class.
         /// </summary>
-        /// <param name="logger">The logger.</param>
         /// <param name="planeSpecificService">The plane application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
         public PlanesSpecificController(
-            ILogger<PlanesSpecificController> logger,
             IPlaneSpecificAppService planeSpecificService,
             IClientForHubService clientForHubService,
             IBiaClaimsPrincipalService biaClaimsPrincipalService)
@@ -68,7 +61,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="planeSpecificService">The plane application service.</param>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
         public PlanesSpecificController(
-            ILogger<PlanesSpecificController> logger,
             IPlaneSpecificAppService planeSpecificService,
             IBiaClaimsPrincipalService biaClaimsPrincipalService)
 #endif
@@ -78,7 +70,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 #endif
             this.planeSpecificService = planeSpecificService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
-            this.logger = logger;
         }
 
         /// <summary>
@@ -292,7 +283,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
 
             try
             {
-                var saveSafeReturn = await this.planeSpecificService.SaveSafeAsync(
+                var saveSafeDtos = await this.planeSpecificService.SaveSafeAsync(
                     dtos: dtoList,
                     principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
                     rightAdd: Rights.Planes.Create,
@@ -300,26 +291,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
                     rightDelete: Rights.Planes.Delete);
 #if UseHubForClientInPlane
                 // BIAToolKit - Begin Parent siteId
-                saveSafeReturn.DtosSaved.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
+                saveSafeDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(parentId =>
                 {
                     _ = this.clientForHubService.SendTargetedMessage(parentId.ToString(), "planes", "refresh-planes");
                 });
 
                 // BIAToolKit - End Parent siteId
 #endif
-                if (saveSafeReturn.AggregateException != null)
-                {
-                    this.logger.LogError(message: saveSafeReturn.ErrorMessage, exception: saveSafeReturn.AggregateException);
-                }
-
-                if (!string.IsNullOrEmpty(saveSafeReturn.ErrorMessage))
-                {
-                    return this.StatusCode(StatusCodes.Status422UnprocessableEntity, saveSafeReturn.ErrorMessage);
-                }
-                else
-                {
-                    return this.Ok();
-                }
+                return this.Ok();
             }
             catch (ArgumentNullException)
             {
