@@ -7,7 +7,7 @@
     <img
       *ngIf="layoutService.config().showAvatar"
       [src]="avatarUrl"
-      onError="this.src='assets/bia/img/PersonPlaceholder.png'"
+      (error)="onImgError()"
       alt="avatar"
       class="avatar" />
     <span>

@@ -166,4 +166,8 @@ export class BiaUltimaMenuProfileComponent implements OnDestroy {
       })
     );
   }
+
+  onImgError() {
+    this.avatarUrl = 'assets/bia/img/PersonPlaceholder.png';
+  }
 }
