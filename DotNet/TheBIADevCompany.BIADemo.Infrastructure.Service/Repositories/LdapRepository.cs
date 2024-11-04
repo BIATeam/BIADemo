@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
     using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
@@ -48,11 +49,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="entry">Entry from AD.</param>
         /// <param name="domainKey">Domain Name in config file where domain found.</param>
         /// <returns>The UserInfoDirectory object.</returns>
+        [SupportedOSPlatform("windows")]
         protected override UserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey)
         {
             var sid = new SecurityIdentifier((byte[])entry.Properties["objectSid"].Value, 0).ToString();
-
-#pragma warning disable CA1416 // Validate platform compatibility
             var user = new UserFromDirectory
             {
                 FirstName = entry.Properties["GivenName"].Value?.ToString(),
@@ -85,7 +85,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
                     user.ExternalCompany = extInfo[1];
                 }
             }
-#pragma warning restore CA1416 // Validate platform compatibility
 
             // Set sub department
             string fullDepartment = user.Department;
