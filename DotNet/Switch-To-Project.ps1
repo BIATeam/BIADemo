@@ -44,16 +44,29 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
     [xml]$xmlContent = Get-Content $propsFilePath
 
     # Remove existing NuGet package reference to the Analyzer
-    $existingPackageReferences = $xmlContent.Project.ItemGroup |
-    Where-Object { 
-        $_.PackageReference -ne $null -and
-        $_.PackageReference | Where-Object { $_.Include -like "BIA.Net.Analyzers" }
+    $analyzersNugetsItemGroup = $xmlContent.Project.ItemGroup |
+    Where-Object {
+        $_.Label -eq "AnalyzersNugets"
     }
-    $existingPackageReferences | ForEach-Object { $_.ParentNode.RemoveChild($_) }
+    Select-Object -First 1
+
+    if($analyzersNugetsItemGroup -ne $null) { 
+        $packageReference = $analyzersNugetsItemGroup.PackageReference |
+        Where-Object {
+            $_.Include -eq "BIA.Net.Analyzers"
+        }
+        Select-Object -First 1
+
+        if($packageReference -ne $null) {
+            $analyzersNugetsItemGroup.RemoveChild($packageReference)
+            $xmlContent.Save($propsFilePath)
+        }
+    }
 
     # Add ProjectReference entries for Analyzers and CodeFixes
     $itemGroup1 = $xmlContent.CreateElement("ItemGroup")
-    $itemGroup1.SetAttribute("Condition", "!`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`)")
+    $itemGroup1.SetAttribute("Label", "AnalyzerReferencesProject")
+    $itemGroup1.SetAttribute("Condition", "!`$(MSBuildProjectDirectory.Contains('BIAPackage'))")
 
     $analyzerReference1 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference1.SetAttribute("Include", "..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
@@ -72,7 +85,8 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
     $xmlContent.Project.AppendChild($itemGroup1)
 
     $itemGroup2 = $xmlContent.CreateElement("ItemGroup")
-    $itemGroup2.SetAttribute("Condition", "`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`) and !`$(`(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))`)")
+    $itemGroup2.SetAttribute("Label", "AnalyzerReferencesBiaPackage")
+    $itemGroup2.SetAttribute("Condition", "`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))")
 
     $analyzerReference2 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference2.SetAttribute("Include", "..\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
@@ -108,7 +122,7 @@ function AddAnalyzerProjectToSolution
 
 # Add Analyzer projects to the solution
 AddAnalyzerProjectToSolution "BIA.Net.Analyzers"
-AddAnalyzerProjectToSolution "BIA.Net.Analyzers.CodesFixes"
+AddAnalyzerProjectToSolution "BIA.Net.Analyzers.CodeFixes"
 AddAnalyzerProjectToSolution "BIA.Net.Analyzers.Package"
 AddAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
 

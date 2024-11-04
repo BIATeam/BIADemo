@@ -44,20 +44,34 @@ function UpdateDirectoryBuildPropsAnalyzersReferences
     # Remove ItemGroup nodes with specific conditions
     $itemGroupsToRemove = $xmlContent.Project.ItemGroup |
     Where-Object {
-        $_.Condition -eq "!`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`)" -or
-        $_.Condition -eq "`$(`(MSBuildProjectDirectory.Contains('BIAPackage'))`) and !`$(`(MSBuildProjectDirectory.Contains('BIA.Net.Analyzers'))`)"
+        $_.Label -eq "AnalyzerReferencesProject" -or
+        $_.Label -eq "AnalyzerReferencesBiaPackage"
     }
     $itemGroupsToRemove | ForEach-Object { $_.ParentNode.RemoveChild($_) }
+    $xmlContent.Save($propsFilePath)
 
     # Add the NuGet PackageReference back
-    $itemGroup = $xmlContent.CreateElement("ItemGroup")
+    $analyzersNugetsItemGroup = $xmlContent.Project.ItemGroup |
+    Where-Object {
+        $_.Label -eq "AnalyzersNugets"
+    }
+    Select-Object -First 1
 
-    $nugetPackageReference = $xmlContent.CreateElement("PackageReference")
-    $nugetPackageReference.SetAttribute("Include", "BIA.Net.Analyzers")
-    $nugetPackageReference.SetAttribute("Version", "1.0.0")
-    $itemGroup.AppendChild($nugetPackageReference)
+    if($analyzersNugetsItemGroup -ne $null) { 
+        $nugetPackageReference = $xmlContent.CreateElement("PackageReference")
+        $nugetPackageReference.SetAttribute("Include", "BIA.Net.Analyzers")
+        $nugetPackageReference.SetAttribute("Version", "1.0.0")
 
-    $xmlContent.Project.AppendChild($itemGroup)
+        $privateAssets = $xmlContent.CreateElement("PrivateAssets")
+        $privateAssets.InnerText = "all"
+        $nugetPackageReference.AppendChild($privateAssets)
+
+        $includeAssets = $xmlContent.CreateElement("IncludeAssets")
+        $includeAssets.InnerText = "runtime; build; native; contentfiles; analyzers; buildtransitive"
+        $nugetPackageReference.AppendChild($includeAssets)
+
+        $analyzersNugetsItemGroup.AppendChild($nugetPackageReference)
+    }
 
     # Save the updated Directory.Build.props
     $xmlContent.Save($propsFilePath)
@@ -77,7 +91,7 @@ function RemoveAnalyzerProjectToSolution
 
 # Remove Analyzer projects to the solution
 RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers"
-RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.CodesFixes"
+RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.CodeFixes"
 RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.Package"
 RemoveAnalyzerProjectToSolution "BIA.Net.Analyzers.Vsix"
 
