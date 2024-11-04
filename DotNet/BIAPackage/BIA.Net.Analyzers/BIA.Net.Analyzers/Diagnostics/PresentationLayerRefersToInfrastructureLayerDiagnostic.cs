@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationLayerUsingInfrastructureLayerDiagnostic.cs" company="BIA">
+﻿// <copyright file="PresentationLayerRefersToInfrastructureLayerDiagnostic.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace BIA.Net.Analyzers.Diagnostics
     /// <summary>
     /// Diagnostic to detect using of Infrastructure layer into Presentation layer.
     /// </summary>
-    internal sealed class PresentationLayerUsingInfrastructureLayerDiagnostic : DiagnosticBase
+    internal sealed class PresentationLayerRefersToInfrastructureLayerDiagnostic : DiagnosticBase
     {
         private readonly List<string> presentationLayerNamespaces = new List<string>
         {

@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationLayerUsingInfrastructureLayerCodeFix.cs" company="BIA">
+﻿// <copyright file="PresentationLayerRefersToDomainLayerCodeFix.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -12,15 +12,15 @@ namespace BIA.Net.Analyzer.CodeFixes
     using Microsoft.CodeAnalysis.CSharp.Syntax;
 
     /// <summary>
-    /// Code fix when detecting using of Infrastructure layer into Presentation layer.
+    /// Code fix when detecting using of Domain layer into Presentation layer.
     /// </summary>
-    internal sealed class PresentationLayerUsingInfrastructureLayerCodeFix : ICodeFix
+    internal sealed class PresentationLayerRefersToDomainLayerCodeFix : ICodeFix
     {
         /// <inheritdoc/>
-        public string DiagnosticId => "BIA002";
+        public string DiagnosticId => "BIA001";
 
         /// <inheritdoc/>
-        public string Title => "Remove forbidden Infrastructure layer reference";
+        public string Title => "Remove forbidden Domain layer reference";
 
         /// <inheritdoc/>
         public async Task Register(CodeFixContext codeFixContext)

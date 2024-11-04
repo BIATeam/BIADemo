@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationLayerUsingDomainLayerDiagnostic.cs" company="BIA">
+﻿// <copyright file="PresentationLayerRefersToDomainLayerDiagnostic.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
@@ -12,7 +12,7 @@ namespace BIA.Net.Analyzers.Diagnostics
     /// <summary>
     /// Diagnostic to detect using of Domain layer into Presentation layer.
     /// </summary>
-    internal sealed class PresentationLayerUsingDomainLayerDiagnostic : DiagnosticBase
+    internal sealed class PresentationLayerRefersToDomainLayerDiagnostic : DiagnosticBase
     {
         private readonly List<string> presentationLayerNamespaces = new List<string>
         {
