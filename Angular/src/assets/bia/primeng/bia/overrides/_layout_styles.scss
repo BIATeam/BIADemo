@@ -20,7 +20,7 @@ body {
 
 .layout-content-wrapper p-breadcrumb + .layout-content {
   padding: 0;
-  min-height: calc(100vh - 6.95rem - var(--footer-height));
+  min-height: calc(100vh - 6.45rem - var(--footer-height));
 }
 
 .layout-container.layout-footer-overlay {
@@ -31,7 +31,7 @@ body {
 
   .layout-content-wrapper p-breadcrumb + .layout-content {
     padding: 0;
-    min-height: calc(100vh - 6.95rem);
+    min-height: calc(100vh - 6.45rem);
   }
 }
 

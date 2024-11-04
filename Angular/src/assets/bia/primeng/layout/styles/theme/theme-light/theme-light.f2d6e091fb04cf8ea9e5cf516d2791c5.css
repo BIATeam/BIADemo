@@ -42,7 +42,7 @@
   --surface-card: #ffffff;
   --surface-overlay: #ffffff;
   --surface-border: rgba(0, 0, 0, 0.12);
-  --surface-hover: rgba(65, 12, 12, 0.04);
+  --surface-hover: rgba(0, 0, 0, 0.04);
   --focus-ring: none;
   --maskbg: rgba(0, 0, 0, 0.32);
   --highlight-bg: rgba(0, 131, 155, 0.12);
@@ -9865,8 +9865,8 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 }
 @layer primeng {
   p-breadcrumb .p-breadcrumb {
-    height: 2.95rem;
-    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
+    height: 2.45rem;
+    padding: 0.4rem 0.25rem 0.25rem 0.25rem;
   }
   p-breadcrumb .p-menuitem-text {
     font-size: 0.9em !important;
@@ -9894,6 +9894,10 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     color: #00839b;
   }
 }
+p-breadcrumb .p-breadcrumb .p-menuitem-link {
+  padding: 0rem 0.5rem;
+}
+
 @layer primeng {
   .p-input-filled .p-float-label input:focus ~ label,
   .p-input-filled .p-float-label input.p-filled ~ label,

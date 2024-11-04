@@ -9897,8 +9897,8 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 }
 @layer primeng {
   p-breadcrumb .p-breadcrumb {
-    height: 2.95rem;
-    padding: 0.5rem 0.25rem 0.25rem 0.25rem;
+    height: 2.45rem;
+    padding: 0.4rem 0.25rem 0.25rem 0.25rem;
   }
   p-breadcrumb .p-menuitem-text {
     font-size: 0.9em !important;
@@ -9926,6 +9926,10 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
     color: #4ec1e0;
   }
 }
+p-breadcrumb .p-breadcrumb .p-menuitem-link {
+  padding: 0rem 0.5rem;
+}
+
 @layer primeng {
   .p-input-filled .p-float-label input:focus ~ label,
   .p-input-filled .p-float-label input.p-filled ~ label,

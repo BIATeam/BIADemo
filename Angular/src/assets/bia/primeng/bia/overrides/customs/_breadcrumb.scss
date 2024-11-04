@@ -1,8 +1,8 @@
 @layer primeng {
   p-breadcrumb {
     .p-breadcrumb {
-      height: 2.95rem;
-      padding: 0.5rem 0.25rem 0.25rem 0.25rem;
+      height: 2.45rem;
+      padding: 0.4rem 0.25rem 0.25rem 0.25rem;
     }
 
     .p-menuitem-text {
@@ -37,4 +37,8 @@
   .p-breadcrumb li:last-child .p-menuitem-icon {
     color: $primaryColor;
   }
+}
+
+p-breadcrumb .p-breadcrumb .p-menuitem-link {
+  padding: 0rem 0.5rem;
 }

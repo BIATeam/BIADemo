@@ -36,7 +36,7 @@
   position: fixed;
   height: var(--footer-height);
   right: 0;
-  bottom: -var(--footer-height);
+  bottom: calc(var(--footer-height) * -1);
   width: 100%;
 }
 
