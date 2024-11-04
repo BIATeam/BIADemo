@@ -47,7 +47,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Utilities
             try
             {
                 using var fileStream = file.OpenReadStream();
+#pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
                 var documentContent = this.documentAnalysisService.GetContent(file.FileName, file.ContentType, fileStream);
+#pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
                 return this.Ok(documentContent);
             }
             catch (Exception ex)
