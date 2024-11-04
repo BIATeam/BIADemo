@@ -16,6 +16,11 @@ namespace BIA.Net.Analyzers.Diagnostics
     /// </summary>
     internal sealed class PresentationLayerUsingInfrastructureLayerDiagnostic : DiagnosticBase
     {
+        private readonly List<string> presentationLayerNamespaces = new List<string>
+        {
+            "BIA.Net.Core.Presentation",
+        };
+
         private readonly List<string> infrastructureLayerNamespaces = new List<string>
         {
             "BIA.Net.Core.Infrastructure",
@@ -49,25 +54,14 @@ namespace BIA.Net.Analyzers.Diagnostics
             {
                 var assemblyName = compilationContext.Compilation.Assembly.Name;
                 var rootNamespace = string.Join(".", assemblyName.Split('.').Take(2));
+
+                var projectPresentationNamespace = $"{rootNamespace}.Presentation";
+                this.presentationLayerNamespaces.Add(projectPresentationNamespace);
+
                 var projectInfrastructureNamespace = $"{rootNamespace}.Infrastructure";
                 this.infrastructureLayerNamespaces.Add(projectInfrastructureNamespace);
 
-                compilationContext.RegisterSyntaxNodeAction(
-                    syntaxNodeContext =>
-                    {
-                        var usingDirective = (UsingDirectiveSyntax)syntaxNodeContext.Node;
-                        var usingDirectiveName = usingDirective.Name.ToString();
-
-                        if (this.infrastructureLayerNamespaces.Exists(ns => usingDirectiveName.StartsWith(ns)))
-                        {
-                            var containingAssembly = syntaxNodeContext.Compilation.Assembly;
-                            if (containingAssembly.Name.Contains("Presentation"))
-                            {
-                                var diagnostic = Diagnostic.Create(this.Rule, usingDirective.GetLocation(), usingDirective.Name.ToString());
-                                syntaxNodeContext.ReportDiagnostic(diagnostic);
-                            }
-                        }
-                    }, SyntaxKind.UsingDirective);
+                this.RegisterForbiddenNamespacesDiagnostics(compilationContext, this.presentationLayerNamespaces, this.infrastructureLayerNamespaces, Enumerable.Empty<string>());
             });
         }
     }

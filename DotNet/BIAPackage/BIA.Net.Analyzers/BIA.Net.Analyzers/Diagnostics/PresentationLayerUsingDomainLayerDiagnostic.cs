@@ -16,7 +16,11 @@ namespace BIA.Net.Analyzers.Diagnostics
     /// </summary>
     internal sealed class PresentationLayerUsingDomainLayerDiagnostic : DiagnosticBase
     {
-        private readonly string domainDtoNamespacePart = "Dto";
+        private readonly List<string> presentationLayerNamespaces = new List<string>
+        {
+            "BIA.Net.Core.Presentation",
+        };
+
         private readonly List<string> domainLayerNamespaces = new List<string>
         {
             "BIA.Net.Core.Domain",
@@ -50,25 +54,16 @@ namespace BIA.Net.Analyzers.Diagnostics
             {
                 var assemblyName = compilationContext.Compilation.Assembly.Name;
                 var rootNamespace = string.Join(".", assemblyName.Split('.').Take(2));
+
+                var projectPresentationNamespace = $"{rootNamespace}.Presentation";
+                this.presentationLayerNamespaces.Add(projectPresentationNamespace);
+
                 var projectDomainNamespace = $"{rootNamespace}.Domain";
                 this.domainLayerNamespaces.Add(projectDomainNamespace);
 
-                compilationContext.RegisterSyntaxNodeAction(
-                    syntaxNodeContext =>
-                    {
-                        var usingDirective = (UsingDirectiveSyntax)syntaxNodeContext.Node;
-                        var usingDirectiveName = usingDirective.Name.ToString();
+                var domainDtoLayerNamespaces = this.domainLayerNamespaces.Select(x => $"{x}.Dto").ToList();
 
-                        if (this.domainLayerNamespaces.Exists(ns => usingDirectiveName.StartsWith(ns) && !usingDirectiveName.StartsWith(ns + $".{this.domainDtoNamespacePart}")))
-                        {
-                            var containingAssembly = syntaxNodeContext.Compilation.Assembly;
-                            if (containingAssembly.Name.Contains("Presentation"))
-                            {
-                                var diagnostic = Diagnostic.Create(this.Rule, usingDirective.GetLocation(), usingDirective.Name.ToString());
-                                syntaxNodeContext.ReportDiagnostic(diagnostic);
-                            }
-                        }
-                    }, SyntaxKind.UsingDirective);
+                this.RegisterForbiddenNamespacesDiagnostics(compilationContext, this.presentationLayerNamespaces, this.domainLayerNamespaces, domainDtoLayerNamespaces);
             });
         }
     }
