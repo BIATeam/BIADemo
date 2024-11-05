@@ -55,6 +55,11 @@ namespace BIA.Net.Core.Common.Configuration
         public Jwt Jwt { get; set; }
 
         /// <summary>
+        /// Gets or sets the profile configuration.
+        /// </summary>
+        public ProfileConfiguration ProfileConfiguration { get; set; }
+
+        /// <summary>
         /// Gets or sets the policies.
         /// </summary>
         public IEnumerable<Policy> Policies { get; set; }
@@ -78,5 +83,6 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the cultures configuration.
         /// </summary>
         public IEnumerable<Culture> Cultures { get; set; }
+
     }
 }

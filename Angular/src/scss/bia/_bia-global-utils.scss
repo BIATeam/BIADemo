@@ -3,6 +3,19 @@
   flex: 1;
 }
 
+bia-ultima-layout .bia-flex {
+  display: block;
+  flex: unset;
+}
+
+bia-ultima-layout bia-page-layout.bia-flex {
+  padding: 1rem;
+}
+
+bia-classic-layout bia-page-layout bia-classic-page-layout > div {
+  margin-top: 10px;
+}
+
 .bia-page-margin {
   padding-left: 35px;
   padding-right: 35px;
@@ -13,6 +26,12 @@
   left: calc(2.5vw);
 }
 
+bia-ultima-layout .bia-page-margin {
+  padding: 0.75rem 2.5rem;
+  min-width: 0.75rem;
+  width: 100%;
+}
+
 .bia-page-remove-margin .bia-page-margin {
   width: unset;
   left: unset;
@@ -21,10 +40,15 @@
 .bia-page-remove-margin {
   margin-left: -35px;
   margin-right: -35px;
-  margin-top: -15px;
-  margin-bottom: -15px;
+  margin-top: -10px;
+  margin-bottom: -10px;
   width: calc(95vw);
   left: calc(2.5vw);
+}
+
+bia-ultima-layout .bia-page-remove-margin {
+  margin: -0.75rem -2.5rem;
+  width: calc(100% + 5rem);
 }
 
 .bia-advanced-filter {

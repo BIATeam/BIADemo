@@ -72,7 +72,8 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"></bia-table>
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -96,6 +97,7 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"></app-engine-table>
+      (save)="onSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></app-engine-table>
   </div>
 </div>

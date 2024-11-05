@@ -105,7 +105,8 @@
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-        [canSelectMultipleElement]="false"></bia-table>
+        [canSelectMultipleElement]="false"
+        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
       <app-maintenance-team-table
         *ngIf="crudConfiguration.useCalcMode"
         [elements]="(crudItems$ | async) ?? []"
@@ -129,7 +130,10 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
-        [canSelectMultipleElement]="false"></app-maintenance-team-table>
+        [canSelectMultipleElement]="false"
+        [scrollHeightValue]="
+          getFillScrollHeightValue()
+        "></app-maintenance-team-table>
     </div>
   </div>
 </div>

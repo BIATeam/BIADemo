@@ -1,8 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { Member } from '../../model/member';
-import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { CrudItemItemComponent } from 'src/app/shared/bia-shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component';
+import { Member } from '../../model/member';
 import { MemberService } from '../../services/member.service';
 
 @Component({
@@ -17,14 +17,12 @@ export class MemberItemComponent
   extends CrudItemItemComponent<Member>
   implements OnInit
 {
-  protected layoutService: BiaClassicLayoutService;
+  protected layoutService: BiaLayoutService;
   protected memberService: MemberService;
 
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
-    this.layoutService = injector.get<BiaClassicLayoutService>(
-      BiaClassicLayoutService
-    );
+    this.layoutService = injector.get<BiaLayoutService>(BiaLayoutService);
     this.memberService = injector.get<MemberService>(MemberService);
   }
 

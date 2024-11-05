@@ -16,6 +16,7 @@ import { filter, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
@@ -90,6 +91,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
+  protected layoutService: BiaLayoutService;
 
   constructor(
     protected injector: Injector,
@@ -106,6 +108,14 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.authService = this.injector.get<AuthService>(AuthService);
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
+    this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
+  }
+
+  getFillScrollHeightValue(offset?: string) {
+    return this.tableHelperService.getFillScrollHeightValue(
+      this.layoutService,
+      offset
+    );
   }
 
   useViewChange(e: boolean) {

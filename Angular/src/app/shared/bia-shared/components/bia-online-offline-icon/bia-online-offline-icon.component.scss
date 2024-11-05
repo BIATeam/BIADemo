@@ -4,6 +4,13 @@
   display: contents;
 }
 
+i {
+  margin-left: 8px;
+  margin-right: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .offline {
   color: $biaRed;
   position: relative;

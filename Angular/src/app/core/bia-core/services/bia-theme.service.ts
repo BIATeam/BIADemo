@@ -1,8 +1,12 @@
-import { Injectable, Renderer2, RendererFactory2, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { THEME_LIGHT, THEME_DARK } from 'src/app/shared/constants';
+import {
+  BiaLayoutService,
+  ColorScheme,
+} from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 
 export const STORAGE_THEME_KEY = 'theme';
 const DEFAULT_THEME = THEME_LIGHT;
@@ -20,6 +24,7 @@ export class BiaThemeService {
   );
 
   constructor(
+    private readonly layoutService: BiaLayoutService,
     rendererFactory: RendererFactory2,
     @Inject(DOCUMENT) document: any
   ) {
@@ -63,6 +68,7 @@ export class BiaThemeService {
     }
     this.applyPrimeNgTheme(theme);
     this.currentTheme.next(theme);
+    this.layoutService.config().colorScheme = theme as ColorScheme;
   }
 
   protected applyPrimeNgTheme(theme: string) {

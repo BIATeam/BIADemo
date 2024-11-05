@@ -1,0 +1,28 @@
+.project-title {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+  font-family: 'oswald-regular';
+  font-size: 1.25rem;
+
+  .app-title {
+    display: block;
+    padding-top: 1.5rem;
+    line-height: 1rem;
+  }
+}
+
+.project-version {
+  font-family: 'oswald-regular';
+  font-size: 0.6rem;
+}
+
+.app-logo {
+  height: 4rem;
+  width: 4rem;
+  margin-right: 0.5em;
+  // https://codepen.io/sosuke/pen/Pjoqqp
+  // hexa: #f8a92b
+  filter: invert(60%) sepia(92%) saturate(376%) hue-rotate(356deg)
+    brightness(98%) contrast(98%);
+}

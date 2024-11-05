@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { getCurrentPlane } from '../../store/plane.state';
-import { Plane } from '../../model/plane';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { PlaneService } from '../../services/plane.service';
-import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { AppState } from 'src/app/store/state';
+import { Plane } from '../../model/plane';
+import { PlaneService } from '../../services/plane.service';
+import { getCurrentPlane } from '../../store/plane.state';
 
 @Component({
   selector: 'app-planes-item',
@@ -22,7 +22,7 @@ export class PlaneItemComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private route: ActivatedRoute,
     public planeService: PlaneService,
-    private layoutService: BiaClassicLayoutService
+    private layoutService: BiaLayoutService
   ) {}
 
   ngOnInit() {

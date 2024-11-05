@@ -1,0 +1,117 @@
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { MenuItem } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaNavigation } from 'src/app/shared/bia-shared/model/bia-navigation';
+import { allEnvironments } from 'src/environments/all-environments';
+import { BiaLayoutService } from '../../services/layout.service';
+import { BiaUltimaMenuProfileComponent } from '../menu-profile/ultima-menu-profile.component';
+
+@Component({
+  selector: 'bia-ultima-side-bar',
+  templateUrl: './ultima-side-bar.component.html',
+  styleUrls: ['./ultima-side-bar.component.scss'],
+})
+export class BiaUltimaSideBarComponent implements OnDestroy {
+  timeout: any = null;
+  @Input() appTitle: string;
+  @Input() version: string;
+  @Input() username: string | undefined;
+  @Input() login: string;
+  @Input() supportedLangs: string[];
+  @Input()
+  set menus(navigations: BiaNavigation[]) {
+    if (navigations && navigations.length > 0) {
+      this.navigations = navigations;
+      this.buildNavigation();
+    }
+  }
+  @Input() allowThemeChange = true;
+  @Input() logos: string[];
+  @Input() helpUrl?: string;
+  @Input() reportUrl?: string;
+
+  @ViewChild(BiaUltimaMenuProfileComponent)
+  menuProfile!: BiaUltimaMenuProfileComponent;
+  @ViewChild('menuContainer') menuContainer!: ElementRef;
+  navigations: BiaNavigation[];
+  navMenuItems: MenuItem[];
+  urlAppIcon = allEnvironments.urlAppIcon;
+
+  protected sub = new Subscription();
+
+  constructor(
+    public layoutService: BiaLayoutService,
+    public biaTranslationService: BiaTranslationService,
+    public translateService: TranslateService,
+    public el: ElementRef
+  ) {}
+
+  buildNavigation() {
+    const translationKeys = new Array<string>();
+    this.navigations.forEach(menu => {
+      if (menu.children) {
+        menu.children.forEach(child => {
+          translationKeys.push(child.labelKey);
+        });
+      }
+      translationKeys.push(menu.labelKey);
+    });
+
+    this.navMenuItems = this.layoutService.mapNavigationToMenuItems(
+      this.navigations,
+      true
+    );
+
+    this.sub.add(
+      this.translateService.stream(translationKeys).subscribe(translations => {
+        this.layoutService.processMenuTranslation(
+          this.navMenuItems,
+          translations
+        );
+      })
+    );
+  }
+
+  resetOverlay() {
+    if (this.layoutService.state.overlayMenuActive) {
+      this.layoutService.state.overlayMenuActive = false;
+    }
+  }
+
+  onMouseEnter() {
+    if (!this.layoutService.state.anchored) {
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+      }
+      this.layoutService.state.sidebarActive = true;
+    }
+  }
+
+  onMouseLeave() {
+    if (!this.layoutService.state.anchored) {
+      if (!this.timeout) {
+        this.timeout = setTimeout(
+          () => (this.layoutService.state.sidebarActive = false),
+          300
+        );
+      }
+    }
+  }
+
+  anchor() {
+    this.layoutService.state.anchored = !this.layoutService.state.anchored;
+  }
+
+  ngOnDestroy() {
+    this.resetOverlay();
+  }
+}
