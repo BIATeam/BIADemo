@@ -20,11 +20,7 @@
     [sortOrder]="sortOrderValue"
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
-    [styleClass]="
-      (table?.multiSortMeta?.length ?? 0) > 1
-        ? 'p-datatable-striped multiSort'
-        : 'p-datatable-striped singleSort'
-    "
+    [styleClass]="'p-datatable-striped'"
     sortMode="multiple"
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"

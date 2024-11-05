@@ -51,6 +51,17 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+
+  _compactMode?: boolean;
+
+  get compactMode(): boolean | undefined {
+    return this._compactMode;
+  }
+  set compactMode(value: boolean | undefined) {
+    this._compactMode = value;
+    //this.store.dispatch(FeaturePlanesActions.toggleCompactMode)
+  }
+
   public get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;

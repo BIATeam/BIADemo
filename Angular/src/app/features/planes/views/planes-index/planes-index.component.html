@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <div [ngClass]="{ 'table-compact': (compactMode$ | async) }">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -23,6 +23,15 @@
           label="{{ 'plane.engines' | translate }}"
           (click)="onViewEngines(selectedCrudItems[0].id)"></button>
       </ng-template>
+      <ng-template pTemplate="customControl">
+        <p-button
+          [icon]="
+            'pi' +
+            (compactMode ? ' pi-angle-double-down' : ' pi-angle-double-up')
+          "
+          (click)="toggleCompactMode()"></p-button>
+      </ng-template>
+
       <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->
       <!-- BIAToolKit - End PlaneIndexHtml -->

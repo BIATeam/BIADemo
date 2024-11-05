@@ -4,6 +4,7 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -47,6 +48,9 @@ import { KeyValuePair } from '../../../model/key-value-pair';
 export class BiaTableControllerComponent
   implements OnChanges, OnInit, OnDestroy, AfterContentInit
 {
+  @HostBinding('class.overlay-controller-active') overlayActive: boolean =
+    false;
+
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() defaultPageSize: number;
   @Input() length: number;
@@ -150,6 +154,10 @@ export class BiaTableControllerComponent
   onViewChange(event: string) {
     this.setControlByViewState(event);
     setTimeout(() => this.viewChange.emit(event));
+  }
+
+  toggleOverlay() {
+    this.overlayActive = !this.overlayActive;
   }
 
   public getSelectedViewName(): string | null {

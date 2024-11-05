@@ -1,6 +1,9 @@
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { TableLazyLoadEvent } from 'primeng/table';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'src/app/shared/bia-shared/model/crud-state';
 import { Plane } from '../model/plane';
 import { FeaturePlanesActions } from './planes-actions';
 
@@ -21,22 +24,13 @@ export const planesAdapter = createEntityAdapter<Plane>({
 // -> ids arrays allow us to sort data easily
 // -> entities map allows us to access the data quickly without iterating/filtering though an array of objects
 
-export interface State extends EntityState<Plane> {
+export interface State extends CrudState<Plane>, EntityState<Plane> {
   // additional props here
-  totalCount: number;
-  currentPlane: Plane;
-  lastLazyLoadEvent: TableLazyLoadEvent;
-  loadingGet: boolean;
-  loadingGetAll: boolean;
 }
 
 export const INIT_STATE: State = planesAdapter.getInitialState({
+  ...DEFAULT_CRUD_STATE(),
   // additional props default values here
-  totalCount: 0,
-  currentPlane: <Plane>{},
-  lastLazyLoadEvent: <TableLazyLoadEvent>{},
-  loadingGet: false,
-  loadingGetAll: false,
 });
 
 export const planeReducers = createReducer<State>(
@@ -62,6 +56,9 @@ export const planeReducers = createReducer<State>(
   }),
   on(FeaturePlanesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
+  }),
+  on(FeaturePlanesActions.toggleCompactMode, state => {
+    return { ...state, compactMode: !state.compactMode };
   })
 );
 
