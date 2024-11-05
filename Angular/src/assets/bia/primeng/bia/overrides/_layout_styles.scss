@@ -136,3 +136,10 @@ body {
 .layout-footer-button:hover {
   background-color: var(--footer-hover-bg);
 }
+
+.layout-container.layout-slim-plus
+  .layout-topbar
+  .layout-topbar-start
+  .app-logo {
+  margin-right: 3rem;
+}

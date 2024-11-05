@@ -314,13 +314,9 @@ export class BiaLayoutService {
     navigationItems.forEach(menu => {
       const childrenMenuItem: MenuItem[] = [];
       if (menu.children) {
-        menu.children.forEach(child => {
-          childrenMenuItem.push({
-            id: child.labelKey,
-            routerLink: child.path,
-            icon: withIcons ? child.icon : undefined,
-          });
-        });
+        childrenMenuItem.push(
+          ...this.mapNavigationToMenuItems(menu.children, withIcons)
+        );
       }
       navMenuItems.push({
         id: menu.labelKey,
