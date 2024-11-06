@@ -31,7 +31,7 @@ namespace BIA.Net.Core.Application.Services
     /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TFilterDto">The filter DTO type.</typeparam>
     /// <typeparam name="TMapper">The mapper used between entity and DTO.</typeparam>
-    public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : FilteredServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
+    public abstract class CrudAppServiceBase<TDto, TEntity, TKey, TFilterDto, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, ICrudAppServiceBase<TDto, TEntity, TKey, TFilterDto>
         where TDto : BaseDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TFilterDto : LazyLoadDto, new()

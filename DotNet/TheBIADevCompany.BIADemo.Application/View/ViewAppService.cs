@@ -14,6 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
@@ -26,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class ViewAppService : AppServiceBase<View, int>, IViewAppService
+    public class ViewAppService : DomainServiceBase<View, int>, IViewAppService
     {
         /// <summary>
         /// The claims principal.

@@ -17,7 +17,7 @@ namespace BIA.Net.Core.Application.Translation
     /// <summary>
     /// The application service used for language.
     /// </summary>
-    public class LanguageAppService : FilteredServiceBase<Language, int>, ILanguageAppService
+    public class LanguageAppService : OperationalDomainServiceBase<Language, int>, ILanguageAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LanguageAppService"/> class.

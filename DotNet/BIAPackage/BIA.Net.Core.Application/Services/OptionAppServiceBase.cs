@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
 
     /// <summary>
     /// The base class for all option application service.
@@ -17,7 +18,7 @@ namespace BIA.Net.Core.Application.Services
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The key type of the option DTO and entity.</typeparam>
     /// <typeparam name="TMapper">The mapper between entity and option DTO.</typeparam>
-    public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : FilteredServiceBase<TEntity, TKey>, IOptionAppServiceBase<TOptionDto, TKey>
+    public abstract class OptionAppServiceBase<TOptionDto, TEntity, TKey, TMapper> : OperationalDomainServiceBase<TEntity, TKey>, IOptionAppServiceBase<TOptionDto, TKey>
         where TOptionDto : TOptionDto<TKey>, new()
         where TEntity : class, IEntity<TKey>, new()
         where TMapper : BaseMapper<TOptionDto, TEntity, TKey>

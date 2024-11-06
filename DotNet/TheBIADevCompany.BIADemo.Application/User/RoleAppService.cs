@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for role.
     /// </summary>
-    public class RoleAppService : FilteredServiceBase<Role, int>, IRoleAppService
+    public class RoleAppService : OperationalDomainServiceBase<Role, int>, IRoleAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RoleAppService"/> class.

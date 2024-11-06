@@ -16,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     /// <summary>
     /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeAppService : AppServiceBase<NotificationType, int>, INotificationTypeAppService
+    public class NotificationTypeAppService : DomainServiceBase<NotificationType, int>, INotificationTypeAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypeAppService"/> class.

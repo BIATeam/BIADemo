@@ -1,8 +1,8 @@
-// <copyright file="FilteredServiceBase.cs" company="BIA">
+// <copyright file="OperationalDomainServiceBase.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Services
+namespace BIA.Net.Core.Domain.Service
 {
     using System;
     using System.Collections.Generic;
@@ -23,18 +23,18 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Specification;
 
     /// <summary>
-    /// The base class for all CRUD application service.
+    /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.
     /// </summary>
     /// <typeparam name="TEntity">The entity type.</typeparam>
     /// <typeparam name="TKey">The primary key of the entity type.</typeparam>
-    public abstract class FilteredServiceBase<TEntity, TKey> : AppServiceBase<TEntity, TKey>, IFilteredServiceBase<TEntity, TKey>
+    public abstract class OperationalDomainServiceBase<TEntity, TKey> : DomainServiceBase<TEntity, TKey>
         where TEntity : class, IEntity<TKey>, new()
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FilteredServiceBase{TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="OperationalDomainServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        protected FilteredServiceBase(ITGenericRepository<TEntity, TKey> repository)
+        protected OperationalDomainServiceBase(ITGenericRepository<TEntity, TKey> repository)
             : base(repository)
         {
             this.FiltersContext = new Dictionary<string, Specification<TEntity>>();
@@ -60,7 +60,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The list of DTO.</returns>
-        public virtual async Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+        protected virtual async Task<(IEnumerable<TOtherDto> results, int total)> GetRangeAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -116,7 +116,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -166,7 +166,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
+        protected async Task<IEnumerable<TOtherDto>> GetAllAsync<TOtherDto, TOtherMapper>(
             Expression<Func<TEntity, TKey>> orderByExpression,
             bool ascending,
             TKey id = default,
@@ -215,7 +215,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
+        protected virtual async Task<byte[]> GetCsvAsync<TOtherDto, TOtherMapper, TOtherFilterDto>(
             TOtherFilterDto filters = null,
             TKey id = default,
             Specification<TEntity> specification = null,
@@ -272,7 +272,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
         /// <returns>The DTO.</returns>
-        public virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> GetAsync<TOtherDto, TOtherMapper>(
             TKey id = default,
             Specification<TEntity> specification = null,
             Expression<Func<TEntity, bool>> filter = null,
@@ -313,7 +313,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="dto">The DTO.</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO with id updated.</returns>
-        public virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> AddAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string mapperMode = null)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
@@ -345,7 +345,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The DTO updated.</returns>
-        public virtual async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> UpdateAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = AccessMode.Update,
             string queryMode = QueryMode.Update,
@@ -386,7 +386,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTO.</returns>
-        public virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> RemoveAsync<TOtherDto, TOtherMapper>(
             TKey id,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -423,7 +423,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>The deleted DTOs.</returns>
-        public virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<List<TOtherDto>> RemoveAsync<TOtherDto, TOtherMapper>(
             List<TKey> ids,
             string accessMode = AccessMode.Delete,
             string queryMode = QueryMode.Delete,
@@ -454,7 +454,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The query mode.</param>
         /// <param name="mapperMode">The mapper mode.</param>
         /// <returns>SaveSafeReturn struct.</returns>
-        public virtual async Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<SaveSafeReturn<TOtherDto>> SaveSafeAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             BiaClaimsPrincipal principal,
             string rightAdd,
@@ -600,7 +600,7 @@ namespace BIA.Net.Core.Application.Services
         /// <returns>
         /// The saved DTOs.
         /// </returns>
-        public virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<IEnumerable<TOtherDto>> SaveAsync<TOtherDto, TOtherMapper>(
             IEnumerable<TOtherDto> dtos,
             string accessMode = null,
             string queryMode = null,
@@ -636,7 +636,7 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
         /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
+        protected virtual async Task<TOtherDto> SaveAsync<TOtherDto, TOtherMapper>(
             TOtherDto dto,
             string accessMode = null,
             string queryMode = null,
@@ -684,7 +684,7 @@ namespace BIA.Net.Core.Application.Services
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <param name="dtoList">The list of element to add.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        protected virtual async Task AddBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
         {
@@ -713,7 +713,7 @@ namespace BIA.Net.Core.Application.Services
         [Obsolete(message: "UpdateBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteUpdateAsync method (See the example with the EngineRepository in BIADemo).", error: true)]
 #pragma warning restore S1133 // Deprecated code should be removed
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        protected virtual async Task UpdateBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
@@ -732,7 +732,7 @@ namespace BIA.Net.Core.Application.Services
         [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
 #pragma warning restore S1133 // Deprecated code should be removed
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
+        protected virtual async Task RemoveBulkAsync<TOtherDto, TOtherMapper>(IEnumerable<TOtherDto> dtoList)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
             where TOtherMapper : BaseMapper<TOtherDto, TEntity, TKey>
             where TOtherDto : BaseDto<TKey>, new()
@@ -753,7 +753,7 @@ namespace BIA.Net.Core.Application.Services
         [Obsolete("RemoveBulkAsync is deprecated, please use a custom repository instead and use the Entity Framework's ExecuteDeleteAsync method (See the example with the EngineRepository in BIADemo).")]
 #pragma warning restore S1133 // Deprecated code should be removed
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
+        protected virtual async Task RemoveBulkAsync(IEnumerable<TKey> idList, string accessMode = AccessMode.Delete, string queryMode = QueryMode.Delete)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             throw new NotImplementedException();

@@ -1,8 +1,8 @@
-﻿// <copyright file="AppServiceBase.cs" company="BIA">
+﻿// <copyright file="DomainServiceBase.cs" company="BIA">
 //     Copyright (c) BIA. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Services
+namespace BIA.Net.Core.Domain.Service
 {
     using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -10,18 +10,18 @@ namespace BIA.Net.Core.Application.Services
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
-    /// The base class for all application service.
+    /// Base class for a service that need access to an <see cref="ITGenericRepository{TEntity, TKey}"/>.
     /// </summary>
     /// <typeparam name="TEntity">Entity type.</typeparam>
     /// <typeparam name="TKey">Primary key type for the entity.</typeparam>
-    public abstract class AppServiceBase<TEntity, TKey>
+    public abstract class DomainServiceBase<TEntity, TKey>
                 where TEntity : class, IEntity<TKey>
     {
        /// <summary>
-        /// Initializes a new instance of the <see cref="AppServiceBase{TEntity, TKey}"/> class.
+        /// Initializes a new instance of the <see cref="DomainServiceBase{TEntity, TKey}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
-        protected AppServiceBase(ITGenericRepository<TEntity, TKey> repository)
+        protected DomainServiceBase(ITGenericRepository<TEntity, TKey> repository)
         {
             this.Repository = repository;
         }
