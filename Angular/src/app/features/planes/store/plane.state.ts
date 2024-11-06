@@ -64,9 +64,4 @@ export namespace FeaturePlanesStore {
 
   export const getPlaneById = (id: number) =>
     createSelector(getPlanesEntitiesState, fromPlanes.getPlaneById(id));
-
-  export const getCompactMode = createSelector(
-    getPlanesEntitiesState,
-    state => state.compactMode
-  );
 }

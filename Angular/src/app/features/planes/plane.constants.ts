@@ -17,6 +17,7 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   /// BIAToolKit - End AncestorTeam Site
   usePopup: true,
   useOfflineMode: false,
+  useCompactMode: false,
   // Begin BIADemo
   bulkMode: {
     useInsert: true,

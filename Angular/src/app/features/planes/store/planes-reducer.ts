@@ -56,9 +56,6 @@ export const planeReducers = createReducer<State>(
   }),
   on(FeaturePlanesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
-  }),
-  on(FeaturePlanesActions.toggleCompactMode, state => {
-    return { ...state, compactMode: !state.compactMode };
   })
 );
 

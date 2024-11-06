@@ -62,8 +62,4 @@ export namespace FeaturePlanesActions {
   export const clearCurrent = createAction(
     '[' + planeCRUDConfiguration.storeKey + '] Clear current'
   );
-
-  export const toggleCompactMode = createAction(
-    '[' + planeCRUDConfiguration.storeKey + '] Toggle compact mode'
-  );
 }

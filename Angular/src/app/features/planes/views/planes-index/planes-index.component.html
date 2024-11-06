@@ -1,5 +1,5 @@
 <div>
-  <div [ngClass]="{ 'table-compact': (compactMode$ | async) }">
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -7,11 +7,14 @@
       [canEdit]="canEdit"
       [canBulk]="canSave && crudConfiguration.useBulk"
       [canExportCSV]="true"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
       (create)="onCreate()"
       (exportCSV)="onExportCSV('plane.listOf')"
       (fullExportCSV)="onExportCSV('plane.listOf', true)"
       (delete)="onDelete()"
       (bulk)="onBulk()"
+      (toggleTableControllerVisibility)="toggleTableControllerVisibility()"
       [selectedElements]="selectedCrudItems">
       <!-- BIAToolKit - Begin Partial PlaneIndexHtml Engine -->
       <ng-template pTemplate="actionOnSelected">
@@ -23,20 +26,12 @@
           label="{{ 'plane.engines' | translate }}"
           (click)="onViewEngines(selectedCrudItems[0].id)"></button>
       </ng-template>
-      <ng-template pTemplate="customControl">
-        <p-button
-          [icon]="
-            'pi' +
-            (compactMode ? ' pi-angle-double-down' : ' pi-angle-double-up')
-          "
-          (click)="toggleCompactMode()"></p-button>
-      </ng-template>
-
       <!-- BIAToolKit - End Partial PlaneIndexHtml Engine -->
       <!-- BIAToolKit - Begin PlaneIndexHtml -->
       <!-- BIAToolKit - End PlaneIndexHtml -->
     </bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
@@ -76,6 +71,12 @@
             [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
             (click)="usePopupChange(!crudConfiguration.usePopup)"
             pTooltip="{{ 'bia.usePopup' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-arrow-down-left-and-arrow-up-right-to-center bia-pointer"
+            [class]="crudConfiguration.useCompactMode ? 'enable' : 'disabled'"
+            (click)="useCompactModeChange(!crudConfiguration.useCompactMode)"
+            pTooltip="{{ 'bia.useCompactMode' | translate }}"
             tooltipPosition="top"></i>
         </div>
       </ng-template>

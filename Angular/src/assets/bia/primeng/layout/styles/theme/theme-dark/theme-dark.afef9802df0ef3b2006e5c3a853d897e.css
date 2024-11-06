@@ -9885,6 +9885,9 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
   .bia-table-controller-container .pi.enable {
     color: #4ec1e0 !important;
   }
+  .p-button.p-button-icon-only {
+    padding: 0;
+  }
 }
 @layer primeng {
   .p-megamenu .p-megamenu-panel {

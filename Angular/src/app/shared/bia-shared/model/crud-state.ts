@@ -6,7 +6,6 @@ export const DEFAULT_CRUD_STATE: <T>() => CrudState<T> = () => ({
   lastLazyLoadEvent: <TableLazyLoadEvent>{},
   loadingGet: false,
   loadingGetAll: false,
-  compactMode: false,
 });
 
 export interface CrudState<T> {
@@ -16,5 +15,4 @@ export interface CrudState<T> {
   lastLazyLoadEvent: TableLazyLoadEvent;
   loadingGet: boolean;
   loadingGetAll: boolean;
-  compactMode: boolean;
 }
