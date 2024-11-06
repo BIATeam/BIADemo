@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationLayerRefersToDomainLayerCodeFix.cs" company="BIA">
+﻿// <copyright file="PresentationLayerUsingDomainLayerCodeFix.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 

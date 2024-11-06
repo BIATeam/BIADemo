@@ -1,4 +1,4 @@
-﻿// <copyright file="PresentationLayerRefersToInfrastructureLayerCodeFix.cs" company="BIA">
+﻿// <copyright file="PresentationLayerUsingInfrastructureLayerCodeFix.cs" company="BIA">
 // Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
