@@ -90,6 +90,7 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"
       [frozeSelectColumn]="true"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
@@ -114,6 +115,7 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
-      [frozeSelectColumn]="true"></app-plane-table>
+      [frozeSelectColumn]="true"
+      [scrollHeightValue]="getFillScrollHeightValue()"></app-plane-table>
   </div>
 </div>

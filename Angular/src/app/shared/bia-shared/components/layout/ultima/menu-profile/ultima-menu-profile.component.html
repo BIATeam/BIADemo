@@ -1,0 +1,45 @@
+<div class="layout-menu-profile">
+  <button
+    class="p-link"
+    (click)="toggleMenu()"
+    pTooltip="Profile"
+    [tooltipDisabled]="isTooltipDisabled">
+    <img
+      *ngIf="layoutService.config().showAvatar"
+      [src]="avatarUrl"
+      (error)="onImgError()"
+      alt="avatar"
+      class="avatar" />
+    <span>
+      <strong>{{ displayName }}</strong>
+    </span>
+    <i class="layout-menu-profile-toggler pi pi-fw pi-angle-down"></i>
+  </button>
+
+  <div *ngIf="menuProfileActive" [@menu]="isHorizontal ? 'overlay' : 'inline'">
+    @if (
+      layoutService.isHorizontal() ||
+      layoutService.isSlim() ||
+      layoutService.isSlimPlus() ||
+      layoutService.isDrawer()
+    ) {
+      <p-dialog
+        [focusOnShow]="false"
+        [(visible)]="menuProfileActive"
+        [modal]="true"
+        [closable]="true"
+        [responsive]="true"
+        [maximizable]="false"
+        [closeOnEscape]="true"
+        [contentStyle]="{ overflow: 'auto' }">
+        <p-header>
+          {{ 'bia.settings' | translate }}
+        </p-header>
+        <bia-ultima-config
+          [supportedLangs]="supportedLangs"></bia-ultima-config>
+      </p-dialog>
+    } @else {
+      <bia-ultima-config [supportedLangs]="supportedLangs"></bia-ultima-config>
+    }
+  </div>
+</div>

@@ -1,16 +1,14 @@
 @layer primeng {
   p-breadcrumb {
     .p-breadcrumb {
-      padding: 0.25rem;
+      height: 2.45rem;
+      padding: 0.4rem 0.25rem 0.25rem 0.25rem;
     }
 
-    // .p-breadcrumb-chevron {
-    //   font-size: 9px;
-    // }
     .p-menuitem-text {
       font-size: 0.9em !important;
       font-weight: 100 !important;
-      line-height: 24px !important;
+      line-height: 1.7rem !important;
     }
 
     .p-menuitem-separator .p-icon {
@@ -39,4 +37,8 @@
   .p-breadcrumb li:last-child .p-menuitem-icon {
     color: $primaryColor;
   }
+}
+
+p-breadcrumb .p-breadcrumb .p-menuitem-link {
+  padding: 0rem 0.5rem;
 }

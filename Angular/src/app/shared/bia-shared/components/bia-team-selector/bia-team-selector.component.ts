@@ -18,17 +18,17 @@ import { DomainTeamsActions } from 'src/app/domains/bia-domains/team/store/teams
 import { RoleMode } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
-import { AuthInfo } from '../../../model/auth-info';
-import { RoleDto } from '../../../model/role';
-import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
+import { AuthInfo } from '../../model/auth-info';
+import { RoleDto } from '../../model/role';
+import { BiaLayoutService } from '../layout/services/layout.service';
 
 @Component({
-  selector: 'bia-classic-team-selector',
-  templateUrl: './classic-team-selector.component.html',
-  styleUrls: ['./classic-team-selector.component.scss'],
+  selector: 'bia-team-selector',
+  templateUrl: './bia-team-selector.component.html',
+  styleUrls: ['./bia-team-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
+export class BiaTeamSelectorComponent implements OnInit, OnDestroy {
   @Input() teamType: any;
 
   displayTeamList = false;
@@ -53,7 +53,7 @@ export class ClassicTeamSelectorComponent implements OnInit, OnDestroy {
   unreadNotificationCount$: Observable<number>;
 
   constructor(
-    public layoutService: BiaClassicLayoutService,
+    public layoutService: BiaLayoutService,
     public auth: AuthService,
     public translateService: TranslateService,
     public biaTranslationService: BiaTranslationService,

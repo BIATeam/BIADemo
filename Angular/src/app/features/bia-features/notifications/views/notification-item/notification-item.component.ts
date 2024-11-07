@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { getCurrentNotification } from '../../store/notification.state';
-import { Notification } from '../../model/notification';
-import { AppState } from 'src/app/store/state';
-import { ActivatedRoute } from '@angular/router';
-import { NotificationService } from '../../services/notification.service';
-import { BiaClassicLayoutService } from 'src/app/shared/bia-shared/components/layout/classic-layout/bia-classic-layout.service';
 import { first } from 'rxjs/operators';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
+import { AppState } from 'src/app/store/state';
+import { Notification } from '../../model/notification';
+import { NotificationService } from '../../services/notification.service';
+import { getCurrentNotification } from '../../store/notification.state';
 
 @Component({
   selector: 'bia-notifications-item',
@@ -23,7 +23,7 @@ export class NotificationItemComponent implements OnInit, OnDestroy {
     protected store: Store<AppState>,
     protected route: ActivatedRoute,
     public notificationService: NotificationService,
-    protected layoutService: BiaClassicLayoutService,
+    protected layoutService: BiaLayoutService,
     protected biaTranslationService: BiaTranslationService
   ) {}
 

@@ -1,0 +1,29 @@
+<ng-template
+  let-footerPortal
+  [ngIf]="layoutService.footerPortal$ | async"
+  [ngIfElse]="defaultFooter">
+  <ng-template [cdkPortalOutlet]="footerPortal"></ng-template>
+</ng-template>
+<ng-template #defaultFooter>
+  <footer
+    class="layout-footer flex-1 align-content-center"
+    [ngClass]="footerClass">
+    <a
+      #footerButton
+      *ngIf="layoutService.isFooterOverlay()"
+      class="layout-footer-button"
+      (click)="onFooterButtonClick()"
+      pRipple>
+      <i class="pi pi-chevron-up"></i>
+    </a>
+    <div class="copyright">
+      © 2024 {{ companyName }} v{{ frameworkVersion }}
+    </div>
+    <div class="logos flex justify-content-center">
+      <ng-template ngFor let-logo let-first="first" [ngForOf]="logos">
+        <span *ngIf="!first" class="flex align-self-center separator"></span>
+        <img alt="logo" class="flex align-self-center" src="{{ logo }}" />
+      </ng-template>
+    </div>
+  </footer>
+</ng-template>

@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy } from '@angular/core';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FRAMEWORK_VERSION } from '../../../framework-version';
-import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
+import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bia-classic-footer',
@@ -15,5 +14,5 @@ export class ClassicFooterComponent {
 
   frameworkVersion = FRAMEWORK_VERSION;
 
-  constructor(public layoutService: BiaClassicLayoutService) {}
+  constructor(public layoutService: BiaLayoutService) {}
 }

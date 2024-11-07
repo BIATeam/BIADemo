@@ -9,6 +9,10 @@ bia-classic-footer {
   color: $biaColorOnBgAccentColor;
 }
 
+bia-ultima-side-bar .layout-sidebar-top .project-title {
+  color: white;
+}
+
 // classic-header-theme
 bia-classic-header {
   .topbar {
@@ -18,6 +22,9 @@ bia-classic-header {
 
   .mainbar {
     background-color: $biaMainBarColor;
+  }
+
+  .mainbar {
     .project-title {
       @if ($is-dark) {
         color: white;
@@ -36,9 +43,15 @@ bia-classic-header {
   }
 }
 
+.layout-topbar .layout-topbar-start .project-title {
+  color: $biaColorOnBgAccentColor;
+}
+
 // classic-layout-theme
-bia-classic-layout {
-  .content {
+bia-classic-layout,
+bia-ultima-layout {
+  .content,
+  .layout-content {
     background-image: linear-gradient(
         rgba($biaBgColor, 0.6),
         rgba($biaBgColor, 0.6)
@@ -50,7 +63,8 @@ bia-classic-layout {
     section.content {
       display: flex;
       flex-flow: column;
-      bia-classic-page-layout {
+      bia-classic-page-layout,
+      bia-ultima-page-layout {
         align-items: stretch;
 
         div.mat-elevation-z2 {
@@ -64,7 +78,8 @@ bia-classic-layout {
   }
 }
 // classic-page-layout-theme
-bia-classic-page-layout {
+bia-classic-page-layout,
+bia-ultima-page-layout {
   > div {
     background-color: $biaBgColor;
   }
@@ -127,5 +142,68 @@ bia-view-list {
   }
   .pi pi-edit {
     font-size: 1.3em;
+  }
+}
+
+bia-ultima-layout {
+  --footer-height: 4rem;
+}
+
+.layout-container {
+  &.env-dev {
+    --topbar-start-bg: #{color-mix(
+        in srgb,
+        $biaMainBarColor 100%,
+        $biaBlue 100%
+      )};
+    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaBlue 100%)};
+
+    .layout-menu li.active-menuitem > a {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  &.env-int {
+    --topbar-start-bg: #{color-mix(
+        in srgb,
+        $biaMainBarColor 100%,
+        $biaGreen 100%
+      )};
+    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaGreen 100%)};
+
+    .layout-menu li.active-menuitem > a {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  &.env-uat {
+    --topbar-start-bg: #{color-mix(
+        in srgb,
+        $biaMainBarColor 100%,
+        $biaOrange 100%
+      )};
+    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaOrange 100%)};
+
+    .layout-menu li.active-menuitem > a {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  &.env-pra {
+    --topbar-start-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaRed 100%)};
+    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaRed 100%)};
+
+    .layout-menu li.active-menuitem > a {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+  &.env-ppd {
+    --topbar-start-bg: #{color-mix(
+        in srgb,
+        $biaMainBarColor 100%,
+        $biaYellow 100%
+      )};
+    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaYellow 100%)};
+
+    .layout-menu li.active-menuitem > a {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
   }
 }

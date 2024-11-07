@@ -3,4 +3,5 @@ export interface BiaNavigation {
   labelKey: string;
   children?: BiaNavigation[];
   permissions?: string[];
+  icon?: string;
 }

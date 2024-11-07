@@ -12,15 +12,12 @@ import {
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { MenuItem, Message } from 'primeng/api';
+import { MegaMenuItem, MenuItem, Message } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { STORAGE_THEME_KEY } from 'src/app/core/bia-core/services/bia-theme.service';
-import {
-  BiaTranslationService,
-  STORAGE_CULTURE_KEY,
-} from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
+import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
 import {
   Notification,
   NotificationData,
@@ -32,7 +29,7 @@ import { THEME_DARK, THEME_LIGHT } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
 import { BiaNavigation } from '../../../model/bia-navigation';
-import { BiaClassicLayoutService } from '../classic-layout/bia-classic-layout.service';
+import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bia-classic-header',
@@ -76,7 +73,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   cssClassEnv: string;
   protected sub = new Subscription();
 
-  topBarMenuItems: any; // MenuItem[]; // bug v9 primeNG
+  topBarMenuItems: MegaMenuItem[];
   navMenuItems: MenuItem[];
   appIcon$: Observable<string>;
 
@@ -88,7 +85,8 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   notificationType = NotificationType;
 
   constructor(
-    public layoutService: BiaClassicLayoutService,
+    protected readonly biaTheme: BiaThemeService,
+    public layoutService: BiaLayoutService,
     public authService: AuthService,
     public translateService: TranslateService,
     protected platform: Platform,
@@ -117,6 +115,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
         }
       })
     );
+    this.buildTopBarMenu();
   }
 
   ngOnDestroy() {
@@ -174,19 +173,16 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     if (this.fullscreenMode === true) {
       this.layoutService.hideFooter();
       this.layoutService.hideBreadcrumb();
+      this.layoutService.state.fullscreen = true;
     } else {
       this.layoutService.showFooter();
       this.layoutService.showBreadcrumb();
+      this.layoutService.state.fullscreen = false;
     }
   }
 
   refresh() {
-    const culture = localStorage.getItem(STORAGE_CULTURE_KEY);
-    const theme = localStorage.getItem(STORAGE_THEME_KEY);
-    localStorage.clear();
-    if (culture !== null) localStorage.setItem(STORAGE_CULTURE_KEY, culture);
-    if (theme !== null) localStorage.setItem(STORAGE_THEME_KEY, theme);
-    sessionStorage.clear();
+    this.layoutService.clearSession();
     location.reload();
   }
 
@@ -199,6 +195,7 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
   }
 
   protected onChangeTheme(theme: string) {
+    this.biaTheme.changeTheme(theme);
     this.theme.emit(theme);
   }
 
@@ -217,38 +214,18 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
       translationKeys.push(menu.labelKey);
     });
 
-    this.navMenuItems = [];
-    this.navigations.forEach(menu => {
-      const childrenMenuItem: MenuItem[] = [];
-      if (menu.children) {
-        menu.children.forEach(child => {
-          childrenMenuItem.push({
-            id: child.labelKey,
-            routerLink: child.path,
-          });
-        });
-      }
-      this.navMenuItems.push({
-        id: menu.labelKey,
-        routerLink: menu.path,
-        items: childrenMenuItem.length > 0 ? childrenMenuItem : undefined,
-      });
-    });
+    this.navMenuItems = this.layoutService.mapNavigationToMenuItems(
+      this.navigations
+    );
 
     this.sub.add(
       this.translateService.stream(translationKeys).subscribe(translations => {
-        this.processMenuTranslation(this.navMenuItems, translations);
+        this.layoutService.processMenuTranslation(
+          this.navMenuItems,
+          translations
+        );
       })
     );
-  }
-  processMenuTranslation(children: MenuItem[], translations: any) {
-    for (const item of children) {
-      if (item.separator) continue;
-      item.label = item.id == undefined ? '---' : translations[item.id];
-      if (item.items) {
-        this.processMenuTranslation(item.items, translations);
-      }
-    }
   }
 
   buildTopBarMenu() {
@@ -268,7 +245,6 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.translateService.stream(translationKeys).subscribe(translations => {
         const menuItemLang: MenuItem[] = [];
-
         if (this.supportedLangs) {
           this.supportedLangs.forEach(lang => {
             menuItemLang.push({
@@ -318,5 +294,13 @@ export class ClassicHeaderComponent implements OnInit, OnDestroy {
         ];
       })
     );
+  }
+
+  get showToggleStyle(): boolean {
+    return this.layoutService.configDisplay().showToggleStyle;
+  }
+
+  toggleStyle() {
+    this.layoutService.toggleStyle();
   }
 }

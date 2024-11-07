@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum EnvironmentType {
+  DEV = 'DEV',
   INT = 'INT',
   UAT = 'UAT',
   PRA = 'PRA',
+  PPD = 'PPD',
   PRD = 'PRD',
 }
 
@@ -11,6 +13,7 @@ export interface AppSettings {
   environment: Environment;
   cultures: Culture[];
   monitoringUrl: string;
+  profileConfiguration?: ProfileConfiguration;
 }
 
 export interface Environment {
@@ -57,4 +60,9 @@ export interface TokenConf {
   relativeUrl: string;
   clientId: string;
   grantType: string;
+}
+
+export interface ProfileConfiguration {
+  urlProfileImage: string;
+  urlEditProfileImage: string;
 }

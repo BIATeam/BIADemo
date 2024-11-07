@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FilterMetadata } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { TABLE_FILTER_GLOBAL } from '../../constants';
+import { BiaLayoutService } from '../components/layout/services/layout.service';
 import { BiaTableComponent } from '../components/table/bia-table/bia-table.component';
 import { clone } from '../utils';
 
@@ -100,5 +101,31 @@ export class TableHelperService {
       elemCopy.value = null;
     }
     return elemCopy;
+  }
+
+  public getFillScrollHeightValue(
+    layoutService: BiaLayoutService,
+    offset?: string
+  ): string {
+    let height: string;
+    if (layoutService._config.classicStyle) {
+      height = layoutService.state.fullscreen
+        ? `100vh - 240px`
+        : `100vh - 460px`;
+    } else {
+      if (layoutService.state.fullscreen) {
+        height = `100vh - 72px - 11.5rem`;
+      } else {
+        height = `100vh - 72px - 18rem`;
+        height +=
+          layoutService._config.footerMode != 'overlay'
+            ? ' - var(--footer-height)'
+            : '';
+      }
+    }
+    if (offset) {
+      height += ` - ${offset}`;
+    }
+    return `calc(${height})`;
   }
 }

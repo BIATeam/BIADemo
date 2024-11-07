@@ -10,3 +10,20 @@
 @import './customs/input';
 @import './customs/paginator';
 @import './customs/badge';
+
+body {
+  --menu-bg: #{$biaPrimaryDisplayColor};
+  --topbar-bg: #{$biaPrimaryDisplayColor};
+  --topbar-start-bg: #{$biaPrimaryDarkDisplayColor};
+  --topbar-menu-button-bg: #f7a92a;
+  --topbar-menu-button-hover-bg: #cc8108;
+  --topbar-menu-button-text-color: #{$accentDarkColor};
+  --topbar-item-text-color: #{$accentTextColor};
+  --footer-bg: #{$biaPrimaryDisplayColor};
+  --footer-hover-bg: #{$biaPrimaryDarkDisplayColor};
+  --footer-item-text-color: #{$accentTextColor};
+}
+
+.layout-menu-dark {
+  --menu-bg: #{$biaPrimaryDisplayColor};
+}

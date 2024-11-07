@@ -1,0 +1,25 @@
+<div
+  class="layout-sidebar"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()">
+  <div class="layout-sidebar-top">
+    <div class="logos flex justify-content-center">
+      <a class="project-title" routerLink="/">
+        <img alt="appicon" class="app-logo" [src]="urlAppIcon" />
+        <div class="app-title">
+          <div>{{ appTitle }}</div>
+          <span class="project-version">&nbsp;v{{ version }}</span>
+        </div>
+      </a>
+    </div>
+    <div class="layout-sidebar-anchor p-link" (click)="anchor()"></div>
+  </div>
+  <bia-ultima-menu-profile
+    #menuProfileStart
+    [username]="username"
+    [login]="login"
+    [supportedLangs]="supportedLangs"></bia-ultima-menu-profile>
+  <div #menuContainer class="layout-menu-container">
+    <bia-ultima-menu [menuItems]="navMenuItems"></bia-ultima-menu>
+  </div>
+</div>
