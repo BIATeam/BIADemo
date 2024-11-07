@@ -1,0 +1,10 @@
+{
+  "docker.cli": "podman",
+  "docker.compose.cli": "podman-compose",
+  "docker.dockerfile.dir": "C:\\Path\\To\\Your\\Project\\Directory",
+  "docker.context.defaultPath": "C:\\Users\\<YourLogin>\\AppData\\Roaming\\Docker",
+  "docker.host": "unix:///run/user/$UID/podman/podman.sock",
+  "docker.certPath": "",
+  "docker.tlsVerify": "0",
+  "docker.apiVersion": "1.40"
+}

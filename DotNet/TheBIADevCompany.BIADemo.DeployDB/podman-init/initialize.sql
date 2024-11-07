@@ -1,0 +1,48 @@
+PRINT 'BEGIN Init'
+
+IF EXISTS (SELECT * FROM sys.databases WHERE name = 'BIADemo')
+BEGIN
+    PRINT 'DROP DATABASE BIADemo'
+    DROP DATABASE BIADemo;
+END;
+GO
+
+PRINT 'CREATE DATABASE BIADemo'
+CREATE DATABASE BIADemo;
+GO
+
+USE BIADemo;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = 'SQLUser_BIA_DEV_U')
+BEGIN
+    PRINT 'CREATE LOGIN SQLUser_BIA_DEV_U'
+    CREATE LOGIN SQLUser_BIA_DEV_U WITH PASSWORD = '<YourStrong!Passw0rd2>';
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'SQLUser_BIA_DEV_U')
+BEGIN
+    PRINT 'CREATE USER SQLUser_BIA_DEV_U'
+    CREATE USER SQLUser_BIA_DEV_U FOR LOGIN SQLUser_BIA_DEV_U;
+    EXEC sp_addrolemember 'db_owner', 'SQLUser_BIA_DEV_U';
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.server_principals WHERE name = 'SQLUser_BIA_DEV_RW')
+BEGIN
+    PRINT 'CREATE LOGIN SQLUser_BIA_DEV_RW'
+    CREATE LOGIN SQLUser_BIA_DEV_RW WITH PASSWORD = '<YourStrong!Passw0rd3>';
+END;
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.database_principals WHERE name = 'SQLUser_BIA_DEV_RW')
+BEGIN
+    PRINT 'CREATE USER SQLUser_BIA_DEV_RW'
+    CREATE USER SQLUser_BIA_DEV_RW FOR LOGIN SQLUser_BIA_DEV_RW;
+    EXEC sp_addrolemember 'db_datareader', 'SQLUser_BIA_DEV_RW';
+    EXEC sp_addrolemember 'db_datawriter', 'SQLUser_BIA_DEV_RW';
+END;
+GO
+
+PRINT 'END Init'

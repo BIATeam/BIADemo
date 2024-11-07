@@ -49,13 +49,13 @@
     <None Update="opt\app-root\ssl_dir\ca-bundle.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="opt\app-root\ssl_dir\front.prd.dc1.cloud.safran.crt">
+    <None Update="opt\app-root\ssl_dir\front.prd.dc1.cloud.TheBIADevCompany.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="usr\local\share\ca-certificates\ca-bundle.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="usr\local\share\ca-certificates\front.prd.dc1.cloud.safran.crt">
+    <None Update="usr\local\share\ca-certificates\front.prd.dc1.cloud.TheBIADevCompany.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

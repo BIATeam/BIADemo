@@ -1,5 +1,5 @@
-﻿// <copyright file="LogHelper.cs" company="Safran">
-// Copyright (c) Safran. All rights reserved.
+﻿// <copyright file="LogHelper.cs" company="BIA.Net">
+// Copyright (c) BIA.Net. All rights reserved.
 // </copyright>
 
 namespace BIA.Net.Core.Common.Helpers

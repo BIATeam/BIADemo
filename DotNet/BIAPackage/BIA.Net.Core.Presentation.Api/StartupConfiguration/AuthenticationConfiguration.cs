@@ -194,7 +194,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         private static IEnumerable<SecurityKey> RetrieveKeycloakKeySet(string certFileName)
         {
             // download key from the Keycloak wih this url:
-            // The URL might look like: https://biaeu-int-keycloak.mycompany/realms/BIA-Realm/protocol/openid-connect/certs
+            // The URL might look like: https://mykeycloak.mycompany/realms/BIA-Realm/protocol/openid-connect/certs
             JsonWebKeySet keySet = default;
             using (StreamReader streamReader = new StreamReader(certFileName))
             {
