@@ -131,7 +131,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new();
+            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new ();
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
