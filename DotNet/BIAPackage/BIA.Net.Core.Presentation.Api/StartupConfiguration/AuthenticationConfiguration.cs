@@ -127,6 +127,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         string certFileName = configuration.Authentication.Keycloak.Configuration.CertFileName;
                         if (!string.IsNullOrWhiteSpace(certFileName))
                         {
+                            // Set MetadataAddress to a dummy value to prevent automatic metadata fetching
+                            o.MetadataAddress = "about:blank";
+                            o.RequireHttpsMetadata = false;
+
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
                                 ValidIssuer = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority,
@@ -137,6 +141,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         }
                         else
                         {
+                            o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
                                 ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
