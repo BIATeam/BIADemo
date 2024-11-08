@@ -5,82 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Angular + npm start",
       "type": "msedge",
       "request": "launch",
-      "preLaunchTask": "angular: start",
+      "name": "Launch Edge against localhost",
       "url": "http://localhost:4200",
       "webRoot": "${workspaceFolder}/Angular"
-    },
-    {
-      "name": "Angular",
-      "type": "msedge",
-      "request": "launch",
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/Angular"
-    },
-    {
-      "name": "DotNet WebApi",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "dotnet: build debug api",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/TheBIADevCompany.BIADemo.Presentation.Api.dll",
-      "args": [
-        "--urls=http://localhost:32128",
-        "--pathbase=/BIADemo/WebApi",
-        "--hot-reload"
-      ],
-      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api",
-      "stopAtEntry": false,
-      "serverReadyAction": {
-        "action": "openExternally",
-        "pattern": "\\bNow listening on:\\s+(https?://\\S+:32128)",
-        "uriFormat": "%s/BIADemo/WebApi/swagger/index.html"
-      },
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_USE_POLLING_FILE_WATCHER": "true",
-        "ASPNETCORE_PATHBASE": "/BIADemo"
-      },
-      "sourceFileMap": {
-        "/": "${workspaceFolder}/"
-      }
-    },
-    {
-      "name": "DotNet Worker",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "dotnet: build debug worker",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/bin/Debug/net8.0/TheBIADevCompany.BIADemo.WorkerService.dll",
-      "args": ["--hot-reload"],
-      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService",
-      "stopAtEntry": false,
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_USE_POLLING_FILE_WATCHER": "true"
-      },
-      "console": "internalConsole"
-    },
-    {
-      "name": "DotNet DeployDB",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "dotnet: build debug deploy db",
-      "program": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/bin/Debug/net8.0/TheBIADevCompany.BIADemo.DeployDB.dll",
-      "args": ["--hot-reload"],
-      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB",
-      "stopAtEntry": false,
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_USE_POLLING_FILE_WATCHER": "true"
-      },
-      "console": "internalConsole"
-    }
-  ],
-  "compounds": [
-    {
-      "name": "Debug Full Stack",
-      "configurations": ["DotNet WebApi", "Angular + npm start"]
     }
   ]
 }
