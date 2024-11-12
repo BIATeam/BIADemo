@@ -283,6 +283,14 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template pTemplate="paginatorleft">
+      <bia-table-footer-controller
+        [length]="totalRecord"
+        [pageSize]="pageSize"
+        (pageSizeChange)="
+          onPageSizeValueChange($event)
+        "></bia-table-footer-controller>
+    </ng-template>
     <!-- EMPTY MESSAGE -->
     <ng-template pTemplate="emptymessage" let-columns>
       <tr>
