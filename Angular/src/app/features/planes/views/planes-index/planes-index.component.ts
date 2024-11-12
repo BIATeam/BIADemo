@@ -15,6 +15,7 @@ import { PlaneService } from '../../services/plane.service';
 export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
   @ViewChild(PlaneTableComponent, { static: false })
   crudItemTableComponent: PlaneTableComponent;
+
   /// BIAToolKit - Begin Partial PlaneIndexTsCanViewChildDeclaration Engine
   canViewEngines = false;
   /// BIAToolKit - End Partial PlaneIndexTsCanViewChildDeclaration Engine

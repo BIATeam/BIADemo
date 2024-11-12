@@ -16,6 +16,7 @@ export class CrudConfig {
   defaultViewPref: BiaTableState;
   optionFilter: any;
   useBulk: boolean;
+  useCompactMode?: boolean;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
@@ -35,6 +36,7 @@ export class CrudConfig {
     useOfflineMode = false,
     optionFilter = undefined,
     bulkMode,
+    useCompactMode = true,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig;
@@ -52,6 +54,7 @@ export class CrudConfig {
       useUpdate: boolean;
       useDelete: boolean;
     };
+    useCompactMode?: boolean;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -69,5 +72,6 @@ export class CrudConfig {
       bulkMode?.useDelete === true ||
       bulkMode?.useInsert === true ||
       bulkMode?.useUpdate === true;
+    this.useCompactMode = useCompactMode;
   }
 }

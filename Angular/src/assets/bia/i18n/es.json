@@ -86,6 +86,7 @@
     },
     "true": "verdadero",
     "useCalcMode": "Edición en línea",
+    "useCompactMode": "Pantalla compacta",
     "usePopup": "Usar popups",
     "useSignalR": "Siempre actualizado",
     "useView": "Vistas",
