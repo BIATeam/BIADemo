@@ -44,12 +44,10 @@
       </bia-table-header>
       <bia-table-controller
         [defaultPageSize]="defaultPageSize"
-        [length]="(totalCount$ | async) ?? 0"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
         (filter)="searchGlobalChanged($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
         (toggleSearch)="onToggleSearch()"
         (viewChange)="onViewChange($event)"
         [tableStateKey]="tableStateKey"
@@ -92,6 +90,7 @@
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
         [configuration]="crudConfiguration.fieldsConfig"
         [showColSearch]="showColSearch"
         [globalSearchValue]="globalSearchValue"
@@ -116,6 +115,7 @@
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
         [configuration]="crudConfiguration.fieldsConfig"
         [showColSearch]="showColSearch"
         [globalSearchValue]="globalSearchValue"

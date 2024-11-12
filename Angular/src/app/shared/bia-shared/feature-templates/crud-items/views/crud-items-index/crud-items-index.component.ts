@@ -51,6 +51,16 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+
+  _showTableController = true;
+
+  get showTableController(): boolean {
+    return this._showTableController;
+  }
+  set showTableController(value: boolean) {
+    this._showTableController = value;
+  }
+
   public get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
@@ -111,9 +121,15 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
   }
 
+  toggleTableControllerVisibility() {
+    this.showTableController = !this.showTableController;
+  }
+
   getFillScrollHeightValue(offset?: string) {
     return this.tableHelperService.getFillScrollHeightValue(
       this.layoutService,
+      this.crudConfiguration.useCompactMode ?? false,
+      this.showTableController ?? true,
       offset
     );
   }
@@ -137,6 +153,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudConfiguration.usePopup = e;
     this.usePopupConfig(true);
   }
+
+  useCompactModeChange(e: boolean) {
+    this.crudConfiguration.useCompactMode = e;
+  }
+
   protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView
       ? this.crudConfiguration.tableStateKey

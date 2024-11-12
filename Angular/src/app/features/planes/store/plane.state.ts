@@ -4,6 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
+import { Plane } from '../model/plane';
 import { planeCRUDConfiguration } from '../plane.constants';
 import * as fromPlanes from './planes-reducer';
 
@@ -40,7 +41,7 @@ export namespace FeaturePlanesStore {
 
   export const getCurrentPlane = createSelector(
     getPlanesEntitiesState,
-    state => state.currentPlane
+    state => state.currentItem ?? <Plane>{}
   );
 
   export const getLastLazyLoadEvent = createSelector(
