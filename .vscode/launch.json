@@ -5,18 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Angular",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/Angular",
+      "sourceMaps": true
+    },
+    {
       "name": "Angular + npm start",
       "type": "msedge",
       "request": "launch",
       "preLaunchTask": "angular: start",
       "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}/Angular"
+      "webRoot": "${workspaceFolder}/Angular",
+      "sourceMaps": true
     },
     {
-      "name": "Angular",
-      "type": "msedge",
-      "request": "launch",
-      "url": "http://localhost:4200",
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "urlFilter": "http://localhost:4200/*",
       "webRoot": "${workspaceFolder}/Angular"
     },
     {
@@ -30,7 +40,7 @@
         "--pathbase=/BIADemo/WebApi",
         "--hot-reload"
       ],
-      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api",
+      "cwd": "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/bin/Debug/net8.0/",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
@@ -40,10 +50,8 @@
       "env": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_USE_POLLING_FILE_WATCHER": "true",
-        "ASPNETCORE_PATHBASE": "/BIADemo"
-      },
-      "sourceFileMap": {
-        "/": "${workspaceFolder}/"
+        "ASPNETCORE_PATHBASE": "/BIADemo",
+        "ASPNETCORE_URLS": "http://localhost:32128/"
       }
     },
     {
