@@ -334,12 +334,10 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
         changes.viewPreference.currentValue
       );
 
-      setTimeout(
-        () =>
-          this.pageSizeChange.emit(
-            viewPreference.rows ? viewPreference.rows : DEFAULT_PAGE_SIZE
-          ),
-        1000
+      setTimeout(() =>
+        this.pageSizeChange.emit(
+          viewPreference.rows ? viewPreference.rows : DEFAULT_PAGE_SIZE
+        )
       );
 
       // compatibility switch sort multiple to single
