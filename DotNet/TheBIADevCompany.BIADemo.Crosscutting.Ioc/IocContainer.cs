@@ -34,7 +34,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.AspNetCore.Http;
     using TheBIADevCompany.BIADemo.Application.User;
 
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+
+    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
