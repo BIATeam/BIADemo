@@ -20,7 +20,7 @@ namespace BIA.Net.Analyzer.CodeFixes
         public string DiagnosticId => "BIA001";
 
         /// <inheritdoc/>
-        public string Title => "Remove forbidden Domain layer reference";
+        public string Title => "BIA.Net - remove forbidden Domain layer reference";
 
         /// <inheritdoc/>
         public async Task Register(CodeFixContext codeFixContext)
