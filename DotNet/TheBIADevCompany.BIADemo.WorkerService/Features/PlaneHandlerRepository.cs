@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
     using System.Configuration;
     using System.Data.Common;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -25,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <summary>
         /// The client for hub service.
         /// </summary>
-        private readonly IClientForHubRepository clientForHubService = null;
+        private readonly IClientForHubService clientForHubService = null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PlaneHandlerRepository"/> class.
@@ -34,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService.Features
         /// <param name="configuration">the project configuration.</param>
         /// <param name="clientForHubService">the client hub service.</param>
         /// <param name="serviceProvider">the service provider.</param>
-        public PlaneHandlerRepository(IConfiguration configuration, IClientForHubRepository clientForHubService, IServiceProvider serviceProvider)
+        public PlaneHandlerRepository(IConfiguration configuration, IClientForHubService clientForHubService, IServiceProvider serviceProvider)
             : base(
                   serviceProvider,
                   configuration.GetConnectionString("BIADemoDatabase"),

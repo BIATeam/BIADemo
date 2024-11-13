@@ -62,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         public static void Configure(IHost host)
         {
 #if BIA_FRONT_FEATURE
-            CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
+            host.Services.GetRequiredService<AuditFeature>().UseAuditFeatures(host.Services);
 #endif
         }
 

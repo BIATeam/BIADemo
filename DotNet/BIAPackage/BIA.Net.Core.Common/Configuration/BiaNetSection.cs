@@ -83,6 +83,5 @@ namespace BIA.Net.Core.Common.Configuration
         /// Gets or sets the cultures configuration.
         /// </summary>
         public IEnumerable<Culture> Cultures { get; set; }
-
     }
 }

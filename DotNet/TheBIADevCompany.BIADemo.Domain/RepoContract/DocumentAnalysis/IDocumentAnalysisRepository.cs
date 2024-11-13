@@ -8,7 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis
     using System.Collections.Generic;
     using System.IO;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
-    using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models;
 
     /// <summary>
     /// Public interface for all document analysis repositories.

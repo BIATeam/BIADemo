@@ -8,17 +8,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
-#if UseHubForClientInNotification
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -35,10 +30,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// The notification application service.
         /// </summary>
         private readonly INotificationAppService notificationService;
-        private readonly IPrincipal principal;
+        private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
 #if UseHubForClientInNotification
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInNotification
@@ -46,23 +41,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// </summary>
         /// <param name="notificationService">The notification application service.</param>
-        /// <param name="principal">The current user.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public NotificationsController(INotificationAppService notificationService, IPrincipal principal, IClientForHubRepository clientForHubService)
+        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
+        public NotificationsController(INotificationAppService notificationService, IClientForHubService clientForHubService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// </summary>
         /// <param name="notificationService">The notification application service.</param>
-        /// <param name="principal">The current user.</param>
-        public NotificationsController(INotificationAppService notificationService, IPrincipal principal)
+        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
+        public NotificationsController(INotificationAppService notificationService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
 #endif
         {
 #if UseHubForClientInNotification
             this.clientForHubService = clientForHubService;
 #endif
             this.notificationService = notificationService;
-            this.principal = principal;
+            this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
 
         /// <summary>
@@ -94,7 +89,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.notificationService.GetRangeAsync(filters, accessMode: AccessMode.All);
+            var (results, total) = await this.notificationService.GetRangeWithAllAccessAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -340,7 +335,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Notification
         [Authorize(Roles = Rights.Notifications.ListAccess)]
         public async Task<IActionResult> GetUnreadIds()
         {
-            int userId = (this.principal as BiaClaimsPrincipal).GetUserId();
+            int userId = this.biaClaimsPrincipalService.GetUserId();
             try
             {
                 var dto = await this.notificationService.GetUnreadIds(userId);

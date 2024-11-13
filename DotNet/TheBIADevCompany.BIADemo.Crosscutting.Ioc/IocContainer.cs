@@ -23,16 +23,28 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
+    using System.Security.Principal;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Service;
+    using Microsoft.AspNetCore.Http;
     using TheBIADevCompany.BIADemo.Application.User;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+
+    // End BIADemo
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+
+    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories.DocumentAnalysis;
+
+    // End BIADemo
 
     /// <summary>
     /// The IoC Container.
@@ -60,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
-            ConfigureDomainContainer(collection);
+            ConfigureDomainContainer(collection, biaNetSection);
             ConfigureApplicationContainer(collection, isApi);
 
             if (!isUnitTest)
@@ -99,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
         }
 
-        private static void ConfigureDomainContainer(IServiceCollection collection)
+        private static void ConfigureDomainContainer(IServiceCollection collection, BiaNetSection biaNetSection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -114,6 +126,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddScoped(type);
             }
+
+            collection.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            collection.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString(), biaNetSection.Cultures));
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
@@ -169,15 +184,15 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
             collection.AddTransient<IMailRepository, MailRepository>();
+
             collection.AddTransient<IClientForHubRepository, SignalRClientForHubRepository>();
 
             collection.AddHttpClient<IIdentityProviderRepository, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
 
-            collection.AddSingleton<PdfAnalysisRepository>();
-            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, DocumentAnalysisRepositoryFactory>();
-
             // Begin BIADemo
             collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+            collection.AddSingleton<PdfAnalysisRepository>();
+            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, DocumentAnalysisRepositoryFactory>();
 
             // End BIADemo
 #endif

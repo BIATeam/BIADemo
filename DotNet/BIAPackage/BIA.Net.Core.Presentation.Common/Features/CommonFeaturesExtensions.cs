@@ -7,7 +7,6 @@ namespace BIA.Net.Core.Presentation.Common.Features
     using System.Diagnostics.CodeAnalysis;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.CommonFeature;
-    using BIA.Net.Core.Domain.RepoContract;
     using Community.Microsoft.Extensions.Caching.PostgreSql;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -56,17 +55,6 @@ namespace BIA.Net.Core.Presentation.Common.Features
             services.AddMemoryCache();
 
             return services;
-        }
-
-        /// <summary>
-        /// Use Bia Common Features.
-        /// </summary>
-        /// <typeparam name="TAuditFeature">the AuditFeature type.</typeparam>
-        /// <param name="services">the services.</param>
-        public static void UseBiaCommonFeatures<TAuditFeature>(IServiceProvider services)
-            where TAuditFeature : IAuditFeature
-        {
-            services.GetRequiredService<TAuditFeature>().UseAuditFeatures(services);
         }
     }
 }

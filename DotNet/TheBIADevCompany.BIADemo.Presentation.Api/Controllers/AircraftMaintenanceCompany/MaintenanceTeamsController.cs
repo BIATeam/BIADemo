@@ -9,21 +9,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInMaintenanceTeam
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInMaintenanceTeam
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage MaintenanceTeams.
@@ -39,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         private readonly IMaintenanceTeamAppService maintenanceTeamAppService;
 
 #if UseHubForClientInMaintenanceTeam
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInMaintenanceTeam
@@ -49,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         /// <param name="maintenanceTeamAppService">The MaintenanceTeam application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MaintenanceTeamsController(
-            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubRepository clientForHubService)
+            IMaintenanceTeamAppService maintenanceTeamAppService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="MaintenanceTeamsController"/> class.
@@ -76,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.AircraftMaintena
         [Authorize(Roles = Rights.MaintenanceTeams.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<MaintenanceTeam>.Filter(filters));
+            var (results, total) = await this.maintenanceTeamAppService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }

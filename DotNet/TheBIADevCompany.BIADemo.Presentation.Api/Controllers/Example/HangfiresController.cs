@@ -6,9 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
-    using System.Security.Principal;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Hangfire;
@@ -25,16 +24,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     /// </summary>
     public class HangfiresController : BiaControllerBase
     {
-        private readonly BiaClaimsPrincipal principal;
+        private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
-        /// <param name="principal">The principal.</param>
-        public HangfiresController(
-            IPrincipal principal)
+        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService)
         {
-            this.principal = principal as BiaClaimsPrincipal;
+            this.biaClaimsPrincipalService = biaClaimsPrincipalService;
         }
 
         /// <summary>
@@ -82,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             try
             {
                 var client = new BackgroundJobClient();
-                client.Create<BiaDemoTestHangfireService>(x => x.RandomReviewPlane(teamId, this.principal.GetUserData<UserDataDto>().GetCurrentTeam((int)TeamTypeId.Site), this.principal.GetUserId(), null), new EnqueuedState());
+                client.Create<BiaDemoTestHangfireService>(x => x.RandomReviewPlane(teamId, this.biaClaimsPrincipalService.GetUserData<UserDataDto>().GetCurrentTeam((int)TeamTypeId.Site), this.biaClaimsPrincipalService.GetUserId(), null), new EnqueuedState());
 
                 return this.Ok();
             }

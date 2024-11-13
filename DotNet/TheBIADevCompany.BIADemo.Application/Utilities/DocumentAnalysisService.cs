@@ -8,8 +8,8 @@ namespace TheBIADevCompany.BIADemo.Application.Utilities
     using System;
     using System.IO;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Domain.DocumentAnalysis.Models;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
-    using TheBIADevCompany.BIADemo.Domain.Utilities.DocumentAnalysis;
 
     /// <summary>
     /// Service for document analysis.

@@ -6,10 +6,11 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
 
     /// <summary>
     /// The interface defining the notification application service.
@@ -36,5 +37,12 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         /// <param name="userId">the user Id.</param>
         /// <returns>The list of int.</returns>
         Task<List<int>> GetUnreadIds(int userId);
+
+        /// <summary>
+        /// Retrieve notification with all access.
+        /// </summary>
+        /// <param name="pagingFilterFormatDto">The paging filter.</param>
+        /// <returns><see cref="IEnumerable{NotificationListItemDto}"/> results and total as int.</returns>
+        Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto);
     }
 }

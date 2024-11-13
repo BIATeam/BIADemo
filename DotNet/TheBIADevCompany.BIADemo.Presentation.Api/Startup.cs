@@ -5,12 +5,9 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
-    using System.Security.Principal;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
-    using BIA.Net.Core.Domain.Authentication;
-    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -23,9 +20,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-#if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-#endif
 
     /// <summary>
     /// The startup class.
@@ -83,8 +77,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 
             // Used to get a unique identifier for each HTTP request and track it.
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
-            services.AddTransient<UserContext>(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString(), this.biaNetSection.Cultures));
 
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
@@ -95,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             // Configure IoC for classes not in the API project.
             IocContainer.ConfigureContainer(services, this.configuration, true);
 #if BIA_BACK_TO_BACK_AUTH
-            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, Controllers.Bia.BiaClaimsTransformation>();
+            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, Application.BiaClaimsTransformation>();
 #endif
         }
 
@@ -139,13 +131,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthentication();
             app.UseAuthorization();
 
-            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new();
+            HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new ();
             hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
-#if BIA_FRONT_FEATURE
-            CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(app.ApplicationServices);
-#endif
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
     }

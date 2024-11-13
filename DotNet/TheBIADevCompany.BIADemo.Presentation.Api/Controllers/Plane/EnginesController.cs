@@ -9,12 +9,12 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+#if UseHubForClientInEngine
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
-#if UseHubForClientInEngine
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -22,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage Engines.
@@ -38,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         private readonly IEngineAppService engineService;
 
 #if UseHubForClientInEngine
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInEngine
@@ -48,7 +47,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         /// <param name="engineService">The engine application service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public EnginesController(
-            IEngineAppService engineService, IClientForHubRepository clientForHubService)
+            IEngineAppService engineService, IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="EnginesController"/> class.
@@ -75,7 +74,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [Authorize(Roles = Rights.Engines.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.engineService.GetRangeAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            var (results, total) = await this.engineService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -303,7 +302,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Plane
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.engineService.GetCsvAsync(filters, specification: EngineSpecification.SearchGetAll(filters));
+            byte[] buffer = await this.engineService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Engines{BiaConstants.Csv.Extension}");
         }
 

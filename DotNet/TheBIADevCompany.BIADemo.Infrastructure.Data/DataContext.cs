@@ -12,23 +12,23 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 #endif
 

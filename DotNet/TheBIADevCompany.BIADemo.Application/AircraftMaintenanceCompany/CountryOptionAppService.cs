@@ -5,10 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers;
 
     /// <summary>
     /// The application service used for country option.

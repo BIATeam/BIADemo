@@ -17,8 +17,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// The Audit Feature.
@@ -32,7 +32,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         /// </summary>
         /// <param name="configuration">the application configuration.</param>
         /// <param name="commonFeaturesConfigurationOptions">The common features configuration options.</param>
-        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions)
+        /// <param name="serviceProvider">The <see cref="IServiceProvider"/>.</param>
+        public AuditFeature(IConfiguration configuration, IOptions<CommonFeatures> commonFeaturesConfigurationOptions, IServiceProvider serviceProvider)
         {
             Audit.Core.Configuration.AuditDisabled = true;
             AuditConfiguration auditConfiguration = commonFeaturesConfigurationOptions.Value.AuditConfiguration;
@@ -41,6 +42,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
             // Audit
             if (this.isActive)
             {
+                this.UseAuditFeatures(serviceProvider);
                 Audit.Core.Configuration.AuditDisabled = false;
 
                 // Log some Audit in dedicated table and all other in AuditLog
