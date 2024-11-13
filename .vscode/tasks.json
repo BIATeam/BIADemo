@@ -2,7 +2,51 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build Api",
+      "label": "angular: start",
+      "type": "npm",
+      "script": "start",
+      "options": {
+        "cwd": "${workspaceFolder}/Angular"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    },
+    {
+      "label": "angular: test",
+      "type": "npm",
+      "script": "test",
+      "options": {
+        "cwd": "${workspaceFolder}/Angular"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "pattern": "$tsc",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "(.*?)"
+          },
+          "endsPattern": {
+            "regexp": "bundle generation complete"
+          }
+        }
+      }
+    },
+    {
+      "label": "dotnet: build debug api",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -14,7 +58,7 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "build Worker",
+      "label": "dotnet: build debug worker",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -26,25 +70,48 @@
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "watch",
+      "label": "dotnet: build debug deploy db",
       "command": "dotnet",
       "type": "process",
       "args": [
-        "watch",
-        "run",
-        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "build",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "Build Release",
+      "label": "dotnet: build release api",
       "command": "dotnet",
       "type": "process",
       "args": [
         "build",
         "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build release worker",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.WorkerService/TheBIADevCompany.BIADemo.WorkerService.csproj",
+        "-c",
+        "Release"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "dotnet: build release deploy db",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB/TheBIADevCompany.BIADemo.DeployDB.csproj",
         "-c",
         "Release"
       ],

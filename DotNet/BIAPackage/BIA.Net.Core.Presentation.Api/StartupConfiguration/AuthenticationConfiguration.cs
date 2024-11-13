@@ -127,6 +127,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         string certFileName = configuration.Authentication.Keycloak.Configuration.CertFileName;
                         if (!string.IsNullOrWhiteSpace(certFileName))
                         {
+                            // Set MetadataAddress to a dummy value to prevent automatic metadata fetching
+                            o.MetadataAddress = "about:blank";
+                            o.RequireHttpsMetadata = false;
+
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
                                 ValidIssuer = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority,
@@ -137,6 +141,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         }
                         else
                         {
+                            o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+
                             o.TokenValidationParameters = new TokenValidationParameters
                             {
                                 ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
@@ -188,7 +194,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         private static IEnumerable<SecurityKey> RetrieveKeycloakKeySet(string certFileName)
         {
             // download key from the Keycloak wih this url:
-            // The URL might look like: https://biaeu-int-keycloak.mycompany/realms/BIA-Realm/protocol/openid-connect/certs
+            // The URL might look like: https://mykeycloak.mycompany/realms/BIA-Realm/protocol/openid-connect/certs
             JsonWebKeySet keySet = default;
             using (StreamReader streamReader = new StreamReader(certFileName))
             {

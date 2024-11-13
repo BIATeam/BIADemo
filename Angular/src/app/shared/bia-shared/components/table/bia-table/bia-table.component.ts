@@ -16,7 +16,10 @@ import { PrimeTemplate, TableState } from 'primeng/api';
 import { Table, TableLazyLoadEvent } from 'primeng/table';
 import { Observable, of, timer } from 'rxjs';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
-import { TABLE_FILTER_GLOBAL } from 'src/app/shared/constants';
+import {
+  DEFAULT_PAGE_SIZE,
+  TABLE_FILTER_GLOBAL,
+} from 'src/app/shared/constants';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
@@ -45,6 +48,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() pageSize: number;
   @Input() totalRecord: number;
   @Input() paginator = true;
+  @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() elements: any[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() reorderableColumns = true;
@@ -82,6 +86,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Output() loadLazy = new EventEmitter<TableLazyLoadEvent>();
   @Output() selectedElementsChanged = new EventEmitter<any[]>();
   @Output() stateSave = new EventEmitter<string>();
+  @Output() pageSizeChange = new EventEmitter<number>();
 
   @ViewChild('dt', { static: false }) table: Table | undefined;
 
@@ -299,9 +304,14 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     return columns;
   }
 
+  onPageSizeValueChange(pageSize: number) {
+    this.pageSizeChange.emit(Number(pageSize));
+  }
+
   protected onPageSizeChange(changes: SimpleChanges) {
     if (changes.pageSize && this.table) {
       this.table.onPageChange({ first: 0, rows: Number(this.pageSize) });
+      this.pageSizeChange.emit(Number(this.pageSize));
     }
   }
 
@@ -322,6 +332,12 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     ) {
       const viewPreference: BiaTableState = JSON.parse(
         changes.viewPreference.currentValue
+      );
+
+      setTimeout(() =>
+        this.pageSizeChange.emit(
+          viewPreference.rows ? viewPreference.rows : DEFAULT_PAGE_SIZE
+        )
       );
 
       // compatibility switch sort multiple to single

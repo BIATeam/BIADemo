@@ -105,26 +105,35 @@ export class TableHelperService {
 
   public getFillScrollHeightValue(
     layoutService: BiaLayoutService,
+    compactMode: boolean,
+    showTableController: boolean,
     offset?: string
   ): string {
     let height: string;
     if (layoutService._config.classicStyle) {
       height = layoutService.state.fullscreen
-        ? `100vh - 240px`
-        : `100vh - 460px`;
+        ? '100vh - 240px'
+        : '100vh - 460px';
     } else {
       if (layoutService.state.fullscreen) {
-        height = `100vh - 72px - 11.5rem`;
+        height = '100vh - 72px - 11.5rem';
       } else {
-        height = `100vh - 72px - 18rem`;
+        height = '100vh - 69px - 18.167rem';
         height +=
           layoutService._config.footerMode != 'overlay'
             ? ' - var(--footer-height)'
             : '';
       }
     }
+    if (compactMode) {
+      height += ' - 0.208rem + 58px';
+
+      if (!showTableController) {
+        height += ' + 2.545rem + 10px';
+      }
+    }
     if (offset) {
-      height += ` - ${offset}`;
+      height += ` ${offset}`;
     }
     return `calc(${height})`;
   }

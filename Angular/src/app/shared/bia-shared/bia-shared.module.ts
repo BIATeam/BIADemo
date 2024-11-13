@@ -108,6 +108,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
 import { BiaTableControllerComponent } from './components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from './components/table/bia-table-footer-controller/bia-table-footer-controller.component';
 import { BiaTableHeaderComponent } from './components/table/bia-table-header/bia-table-header.component';
 import { BiaTableInputComponent } from './components/table/bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from './components/table/bia-table-output/bia-table-output.component';
@@ -209,6 +210,7 @@ const COMPONENTS = [
   BiaCalcTableComponent,
   BiaTableHeaderComponent,
   BiaTableControllerComponent,
+  BiaTableFooterControllerComponent,
   LayoutComponent,
   PageLayoutComponent,
   PopupLayoutComponent,

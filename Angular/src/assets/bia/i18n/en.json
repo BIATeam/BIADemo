@@ -86,6 +86,7 @@
     },
     "true": "true",
     "useCalcMode": "Online editing",
+    "useCompactMode": "Compact display",
     "usePopup": "Use popups",
     "useSignalR": "Always up to date",
     "useView": "Views",
