@@ -4,10 +4,11 @@ import {
   setupElectronDeepLinking,
 } from '@capacitor-community/electron';
 import type { MenuItemConstructorOptions } from 'electron';
-import { app, MenuItem } from 'electron';
+import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
+import { SerialPort } from 'serialport';
 
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 
@@ -60,6 +61,8 @@ if (electronIsDev) {
   await myCapacitorApp.init();
   // Check for updates if we are in a packaged app.
   autoUpdater.checkForUpdatesAndNotify();
+
+  ipcMain.handle('get-usb-ports', getUsbPorts);
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
@@ -81,3 +84,24 @@ app.on('activate', async function () {
 });
 
 // Place all ipc or other electron api calls and custom functionality under this line
+async function getUsbPorts(): Promise<string[]> {
+  console.log('Request USB ports');
+  try {
+    // List all available serial ports
+    const ports = await SerialPort.list();
+    // Map the ports to a user-friendly format
+    const portDetails = ports.map(port => ({
+      path: port.path,
+      manufacturer: port.manufacturer || 'Unknown',
+      serialNumber: port.serialNumber || 'N/A',
+      pnpId: port.pnpId || 'N/A',
+      vendorId: port.vendorId || 'N/A',
+      productId: port.productId || 'N/A',
+    }));
+
+    return portDetails.map(pd => JSON.stringify(pd));
+  } catch (error) {
+    console.error('Error listing USB ports:', error);
+    throw new Error('Could not retrieve USB ports');
+  }
+}

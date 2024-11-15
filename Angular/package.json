@@ -25,7 +25,8 @@
     "styles": "npm run styles-theme-dark && npm run styles-theme-light && npm run styles-layout",
     "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
     "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
-    "stats": "npm run stats-compute && npm run stats-display"
+    "stats": "npm run stats-compute && npm run stats-display",
+    "electron": "npm run build && npx cap sync @capacitor-community/electron && npx cap open electron"
   },
   "private": true,
   "dependencies": {
