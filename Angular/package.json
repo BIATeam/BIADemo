@@ -26,7 +26,8 @@
     "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
     "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
     "stats": "npm run stats-compute && npm run stats-display",
-    "electron": "npm run build && npx cap sync @capacitor-community/electron && npx cap open electron"
+    "electron:build": "npm run build && npx cap sync @capacitor-community/electron && npx cap copy @capacitor-community/electron",
+    "electron:start": "npm run electron:build && npx cap open electron"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +42,7 @@
     "@angular/router": "17.3.12",
     "@angular/service-worker": "17.3.12",
     "@capacitor-community/electron": "^5.0.1",
+    "@capacitor-community/sqlite": "^6.0.2",
     "@capacitor/android": "^6.1.2",
     "@capacitor/core": "^6.1.2",
     "@microsoft/signalr": "6.0.25",
