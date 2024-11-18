@@ -14,5 +14,11 @@ contextBridge.exposeInMainWorld('electron', {
   },
   bia: {
     getUsbPorts: () => ipcRenderer.invoke('get-usb-ports'),
+    onUsbDeviceConnected: (callback: (device: any) => void) =>
+      ipcRenderer.on('usb-device-connected', (_, device) => callback(device)),
+    onUsbDeviceDisconnected: (callback: (device: any) => void) =>
+      ipcRenderer.on('usb-device-disconnected', (_, device) =>
+        callback(device)
+      ),
   },
 });

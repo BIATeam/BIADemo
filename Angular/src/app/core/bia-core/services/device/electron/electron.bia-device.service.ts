@@ -5,6 +5,14 @@ import { BiaDeviceService } from '../bia-device.service';
   providedIn: 'root',
 })
 export class ElectronBiaDeviceService implements BiaDeviceService {
+  onUsbDeviceConnected(callback: (device: any) => void): void {
+    (window as any).electron?.bia?.onUsbDeviceConnected(callback);
+  }
+
+  onUsbDeviceDisconnected(callback: (device: any) => void): void {
+    (window as any).electron?.bia?.onUsbDeviceDisconnected(callback);
+  }
+
   async getUsbPorts(): Promise<any[]> {
     try {
       const ports = await (window as any).electron?.bia?.getUsbPorts();

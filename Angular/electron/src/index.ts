@@ -91,3 +91,25 @@ async function getUsbPorts(): Promise<Device[]> {
     throw new Error('Could not retrieve USB ports : ' + error);
   }
 }
+
+usb.on('attach', device => {
+  console.log('Device attached:', device);
+  const deviceInfo = {
+    vendorId: device.deviceDescriptor.idVendor,
+    productId: device.deviceDescriptor.idProduct,
+  };
+  myCapacitorApp
+    .getMainWindow()
+    .webContents.send('usb-device-connected', deviceInfo);
+});
+
+usb.on('detach', device => {
+  console.log('Device detached:', device);
+  const deviceInfo = {
+    vendorId: device.deviceDescriptor.idVendor,
+    productId: device.deviceDescriptor.idProduct,
+  };
+  myCapacitorApp
+    .getMainWindow()
+    .webContents.send('usb-device-disconnected', deviceInfo);
+});
