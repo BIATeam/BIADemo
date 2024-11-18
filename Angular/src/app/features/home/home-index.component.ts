@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BiaOsBridge } from 'src/app/core/bia-core/os-bridges/bia-os-bridge';
 import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 
 @Component({
@@ -10,23 +9,9 @@ import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/se
 export class HomeIndexComponent implements OnInit, OnDestroy {
   ports: any[] = [];
 
-  constructor(
-    private layoutService: BiaLayoutService,
-    private osBridge: BiaOsBridge
-  ) {}
+  constructor(private layoutService: BiaLayoutService) {}
   ngOnInit(): void {
     this.layoutService.hideBreadcrumb();
-    this.osBridge.usb.getUsbPorts().then(x => {
-      this.ports = x.map(y => JSON.stringify(y));
-    });
-
-    this.osBridge.usb.onUsbDeviceConnected(device => {
-      console.log('Device Connected:', device);
-    });
-
-    this.osBridge.usb.onUsbDeviceDisconnected(device => {
-      console.log('Device Disconnected:', device);
-    });
   }
 
   ngOnDestroy(): void {
