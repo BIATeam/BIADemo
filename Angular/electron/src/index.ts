@@ -8,8 +8,8 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { Device, usb } from 'usb';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
+import { UsbService } from './usb/usb.service';
 
 // Graceful handling of unhandled errors.
 unhandled();
@@ -29,7 +29,7 @@ const capacitorFileConfig: CapacitorElectronConfig =
 
 // Initialize our app. You can pass menu templates into the app here.
 // const myCapacitorApp = new ElectronCapacitorApp(capacitorFileConfig);
-const myCapacitorApp = new ElectronCapacitorApp(
+const electronCapacitorApp = new ElectronCapacitorApp(
   capacitorFileConfig,
   trayMenuTemplate,
   appMenuBarMenuTemplate
@@ -37,7 +37,7 @@ const myCapacitorApp = new ElectronCapacitorApp(
 
 // If deeplinking is enabled then we will set it up here.
 if (capacitorFileConfig.electron?.deepLinkingEnabled) {
-  setupElectronDeepLinking(myCapacitorApp, {
+  setupElectronDeepLinking(electronCapacitorApp, {
     customProtocol:
       capacitorFileConfig.electron.deepLinkingCustomProtocol ??
       'mycapacitorapp',
@@ -46,7 +46,7 @@ if (capacitorFileConfig.electron?.deepLinkingEnabled) {
 
 // If we are in Dev mode, use the file watcher components.
 if (electronIsDev) {
-  setupReloadWatcher(myCapacitorApp);
+  setupReloadWatcher(electronCapacitorApp);
 }
 
 // Run Application
@@ -57,11 +57,9 @@ if (electronIsDev) {
   // TODO uncomment following when CORS errors resolved
   //setupContentSecurityPolicy(myCapacitorApp.getCustomURLScheme());
   // Initialize our app, build windows, and load content.
-  await myCapacitorApp.init();
+  await electronCapacitorApp.init();
   // Check for updates if we are in a packaged app.
   autoUpdater.checkForUpdatesAndNotify();
-
-  ipcMain.handle('get-usb-ports', getUsbPorts);
 })();
 
 // Handle when all of our windows are close (platforms have their own expectations).
@@ -77,39 +75,16 @@ app.on('window-all-closed', function () {
 app.on('activate', async function () {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (myCapacitorApp.getMainWindow().isDestroyed()) {
-    await myCapacitorApp.init();
+  if (electronCapacitorApp.getMainWindow().isDestroyed()) {
+    await electronCapacitorApp.init();
   }
 });
 
 // Place all ipc or other electron api calls and custom functionality under this line
-async function getUsbPorts(): Promise<Device[]> {
-  console.log('Request USB ports');
-  try {
-    return usb.getDeviceList();
-  } catch (error) {
-    throw new Error('Could not retrieve USB ports : ' + error);
-  }
+useUsbService(electronCapacitorApp);
+
+function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
+  const usbService = new UsbService(electronCapacitorApp);
+  usbService.registerListeners();
+  ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
 }
-
-usb.on('attach', device => {
-  console.log('Device attached:', device);
-  const deviceInfo = {
-    vendorId: device.deviceDescriptor.idVendor,
-    productId: device.deviceDescriptor.idProduct,
-  };
-  myCapacitorApp
-    .getMainWindow()
-    .webContents.send('usb-device-connected', deviceInfo);
-});
-
-usb.on('detach', device => {
-  console.log('Device detached:', device);
-  const deviceInfo = {
-    vendorId: device.deviceDescriptor.idVendor,
-    productId: device.deviceDescriptor.idProduct,
-  };
-  myCapacitorApp
-    .getMainWindow()
-    .webContents.send('usb-device-disconnected', deviceInfo);
-});
