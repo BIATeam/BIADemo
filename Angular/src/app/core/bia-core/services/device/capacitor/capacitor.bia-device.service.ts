@@ -5,7 +5,7 @@ import { BiaDeviceService } from '../bia-device.service';
   providedIn: 'root',
 })
 export class CapacitorBiaDeviceService implements BiaDeviceService {
-  getUsbPorts(): Promise<string[]> {
+  getUsbPorts(): Promise<any[]> {
     throw new Error('Method not implemented.');
   }
 }

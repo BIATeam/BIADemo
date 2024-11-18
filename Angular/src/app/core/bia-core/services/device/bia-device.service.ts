@@ -1,3 +1,3 @@
 export abstract class BiaDeviceService {
-  abstract getUsbPorts(): Promise<string[]>;
+  abstract getUsbPorts(): Promise<any[]>;
 }
