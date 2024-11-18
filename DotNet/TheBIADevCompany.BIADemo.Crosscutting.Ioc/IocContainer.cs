@@ -172,7 +172,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             collection.AddScoped<DataContextFactory>();
 #if BIA_FRONT_FEATURE
-            collection.AddSingleton<AuditFeature>();
+            collection.AddSingleton<IAuditFeature, AuditFeature>();
 #endif
         }
 
