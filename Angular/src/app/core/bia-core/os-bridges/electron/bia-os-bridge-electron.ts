@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BiaDeviceService } from '../bia-device.service';
+import { BiaOsBridge } from '../bia-os-bridge';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ElectronBiaDeviceService implements BiaDeviceService {
+export class BiaOsBridgeElectron implements BiaOsBridge {
   onUsbDeviceConnected(callback: (device: any) => void): void {
     (window as any).electron?.bia?.onUsbDeviceConnected(callback);
   }

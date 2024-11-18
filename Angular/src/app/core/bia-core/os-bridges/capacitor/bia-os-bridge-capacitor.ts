@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BiaDeviceService } from '../bia-device.service';
+import { BiaOsBridge } from '../bia-os-bridge';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CapacitorBiaDeviceService implements BiaDeviceService {
+export class BiaOsBridgeCapacitor implements BiaOsBridge {
   onUsbDeviceConnected(callback: (device: any) => void): void {
     throw new Error('Method not implemented.');
   }
