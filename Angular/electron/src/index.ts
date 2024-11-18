@@ -8,8 +8,7 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { SerialPort } from 'serialport';
-
+import { Device, usb } from 'usb';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 
 // Graceful handling of unhandled errors.
@@ -84,24 +83,11 @@ app.on('activate', async function () {
 });
 
 // Place all ipc or other electron api calls and custom functionality under this line
-async function getUsbPorts(): Promise<string[]> {
+async function getUsbPorts(): Promise<Device[]> {
   console.log('Request USB ports');
   try {
-    // List all available serial ports
-    const ports = await SerialPort.list();
-    // Map the ports to a user-friendly format
-    const portDetails = ports.map(port => ({
-      path: port.path,
-      manufacturer: port.manufacturer || 'Unknown',
-      serialNumber: port.serialNumber || 'N/A',
-      pnpId: port.pnpId || 'N/A',
-      vendorId: port.vendorId || 'N/A',
-      productId: port.productId || 'N/A',
-    }));
-
-    return portDetails.map(pd => JSON.stringify(pd));
+    return usb.getDeviceList();
   } catch (error) {
-    console.error('Error listing USB ports:', error);
-    throw new Error('Could not retrieve USB ports');
+    throw new Error('Could not retrieve USB ports : ' + error);
   }
 }

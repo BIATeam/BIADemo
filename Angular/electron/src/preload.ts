@@ -12,4 +12,7 @@ contextBridge.exposeInMainWorld('electron', {
     removeListener: (channel, listener) =>
       ipcRenderer.removeListener(channel, listener),
   },
+  bia: {
+    getUsbPorts: () => ipcRenderer.invoke('get-usb-ports'),
+  },
 });
