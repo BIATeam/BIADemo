@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Presentation.Api.Features;
@@ -20,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 
     /// <summary>
     /// The startup class.
@@ -137,7 +137,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt.SecretKey, jwtFactory) };
 
 #if BIA_FRONT_FEATURE
-            app.ApplicationServices.GetRequiredService<AuditFeature>().UseAuditFeatures(app.ApplicationServices);
+            app.ApplicationServices.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
 #endif
             app.UseBiaApiFeatures(this.biaNetSection.ApiFeatures, hangfireDashboardAuthorizations);
         }
