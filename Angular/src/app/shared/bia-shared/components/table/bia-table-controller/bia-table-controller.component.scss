@@ -1,5 +1,5 @@
 :host {
-  display: inline-block;
+  display: block;
   position: relative;
   left: -35px;
   width: calc(100% + 70px);
@@ -31,6 +31,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
+
 .bia-column-filter-icon {
   margin-top: 5px;
 }

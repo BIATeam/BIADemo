@@ -18,8 +18,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage sites.
@@ -63,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [Authorize(Roles = Rights.Sites.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.siteService.GetRangeAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
+            var (results, total) = await this.siteService.GetRangeAsync(filters);
 
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
 
@@ -260,7 +258,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [HttpPost("csv")]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
-            byte[] buffer = await this.siteService.GetCsvAsync(filters, specification: TeamAdvancedFilterSpecification<Site>.Filter(filters));
+            byte[] buffer = await this.siteService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + ";charset=utf-8", $"Sites{BiaConstants.Csv.Extension}");
         }
     }

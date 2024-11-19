@@ -1,10 +1,10 @@
 // Modules
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { PortalModule } from '@angular/cdk/portal';
-import { TranslateModule } from '@ngx-translate/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 // PrimeNG Modules
 import { AccordionModule } from 'primeng/accordion';
@@ -43,10 +43,10 @@ import { FieldsetModule } from 'primeng/fieldset';
 //    - npm install @fullcalendar/interaction
 //    - npm install @fullcalendar/timegrid
 // import { InputMaskModule } from 'primeng/inputmask';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { ListboxModule } from 'primeng/listbox';
 import { MegaMenuModule } from 'primeng/megamenu';
 // import { MenuModule } from 'primeng/menu';
@@ -79,52 +79,53 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 
 // Component
-import { BiaTableHeaderComponent } from './components/table/bia-table-header/bia-table-header.component';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
+import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
+import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
+import { BiaOnlineOfflineIconModule } from './components/bia-online-offline-icon/bia-online-offline-icon.module';
+import { BiaTeamSelectorModule } from './components/bia-team-selector/bia-team-selector.module';
+import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
+import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
+import { BiaInputComponent } from './components/form/bia-input/bia-input.component';
+import { BiaOutputComponent } from './components/form/bia-output/bia-output.component';
+import { HangfireContainerComponent } from './components/hangfire-container/hangfire-container.component';
 import { ClassicFooterComponent } from './components/layout/classic-footer/classic-footer.component';
 import { ClassicHeaderComponent } from './components/layout/classic-header/classic-header.component';
 import { ClassicLayoutComponent } from './components/layout/classic-layout/classic-layout.component';
 import { ClassicPageLayoutComponent } from './components/layout/classic-page-layout/classic-page-layout.component';
-import { IeWarningComponent } from './components/layout/classic-header/ie-warning/ie-warning.component';
-import { SpinnerComponent } from './components/spinner/spinner.component';
-import { BiaTableControllerComponent } from './components/table/bia-table-controller/bia-table-controller.component';
-import { BiaTableComponent } from './components/table/bia-table/bia-table.component';
+import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
+import { IeWarningComponent } from './components/layout/ie-warning/ie-warning.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { PageLayoutComponent } from './components/layout/page-layout.component';
-import { ViewListComponent } from './features/view/views/view-list/view-list.component';
-import { ViewDialogComponent } from './features/view/views/view-dialog/view-dialog.component';
-import { ViewTeamTableComponent } from './features/view/components/view-team-table/view-team-table.component';
-import { ViewUserTableComponent } from './features/view/components/view-user-table/view-user-table.component';
-import { StoreModule } from '@ngrx/store';
-import { reducers } from './features/view/store/view.state';
-import { reducers as notificationReducers } from '../../domains/bia-domains/notification/store/notification.state';
-import { EffectsModule } from '@ngrx/effects';
-import { ViewsEffects } from './features/view/store/views-effects';
-import { ViewFormComponent } from './features/view/components/view-form/view-form.component';
-import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
 import { PopupLayoutComponent } from './components/layout/popup-layout/popup-layout.component';
-import { FullPageLayoutComponent } from './components/layout/fullpage-layout/fullpage-layout.component';
-import { PluckPipe } from './pipes/pluck.pipe';
-import { JoinPipe } from './pipes/join.pipe';
-import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
-import { TranslateFieldPipe } from './pipes/translate-field.pipe';
-import { FormatValuePipe } from './pipes/format-value.pipe';
-import { ClassicTeamSelectorComponent } from './components/layout/classic-team-selector/classic-team-selector.component';
-import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
-import { BiaOnlineOfflineIconComponent } from './components/bia-online-offline-icon/bia-online-offline-icon.component';
-import { IsNotCurrentTeamPipe } from './components/notification-team-warning/is-not-current-team/is-not-current-team.pipe';
-import { TeamListPipe } from './components/notification-team-warning/team-list/team-list.pipe';
-import { NotificationTeamWarningComponent } from './components/notification-team-warning/notification-team-warning.component';
-import { HangfireContainerComponent } from './components/hangfire-container/hangfire-container.component';
-import { SafeUrlPipe } from './pipes/safe-url.pipe';
-import { BiaFormComponent } from './components/form/bia-form/bia-form.component';
-import { BiaInputComponent } from './components/form/bia-input/bia-input.component';
+import { BiaScrollingNotificationComponent } from './components/layout/scrolling-notification/scrolling-notification.component';
+import { BiaUltimaLayoutModule } from './components/layout/ultima/ultima-layout.module';
+import { NotificationTeamWarningModule } from './components/notification-team-warning/notification-team-warning.module';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { BiaCalcTableComponent } from './components/table/bia-calc-table/bia-calc-table.component';
+import { BiaTableControllerComponent } from './components/table/bia-table-controller/bia-table-controller.component';
+import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
+import { BiaTableFooterControllerComponent } from './components/table/bia-table-footer-controller/bia-table-footer-controller.component';
+import { BiaTableHeaderComponent } from './components/table/bia-table-header/bia-table-header.component';
 import { BiaTableInputComponent } from './components/table/bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from './components/table/bia-table-output/bia-table-output.component';
-import { BiaOutputComponent } from './components/form/bia-output/bia-output.component';
-import { BiaTableFilterComponent } from './components/table/bia-table-filter/bia-table-filter.component';
-import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
+import { BiaTableComponent } from './components/table/bia-table/bia-table.component';
 import { TeamAdvancedFilterComponent } from './components/team-advanced-filter/team-advanced-filter.component';
-import { BiaFieldBaseComponent } from './components/form/bia-field-base/bia-field-base.component';
+import { ViewFormComponent } from './features/view/components/view-form/view-form.component';
+import { ViewTeamTableComponent } from './features/view/components/view-team-table/view-team-table.component';
+import { ViewUserTableComponent } from './features/view/components/view-user-table/view-user-table.component';
+import { reducers } from './features/view/store/view.state';
+import { ViewsEffects } from './features/view/store/views-effects';
+import { ViewDialogComponent } from './features/view/views/view-dialog/view-dialog.component';
+import { ViewListComponent } from './features/view/views/view-list/view-list.component';
+import { FormatValuePipe } from './pipes/format-value.pipe';
+import { JoinPipe } from './pipes/join.pipe';
+import { PluckPipe } from './pipes/pluck.pipe';
+import { SafeUrlPipe } from './pipes/safe-url.pipe';
+import { TranslateFieldPipe } from './pipes/translate-field.pipe';
 
 const PRIMENG_MODULES = [
   AccordionModule,
@@ -185,16 +186,19 @@ const MODULES = [
   ReactiveFormsModule,
   HttpClientModule,
   TeamModule,
+  //BiaLayoutModule,
+  BiaTeamSelectorModule,
+  BiaOnlineOfflineIconModule,
+  NotificationTeamWarningModule,
+  BiaUltimaLayoutModule,
 ];
 
 const COMPONENTS = [
   ClassicFooterComponent,
   ClassicHeaderComponent,
-  ClassicTeamSelectorComponent,
   ClassicLayoutComponent,
   ClassicPageLayoutComponent,
   SpinnerComponent,
-  IeWarningComponent,
   BiaTableComponent,
   BiaTableFilterComponent,
   BiaFieldBaseComponent,
@@ -206,14 +210,14 @@ const COMPONENTS = [
   BiaCalcTableComponent,
   BiaTableHeaderComponent,
   BiaTableControllerComponent,
+  BiaTableFooterControllerComponent,
   LayoutComponent,
   PageLayoutComponent,
   PopupLayoutComponent,
   FullPageLayoutComponent,
-  BiaOnlineOfflineIconComponent,
-  NotificationTeamWarningComponent,
   HangfireContainerComponent,
   TeamAdvancedFilterComponent,
+  BiaScrollingNotificationComponent,
 ];
 
 const VIEW_COMPONENTS = [
@@ -230,8 +234,6 @@ const PIPES = [
   TranslateFieldPipe,
   FormatValuePipe,
   SafeUrlPipe,
-  IsNotCurrentTeamPipe,
-  TeamListPipe,
 ];
 
 const VIEW_IMPORTS = [
@@ -247,6 +249,8 @@ const NOTIFICATION_IMPORTS = [
 const TEAM_ADVANCED_FILTER_IMPORTS = [UserOptionModule];
 const SERVICES = [MessageService];
 
+const STANDALONE_COMPONENTS = [IeWarningComponent];
+
 @NgModule({
   imports: [
     ...PRIMENG_MODULES,
@@ -254,6 +258,7 @@ const SERVICES = [MessageService];
     ...VIEW_IMPORTS,
     ...NOTIFICATION_IMPORTS,
     ...TEAM_ADVANCED_FILTER_IMPORTS,
+    ...STANDALONE_COMPONENTS,
   ],
   declarations: [...COMPONENTS, ...VIEW_COMPONENTS, ...PIPES],
   exports: [

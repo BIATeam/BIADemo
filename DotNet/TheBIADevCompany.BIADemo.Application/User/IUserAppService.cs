@@ -6,17 +6,19 @@ namespace TheBIADevCompany.BIADemo.Application.User
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Service;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the application service for user.
     /// </summary>
-    public interface IUserAppService : IFilteredServiceBase<User, int>
+    public interface IUserAppService : ICrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto>
     {
         /// <summary>
         /// Gets all option that I can see.

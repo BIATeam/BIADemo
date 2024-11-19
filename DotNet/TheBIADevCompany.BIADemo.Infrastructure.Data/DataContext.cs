@@ -10,24 +10,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 #endif
     using BIA.Net.Core.Infrastructure.Data;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
 
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Audit.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Audit.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Translation.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
 #endif
 
@@ -49,8 +50,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         /// </summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
-        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger)
-            : base(options, logger)
+        /// <param name="configuration">The configuration.</param>
+        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger, IConfiguration configuration)
+            : base(options, logger, configuration)
         {
             this.logger = logger;
             this.logger.LogDebug("----------------Create Context--------------");

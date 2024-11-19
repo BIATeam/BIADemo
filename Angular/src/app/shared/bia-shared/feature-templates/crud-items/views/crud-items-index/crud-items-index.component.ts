@@ -16,6 +16,7 @@ import { filter, skip } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
+import { BiaLayoutService } from 'src/app/shared/bia-shared/components/layout/services/layout.service';
 import { BiaTableControllerComponent } from 'src/app/shared/bia-shared/components/table/bia-table-controller/bia-table-controller.component';
 import { BiaTableComponent } from 'src/app/shared/bia-shared/components/table/bia-table/bia-table.component';
 import { loadAllView } from 'src/app/shared/bia-shared/features/view/store/views-actions';
@@ -50,6 +51,16 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   biaTableControllerComponent: BiaTableControllerComponent;
   @ViewChild(CrudItemTableComponent, { static: false })
   crudItemTableComponent: CrudItemTableComponent<CrudItem>;
+
+  _showTableController = true;
+
+  get showTableController(): boolean {
+    return this._showTableController;
+  }
+  set showTableController(value: boolean) {
+    this._showTableController = value;
+  }
+
   public get crudItemListComponent() {
     if (!this.crudConfiguration.useCalcMode) {
       return this.biaTableComponent;
@@ -90,6 +101,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   protected biaTranslationService: BiaTranslationService;
   protected authService: AuthService;
   protected tableHelperService: TableHelperService;
+  protected layoutService: BiaLayoutService;
 
   constructor(
     protected injector: Injector,
@@ -106,6 +118,20 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.authService = this.injector.get<AuthService>(AuthService);
     this.tableHelperService =
       this.injector.get<TableHelperService>(TableHelperService);
+    this.layoutService = this.injector.get<BiaLayoutService>(BiaLayoutService);
+  }
+
+  toggleTableControllerVisibility() {
+    this.showTableController = !this.showTableController;
+  }
+
+  getFillScrollHeightValue(offset?: string) {
+    return this.tableHelperService.getFillScrollHeightValue(
+      this.layoutService,
+      this.crudConfiguration.useCompactMode ?? false,
+      this.showTableController ?? true,
+      offset
+    );
   }
 
   useViewChange(e: boolean) {
@@ -127,6 +153,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudConfiguration.usePopup = e;
     this.usePopupConfig(true);
   }
+
+  useCompactModeChange(e: boolean) {
+    this.crudConfiguration.useCompactMode = e;
+  }
+
   protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView
       ? this.crudConfiguration.tableStateKey

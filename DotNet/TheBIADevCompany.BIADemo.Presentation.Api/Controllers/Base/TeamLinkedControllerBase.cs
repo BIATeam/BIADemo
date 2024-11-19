@@ -4,15 +4,11 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
 {
-    using System.Linq;
-    using System.Security.Claims;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Presentation.Api.Controllers.Base;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage views.
@@ -41,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// <returns>true if authorized.</returns>
         protected async Task<bool> IsAuthorizeForTeam(int teamId, string roleSuffix)
         {
-            TeamDto teamDto = await this.teamAppService.GetAsync<TeamDto, TeamMapper>(id: teamId);
+            TeamDto teamDto = await this.teamAppService.GetAsync(id: teamId);
             if (teamDto == null)
             {
                 return false;
@@ -59,26 +55,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Base
         /// <returns>true if authorized.</returns>
         private bool IsAuthorizeForTeamType(TeamTypeId teamTypeId, int teamId, string roleSuffix)
         {
-            var config = TeamConfig.Config.Find(tc => tc.TeamTypeId == (int)teamTypeId);
-            if (config != null)
-            {
-                if (!this.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == config.RightPrefix + roleSuffix))
-                {
-                    return false;
-                }
-
-                var userData = new BiaClaimsPrincipal(this.HttpContext.User).GetUserData<UserDataDto>();
-                if (userData.GetCurrentTeamId((int)teamTypeId) != teamId)
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
+            return this.teamAppService.IsAuthorizeForTeamType(this.HttpContext.User, teamTypeId, teamId, roleSuffix);
         }
     }
 }

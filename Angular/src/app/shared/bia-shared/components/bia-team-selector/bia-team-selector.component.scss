@@ -1,0 +1,87 @@
+@import '../../../../../scss/bia/bia-variables';
+
+:host {
+  display: flex;
+}
+
+.pi-star-fill,
+.pi-star {
+  padding-right: 0.5rem;
+}
+
+.app-icon-header {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+:host ::ng-deep {
+  p-multiselect {
+    .p-multiselect {
+      min-width: 12.5em;
+      background-image: linear-gradient(to bottom, white, white),
+        linear-gradient(to bottom, white, white);
+      padding-bottom: 2px;
+      .p-multiselect-label {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+        padding-right: 2px;
+        width: 157px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      background-color: transparent;
+      .p-inputtext {
+        color: white !important;
+      }
+    }
+    .p-multiselect:not(.p-disabled) {
+      &:hover {
+        background-image: linear-gradient(to bottom, white, white),
+          linear-gradient(to bottom, white, white) !important;
+      }
+    }
+    .p-multiselect-trigger-icon {
+      color: white !important;
+    }
+    .p-multiselect-label.p-placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+  p-dropdown {
+    .p-dropdown {
+      min-width: 12.5em;
+      background-image: linear-gradient(to bottom, white, white),
+        linear-gradient(to bottom, white, white);
+      padding-bottom: 2px;
+      .p-dropdown-label {
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 2px;
+        padding-right: 2px;
+        width: 157px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      background-color: transparent;
+      .p-inputtext {
+        color: white !important;
+      }
+    }
+    .p-dropdown:not(.p-disabled) {
+      &:hover {
+        background-image: linear-gradient(to bottom, white, white),
+          linear-gradient(to bottom, white, white) !important;
+      }
+    }
+    .p-dropdown-trigger-icon {
+      color: white !important;
+    }
+  }
+  label {
+    text-wrap: nowrap;
+    padding: 5px 5px 5px 0px;
+  }
+}

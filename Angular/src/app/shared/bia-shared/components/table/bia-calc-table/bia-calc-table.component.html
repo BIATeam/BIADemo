@@ -20,11 +20,7 @@
     [sortOrder]="sortOrderValue"
     (onStateSave)="onStateSave($event)"
     (selectionChange)="onSelectionChange()"
-    [styleClass]="
-      (table?.multiSortMeta?.length ?? 0) > 1
-        ? 'p-datatable-striped multiSort'
-        : 'p-datatable-striped singleSort'
-    "
+    [styleClass]="'p-datatable-striped'"
     sortMode="multiple"
     [scrollHeight]="scrollHeightValue"
     [scrollable]="isScrollable"
@@ -286,6 +282,14 @@
           <!-- </p-cellEditor> -->
         </td>
       </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+      <bia-table-footer-controller
+        [length]="totalRecord"
+        [pageSize]="pageSize"
+        (pageSizeChange)="
+          onPageSizeValueChange($event)
+        "></bia-table-footer-controller>
     </ng-template>
     <!-- EMPTY MESSAGE -->
     <ng-template pTemplate="emptymessage" let-columns>

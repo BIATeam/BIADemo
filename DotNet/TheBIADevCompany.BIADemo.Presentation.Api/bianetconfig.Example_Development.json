@@ -43,7 +43,11 @@
             "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
             "ClientId": "biademo",
             "GrantType": "password",
-            "CredentialKeyInWindowsVault": "BIA:KeycloakSearchUserAccount"
+            "CredentialSource": {
+              "VaultCredentialsKey": "BIA:KeycloakSearchUserAccount",
+              "EnvLoginKey": "KC_SA_USERNAME",
+              "EnvPasswordKey": "KC_SA_PASSWORD"
+            }
           },
           "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
         }

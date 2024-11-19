@@ -43,12 +43,10 @@
       </bia-table-header>
       <bia-table-controller
         [defaultPageSize]="defaultPageSize"
-        [length]="(totalCount$ | async) ?? 0"
         [columns]="columns"
         [columnToDisplays]="displayedColumns"
         (displayedColumnsChange)="displayedColumnsChanged($event)"
         (filter)="searchGlobalChanged($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
         (toggleSearch)="onToggleSearch()"
         (viewChange)="onViewChange($event)"
         [tableStateKey]="tableStateKey"
@@ -90,6 +88,7 @@
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
         [configuration]="crudConfiguration.fieldsConfig"
         [showColSearch]="showColSearch"
         [globalSearchValue]="globalSearchValue"
@@ -103,7 +102,8 @@
         (selectedElementsChanged)="onSelectedElementsChanged($event)"
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
-        [canSelectMultipleElement]="false"></bia-table>
+        [canSelectMultipleElement]="false"
+        [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
       <app-site-table
         *ngIf="crudConfiguration.useCalcMode"
         [elements]="(crudItems$ | async) ?? []"
@@ -113,6 +113,7 @@
         [totalRecord]="(totalCount$ | async) ?? 0"
         [columnToDisplays]="displayedColumns"
         [pageSize]="pageSize"
+        (pageSizeChange)="onPageSizeChange($event)"
         [configuration]="crudConfiguration.fieldsConfig"
         [showColSearch]="showColSearch"
         [globalSearchValue]="globalSearchValue"
@@ -127,7 +128,8 @@
         [sortFieldValue]="sortFieldValue"
         (stateSave)="onStateSave($event)"
         (save)="onSave($event)"
-        [canSelectMultipleElement]="false"></app-site-table>
+        [canSelectMultipleElement]="false"
+        [scrollHeightValue]="getFillScrollHeightValue()"></app-site-table>
     </div>
   </div>
 </div>

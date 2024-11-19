@@ -5,9 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
@@ -16,11 +19,12 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities;
+    using TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Mappers;
     using TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
 
     /// <summary>
     /// The application service used for AircraftMaintenanceCompany.
@@ -42,6 +46,15 @@ namespace TheBIADevCompany.BIADemo.Application.AircraftMaintenanceCompany
             this.FiltersContext.Add(
                 AccessMode.Update,
                 TeamAppService.UpdateSpecification<AircraftMaintenanceCompany>(TeamTypeId.AircraftMaintenanceCompany, principal));
+        }
+
+        /// <inheritdoc/>
+#pragma warning disable S1006 // Method overrides should not change parameter defaults
+        public override async Task<(IEnumerable<AircraftMaintenanceCompanyDto> Results, int Total)> GetRangeAsync(PagingFilterFormatDto filters = null, int id = default, Specification<AircraftMaintenanceCompany> specification = null, Expression<Func<AircraftMaintenanceCompany, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+#pragma warning restore S1006 // Method overrides should not change parameter defaults
+        {
+            specification ??= TeamAdvancedFilterSpecification<AircraftMaintenanceCompany>.Filter(filters);
+            return await base.GetRangeAsync(filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }

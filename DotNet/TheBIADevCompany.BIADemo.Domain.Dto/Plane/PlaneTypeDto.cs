@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Plane
         /// <summary>
         /// Gets or sets the first flight date.
         /// </summary>
-        [BiaDtoField(Type = "date&time", Required = false)]
+        [BiaDtoField(Type = "datetime", Required = false)]
         public DateTime? CertificationDate { get; set; }
     }
 }

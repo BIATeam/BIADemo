@@ -6,15 +6,17 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
 
     /// <summary>
     /// The application service used for notification type.
     /// </summary>
-    public class NotificationTypeAppService : AppServiceBase<NotificationType, int>, INotificationTypeAppService
+    public class NotificationTypeAppService : DomainServiceBase<NotificationType, int>, INotificationTypeAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationTypeAppService"/> class.

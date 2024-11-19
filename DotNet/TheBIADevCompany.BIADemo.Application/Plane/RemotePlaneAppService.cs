@@ -6,7 +6,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Plane
 {
     using System.Threading.Tasks;
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>

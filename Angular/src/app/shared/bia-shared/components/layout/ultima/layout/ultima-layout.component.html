@@ -1,0 +1,49 @@
+<div
+  class="layout-container layout-menu-profile-start"
+  [ngClass]="containerClass">
+  <bia-ultima-top-bar
+    [version]="version"
+    [appTitle]="appTitle"
+    [helpUrl]="helpUrl"
+    [reportUrl]="reportUrl"
+    [enableNotifications]="enableNotifications"></bia-ultima-top-bar>
+  <bia-ultima-side-bar
+    [version]="version"
+    [appTitle]="appTitle"
+    [menus]="menus"
+    [username]="username"
+    [login]="login"
+    [supportedLangs]="supportedLangs"
+    [allowThemeChange]="allowThemeChange"
+    [logos]="headerLogos"></bia-ultima-side-bar>
+
+  <div class="layout-content-wrapper">
+    <div
+      class="layout-environment-warning"
+      *ngIf="showEnvironmentMessage$ | async">
+      {{
+        'bia.environmentDescription'
+          | translate: { envName: (envName$ | async) }
+      }}
+    </div>
+    <p-breadcrumb
+      *ngIf="
+        (layoutService.breadcrumbHidden$ | async) === false &&
+        !layoutService.state.fullscreen
+      "
+      [model]="menuItems"></p-breadcrumb>
+
+    <div class="layout-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <bia-ultima-footer
+      *ngIf="(layoutService.footerHidden$ | async) === false"
+      [companyName]="companyName"
+      [logos]="headerLogos"></bia-ultima-footer>
+  </div>
+
+  <div
+    *ngIf="layoutService.state.staticMenuMobileActive"
+    class="layout-mask"></div>
+</div>

@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -25,13 +26,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.User.Specifications;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : FilteredServiceBase<User, int>, IUserAppService
+    public class UserAppService : CrudAppServiceBase<UserDto, User, int, PagingFilterFormatDto, UserMapper>, IUserAppService
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -234,7 +239,18 @@ namespace TheBIADevCompany.BIADemo.Application.User
                     try
                     {
                         var foundUser = (await this.Repository.GetAllEntityAsync(filter: this.userIdentityKeyDomainService.CheckDatabaseIdentityKey(this.userIdentityKeyDomainService.GetDirectoryIdentityKey(userFormDirectoryDto)))).FirstOrDefault();
-                        UserFromDirectory userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
+
+                        UserFromDirectory userFormDirectory = null;
+
+                        if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
+                        {
+                            userFormDirectory = await this.identityProviderRepository.FindUserAsync(userFormDirectoryDto.IdentityKey);
+                        }
+                        else
+                        {
+                            userFormDirectory = await this.userDirectoryHelper.ResolveUser(userFormDirectoryDto);
+                        }
+
                         if (userFormDirectory != null)
                         {
                             var addedUser = this.userSynchronizeDomainService.AddOrActiveUserFromDirectory(userFormDirectory, foundUser);

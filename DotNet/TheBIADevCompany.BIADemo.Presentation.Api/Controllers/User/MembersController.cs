@@ -10,14 +10,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.Service;
-#if UseHubForClientInMember || UseHubForClientInUser
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -42,15 +39,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IUserAppService userService;
 
         /// <summary>
-        /// The user context for message translation.
+        /// The user context service for message translation.
         /// </summary>
-        private readonly UserContext userContext;
+        private readonly IUserContextService userContextService;
 
 #if UseHubForClientInMember || UseHubForClientInUser
         /// <summary>
         /// the client for hub (signalR) service.
         /// </summary>
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
 #if UseHubForClientInMember || UseHubForClientInUser
@@ -60,14 +57,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContext">The user context.</param>
+        /// <param name="userContextService">The user context service.</param>
         /// <param name="clientForHubService">The hub for client.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
             ITeamAppService teamAppService,
-            UserContext userContext,
-            IClientForHubRepository clientForHubService)
+            IUserContextService userContextService,
+            IClientForHubService clientForHubService)
 #else
         /// <summary>
         /// Initializes a new instance of the <see cref="MembersController"/> class.
@@ -75,11 +72,11 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="userService">The user application service.</param>
         /// <param name="memberService">The member application service.</param>
         /// <param name="teamAppService">The team service.</param>
-        /// <param name="userContext">The user context.</param>
+        /// <param name="userContextService">The user context service.</param>
         public MembersController(
             IUserAppService userService,
             IMemberAppService memberService,
-            UserContext userContext,
+            IUserContextService userContextService,
             ITeamAppService teamAppService)
 #endif
             : base(teamAppService)
@@ -89,7 +86,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #endif
             this.memberService = memberService;
             this.userService = userService;
-            this.userContext = userContext;
+            this.userContextService = userContextService;
         }
 
         /// <summary>
@@ -194,7 +191,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
             }
             catch (InvalidOperationException)
             {
-                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContext.LanguageId));
+                return this.UnprocessableEntity(ErrorMessage.GetMessage(ErrorId.MemberAlreadyExists, this.userContextService.GetLanguageId()));
             }
         }
 

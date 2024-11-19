@@ -1,0 +1,89 @@
+{
+  "BiaNet": {
+    "Environment": {
+      "Type": "DEV",
+      // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
+      "UrlMatomo": "",
+      "SiteIdMatomo": "1"
+    },
+    "CommonFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "http://localhost:8080/HubForClients"
+      }
+    },
+    "ApiFeatures": {
+      "Swagger": {
+        "IsActive": true
+      },
+      "DelegateJobToWorker": {
+        "MonitoringUrl": "http://localhost:32128/hangfire"
+      }
+    },
+    "Security": {
+      "Audience": "http://localhost:4200,http://localhost:4201"
+    },
+    "EmailConfiguration": {
+      "From": "noreply-BIADemo@TheBIADevCompany",
+      "SmtpHost": "127.0.0.1",
+      "SmtpPort": 25
+    },
+    "Authentication": {
+      "Keycloak": {
+        "IsActive": true,
+        "BaseUrl": "https://mykeycloak.TheBIADevCompany",
+        "Configuration": {
+          "idpHint": "darwin",
+          "realm": "BIA-Realm",
+          "Authority": "/realms/BIA-Realm",
+          "RequireHttpsMetadata": true,
+          "ValidAudience": "account"
+        },
+        "Api": {
+          "TokenConf": {
+            "RelativeUrl": "/realms/BIA-Realm/protocol/openid-connect/token",
+            "ClientId": "dmapp",
+            "GrantType": "password",
+            "CredentialSource": {
+              "VaultCredentialsKey": "BIA:KeycloakSearchUserAccount",
+              "EnvLoginKey": "KC_SA_USERNAME",
+              "EnvPasswordKey": "KC_SA_PASSWORD"
+            }
+          },
+          "SearchUserRelativeUrl": "/admin/realms/BIA-Realm/users"
+        }
+      }
+    },
+    "Roles": [
+      {
+        "Label": "User",
+        "Type": "UserInDB"
+      },
+      {
+        "Label": "Admin",
+        "Type": "ClaimsToRole",
+        "RequireClaim": {
+          "Type": "groups",
+          "AllowedValues": [ "GP_S007_Digital_Role_App_Admin" ] // GP_S007_Digital_Role_App_Admin
+        }
+      }
+    ],
+    "PermissionsByEnv": [
+      {
+        "Names": [ "User_ListAD", "User_Add", "User_Delete", "User_Save" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_List_Access", "User_List", "User_Read", "User_Sync", "User_UpdateRoles" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_UpdateRoles" ],
+        "Roles": [ "Admin" ]
+      },
+      {
+        "Names": [ "User_ListAD", "User_Add", "User_Save" ],
+        "Roles": [ "Site_Admin" ]
+      }
+    ]
+  }
+}

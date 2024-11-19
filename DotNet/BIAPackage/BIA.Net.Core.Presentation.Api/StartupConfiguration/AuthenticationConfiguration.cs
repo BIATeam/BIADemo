@@ -5,6 +5,8 @@
 namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System;
+    using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -122,21 +124,31 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
                         o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
 
-                        o.TokenValidationParameters = new TokenValidationParameters
+                        string certFileName = configuration.Authentication.Keycloak.Configuration.CertFileName;
+                        if (!string.IsNullOrWhiteSpace(certFileName))
                         {
-                            // https://zhiliaxu.github.io/how-do-aspnet-core-services-validate-jwt-signature-signed-by-aad.html
-                            // JWT signature is validated without providing any key or certification in our service’s source code.
-                            // JWT signing key is retrieved from the well-known URL, based on Authority property. (MetadataAddress = Authority + '/.well-known/openid-configuration')
-                            // The signing key is cached in the singleton instance, and so our ASP.NET Core service only needs to retrieve it once throughout its lifecycle.JwtBearerHandler
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
-                            ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
-                            ValidateIssuerSigningKey = true,
-                            ValidateLifetime = true,
-                            RequireExpirationTime = true,
-                            RequireSignedTokens = true,
-                            RequireAudience = true,
-                        };
+                            // Set MetadataAddress to a dummy value to prevent automatic metadata fetching
+                            o.MetadataAddress = "about:blank";
+                            o.RequireHttpsMetadata = false;
+
+                            o.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidIssuer = configuration.Authentication.Keycloak.BaseUrl + configuration.Authentication.Keycloak.Configuration.Authority,
+                                ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                                ValidateIssuerSigningKey = true,
+                                IssuerSigningKeys = RetrieveKeycloakKeySet(certFileName),
+                            };
+                        }
+                        else
+                        {
+                            o.RequireHttpsMetadata = configuration.Authentication.Keycloak.Configuration.RequireHttpsMetadata;
+
+                            o.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidAudience = configuration.Authentication.Keycloak.Configuration.ValidAudience,
+                                ValidateIssuerSigningKey = true,
+                            };
+                        }
                     }
 
                     o.IncludeErrorDetails = true;
@@ -159,6 +171,8 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     AddConfigurationPolicies(configuration, options);
                 }
             });
+
+            services.AddSingleton<IAuthorizationPolicyProvider, BiaAuthorizationPolicyProvider>();
         }
 
         private static void AddConfigurationPolicies(BiaNetSection configuration, AuthorizationOptions options)
@@ -170,6 +184,25 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
             {
                 options.AddPolicy(confPolicy.Name, policy => policy.RequireClaim(confPolicy.RequireClaim.Type, confPolicy.RequireClaim.AllowedValues));
             }
+        }
+
+        /// <summary>
+        /// Retrieves the keycloak key set.
+        /// </summary>
+        /// <param name="certFileName">Name of the cert file.</param>
+        /// <returns>The keycloak key set.</returns>
+        private static IEnumerable<SecurityKey> RetrieveKeycloakKeySet(string certFileName)
+        {
+            // download key from the Keycloak wih this url:
+            // The URL might look like: https://mykeycloak.mycompany/realms/BIA-Realm/protocol/openid-connect/certs
+            JsonWebKeySet keySet = default;
+            using (StreamReader streamReader = new StreamReader(certFileName))
+            {
+                string json = streamReader.ReadToEnd();
+                keySet = new JsonWebKeySet(json);
+            }
+
+            return keySet.Keys;
         }
     }
 }

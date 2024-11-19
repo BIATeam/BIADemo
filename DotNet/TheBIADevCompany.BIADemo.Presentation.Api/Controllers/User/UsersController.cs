@@ -9,14 +9,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+#if UseHubForClientInUser
+    using BIA.Net.Core.Application.Services;
+#endif
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
-#if UseHubForClientInUser
-    using BIA.Net.Core.Domain.RepoContract;
-#endif
     using BIA.Net.Presentation.Api.Controllers.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -25,7 +25,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
 
     /// <summary>
     /// The API controller used to manage users.
@@ -38,7 +37,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         private readonly IUserAppService userService;
 
 #if UseHubForClientInUser
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 #endif
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
         /// <param name="clientForHubService">The hub for client.</param>
-        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubRepository clientForHubService)
+        public UsersController(IUserAppService userService, IOptions<BiaNetSection> configuration, IClientForHubService clientForHubService)
 #else
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
         [Authorize(Roles = Rights.Users.ListAccess)]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
-            var (results, total) = await this.userService.GetRangeAsync<UserDto, UserMapper, PagingFilterFormatDto>(filters);
+            var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -159,7 +158,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var dto = await this.userService.GetAsync<UserDto, UserMapper>(id);
+                var dto = await this.userService.GetAsync(id);
                 return this.Ok(dto);
             }
             catch (ElementNotFoundException)
@@ -245,7 +244,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 
             try
             {
-                var updatedDto = await this.userService.UpdateAsync<UserDto, UserMapper>(dto, mapperMode: "Roles");
+                var updatedDto = await this.userService.UpdateAsync(dto, mapperMode: "Roles");
 #if UseHubForClientInUser
                 _ = this.clientForHubService.SendTargetedMessage(string.Empty, "users", "refresh-users");
 #endif

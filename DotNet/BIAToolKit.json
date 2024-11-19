@@ -10,8 +10,8 @@
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\PlanesController.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\PlaneAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\IPlaneAppService.cs",
-        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\PlaneMapper.cs",
-        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Plane.cs",
+        "TheBIADevCompany.BIADemo.Domain\\Plane\\Mappers\\PlaneMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\Plane\\Entities\\Plane.cs",
         "TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\PlaneDto.cs"
       ],
       "Exclude": []
@@ -35,9 +35,9 @@
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\EnginesController.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\EngineAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\Plane\\IEngineAppService.cs",
-        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\EngineMapper.cs",
-        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\Engine.cs",
-        "TheBIADevCompany.BIADemo.Domain\\PlaneModule\\Aggregate\\EngineSpecification.cs",
+        "TheBIADevCompany.BIADemo.Domain\\Plane\\Mappers\\EngineMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\Plane\\Entities\\Engine.cs",
+        "TheBIADevCompany.BIADemo.Domain\\Plane\\Specifications\\EngineSpecification.cs",
         "TheBIADevCompany.BIADemo.Domain.Dto\\Plane\\EngineDto.cs"
       ],
       "Exclude": []
@@ -79,8 +79,8 @@
 
             "MoveFiles": [
               {
-                "FromRelativePath": "PlaneModule\\Aggregate\\EngineSpecification.cs",
-                "ToRelativePathWithParent": "{ParentDomainName}Module\\Aggregate\\{NewCrudNamePascalSingular}Specification.cs"
+                "FromRelativePath": "Plane\\Specifications\\EngineSpecification.cs",
+                "ToRelativePathWithParent": "{ParentDomainName}\\Specifications\\{NewCrudNamePascalSingular}Specification.cs"
               }
             ]
           }
@@ -96,22 +96,65 @@
   {
     "Feature": "Option",
     "Type": "Option",
-    "FeatureName": "Airport",
-    "FeatureNamePlural": "Airports",
+    "FeatureName": "Country",
+    "FeatureNamePlural": "Countries",
     "ZipName": "option.zip",
     "Contains": {
       "Include": [
-        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\Plane\\AirportsController.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\AirportAppService.cs",
-        "TheBIADevCompany.BIADemo.Application\\Plane\\IAirportAppService.cs"
+        "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\CountryOptionsController.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\CountryOptionAppService.cs",
+        "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\ICountryOptionAppService.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Mappers\\CountryOptionMapper.cs"
       ],
       "Exclude": []
     },
     "Children": [],
+    "Parents": [
+      {
+        "Name": "AircraftMaintenanceCompany",
+        "NamePlural": "AircraftMaintenanceCompanies",
+        "DomainName": "AircraftMaintenanceCompany",
+        "IsPrincipal": "true",
+        "AdaptPaths": [
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Application\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathWithParent": "{DomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\",
+                "ToRelativePathWithParent": "{DomainName}\\"
+              }
+            ]
+          },
+          {
+            "RootPath": "TheBIADevCompany.BIADemo.Domain\\",
+            "InitialDeepLevel": 0,
+
+            "MoveFiles": [
+              {
+                "FromRelativePath": "AircraftMaintenanceCompany\\Mappers",
+                "ToRelativePathWithParent": "{DomainName}\\Mappers"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Options": [],
     "Partial": [
       "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\IocContainer.cs",
       "TheBIADevCompany.BIADemo.Crosscutting.Common\\Rights.cs"
     ]
   },
@@ -126,8 +169,8 @@
         "TheBIADevCompany.BIADemo.Presentation.Api\\Controllers\\AircraftMaintenanceCompany\\MaintenanceTeamsController.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\MaintenanceTeamAppService.cs",
         "TheBIADevCompany.BIADemo.Application\\AircraftMaintenanceCompany\\IMaintenanceTeamAppService.cs",
-        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeamMapper.cs",
-        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Aggregate\\MaintenanceTeam.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Mappers\\MaintenanceTeamMapper.cs",
+        "TheBIADevCompany.BIADemo.Domain\\AircraftMaintenanceCompany\\Entities\\MaintenanceTeam.cs",
         "TheBIADevCompany.BIADemo.Domain.Dto\\AircraftMaintenanceCompany\\MaintenanceTeamDto.cs"
       ],
       "Exclude": []
@@ -174,8 +217,8 @@
       "TheBIADevCompany.BIADemo.Crosscutting.Common\\Enum\\RoleId.cs",
       "TheBIADevCompany.BIADemo.Infrastructure.Data\\ModelBuilders\\UserModelBuilder.cs",
       "TheBIADevCompany.BIADemo.Presentation.Api\\bianetconfig.json",
-      "TheBIADevCompany.BIADemo.Domain\\UserModule\\Aggregate\\TeamConfig.cs",
-      "TheBIADevCompany.BIADemo.Domain\\UserModule\\Aggregate\\TeamMapper.cs",
+      "TheBIADevCompany.BIADemo.Domain\\User\\TeamConfig.cs",
+      "TheBIADevCompany.BIADemo.Domain\\User\\Mappers\\TeamMapper.cs",
       "TheBIADevCompany.BIADemo.Presentation.API\\Controllers\\User\\AuthController.cs"
     ]
   }

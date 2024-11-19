@@ -575,13 +575,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<float?>("AverageFuelConsumption")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("DeliveryDate")
+                    b.Property<DateOnly>("DeliveryDate")
                         .HasColumnType("date");
 
                     b.Property<decimal?>("EstimatedPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime?>("ExchangeDate")
+                    b.Property<DateOnly?>("ExchangeDate")
                         .HasColumnType("date");
 
                     b.Property<double>("FlightHours")
@@ -590,7 +590,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<float>("FuelConsumption")
                         .HasColumnType("real");
 
-                    b.Property<TimeSpan?>("IgnitionTime")
+                    b.Property<TimeOnly?>("IgnitionTime")
                         .HasColumnType("time");
 
                     b.Property<bool?>("IsHybrid")
@@ -632,7 +632,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<TimeSpan>("SyncTime")
+                    b.Property<TimeOnly>("SyncTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
@@ -735,7 +735,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("CurrentAirportId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("DeliveryDate")
+                    b.Property<DateOnly?>("DeliveryDate")
                         .HasColumnType("date");
 
                     b.Property<decimal?>("EstimatedPrice")
@@ -771,7 +771,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<DateTime>("NextMaintenanceDate")
+                    b.Property<DateOnly>("NextMaintenanceDate")
                         .HasColumnType("date");
 
                     b.Property<decimal>("OriginalPrice")
@@ -791,10 +791,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
 
-                    b.Property<TimeSpan>("SyncFlightDataTime")
+                    b.Property<TimeOnly>("SyncFlightDataTime")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan?>("SyncTime")
+                    b.Property<TimeOnly?>("SyncTime")
                         .HasColumnType("time");
 
                     b.Property<double>("TotalFlightHours")
@@ -1765,8 +1765,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ApprovedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly?>("ApprovedDate")
+                        .HasColumnType("date");
 
                     b.Property<decimal?>("AverageOperationCost")
                         .HasColumnType("Money");
@@ -1802,14 +1802,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("LastOperation")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeSpan>("MaxOperationDuration")
+                    b.Property<TimeOnly>("MaxOperationDuration")
                         .HasColumnType("time");
 
-                    b.Property<TimeSpan?>("MaxTravelDuration")
+                    b.Property<TimeOnly?>("MaxTravelDuration")
                         .HasColumnType("time");
 
-                    b.Property<DateTime>("NextOperation")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("NextOperation")
+                        .HasColumnType("date");
 
                     b.Property<int>("OperationCount")
                         .HasColumnType("int");

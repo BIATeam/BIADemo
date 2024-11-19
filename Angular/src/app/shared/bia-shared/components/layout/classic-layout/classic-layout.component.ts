@@ -1,32 +1,31 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnInit,
-  OnDestroy,
   HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
 } from '@angular/core';
-import { BiaClassicLayoutService } from './bia-classic-layout.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { MenuItem } from 'primeng/api';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { BiaThemeService } from 'src/app/core/bia-core/services/bia-theme.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
-import { MenuItem } from 'primeng/api';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
-import { BiaNavigation } from '../../../model/bia-navigation';
 import {
-  ROUTE_DATA_CAN_NAVIGATE,
-  ROUTE_DATA_BREADCRUMB,
   APP_SUPPORTED_TRANSLATIONS,
+  ROUTE_DATA_BREADCRUMB,
+  ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
 } from 'src/app/shared/constants';
-import { Subscription } from 'rxjs';
+import { BiaNavigation } from '../../../model/bia-navigation';
+import { BiaLayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'bia-classic-layout',
   templateUrl: './classic-layout.component.html',
   styleUrls: ['./classic-layout.component.scss'],
-  providers: [BiaClassicLayoutService],
   // In order to avoid change detections issues in custom footer / mainBar, stay default here
   changeDetection: ChangeDetectionStrategy.Default,
 })
@@ -51,7 +50,7 @@ export class ClassicLayoutComponent implements OnInit, OnDestroy {
   constructor(
     protected biaTranslation: BiaTranslationService,
     protected biaTheme: BiaThemeService,
-    public layoutService: BiaClassicLayoutService,
+    public layoutService: BiaLayoutService,
     protected translateService: TranslateService,
     protected router: Router,
     protected activatedRoute: ActivatedRoute

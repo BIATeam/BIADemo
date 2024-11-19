@@ -24,12 +24,10 @@
     </bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
       (filter)="searchGlobalChanged($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
@@ -72,6 +70,7 @@
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
@@ -84,7 +83,8 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"></bia-table>
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     <bia-user-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -94,6 +94,7 @@
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
@@ -107,7 +108,8 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"></bia-user-table>
+      (save)="onSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></bia-user-table>
   </div>
 </div>
 <bia-user-add-from-directory-dialog

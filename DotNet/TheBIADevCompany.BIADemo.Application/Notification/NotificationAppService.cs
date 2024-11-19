@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -17,7 +18,8 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
@@ -33,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         /// <summary>
         /// The signalR Service.
         /// </summary>
-        private readonly IClientForHubRepository clientForHubService;
+        private readonly IClientForHubService clientForHubService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationAppService"/> class.
@@ -46,7 +48,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         public NotificationAppService(
             ITGenericRepository<Notification, int> repository,
             IPrincipal principal,
-            IClientForHubRepository clientForHubService,
+            IClientForHubService clientForHubService,
             INotificationQueryCustomizer queryCustomizer)
             : base(repository)
         {
@@ -179,6 +181,12 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
                 specification: this.FiltersContext[AccessMode.Read] & new DirectSpecification<Notification>(x => !x.Read));
 
             return results.ToList();
+        }
+
+        /// <inheritdoc/>
+        public async Task<(IEnumerable<NotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto)
+        {
+            return await this.GetRangeAsync(pagingFilterFormatDto, accessMode: AccessMode.All);
         }
     }
 }

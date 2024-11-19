@@ -1,0 +1,23 @@
+{
+  "BiaNet": {
+    "CommonFeatures": {
+      "ClientForHub": {
+        "SignalRUrl": "http://localhost:8080/HubForClients"
+      }
+    },
+    "Environment": {
+      "Type": "DEV"
+    },
+    "EmailConfiguration": {
+      "From": "noreply-BIADemo@domain.com",
+      "SmtpHost": "127.0.0.1",
+      "SmtpPort": 25
+    },
+    "Roles": [
+      {
+        "Label": "Service",
+        "Type": "Fake"
+      }
+    ]
+  }
+}

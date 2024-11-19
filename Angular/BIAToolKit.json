@@ -66,7 +66,7 @@
       }
     ],
     "Children": [],
-    "Options": [],
+    "Options": ["Part"],
     "Partial": [
       "src\\app\\shared\\permission.ts",
       "src\\app\\features\\planes\\plane.module.ts",
@@ -77,15 +77,14 @@
   {
     "Feature": "Option",
     "Type": "Option",
-    "FeatureName": "Airport",
-    "FeatureNamePlural": "Airports",
+    "FeatureName": "Country",
+    "FeatureNamePlural": "Countries",
     "ZipName": "option.zip",
     "Contains": {
-      "Include": ["src\\app\\domains\\airport-option\\*"],
+      "Include": ["src\\app\\domains\\country-option\\*"],
       "Exclude": []
     },
     "Children": [],
-    "Options": [],
     "Partial": []
   },
   {
@@ -138,7 +137,7 @@
       }
     ],
     "Children": [],
-    "Options": [],
+    "Options": ["Airport", "Country"],
     "Partial": [
       "src\\app\\app-routing.module.ts",
       "src\\app\\shared\\navigation.ts",

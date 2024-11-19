@@ -20,12 +20,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Application.Plane;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Plane;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.NotificationModule.Service;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -33,7 +32,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     /// </summary>
     public class BiaDemoTestHangfireService : BaseJob, IBiaDemoTestHangfireService
     {
-        private readonly INotificationDomainService notificationDomainService;
+        private readonly INotificationAppService notificationAppService;
 
         private readonly ITGenericRepository<Team, int> teamRepository;
 
@@ -44,19 +43,19 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">logger.</param>
-        /// <param name="notificationDomainService">The notification service.</param>
+        /// <param name="notificationAppService">The notification service.</param>
         /// <param name="teamRepository">The team repository.</param>
         /// <param name="planeAppService">The plane repository.</param>
         /// <param name="principal">The principal.</param>
         public BiaDemoTestHangfireService(
             IConfiguration configuration,
             ILogger<BiaDemoTestHangfireService> logger,
-            INotificationDomainService notificationDomainService,
+            INotificationAppService notificationAppService,
             ITGenericRepository<Team, int> teamRepository,
             IPlaneAppService planeAppService)
             : base(configuration, logger)
         {
-            this.notificationDomainService = notificationDomainService;
+            this.notificationAppService = notificationAppService;
             this.teamRepository = teamRepository;
             this.planeAppService = planeAppService;
         }
@@ -169,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                         new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Flugzeug überprüfen", Description = "Überprüfen Sie das Flugzeug mit der ID " + targetPlaneId + ".", DtoState = DtoState.Added },
                     },
                 };
-                await this.notificationDomainService.AddAsync<NotificationDto, NotificationMapper>(notification);
+                await this.notificationAppService.AddAsync(notification);
             }
             else
             {
@@ -206,7 +205,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                         new NotificationTranslationDto() { LanguageId = LanguageId.German, Title = "Kein Flugzeug zu überprüfen", Description = "An Standort '" + selectPlaneOnSiteTitle + "' sind keine Flugzeuge zu überprüfen.", DtoState = DtoState.Added },
                     },
                 };
-                await this.notificationDomainService.AddAsync<NotificationDto, NotificationMapper>(notification);
+                await this.notificationAppService.AddAsync(notification);
             }
         }
 

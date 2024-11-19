@@ -11,12 +11,10 @@
       [selectedElements]="selectedCrudItems"></bia-table-header>
     <bia-table-controller
       [defaultPageSize]="defaultPageSize"
-      [length]="(totalCount$ | async) ?? 0"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
       (displayedColumnsChange)="displayedColumnsChanged($event)"
       (filter)="searchGlobalChanged($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
       (toggleSearch)="onToggleSearch()"
       (viewChange)="onViewChange($event)"
       [tableStateKey]="tableStateKey"
@@ -60,6 +58,7 @@
       [columnToDisplays]="displayedColumns"
       [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
@@ -72,7 +71,8 @@
       [tableStateKey]="tableStateKey"
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
-      (stateSave)="onStateSave($event)"></bia-table>
+      (stateSave)="onStateSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></bia-table>
     <app-engine-table
       *ngIf="crudConfiguration.useCalcMode"
       [elements]="(crudItems$ | async) ?? []"
@@ -83,6 +83,7 @@
       [columnToDisplays]="displayedColumns"
       [reorderableColumns]="reorderableColumns"
       [pageSize]="pageSize"
+      (pageSizeChange)="onPageSizeChange($event)"
       [configuration]="crudConfiguration.fieldsConfig"
       [showColSearch]="showColSearch"
       [globalSearchValue]="globalSearchValue"
@@ -96,6 +97,7 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"></app-engine-table>
+      (save)="onSave($event)"
+      [scrollHeightValue]="getFillScrollHeightValue()"></app-engine-table>
   </div>
 </div>

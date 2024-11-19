@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using System.Collections.Generic;
     using System.Security.Claims;
     using System.Security.Principal;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Service;
@@ -20,8 +21,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using Microsoft.Extensions.Hosting;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 #if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.WorkerService.Features;
 
@@ -62,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         public static void Configure(IHost host)
         {
 #if BIA_FRONT_FEATURE
-            CommonFeaturesExtensions.UseBiaCommonFeatures<AuditFeature>(host.Services);
+            host.Services.GetRequiredService<IAuditFeatureService>().EnableAuditFeatures();
 #endif
         }
 

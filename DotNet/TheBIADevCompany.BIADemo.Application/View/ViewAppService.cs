@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
@@ -19,12 +20,14 @@ namespace TheBIADevCompany.BIADemo.Application.View
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Domain.Dto.View;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
+    using TheBIADevCompany.BIADemo.Domain.View.Mappers;
+    using TheBIADevCompany.BIADemo.Domain.View.Models;
 
     /// <summary>
     /// The application service used to manage views.
     /// </summary>
-    public class ViewAppService : AppServiceBase<View, int>, IViewAppService
+    public class ViewAppService : DomainServiceBase<View, int>, IViewAppService
     {
         /// <summary>
         /// The claims principal.

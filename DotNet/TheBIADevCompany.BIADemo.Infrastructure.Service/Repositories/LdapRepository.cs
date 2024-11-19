@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using System.DirectoryServices;
     using System.DirectoryServices.AccountManagement;
     using System.Runtime.InteropServices;
+    using System.Runtime.Versioning;
     using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Domain.Dto.User;
@@ -15,8 +16,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Service;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Domain.UserModule.Services;
 
     /// <summary>
     /// Class the manipulate AD.
@@ -48,6 +49,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
         /// <param name="entry">Entry from AD.</param>
         /// <param name="domainKey">Domain Name in config file where domain found.</param>
         /// <returns>The UserInfoDirectory object.</returns>
+        [SupportedOSPlatform("windows")]
         protected override UserFromDirectory ConvertToUserDirectory(DirectoryEntry entry, string domainKey)
         {
             var sid = new SecurityIdentifier((byte[])entry.Properties["objectSid"].Value, 0).ToString();

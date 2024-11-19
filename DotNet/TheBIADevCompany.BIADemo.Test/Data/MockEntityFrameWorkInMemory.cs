@@ -9,14 +9,14 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     using System.Linq;
     using BIA.Net.Core.Infrastructure.Data;
     using BIA.Net.Core.Test.Data;
+    using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
+    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate;
-    using TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate;
+    using TheBIADevCompany.BIADemo.Domain.View.Entities;
 
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -25,14 +25,14 @@ namespace TheBIADevCompany.BIADemo.Test.Data
     /// Manage the mock of the DB context as an "in memory" database.
     /// </summary>
     /// <seealso cref="AbstractMockEntityFramework{TDbContext}"/>
-    public class MockEntityFrameworkInMemory : AbstractMockEntityFramework<DataContext, DataContextReadOnly>
+    public class MockEntityFrameworkInMemory : AbstractMockEntityFramework<DataContext, DataContextNoTracking>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MockEntityFrameworkInMemory"/> class.
         /// </summary>
         /// <param name="dbContext">The DB context.</param>
         /// <param name="dbContextReadOnly">The DB context readonly.</param>
-        public MockEntityFrameworkInMemory(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkReadOnly dbContextReadOnly)
+        public MockEntityFrameworkInMemory(IQueryableUnitOfWork dbContext, IQueryableUnitOfWorkNoTracking dbContextReadOnly)
             : base(dbContext, dbContextReadOnly)
         {
             // Do nothing. Used to create the DbContext through IoC.
@@ -154,11 +154,11 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 SiteId = 1,
                 Id = 1,
                 Capacity = 200,
-                SyncTime = TimeSpan.Parse("00:00", new CultureInfo("en-US")),
-                DeliveryDate = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                SyncTime = TimeOnly.Parse("00:00", new CultureInfo("en-US")),
+                DeliveryDate = new DateOnly(2000, 1, 1),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
-                SyncFlightDataTime = TimeSpan.Parse("10:00", new CultureInfo("en-US")),
+                SyncFlightDataTime = TimeOnly.Parse("10:00", new CultureInfo("en-US")),
                 CurrentAirportId = 1,
                 CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[0],
@@ -169,11 +169,11 @@ namespace TheBIADevCompany.BIADemo.Test.Data
                 SiteId = 1,
                 Id = 2,
                 Capacity = 300,
-                SyncTime = TimeSpan.Parse("12:00", new CultureInfo("en-US")),
-                DeliveryDate = new DateTime(2001, 2, 3, 0, 0, 0, DateTimeKind.Utc),
+                SyncTime = TimeOnly.Parse("12:00", new CultureInfo("en-US")),
+                DeliveryDate = new DateOnly(2001, 2, 3),
                 IsActive = true,
                 LastFlightDate = DateTime.Now,
-                SyncFlightDataTime = TimeSpan.Parse("13:00", new CultureInfo("en-US")),
+                SyncFlightDataTime = TimeOnly.Parse("13:00", new CultureInfo("en-US")),
                 CurrentAirportId = 1,
                 CurrentAirport = airport,
                 Msn = DataConstants.DefaultPlanesMsn[1],
