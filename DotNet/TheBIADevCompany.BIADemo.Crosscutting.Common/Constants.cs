@@ -27,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The framework version.
             /// </summary>
-            public const string FrameworkVersion = "3.10.0";
+            public const string FrameworkVersion = "4.0.0-alpha";
         }
 
         /// <summary>
