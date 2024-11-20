@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BiaOsBridge, BiaOsBridgeUsb } from '../bia-os-bridge';
-import { BiaOsBridgeCapacitorUsb } from './bia-os-bridge-capacitor-usb';
+import {
+  BiaOsBridge,
+  BiaOsBridgeDatabase,
+  BiaOsBridgeUsb,
+} from '../bia-os-bridge';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BiaOsBridgeCapacitor implements BiaOsBridge {
-  usb: BiaOsBridgeUsb = new BiaOsBridgeCapacitorUsb();
+  usb: BiaOsBridgeUsb;
+  database: BiaOsBridgeDatabase;
 }

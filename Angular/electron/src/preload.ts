@@ -23,4 +23,10 @@ contextBridge.exposeInMainWorld('electronBridge', {
         callback(device)
       ),
   },
+  database: {
+    runQuery: (query: string, params: any[]) =>
+      ipcRenderer.invoke('db:run', query, params),
+    getQuery: (query: string, params: any[]) =>
+      ipcRenderer.invoke('db:get', query, params),
+  },
 });

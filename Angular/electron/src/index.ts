@@ -8,6 +8,7 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
+import { DatabaseService } from './database.service';
 import { DotnetInterop } from './dotnet-interop/dotnet.interop';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 import { UsbService } from './usb/usb.service';
@@ -86,6 +87,7 @@ app.on('activate', async function () {
 // Place all ipc or other electron api calls and custom functionality under this line
 useUsbService(electronCapacitorApp);
 useDotnetInterop();
+useDatabase();
 
 function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
   const usbService = new UsbService(electronCapacitorApp);
@@ -96,4 +98,30 @@ function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
 function useDotnetInterop() {
   const dotnetInterop = new DotnetInterop();
   ipcMain.handle('try-dotnet-interop', dotnetInterop.execute);
+}
+
+function useDatabase() {
+  const databaseService = new DatabaseService(
+    'C:\\temp\\CapacitorDatabases\\biademo\\myuserdbSQLite.db'
+  );
+  databaseService.initialize();
+  ipcMain.handle('db:run', async (_event, query, params) => {
+    try {
+      const result = await databaseService.runQuery(query, params);
+      return result;
+    } catch (error) {
+      console.error('Error running query:', error);
+      throw error;
+    }
+  });
+
+  ipcMain.handle('db:get', async (_event, query, params) => {
+    try {
+      const result = await databaseService.getQuery(query, params);
+      return result;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      throw error;
+    }
+  });
 }
