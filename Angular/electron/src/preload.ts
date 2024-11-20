@@ -5,6 +5,8 @@ require('./rt/electron-rt');
 // User Defined Preload scripts below
 console.log('User Preload!');
 
+ipcRenderer.invoke('try-dotnet-interop');
+
 contextBridge.exposeInMainWorld('electronBridge', {
   ipcRenderer: {
     invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),

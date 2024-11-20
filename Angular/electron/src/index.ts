@@ -8,8 +8,11 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
+import { DotnetInterop } from './dotnet-interop/dotnet.interop';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 import { UsbService } from './usb/usb.service';
+
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 // Graceful handling of unhandled errors.
 unhandled();
@@ -82,9 +85,15 @@ app.on('activate', async function () {
 
 // Place all ipc or other electron api calls and custom functionality under this line
 useUsbService(electronCapacitorApp);
+useDotnetInterop();
 
 function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
   const usbService = new UsbService(electronCapacitorApp);
   usbService.registerListeners();
   ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
+}
+
+function useDotnetInterop() {
+  const dotnetInterop = new DotnetInterop();
+  ipcMain.handle('try-dotnet-interop', dotnetInterop.execute);
 }
