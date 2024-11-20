@@ -52,7 +52,7 @@ export const planeReducers = createReducer<State>(
     return stateUpdated;
   }),
   on(FeaturePlanesActions.loadSuccess, (state, { plane }) => {
-    return { ...state, currentPlane: plane, loadingGet: false };
+    return { ...state, currentItem: plane, loadingGet: false };
   }),
   on(FeaturePlanesActions.failure, state => {
     return { ...state, loadingGetAll: false, loadingGet: false };
