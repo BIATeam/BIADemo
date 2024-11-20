@@ -76,9 +76,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
-            // Used to get a unique identifier for each HTTP request and track it.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaApiFeatures(this.biaNetSection.ApiFeatures, this.configuration);

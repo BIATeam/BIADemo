@@ -71,18 +71,6 @@ namespace TheBIADevCompany.BIADemo.WorkerService
         /// <param name="services">The collection of services.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Used to get a unique identifier for each HTTP request and track it.
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddTransient<IPrincipal>(
-                provider =>
-                {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, Environment.UserName) };
-                    var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
-                    return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
-                });
-            services.AddTransient<UserContext>(provider => new UserContext("en-GB", this.biaNetSection.Cultures));
-
             // Begin BIA Standard service
             services.AddBiaCommonFeatures(this.biaNetSection.CommonFeatures, this.configuration);
             services.AddBiaWorkerFeatures(
