@@ -61,7 +61,7 @@ export class SQLiteService {
         readonly
       );
     }
-    await db.open();
+    //await db.open();
     return db;
   }
   async retrieveConnection(

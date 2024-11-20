@@ -1,4 +1,5 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 import { Store } from '@ngrx/store';
 import {
   KeycloakEvent,
@@ -179,12 +180,12 @@ export class BiaAppInitService implements OnDestroy {
     }
   }
 
-  async initializeSqlite() {
-    await this.sqliteService.initializePlugin().then(async () => {
-      if (this.sqliteService.platform === 'web') {
-        return;
-      }
+  async initializeSqlite(): Promise<void> {
+    if (Capacitor.getPlatform() === 'web') {
+      return;
+    }
 
+    await this.sqliteService.initializePlugin().then(async () => {
       try {
         const DB_USERS = 'myuserdb';
         await this.storageService.initializeDatabase(DB_USERS);

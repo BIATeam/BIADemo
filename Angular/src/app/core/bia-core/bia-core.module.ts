@@ -32,7 +32,7 @@ import { StorageService } from './services/sqlite/storage.service';
 export function initializeApp(appInitService: BiaAppInitService) {
   return async (): Promise<any> => {
     // TODO why stops the app ???
-    //await appInitService.initializeSqlite();
+    await appInitService.initializeSqlite();
     return appInitService.initAuth();
   };
 }

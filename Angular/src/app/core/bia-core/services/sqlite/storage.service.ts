@@ -41,7 +41,7 @@ export class StorageService {
     );
     this.dbVerService.set(this.databaseName, this.loadToVersion);
 
-    await this.getUsers();
+    //await this.getUsers();
   }
   // Current database state
   userState() {
