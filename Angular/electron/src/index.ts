@@ -8,9 +8,9 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { DatabaseService } from './database.service';
 import { DotnetInterop } from './dotnet-interop/dotnet.interop';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
+import { SqliteDal } from './sqlite.dal';
 import { UsbService } from './usb/usb.service';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
@@ -101,13 +101,13 @@ function useDotnetInterop() {
 }
 
 function useDatabase() {
-  const databaseService = new DatabaseService(
+  const sqliteDal = new SqliteDal(
     'C:\\temp\\CapacitorDatabases\\biademo\\myuserdbSQLite.db'
   );
-  databaseService.initialize();
+  sqliteDal.initialize();
   ipcMain.handle('db:run', async (_event, query, params) => {
     try {
-      const result = await databaseService.runQuery(query, params);
+      const result = await sqliteDal.runQuery(query, params);
       return result;
     } catch (error) {
       console.error('Error running query:', error);
@@ -117,7 +117,7 @@ function useDatabase() {
 
   ipcMain.handle('db:get', async (_event, query, params) => {
     try {
-      const result = await databaseService.getQuery(query, params);
+      const result = await sqliteDal.getQuery(query, params);
       return result;
     } catch (error) {
       console.error('Error fetching data:', error);

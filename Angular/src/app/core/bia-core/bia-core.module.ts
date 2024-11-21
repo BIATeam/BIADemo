@@ -25,14 +25,9 @@ import { BiaTranslationService } from './services/bia-translation.service';
 // OS Bridge
 import { BiaOsBridge } from './os-bridges/bia-os-bridge';
 import { biaOsBridgeFactory } from './os-bridges/bia-os-bridge-factory';
-import { DbnameVersionService } from './services/sqlite/dbname-version.service';
-import { SQLiteService } from './services/sqlite/sqlite.service';
-import { StorageService } from './services/sqlite/storage.service';
 
 export function initializeApp(appInitService: BiaAppInitService) {
   return async (): Promise<any> => {
-    // TODO why stops the app ???
-    //await appInitService.initializeSqlite();
     return appInitService.initAuth();
   };
 }
@@ -80,9 +75,6 @@ const BASE_HREF = [
       provide: BiaOsBridge,
       useFactory: biaOsBridgeFactory,
     },
-    SQLiteService,
-    StorageService,
-    DbnameVersionService,
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

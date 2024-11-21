@@ -1,5 +1,4 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { Capacitor } from '@capacitor/core';
 import { Store } from '@ngrx/store';
 import {
   KeycloakEvent,
@@ -18,8 +17,6 @@ import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { AppState } from 'src/app/store/state';
 import { allEnvironments } from 'src/environments/all-environments';
 import { AuthService } from './auth.service';
-import { SQLiteService } from './sqlite/sqlite.service';
-import { StorageService } from './sqlite/storage.service';
 
 // const STORAGE_KEYCLOAK_TOKEN = 'KeyCloak_Token';
 // const STORAGE_KEYCLOAK_REFRESHTOKEN = 'KeyCloak_RefreshToken';
@@ -37,9 +34,7 @@ export class BiaAppInitService implements OnDestroy {
     protected store: Store<AppState>,
     protected notificationSignalRService: NotificationSignalRService,
     protected keycloakService: KeycloakService,
-    protected appSettingsService: AppSettingsService,
-    protected sqliteService: SQLiteService,
-    protected storageService: StorageService
+    protected appSettingsService: AppSettingsService
   ) {}
 
   public initAuth() {
@@ -178,20 +173,5 @@ export class BiaAppInitService implements OnDestroy {
     if (allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
-  }
-
-  async initializeSqlite(): Promise<void> {
-    if (Capacitor.getPlatform() === 'web') {
-      return;
-    }
-
-    await this.sqliteService.initializePlugin().then(async () => {
-      try {
-        const DB_USERS = 'myuserdb';
-        await this.storageService.initializeDatabase(DB_USERS);
-      } catch (error) {
-        console.log(`initializeAppError: ${error}`);
-      }
-    });
   }
 }

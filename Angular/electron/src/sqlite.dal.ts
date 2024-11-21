@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 
-export class DatabaseService {
+export class SqliteDal {
   dbPath: string;
   db: sqlite3.Database;
 
