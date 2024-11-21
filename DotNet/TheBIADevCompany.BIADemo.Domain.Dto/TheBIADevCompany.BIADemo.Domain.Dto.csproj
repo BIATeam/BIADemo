@@ -6,6 +6,9 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Common\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
   </ItemGroup>

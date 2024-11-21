@@ -77,6 +77,10 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+		<PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.1" />
+		<PackageReference Include="System.Runtime.Caching" Version="8.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
