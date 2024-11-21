@@ -2,13 +2,17 @@ import { BiaOsBridgeSerial } from '../bia-os-bridge';
 
 export class BiaOsBridgeElectronSerial implements BiaOsBridgeSerial {
   async getSerialPorts(): Promise<any[]> {
-    return await (window as any).electronBridge?.serialPort?.getSerialPorts();
+    return await (
+      window as any
+    ).biaElectronBridge?.serialPort?.getSerialPorts();
   }
   onSerialPortConnected(callback: (portInfo: any) => void): void {
-    (window as any).electronBridge?.serialPort?.onSerialPortConnected(callback);
+    (window as any).biaElectronBridge?.serialPort?.onSerialPortConnected(
+      callback
+    );
   }
   onSerialPortDisconnected(callback: (portInfo: any) => void): void {
-    (window as any).electronBridge?.serialPort?.onSerialPortDisconnected(
+    (window as any).biaElectronBridge?.serialPort?.onSerialPortDisconnected(
       callback
     );
   }
@@ -17,7 +21,7 @@ export class BiaOsBridgeElectronSerial implements BiaOsBridgeSerial {
     errorCallback: (portPath: string, err: any) => void,
     onDataReceivedCallback: (portPath: string, data: any) => void
   ): void {
-    (window as any).electronBridge?.serialPort?.listenPort(
+    (window as any).biaElectronBridge?.serialPort?.listenPort(
       portPath,
       errorCallback,
       onDataReceivedCallback

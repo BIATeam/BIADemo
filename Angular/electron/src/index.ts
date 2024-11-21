@@ -4,14 +4,14 @@ import {
   setupElectronDeepLinking,
 } from '@capacitor-community/electron';
 import type { MenuItemConstructorOptions } from 'electron';
-import { app, ipcMain, MenuItem } from 'electron';
+import { app, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { SerialService } from './serial.service';
+import { DatabaseIpc } from './ipc/database.ipc';
+import { SerialPortIpc } from './ipc/serial-port.ipc';
+import { UsbIpc } from './ipc/usb.ipc';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
-import { SqliteDal } from './sqlite.dal';
-import { UsbService } from './usb.service';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -85,50 +85,9 @@ app.on('activate', async function () {
 });
 
 // Place all ipc or other electron api calls and custom functionality under this line
-useUsbService(electronCapacitorApp);
-useDatabase();
-useSerialService(electronCapacitorApp);
-
-function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
-  const usbService = new UsbService(electronCapacitorApp);
-  usbService.init();
-
-  ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
-}
-
-function useDatabase() {
-  const sqliteDal = new SqliteDal(
-    'C:\\temp\\CapacitorDatabases\\biademo\\myuserdbSQLite.db'
-  );
-  sqliteDal.initialize();
-
-  ipcMain.handle('db:run', async (_event, query, params) => {
-    try {
-      const result = await sqliteDal.runQuery(query, params);
-      return result;
-    } catch (error) {
-      console.error('Error running query:', error);
-      throw error;
-    }
-  });
-
-  ipcMain.handle('db:get', async (_event, query, params) => {
-    try {
-      const result = await sqliteDal.getQuery(query, params);
-      return result;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      throw error;
-    }
-  });
-}
-
-function useSerialService(electronCapacitorApp: ElectronCapacitorApp) {
-  const serialService = new SerialService(electronCapacitorApp);
-  serialService.init();
-
-  ipcMain.handle('get-serial-ports', serialService.getPorts);
-  ipcMain.handle('listen-port', (_event, portPath) =>
-    serialService.listen(portPath)
-  );
-}
+new DatabaseIpc(
+  'C:\\temp\\CapacitorDatabases\\biademo\\myuserdbSQLite.db',
+  electronCapacitorApp
+).init();
+new UsbIpc(electronCapacitorApp).init();
+new SerialPortIpc(electronCapacitorApp).init();

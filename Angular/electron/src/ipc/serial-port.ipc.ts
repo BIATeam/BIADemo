@@ -1,21 +1,28 @@
 import { PortInfo } from '@serialport/bindings-interface';
 import { SerialPort } from 'serialport';
-import { ElectronCapacitorApp } from './setup';
+import { BiaIpc } from './bia.ipc';
 
-export class SerialService {
+export class SerialPortIpc extends BiaIpc {
   private ports: PortInfo[] = [];
   private listeningPorts: PortInfo[] = [];
   private isInit = false;
 
-  constructor(private electronCapacitorApp: ElectronCapacitorApp) {}
+  override init(): void {
+    super.init();
 
-  async init() {
     setInterval(() => {
       this.updatePorts();
     }, 1000);
   }
 
-  private async updatePorts() {
+  protected setHandling(): void {
+    this.handle('serialPort:ports', this.getPorts);
+    this.handle('serialPort:listen', (_event, portPath) =>
+      this.listen(portPath)
+    );
+  }
+
+  private async updatePorts(): Promise<void> {
     const currentPorts = await this.getPorts();
 
     const currentPortsMap = new Map(
@@ -32,7 +39,7 @@ export class SerialService {
       for (const newPort of newPorts) {
         this.electronCapacitorApp
           .getMainWindow()
-          .webContents.send('serial-port-connected', newPort);
+          .webContents.send('serialPort:onConnected', newPort);
       }
       for (const oldPort of oldPorts) {
         if (this.listeningPorts.indexOf(oldPort) !== -1) {
@@ -42,7 +49,7 @@ export class SerialService {
         }
         this.electronCapacitorApp
           .getMainWindow()
-          .webContents.send('serial-port-disconnected', oldPort);
+          .webContents.send('serialPort:onDisconnected', oldPort);
       }
     }
 
@@ -50,18 +57,18 @@ export class SerialService {
     this.isInit = true;
   }
 
-  async getPorts(): Promise<PortInfo[]> {
+  private async getPorts(): Promise<PortInfo[]> {
     return await SerialPort.list();
   }
 
-  listen(portPath: any) {
+  private listen(portPath: any): void {
     const portInfo = this.ports.find(p => p.path == portPath);
 
     if (this.listeningPorts.indexOf(portInfo) !== -1) {
       this.electronCapacitorApp
         .getMainWindow()
         .webContents.send(
-          'serial-port-listening-error',
+          'serialPort:listen:onError',
           portPath,
           new Error(`Already listening to port at path ${portPath}`)
         );
@@ -72,7 +79,7 @@ export class SerialService {
       if (err) {
         this.electronCapacitorApp
           .getMainWindow()
-          .webContents.send('serial-port-listening-error', portPath, err);
+          .webContents.send('serialPort:listen:onError', portPath, err);
       }
     });
 
@@ -80,7 +87,7 @@ export class SerialService {
       port.on('data', data =>
         this.electronCapacitorApp
           .getMainWindow()
-          .webContents.send('serial-port-data-received', portPath, data)
+          .webContents.send('serialPort:listen:onData', portPath, data)
       );
 
       this.listeningPorts.push(portInfo);

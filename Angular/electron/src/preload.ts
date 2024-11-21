@@ -3,7 +3,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 require('./rt/electron-rt');
 
-contextBridge.exposeInMainWorld('electronBridge', {
+contextBridge.exposeInMainWorld('biaElectronBridge', {
   ipcRenderer: {
     invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
     on: (channel, listener) => ipcRenderer.on(channel, listener),
@@ -11,28 +11,26 @@ contextBridge.exposeInMainWorld('electronBridge', {
       ipcRenderer.removeListener(channel, listener),
   },
   usb: {
-    getUsbPorts: () => ipcRenderer.invoke('get-usb-ports'),
+    getUsbPorts: () => ipcRenderer.invoke('usb:ports'),
     onUsbDeviceConnected: (callback: (device: any) => void) =>
-      ipcRenderer.on('usb-device-connected', (_, device) => callback(device)),
+      ipcRenderer.on('usb:onConnected', (_, device) => callback(device)),
     onUsbDeviceDisconnected: (callback: (device: any) => void) =>
-      ipcRenderer.on('usb-device-disconnected', (_, device) =>
-        callback(device)
-      ),
+      ipcRenderer.on('usb:onDisconnected', (_, device) => callback(device)),
   },
   database: {
     runQuery: (query: string, params: any[]) =>
-      ipcRenderer.invoke('db:run', query, params),
+      ipcRenderer.invoke('db:runQuery', query, params),
     getQuery: (query: string, params: any[]) =>
-      ipcRenderer.invoke('db:get', query, params),
+      ipcRenderer.invoke('db:getQuery', query, params),
   },
   serialPort: {
-    getSerialPorts: () => ipcRenderer.invoke('get-serial-ports'),
+    getSerialPorts: () => ipcRenderer.invoke('serialPort:ports'),
     onSerialPortConnected: (callback: (portInfo: PortInfo) => void) =>
-      ipcRenderer.on('serial-port-connected', (_, portInfo) =>
+      ipcRenderer.on('serialPort:onConnected', (_, portInfo) =>
         callback(portInfo)
       ),
     onSerialPortDisconnected: (callback: (portInfo: PortInfo) => void) =>
-      ipcRenderer.on('serial-port-disconnected', (_, portInfo) =>
+      ipcRenderer.on('serialPort:onDisconnected', (_, portInfo) =>
         callback(portInfo)
       ),
     listenPort: (
@@ -40,11 +38,11 @@ contextBridge.exposeInMainWorld('electronBridge', {
       errorCallback: (portPath: string, err: any) => void,
       onDataReceivedCallback: (portPath: string, data: any) => void
     ) => {
-      ipcRenderer.invoke('listen-port', portPath);
-      ipcRenderer.on('serial-port-listening-error', (_, portPath, err) =>
+      ipcRenderer.invoke('serialPort:listen', portPath);
+      ipcRenderer.on('serialPort:listen:onError', (_, portPath, err) =>
         errorCallback(portPath, err)
       );
-      ipcRenderer.on('serial-port-data-received', (_, portPath, data) =>
+      ipcRenderer.on('serialPort:listen:onData', (_, portPath, data) =>
         onDataReceivedCallback(portPath, data)
       );
     },
