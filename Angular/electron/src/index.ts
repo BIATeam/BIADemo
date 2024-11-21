@@ -8,10 +8,11 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { DotnetInterop } from './dotnet-interop/dotnet.interop';
+import { DotnetInterop } from './dotnet.interop';
+import { SerialService } from './serial.service';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 import { SqliteDal } from './sqlite.dal';
-import { UsbService } from './usb/usb.service';
+import { UsbService } from './usb.service';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -88,10 +89,11 @@ app.on('activate', async function () {
 useUsbService(electronCapacitorApp);
 useDotnetInterop();
 useDatabase();
+useSerialService(electronCapacitorApp);
 
 function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
   const usbService = new UsbService(electronCapacitorApp);
-  usbService.registerListeners();
+  usbService.init();
   ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
 }
 
@@ -124,4 +126,14 @@ function useDatabase() {
       throw error;
     }
   });
+}
+
+function useSerialService(electronCapacitorApp: ElectronCapacitorApp) {
+  const serialService = new SerialService(electronCapacitorApp);
+  serialService.init();
+
+  ipcMain.handle('get-serial-ports', serialService.getPorts);
+  ipcMain.handle('listen-port', (_event, portPath) =>
+    serialService.listen(portPath)
+  );
 }
