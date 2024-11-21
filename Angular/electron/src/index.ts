@@ -8,7 +8,6 @@ import { app, ipcMain, MenuItem } from 'electron';
 import electronIsDev from 'electron-is-dev';
 import unhandled from 'electron-unhandled';
 import { autoUpdater } from 'electron-updater';
-import { DotnetInterop } from './dotnet.interop';
 import { SerialService } from './serial.service';
 import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 import { SqliteDal } from './sqlite.dal';
@@ -87,19 +86,14 @@ app.on('activate', async function () {
 
 // Place all ipc or other electron api calls and custom functionality under this line
 useUsbService(electronCapacitorApp);
-useDotnetInterop();
 useDatabase();
 useSerialService(electronCapacitorApp);
 
 function useUsbService(electronCapacitorApp: ElectronCapacitorApp) {
   const usbService = new UsbService(electronCapacitorApp);
   usbService.init();
-  ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
-}
 
-function useDotnetInterop() {
-  const dotnetInterop = new DotnetInterop();
-  ipcMain.handle('try-dotnet-interop', dotnetInterop.execute);
+  ipcMain.handle('get-usb-ports', usbService.getUsbPorts);
 }
 
 function useDatabase() {
@@ -107,6 +101,7 @@ function useDatabase() {
     'C:\\temp\\CapacitorDatabases\\biademo\\myuserdbSQLite.db'
   );
   sqliteDal.initialize();
+
   ipcMain.handle('db:run', async (_event, query, params) => {
     try {
       const result = await sqliteDal.runQuery(query, params);

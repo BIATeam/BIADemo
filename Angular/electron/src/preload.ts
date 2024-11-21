@@ -2,11 +2,6 @@ import { PortInfo } from '@serialport/bindings-interface';
 import { contextBridge, ipcRenderer } from 'electron';
 
 require('./rt/electron-rt');
-//////////////////////////////
-// User Defined Preload scripts below
-console.log('User Preload!');
-
-ipcRenderer.invoke('try-dotnet-interop');
 
 contextBridge.exposeInMainWorld('electronBridge', {
   ipcRenderer: {
