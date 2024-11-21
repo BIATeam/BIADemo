@@ -26,6 +26,7 @@
     "stats-compute": "ng build --configuration production --base-href /BIADemo/App/ --stats-json",
     "stats-display": "webpack-bundle-analyzer --port 4299 dist/BIADemo/stats.json",
     "stats": "npm run stats-compute && npm run stats-display",
+    "capacitor:sync": "npm run build && npx cap sync && npx cap sync @capacitor-community/electron",
     "electron:build": "npm run build && npx cap sync @capacitor-community/electron",
     "electron:start": "npm run electron:build && npx cap open electron"
   },
