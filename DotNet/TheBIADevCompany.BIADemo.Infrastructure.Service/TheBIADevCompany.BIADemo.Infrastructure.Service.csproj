@@ -7,9 +7,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.8.*" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="[8.0.*,9.0.0)" />
     <PackageReference Include="PdfPig" Version="0.1.*" />
-    <PackageReference Include="System.DirectoryServices" Version="8.0.*" />
+    <PackageReference Include="System.DirectoryServices" Version="[8.0.*,9.0.0)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
