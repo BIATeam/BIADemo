@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Core" Version="27.1.*" />
     <PackageReference Include="Hangfire" Version="1.8.*" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.*" />
@@ -22,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\thepirat000\Audit.NET\src\Audit.EntityFramework.Core\Audit.EntityFramework.Core.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
   </ItemGroup>

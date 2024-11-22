@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\thepirat000\Audit.NET\src\Audit.Attribute\Audit.Attribute.csproj" />
     <ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
   </ItemGroup>
 
@@ -22,10 +23,6 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Audit.EntityFramework.Core" Version="27.1.*" />
   </ItemGroup>
 
 </Project>

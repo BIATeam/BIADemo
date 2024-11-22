@@ -14,7 +14,6 @@
     <Compile Remove="Migrations\20200908084410_AddVersionedTable.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Audit.NET.SqlServer" Version="27.1.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.*" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.*" />
@@ -24,6 +23,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\thepirat000\Audit.NET\src\Audit.NET.SqlServer\Audit.NET.SqlServer.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
     <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
   </ItemGroup>
