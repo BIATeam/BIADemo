@@ -20,7 +20,7 @@
       }
     },
     "Security": {
-      "Audience": "http://localhost:4200"
+        "Audience": "http://localhost:4200,capacitor-electron://-"
     },
     "EmailConfiguration": {
       "From": "noreply-BIADemo@the-mail-domain.bia",

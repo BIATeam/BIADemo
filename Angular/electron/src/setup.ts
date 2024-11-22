@@ -136,8 +136,6 @@ export class ElectronCapacitorApp {
         // Use preload to inject the electron varriant overrides for capacitor plugins.
         // preload: join(app.getAppPath(), "node_modules", "@capacitor-community", "electron", "dist", "runtime", "electron-rt.js"),
         preload: preloadPath,
-        // TODO uncomment following when CORS errors resolved
-        webSecurity: false,
       },
     });
     this.mainWindowState.manage(this.MainWindow);
@@ -255,8 +253,8 @@ export function setupContentSecurityPolicy(customScheme: string): void {
         ...details.responseHeaders,
         'Content-Security-Policy': [
           electronIsDev
-            ? `default-src ${customScheme}://* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
-            : `default-src ${customScheme}://* 'unsafe-inline' data:`,
+            ? `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
+            : `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' data:`,
         ],
       },
     });
