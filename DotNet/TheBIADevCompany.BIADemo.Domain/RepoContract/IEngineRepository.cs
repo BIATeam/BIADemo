@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.RepoContract;
+    using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Domain.Plane.Entities;
 
     /// <summary>
@@ -20,5 +21,11 @@ namespace TheBIADevCompany.BIADemo.Domain.RepoContract
         /// <param name="nbMonth">The nb month.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task FillIsToBeMaintainedAsync(int nbMonth);
+
+        /// <summary>
+        /// TodoShouldBeImpossibleToDeclareDbSetInInetrefaceDomain.
+        /// </summary>
+        /// <returns>A DBSET.</returns>
+        DbSet<Engine> TodoShouldBeImpossibleToDeclareDbSetInInetrefaceDomain();
     }
 }
