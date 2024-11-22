@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <PackageReference Include="Audit.EntityFramework.Core" Version="27.0.2" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
   </ItemGroup>
 
 </Project>
