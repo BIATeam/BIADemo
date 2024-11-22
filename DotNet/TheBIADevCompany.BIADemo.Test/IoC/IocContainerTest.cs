@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
     using System.Reflection;
     using BIA.Net.Core.Test.Data;
     using BIA.Net.Core.Test.IoC;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -31,6 +32,9 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
         /// <param name="services">The collection of services to update.</param>
         public static void ConfigureContainerTest(IServiceCollection services)
         {
+            IConfiguration configuration = BuildConfiguration();
+            services.AddSingleton(configuration);
+
             IocContainer.ConfigureContainer(services, null, true, true);
             BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
 
@@ -56,6 +60,16 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
             {
                 collection.AddTransient(classType, classType);
             }
+        }
+
+        /// <summary>
+        /// Builds the configuration.
+        /// </summary>
+        /// <returns>The configuration.</returns>
+        private static IConfiguration BuildConfiguration()
+        {
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            return configurationBuilder.Build();
         }
     }
 }
