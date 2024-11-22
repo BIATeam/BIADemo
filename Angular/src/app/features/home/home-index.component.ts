@@ -23,11 +23,11 @@ export class HomeIndexComponent implements OnInit, OnDestroy {
     // );
     // console.log('Users added result', addUsers);
 
-    const users = await this.osBridge.database.getQuery<any>(
-      'SELECT * FROM users',
-      []
-    );
-    console.log('Database users', users);
+    // const users = await this.osBridge.database.getQuery<any>(
+    //   'SELECT * FROM users',
+    //   []
+    // );
+    // console.log('Database users', users);
 
     // === OS Bridge USB ===
     console.log('USB ports', await this.osBridge.usb.getUsbPorts());

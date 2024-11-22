@@ -1,4 +1,8 @@
+import { Capacitor } from '@capacitor/core';
 import { NgxLoggerLevel } from 'ngx-logger';
+
+const isAndroid = Capacitor.getPlatform() === 'android';
+const serverUrl = isAndroid ? '10.0.2.2' : 'localhost';
 
 export const environment = {
   helpUrl: '',
@@ -7,13 +11,13 @@ export const environment = {
     oldValue: '',
     newValue: '',
   },
-  apiUrl: 'http://localhost:32128/BIADemo/WebApi/api',
-  hubUrl: 'http://localhost:32128/BIADemo/WebApi/HubForClients',
+  apiUrl: `http://${serverUrl}:32128/BIADemo/WebApi/api`,
+  hubUrl: `http://${serverUrl}:32128/BIADemo/WebApi/HubForClients`,
   useXhrWithCred: true,
   production: false,
   logging: {
     conf: {
-      serverLoggingUrl: 'http://localhost:32128/BIADemo/WebApi/api/logs',
+      serverLoggingUrl: `http://${serverUrl}:32128/BIADemo/WebApi/api/logs`,
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.ERROR,
       withCredentials: true,

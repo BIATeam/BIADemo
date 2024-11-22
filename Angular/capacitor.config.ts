@@ -4,6 +4,13 @@ const config: CapacitorConfig = {
   appId: 'com.bia.biademo',
   appName: 'biademo',
   webDir: 'dist/BIADemo',
+  android: {
+    allowMixedContent: true,
+  },
+  server: {
+    androidScheme: 'http',
+    cleartext: true,
+  }
 };
 
 export default config;
