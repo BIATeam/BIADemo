@@ -49,6 +49,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() totalRecord: number;
   @Input() paginator = true;
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
+  @Input() virtualScroll: boolean = false;
   @Input() elements: any[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() reorderableColumns = true;
@@ -67,6 +68,8 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() isScrollable = true;
   @Input() frozeSelectColumn = true;
   @Input() canSelectMultipleElement = true;
+  @Input() rowHeight = 33.56;
+  @Input() virtualScrollPageSize = 100;
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -432,9 +435,15 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
 
   onLoadLazy(event: TableLazyLoadEvent) {
     this.saveTableState();
+    if (event.rows === 0 && this.virtualScroll) {
+      event.rows = this.virtualScrollPageSize;
+    }
     const tableLazyLoadCopy: TableLazyLoadEvent =
       TableHelperService.copyTableLazyLoadEvent(event);
     setTimeout(() => this.loadLazy.emit(tableLazyLoadCopy), 0);
+    if (event.forceUpdate) {
+      event.forceUpdate();
+    }
   }
 
   onSelectionChange() {

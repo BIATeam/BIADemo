@@ -20,6 +20,8 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   // storeKey: 'feature-' + featureName,
   // IMPORTANT: this is the key used for the view management it should be unique in all the application (except if share same views).
   tableStateKey: 'planesGrid',
+  useCompactMode: true,
+  useVirtualScroll: false,
 });
 
 export const planeSpecificCRUDConfiguration: CrudConfig = new CrudConfig({

@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'crudItem.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -8,8 +8,14 @@
       (create)="onCreate()"
       (exportCSV)="onExportCSV('bia.crud.listOf')"
       (delete)="onDelete()"
-      [selectedElements]="selectedCrudItems"></bia-table-header>
+      [selectedElements]="selectedCrudItems"
+      [showTableControllerButton]="crudConfiguration.useCompactMode ?? false"
+      [tableControllerVisible]="showTableController"
+      (toggleTableControllerVisibility)="
+        toggleTableControllerVisibility()
+      "></bia-table-header>
     <bia-table-controller
+      [ngClass]="{ 'table-controller-hidden': !showTableController }"
       [defaultPageSize]="defaultPageSize"
       [columns]="columns"
       [columnToDisplays]="displayedColumns"
@@ -42,11 +48,36 @@
             (click)="useSignalRChange(!crudConfiguration.useSignalR)"
             pTooltip="{{ 'bia.useSignalR' | translate }}"
             tooltipPosition="top"></i>
+          <i
+            class="pi pi-clone bia-pointer"
+            [class]="crudConfiguration.usePopup ? 'enable' : 'disabled'"
+            (click)="usePopupChange(!crudConfiguration.usePopup)"
+            pTooltip="{{ 'bia.usePopup' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-arrow-down-left-and-arrow-up-right-to-center bia-pointer"
+            [class]="crudConfiguration.useCompactMode ? 'enable' : 'disabled'"
+            (click)="useCompactModeChange(!crudConfiguration.useCompactMode)"
+            pTooltip="{{ 'bia.useCompactMode' | translate }}"
+            tooltipPosition="top"></i>
+          <i
+            class="pi pi-arrows-v bia-pointer"
+            [class]="crudConfiguration.useVirtualScroll ? 'enable' : 'disabled'"
+            (click)="
+              useVirtualScrollChange(!crudConfiguration.useVirtualScroll)
+            "
+            pTooltip="{{ 'bia.useVirtualScroll' | translate }}"
+            tooltipPosition="top"></i>
         </div>
       </ng-template>
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [elements]="(crudItems$ | async) ?? []"
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
@@ -66,10 +97,16 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      (stateSave)="onStateSave($event)"></bia-table>
+      (stateSave)="onStateSave($event)"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [rowHeight]="defaultRowHeight"></bia-table>
     <bia-crud-item-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [dictOptionDtos]="
         (crudItemService.optionsService.dictOptionDtos$ | async) ?? []
       "
@@ -91,6 +128,8 @@
       (selectedElementsChanged)="onSelectedElementsChanged($event)"
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
-      (save)="onSave($event)"></bia-crud-item-table>
+      (save)="onSave($event)"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [rowHeight]="defaultRowHeight"></bia-crud-item-table>
   </div>
 </div>
