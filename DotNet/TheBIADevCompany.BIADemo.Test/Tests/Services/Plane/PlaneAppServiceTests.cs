@@ -87,10 +87,10 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             // Add new plane.
             int id = 3;
             int capacity = 333;
-            var deliveryDate = new DateOnly(1990, 10, 10);
-            var syncTime = TimeOnly.Parse("12:00", new CultureInfo("en-US"));
+            DateTime deliveryDate = new DateTime(1990, 10, 10, 0, 0, 0, DateTimeKind.Utc);
+            string syncTime = "12:00:00";
             bool isActive = false;
-            var lastFlightDate = new DateTime(2013, 4, 4, 0, 0, 0, DateTimeKind.Utc);
+            DateTime lastFlightDate = new DateTime(2013, 4, 4, 0, 0, 0, DateTimeKind.Utc);
             string msn = "AB-0001";
             OptionDto airport = new OptionDto() { Id = 1, Display = "BDX" };
 
@@ -116,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Test.Tests.Services.Plane
             Plane plane = this.DbMock.GetPlane(id);
             Assert.AreEqual(capacity, plane.Capacity);
             Assert.AreEqual(deliveryDate, plane.DeliveryDate);
-            Assert.AreEqual(syncTime, plane.SyncTime);
+            Assert.AreEqual(TimeSpan.Parse(syncTime, new CultureInfo("en-US")), plane.SyncTime);
             Assert.AreEqual(id, plane.Id);
             Assert.AreEqual(isActive, plane.IsActive);
             Assert.AreEqual(lastFlightDate, plane.LastFlightDate);

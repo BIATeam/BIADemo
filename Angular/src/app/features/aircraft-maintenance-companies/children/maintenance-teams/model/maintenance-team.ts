@@ -21,7 +21,7 @@ export class MaintenanceTeam extends BaseTeamDto {
   isApproved: boolean | null;
   firstOperation: Date;
   lastOperation: Date | null;
-  approvalDate: Date | null;
+  approvedDate: Date | null;
   nextOperation: Date;
   maxTravelDuration: string;
   maxOperationDuration: string;
@@ -88,14 +88,14 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig = {
         }
       ),
       /// BIAToolKit - End Block lastOperation
-      /// BIAToolKit - Begin Block approvalDate
+      /// BIAToolKit - Begin Block approvedDate
       Object.assign(
-        new BiaFieldConfig('approvalDate', 'maintenanceTeam.approvalDate'),
+        new BiaFieldConfig('approvedDate', 'maintenanceTeam.approvedDate'),
         {
           type: PropType.Date,
         }
       ),
-      /// BIAToolKit - End Block approvalDate
+      /// BIAToolKit - End Block approvedDate
       /// BIAToolKit - Begin Block nextOperation
       Object.assign(
         new BiaFieldConfig('nextOperation', 'maintenanceTeam.nextOperation'),

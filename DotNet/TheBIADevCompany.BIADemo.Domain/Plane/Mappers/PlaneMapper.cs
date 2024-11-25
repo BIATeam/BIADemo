@@ -73,8 +73,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.LastFlightDate = dto.LastFlightDate;
             entity.DeliveryDate = dto.DeliveryDate;
             entity.NextMaintenanceDate = dto.NextMaintenanceDate;
-            entity.SyncTime = dto.SyncTime;
-            entity.SyncFlightDataTime = dto.SyncFlightDataTime;
+            entity.SyncTime = string.IsNullOrEmpty(dto.SyncTime) ? null : TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
+            entity.SyncFlightDataTime = TimeSpan.Parse(dto.SyncFlightDataTime, new CultureInfo("en-US"));
             entity.Capacity = dto.Capacity;
             entity.MotorsCount = dto.MotorsCount;
             entity.TotalFlightHours = dto.TotalFlightHours;
@@ -150,8 +150,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 LastFlightDate = entity.LastFlightDate,
                 DeliveryDate = entity.DeliveryDate,
                 NextMaintenanceDate = entity.NextMaintenanceDate,
-                SyncTime = entity.SyncTime,
-                SyncFlightDataTime = entity.SyncFlightDataTime,
+                SyncTime = entity.SyncTime.Value.ToString(@"hh\:mm\:ss"),
+                SyncFlightDataTime = entity.SyncFlightDataTime.ToString(@"hh\:mm\:ss"),
                 Capacity = entity.Capacity,
                 MotorsCount = entity.MotorsCount,
                 TotalFlightHours = entity.TotalFlightHours,

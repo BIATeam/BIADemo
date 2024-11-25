@@ -76,7 +76,7 @@
     "isApproved": "Approuvée",
     "firstOperation": "Première date d'opération",
     "lastOperation": "Dernière date d'opération",
-    "approvalDate": "Date d'approbation",
+    "approvedDate": "Date d'approbation",
     "nextOperation": "Prochaine date d'opération",
     "maxTravelDuration": "Durée maximale de voyage",
     "maxOperationDuration": "Durée maximale d'opération",

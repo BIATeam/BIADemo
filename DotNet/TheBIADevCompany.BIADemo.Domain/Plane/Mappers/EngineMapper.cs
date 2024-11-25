@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Domain;
@@ -67,8 +68,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
             entity.LastMaintenanceDate = dto.LastMaintenanceDate;
             entity.DeliveryDate = dto.DeliveryDate;
             entity.ExchangeDate = dto.ExchangeDate;
-            entity.SyncTime = dto.SyncTime;
-            entity.IgnitionTime = dto.IgnitionTime;
+            entity.SyncTime = TimeSpan.Parse(dto.SyncTime, new CultureInfo("en-US"));
+            entity.IgnitionTime = dto.IgnitionTime != null ? TimeSpan.Parse(dto.IgnitionTime, new CultureInfo("en-US")) : null;
             entity.Power = dto.Power;
             entity.NoiseLevel = dto.NoiseLevel;
             entity.FlightHours = dto.FlightHours;
@@ -119,8 +120,8 @@ namespace TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate
                 LastMaintenanceDate = entity.LastMaintenanceDate,
                 DeliveryDate = entity.DeliveryDate,
                 ExchangeDate = entity.ExchangeDate,
-                SyncTime = entity.SyncTime,
-                IgnitionTime = entity.IgnitionTime,
+                SyncTime = entity.SyncTime.ToString(@"hh\:mm\:ss"),
+                IgnitionTime = entity.IgnitionTime.GetValueOrDefault().ToString(@"hh\:mm\:ss"),
                 Power = entity.Power,
                 NoiseLevel = entity.NoiseLevel,
                 FlightHours = entity.FlightHours,
