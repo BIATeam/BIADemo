@@ -17,7 +17,7 @@ export class CrudConfig {
   optionFilter: any;
   useBulk: boolean;
   useCompactMode?: boolean;
-  useVirtualScroll: boolean = false;
+  useVirtualScroll = false;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
