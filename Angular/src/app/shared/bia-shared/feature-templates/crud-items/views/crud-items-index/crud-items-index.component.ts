@@ -11,8 +11,8 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
-import { Observable, Subscription } from 'rxjs';
-import { filter, skip } from 'rxjs/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { filter, skip, take, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/core/bia-core/services/auth.service';
 import { BiaOnlineOfflineService } from 'src/app/core/bia-core/services/bia-online-offline.service';
 import { BiaTranslationService } from 'src/app/core/bia-core/services/bia-translation.service';
@@ -75,6 +75,8 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
   pageSize = this.defaultPageSize;
   totalRecords: number;
   crudItems$: Observable<CrudItem[]>;
+  lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
+  virtualCrudItems: CrudItem[];
   selectedCrudItems: CrudItem[] = [];
   totalCount$: Observable<number>;
   loading$: Observable<boolean>;
@@ -237,6 +239,7 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudItemService.clearAll();
     this.crudItems$ = this.crudItemService.crudItems$;
     this.totalCount$ = this.crudItemService.totalCount$;
+    this.lastLazyLoadEvent$ = this.crudItemService.lastLazyLoadEvent$;
     this.loading$ = this.crudItemService.loadingGetAll$;
     this.onDisplay();
 
@@ -248,6 +251,40 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
           .subscribe(() => {
             this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
           })
+      );
+    }
+
+    if (this.crudConfiguration.useVirtualScroll) {
+      this.sub.add(
+        combineLatest([this.crudItems$, this.totalCount$]).subscribe(data => {
+          this.lastLazyLoadEvent$
+            .pipe(
+              take(1),
+              tap(lastLazyLoadEvent => {
+                if (lastLazyLoadEvent.first !== undefined) {
+                  if (
+                    data[1] > 0 &&
+                    (!this.virtualCrudItems ||
+                      data[1] !== this.virtualCrudItems.length)
+                  ) {
+                    this.virtualCrudItems = Array.from({ length: data[1] });
+                  }
+
+                  if (
+                    this.virtualCrudItems &&
+                    this.virtualCrudItems.length > 0
+                  ) {
+                    this.virtualCrudItems.splice(
+                      lastLazyLoadEvent.first ?? 0,
+                      lastLazyLoadEvent.rows ?? 0,
+                      ...data[0]
+                    );
+                  }
+                }
+              })
+            )
+            .subscribe();
+        })
       );
     }
 
@@ -491,5 +528,13 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
 
   onOpenFilter() {
     this.showAdvancedFilter = true;
+  }
+
+  get defaultRowHeight(): number {
+    if (this.crudConfiguration.useCompactMode) {
+      return this.layoutService.config().scale * 1.679 + 2;
+    } else {
+      return this.layoutService.config().scale * 2.257 + 2;
+    }
   }
 }

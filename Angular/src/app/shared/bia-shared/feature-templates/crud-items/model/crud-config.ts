@@ -17,6 +17,7 @@ export class CrudConfig {
   optionFilter: any;
   useBulk: boolean;
   useCompactMode?: boolean;
+  useVirtualScroll: boolean = false;
   bulkMode?: {
     useInsert: boolean;
     useUpdate: boolean;
@@ -36,7 +37,8 @@ export class CrudConfig {
     useOfflineMode = false,
     optionFilter = undefined,
     bulkMode,
-    useCompactMode = true,
+    useCompactMode = false,
+    useVirtualScroll = false,
   }: {
     featureName: string;
     fieldsConfig: BiaFieldsConfig;
@@ -55,6 +57,7 @@ export class CrudConfig {
       useDelete: boolean;
     };
     useCompactMode?: boolean;
+    useVirtualScroll?: boolean;
   }) {
     this.featureName = featureName;
     this.fieldsConfig = fieldsConfig;
@@ -73,5 +76,6 @@ export class CrudConfig {
       bulkMode?.useInsert === true ||
       bulkMode?.useUpdate === true;
     this.useCompactMode = useCompactMode;
+    this.useVirtualScroll = !!useVirtualScroll;
   }
 }

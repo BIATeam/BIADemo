@@ -5,8 +5,8 @@
   [reorderableColumns]="reorderableColumns"
   [columns]="displayedColumns"
   [value]="elements"
-  [paginator]="paginator"
-  [rows]="pageSize"
+  [paginator]="!virtualScroll && paginator"
+  [rows]="virtualScroll ? virtualScrollPageSize : pageSize"
   (onFilter)="onFilter()"
   [totalRecords]="totalRecord"
   [lazy]="true"
@@ -23,7 +23,10 @@
   sortMode="multiple"
   [scrollHeight]="scrollHeightValue"
   [scrollable]="isScrollable"
-  [(selection)]="selectedElements">
+  [(selection)]="selectedElements"
+  [virtualScroll]="virtualScroll"
+  [virtualScrollItemSize]="rowHeight"
+  [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }">
   <ng-template pTemplate="header" let-columns>
     <tr>
       <th
@@ -98,8 +101,12 @@
       </th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-rowData let-columns="columns">
-    <tr [pSelectableRow]="rowData">
+  <ng-template
+    pTemplate="body"
+    let-rowData
+    let-columns="columns"
+    let-ri="rowIndex">
+    <tr [pSelectableRow]="rowData" [ngClass]="{ 'p-even-row': ri % 2 === 0 }">
       <td
         *ngIf="canSelectElement === true"
         [style.width]="widthSelect"
@@ -142,6 +149,38 @@
       </td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="loadingbody" let-columns="columns" let-ri="rowIndex">
+    <tr
+      [style]="'height: ' + rowHeight + 'px'"
+      [ngClass]="{ 'p-even-row': ri % 2 !== 0 }">
+      <td
+        *ngIf="canSelectElement === true"
+        [style.width]="widthSelect"
+        [alignFrozen]="alignFrozenSelect"
+        pFrozenColumn
+        [frozen]="isSelectFrozen">
+        <p-skeleton
+          [ngStyle]="{
+            width: '60%',
+          }" />
+      </td>
+      <td *ngFor="let col of columns; let even = even">
+        <p-skeleton
+          [ngStyle]="{
+            width: even ? '40%' : '60%',
+          }" />
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template *ngIf="virtualScroll" pTemplate="summary" let-columns
+    ><bia-table-footer-controller
+      [length]="totalRecord"
+      [pageSize]="pageSize"
+      [canChangePageSize]="false"
+      (pageSizeChange)="
+        onPageSizeValueChange($event)
+      "></bia-table-footer-controller
+  ></ng-template>
   <ng-template pTemplate="paginatorleft">
     <bia-table-footer-controller
       [length]="totalRecord"

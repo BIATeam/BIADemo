@@ -81,7 +81,11 @@
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -100,10 +104,16 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [frozeSelectColumn]="true"></bia-table>
+      [frozeSelectColumn]="true"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [rowHeight]="defaultRowHeight"></bia-table>
     <app-plane-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [dictOptionDtos]="
         (planeService.optionsService.dictOptionDtos$ | async) ?? []
       "
@@ -126,6 +136,10 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
       [frozeSelectColumn]="true"
-      [scrollHeightValue]="getFillScrollHeightValue()"></app-plane-table>
+      [scrollHeightValue]="getFillScrollHeightValue()"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [rowHeight]="
+        crudConfiguration.useCompactMode ? 25.5 : 33.56
+      "></app-plane-table>
   </div>
 </div>

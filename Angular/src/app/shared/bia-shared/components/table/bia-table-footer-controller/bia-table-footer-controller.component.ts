@@ -19,6 +19,7 @@ export class BiaTableFooterControllerComponent implements OnInit, OnChanges {
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
   @Input() pageSize: number;
   @Input() length: number;
+  @Input() canChangePageSize: boolean = true;
   @Output() pageSizeChange = new EventEmitter<number>();
 
   pageSizes: SelectItem[];
