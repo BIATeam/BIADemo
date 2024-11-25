@@ -49,7 +49,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() totalRecord: number;
   @Input() paginator = true;
   @Input() pageSizeOptions: number[] = [10, 25, 50, 100];
-  @Input() virtualScroll: boolean = false;
+  @Input() virtualScroll = false;
   @Input() elements: any[];
   @Input() columnToDisplays: KeyValuePair[];
   @Input() reorderableColumns = true;
