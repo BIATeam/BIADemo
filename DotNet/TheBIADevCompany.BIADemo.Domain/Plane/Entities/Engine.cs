@@ -44,25 +44,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// Gets or sets the delivery date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateOnly DeliveryDate { get; set; }
+        public DateTime DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the exchange date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateOnly? ExchangeDate { get; set; }
+        public DateTime? ExchangeDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeOnly SyncTime { get; set; }
+        public TimeSpan SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the daily ignition hour.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeOnly? IgnitionTime { get; set; }
+        public TimeSpan? IgnitionTime { get; set; }
 
         /// <summary>
         /// Gets or sets the power.

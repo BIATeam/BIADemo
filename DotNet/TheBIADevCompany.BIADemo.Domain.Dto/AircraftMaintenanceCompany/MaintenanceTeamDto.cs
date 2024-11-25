@@ -57,25 +57,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.AircraftMaintenanceCompany
         /// Gets or sets the approval date.
         /// </summary>
         [BiaDtoField(Type = "date", Required = false)]
-        public DateOnly? ApprovedDate { get; set; }
+        public DateTime? ApprovedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the next operation date.
         /// </summary>
         [BiaDtoField(Type = "date", Required = true)]
-        public DateOnly NextOperation { get; set; }
+        public DateTime NextOperation { get; set; }
 
         /// <summary>
         /// Gets or sets the max travel duration hour.
         /// </summary>
         [BiaDtoField(Type = "time", Required = false)]
-        public TimeOnly? MaxTravelDuration { get; set; }
+        public string MaxTravelDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the max operation duration hour.
         /// </summary>
         [BiaDtoField(Type = "time", Required = true)]
-        public TimeOnly MaxOperationDuration { get; set; }
+        public string MaxOperationDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the operation count.

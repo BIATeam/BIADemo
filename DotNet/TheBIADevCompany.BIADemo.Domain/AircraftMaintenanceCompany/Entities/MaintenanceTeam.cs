@@ -62,22 +62,22 @@ namespace TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities
         /// <summary>
         /// Gets or sets the approval date.
         /// </summary>
-        public DateOnly? ApprovedDate { get; set; }
+        public DateTime? ApprovedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the next operation date.
         /// </summary>
-        public DateOnly NextOperation { get; set; }
+        public DateTime NextOperation { get; set; }
 
         /// <summary>
         /// Gets or sets the max travel duration hour.
         /// </summary>
-        public TimeOnly? MaxTravelDuration { get; set; }
+        public TimeSpan? MaxTravelDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the max operation duration hour.
         /// </summary>
-        public TimeOnly MaxOperationDuration { get; set; }
+        public TimeSpan MaxOperationDuration { get; set; }
 
         /// <summary>
         /// Gets or sets the operation count.
