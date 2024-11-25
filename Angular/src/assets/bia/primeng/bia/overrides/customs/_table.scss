@@ -27,4 +27,8 @@
     align-items: center;
     box-sizing: content-box;
   }
+
+  .p-datatable .p-datatable-footer:empty {
+    display: none;
+  }
 }

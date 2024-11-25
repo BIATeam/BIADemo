@@ -76,6 +76,14 @@
             (click)="useCompactModeChange(!crudConfiguration.useCompactMode)"
             pTooltip="{{ 'bia.useCompactMode' | translate }}"
             tooltipPosition="top"></i>
+          <i
+            class="pi pi-arrows-v bia-pointer"
+            [class]="crudConfiguration.useVirtualScroll ? 'enable' : 'disabled'"
+            (click)="
+              useVirtualScrollChange(!crudConfiguration.useVirtualScroll)
+            "
+            pTooltip="{{ 'bia.useVirtualScroll' | translate }}"
+            tooltipPosition="top"></i>
         </div>
       </ng-template>
     </bia-table-controller>
@@ -138,8 +146,6 @@
       [frozeSelectColumn]="true"
       [scrollHeightValue]="getFillScrollHeightValue()"
       [virtualScroll]="crudConfiguration.useVirtualScroll"
-      [rowHeight]="
-        crudConfiguration.useCompactMode ? 25.5 : 33.56
-      "></app-plane-table>
+      [rowHeight]="defaultRowHeight"></app-plane-table>
   </div>
 </div>

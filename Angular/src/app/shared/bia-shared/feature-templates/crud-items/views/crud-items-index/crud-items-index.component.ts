@@ -160,6 +160,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
     this.crudConfiguration.useCompactMode = e;
   }
 
+  useVirtualScrollChange(e: boolean) {
+    this.crudConfiguration.useVirtualScroll = e;
+    this.initVirtualScroll();
+  }
+
   protected useViewConfig(manualChange: boolean) {
     this.tableStateKey = this.crudConfiguration.useView
       ? this.crudConfiguration.tableStateKey
@@ -254,6 +259,26 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       );
     }
 
+    this.initVirtualScroll();
+
+    if (this.crudConfiguration.useOfflineMode) {
+      if (BiaOnlineOfflineService.isModeEnabled) {
+        this.sub.add(
+          this.injector
+            .get<BiaOnlineOfflineService>(BiaOnlineOfflineService)
+            .syncCompleted$.pipe(
+              skip(1),
+              filter(x => x === true)
+            )
+            .subscribe(() => {
+              this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
+            })
+        );
+      }
+    }
+  }
+
+  protected initVirtualScroll() {
     if (this.crudConfiguration.useVirtualScroll) {
       this.sub.add(
         combineLatest([this.crudItems$, this.totalCount$]).subscribe(data => {
@@ -286,22 +311,6 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
             .subscribe();
         })
       );
-    }
-
-    if (this.crudConfiguration.useOfflineMode) {
-      if (BiaOnlineOfflineService.isModeEnabled) {
-        this.sub.add(
-          this.injector
-            .get<BiaOnlineOfflineService>(BiaOnlineOfflineService)
-            .syncCompleted$.pipe(
-              skip(1),
-              filter(x => x === true)
-            )
-            .subscribe(() => {
-              this.onLoadLazy(this.crudItemListComponent.getLazyLoadMetadata());
-            })
-        );
-      }
     }
   }
 

@@ -312,15 +312,17 @@
         </td>
       </tr>
     </ng-template>
-    <ng-template *ngIf="virtualScroll" pTemplate="summary" let-columns
-      ><bia-table-footer-controller
-        [length]="totalRecord"
-        [pageSize]="pageSize"
-        [canChangePageSize]="false"
-        (pageSizeChange)="
-          onPageSizeValueChange($event)
-        "></bia-table-footer-controller
-    ></ng-template>
+    <ng-template pTemplate="summary" let-columns>
+      @if (virtualScroll) {
+        <bia-table-footer-controller
+          [length]="totalRecord"
+          [pageSize]="pageSize"
+          [canChangePageSize]="false"
+          (pageSizeChange)="
+            onPageSizeValueChange($event)
+          "></bia-table-footer-controller>
+      }
+    </ng-template>
     <ng-template pTemplate="paginatorleft">
       <bia-table-footer-controller
         [length]="totalRecord"
