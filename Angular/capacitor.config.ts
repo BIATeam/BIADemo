@@ -15,10 +15,10 @@ const config: CapacitorConfig = {
     CapacitorSQLite: {
       androidIsEncryption: false,
       androidBiometric: {
-        biometricAuth: false
-      }
-    }
-  }
+        biometricAuth: false,
+      },
+    },
+  },
 };
 
 export default config;

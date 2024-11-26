@@ -12,7 +12,6 @@ import {
   Menu,
   MenuItem,
   nativeImage,
-  session,
   Tray,
 } from 'electron';
 import electronIsDev from 'electron-is-dev';
@@ -246,17 +245,17 @@ export class ElectronCapacitorApp {
 }
 
 // Set a CSP up for our application based on the custom scheme
-export function setupContentSecurityPolicy(customScheme: string): void {
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    callback({
-      responseHeaders: {
-        ...details.responseHeaders,
-        'Content-Security-Policy': [
-          electronIsDev
-            ? `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
-            : `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' data:`,
-        ],
-      },
-    });
-  });
-}
+// export function setupContentSecurityPolicy(customScheme: string): void {
+//   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+//     callback({
+//       responseHeaders: {
+//         ...details.responseHeaders,
+//         'Content-Security-Policy': [
+//           electronIsDev
+//             ? `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' devtools://* 'unsafe-eval' data:`
+//             : `default-src ${customScheme}://* http://localhost:* ws://localhost:* 'unsafe-inline' data:`,
+//         ],
+//       },
+//     });
+//   });
+// }

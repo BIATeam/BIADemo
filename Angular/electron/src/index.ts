@@ -11,7 +11,7 @@ import { autoUpdater } from 'electron-updater';
 import { DatabaseIpc } from './ipc/database.ipc';
 import { SerialPortIpc } from './ipc/serial-port.ipc';
 import { UsbIpc } from './ipc/usb.ipc';
-import { ElectronCapacitorApp, setupContentSecurityPolicy, setupReloadWatcher } from './setup';
+import { ElectronCapacitorApp, setupReloadWatcher } from './setup';
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
@@ -58,7 +58,7 @@ if (electronIsDev) {
   // Wait for electron app to be ready.
   await app.whenReady();
   // Security - Set Content-Security-Policy based on whether or not we are in dev mode.
-  setupContentSecurityPolicy(electronCapacitorApp.getCustomURLScheme());
+  //setupContentSecurityPolicy(electronCapacitorApp.getCustomURLScheme());
   // Initialize our app, build windows, and load content.
   await electronCapacitorApp.init();
   // Check for updates if we are in a packaged app.

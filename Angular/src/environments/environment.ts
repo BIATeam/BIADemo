@@ -2,7 +2,7 @@ import { Capacitor } from '@capacitor/core';
 import { NgxLoggerLevel } from 'ngx-logger';
 
 const isAndroid = Capacitor.getPlatform() === 'android';
-const serverUrl = isAndroid ? '10.0.2.2' : 'localhost';
+const serverUrl = isAndroid ? '10.0.2.2' : '127.0.0.1';
 
 export const environment = {
   helpUrl: '',
