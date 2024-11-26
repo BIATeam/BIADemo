@@ -98,6 +98,8 @@ export class BiaFieldConfig {
   isFrozen: boolean;
   alignFrozen: string;
   displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
+  maxConstraints = 10;
+
   get isDate() {
     return (
       this.type === PropType.Date ||

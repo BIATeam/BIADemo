@@ -82,6 +82,7 @@ import { MessageService } from 'primeng/api';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TriStateCheckboxModule } from 'primeng/tristatecheckbox';
 import { NotificationsEffects } from 'src/app/domains/bia-domains/notification/store/notifications-effects';
 import { TeamModule } from 'src/app/domains/bia-domains/team/team.module';
 import { UserOptionModule } from 'src/app/domains/bia-domains/user-option/user-option.module';
@@ -178,6 +179,7 @@ const PRIMENG_MODULES = [
   //  TooltipModule,
   FileUploadModule,
   SkeletonModule,
+  TriStateCheckboxModule,
 ];
 
 const MODULES = [

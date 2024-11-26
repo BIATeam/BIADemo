@@ -2,26 +2,80 @@
   <div class="flex flex-row justify-content-center">
     <div class="app-field-container flex-1" style="max-width: 18px">
       <ng-container *ngIf="!isArraySimple(field) && showColumnFilter">
-        <p-columnFilter
-          [type]="columnFilterType"
-          [locale]="getDisplayNumberFormat(field.displayFormat)?.autoLocale"
-          [minFractionDigits]="
-            getDisplayNumberFormat(field.displayFormat)?.minFractionDigits
-          "
-          [maxFractionDigits]="
-            getDisplayNumberFormat(field.displayFormat)?.maxFractionDigits
-          "
-          [currency]="
-            getDisplayNumberFormat(field.displayFormat)?.mode === 'currency'
-              ? getDisplayNumberFormat(field.displayFormat)?.currency
-              : undefined
-          "
-          [currencyDisplay]="
-            getDisplayNumberFormat(field.displayFormat)?.currencyDisplay
-          "
-          [matchModeOptions]="matchModeOptions"
-          [field]="field.field"
-          display="menu"></p-columnFilter>
+        @if (options) {
+          <p-columnFilter
+            [field]="field.field"
+            matchMode="in"
+            display="menu"
+            [showMatchModes]="false"
+            [showOperator]="true"
+            [showAddButton]="true"
+            [maxConstraints]="field.maxConstraints">
+            <ng-template
+              pTemplate="filter"
+              let-value
+              let-filterConstraint="filterConstraint"
+              let-filter="filterCallback">
+              <p-multiSelect
+                [options]="optionValues"
+                [(ngModel)]="filterConstraint.value">
+                <ng-template let-option pTemplate="item">
+                  <div class="inline-block vertical-align-middle">
+                    <span class="ml-1 mt-1">{{ option }}</span>
+                  </div>
+                </ng-template>
+              </p-multiSelect>
+            </ng-template>
+          </p-columnFilter>
+        } @else {
+          <p-columnFilter
+            [type]="columnFilterType"
+            [locale]="getDisplayNumberFormat(field.displayFormat)?.autoLocale"
+            [minFractionDigits]="
+              getDisplayNumberFormat(field.displayFormat)?.minFractionDigits
+            "
+            [maxFractionDigits]="
+              getDisplayNumberFormat(field.displayFormat)?.maxFractionDigits
+            "
+            [currency]="
+              getDisplayNumberFormat(field.displayFormat)?.mode === 'currency'
+                ? getDisplayNumberFormat(field.displayFormat)?.currency
+                : undefined
+            "
+            [currencyDisplay]="
+              getDisplayNumberFormat(field.displayFormat)?.currencyDisplay
+            "
+            [matchModeOptions]="matchModeOptions"
+            [field]="field.field"
+            display="menu"
+            [hideOnClear]="true"
+            [maxConstraints]="field.maxConstraints">
+            @if (
+              columnFilterType === 'date' || columnFilterType === 'boolean'
+            ) {
+              <ng-template
+                pTemplate="filter"
+                let-filterConstraint="filterConstraint"
+                let-value
+                let-filter="filterCallback">
+                @if (columnFilterType === 'date') {
+                  <p-calendar
+                    [ngModel]="value"
+                    (ngModelChange)="
+                      filterConstraint.value = $event
+                    "></p-calendar>
+                }
+                @if (columnFilterType === 'boolean') {
+                  <p-triStateCheckbox
+                    [ngModel]="value"
+                    (ngModelChange)="
+                      filterConstraint.value = $event
+                    "></p-triStateCheckbox>
+                }
+              </ng-template>
+            }
+          </p-columnFilter>
+        }
       </ng-container>
     </div>
     <div class="app-field-container flex-1">

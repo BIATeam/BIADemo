@@ -4,7 +4,7 @@ import { CrudItemsIndexComponent } from 'src/app/shared/bia-shared/feature-templ
 import { Permission } from 'src/app/shared/permission';
 import { PlaneTableComponent } from '../../components/plane-table/plane-table.component';
 import { Plane } from '../../model/plane';
-import { planeSpecificCRUDConfiguration } from '../../plane.constants';
+import { planeCRUDConfiguration } from '../../plane.constants';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
@@ -22,7 +22,7 @@ export class PlanesIndexComponent extends CrudItemsIndexComponent<Plane> {
     protected authService: AuthService
   ) {
     super(injector, planeService);
-    this.crudConfiguration = planeSpecificCRUDConfiguration;
+    this.crudConfiguration = planeCRUDConfiguration;
   }
 
   protected setPermissions() {

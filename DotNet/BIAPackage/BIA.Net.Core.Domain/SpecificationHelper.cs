@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Globalization;
@@ -14,6 +15,7 @@ namespace BIA.Net.Core.Domain
     using System.Text.Json;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Specification;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// The helpers for specifications.
@@ -296,6 +298,45 @@ namespace BIA.Net.Core.Domain
 
                 case "notendswith":
                     binaryExpression = Expression.Not(ComputeExpression(expressionBody, "EndsWith", value));
+                    break;
+
+                case "in":
+                    var inExp = Expression.Not(ComputeExpression(expressionBody, "EndsWith", value));
+
+                    JObject o = JObject.Parse(@"{ array : " + value + " }");
+                    JArray a = (JArray)o["array"];
+                    IList<string> values = a.ToObject<IList<string>>();
+
+                    if (IsCollectionType(expressionBody.Type))
+                    {
+                        valueExpression = Expression.Constant(values);
+                        var method = typeof(Enumerable)
+                            .GetMethods()
+                            .Single(m => m.Name == "Intersect" && m.GetParameters().Length == 2)
+                            .MakeGenericMethod(typeof(string));
+                        var intersect = Expression.Call(method ?? throw new InvalidOperationException(), expressionBody, valueExpression);
+                        var lengthValueExpression = Expression.Constant(values.Count);
+                        var count = Expression.Call(typeof(Enumerable), "Count", new[] { typeof(string) }, intersect);
+                        var equals = Expression.Equal(count, lengthValueExpression);
+
+                        binaryExpression = equals;
+                    }
+                    else if (expressionBody.Type == typeof(string))
+                    {
+                        var filterExpression = Expression.Constant(values);
+                        var method = typeof(Enumerable)
+                            .GetMethods()
+                            .Single(m => m.Name == "Contains" && m.GetParameters().Length == 2)
+                            .MakeGenericMethod(typeof(string));
+                        var contains = Expression.Call(method, filterExpression, expressionBody);
+
+                        binaryExpression = contains;
+                    }
+                    else
+                    {
+                        binaryExpression = inExp;
+                    }
+
                     break;
 
                 default:

@@ -28,6 +28,7 @@ import {
 import { BiaTableState } from '../../../model/bia-table-state';
 import { KeyValuePair } from '../../../model/key-value-pair';
 import { TableHelperService } from '../../../services/table-helper.service';
+import { DictOptionDto } from './dict-option-dto';
 
 const objectsEqual = (o1: any, o2: any) =>
   Object.keys(o1).length === Object.keys(o2).length &&
@@ -56,6 +57,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() sortFieldValue = '';
   @Input() sortOrderValue = 1;
   @Input() showColSearch = false;
+  @Output() showColSearchChange = new EventEmitter<boolean>();
   @Input() globalSearchValue = '';
   @Input() canClickRow = true;
   @Input() canSelectElement = true;
@@ -70,6 +72,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() canSelectMultipleElement = true;
   @Input() rowHeight = 33.56;
   @Input() virtualScrollPageSize = 100;
+  @Input() dictOptionDtos: DictOptionDto[] = [];
 
   protected isSelectFrozen = false;
   protected widthSelect: string;
@@ -140,6 +143,11 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     this.onSearchGlobalChange(changes);
     this.onViewPreferenceChange(changes);
     this.onAdvancedFilterChange(changes);
+  }
+
+  clearFilters() {
+    this.table?.clear();
+    this.globalSearchValue = '';
   }
 
   protected onElementsChange(changes: SimpleChanges) {
@@ -495,11 +503,17 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
           this.table.sortSingle();
         }
 
-        this.showColSearch = false;
+        setTimeout(() => {
+          this.showColSearch = false;
+          this.showColSearchChange.emit(false);
+        });
         if (this.table.hasFilter()) {
           for (const key in this.table.filters) {
             if (!key.startsWith(TABLE_FILTER_GLOBAL)) {
-              this.showColSearch = true;
+              setTimeout(() => {
+                this.showColSearch = true;
+                this.showColSearchChange.emit(true);
+              });
               break;
             }
           }
@@ -573,5 +587,9 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
     }
 
     return value;
+  }
+
+  public getOptionDto(key: string) {
+    return this.dictOptionDtos.filter(x => x.key === key)[0]?.value;
   }
 }
