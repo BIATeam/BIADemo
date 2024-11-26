@@ -24,7 +24,7 @@
     "display": "Afficher :",
     "edit": "Modifier",
     "editProfileImage": "Modifier votre photo de profil",
-    "environmentDescription": "Environnement {{envName}}",
+    "environmentDescription": "{{envName}}",
     "error": "Erreur",
     "errors": "Erreur(s)",
     "export": "Exporter",
@@ -90,6 +90,7 @@
     "usePopup": "Utiliser les popups",
     "useSignalR": "Toujours à jour",
     "useView": "Vues",
+    "useVirtualScroll": "Défilement infini",
     "validate": "Valider",
     "view": "Voir",
     "views": {

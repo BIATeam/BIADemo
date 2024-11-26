@@ -6,12 +6,17 @@ namespace BIA.Net.Core.WorkerService.Features
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Security.Claims;
+    using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
     using Hangfire;
     using Hangfire.PerformContextAccessor;
     using Hangfire.PostgreSql;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -33,6 +38,19 @@ namespace BIA.Net.Core.WorkerService.Features
             WorkerFeatures workerFeatures,
             IConfiguration configuration)
         {
+            var biaNetSection = new BiaNetSection();
+            configuration.GetSection("BiaNet").Bind(biaNetSection);
+
+            // Identity
+            services.AddTransient<IPrincipal>(
+                provider =>
+                {
+                    var claims = new List<Claim> { new (ClaimTypes.Name, Environment.UserName) };
+                    var userIdentity = new ClaimsIdentity(claims, "NonEmptyAuthType");
+                    return new BiaClaimsPrincipal(new ClaimsPrincipal(userIdentity));
+                });
+            services.AddTransient(provider => new UserContext("en-GB", biaNetSection.Cultures));
+
             // Database Handler
             if (workerFeatures.DatabaseHandler.IsActive)
             {

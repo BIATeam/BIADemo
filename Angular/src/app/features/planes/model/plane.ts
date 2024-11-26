@@ -1,14 +1,14 @@
-import {
-  PrimeNGFiltering,
-  BiaFieldConfig,
-  PropType,
-  BiaFieldsConfig,
-  BiaFieldNumberFormat,
-  NumberMode,
-} from 'src/app/shared/bia-shared/model/bia-field-config';
-import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
-import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 import { Validators } from '@angular/forms';
+import { BaseDto } from 'src/app/shared/bia-shared/model/base-dto';
+import {
+  BiaFieldConfig,
+  BiaFieldNumberFormat,
+  BiaFieldsConfig,
+  NumberMode,
+  PrimeNGFiltering,
+  PropType,
+} from 'src/app/shared/bia-shared/model/bia-field-config';
+import { OptionDto } from 'src/app/shared/bia-shared/model/option-dto';
 
 // TODO after creation of CRUD Plane : adapt the model
 export class Plane extends BaseDto {

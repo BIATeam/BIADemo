@@ -55,25 +55,25 @@ namespace TheBIADevCompany.BIADemo.Domain.Plane.Entities
         /// Gets or sets the delivery date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateOnly? DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
 
         /// <summary>
         /// Gets or sets the next maintenance date.
         /// </summary>
         [Column(TypeName = "date")]
-        public DateOnly NextMaintenanceDate { get; set; }
+        public DateTime NextMaintenanceDate { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeOnly? SyncTime { get; set; }
+        public TimeSpan? SyncTime { get; set; }
 
         /// <summary>
         /// Gets or sets the daily synchronisation hour for flight data.
         /// </summary>
         [Column(TypeName = "time")]
-        public TimeOnly SyncFlightDataTime { get; set; }
+        public TimeSpan SyncFlightDataTime { get; set; }
 
         /// <summary>
         /// Gets or sets the capacity.

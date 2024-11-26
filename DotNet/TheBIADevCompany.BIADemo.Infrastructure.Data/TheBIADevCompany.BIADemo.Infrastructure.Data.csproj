@@ -1,82 +1,85 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2024</Copyright>
-    <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Migrations\20200219151113_AddViews.cs" />
-    <Compile Remove="Migrations\20200219151113_AddViews.Designer.cs" />
-    <Compile Remove="Migrations\20200908082829_AddVersionedTable.cs" />
-    <Compile Remove="Migrations\20200908082829_AddVersionedTable.Designer.cs" />
-    <Compile Remove="Migrations\20200908084410_AddVersionedTable.cs" />
-    <Compile Remove="Migrations\20200908084410_AddVersionedTable.Designer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Audit.NET.SqlServer" Version="27.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Migrations\20211115180047_LanguageInDB - Copy.Designer.cs">
-      <DependentUpon>20211115180047_LanguageInDB.Designer.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
-    <!--BIADEMO-->
-    <Compile Remove="**\*Aircraft*.cs" />
-    <Compile Remove="**\*Airport*.cs" />
-    <Compile Remove="**\*BiaDemo*.cs" />
-    <Compile Remove="**\*Engine*.cs" />
-    <Compile Remove="**\*Example*.cs" />
-    <Compile Remove="**\*Plane*.cs" />
-    <Compile Remove="**\*Worker*.cs" />
-    <Compile Remove="**\*HangfiresController*.cs" />
-    <!--BIATEMPLATE-->
-    <Compile Remove="**\*Audit*.cs" />
-    <Compile Remove="**\*Error*.cs" />
-    <Compile Remove="**\*IdentityProvider*.cs" />
-    <Compile Remove="**\*LogsController*.cs" />
-    <Compile Remove="**\*Mapper*.cs" />
-    <Compile Remove="**\*Member*.cs" />
-    <Compile Remove="**\*ModelBuilder*.cs" />
-    <Compile Remove="**\*Notification*.cs" />
-    <Compile Remove="**\*Query*.cs" />
-    <Compile Remove="**\*SearchExpressionService*.cs" />
-    <Compile Remove="**\*Site*.cs" />
-    <Compile Remove="**\*Synchronize*.cs" />
-    <Compile Remove="**\*Team*.cs" />
-    <Compile Remove="**\*Translation*.cs" />
-    <Compile Remove="**\*View*.cs" />
-    <Compile Remove="**\Role.cs" />
-    <Compile Remove="**\RoleAppService.cs" />
-    <Compile Remove="**\IRoleAppService.cs" />
-    <Compile Remove="**\RolesController.cs" />
-    <Compile Remove="**\User.cs" />
-    <Compile Remove="**\UsersController.cs" />
-    <Compile Remove="**\UserAppService.cs" />
-    <Compile Remove="**\IUserAppService.cs" />
-    <Compile Remove="**\UserExtensions.cs" />
-    <Compile Remove="**\UserSelectBuilder.cs" />
-    <Compile Remove="**\UserSpecification.cs" />
-    <Compile Remove="**\WakeUpTask.cs" />
-    <Compile Remove="**\LanguagesController.cs" />
-    <Compile Remove="**\LdapDomainsController.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Company>TheBIADevCompany</Company>
+		<Copyright>Copyright © TheBIADevCompany 2024</Copyright>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Migrations\20200219151113_AddViews.cs" />
+		<Compile Remove="Migrations\20200219151113_AddViews.Designer.cs" />
+		<Compile Remove="Migrations\20200908082829_AddVersionedTable.cs" />
+		<Compile Remove="Migrations\20200908082829_AddVersionedTable.Designer.cs" />
+		<Compile Remove="Migrations\20200908084410_AddVersionedTable.cs" />
+		<Compile Remove="Migrations\20200908084410_AddVersionedTable.Designer.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Audit.EntityFramework.Core" Version="27.2.*" />
+		<PackageReference Include="Audit.NET.SqlServer" Version="27.2.*" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="[8.0.*,9.0.0)">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Migrations\20211115180047_LanguageInDB - Copy.Designer.cs">
+			<DependentUpon>20211115180047_LanguageInDB.Designer.cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
+		<!--BIADEMO-->
+		<Compile Remove="**\*Aircraft*.cs" />
+		<Compile Remove="**\*Airport*.cs" />
+		<Compile Remove="**\*BiaDemo*.cs" />
+		<Compile Remove="**\*Engine*.cs" />
+		<Compile Remove="**\*Example*.cs" />
+		<Compile Remove="**\*Plane*.cs" />
+		<Compile Remove="**\*Worker*.cs" />
+		<Compile Remove="**\*HangfiresController*.cs" />
+		<!--BIATEMPLATE-->
+		<Compile Remove="**\*Audit*.cs" />
+		<Compile Remove="**\*Error*.cs" />
+		<Compile Remove="**\*IdentityProvider*.cs" />
+		<Compile Remove="**\*LogsController*.cs" />
+		<Compile Remove="**\*Mapper*.cs" />
+		<Compile Remove="**\*Member*.cs" />
+		<Compile Remove="**\*ModelBuilder*.cs" />
+		<Compile Remove="**\*Notification*.cs" />
+		<Compile Remove="**\*Query*.cs" />
+		<Compile Remove="**\*SearchExpressionService*.cs" />
+		<Compile Remove="**\*Site*.cs" />
+		<Compile Remove="**\*Synchronize*.cs" />
+		<Compile Remove="**\*Team*.cs" />
+		<Compile Remove="**\*Translation*.cs" />
+		<Compile Remove="**\*View*.cs" />
+		<Compile Remove="**\Role.cs" />
+		<Compile Remove="**\RoleAppService.cs" />
+		<Compile Remove="**\IRoleAppService.cs" />
+		<Compile Remove="**\RolesController.cs" />
+		<Compile Remove="**\User.cs" />
+		<Compile Remove="**\UsersController.cs" />
+		<Compile Remove="**\UserAppService.cs" />
+		<Compile Remove="**\IUserAppService.cs" />
+		<Compile Remove="**\UserExtensions.cs" />
+		<Compile Remove="**\UserSelectBuilder.cs" />
+		<Compile Remove="**\UserSpecification.cs" />
+		<Compile Remove="**\WakeUpTask.cs" />
+		<Compile Remove="**\LanguagesController.cs" />
+		<Compile Remove="**\LdapDomainsController.cs" />
+	</ItemGroup>
 </Project>

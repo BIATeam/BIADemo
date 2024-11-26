@@ -18,6 +18,7 @@ export const planeCRUDConfiguration: CrudConfig = new CrudConfig({
   usePopup: true,
   useOfflineMode: false,
   useCompactMode: false,
+  useVirtualScroll: false,
   // Begin BIADemo
   bulkMode: {
     useInsert: true,

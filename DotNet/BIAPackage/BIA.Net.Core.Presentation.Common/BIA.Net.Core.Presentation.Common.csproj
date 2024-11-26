@@ -1,39 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Copyright>Copyright © BIA 2024</Copyright>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>3.10.0</Version>
-    <PackageIcon>LogoBIA.png</PackageIcon>
-    <Authors>BIA Team</Authors>
-    <Company>BIA</Company>
-    <Description>Presentation features layer classes for BIA.Net Core Framework</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Copyright>Copyright © BIA 2024</Copyright>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<Version>3.10.0</Version>
+		<PackageIcon>LogoBIA.png</PackageIcon>
+		<Authors>BIA Team</Authors>
+		<Company>BIA</Company>
+		<Description>Presentation features layer classes for BIA.Net Core Framework</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\Images\LogoBIA.png" Link="LogoBIA.png">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\Images\LogoBIA.png" Link="LogoBIA.png">
+			<PackagePath></PackagePath>
+			<Pack>True</Pack>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.6" />
-    <PackageReference Include="Hangfire.PostgreSql" Version="1.20.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.8" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.*" />
+		<PackageReference Include="Hangfire.PostgreSql" Version="1.20.*" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="[8.0.*,9.0.0)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="[8.0.*,9.0.0)" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\BIA.Net.Core.Application\BIA.Net.Core.Application.csproj" />
-    <ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
-    <ProjectReference Include="..\BIA.Net.Core.Domain\BIA.Net.Core.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BIA.Net.Core.Domain.Dto\BIA.Net.Core.Domain.Dto.csproj" />
+	</ItemGroup>
 
 </Project>

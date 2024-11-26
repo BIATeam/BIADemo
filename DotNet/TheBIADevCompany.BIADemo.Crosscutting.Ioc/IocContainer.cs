@@ -126,9 +126,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             {
                 collection.AddScoped(type);
             }
-
-            collection.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
-            collection.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["Accept-Language"].ToString(), biaNetSection.Cultures));
         }
 
         private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)

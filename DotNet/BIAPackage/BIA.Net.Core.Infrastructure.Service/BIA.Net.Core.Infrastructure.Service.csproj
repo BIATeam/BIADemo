@@ -14,18 +14,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.7.1.1" />
-    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" Version="1.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.1.0" />
-    <PackageReference Include="System.DirectoryServices" Version="8.0.0" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.0" />
-    <PackageReference Include="System.Runtime.Caching" Version="8.0.0" />
+    <PackageReference Include="MailKit" Version="4.8.*" />
+    <PackageReference Include="Meziantou.Framework.Win32.CredentialManager" Version="1.7.*" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="System.DirectoryServices" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.*" />
   </ItemGroup>
 
   <ItemGroup>

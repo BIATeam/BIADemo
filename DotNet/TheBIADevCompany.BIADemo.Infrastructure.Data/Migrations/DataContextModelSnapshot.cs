@@ -17,12 +17,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.DistCacheModule.Aggregate.DistCache", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.DistCache.Entities.DistCache", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(449)
@@ -49,7 +49,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("DistCache");
                 });
 
-            modelBuilder.Entity("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", b =>
+            modelBuilder.Entity("BIA.Net.Core.Domain.Translation.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -192,7 +192,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("UserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.Country", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -237,7 +237,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamAirport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamAirport", b =>
                 {
                     b.Property<int>("AirportId")
                         .HasColumnType("int");
@@ -257,7 +257,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeamAirport");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamCountry", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamCountry", b =>
                 {
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
@@ -277,7 +277,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeamCountry");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Aggregate.AuditLog", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Audit.Entities.AuditLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -315,7 +315,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("AuditLogs");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -362,7 +362,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -390,7 +390,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeamRole", b =>
                 {
                     b.Property<int>("NotificationTeamId")
                         .HasColumnType("int");
@@ -410,7 +410,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationTeamRole");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -470,7 +470,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationUser", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -490,7 +490,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationUser");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -518,7 +518,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Airports");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.AirportAudit", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.AirportAudit", b =>
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
@@ -561,7 +561,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("AirportsAudit");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Engine", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -575,13 +575,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<float?>("AverageFuelConsumption")
                         .HasColumnType("real");
 
-                    b.Property<DateOnly>("DeliveryDate")
+                    b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("date");
 
                     b.Property<decimal?>("EstimatedPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateOnly?>("ExchangeDate")
+                    b.Property<DateTime?>("ExchangeDate")
                         .HasColumnType("date");
 
                     b.Property<double>("FlightHours")
@@ -590,7 +590,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<float>("FuelConsumption")
                         .HasColumnType("real");
 
-                    b.Property<TimeOnly?>("IgnitionTime")
+                    b.Property<TimeSpan?>("IgnitionTime")
                         .HasColumnType("time");
 
                     b.Property<bool?>("IsHybrid")
@@ -632,7 +632,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<TimeOnly>("SyncTime")
+                    b.Property<TimeSpan>("SyncTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
@@ -644,7 +644,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Engines");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.EnginePart", b =>
                 {
                     b.Property<int>("EngineId")
                         .HasColumnType("int");
@@ -664,7 +664,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("EnginePart");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Part", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -721,7 +721,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -735,7 +735,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("CurrentAirportId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("DeliveryDate")
+                    b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("date");
 
                     b.Property<decimal?>("EstimatedPrice")
@@ -771,7 +771,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 
-                    b.Property<DateOnly>("NextMaintenanceDate")
+                    b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("date");
 
                     b.Property<decimal>("OriginalPrice")
@@ -791,10 +791,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<int>("SiteId")
                         .HasColumnType("int");
 
-                    b.Property<TimeOnly>("SyncFlightDataTime")
+                    b.Property<TimeSpan>("SyncFlightDataTime")
                         .HasColumnType("time");
 
-                    b.Property<TimeOnly?>("SyncTime")
+                    b.Property<TimeSpan?>("SyncTime")
                         .HasColumnType("time");
 
                     b.Property<double>("TotalFlightHours")
@@ -811,7 +811,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Planes");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneAirport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneAirport", b =>
                 {
                     b.Property<int>("AirportId")
                         .HasColumnType("int");
@@ -831,7 +831,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlaneAirport");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlanePlaneType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlanePlaneType", b =>
                 {
                     b.Property<int>("PlaneId")
                         .HasColumnType("int");
@@ -851,7 +851,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlanePlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -877,7 +877,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("PlanesTypes");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -916,7 +916,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("NotificationTranslations");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTypeTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTypeTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1057,7 +1057,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.RoleTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1282,7 +1282,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1314,7 +1314,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.MemberRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.MemberRole", b =>
                 {
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
@@ -1337,7 +1337,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MemberRole");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1427,7 +1427,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1459,7 +1459,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1504,7 +1504,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1596,7 +1596,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.UserAudit", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.UserAudit", b =>
                 {
                     b.Property<int>("AuditId")
                         .ValueGeneratedOnAdd()
@@ -1650,7 +1650,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("UsersAudit");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1699,7 +1699,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewTeam", b =>
                 {
                     b.Property<int>("TeamId")
                         .HasColumnType("int");
@@ -1722,7 +1722,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("ViewTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewUser", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -1745,9 +1745,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("ViewUser");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
 
                     b.Property<byte[]>("RowVersionAircraftMaintenanceCompany")
                         .IsConcurrencyToken()
@@ -1758,15 +1758,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("AircraftMaintenanceCompanies", (string)null);
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
 
                     b.Property<int>("AircraftMaintenanceCompanyId")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly?>("ApprovedDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("ApprovedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal?>("AverageOperationCost")
                         .HasColumnType("Money");
@@ -1802,14 +1802,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Property<DateTime?>("LastOperation")
                         .HasColumnType("datetime2");
 
-                    b.Property<TimeOnly>("MaxOperationDuration")
+                    b.Property<TimeSpan>("MaxOperationDuration")
                         .HasColumnType("time");
 
-                    b.Property<TimeOnly?>("MaxTravelDuration")
+                    b.Property<TimeSpan?>("MaxTravelDuration")
                         .HasColumnType("time");
 
-                    b.Property<DateOnly>("NextOperation")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("NextOperation")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("OperationCount")
                         .HasColumnType("int");
@@ -1838,9 +1838,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.ToTable("MaintenanceTeams", (string)null);
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team");
+                    b.HasBaseType("TheBIADevCompany.BIADemo.Domain.User.Entities.Team");
 
                     b.Property<byte[]>("RowVersionSite")
                         .IsConcurrencyToken()
@@ -1853,13 +1853,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("RoleTeamType", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", null)
                         .WithMany()
                         .HasForeignKey("TeamTypesId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1868,28 +1868,28 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RolesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamAirport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamAirport", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "Airport")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", "Airport")
                         .WithMany()
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "MaintenanceTeam")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", "MaintenanceTeam")
                         .WithMany("OperationMaintenanceTeamAirports")
                         .HasForeignKey("MaintenanceTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1900,15 +1900,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("MaintenanceTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.MaintenanceTeamCountry", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeamCountry", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", "Country")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "MaintenanceTeam")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", "MaintenanceTeam")
                         .WithMany("OperationMaintenanceTeamCountries")
                         .HasForeignKey("MaintenanceTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1919,13 +1919,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("MaintenanceTeam");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", "CreatedBy")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "CreatedBy")
                         .WithMany()
                         .HasForeignKey("CreatedById");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", "Type")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1936,15 +1936,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedTeams")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
                         .WithMany("NotificationTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1955,15 +1955,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeamRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeamRole", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", "NotificationTeam")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", "NotificationTeam")
                         .WithMany("Roles")
                         .HasForeignKey("NotificationTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
                         .WithMany("NotificationTeamRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1974,15 +1974,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
                         .WithMany("NotifiedUsers")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", "User")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
                         .WithMany("NotificationUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -1993,15 +1993,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Engine", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", "Plane")
                         .WithMany("Engines")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "PrincipalPart")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Part", "PrincipalPart")
                         .WithMany()
                         .HasForeignKey("PrincipalPartId");
 
@@ -2010,15 +2010,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("PrincipalPart");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.EnginePart", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.EnginePart", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", "Engine")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Engine", "Engine")
                         .WithMany("InstalledEngineParts")
                         .HasForeignKey("EngineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Part", "Part")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Part", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2029,19 +2029,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Part");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "CurrentAirport")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", "CurrentAirport")
                         .WithMany()
                         .HasForeignKey("CurrentAirportId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", "PlaneType")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneType", "PlaneType")
                         .WithMany()
                         .HasForeignKey("PlaneTypeId");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Site")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2054,15 +2054,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Site");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneAirport", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneAirport", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "Airport")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", "Airport")
                         .WithMany()
                         .HasForeignKey("AirportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", "Plane")
                         .WithMany("ConnectingPlaneAirports")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2073,15 +2073,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Plane");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlanePlaneType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlanePlaneType", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", "Plane")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", "Plane")
                         .WithMany("SimilarPlaneType")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.PlaneType", "PlaneType")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.PlaneType", "PlaneType")
                         .WithMany()
                         .HasForeignKey("PlaneTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2092,15 +2092,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("PlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTranslation", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", "Language")
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", "Notification")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", "Notification")
                         .WithMany("NotificationTranslations")
                         .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2111,15 +2111,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Notification");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.NotificationTypeTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.NotificationTypeTranslation", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", "Language")
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", "NotificationType")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", "NotificationType")
                         .WithMany("NotificationTypeTranslations")
                         .HasForeignKey("NotificationTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2130,15 +2130,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotificationType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.TranslationModule.Aggregate.RoleTranslation", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Translation.Entities.RoleTranslation", b =>
                 {
-                    b.HasOne("BIA.Net.Core.Domain.TranslationModule.Aggregate.Language", "Language")
+                    b.HasOne("BIA.Net.Core.Domain.Translation.Entities.Language", "Language")
                         .WithMany()
                         .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
                         .WithMany("RoleTranslations")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2149,15 +2149,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
                         .WithMany("Members")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", "User")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
                         .WithMany("Members")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2168,15 +2168,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.MemberRole", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.MemberRole", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", "Member")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", "Member")
                         .WithMany("MemberRoles")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", "Role")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", "Role")
                         .WithMany("MemberRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2187,9 +2187,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.TeamType", "TeamType")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.TeamType", "TeamType")
                         .WithMany()
                         .HasForeignKey("TeamTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2198,15 +2198,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("TeamType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", "Team")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", "Team")
                         .WithMany("ViewTeams")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", "View")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.View.Entities.View", "View")
                         .WithMany("ViewTeams")
                         .HasForeignKey("ViewId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2217,15 +2217,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("View");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.ViewUser", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.ViewUser", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", "User")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.User", "User")
                         .WithMany("ViewUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", "View")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.View.Entities.View", "View")
                         .WithMany("ViewUsers")
                         .HasForeignKey("ViewId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2236,36 +2236,36 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("View");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
                         .WithOne()
-                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", "Id")
+                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", "AircraftMaintenanceCompany")
                         .WithMany("MaintenanceTeams")
                         .HasForeignKey("AircraftMaintenanceCompanyId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Airport", "CurrentAirport")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Airport", "CurrentAirport")
                         .WithMany()
                         .HasForeignKey("CurrentAirportId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Aggregate.Country", "CurrentCountry")
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.Country", "CurrentCountry")
                         .WithMany()
                         .HasForeignKey("CurrentCountryId");
 
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
                         .WithOne()
-                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", "Id")
+                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -2276,16 +2276,16 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("CurrentCountry");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", b =>
                 {
-                    b.HasOne("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", null)
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", null)
                         .WithOne()
-                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.SiteModule.Aggregate.Site", "Id")
+                        .HasForeignKey("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.Notification", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification", b =>
                 {
                     b.Navigation("NotificationTranslations");
 
@@ -2294,22 +2294,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("NotifiedUsers");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationTeam", b =>
                 {
                     b.Navigation("Roles");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.NotificationModule.Aggregate.NotificationType", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Notification.Entities.NotificationType", b =>
                 {
                     b.Navigation("NotificationTypeTranslations");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Engine", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Engine", b =>
                 {
                     b.Navigation("InstalledEngineParts");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.PlaneModule.Aggregate.Plane", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Plane.Entities.Plane", b =>
                 {
                     b.Navigation("ConnectingPlaneAirports");
 
@@ -2318,12 +2318,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("SimilarPlaneType");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Member", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Member", b =>
                 {
                     b.Navigation("MemberRoles");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Role", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Role", b =>
                 {
                     b.Navigation("MemberRoles");
 
@@ -2332,7 +2332,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("RoleTranslations");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.Team", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.Team", b =>
                 {
                     b.Navigation("Members");
 
@@ -2341,7 +2341,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("ViewTeams");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.UserModule.Aggregate.User", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.User.Entities.User", b =>
                 {
                     b.Navigation("Members");
 
@@ -2350,19 +2350,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations
                     b.Navigation("ViewUsers");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.ViewModule.Aggregate.View", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.View.Entities.View", b =>
                 {
                     b.Navigation("ViewTeams");
 
                     b.Navigation("ViewUsers");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.AircraftMaintenanceCompany", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.AircraftMaintenanceCompany", b =>
                 {
                     b.Navigation("MaintenanceTeams");
                 });
 
-            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompanyModule.Aggregate.MaintenanceTeam", b =>
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.AircraftMaintenanceCompany.Entities.MaintenanceTeam", b =>
                 {
                     b.Navigation("OperationMaintenanceTeamAirports");
 

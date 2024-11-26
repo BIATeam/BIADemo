@@ -24,7 +24,7 @@
     "display": "Show:",
     "edit": "Edit",
     "editProfileImage": "Edit your profile image",
-    "environmentDescription": "{{envName}} environment",
+    "environmentDescription": "{{envName}}",
     "error": "Error",
     "errors": "Error(s)",
     "export": "Export",
@@ -90,6 +90,7 @@
     "usePopup": "Use popups",
     "useSignalR": "Always up to date",
     "useView": "Views",
+    "useVirtualScroll": "Inifinite scroll",
     "validate": "Validate",
     "view": "View",
     "views": {

@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Job;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
     /// <summary>
@@ -33,7 +34,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable(Constants.Application.Environment)}.json", optional: true, reloadOnChange: true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureServices((hostingContext, services) =>
@@ -74,6 +75,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+                    LogManager.GetCurrentClassLogger().Info($"{Constants.Application.Environment}: {Environment.GetEnvironmentVariable(Constants.Application.Environment)}");
                 })
                 .UseNLog()
                 .RunConsoleAsync();

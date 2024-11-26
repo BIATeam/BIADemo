@@ -7,8 +7,11 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
+    using System.Security.Principal;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
@@ -19,6 +22,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Hangfire.PostgreSql.Factories;
     using Hangfire.SqlServer;
     using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.OpenApi.Models;
@@ -46,6 +50,11 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
             // Authentication
             services.ConfigureAuthentication(biaNetSection);
+
+            // Identity
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            services.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers.AcceptLanguage.ToString(), biaNetSection.Cultures));
 
             // Swagger
             if (apiFeatures.Swagger?.IsActive == true)
