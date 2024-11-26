@@ -134,6 +134,7 @@ namespace BIA.Net.Core.IocContainer
             collection.AddTransient<ILanguageAppService, LanguageAppService>();
             collection.AddTransient<IClientForHubService, ClientForHubService>();
             collection.AddTransient<IBiaClaimsPrincipalService, BiaClaimsPrincipalService>();
+            collection.AddTransient<IUserContextService, UserContextService>();
             collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
         }
 
