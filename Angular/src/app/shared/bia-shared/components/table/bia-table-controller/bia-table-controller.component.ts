@@ -56,6 +56,7 @@ export class BiaTableControllerComponent
   @Output() filter = new EventEmitter<string>();
   @Output() toggleSearch = new EventEmitter<void>();
   @Output() viewChange = new EventEmitter<string>();
+  @Output() clearFilters = new EventEmitter<void>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   @ViewChild(ViewListComponent, { static: false })
@@ -119,6 +120,11 @@ export class BiaTableControllerComponent
 
   onToggleSearch() {
     this.toggleSearch.emit();
+  }
+
+  onClearFilters() {
+    this.filterCtrl.setValue('');
+    this.clearFilters.emit();
   }
 
   onViewChange(event: string) {

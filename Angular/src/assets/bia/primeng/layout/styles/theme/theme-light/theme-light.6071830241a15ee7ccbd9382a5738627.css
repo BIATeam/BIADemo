@@ -9843,6 +9843,12 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
   .p-button.p-button-outlined {
     color: #00839b;
   }
+  .p-button .p-badge.p-badge-dot {
+    width: 0.5rem;
+    min-width: 0.5rem;
+    height: 0.5rem;
+    transform: translate(-50%, 50%);
+  }
   .bia-table-controller-container {
     padding-top: 10px;
     white-space: nowrap;

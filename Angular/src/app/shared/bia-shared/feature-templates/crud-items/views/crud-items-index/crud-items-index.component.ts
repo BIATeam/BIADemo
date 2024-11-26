@@ -546,4 +546,11 @@ export class CrudItemsIndexComponent<CrudItem extends BaseDto>
       return this.layoutService.config().scale * 2.257 + 2;
     }
   }
+
+  onClearFilters() {
+    const table = this.crudItemListComponent.getPrimeNgTable();
+    if (table) {
+      table.clear();
+    }
+  }
 }

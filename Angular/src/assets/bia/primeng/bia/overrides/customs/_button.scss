@@ -15,6 +15,13 @@
     &.p-button-outlined {
       color: $primaryColor;
     }
+
+    & .p-badge.p-badge-dot {
+      width: 0.5rem;
+      min-width: 0.5rem;
+      height: 0.5rem;
+      transform: translate(-50%, 50%);
+    }
   }
 
   .bia-table-controller-container {
