@@ -3,7 +3,7 @@
     <strong>{{
       length
         | i18nPlural: resultMessageMapping : translateService.currentLang
-        | translate: { length: length }
+        | translate: { length: length | number }
     }}</strong>
   </div>
   <div *ngIf="canChangePageSize">
