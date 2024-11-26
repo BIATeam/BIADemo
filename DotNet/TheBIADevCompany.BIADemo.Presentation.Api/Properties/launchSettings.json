@@ -3,11 +3,11 @@
     "windowsAuthentication": true,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:32128/BIADemo/WebApi",
+      "applicationUrl": "http://127.0.0.1:32128/BIADemo/WebApi",
       "sslPort": 0
     },
     "iis": {
-      "applicationUrl": "http://localhost/BIADemo/WebApi",
+      "applicationUrl": "http://127.0.0.1/BIADemo/WebApi",
       "sslPort": 0
     }
   },
