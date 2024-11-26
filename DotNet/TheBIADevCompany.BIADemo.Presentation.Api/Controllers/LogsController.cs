@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     using System;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -15,6 +16,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers
     /// <summary>
     /// The API controller used to manage users.
     /// </summary>
+    // Android workaround
+    [AllowAnonymous]
     public class LogsController : AuthControllerBase
     {
         /// <summary>

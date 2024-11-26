@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Configuration;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authentication.Negotiate;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     /// </summary>
     internal class BiaAuthorizationPolicyProvider : DefaultAuthorizationPolicyProvider
     {
-        private readonly BiaNetSection biaNetSection = new ();
+        private readonly BiaNetSection biaNetSection = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaAuthorizationPolicyProvider"/> class.
@@ -32,12 +33,16 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         /// <inheritdoc cref="DefaultAuthorizationPolicyProvider.GetPolicyAsync(string)"/>
         public override Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
-            var isKeycloakActive = this.biaNetSection?.Authentication?.Keycloak?.IsActive == true;
-            var isAndroid = this.biaNetSection?.Environment?.Android == true;
+            var authenticationScheme = NegotiateDefaults.AuthenticationScheme;
 
-            var authenticationScheme = isKeycloakActive || isAndroid ?
-                AuthenticationConfiguration.JwtBearerIdentityProvider :
-                NegotiateDefaults.AuthenticationScheme;
+            if (this.biaNetSection?.Authentication?.Keycloak?.IsActive == true)
+            {
+                authenticationScheme = AuthenticationConfiguration.JwtBearerIdentityProvider;
+            }
+            else if (this.biaNetSection?.Environment?.Android == true)
+            {
+                authenticationScheme = AuthenticationConfiguration.JwtBearerDefault;
+            }
 
             var policy = new AuthorizationPolicyBuilder()
                 .AddAuthenticationSchemes(authenticationScheme)

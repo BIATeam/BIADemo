@@ -156,6 +156,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                     o.Events = jwtBearerEvents;
                 });
             }
+            else if (configuration?.Environment?.Android == true)
+            {
+                // Android case
+            }
             else
             {
                 authenticationBuilder.AddNegotiate(); // force user to be authenticated if no jwt

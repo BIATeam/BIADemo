@@ -4,10 +4,14 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
+    using System.Collections.Generic;
+    using System.Security.Claims;
     using System.Threading.Tasks;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.User;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -18,6 +22,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
     /// <summary>
     /// The API controller used to authenticate users.
     /// </summary>
+    // Android workaround
+    [AllowAnonymous]
     public class AuthController : AuthControllerBase
     {
         /// <summary>

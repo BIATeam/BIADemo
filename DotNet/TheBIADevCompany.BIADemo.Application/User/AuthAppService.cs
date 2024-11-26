@@ -124,7 +124,15 @@ namespace TheBIADevCompany.BIADemo.Application.User
             this.rolesConfiguration = biaNetconfiguration.Value.Roles;
 #endif
             this.jwtFactory = jwtFactory;
-            this.claimsPrincipal = principal as BiaClaimsPrincipal;
+
+            //this.claimsPrincipal = principal as BiaClaimsPrincipal;
+            // Android workaround
+            this.claimsPrincipal = new BiaClaimsPrincipal(new ClaimsPrincipal(new ClaimsIdentity(new List<Claim> 
+            { 
+                new Claim(ClaimTypes.Name, "DESKTOP-5MA78ST\\Kevin"),
+                new Claim(ClaimTypes.PrimarySid, Guid.NewGuid().ToString())
+            }, "Custom")));
+
             this.userPermissionDomainService = userPermissionDomainService;
             this.logger = logger;
             this.userDirectoryHelper = userDirectoryHelper;
