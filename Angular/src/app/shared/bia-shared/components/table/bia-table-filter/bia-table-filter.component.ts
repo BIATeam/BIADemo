@@ -18,6 +18,7 @@ import {
   BiaFieldNumberFormat,
   PropType,
 } from 'src/app/shared/bia-shared/model/bia-field-config';
+import { OptionDto } from '../../../model/option-dto';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 
@@ -33,9 +34,11 @@ export class BiaTableFilterComponent
   implements OnInit, OnDestroy
 {
   @Input() table: Table;
+  @Input() options?: OptionDto[];
 
-  // @Output() valueChange = new EventEmitter<void>();
-  // @Output() complexInput = new EventEmitter<boolean>();
+  get optionValues() {
+    return this.options?.map(x => x.display) ?? [];
+  }
 
   public columnFilterType = '';
   protected matchModeOptions: SelectItem[] | undefined = undefined;
@@ -193,5 +196,9 @@ export class BiaTableFilterComponent
     setTimeout(() => {
       this.showColumnFilter = true;
     });
+  }
+
+  setFilterConstraint(filterConstraint: FilterMetadata, value: OptionDto[]) {
+    filterConstraint.value = value.map(x => x.display);
   }
 }
