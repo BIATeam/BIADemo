@@ -24,7 +24,7 @@
     "display": "Afficher :",
     "edit": "Modifier",
     "editProfileImage": "Modifier votre photo de profil",
-    "environmentDescription": "Environnement {{envName}}",
+    "environmentDescription": "{{envName}}",
     "error": "Erreur",
     "errors": "Erreur(s)",
     "export": "Exporter",
