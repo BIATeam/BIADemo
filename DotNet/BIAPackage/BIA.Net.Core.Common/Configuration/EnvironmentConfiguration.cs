@@ -44,5 +44,10 @@ namespace BIA.Net.Core.Common.Configuration
         /// The urls additional CSS.
         /// </value>
         public string[] UrlsAdditionalCSS { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Android marker environment.
+        /// </summary>
+        public bool Android { get; set; }
     }
 }

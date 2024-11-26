@@ -32,7 +32,10 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
         /// <inheritdoc cref="DefaultAuthorizationPolicyProvider.GetPolicyAsync(string)"/>
         public override Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
         {
-            var authenticationScheme = this.biaNetSection?.Authentication?.Keycloak?.IsActive == true ?
+            var isKeycloakActive = this.biaNetSection?.Authentication?.Keycloak?.IsActive == true;
+            var isAndroid = this.biaNetSection?.Environment?.Android == true;
+
+            var authenticationScheme = isKeycloakActive || isAndroid ?
                 AuthenticationConfiguration.JwtBearerIdentityProvider :
                 NegotiateDefaults.AuthenticationScheme;
 

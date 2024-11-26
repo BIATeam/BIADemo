@@ -4,7 +4,8 @@
       "Type": "DEV",
       // UrlMatomo shoulld now contain the name of the php and js (originaly matomo.js & matomo.php) => rename to bypass ublock
       "UrlMatomo": "https://matomo-int.the-shared-tools-domain-name.bia/matomo(torename)",
-      "SiteIdMatomo": "1"
+      "SiteIdMatomo": "1",
+      "Android":  false
     },
     "CommonFeatures": {
       "ClientForHub": {
