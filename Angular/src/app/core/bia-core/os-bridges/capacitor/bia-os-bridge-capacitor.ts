@@ -5,6 +5,7 @@ import {
   BiaOsBridgeSerial,
   BiaOsBridgeUsb,
 } from '../bia-os-bridge';
+import { BiaOsBridgeCapacitorDatabase } from './bia-os-bridge-capacitor-database';
 
 @Injectable({
   providedIn: 'root',
@@ -12,5 +13,5 @@ import {
 export class BiaOsBridgeCapacitor implements BiaOsBridge {
   serialPort: BiaOsBridgeSerial;
   usb: BiaOsBridgeUsb;
-  database: BiaOsBridgeDatabase;
+  database: BiaOsBridgeDatabase = new BiaOsBridgeCapacitorDatabase();
 }

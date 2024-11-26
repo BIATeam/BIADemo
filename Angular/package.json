@@ -43,6 +43,7 @@
     "@angular/router": "~17.3.12",
     "@angular/service-worker": "~17.3.12",
     "@capacitor-community/electron": "^5.0.1",
+    "@capacitor-community/sqlite": "^6.0.2",
     "@capacitor/android": "^6.1.2",
     "@capacitor/core": "^6.1.2",
     "@microsoft/signalr": "~6.0.25",
