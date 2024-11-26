@@ -24,12 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.6" />
-    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.8" />
-    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.8" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
+    <PackageReference Include="Community.Microsoft.Extensions.Caching.PostgreSql" Version="4.0.*" />
+    <PackageReference Include="Hangfire.Dashboard.Customize" Version="1.0.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="[8.0.*,9.0.0)" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.*" />
   </ItemGroup>
 
   <ItemGroup>

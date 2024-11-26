@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common;
 
     /// <summary>
     /// The base program class.
@@ -34,16 +35,18 @@ namespace TheBIADevCompany.BIADemo.WorkerService
 
                 IHost host = builder.ConfigureAppConfiguration((hostingContext, config) =>
                 {
+                    string environment = Environment.GetEnvironmentVariable(Constants.Application.Environment);
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile($"appsettings.{environment}.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile("bianetconfig.json", optional: false, reloadOnChange: true);
-                    config.AddJsonFile($"bianetconfig.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile($"bianetconfig.{environment}.json", optional: true, reloadOnChange: true);
                     config.AddEnvironmentVariables();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
                     IConfiguration configuration = hostingContext.Configuration;
                     LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
+                    LogManager.GetCurrentClassLogger().Info($"{Constants.Application.Environment}: {Environment.GetEnvironmentVariable(Constants.Application.Environment)}");
                 })
                 .ConfigureServices((hostingContext, services) =>
                 {

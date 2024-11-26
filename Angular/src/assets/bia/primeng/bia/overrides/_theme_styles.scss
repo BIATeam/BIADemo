@@ -10,6 +10,7 @@
 @import './customs/input';
 @import './customs/paginator';
 @import './customs/badge';
+@import './customs/table';
 
 body {
   --menu-bg: #{$biaPrimaryDisplayColor};
@@ -22,6 +23,7 @@ body {
   --footer-bg: #{$biaPrimaryDisplayColor};
   --footer-hover-bg: #{$biaPrimaryDarkDisplayColor};
   --footer-item-text-color: #{$accentTextColor};
+  --surface-ground-somber: #{$biaSurfaceGroundSomber};
 }
 
 .layout-menu-dark {

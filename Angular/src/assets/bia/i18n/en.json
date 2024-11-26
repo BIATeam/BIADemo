@@ -90,6 +90,7 @@
     "usePopup": "Use popups",
     "useSignalR": "Always up to date",
     "useView": "Views",
+    "useVirtualScroll": "Inifinite scroll",
     "validate": "Validate",
     "view": "View",
     "views": {

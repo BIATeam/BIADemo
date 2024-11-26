@@ -10,7 +10,7 @@ import {
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { from, Observable, throwError } from 'rxjs';
-import { catchError, filter, skip, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { AppSettingsService } from 'src/app/domains/bia-domains/app-settings/services/app-settings.service';
 import { AuthInfo } from 'src/app/shared/bia-shared/model/auth-info';
 import { HttpStatusCodeCustom } from 'src/app/shared/bia-shared/model/http-status-code-custom.enum';
@@ -142,6 +142,16 @@ export class TokenInterceptor implements HttpInterceptor {
         console.info('Login end from interceptor.');
         this.isRefreshing = false;
         return next.handle(this.addToken(request, authInfo.token));
+      }),
+      finalize(() => {
+        // Requests can be canceled while login is ongoing.
+        // If it happens, we must set the information that the refresh is over to
+        // either let another request refresh the token
+        // or inform that this request has correctly refreshed the token despite the cancelling
+        if (this.isRefreshing) {
+          this.isRefreshing = false;
+          console.info('Login end from interceptor from finalize.');
+        }
       })
     );
 
@@ -160,7 +170,7 @@ export class TokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return this.authService.authInfo$.pipe(
-      skip(1),
+      filter(authInfo => authInfo.token !== ''),
       take(1),
       switchMap(authInfo => {
         return next.handle(

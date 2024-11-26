@@ -6,7 +6,7 @@
         | translate: { length: length }
     }}</strong>
   </div>
-  <div>
+  <div *ngIf="canChangePageSize">
     <span>{{ 'bia.itemsPerPage' | translate }} : </span>
     <p-dropdown
       [options]="pageSizes"

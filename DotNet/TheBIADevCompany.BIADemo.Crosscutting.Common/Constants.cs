@@ -28,6 +28,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// The framework version.
             /// </summary>
             public const string FrameworkVersion = "4.0.0-alpha";
+
+            /// <summary>
+            /// The environment.
+            /// </summary>
+            public const string Environment = "ASPNETCORE_ENVIRONMENT";
         }
 
         /// <summary>

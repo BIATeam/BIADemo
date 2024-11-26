@@ -1,5 +1,5 @@
 <div>
-  <div class="table-compact">
+  <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
       [headerTitle]="'plane.listOf' | translate"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
@@ -47,7 +47,11 @@
     </bia-table-controller>
     <bia-table
       *ngIf="!crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [totalRecord]="(totalCount$ | async) ?? 0"
       [columnToDisplays]="displayedColumns"
       [pageSize]="pageSize"
@@ -66,7 +70,9 @@
       [sortFieldValue]="sortFieldValue"
       (stateSave)="onStateSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [isScrollable]="true">
+      [isScrollable]="true"
+      [virtualScroll]="crudConfiguration.useVirtualScroll"
+      [rowHeight]="defaultRowHeight">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <!-- isActive -->
@@ -95,7 +101,11 @@
     </bia-table>
     <app-plane-specific-table
       *ngIf="crudConfiguration.useCalcMode"
-      [elements]="(crudItems$ | async) ?? []"
+      [elements]="
+        crudConfiguration.useVirtualScroll
+          ? virtualCrudItems
+          : ((crudItems$ | async) ?? [])
+      "
       [dictOptionDtos]="
         (planeService.optionsService.dictOptionDtos$ | async) ?? []
       "
@@ -118,7 +128,9 @@
       (stateSave)="onStateSave($event)"
       (save)="onSave($event)"
       [scrollHeightValue]="getFillScrollHeightValue()"
-      [isScrollable]="true">
+      [isScrollable]="true"
+      [virtualScroll]="true"
+      [rowHeight]="defaultRowHeight">
       <ng-template pTemplate="specificOutput" let-field="field" let-data="data">
         <ng-container [ngSwitch]="field.field">
           <!-- isActive -->
