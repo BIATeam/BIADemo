@@ -151,60 +151,39 @@ bia-ultima-layout {
 
 .layout-container {
   &.env-dev {
-    --topbar-start-bg: #{color-mix(
+    --environment-color: #{color-mix(
         in srgb,
         $biaMainBarColor 100%,
         $biaBlue 100%
       )};
-    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaBlue 100%)};
-
-    .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
   &.env-int {
-    --topbar-start-bg: #{color-mix(
+    --environment-color: #{color-mix(
         in srgb,
         $biaMainBarColor 100%,
         $biaGreen 100%
       )};
-    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaGreen 100%)};
-
-    .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
   &.env-uat {
-    --topbar-start-bg: #{color-mix(
+    --environment-color: #{color-mix(
         in srgb,
         $biaMainBarColor 100%,
         $biaOrange 100%
       )};
-    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaOrange 100%)};
-
-    .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
   &.env-pra {
-    --topbar-start-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaRed 100%)};
-    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaRed 100%)};
-
-    .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
+    --environment-color: #{color-mix(
+        in srgb,
+        $biaMainBarColor 100%,
+        $biaRed 100%
+      )};
   }
   &.env-ppd {
-    --topbar-start-bg: #{color-mix(
+    --environment-color: #{color-mix(
         in srgb,
         $biaMainBarColor 100%,
         $biaYellow 100%
       )};
-    --menu-bg: #{color-mix(in srgb, $biaMainBarColor 100%, $biaYellow 100%)};
-
-    .layout-menu li.active-menuitem > a {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
   }
 }
 
