@@ -68,6 +68,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
   @Input() showLoadingAfter = 100;
   @Input() scrollHeightValue = 'calc( 100vh - 460px)';
   @Input() isScrollable = true;
+  @Input() isResizableColumn = true;
   @Input() frozeSelectColumn = true;
   @Input() canSelectMultipleElement = true;
   @Input() rowHeight = 33.56;
@@ -496,6 +497,7 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
       if (tableState?.columnOrder) {
         this.updateDisplayedColumns(false);
         this.table.restoreState();
+        this.restoreColumnWidthsTable();
 
         if (this.table.sortMode === 'multiple') {
           this.table.sortMultiple();
@@ -519,6 +521,22 @@ export class BiaTableComponent implements OnChanges, AfterContentInit {
           }
         }
       }
+    }
+  }
+
+  /**
+   * This method is used to restore column widths in a PrimeNG table
+   * and to reset the column widths if the columnWidthsState is not defined.
+   */
+  protected restoreColumnWidthsTable() {
+    if (this.table && this.table.isStateful() && this.table.resizableColumns) {
+      // The restoreColumnWidths method of PrimeNG does not restore the default size.
+      // Therefore, we handle it here.
+      if (this.table.styleElement) {
+        this.table.styleElement.textContent = '';
+      }
+
+      this.table.restoreColumnWidths();
     }
   }
 

@@ -4,6 +4,7 @@
     #dt
     [autoLayout]="true"
     [reorderableColumns]="reorderableColumns"
+    [resizableColumns]="isResizableColumn"
     [columns]="displayedColumns"
     [value]="elements"
     [paginator]="!virtualScroll && paginator"
@@ -46,6 +47,7 @@
             *ngIf="col?.isSortable === true"
             [pSortableColumn]="col.field"
             pReorderableColumn
+            pResizableColumn
             [style.min-width]="col.minWidth"
             [alignFrozen]="col.alignFrozen"
             pFrozenColumn
@@ -66,6 +68,7 @@
           <th
             *ngIf="col?.isSortable !== true"
             pReorderableColumn
+            pResizableColumn
             [style.min-width]="col.minWidth"
             [alignFrozen]="col.alignFrozen"
             pFrozenColumn
@@ -95,6 +98,7 @@
           *ngFor="let col of columns"
           [ngSwitch]="col.field"
           pReorderableColumn
+          pResizableColumn
           [style.min-width]="col.minWidth"
           [alignFrozen]="col.alignFrozen"
           pFrozenColumn
