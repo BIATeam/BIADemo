@@ -72,7 +72,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
 
             ConfigureInfrastructureServiceContainer(collection, biaNetSection);
-            ConfigureDomainContainer(collection, biaNetSection);
+            ConfigureDomainContainer(collection);
             ConfigureApplicationContainer(collection, isApi);
 
             if (!isUnitTest)
@@ -111,7 +111,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
         }
 
-        private static void ConfigureDomainContainer(IServiceCollection collection, BiaNetSection biaNetSection)
+        private static void ConfigureDomainContainer(IServiceCollection collection)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(

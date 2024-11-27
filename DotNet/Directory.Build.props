@@ -6,7 +6,7 @@
 		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	<ItemGroup Label="AnalyzersNugets">
-		<PackageReference Include="SonarAnalyzer.CSharp" Version="9.*">
+		<PackageReference Include="SonarAnalyzer.CSharp" Version="10.*">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
